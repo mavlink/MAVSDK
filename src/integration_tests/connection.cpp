@@ -29,7 +29,7 @@ connection_test(const std::string& client_system_address, const std::string& ser
 {
     // Start instance as a UDP server pretending to be an autopilot
     Mavsdk mavsdk_server;
-    Mavsdk::Configuration config_autopilot(Mavsdk::Configuration::UsageType::Autopilot);
+    Mavsdk::Configuration config_autopilot(Mavsdk::ComponentType::Autopilot);
     mavsdk_server.set_configuration(config_autopilot);
     ConnectionResult ret_server = mavsdk_server.add_any_connection(server_system_address);
     ASSERT_EQ(ret_server, ConnectionResult::Success);

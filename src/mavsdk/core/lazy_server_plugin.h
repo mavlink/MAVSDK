@@ -16,7 +16,7 @@ public:
         std::lock_guard<std::mutex> lock(_mutex);
         if (_server_plugin == nullptr) {
             _server_plugin = std::make_unique<ServerPlugin>(
-                _mavsdk.server_component_by_type(Mavsdk::ServerComponentType::CompanionComputer));
+                _mavsdk.server_component_by_type(Mavsdk::ComponentType::CompanionComputer));
         }
         return _server_plugin.get();
     }

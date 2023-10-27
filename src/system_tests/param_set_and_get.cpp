@@ -20,20 +20,19 @@ TEST(SystemTest, ParamSetAndGet)
 {
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
-        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
+        Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation});
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
     Mavsdk mavsdk_autopilot;
-    mavsdk_autopilot.set_configuration(
-        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::Autopilot});
+    mavsdk_autopilot.set_configuration(Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot});
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(
         mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
 
-    auto param_server = ParamServer{
-        mavsdk_autopilot.server_component_by_type(Mavsdk::ServerComponentType::Autopilot)};
+    auto param_server =
+        ParamServer{mavsdk_autopilot.server_component_by_type(Mavsdk::ComponentType::Autopilot)};
 
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);
@@ -103,7 +102,7 @@ TEST(SystemTest, ParamSetAndGetLossy)
 {
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
-        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
+        Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation});
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
     // Drop every third message
@@ -114,16 +113,15 @@ TEST(SystemTest, ParamSetAndGetLossy)
     mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
 
     Mavsdk mavsdk_autopilot;
-    mavsdk_autopilot.set_configuration(
-        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::Autopilot});
+    mavsdk_autopilot.set_configuration(Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot});
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(
         mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
 
-    auto param_server = ParamServer{
-        mavsdk_autopilot.server_component_by_type(Mavsdk::ServerComponentType::Autopilot)};
+    auto param_server =
+        ParamServer{mavsdk_autopilot.server_component_by_type(Mavsdk::ComponentType::Autopilot)};
 
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);

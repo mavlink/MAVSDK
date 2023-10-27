@@ -12,18 +12,17 @@ TEST(SystemTest, TelemetrySubscription)
 {
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
-        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
+        Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation});
 
     Mavsdk mavsdk_autopilot;
-    mavsdk_autopilot.set_configuration(
-        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::Autopilot});
+    mavsdk_autopilot.set_configuration(Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot});
 
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(
         mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
 
     auto telemetry_server = TelemetryServer{
-        mavsdk_autopilot.server_component_by_type(Mavsdk::ServerComponentType::Autopilot)};
+        mavsdk_autopilot.server_component_by_type(Mavsdk::ComponentType::Autopilot)};
 
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);

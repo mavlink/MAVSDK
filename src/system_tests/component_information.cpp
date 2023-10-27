@@ -21,12 +21,12 @@ TEST(SystemTest, DISABLED_ComponentInformationConnect)
 {
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
-        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
+        Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation});
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
 
     Mavsdk mavsdk_companion;
     mavsdk_companion.set_configuration(
-        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::CompanionComputer});
+        Mavsdk::Configuration{Mavsdk::ComponentType::CompanionComputer});
     ASSERT_EQ(
         mavsdk_companion.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
 
@@ -35,7 +35,7 @@ TEST(SystemTest, DISABLED_ComponentInformationConnect)
     auto system = maybe_system.value();
 
     auto server = ComponentInformationServer{
-        mavsdk_companion.server_component_by_type(Mavsdk::ServerComponentType::CompanionComputer)};
+        mavsdk_companion.server_component_by_type(Mavsdk::ComponentType::CompanionComputer)};
 
     auto param = ComponentInformationServer::FloatParam{};
     param.name = "ANG_RATE_ACC_MAX";
