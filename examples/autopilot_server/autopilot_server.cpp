@@ -59,8 +59,7 @@ int main(int argc, char** argv)
     // thread as a ground station.
     std::thread autopilotThread([]() {
         mavsdk::Mavsdk mavsdkTester;
-        mavsdk::Mavsdk::Configuration configuration(
-            mavsdk::Mavsdk::Configuration::UsageType::Autopilot);
+        mavsdk::Mavsdk::Configuration configuration(mavsdk::Mavsdk::ComponentType::Autopilot);
         mavsdkTester.set_configuration(configuration);
 
         auto result = mavsdkTester.add_any_connection("udp://127.0.0.1:14551");
@@ -69,7 +68,7 @@ int main(int argc, char** argv)
         }
 
         auto server_component =
-            mavsdkTester.server_component_by_type(Mavsdk::ServerComponentType::Autopilot);
+            mavsdkTester.server_component_by_type(Mavsdk::ComponentType::Autopilot);
 
         // Create server plugins
         auto paramServer = mavsdk::ParamServer{server_component};
@@ -148,8 +147,7 @@ int main(int argc, char** argv)
     // Now this is the main thread, we run client plugins to act as the GCS
     // to communicate with the autopilot server plugins.
     mavsdk::Mavsdk mavsdk;
-    mavsdk::Mavsdk::Configuration configuration(
-        mavsdk::Mavsdk::Configuration::UsageType::GroundStation);
+    mavsdk::Mavsdk::Configuration configuration(mavsdk::Mavsdk::ComponentType::GroundStation);
     mavsdk.set_configuration(configuration);
 
     auto result = mavsdk.add_any_connection("udp://:14551");

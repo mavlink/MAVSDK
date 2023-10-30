@@ -816,7 +816,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    Mavsdk::Configuration config(Mavsdk::Configuration::UsageType::Autopilot);
+    Mavsdk::Configuration config(Mavsdk::ComponentType::Autopilot);
     config.set_system_id(own_sysid);
     mavsdk.set_configuration(config);
 

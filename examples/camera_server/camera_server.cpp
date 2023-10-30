@@ -6,7 +6,7 @@
 int main(int argc, char** argv)
 {
     mavsdk::Mavsdk mavsdk;
-    mavsdk::Mavsdk::Configuration configuration(mavsdk::Mavsdk::Configuration::UsageType::Camera);
+    mavsdk::Mavsdk::Configuration configuration(mavsdk::Mavsdk::ComponentType::Camera);
     mavsdk.set_configuration(configuration);
 
     // 14030 is the default camera port for PX4 SITL
@@ -18,7 +18,7 @@ int main(int argc, char** argv)
     std::cout << "Created camera server connection" << std::endl;
 
     auto camera_server = mavsdk::CameraServer{
-        mavsdk.server_component_by_type(mavsdk::Mavsdk::ServerComponentType::Camera)};
+        mavsdk.server_component_by_type(mavsdk::Mavsdk::ComponentType::Camera)};
 
     // First add all subscriptions. This defines the camera capabilities.
 
