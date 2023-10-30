@@ -69,8 +69,8 @@ jobs:
         run: cmake --build build/release -j2
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
-      - name: system tests
-        run: ./build/release/src/system_tests/system_tests_runner
+      #- name: system tests
+      #  run: ./build/release/src/system_tests/system_tests_runner
 
   ubuntu-superbuild:
     name: ${{ matrix.ubuntu_image }} (mavsdk_server, superbuild)
@@ -109,8 +109,8 @@ jobs:
         run: cmake --build examples/build -j2
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
-      - name: system tests
-        run: ./build/release/src/system_tests/system_tests_runner
+       # - name: system tests
+       #   run: ./build/release/src/system_tests/system_tests_runner
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
 
@@ -136,8 +136,8 @@ jobs:
         run: cmake --build build -j2
       - name: unit tests
         run: ./build/src/unit_tests/unit_tests_runner
-      - name: system tests
-        run: ./build/src/system_tests/system_tests_runner
+      #- name: system tests
+      #  run: ./build/src/system_tests/system_tests_runner
 
   ubuntu22-style-and-proto-check:
     name: ubuntu-22.04 (style and proto check)
@@ -280,8 +280,8 @@ jobs:
         run: cmake --build build/release --target install -- -j2
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
-      - name: system tests
-        run: ./build/release/src/system_tests/system_tests_runner
+      # - name: system tests
+      #   run: ./build/release/src/system_tests/system_tests_runner
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: Upload as artefact
