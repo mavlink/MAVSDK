@@ -5,6 +5,7 @@
 #include <chrono>
 #include <future>
 #include <fstream>
+#include <thread>
 #include "plugins/ftp/ftp.h"
 #include "plugins/ftp_server/ftp_server.h"
 #include "fs_helpers.h"
@@ -58,6 +59,8 @@ TEST(SystemTest, FtpRemoveFile)
     EXPECT_EQ(ftp.remove_file(temp_file.string()), Ftp::Result::Success);
 
     EXPECT_FALSE(file_exists(temp_dir_provided / temp_file));
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST(SystemTest, FtpRemoveFileThatDoesNotExist)
@@ -95,6 +98,8 @@ TEST(SystemTest, FtpRemoveFileThatDoesNotExist)
     EXPECT_EQ(ftp.remove_file(temp_file.string()), Ftp::Result::FileDoesNotExist);
 
     EXPECT_FALSE(file_exists(temp_dir_provided / temp_file));
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST(SystemTest, FtpRemoveFileOutsideOfRoot)
@@ -130,4 +135,6 @@ TEST(SystemTest, FtpRemoveFileOutsideOfRoot)
     ftp_server.set_root_dir(temp_dir_provided.string());
 
     EXPECT_EQ(ftp.remove_file((fs::path("..") / temp_file).string()), Ftp::Result::ProtocolError);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

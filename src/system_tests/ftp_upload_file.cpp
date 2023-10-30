@@ -5,6 +5,7 @@
 #include <chrono>
 #include <future>
 #include <fstream>
+#include <thread>
 #include "plugins/ftp/ftp.h"
 #include "plugins/ftp_server/ftp_server.h"
 #include "fs_helpers.h"
@@ -94,6 +95,8 @@ TEST(SystemTest, FtpUploadFile)
         EXPECT_TRUE(
             are_files_identical(temp_dir_to_upload / temp_file, temp_dir_provided / temp_file));
     }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST(SystemTest, FtpUploadBigFile)
@@ -150,6 +153,8 @@ TEST(SystemTest, FtpUploadBigFile)
         EXPECT_TRUE(
             are_files_identical(temp_dir_to_upload / temp_file, temp_dir_provided / temp_file));
     }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST(SystemTest, FtpUploadBigFileLossy)
@@ -215,6 +220,8 @@ TEST(SystemTest, FtpUploadBigFileLossy)
 
     mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
     mavsdk_groundstation.intercept_outgoing_messages_async(nullptr);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST(SystemTest, FtpUploadStopAndTryAgain)
@@ -302,6 +309,8 @@ TEST(SystemTest, FtpUploadStopAndTryAgain)
         ASSERT_EQ(future_status, std::future_status::ready);
         EXPECT_EQ(fut.get(), Ftp::Result::Success);
     }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST(SystemTest, FtpUploadFileOutsideOfRoot)
@@ -354,4 +363,6 @@ TEST(SystemTest, FtpUploadFileOutsideOfRoot)
         ASSERT_EQ(future_status, std::future_status::ready);
         EXPECT_EQ(fut.get(), Ftp::Result::ProtocolError);
     }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

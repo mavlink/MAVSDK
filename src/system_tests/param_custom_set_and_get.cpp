@@ -2,6 +2,7 @@
 #include "mavsdk.h"
 #include "plugins/param/param.h"
 #include "plugins/param_server/param_server.h"
+#include <thread>
 #include <gtest/gtest.h>
 
 using namespace mavsdk;
@@ -79,6 +80,8 @@ TEST(SystemTest, ParamCustomSetAndGet)
     auto server_result_pair = param_server.retrieve_param_custom(param_name);
     EXPECT_EQ(server_result_pair.first, ParamServer::Result::Success);
     EXPECT_EQ(server_result_pair.second, data_shorter);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST(SystemTest, ParamCustomSetAndGetLossy)
@@ -146,4 +149,6 @@ TEST(SystemTest, ParamCustomSetAndGetLossy)
     // drop_some callback which accesses the local counter variable.
     mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
     mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

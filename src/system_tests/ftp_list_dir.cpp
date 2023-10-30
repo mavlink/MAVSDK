@@ -8,6 +8,7 @@
 #include <filesystem>
 #include <gtest/gtest.h>
 #include <chrono>
+#include <thread>
 
 using namespace mavsdk;
 
@@ -73,4 +74,6 @@ TEST(SystemTest, FtpListDir)
     EXPECT_EQ(ret.first, Ftp::Result::Success);
 
     EXPECT_EQ(ret.second, truth_list);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

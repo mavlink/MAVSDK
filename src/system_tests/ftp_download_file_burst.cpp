@@ -5,6 +5,7 @@
 #include <chrono>
 #include <future>
 #include <fstream>
+#include <thread>
 #include "plugins/ftp/ftp.h"
 #include "plugins/ftp_server/ftp_server.h"
 #include "fs_helpers.h"
@@ -92,6 +93,8 @@ TEST(SystemTest, FtpDownloadBurstFile)
         EXPECT_TRUE(
             are_files_identical(temp_dir_provided / temp_file, temp_dir_downloaded / temp_file));
     }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST(SystemTest, FtpDownloadBurstBigFile)
@@ -147,6 +150,8 @@ TEST(SystemTest, FtpDownloadBurstBigFile)
 
     EXPECT_TRUE(
         are_files_identical(temp_dir_provided / temp_file, temp_dir_downloaded / temp_file));
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST(SystemTest, FtpDownloadBurstBigFileLossy)
@@ -213,6 +218,8 @@ TEST(SystemTest, FtpDownloadBurstBigFileLossy)
     // drop_some callback which accesses the local counter variable.
     mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
     mavsdk_groundstation.intercept_outgoing_messages_async(nullptr);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
@@ -302,6 +309,8 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
         ASSERT_EQ(future_status, std::future_status::ready);
         EXPECT_EQ(fut.get(), Ftp::Result::Success);
     }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST(SystemTest, FtpDownloadBurstFileOutsideOfRoot)
@@ -352,4 +361,6 @@ TEST(SystemTest, FtpDownloadBurstFileOutsideOfRoot)
         ASSERT_EQ(future_status, std::future_status::ready);
         EXPECT_EQ(fut.get(), Ftp::Result::ProtocolError);
     }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

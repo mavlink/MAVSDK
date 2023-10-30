@@ -4,6 +4,7 @@
 #include "log.h"
 #include <future>
 #include <mutex>
+#include <thread>
 #include <gtest/gtest.h>
 
 using namespace mavsdk;
@@ -69,4 +70,6 @@ TEST(SystemTest, CameraTakePhoto)
     ASSERT_EQ(
         received_captured_info_fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     received_captured_info_fut.get();
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

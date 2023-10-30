@@ -3,6 +3,7 @@
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/telemetry_server/telemetry_server.h"
 #include <future>
+#include <thread>
 #include <gtest/gtest.h>
 
 using namespace mavsdk;
@@ -74,4 +75,6 @@ TEST(SystemTest, TelemetrySubscription)
 
     EXPECT_EQ(num_subscription1_called, 2);
     EXPECT_EQ(num_subscription2_called, 3);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

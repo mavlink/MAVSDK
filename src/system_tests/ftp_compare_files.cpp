@@ -5,6 +5,7 @@
 #include <chrono>
 #include <future>
 #include <fstream>
+#include <thread>
 #include "plugins/ftp/ftp.h"
 #include "plugins/ftp_server/ftp_server.h"
 #include "fs_helpers.h"
@@ -73,4 +74,6 @@ TEST(SystemTest, FtpCompareFiles)
         (temp_dir_provided / temp_file).string(), temp_file_different.string());
     EXPECT_EQ(result.first, Ftp::Result::Success);
     EXPECT_EQ(result.second, false);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

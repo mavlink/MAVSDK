@@ -5,6 +5,7 @@
 #include "plugins/mission_raw_server/mission_raw_server.h"
 #include <string>
 #include <fstream>
+#include <thread>
 #include <gtest/gtest.h>
 
 using namespace mavsdk;
@@ -42,4 +43,6 @@ TEST(SystemTest, MissionRawUpload)
 
     EXPECT_EQ(
         mission_raw.upload_mission(result_pair.second.mission_items), MissionRaw::Result::Success);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

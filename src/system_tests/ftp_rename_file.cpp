@@ -5,6 +5,7 @@
 #include <chrono>
 #include <future>
 #include <fstream>
+#include <thread>
 #include "plugins/ftp/ftp.h"
 #include "plugins/ftp_server/ftp_server.h"
 #include "fs_helpers.h"
@@ -61,4 +62,6 @@ TEST(SystemTest, FtpRenameFile)
     EXPECT_EQ(ftp.rename(temp_file.string(), temp_file_renamed.string()), Ftp::Result::Success);
 
     EXPECT_TRUE(file_exists(temp_dir_provided / temp_file_renamed));
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

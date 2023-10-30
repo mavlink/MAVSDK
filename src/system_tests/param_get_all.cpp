@@ -7,6 +7,7 @@
 #include <vector>
 #include <thread>
 #include <map>
+#include <thread>
 
 using namespace mavsdk;
 
@@ -115,6 +116,8 @@ TEST(SystemTest, ParamGetAll)
         assert_equal<float, Param::FloatParam>(test_float_params, all_params.float_params);
         assert_equal<std::string, Param::CustomParam>(test_string_params, all_params.custom_params);
     }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST(SystemTest, ParamGetAllLossy)
@@ -187,4 +190,6 @@ TEST(SystemTest, ParamGetAllLossy)
     // drop_some callback which accesses the local counter variable.
     mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
     mavsdk_groundstation.intercept_outgoing_messages_async(nullptr);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <gtest/gtest.h>
 #include <chrono>
+#include <thread>
 
 using namespace mavsdk;
 
@@ -58,6 +59,8 @@ TEST(SystemTest, FtpRemoveDir)
     EXPECT_EQ(ftp.remove_directory(temp_dir.string()), Ftp::Result::Success);
 
     EXPECT_FALSE(file_exists(temp_dir_provided / temp_dir));
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST(SystemTest, FtpRemoveDirNotEmpty)
@@ -97,4 +100,6 @@ TEST(SystemTest, FtpRemoveDirNotEmpty)
     EXPECT_EQ(ftp.remove_directory(temp_dir.string()), Ftp::Result::ProtocolError);
 
     EXPECT_TRUE(file_exists(temp_dir_provided / temp_dir));
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

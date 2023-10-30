@@ -3,6 +3,7 @@
 #include "plugins/action/action.h"
 #include "plugins/action_server/action_server.h"
 #include <gtest/gtest.h>
+#include <thread>
 
 using namespace mavsdk;
 
@@ -48,4 +49,6 @@ TEST(SystemTest, ActionArmDisarm)
 
     // And disarm again
     EXPECT_EQ(action.disarm(), Action::Result::Success);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

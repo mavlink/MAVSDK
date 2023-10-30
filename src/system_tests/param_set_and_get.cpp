@@ -3,6 +3,7 @@
 #include "plugins/param/param.h"
 #include "plugins/param_server/param_server.h"
 #include <chrono>
+#include <thread>
 #include <gtest/gtest.h>
 
 using namespace mavsdk;
@@ -94,6 +95,8 @@ TEST(SystemTest, ParamSetAndGet)
     auto server_result_all_params = param_server.retrieve_all_params();
     EXPECT_EQ(server_result_all_params.int_params.size(), 1);
     EXPECT_EQ(server_result_all_params.float_params.size(), 1);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST(SystemTest, ParamSetAndGetLossy)

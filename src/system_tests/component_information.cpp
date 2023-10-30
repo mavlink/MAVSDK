@@ -3,6 +3,7 @@
 #include <vector>
 #include <atomic>
 #include <future>
+#include <thread>
 
 #include "mavsdk.h"
 #include "log.h"
@@ -67,4 +68,6 @@ TEST(SystemTest, DISABLED_ComponentInformationConnect)
 
     // Use another parameter to trigger the second callback.
     param_client.set_param_float("ANG_RATE_ACC_MAX", 6.0f);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
