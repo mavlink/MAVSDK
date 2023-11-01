@@ -72,7 +72,7 @@ class CameraServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTakePhotoResponse>> PrepareAsyncRespondTakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTakePhotoRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTakePhotoResponse>>(PrepareAsyncRespondTakePhotoRaw(context, request, cq));
     }
-    // Subscribe to start video requests. Each request received should response to using RespondStartVideo
+    // Subscribe to start video requests. Each request received should respond to using RespondStartVideo
     std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::StartVideoResponse>> SubscribeStartVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeStartVideoRequest& request) {
       return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::StartVideoResponse>>(SubscribeStartVideoRaw(context, request));
     }
@@ -82,7 +82,7 @@ class CameraServerService final {
     std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::StartVideoResponse>> PrepareAsyncSubscribeStartVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeStartVideoRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::StartVideoResponse>>(PrepareAsyncSubscribeStartVideoRaw(context, request, cq));
     }
-    // Respond to start video request from SubscribeStartVideo.
+    // Subscribe to stop video requests. Each request received should respond using StopVideoResponse
     virtual ::grpc::Status RespondStartVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondStartVideoRequest& request, ::mavsdk::rpc::camera_server::RespondStartVideoResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondStartVideoResponse>> AsyncRespondStartVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondStartVideoRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondStartVideoResponse>>(AsyncRespondStartVideoRaw(context, request, cq));
@@ -248,9 +248,9 @@ class CameraServerService final {
       // Respond to an image capture request from SubscribeTakePhoto.
       virtual void RespondTakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTakePhotoRequest* request, ::mavsdk::rpc::camera_server::RespondTakePhotoResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void RespondTakePhoto(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTakePhotoRequest* request, ::mavsdk::rpc::camera_server::RespondTakePhotoResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
-      // Subscribe to start video requests. Each request received should response to using RespondStartVideo
+      // Subscribe to start video requests. Each request received should respond to using RespondStartVideo
       virtual void SubscribeStartVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeStartVideoRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::StartVideoResponse>* reactor) = 0;
-      // Respond to start video request from SubscribeStartVideo.
+      // Subscribe to stop video requests. Each request received should respond using StopVideoResponse
       virtual void RespondStartVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondStartVideoRequest* request, ::mavsdk::rpc::camera_server::RespondStartVideoResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void RespondStartVideo(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondStartVideoRequest* request, ::mavsdk::rpc::camera_server::RespondStartVideoResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // Subscribe to stop video requests. Each request received should response to using RespondStopVideo
@@ -669,9 +669,9 @@ class CameraServerService final {
     virtual ::grpc::Status SubscribeTakePhoto(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeTakePhotoRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TakePhotoResponse>* writer);
     // Respond to an image capture request from SubscribeTakePhoto.
     virtual ::grpc::Status RespondTakePhoto(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondTakePhotoRequest* request, ::mavsdk::rpc::camera_server::RespondTakePhotoResponse* response);
-    // Subscribe to start video requests. Each request received should response to using RespondStartVideo
+    // Subscribe to start video requests. Each request received should respond to using RespondStartVideo
     virtual ::grpc::Status SubscribeStartVideo(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeStartVideoRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::StartVideoResponse>* writer);
-    // Respond to start video request from SubscribeStartVideo.
+    // Subscribe to stop video requests. Each request received should respond using StopVideoResponse
     virtual ::grpc::Status RespondStartVideo(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondStartVideoRequest* request, ::mavsdk::rpc::camera_server::RespondStartVideoResponse* response);
     // Subscribe to stop video requests. Each request received should response to using RespondStopVideo
     virtual ::grpc::Status SubscribeStopVideo(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeStopVideoRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::StopVideoResponse>* writer);

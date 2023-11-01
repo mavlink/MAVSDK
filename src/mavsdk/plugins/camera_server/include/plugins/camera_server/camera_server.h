@@ -421,7 +421,7 @@ public:
     using StartVideoHandle = Handle<int32_t>;
 
     /**
-     * @brief Subscribe to start video requests. Each request received should response to using
+     * @brief Subscribe to start video requests. Each request received should respond to using
      * RespondStartVideo
      */
     StartVideoHandle subscribe_start_video(const StartVideoCallback& callback);
@@ -432,7 +432,8 @@ public:
     void unsubscribe_start_video(StartVideoHandle handle);
 
     /**
-     * @brief Respond to start video request from SubscribeStartVideo.
+     * @brief Subscribe to stop video requests. Each request received should respond using
+     * StopVideoResponse
      *
      * This function is blocking.
      *
