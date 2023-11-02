@@ -666,51 +666,9 @@ CameraServer::Result CameraServerImpl::respond_capture_status(
         }
     }
 
-    uint8_t image_status{};
-    if (capture_status.image_status ==
-            CameraServer::CaptureStatus::ImageStatus::CaptureInProgress ||
-        capture_status.image_status ==
-            CameraServer::CaptureStatus::ImageStatus::IntervalInProgress) {
-        image_status |= StatusFlags::IN_PROGRESS;
-    }
+    _capture_status = capture_status;
 
-    if (capture_status.image_status == CameraServer::CaptureStatus::ImageStatus::IntervalIdle ||
-        capture_status.image_status ==
-            CameraServer::CaptureStatus::ImageStatus::IntervalInProgress ||
-        _is_image_capture_interval_set) {
-        image_status |= StatusFlags::INTERVAL_SET;
-    }
-
-    uint8_t video_status = 0;
-    if (capture_status.video_status == CameraServer::CaptureStatus::VideoStatus::Idle) {
-        video_status = 0;
-    } else if (
-        capture_status.video_status ==
-        CameraServer::CaptureStatus::VideoStatus::CaptureInProgress) {
-        video_status = 1;
-    }
-    const uint32_t recording_time_ms =
-        static_cast<uint32_t>(static_cast<double>(capture_status.recording_time_s) * 1e3);
-    const float available_capacity = capture_status.available_capacity_mib;
-
-    // FIXME for now the image catpure interval is the interval state of the camera server
-    // so the capture_status.image_interval_s is useless for now
-    _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
-        mavlink_message_t message{};
-        mavlink_msg_camera_capture_status_pack_chan(
-            mavlink_address.system_id,
-            mavlink_address.component_id,
-            channel,
-            &message,
-            static_cast<uint32_t>(_server_component_impl->get_time().elapsed_s() * 1e3),
-            image_status,
-            video_status,
-            _image_capture_timer_interval_s,
-            recording_time_ms,
-            available_capacity,
-            _image_capture_count);
-        return message;
-    });
+    send_capture_status();
 
     return CameraServer::Result::Success;
 }
@@ -1070,20 +1028,41 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_capture_st
     // may not need param for now ,just use zero
     _capture_status_callbacks(0);
 
-    uint8_t image_status{};
+    send_capture_status();
 
-    if (_is_image_capture_in_progress) {
+    // ack was already sent
+    return std::nullopt;
+}
+
+void CameraServerImpl::send_capture_status()
+{
+    uint8_t image_status{};
+    if (_capture_status.image_status ==
+            CameraServer::CaptureStatus::ImageStatus::CaptureInProgress ||
+        _capture_status.image_status ==
+            CameraServer::CaptureStatus::ImageStatus::IntervalInProgress) {
         image_status |= StatusFlags::IN_PROGRESS;
     }
 
-    if (_is_image_capture_interval_set) {
+    if (_capture_status.image_status == CameraServer::CaptureStatus::ImageStatus::IntervalIdle ||
+        _capture_status.image_status ==
+            CameraServer::CaptureStatus::ImageStatus::IntervalInProgress ||
+        _is_image_capture_interval_set) {
         image_status |= StatusFlags::INTERVAL_SET;
     }
 
-    // unsupported
-    const uint8_t video_status = 0;
-    const uint32_t recording_time_ms = 0;
-    const float available_capacity = 0;
+    uint8_t video_status = 0;
+    if (_capture_status.video_status == CameraServer::CaptureStatus::VideoStatus::Idle) {
+        video_status = 0;
+    } else if (
+        _capture_status.video_status ==
+        CameraServer::CaptureStatus::VideoStatus::CaptureInProgress) {
+        video_status = 1;
+    }
+
+    const uint32_t recording_time_ms =
+        static_cast<uint32_t>(static_cast<double>(_capture_status.recording_time_s) * 1e3);
+    const float available_capacity = _capture_status.available_capacity_mib;
 
     _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message{};
@@ -1101,9 +1080,6 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_capture_st
             _image_capture_count);
         return message;
     });
-
-    // ack was already sent
-    return std::nullopt;
 }
 
 std::optional<mavlink_command_ack_t>

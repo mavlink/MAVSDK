@@ -93,6 +93,8 @@ private:
     bool _is_video_streaming_set{};
     CameraServer::VideoStreaming _video_streaming{};
 
+    CameraServer::CaptureStatus _capture_status{};
+
     // CAMERA_CAPTURE_STATUS fields
     // TODO: how do we keep this info in sync between plugin instances?
     bool _is_image_capture_in_progress{};
@@ -168,6 +170,8 @@ private:
     process_video_stream_information_request(const MavlinkCommandReceiver::CommandLong& command);
     std::optional<mavlink_command_ack_t>
     process_video_stream_status_request(const MavlinkCommandReceiver::CommandLong& command);
+
+    void send_capture_status();
 };
 
 } // namespace mavsdk
