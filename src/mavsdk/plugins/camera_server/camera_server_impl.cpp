@@ -1,8 +1,6 @@
 #include "camera_server_impl.h"
 #include "callback_list.tpp"
 
-#include <thread> // FIXME: remove me
-
 namespace mavsdk {
 
 template class CallbackList<int32_t>;
@@ -632,6 +630,7 @@ CameraServerImpl::subscribe_capture_status(const CameraServer::CaptureStatusCall
 {
     return _capture_status_callbacks.subscribe(callback);
 }
+
 void CameraServerImpl::unsubscribe_capture_status(CameraServer::CaptureStatusHandle handle)
 {
     _capture_status_callbacks.unsubscribe(handle);
@@ -797,13 +796,6 @@ CameraServerImpl::respond_reset_settings(CameraServer::CameraFeedback reset_sett
     return CameraServer::Result::Success;
 }
 
-/**
- * Starts capturing images with the given interval.
- * @param [in]  interval_s      The interval between captures in seconds.
- * @param [in]  count           The number of images to capture or 0 for "forever".
- * @param [in]  index           The index/sequence number pass to the user callback (always
- *                              @c INT32_MIN).
- */
 void CameraServerImpl::start_image_capture_interval(float interval_s, int32_t count, int32_t index)
 {
     // If count == 0, it means capture "forever" until a stop command is received.
@@ -829,9 +821,6 @@ void CameraServerImpl::start_image_capture_interval(float interval_s, int32_t co
     _image_capture_timer_interval_s = interval_s;
 }
 
-/**
- * Stops any pending image capture interval timer.
- */
 void CameraServerImpl::stop_image_capture_interval()
 {
     if (_image_capture_timer_cookie) {
@@ -865,9 +854,6 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_informatio
         _server_component_impl->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
     _server_component_impl->send_command_ack(command_ack);
     LogDebug() << "sent info ack";
-
-    // FIXME: why is this needed to prevent dropping messages?
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     // It is safe to ignore the return value of parse_version_string() here
     // since the string was already validated in set_information().
@@ -935,9 +921,6 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_settings_r
         _server_component_impl->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
     _server_component_impl->send_command_ack(command_ack);
     LogDebug() << "sent settings ack";
-
-    // FIXME: why is this needed to prevent dropping messages?
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     // unsupported
     const auto mode_id = CAMERA_MODE::CAMERA_MODE_IMAGE;
