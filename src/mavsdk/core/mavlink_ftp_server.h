@@ -155,7 +155,7 @@ private:
     std::unordered_map<std::string, std::string> _tmp_files{};
     std::string _tmp_dir{};
 
-    uint16_t _seq = 0;
+    uint16_t _burst_seq = 0;
 
     bool _debugging{false};
 };

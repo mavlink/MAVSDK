@@ -60,7 +60,7 @@ void MavlinkFtpServer::process_mavlink_ftp_message(const mavlink_message_t& msg)
     // Basic sanity check: validate length before use.
     if (payload.size > max_data_length) {
         auto response = PayloadHeader{};
-        response.seq_number = _seq++;
+        response.seq_number = payload.seq_number + 1;
         response.req_opcode = payload.opcode;
         response.opcode = Opcode::RSP_NAK;
         response.data[0] = ServerResult::ERR_INVALID_DATA_SIZE;
@@ -274,12 +274,15 @@ void MavlinkFtpServer::set_root_directory(const std::string& root_dir)
 
     std::error_code ignored;
     _root_dir = fs::canonical(fs::path(root_dir), ignored).string();
+    if (_debugging) {
+        LogDebug() << "Set root dir to: " << _root_dir;
+    }
 }
 
 void MavlinkFtpServer::_work_list(const PayloadHeader& payload)
 {
     auto response = PayloadHeader{};
-    response.seq_number = _seq++;
+    response.seq_number = payload.seq_number + 1;
     response.req_opcode = payload.opcode;
 
     std::lock_guard<std::mutex> lock(_mutex);
@@ -397,7 +400,7 @@ void MavlinkFtpServer::_work_list(const PayloadHeader& payload)
 void MavlinkFtpServer::_work_open_file_readonly(const PayloadHeader& payload)
 {
     auto response = PayloadHeader{};
-    response.seq_number = _seq++;
+    response.seq_number = payload.seq_number + 1;
     response.req_opcode = payload.opcode;
 
     std::lock_guard<std::mutex> lock(_mutex);
@@ -478,6 +481,7 @@ void MavlinkFtpServer::_work_open_file_readonly(const PayloadHeader& payload)
 
     response.opcode = Opcode::RSP_ACK;
     response.session = 0;
+    response.seq_number = payload.seq_number + 1;
     response.size = sizeof(uint32_t);
     std::memcpy(response.data, &file_size, response.size);
 
@@ -487,7 +491,7 @@ void MavlinkFtpServer::_work_open_file_readonly(const PayloadHeader& payload)
 void MavlinkFtpServer::_work_open_file_writeonly(const PayloadHeader& payload)
 {
     auto response = PayloadHeader{};
-    response.seq_number = _seq++;
+    response.seq_number = payload.seq_number + 1;
     response.req_opcode = payload.opcode;
 
     std::lock_guard<std::mutex> lock(_mutex);
@@ -587,7 +591,7 @@ void MavlinkFtpServer::_work_open_file_writeonly(const PayloadHeader& payload)
 void MavlinkFtpServer::_work_create_file(const PayloadHeader& payload)
 {
     auto response = PayloadHeader{};
-    response.seq_number = _seq++;
+    response.seq_number = payload.seq_number + 1;
     response.req_opcode = payload.opcode;
 
     std::lock_guard<std::mutex> lock(_mutex);
@@ -664,7 +668,7 @@ void MavlinkFtpServer::_work_create_file(const PayloadHeader& payload)
 void MavlinkFtpServer::_work_read(const PayloadHeader& payload)
 {
     auto response = PayloadHeader{};
-    response.seq_number = _seq++;
+    response.seq_number = payload.seq_number + 1;
     response.req_opcode = payload.opcode;
 
     std::lock_guard<std::mutex> lock(_mutex);
@@ -725,7 +729,7 @@ void MavlinkFtpServer::_work_burst(const PayloadHeader& payload)
 
     // We have to test seek past EOF ourselves, lseek will allow seek past EOF
     if (payload.offset >= _session_info.file_size) {
-        response.seq_number = _seq++;
+        response.seq_number = payload.seq_number + 1;
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_EOF;
@@ -741,7 +745,7 @@ void MavlinkFtpServer::_work_burst(const PayloadHeader& payload)
     }
     _session_info.ifstream.seekg(payload.offset);
     if (_session_info.ifstream.fail()) {
-        response.seq_number = _seq++;
+        response.seq_number = payload.seq_number + 1;
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_FAIL;
@@ -753,7 +757,7 @@ void MavlinkFtpServer::_work_burst(const PayloadHeader& payload)
     _session_info.burst_offset = payload.offset;
 
     if (payload.size != 4) {
-        response.seq_number = _seq++;
+        response.seq_number = payload.seq_number + 1;
         response.opcode = Opcode::RSP_NAK;
         response.size = 1;
         response.data[0] = ServerResult::ERR_INVALID_DATA_SIZE;
@@ -765,6 +769,8 @@ void MavlinkFtpServer::_work_burst(const PayloadHeader& payload)
     uint32_t burst_size;
     std::memcpy(&burst_size, &payload.data, payload.size);
     _session_info.burst_end = _session_info.burst_offset + burst_size;
+
+    _burst_seq = payload.seq_number + 1;
 
     // Schedule sending out burst messages.
     // Use some arbitrary "fast" rate: 100 packets per second
@@ -783,7 +789,7 @@ void MavlinkFtpServer::_send_burst_packet()
 
     PayloadHeader burst_packet{};
     burst_packet.req_opcode = Opcode::CMD_BURST_READ_FILE;
-    burst_packet.seq_number = _seq++;
+    burst_packet.seq_number = _burst_seq++;
 
     _make_burst_packet(burst_packet);
 
@@ -835,7 +841,7 @@ void MavlinkFtpServer::_make_burst_packet(PayloadHeader& packet)
 void MavlinkFtpServer::_work_write(const PayloadHeader& payload)
 {
     auto response = PayloadHeader{};
-    response.seq_number = _seq++;
+    response.seq_number = payload.seq_number + 1;
     response.req_opcode = payload.opcode;
 
     std::lock_guard<std::mutex> lock(_mutex);
@@ -878,7 +884,7 @@ void MavlinkFtpServer::_work_terminate(const PayloadHeader& payload)
     }
 
     auto response = PayloadHeader{};
-    response.seq_number = _seq++;
+    response.seq_number = payload.seq_number + 1;
     response.req_opcode = payload.opcode;
     response.opcode = Opcode::RSP_ACK;
     response.size = 0;
@@ -910,7 +916,7 @@ void MavlinkFtpServer::_work_reset(const PayloadHeader& payload)
     }
 
     auto response = PayloadHeader{};
-    response.seq_number = _seq++;
+    response.seq_number = payload.seq_number + 1;
     response.req_opcode = payload.opcode;
     response.opcode = Opcode::RSP_ACK;
     response.size = 0;
@@ -920,7 +926,7 @@ void MavlinkFtpServer::_work_reset(const PayloadHeader& payload)
 void MavlinkFtpServer::_work_remove_directory(const PayloadHeader& payload)
 {
     auto response = PayloadHeader{};
-    response.seq_number = _seq++;
+    response.seq_number = payload.seq_number + 1;
     response.req_opcode = payload.opcode;
 
     std::lock_guard<std::mutex> lock(_mutex);
@@ -959,7 +965,7 @@ void MavlinkFtpServer::_work_remove_directory(const PayloadHeader& payload)
 void MavlinkFtpServer::_work_create_directory(const PayloadHeader& payload)
 {
     auto response = PayloadHeader{};
-    response.seq_number = _seq++;
+    response.seq_number = payload.seq_number + 1;
     response.req_opcode = payload.opcode;
 
     std::lock_guard<std::mutex> lock(_mutex);
@@ -999,7 +1005,7 @@ void MavlinkFtpServer::_work_create_directory(const PayloadHeader& payload)
 void MavlinkFtpServer::_work_remove_file(const PayloadHeader& payload)
 {
     auto response = PayloadHeader{};
-    response.seq_number = _seq++;
+    response.seq_number = payload.seq_number + 1;
     response.req_opcode = payload.opcode;
 
     std::lock_guard<std::mutex> lock(_mutex);
@@ -1037,7 +1043,7 @@ void MavlinkFtpServer::_work_remove_file(const PayloadHeader& payload)
 void MavlinkFtpServer::_work_rename(const PayloadHeader& payload)
 {
     auto response = PayloadHeader{};
-    response.seq_number = _seq++;
+    response.seq_number = payload.seq_number + 1;
     response.req_opcode = payload.opcode;
 
     std::lock_guard<std::mutex> lock(_mutex);
@@ -1132,7 +1138,7 @@ MavlinkFtpServer::_calc_local_file_crc32(const std::string& path, uint32_t& csum
 void MavlinkFtpServer::_work_calc_file_CRC32(const PayloadHeader& payload)
 {
     auto response = PayloadHeader{};
-    response.seq_number = _seq++;
+    response.seq_number = payload.seq_number + 1;
     response.req_opcode = payload.opcode;
 
     std::lock_guard<std::mutex> lock(_mutex);
