@@ -455,7 +455,7 @@ void ActionImpl::goto_location_async(
             command.params.x = int32_t(std::round(latitude_deg * 1e7));
             command.params.y = int32_t(std::round(longitude_deg * 1e7));
             command.params.maybe_z = altitude_amsl_m;
-            command.params.maybe_param2 = MAV_DO_REPOSITION_FLAGS_CHANGE_MODE;
+            command.params.maybe_param2 = static_cast<float>(MAV_DO_REPOSITION_FLAGS_CHANGE_MODE);
 
             _system_impl->send_command_async(
                 command, [this, callback](MavlinkCommandSender::Result result, float) {
