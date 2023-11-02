@@ -24,7 +24,6 @@
 #include "google/protobuf/io/coded_stream.h"
 #include "google/protobuf/arena.h"
 #include "google/protobuf/arenastring.h"
-#include "google/protobuf/generated_message_bases.h"
 #include "google/protobuf/generated_message_util.h"
 #include "google/protobuf/metadata_lite.h"
 #include "google/protobuf/generated_message_reflection.h"
@@ -74,12 +73,6 @@ extern DownloadResponseDefaultTypeInternal _DownloadResponse_default_instance_;
 class FtpResult;
 struct FtpResultDefaultTypeInternal;
 extern FtpResultDefaultTypeInternal _FtpResult_default_instance_;
-class GetOurCompidRequest;
-struct GetOurCompidRequestDefaultTypeInternal;
-extern GetOurCompidRequestDefaultTypeInternal _GetOurCompidRequest_default_instance_;
-class GetOurCompidResponse;
-struct GetOurCompidResponseDefaultTypeInternal;
-extern GetOurCompidResponseDefaultTypeInternal _GetOurCompidResponse_default_instance_;
 class ListDirectoryRequest;
 struct ListDirectoryRequestDefaultTypeInternal;
 extern ListDirectoryRequestDefaultTypeInternal _ListDirectoryRequest_default_instance_;
@@ -107,18 +100,6 @@ extern RenameRequestDefaultTypeInternal _RenameRequest_default_instance_;
 class RenameResponse;
 struct RenameResponseDefaultTypeInternal;
 extern RenameResponseDefaultTypeInternal _RenameResponse_default_instance_;
-class ResetRequest;
-struct ResetRequestDefaultTypeInternal;
-extern ResetRequestDefaultTypeInternal _ResetRequest_default_instance_;
-class ResetResponse;
-struct ResetResponseDefaultTypeInternal;
-extern ResetResponseDefaultTypeInternal _ResetResponse_default_instance_;
-class SetRootDirectoryRequest;
-struct SetRootDirectoryRequestDefaultTypeInternal;
-extern SetRootDirectoryRequestDefaultTypeInternal _SetRootDirectoryRequest_default_instance_;
-class SetRootDirectoryResponse;
-struct SetRootDirectoryResponseDefaultTypeInternal;
-extern SetRootDirectoryResponseDefaultTypeInternal _SetRootDirectoryResponse_default_instance_;
 class SetTargetCompidRequest;
 struct SetTargetCompidRequestDefaultTypeInternal;
 extern SetTargetCompidRequestDefaultTypeInternal _SetTargetCompidRequest_default_instance_;
@@ -151,10 +132,6 @@ template <>
 template <>
 ::mavsdk::rpc::ftp::FtpResult* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::FtpResult>(Arena*);
 template <>
-::mavsdk::rpc::ftp::GetOurCompidRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::GetOurCompidRequest>(Arena*);
-template <>
-::mavsdk::rpc::ftp::GetOurCompidResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::GetOurCompidResponse>(Arena*);
-template <>
 ::mavsdk::rpc::ftp::ListDirectoryRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::ListDirectoryRequest>(Arena*);
 template <>
 ::mavsdk::rpc::ftp::ListDirectoryResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::ListDirectoryResponse>(Arena*);
@@ -172,14 +149,6 @@ template <>
 ::mavsdk::rpc::ftp::RenameRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::RenameRequest>(Arena*);
 template <>
 ::mavsdk::rpc::ftp::RenameResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::RenameResponse>(Arena*);
-template <>
-::mavsdk::rpc::ftp::ResetRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::ResetRequest>(Arena*);
-template <>
-::mavsdk::rpc::ftp::ResetResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::ResetResponse>(Arena*);
-template <>
-::mavsdk::rpc::ftp::SetRootDirectoryRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::SetRootDirectoryRequest>(Arena*);
-template <>
-::mavsdk::rpc::ftp::SetRootDirectoryResponse* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::SetRootDirectoryResponse>(Arena*);
 template <>
 ::mavsdk::rpc::ftp::SetTargetCompidRequest* Arena::CreateMaybeMessage<::mavsdk::rpc::ftp::SetTargetCompidRequest>(Arena*);
 template <>
@@ -244,290 +213,6 @@ inline bool FtpResult_Result_Parse(absl::string_view name, FtpResult_Result* val
 
 // -------------------------------------------------------------------
 
-class ResetRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.ResetRequest) */ {
- public:
-  inline ResetRequest() : ResetRequest(nullptr) {}
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR ResetRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  ResetRequest(const ResetRequest& from);
-  ResetRequest(ResetRequest&& from) noexcept
-    : ResetRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline ResetRequest& operator=(const ResetRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline ResetRequest& operator=(ResetRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
-  }
-  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const ResetRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const ResetRequest* internal_default_instance() {
-    return reinterpret_cast<const ResetRequest*>(
-               &_ResetRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    0;
-
-  friend void swap(ResetRequest& a, ResetRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(ResetRequest* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(ResetRequest* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  ResetRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<ResetRequest>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const ResetRequest& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const ResetRequest& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-  public:
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.ftp.ResetRequest";
-  }
-  protected:
-  explicit ResetRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.ResetRequest)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-  };
-  friend struct ::TableStruct_ftp_2fftp_2eproto;
-};// -------------------------------------------------------------------
-
-class ResetResponse final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.ResetResponse) */ {
- public:
-  inline ResetResponse() : ResetResponse(nullptr) {}
-  ~ResetResponse() override;
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR ResetResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  ResetResponse(const ResetResponse& from);
-  ResetResponse(ResetResponse&& from) noexcept
-    : ResetResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline ResetResponse& operator=(const ResetResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline ResetResponse& operator=(ResetResponse&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
-  }
-  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const ResetResponse& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const ResetResponse* internal_default_instance() {
-    return reinterpret_cast<const ResetResponse*>(
-               &_ResetResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    1;
-
-  friend void swap(ResetResponse& a, ResetResponse& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(ResetResponse* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(ResetResponse* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  ResetResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<ResetResponse>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const ResetResponse& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const ResetResponse& from) {
-    ResetResponse::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  ::size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(ResetResponse* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.ftp.ResetResponse";
-  }
-  protected:
-  explicit ResetResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kFtpResultFieldNumber = 1,
-  };
-  // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-  bool has_ftp_result() const;
-  void clear_ftp_result() ;
-  const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
-  PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
-  ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
-  void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* ftp_result);
-  private:
-  const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
-  ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
-  public:
-  void unsafe_arena_set_allocated_ftp_result(
-      ::mavsdk::rpc::ftp::FtpResult* ftp_result);
-  ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.ResetResponse)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_ftp_2fftp_2eproto;
-};// -------------------------------------------------------------------
-
 class SubscribeDownloadRequest final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.SubscribeDownloadRequest) */ {
  public:
@@ -584,7 +269,7 @@ class SubscribeDownloadRequest final :
                &_SubscribeDownloadRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    0;
 
   friend void swap(SubscribeDownloadRequest& a, SubscribeDownloadRequest& b) {
     a.Swap(&b);
@@ -658,6 +343,7 @@ class SubscribeDownloadRequest final :
   enum : int {
     kRemoteFilePathFieldNumber = 1,
     kLocalDirFieldNumber = 2,
+    kUseBurstFieldNumber = 3,
   };
   // string remote_file_path = 1;
   void clear_remote_file_path() ;
@@ -699,6 +385,16 @@ class SubscribeDownloadRequest final :
   std::string* _internal_mutable_local_dir();
 
   public:
+  // bool use_burst = 3;
+  void clear_use_burst() ;
+  bool use_burst() const;
+  void set_use_burst(bool value);
+
+  private:
+  bool _internal_use_burst() const;
+  void _internal_set_use_burst(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.SubscribeDownloadRequest)
  private:
   class _Internal;
@@ -709,6 +405,7 @@ class SubscribeDownloadRequest final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr remote_file_path_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr local_dir_;
+    bool use_burst_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -771,7 +468,7 @@ class DownloadResponse final :
                &_DownloadResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    1;
 
   friend void swap(DownloadResponse& a, DownloadResponse& b) {
     a.Swap(&b);
@@ -947,7 +644,7 @@ class SubscribeUploadRequest final :
                &_SubscribeUploadRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    2;
 
   friend void swap(SubscribeUploadRequest& a, SubscribeUploadRequest& b) {
     a.Swap(&b);
@@ -1134,7 +831,7 @@ class UploadResponse final :
                &_UploadResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    3;
 
   friend void swap(UploadResponse& a, UploadResponse& b) {
     a.Swap(&b);
@@ -1310,7 +1007,7 @@ class ListDirectoryRequest final :
                &_ListDirectoryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    4;
 
   friend void swap(ListDirectoryRequest& a, ListDirectoryRequest& b) {
     a.Swap(&b);
@@ -1475,7 +1172,7 @@ class ListDirectoryResponse final :
                &_ListDirectoryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    5;
 
   friend void swap(ListDirectoryResponse& a, ListDirectoryResponse& b) {
     a.Swap(&b);
@@ -1667,7 +1364,7 @@ class CreateDirectoryRequest final :
                &_CreateDirectoryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    6;
 
   friend void swap(CreateDirectoryRequest& a, CreateDirectoryRequest& b) {
     a.Swap(&b);
@@ -1832,7 +1529,7 @@ class CreateDirectoryResponse final :
                &_CreateDirectoryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    7;
 
   friend void swap(CreateDirectoryResponse& a, CreateDirectoryResponse& b) {
     a.Swap(&b);
@@ -1992,7 +1689,7 @@ class RemoveDirectoryRequest final :
                &_RemoveDirectoryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    8;
 
   friend void swap(RemoveDirectoryRequest& a, RemoveDirectoryRequest& b) {
     a.Swap(&b);
@@ -2157,7 +1854,7 @@ class RemoveDirectoryResponse final :
                &_RemoveDirectoryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    9;
 
   friend void swap(RemoveDirectoryResponse& a, RemoveDirectoryResponse& b) {
     a.Swap(&b);
@@ -2317,7 +2014,7 @@ class RemoveFileRequest final :
                &_RemoveFileRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    10;
 
   friend void swap(RemoveFileRequest& a, RemoveFileRequest& b) {
     a.Swap(&b);
@@ -2482,7 +2179,7 @@ class RemoveFileResponse final :
                &_RemoveFileResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    11;
 
   friend void swap(RemoveFileResponse& a, RemoveFileResponse& b) {
     a.Swap(&b);
@@ -2642,7 +2339,7 @@ class RenameRequest final :
                &_RenameRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    12;
 
   friend void swap(RenameRequest& a, RenameRequest& b) {
     a.Swap(&b);
@@ -2829,7 +2526,7 @@ class RenameResponse final :
                &_RenameResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    13;
 
   friend void swap(RenameResponse& a, RenameResponse& b) {
     a.Swap(&b);
@@ -2989,7 +2686,7 @@ class AreFilesIdenticalRequest final :
                &_AreFilesIdenticalRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    14;
 
   friend void swap(AreFilesIdenticalRequest& a, AreFilesIdenticalRequest& b) {
     a.Swap(&b);
@@ -3176,7 +2873,7 @@ class AreFilesIdenticalResponse final :
                &_AreFilesIdenticalResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    15;
 
   friend void swap(AreFilesIdenticalResponse& a, AreFilesIdenticalResponse& b) {
     a.Swap(&b);
@@ -3292,331 +2989,6 @@ class AreFilesIdenticalResponse final :
   friend struct ::TableStruct_ftp_2fftp_2eproto;
 };// -------------------------------------------------------------------
 
-class SetRootDirectoryRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.SetRootDirectoryRequest) */ {
- public:
-  inline SetRootDirectoryRequest() : SetRootDirectoryRequest(nullptr) {}
-  ~SetRootDirectoryRequest() override;
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR SetRootDirectoryRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  SetRootDirectoryRequest(const SetRootDirectoryRequest& from);
-  SetRootDirectoryRequest(SetRootDirectoryRequest&& from) noexcept
-    : SetRootDirectoryRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline SetRootDirectoryRequest& operator=(const SetRootDirectoryRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline SetRootDirectoryRequest& operator=(SetRootDirectoryRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
-  }
-  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const SetRootDirectoryRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const SetRootDirectoryRequest* internal_default_instance() {
-    return reinterpret_cast<const SetRootDirectoryRequest*>(
-               &_SetRootDirectoryRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    18;
-
-  friend void swap(SetRootDirectoryRequest& a, SetRootDirectoryRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(SetRootDirectoryRequest* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(SetRootDirectoryRequest* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  SetRootDirectoryRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<SetRootDirectoryRequest>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const SetRootDirectoryRequest& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const SetRootDirectoryRequest& from) {
-    SetRootDirectoryRequest::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  ::size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(SetRootDirectoryRequest* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.ftp.SetRootDirectoryRequest";
-  }
-  protected:
-  explicit SetRootDirectoryRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kRootDirFieldNumber = 1,
-  };
-  // string root_dir = 1;
-  void clear_root_dir() ;
-  const std::string& root_dir() const;
-
-
-
-
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_root_dir(Arg_&& arg, Args_... args);
-  std::string* mutable_root_dir();
-  PROTOBUF_NODISCARD std::string* release_root_dir();
-  void set_allocated_root_dir(std::string* ptr);
-
-  private:
-  const std::string& _internal_root_dir() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_root_dir(
-      const std::string& value);
-  std::string* _internal_mutable_root_dir();
-
-  public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.SetRootDirectoryRequest)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr root_dir_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_ftp_2fftp_2eproto;
-};// -------------------------------------------------------------------
-
-class SetRootDirectoryResponse final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.SetRootDirectoryResponse) */ {
- public:
-  inline SetRootDirectoryResponse() : SetRootDirectoryResponse(nullptr) {}
-  ~SetRootDirectoryResponse() override;
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR SetRootDirectoryResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  SetRootDirectoryResponse(const SetRootDirectoryResponse& from);
-  SetRootDirectoryResponse(SetRootDirectoryResponse&& from) noexcept
-    : SetRootDirectoryResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline SetRootDirectoryResponse& operator=(const SetRootDirectoryResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline SetRootDirectoryResponse& operator=(SetRootDirectoryResponse&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
-  }
-  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const SetRootDirectoryResponse& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const SetRootDirectoryResponse* internal_default_instance() {
-    return reinterpret_cast<const SetRootDirectoryResponse*>(
-               &_SetRootDirectoryResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    19;
-
-  friend void swap(SetRootDirectoryResponse& a, SetRootDirectoryResponse& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(SetRootDirectoryResponse* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(SetRootDirectoryResponse* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  SetRootDirectoryResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<SetRootDirectoryResponse>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const SetRootDirectoryResponse& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const SetRootDirectoryResponse& from) {
-    SetRootDirectoryResponse::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  ::size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(SetRootDirectoryResponse* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.ftp.SetRootDirectoryResponse";
-  }
-  protected:
-  explicit SetRootDirectoryResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kFtpResultFieldNumber = 1,
-  };
-  // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-  bool has_ftp_result() const;
-  void clear_ftp_result() ;
-  const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
-  PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
-  ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
-  void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* ftp_result);
-  private:
-  const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
-  ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
-  public:
-  void unsafe_arena_set_allocated_ftp_result(
-      ::mavsdk::rpc::ftp::FtpResult* ftp_result);
-  ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.SetRootDirectoryResponse)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_ftp_2fftp_2eproto;
-};// -------------------------------------------------------------------
-
 class SetTargetCompidRequest final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.SetTargetCompidRequest) */ {
  public:
@@ -3673,7 +3045,7 @@ class SetTargetCompidRequest final :
                &_SetTargetCompidRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    16;
 
   friend void swap(SetTargetCompidRequest& a, SetTargetCompidRequest& b) {
     a.Swap(&b);
@@ -3828,7 +3200,7 @@ class SetTargetCompidResponse final :
                &_SetTargetCompidResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    17;
 
   friend void swap(SetTargetCompidResponse& a, SetTargetCompidResponse& b) {
     a.Swap(&b);
@@ -3932,285 +3304,6 @@ class SetTargetCompidResponse final :
   friend struct ::TableStruct_ftp_2fftp_2eproto;
 };// -------------------------------------------------------------------
 
-class GetOurCompidRequest final :
-    public ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.GetOurCompidRequest) */ {
- public:
-  inline GetOurCompidRequest() : GetOurCompidRequest(nullptr) {}
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR GetOurCompidRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  GetOurCompidRequest(const GetOurCompidRequest& from);
-  GetOurCompidRequest(GetOurCompidRequest&& from) noexcept
-    : GetOurCompidRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline GetOurCompidRequest& operator=(const GetOurCompidRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline GetOurCompidRequest& operator=(GetOurCompidRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
-  }
-  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const GetOurCompidRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const GetOurCompidRequest* internal_default_instance() {
-    return reinterpret_cast<const GetOurCompidRequest*>(
-               &_GetOurCompidRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    22;
-
-  friend void swap(GetOurCompidRequest& a, GetOurCompidRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(GetOurCompidRequest* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(GetOurCompidRequest* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  GetOurCompidRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<GetOurCompidRequest>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const GetOurCompidRequest& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const GetOurCompidRequest& from) {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-  public:
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.ftp.GetOurCompidRequest";
-  }
-  protected:
-  explicit GetOurCompidRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.GetOurCompidRequest)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-  };
-  friend struct ::TableStruct_ftp_2fftp_2eproto;
-};// -------------------------------------------------------------------
-
-class GetOurCompidResponse final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.GetOurCompidResponse) */ {
- public:
-  inline GetOurCompidResponse() : GetOurCompidResponse(nullptr) {}
-  ~GetOurCompidResponse() override;
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR GetOurCompidResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  GetOurCompidResponse(const GetOurCompidResponse& from);
-  GetOurCompidResponse(GetOurCompidResponse&& from) noexcept
-    : GetOurCompidResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline GetOurCompidResponse& operator=(const GetOurCompidResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline GetOurCompidResponse& operator=(GetOurCompidResponse&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
-  }
-  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const GetOurCompidResponse& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const GetOurCompidResponse* internal_default_instance() {
-    return reinterpret_cast<const GetOurCompidResponse*>(
-               &_GetOurCompidResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    23;
-
-  friend void swap(GetOurCompidResponse& a, GetOurCompidResponse& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(GetOurCompidResponse* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(GetOurCompidResponse* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  GetOurCompidResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<GetOurCompidResponse>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const GetOurCompidResponse& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const GetOurCompidResponse& from) {
-    GetOurCompidResponse::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  ::size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(GetOurCompidResponse* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.ftp.GetOurCompidResponse";
-  }
-  protected:
-  explicit GetOurCompidResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kCompidFieldNumber = 1,
-  };
-  // uint32 compid = 1;
-  void clear_compid() ;
-  ::uint32_t compid() const;
-  void set_compid(::uint32_t value);
-
-  private:
-  ::uint32_t _internal_compid() const;
-  void _internal_set_compid(::uint32_t value);
-
-  public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.GetOurCompidResponse)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-    ::uint32_t compid_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_ftp_2fftp_2eproto;
-};// -------------------------------------------------------------------
-
 class ProgressData final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.ProgressData) */ {
  public:
@@ -4267,7 +3360,7 @@ class ProgressData final :
                &_ProgressData_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    18;
 
   friend void swap(ProgressData& a, ProgressData& b) {
     a.Swap(&b);
@@ -4434,7 +3527,7 @@ class FtpResult final :
                &_FtpResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    19;
 
   friend void swap(FtpResult& a, FtpResult& b) {
     a.Swap(&b);
@@ -4600,101 +3693,6 @@ class FtpResult final :
 #endif  // __GNUC__
 // -------------------------------------------------------------------
 
-// ResetRequest
-
-// -------------------------------------------------------------------
-
-// ResetResponse
-
-// .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-inline bool ResetResponse::has_ftp_result() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
-  return value;
-}
-inline void ResetResponse::clear_ftp_result() {
-  if (_impl_.ftp_result_ != nullptr) _impl_.ftp_result_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
-}
-inline const ::mavsdk::rpc::ftp::FtpResult& ResetResponse::_internal_ftp_result() const {
-  const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(
-      ::mavsdk::rpc::ftp::_FtpResult_default_instance_);
-}
-inline const ::mavsdk::rpc::ftp::FtpResult& ResetResponse::ftp_result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ResetResponse.ftp_result)
-  return _internal_ftp_result();
-}
-inline void ResetResponse::unsafe_arena_set_allocated_ftp_result(
-    ::mavsdk::rpc::ftp::FtpResult* ftp_result) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.ftp_result_);
-  }
-  _impl_.ftp_result_ = ftp_result;
-  if (ftp_result) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.ResetResponse.ftp_result)
-}
-inline ::mavsdk::rpc::ftp::FtpResult* ResetResponse::release_ftp_result() {
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
-  _impl_.ftp_result_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* ResetResponse::unsafe_arena_release_ftp_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.ResetResponse.ftp_result)
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
-  _impl_.ftp_result_ = nullptr;
-  return temp;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* ResetResponse::_internal_mutable_ftp_result() {
-  _impl_._has_bits_[0] |= 0x00000001u;
-  if (_impl_.ftp_result_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::ftp::FtpResult>(GetArenaForAllocation());
-    _impl_.ftp_result_ = p;
-  }
-  return _impl_.ftp_result_;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* ResetResponse::mutable_ftp_result() {
-  ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.ResetResponse.ftp_result)
-  return _msg;
-}
-inline void ResetResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* ftp_result) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete _impl_.ftp_result_;
-  }
-  if (ftp_result) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(ftp_result);
-    if (message_arena != submessage_arena) {
-      ftp_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, ftp_result, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  _impl_.ftp_result_ = ftp_result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.ResetResponse.ftp_result)
-}
-
-// -------------------------------------------------------------------
-
 // SubscribeDownloadRequest
 
 // string remote_file_path = 1;
@@ -4789,6 +3787,26 @@ inline void SubscribeDownloadRequest::set_allocated_local_dir(std::string* value
         }
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.SubscribeDownloadRequest.local_dir)
+}
+
+// bool use_burst = 3;
+inline void SubscribeDownloadRequest::clear_use_burst() {
+  _impl_.use_burst_ = false;
+}
+inline bool SubscribeDownloadRequest::use_burst() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SubscribeDownloadRequest.use_burst)
+  return _internal_use_burst();
+}
+inline void SubscribeDownloadRequest::set_use_burst(bool value) {
+  _internal_set_use_burst(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.SubscribeDownloadRequest.use_burst)
+}
+inline bool SubscribeDownloadRequest::_internal_use_burst() const {
+  return _impl_.use_burst_;
+}
+inline void SubscribeDownloadRequest::_internal_set_use_burst(bool value) {
+  ;
+  _impl_.use_burst_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -6306,148 +5324,6 @@ inline void AreFilesIdenticalResponse::_internal_set_are_identical(bool value) {
 
 // -------------------------------------------------------------------
 
-// SetRootDirectoryRequest
-
-// string root_dir = 1;
-inline void SetRootDirectoryRequest::clear_root_dir() {
-  _impl_.root_dir_.ClearToEmpty();
-}
-inline const std::string& SetRootDirectoryRequest::root_dir() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SetRootDirectoryRequest.root_dir)
-  return _internal_root_dir();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void SetRootDirectoryRequest::set_root_dir(Arg_&& arg,
-                                                     Args_... args) {
-  ;
-  _impl_.root_dir_.Set(static_cast<Arg_&&>(arg), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.SetRootDirectoryRequest.root_dir)
-}
-inline std::string* SetRootDirectoryRequest::mutable_root_dir() {
-  std::string* _s = _internal_mutable_root_dir();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.SetRootDirectoryRequest.root_dir)
-  return _s;
-}
-inline const std::string& SetRootDirectoryRequest::_internal_root_dir() const {
-  return _impl_.root_dir_.Get();
-}
-inline void SetRootDirectoryRequest::_internal_set_root_dir(const std::string& value) {
-  ;
-
-
-  _impl_.root_dir_.Set(value, GetArenaForAllocation());
-}
-inline std::string* SetRootDirectoryRequest::_internal_mutable_root_dir() {
-  ;
-  return _impl_.root_dir_.Mutable( GetArenaForAllocation());
-}
-inline std::string* SetRootDirectoryRequest::release_root_dir() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.SetRootDirectoryRequest.root_dir)
-  return _impl_.root_dir_.Release();
-}
-inline void SetRootDirectoryRequest::set_allocated_root_dir(std::string* value) {
-  _impl_.root_dir_.SetAllocated(value, GetArenaForAllocation());
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        if (_impl_.root_dir_.IsDefault()) {
-          _impl_.root_dir_.Set("", GetArenaForAllocation());
-        }
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.SetRootDirectoryRequest.root_dir)
-}
-
-// -------------------------------------------------------------------
-
-// SetRootDirectoryResponse
-
-// .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-inline bool SetRootDirectoryResponse::has_ftp_result() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
-  return value;
-}
-inline void SetRootDirectoryResponse::clear_ftp_result() {
-  if (_impl_.ftp_result_ != nullptr) _impl_.ftp_result_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
-}
-inline const ::mavsdk::rpc::ftp::FtpResult& SetRootDirectoryResponse::_internal_ftp_result() const {
-  const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(
-      ::mavsdk::rpc::ftp::_FtpResult_default_instance_);
-}
-inline const ::mavsdk::rpc::ftp::FtpResult& SetRootDirectoryResponse::ftp_result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SetRootDirectoryResponse.ftp_result)
-  return _internal_ftp_result();
-}
-inline void SetRootDirectoryResponse::unsafe_arena_set_allocated_ftp_result(
-    ::mavsdk::rpc::ftp::FtpResult* ftp_result) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.ftp_result_);
-  }
-  _impl_.ftp_result_ = ftp_result;
-  if (ftp_result) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.SetRootDirectoryResponse.ftp_result)
-}
-inline ::mavsdk::rpc::ftp::FtpResult* SetRootDirectoryResponse::release_ftp_result() {
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
-  _impl_.ftp_result_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* SetRootDirectoryResponse::unsafe_arena_release_ftp_result() {
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.SetRootDirectoryResponse.ftp_result)
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
-  _impl_.ftp_result_ = nullptr;
-  return temp;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* SetRootDirectoryResponse::_internal_mutable_ftp_result() {
-  _impl_._has_bits_[0] |= 0x00000001u;
-  if (_impl_.ftp_result_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::ftp::FtpResult>(GetArenaForAllocation());
-    _impl_.ftp_result_ = p;
-  }
-  return _impl_.ftp_result_;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* SetRootDirectoryResponse::mutable_ftp_result() {
-  ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.SetRootDirectoryResponse.ftp_result)
-  return _msg;
-}
-inline void SetRootDirectoryResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* ftp_result) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete _impl_.ftp_result_;
-  }
-  if (ftp_result) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(ftp_result);
-    if (message_arena != submessage_arena) {
-      ftp_result = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, ftp_result, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  _impl_.ftp_result_ = ftp_result;
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.SetRootDirectoryResponse.ftp_result)
-}
-
-// -------------------------------------------------------------------
-
 // SetTargetCompidRequest
 
 // uint32 compid = 1;
@@ -6559,34 +5435,6 @@ inline void SetTargetCompidResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp
   }
   _impl_.ftp_result_ = ftp_result;
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.SetTargetCompidResponse.ftp_result)
-}
-
-// -------------------------------------------------------------------
-
-// GetOurCompidRequest
-
-// -------------------------------------------------------------------
-
-// GetOurCompidResponse
-
-// uint32 compid = 1;
-inline void GetOurCompidResponse::clear_compid() {
-  _impl_.compid_ = 0u;
-}
-inline ::uint32_t GetOurCompidResponse::compid() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.GetOurCompidResponse.compid)
-  return _internal_compid();
-}
-inline void GetOurCompidResponse::set_compid(::uint32_t value) {
-  _internal_set_compid(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.GetOurCompidResponse.compid)
-}
-inline ::uint32_t GetOurCompidResponse::_internal_compid() const {
-  return _impl_.compid_;
-}
-inline void GetOurCompidResponse::_internal_set_compid(::uint32_t value) {
-  ;
-  _impl_.compid_ = value;
 }
 
 // -------------------------------------------------------------------

@@ -33,7 +33,7 @@ SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
         [this]() { return timeout_s(); }),
     _request_message(
         *this, _command_sender, _mavsdk_impl.mavlink_message_handler, _mavsdk_impl.timeout_handler),
-    _mavlink_ftp(*this)
+    _mavlink_ftp_client(*this)
 {
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
 }
@@ -285,6 +285,7 @@ void SystemImpl::system_thread()
         _command_sender.do_work();
         _timesync.do_work();
         _mission_transfer.do_work();
+        _mavlink_ftp_client.do_work();
 
         if (_mavsdk_impl.time.elapsed_since_s(last_ping_time) >= SystemImpl::_ping_interval_s) {
             if (_connected && _autopilot != Autopilot::ArduPilot) {

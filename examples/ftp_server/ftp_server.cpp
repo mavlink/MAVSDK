@@ -3,7 +3,7 @@
 //
 
 #include <mavsdk/mavsdk.h>
-#include <mavsdk/plugins/ftp/ftp.h>
+#include <mavsdk/plugins/ftp_server/ftp_server.h>
 
 #include <chrono>
 #include <iostream>
@@ -37,15 +37,15 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    auto system_cc = mavsdk.systems().at(0);
-
-    auto ftp_server = Ftp{system_cc};
-    ftp_server.set_root_directory(argv[3]);
+    auto component =
+        mavsdk.server_component_by_type(mavsdk::Mavsdk::ServerComponentType::CompanionComputer);
+    auto ftp_server = FtpServer{component};
+    ftp_server.set_root_dir(argv[3]);
 
     std::cout << "Mavlink FTP server running.\n"
               << '\n'
               << "Remote:       " << argv[1] << ":" << argv[2] << '\n'
-              << "Component ID: " << static_cast<int>(ftp_server.get_our_compid()) << '\n';
+              << "Component ID: " << std::to_string(component->component_id()) << '\n';
 
     while (true) {
         std::this_thread::sleep_for(std::chrono::seconds(1));

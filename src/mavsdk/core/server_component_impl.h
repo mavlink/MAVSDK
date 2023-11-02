@@ -7,6 +7,7 @@
 #include "mavlink_mission_transfer.h"
 #include "mavlink_parameter_server.h"
 #include "mavlink_request_message_handler.h"
+#include "mavlink_ftp_server.h"
 #include "mavsdk_time.h"
 #include "flight_mode.h"
 #include "log.h"
@@ -147,6 +148,7 @@ public:
     {
         return _mavlink_request_message_handler;
     }
+    MavlinkFtpServer& mavlink_ftp_server() { return _mavlink_ftp_server; }
 
     void do_work();
 
@@ -171,6 +173,7 @@ private:
     MavlinkMissionTransfer _mission_transfer;
     MavlinkParameterServer _mavlink_parameter_server;
     MavlinkRequestMessageHandler _mavlink_request_message_handler;
+    MavlinkFtpServer _mavlink_ftp_server;
 };
 
 } // namespace mavsdk

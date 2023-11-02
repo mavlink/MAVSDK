@@ -4,6 +4,9 @@
 #include "plugin_impl_base.h"
 #include "callback_list.h"
 
+#include <optional>
+#include <string>
+
 namespace mavsdk {
 
 class ComponentInformationImpl : public PluginImplBase {
@@ -38,6 +41,8 @@ private:
         const std::string& name, MavlinkParameterClient::Result result, float value);
 
     void param_update(const std::string& name, float new_value);
+
+    std::optional<std::string> create_tmp_directory(const std::string& prefix);
 
     std::mutex _mutex{};
     std::vector<ComponentInformation::FloatParam> _float_params{};

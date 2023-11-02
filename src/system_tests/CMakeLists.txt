@@ -1,5 +1,4 @@
 add_executable(system_tests_runner
-    ../mavsdk/core/unittests_main.cpp
     camera_take_photo.cpp
     component_information.cpp
     action_arm_disarm.cpp
@@ -9,6 +8,17 @@ add_executable(system_tests_runner
     param_get_all.cpp
     mission_raw_upload.cpp
     telemetry_subscription.cpp
+    fs_helpers.cpp
+    ftp_download_file.cpp
+    ftp_download_file_burst.cpp
+    ftp_remove_file.cpp
+    ftp_upload_file.cpp
+    ftp_rename_file.cpp
+    ftp_create_dir.cpp
+    ftp_remove_dir.cpp
+    ftp_compare_files.cpp
+    ftp_list_dir.cpp
+    system_tests_runner.cpp
 )
 
 target_include_directories(system_tests_runner
@@ -23,3 +33,15 @@ target_link_libraries(system_tests_runner
     gtest_main
     gmock
 )
+
+if(ENABLE_CPPTRACE)
+    find_package(cpptrace REQUIRED)
+    target_link_libraries(system_tests_runner
+        PRIVATE
+        cpptrace::cpptrace
+    )
+    target_compile_definitions(system_tests_runner
+        PRIVATE
+        -DENABLE_CPPTRACE
+    )
+endif()

@@ -1,12 +1,15 @@
 #include "component_information_impl.h"
-#include "fs.h"
 #include "callback_list.tpp"
 
 #include <utility>
+#include <filesystem>
 #include <fstream>
+#include <random>
 #include <json/json.h>
 
 namespace mavsdk {
+
+namespace fs = std::filesystem;
 
 template class CallbackList<ComponentInformation::FloatParamUpdate>;
 
@@ -78,17 +81,19 @@ void ComponentInformationImpl::download_file_async(
         const auto maybe_tmp_path = create_tmp_directory("mavsdk-component-information-tmp-files");
         const auto path_to_download = maybe_tmp_path ? maybe_tmp_path.value() : "./";
 
-        _system_impl->mavlink_ftp().download_async(
+        _system_impl->mavlink_ftp_client().download_async(
             path,
             path_to_download,
+            false, // Don't use burst for now
             [path_to_download, callback, path](
-                MavlinkFtp::ClientResult download_result, MavlinkFtp::ProgressData progress_data) {
-                if (download_result == MavlinkFtp::ClientResult::Next) {
+                MavlinkFtpClient::ClientResult download_result,
+                MavlinkFtpClient::ProgressData progress_data) {
+                if (download_result == MavlinkFtpClient::ClientResult::Next) {
                     LogDebug() << "File download progress: " << progress_data.bytes_transferred
                                << '/' << progress_data.total_bytes;
                 } else {
                     LogDebug() << "File download ended with result " << download_result;
-                    if (download_result == MavlinkFtp::ClientResult::Success) {
+                    if (download_result == MavlinkFtpClient::ClientResult::Success) {
                         LogDebug() << "Received file " << path_to_download + "/" + path;
                         callback(path_to_download + "/" + path);
                     }
@@ -262,6 +267,32 @@ void ComponentInformationImpl::unsubscribe_float_param(
 {
     std::lock_guard<std::mutex> lock(_mutex);
     _float_param_update_callbacks.unsubscribe(handle);
+}
+
+std::optional<std::string> ComponentInformationImpl::create_tmp_directory(const std::string& prefix)
+{
+    // Inspired by https://stackoverflow.com/a/58454949/8548472
+    const auto tmp_dir = fs::temp_directory_path();
+
+    std::random_device dev;
+    std::mt19937 prng(dev());
+    std::uniform_int_distribution<uint32_t> rand(0);
+
+    static constexpr unsigned max_tries = 100;
+
+    for (unsigned i = 0; i < max_tries; ++i) {
+        std::stringstream ss;
+        ss << prefix << '-' << std::hex << rand(prng);
+        auto path = tmp_dir / ss.str();
+
+        const auto created = fs::create_directory(path);
+        if (created) {
+            return {path.string()};
+        }
+    }
+
+    LogErr() << "Could not create a temporary directory, aborting.";
+    return {};
 }
 
 } // namespace mavsdk

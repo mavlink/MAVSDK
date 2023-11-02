@@ -8,14 +8,6 @@
 #include "plugins/ftp/ftp.h"
 #include "plugin_impl_base.h"
 
-// As found in
-// https://stackoverflow.com/questions/1537964#answer-3312896
-#ifdef _MSC_VER // MSVC
-#define PACK(__Declaration__) __pragma(pack(push, 1)) __Declaration__ __pragma(pack(pop))
-#else
-#define PACK(__Declaration__) __Declaration__ __attribute__((__packed__))
-#endif
-
 namespace mavsdk {
 
 class FtpImpl : public PluginImplBase {
@@ -45,13 +37,13 @@ public:
     void download_async(
         const std::string& remote_file_path,
         const std::string& local_folder,
+        bool use_burst,
         Ftp::DownloadCallback callback);
     void upload_async(
         const std::string& local_file_path,
         const std::string& remote_folder,
         Ftp::UploadCallback callback);
-    void list_directory_async(
-        const std::string& path, Ftp::ListDirectoryCallback callback, uint32_t offset = 0);
+    void list_directory_async(const std::string& path, Ftp::ListDirectoryCallback callback);
     void create_directory_async(const std::string& path, Ftp::ResultCallback callback);
     void remove_directory_async(const std::string& path, Ftp::ResultCallback callback);
     void remove_file_async(const std::string& path, Ftp::ResultCallback callback);
@@ -62,15 +54,12 @@ public:
         const std::string& remote_path,
         Ftp::AreFilesIdenticalCallback callback);
 
-    void set_retries(uint32_t retries);
-    Ftp::Result set_root_directory(const std::string& root_dir);
-    uint8_t get_our_compid() { return _system_impl->get_own_component_id(); };
     Ftp::Result set_target_compid(uint8_t component_id);
 
 private:
-    Ftp::Result result_from_mavlink_ftp_result(MavlinkFtp::ClientResult result);
+    Ftp::Result result_from_mavlink_ftp_result(MavlinkFtpClient::ClientResult result);
     Ftp::ProgressData
-    progress_data_from_mavlink_ftp_progress_data(MavlinkFtp::ProgressData progress_data);
+    progress_data_from_mavlink_ftp_progress_data(MavlinkFtpClient::ProgressData progress_data);
 };
 
 } // namespace mavsdk

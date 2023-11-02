@@ -27,7 +27,6 @@ add_executable(integration_tests_runner
     offboard_attitude.cpp
     #logging.cpp # Not fully implemented
     log_files.cpp
-    ftp.cpp
     mission_cancellation.cpp
     mission_change_speed.cpp
     mission.cpp

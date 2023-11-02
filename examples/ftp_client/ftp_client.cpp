@@ -47,14 +47,6 @@ void usage(const std::string& bin_name)
         << " 3 : Files are different (cmp command)\n";
 }
 
-Ftp::Result reset_server(Ftp& ftp)
-{
-    auto prom = std::promise<Ftp::Result>{};
-    auto future_result = prom.get_future();
-    ftp.reset_async([&prom](Ftp::Result result) { prom.set_value(result); });
-    return future_result.get();
-}
-
 Ftp::Result create_directory(Ftp& ftp, const std::string& path)
 {
     std::cerr << "Creating directory: " << path << '\n';
@@ -131,7 +123,10 @@ download_file(Ftp& ftp, const std::string& remote_file_path, const std::string& 
     auto prom = std::promise<Ftp::Result>{};
     auto future_result = prom.get_future();
     ftp.download_async(
-        remote_file_path, local_path, [&prom](Ftp::Result result, Ftp::ProgressData progress) {
+        remote_file_path,
+        local_path,
+        false,
+        [&prom](Ftp::Result result, Ftp::ProgressData progress) {
             if (result == Ftp::Result::Next) {
                 int percentage = progress.total_bytes > 0 ?
                                      progress.bytes_transferred * 100 / progress.total_bytes :
@@ -215,13 +210,6 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    Ftp::Result res;
-    res = reset_server(ftp);
-    if (res != Ftp::Result::Success) {
-        std::cerr << "Reset server error: " << res << '\n';
-        return 1;
-    }
-
     std::string command = argv[3];
 
     if (command == "put") {
@@ -229,7 +217,7 @@ int main(int argc, char** argv)
             usage(argv[0]);
             return 1;
         }
-        res = upload_file(ftp, argv[4], argv[5]);
+        auto res = upload_file(ftp, argv[4], argv[5]);
         if (res == Ftp::Result::Success) {
             std::cerr << "File uploaded.\n";
         } else {
@@ -241,7 +229,7 @@ int main(int argc, char** argv)
             usage(argv[0]);
             return 1;
         }
-        res = download_file(ftp, argv[4], (argc == 6) ? argv[5] : ".");
+        auto res = download_file(ftp, argv[4], (argc == 6) ? argv[5] : ".");
         if (res == Ftp::Result::Success) {
             std::cerr << "File downloaded.\n";
         } else {
@@ -253,7 +241,7 @@ int main(int argc, char** argv)
             usage(argv[0]);
             return 1;
         }
-        res = rename_file(ftp, argv[4], argv[5]);
+        auto res = rename_file(ftp, argv[4], argv[5]);
         if (res == Ftp::Result::Success) {
             std::cerr << "File renamed.\n";
         } else {
@@ -265,7 +253,7 @@ int main(int argc, char** argv)
             usage(argv[0]);
             return 1;
         }
-        res = create_directory(ftp, argv[4]);
+        auto res = create_directory(ftp, argv[4]);
         if (res == Ftp::Result::Success) {
             std::cerr << "Directory created.\n";
         } else if (res == Ftp::Result::FileExists) {
@@ -289,7 +277,7 @@ int main(int argc, char** argv)
                 recursive = true;
             }
         }
-        res = remove_directory(ftp, path, recursive);
+        auto res = remove_directory(ftp, path, recursive);
         if (res == Ftp::Result::Success) {
             std::cerr << "Directory removed.\n";
         } else if (res == Ftp::Result::FileDoesNotExist) {
@@ -304,7 +292,7 @@ int main(int argc, char** argv)
             usage(argv[0]);
             return 1;
         }
-        res = list_directory(ftp, argv[4]);
+        auto res = list_directory(ftp, argv[4]);
         if (res == Ftp::Result::Success) {
             std::cerr << "Directory listed.\n";
         } else if (res == Ftp::Result::FileDoesNotExist) {
@@ -319,7 +307,7 @@ int main(int argc, char** argv)
             usage(argv[0]);
             return 1;
         }
-        res = remove_file(ftp, argv[4]);
+        auto res = remove_file(ftp, argv[4]);
         if (res == Ftp::Result::Success) {
             std::cerr << "File deleted.\n";
         } else if (res == Ftp::Result::FileDoesNotExist) {

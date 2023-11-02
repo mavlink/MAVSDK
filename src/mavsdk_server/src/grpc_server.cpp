@@ -62,6 +62,10 @@ int GrpcServer::run()
     builder.RegisterService(&_ftp_service);
 #endif
 
+#ifdef FTP_SERVER_ENABLED
+    builder.RegisterService(&_ftp_server_service);
+#endif
+
 #ifdef GEOFENCE_ENABLED
     builder.RegisterService(&_geofence_service);
 #endif
@@ -219,6 +223,10 @@ void GrpcServer::stop()
 
 #ifdef FTP_ENABLED
         _ftp_service.stop();
+#endif
+
+#ifdef FTP_SERVER_ENABLED
+        _ftp_server_service.stop();
 #endif
 
 #ifdef GEOFENCE_ENABLED

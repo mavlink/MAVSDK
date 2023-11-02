@@ -64,6 +64,11 @@
 #include "ftp/ftp_service_impl.h"
 #endif
 
+#ifdef FTP_SERVER_ENABLED
+#include "plugins/ftp_server/ftp_server.h"
+#include "ftp_server/ftp_server_service_impl.h"
+#endif
+
 #ifdef GEOFENCE_ENABLED
 #include "plugins/geofence/geofence.h"
 #include "geofence/geofence_service_impl.h"
@@ -230,6 +235,11 @@ public:
 #ifdef FTP_ENABLED
         _ftp_lazy_plugin(mavsdk),
         _ftp_service(_ftp_lazy_plugin),
+#endif
+
+#ifdef FTP_SERVER_ENABLED
+        _ftp_server_lazy_plugin(mavsdk),
+        _ftp_server_service(_ftp_server_lazy_plugin),
 #endif
 
 #ifdef GEOFENCE_ENABLED
@@ -422,6 +432,13 @@ private:
     LazyPlugin<Ftp> _ftp_lazy_plugin;
 
     FtpServiceImpl<> _ftp_service;
+#endif
+
+#ifdef FTP_SERVER_ENABLED
+
+    LazyServerPlugin<FtpServer> _ftp_server_lazy_plugin;
+
+    FtpServerServiceImpl<> _ftp_server_service;
 #endif
 
 #ifdef GEOFENCE_ENABLED

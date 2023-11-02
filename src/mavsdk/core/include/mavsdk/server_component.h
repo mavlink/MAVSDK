@@ -26,6 +26,11 @@ public:
      */
     ~ServerComponent() = default;
 
+    /**
+     * @brief MAVLink component ID of this component
+     */
+    uint8_t component_id() const;
+
 private:
     std::shared_ptr<ServerComponentImpl> _impl;
 

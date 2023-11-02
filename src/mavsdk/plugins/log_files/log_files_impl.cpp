@@ -1,15 +1,17 @@
 #include "log_files_impl.h"
 #include "mavlink_address.h"
 #include "mavsdk_impl.h"
-#include "filesystem_include.h"
 #include "unused.h"
 
 #include <algorithm>
 #include <cmath>
 #include <ctime>
 #include <cstring>
+#include <filesystem>
 
 namespace mavsdk {
+
+namespace fs = std::filesystem;
 
 LogFilesImpl::LogFilesImpl(System& system) : PluginImplBase(system)
 {
