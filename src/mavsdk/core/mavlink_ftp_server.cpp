@@ -255,13 +255,22 @@ MavlinkFtpServer::_path_from_string(const std::string& payload_path)
         return ServerResult::ERR_FAIL;
     }
 
-    fs::path combined_path = (fs::path(_root_dir) / payload_path).lexically_normal();
+    // Take a copy before we mess with it.
+    auto temp_path = payload_path;
+
+    // We strip leading slashes (like absolute paths).
+    if (temp_path.size() >= 1 && temp_path[0] == '/') {
+        temp_path = temp_path.substr(1, temp_path.size());
+    }
+
+    fs::path combined_path = (fs::path(_root_dir) / temp_path).lexically_normal();
 
     // Check whether the combined path is inside the root dir.
     // From: https://stackoverflow.com/a/61125335/8548472
     auto ret = std::mismatch(_root_dir.begin(), _root_dir.end(), combined_path.string().begin());
     if (ret.first != _root_dir.end()) {
-        LogWarn() << "Not inside root dir";
+        LogWarn() << "Not inside root dir: " << combined_path.string()
+                  << ", root dir: " << _root_dir;
         return ServerResult::ERR_FAIL;
     }
 
