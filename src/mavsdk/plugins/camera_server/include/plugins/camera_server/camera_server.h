@@ -116,6 +116,30 @@ public:
     operator<<(std::ostream& str, CameraServer::Information const& information);
 
     /**
+     * @brief Type to represent video streaming settings
+     */
+    struct VideoStreaming {
+        bool has_rtsp_server{}; /**< @brief True if the capture was successful */
+        std::string rtsp_uri{}; /**< @brief RTSP URI (e.g. rtsp://192.168.1.42:8554/live) */
+    };
+
+    /**
+     * @brief Equal operator to compare two `CameraServer::VideoStreaming` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const CameraServer::VideoStreaming& lhs, const CameraServer::VideoStreaming& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `CameraServer::VideoStreaming`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, CameraServer::VideoStreaming const& video_streaming);
+
+    /**
      * @brief Position type in global coordinates.
      */
     struct Position {
@@ -369,6 +393,15 @@ public:
      * @return Result of request.
      */
     Result set_information(Information information) const;
+
+    /**
+     * @brief Sets video streaming settings.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result set_video_streaming(VideoStreaming video_streaming) const;
 
     /**
      * @brief Sets image capture in progress status flags. This should be set to true when the

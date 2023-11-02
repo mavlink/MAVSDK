@@ -188,6 +188,17 @@ CameraServer::Result CameraServerImpl::set_information(CameraServer::Information
     return CameraServer::Result::Success;
 }
 
+CameraServer::Result
+CameraServerImpl::set_video_streaming(CameraServer::VideoStreaming video_streaming)
+{
+    // TODO: validate uri length
+
+    _is_video_streaming_set = true;
+    _video_streaming = video_streaming;
+
+    return CameraServer::Result::Success;
+}
+
 CameraServer::Result CameraServerImpl::set_in_progress(bool in_progress)
 {
     _is_image_capture_in_progress = in_progress;
@@ -835,6 +846,7 @@ void CameraServerImpl::stop_image_capture_interval()
 std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_information_request(
     const MavlinkCommandReceiver::CommandLong& command)
 {
+    LogWarn() << "Camera info request";
     auto capabilities = static_cast<bool>(command.params.param1);
 
     if (!capabilities) {
@@ -869,6 +881,15 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_informatio
         capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAPTURE_IMAGE;
     }
 
+    if (_is_video_streaming_set) {
+        capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM;
+    }
+
+    _information.vendor_name.resize(sizeof(mavlink_camera_information_t::vendor_name));
+    _information.model_name.resize(sizeof(mavlink_camera_information_t::model_name));
+    _information.definition_file_uri.resize(
+        sizeof(mavlink_camera_information_t::cam_definition_uri));
+
     _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message{};
         mavlink_msg_camera_information_pack_chan(
@@ -888,7 +909,8 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_informatio
             _information.lens_id,
             capability_flags,
             _information.definition_file_version,
-            _information.definition_file_uri.c_str());
+            _information.definition_file_uri.c_str(),
+            0);
         return message;
     });
     LogDebug() << "sent info msg";
@@ -1342,10 +1364,43 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_info
 
     UNUSED(stream_id);
 
-    LogDebug() << "unsupported video stream information request";
+    if (_is_video_streaming_set) {
+        auto command_ack = _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+        _server_component_impl->send_command_ack(command_ack);
+        LogDebug() << "sent video streaming ack";
 
-    return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+        const char name[32] = "";
+
+        _video_streaming.rtsp_uri.resize(sizeof(mavlink_video_stream_information_t::uri));
+
+        mavlink_message_t msg{};
+        mavlink_msg_video_stream_information_pack(
+            _server_component_impl->get_own_system_id(),
+            _server_component_impl->get_own_component_id(),
+            &msg,
+            0, // Stream id
+            0, // Count
+            VIDEO_STREAM_TYPE_RTSP,
+            VIDEO_STREAM_STATUS_FLAGS_RUNNING,
+            0, // famerate
+            0, // resolution horizontal
+            0, // resolution vertical
+            0, // bitrate
+            0, // rotation
+            0, // horizontal field of view
+            name,
+            _video_streaming.rtsp_uri.c_str());
+
+        _server_component_impl->send_message(msg);
+
+        // Ack already sent.
+        return std::nullopt;
+
+    } else {
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    }
 }
 
 std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_status_request(
@@ -1355,10 +1410,34 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_stat
 
     UNUSED(stream_id);
 
-    LogDebug() << "unsupported video stream status request";
+    if (!_is_video_streaming_set) {
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    }
 
-    return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    auto command_ack =
+        _server_component_impl->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+    _server_component_impl->send_command_ack(command_ack);
+    LogDebug() << "sent video streaming ack";
+
+    mavlink_message_t msg{};
+    mavlink_msg_video_stream_status_pack(
+        _server_component_impl->get_own_system_id(),
+        _server_component_impl->get_own_component_id(),
+        &msg,
+        0, // Stream id
+        VIDEO_STREAM_STATUS_FLAGS_RUNNING,
+        0, // framerate
+        0, // resolution horizontal
+        0, // resolution vertical
+        0, // bitrate
+        0, // rotation
+        0 // horizontal field of view
+    );
+    _server_component_impl->send_message(msg);
+
+    // ack was already sent
+    return std::nullopt;
 }
 
 } // namespace mavsdk

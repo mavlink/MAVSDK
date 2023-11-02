@@ -172,6 +172,30 @@ public:
         return obj;
     }
 
+    static std::unique_ptr<rpc::camera_server::VideoStreaming>
+    translateToRpcVideoStreaming(const mavsdk::CameraServer::VideoStreaming& video_streaming)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera_server::VideoStreaming>();
+
+        rpc_obj->set_has_rtsp_server(video_streaming.has_rtsp_server);
+
+        rpc_obj->set_rtsp_uri(video_streaming.rtsp_uri);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::CameraServer::VideoStreaming
+    translateFromRpcVideoStreaming(const rpc::camera_server::VideoStreaming& video_streaming)
+    {
+        mavsdk::CameraServer::VideoStreaming obj;
+
+        obj.has_rtsp_server = video_streaming.has_rtsp_server();
+
+        obj.rtsp_uri = video_streaming.rtsp_uri();
+
+        return obj;
+    }
+
     static std::unique_ptr<rpc::camera_server::Position>
     translateToRpcPosition(const mavsdk::CameraServer::Position& position)
     {
@@ -598,6 +622,37 @@ public:
 
         auto result = _lazy_plugin.maybe_plugin()->set_information(
             translateFromRpcInformation(request->information()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetVideoStreaming(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::SetVideoStreamingRequest* request,
+        rpc::camera_server::SetVideoStreamingResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetVideoStreaming sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->set_video_streaming(
+            translateFromRpcVideoStreaming(request->video_streaming()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

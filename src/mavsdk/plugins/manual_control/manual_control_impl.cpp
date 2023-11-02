@@ -122,7 +122,13 @@ ManualControlImpl::set_manual_control_input(float x, float y, float z, float r)
             buttons2,
             enabled_extensions,
             pitch_only_axis,
-            roll_only_axis);
+            roll_only_axis,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0);
         return message;
     }) ?
                ManualControl::Result::Success :

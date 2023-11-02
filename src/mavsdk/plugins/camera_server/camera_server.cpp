@@ -11,6 +11,7 @@
 namespace mavsdk {
 
 using Information = CameraServer::Information;
+using VideoStreaming = CameraServer::VideoStreaming;
 using Position = CameraServer::Position;
 using Quaternion = CameraServer::Quaternion;
 using CaptureInfo = CameraServer::CaptureInfo;
@@ -28,6 +29,11 @@ CameraServer::~CameraServer() {}
 CameraServer::Result CameraServer::set_information(Information information) const
 {
     return _impl->set_information(information);
+}
+
+CameraServer::Result CameraServer::set_video_streaming(VideoStreaming video_streaming) const
+{
+    return _impl->set_video_streaming(video_streaming);
 }
 
 CameraServer::Result CameraServer::set_in_progress(bool in_progress) const
@@ -232,6 +238,21 @@ std::ostream& operator<<(std::ostream& str, CameraServer::Information const& inf
     str << "    lens_id: " << information.lens_id << '\n';
     str << "    definition_file_version: " << information.definition_file_version << '\n';
     str << "    definition_file_uri: " << information.definition_file_uri << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const CameraServer::VideoStreaming& lhs, const CameraServer::VideoStreaming& rhs)
+{
+    return (rhs.has_rtsp_server == lhs.has_rtsp_server) && (rhs.rtsp_uri == lhs.rtsp_uri);
+}
+
+std::ostream& operator<<(std::ostream& str, CameraServer::VideoStreaming const& video_streaming)
+{
+    str << std::setprecision(15);
+    str << "video_streaming:" << '\n' << "{\n";
+    str << "    has_rtsp_server: " << video_streaming.has_rtsp_server << '\n';
+    str << "    rtsp_uri: " << video_streaming.rtsp_uri << '\n';
     str << '}';
     return str;
 }

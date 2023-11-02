@@ -15,6 +15,7 @@ public:
     void deinit() override;
 
     CameraServer::Result set_information(CameraServer::Information information);
+    CameraServer::Result set_video_streaming(CameraServer::VideoStreaming video_streaming);
     CameraServer::Result set_in_progress(bool in_progress);
 
     CameraServer::TakePhotoHandle
@@ -89,6 +90,8 @@ private:
 
     bool _is_information_set{};
     CameraServer::Information _information{};
+    bool _is_video_streaming_set{};
+    CameraServer::VideoStreaming _video_streaming{};
 
     // CAMERA_CAPTURE_STATUS fields
     // TODO: how do we keep this info in sync between plugin instances?
