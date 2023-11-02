@@ -867,6 +867,10 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_informatio
         capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAPTURE_IMAGE;
     }
 
+    if (!_start_video_callbacks.empty()) {
+        capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAPTURE_VIDEO;
+    }
+
     if (_is_video_streaming_set) {
         capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM;
     }
