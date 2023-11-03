@@ -416,6 +416,132 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SubscribeChangedParamInt(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::param_server::SubscribeChangedParamIntRequest* /* request */,
+        grpc::ServerWriter<rpc::param_server::ChangedParamIntResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::ParamServer::ChangedParamIntHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_changed_param_int(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const mavsdk::ParamServer::IntParam changed_param_int) {
+                    rpc::param_server::ChangedParamIntResponse rpc_response;
+
+                    rpc_response.set_allocated_param(
+                        translateToRpcIntParam(changed_param_int).release());
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_changed_param_int(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeChangedParamFloat(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::param_server::SubscribeChangedParamFloatRequest* /* request */,
+        grpc::ServerWriter<rpc::param_server::ChangedParamFloatResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::ParamServer::ChangedParamFloatHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_changed_param_float(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const mavsdk::ParamServer::FloatParam changed_param_float) {
+                    rpc::param_server::ChangedParamFloatResponse rpc_response;
+
+                    rpc_response.set_allocated_param(
+                        translateToRpcFloatParam(changed_param_float).release());
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_changed_param_float(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeChangedParamCustom(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::param_server::SubscribeChangedParamCustomRequest* /* request */,
+        grpc::ServerWriter<rpc::param_server::ChangedParamCustomResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::ParamServer::ChangedParamCustomHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_changed_param_custom(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const mavsdk::ParamServer::CustomParam changed_param_custom) {
+                    rpc::param_server::ChangedParamCustomResponse rpc_response;
+
+                    rpc_response.set_allocated_param(
+                        translateToRpcCustomParam(changed_param_custom).release());
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_changed_param_custom(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stopped.store(true);
