@@ -79,4 +79,18 @@ void MavlinkParameterSubscription::find_and_call_subscriptions_value_changed(
     }
 }
 
+void MavlinkParameterSubscription::unsubscribe_all_params_changed(const void* cookie)
+{
+    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
+
+    for (auto it = _param_changed_subscriptions.begin(); it != _param_changed_subscriptions.end();
+         /* it++ */) {
+        if (it->cookie == cookie) {
+            it = _param_changed_subscriptions.erase(it);
+        } else {
+            it++;
+        }
+    }
+}
+
 } // namespace mavsdk

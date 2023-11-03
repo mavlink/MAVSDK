@@ -35,6 +35,8 @@ public:
     void subscribe_param_custom_changed(
         const std::string& name, const ParamCustomChangedCallback& callback, const void* cookie);
 
+    void unsubscribe_all_params_changed(const void* cookie);
+
 protected:
     /**
      * Find all the subscriptions for the given @param param_name,
