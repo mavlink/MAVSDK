@@ -26,7 +26,7 @@ SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
     _command_sender(*this),
     _timesync(*this),
     _ping(*this),
-    _mission_transfer(
+    _mission_transfer_client(
         _mavsdk_impl.default_server_component_impl().sender(),
         _mavsdk_impl.mavlink_message_handler,
         _mavsdk_impl.timeout_handler,
@@ -261,7 +261,7 @@ void SystemImpl::process_autopilot_version(const mavlink_message_t& message)
     mavlink_autopilot_version_t autopilot_version;
     mavlink_msg_autopilot_version_decode(&message, &autopilot_version);
 
-    _mission_transfer.set_int_messages_supported(
+    _mission_transfer_client.set_int_messages_supported(
         autopilot_version.capabilities & MAV_PROTOCOL_CAPABILITY_MISSION_INT);
 }
 
@@ -284,7 +284,7 @@ void SystemImpl::system_thread()
         }
         _command_sender.do_work();
         _timesync.do_work();
-        _mission_transfer.do_work();
+        _mission_transfer_client.do_work();
         _mavlink_ftp_client.do_work();
 
         if (_mavsdk_impl.time.elapsed_since_s(last_ping_time) >= SystemImpl::_ping_interval_s) {

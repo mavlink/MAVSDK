@@ -30,7 +30,8 @@ target_sources(mavsdk
     mavlink_command_sender.cpp
     mavlink_ftp_client.cpp
     mavlink_ftp_server.cpp
-    mavlink_mission_transfer.cpp
+    mavlink_mission_transfer_client.cpp
+    mavlink_mission_transfer_server.cpp
     mavlink_parameter_cache.cpp
     mavlink_parameter_client.cpp
     mavlink_parameter_server.cpp
@@ -154,7 +155,8 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_time_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_channels_test.cpp
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_mission_transfer_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_mission_transfer_client_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_mission_transfer_server_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_statustext_handler_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/ringbuffer_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/safe_queue_test.cpp

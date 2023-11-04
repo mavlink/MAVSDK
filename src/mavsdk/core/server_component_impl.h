@@ -4,7 +4,7 @@
 #include "mavlink_address.h"
 #include "mavlink_channels.h"
 #include "mavlink_command_receiver.h"
-#include "mavlink_mission_transfer.h"
+#include "mavlink_mission_transfer_server.h"
 #include "mavlink_parameter_server.h"
 #include "mavlink_request_message_handler.h"
 #include "mavlink_ftp_server.h"
@@ -142,7 +142,7 @@ public:
     bool set_uid2(std::string uid2);
     void send_autopilot_version();
 
-    MavlinkMissionTransfer& mission_transfer() { return _mission_transfer; }
+    MavlinkMissionTransferServer& mission_transfer_server() { return _mission_transfer_server; }
     MavlinkParameterServer& mavlink_parameter_server() { return _mavlink_parameter_server; }
     MavlinkRequestMessageHandler& mavlink_request_message_handler()
     {
@@ -170,7 +170,7 @@ private:
 
     OurSender _our_sender;
     MavlinkCommandReceiver _mavlink_command_receiver;
-    MavlinkMissionTransfer _mission_transfer;
+    MavlinkMissionTransferServer _mission_transfer_server;
     MavlinkParameterServer _mavlink_parameter_server;
     MavlinkRequestMessageHandler _mavlink_request_message_handler;
     MavlinkFtpServer _mavlink_ftp_server;

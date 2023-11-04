@@ -9,7 +9,7 @@
 #include "plugins/mission/mission.h"
 #include "plugin_impl_base.h"
 #include "system.h"
-#include "mavlink_mission_transfer.h"
+#include "mavlink_mission_transfer_client.h"
 #include "callback_list.h"
 
 namespace mavsdk {
@@ -89,7 +89,7 @@ private:
     static float hold_time(const Mission::MissionItem& item);
     static float acceptance_radius(const Mission::MissionItem& item);
 
-    std::vector<MavlinkMissionTransfer::ItemInt>
+    std::vector<MavlinkMissionTransferClient::ItemInt>
     convert_to_int_items(const std::vector<Mission::MissionItem>& mission_items);
 
     void report_progress_locked();
@@ -101,27 +101,27 @@ private:
 
     // FIXME: make static
     std::pair<Mission::Result, Mission::MissionPlan> convert_to_result_and_mission_items(
-        MavlinkMissionTransfer::Result result,
-        const std::vector<MavlinkMissionTransfer::ItemInt>& int_items);
+        MavlinkMissionTransferClient::Result result,
+        const std::vector<MavlinkMissionTransferClient::ItemInt>& int_items);
 
-    static Mission::Result convert_result(MavlinkMissionTransfer::Result result);
+    static Mission::Result convert_result(MavlinkMissionTransferClient::Result result);
 
     void add_gimbal_items_v1(
-        std::vector<MavlinkMissionTransfer::ItemInt>& int_items,
+        std::vector<MavlinkMissionTransferClient::ItemInt>& int_items,
         unsigned item_i,
         float pitch_deg,
         float yaw_deg);
     void add_gimbal_items_v2(
-        std::vector<MavlinkMissionTransfer::ItemInt>& int_items,
+        std::vector<MavlinkMissionTransferClient::ItemInt>& int_items,
         unsigned item_i,
         float pitch_deg,
         float yaw_deg);
 
     void acquire_gimbal_control_v2(
-        std::vector<MavlinkMissionTransfer::ItemInt>& int_items, unsigned item_i);
+        std::vector<MavlinkMissionTransferClient::ItemInt>& int_items, unsigned item_i);
 
     void release_gimbal_control_v2(
-        std::vector<MavlinkMissionTransfer::ItemInt>& int_items, unsigned item_i);
+        std::vector<MavlinkMissionTransferClient::ItemInt>& int_items, unsigned item_i);
 
     struct MissionData {
         mutable std::mutex mutex{};
@@ -131,8 +131,8 @@ private:
         CallbackList<Mission::MissionProgress> mission_progress_callbacks{};
         int last_current_reported_mission_item{-1};
         int last_total_reported_mission_item{-1};
-        std::weak_ptr<MavlinkMissionTransfer::WorkItem> last_upload{};
-        std::weak_ptr<MavlinkMissionTransfer::WorkItem> last_download{};
+        std::weak_ptr<MavlinkMissionTransferClient::WorkItem> last_upload{};
+        std::weak_ptr<MavlinkMissionTransferClient::WorkItem> last_download{};
         bool gimbal_v2_in_control{false};
     } _mission_data{};
 

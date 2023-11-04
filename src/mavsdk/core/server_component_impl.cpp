@@ -9,7 +9,7 @@ ServerComponentImpl::ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t compon
     _own_component_id(component_id),
     _our_sender(*this),
     _mavlink_command_receiver(*this),
-    _mission_transfer(
+    _mission_transfer_server(
         _our_sender,
         mavsdk_impl.mavlink_message_handler,
         mavsdk_impl.timeout_handler,
@@ -121,7 +121,7 @@ void ServerComponentImpl::unregister_all_mavlink_message_handlers(const void* co
 void ServerComponentImpl::do_work()
 {
     _mavlink_parameter_server.do_work();
-    _mission_transfer.do_work();
+    _mission_transfer_server.do_work();
 }
 
 Sender& ServerComponentImpl::sender()
