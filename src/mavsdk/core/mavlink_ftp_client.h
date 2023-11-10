@@ -268,7 +268,9 @@ private:
 
     bool download_burst_start(Work& work, DownloadBurstItem& item);
     bool download_burst_continue(Work& work, DownloadBurstItem& item, PayloadHeader* payload);
-    void request_next_burst(Work& work, DownloadBurstItem& item);
+    void request_burst(Work& work, DownloadBurstItem& item);
+    void request_next_rest(Work& work, DownloadBurstItem& item);
+    size_t burst_bytes_transferred(DownloadBurstItem& item);
 
     bool upload_start(Work& work, UploadItem& item);
     bool upload_continue(Work& work, UploadItem& item);
