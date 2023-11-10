@@ -1,6 +1,7 @@
 #include "mavlink_ftp_client.h"
 #include "system_impl.h"
 #include "plugin_base.h"
+#include "unused.h"
 #include <algorithm>
 #include <fstream>
 #include <filesystem>
@@ -180,7 +181,8 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
             [&](DownloadBurstItem& item) {
                 if (payload->opcode == RSP_ACK) {
                     if (payload->req_opcode == CMD_OPEN_FILE_RO ||
-                        payload->req_opcode == CMD_BURST_READ_FILE) {
+                        payload->req_opcode == CMD_BURST_READ_FILE ||
+                        payload->req_opcode == CMD_READ_FILE) {
                         // Whenever we do get an ack,
                         // reset the retry counter.
                         work->retries = RETRIES;
@@ -506,7 +508,7 @@ bool MavlinkFtpClient::download_burst_continue(
             LogDebug() << "Burst Download continue, got file size: " << file_size;
         }
 
-        request_next_burst(work, item);
+        request_burst(work, item);
         return true;
 
     } else if (payload->req_opcode == CMD_BURST_READ_FILE) {
@@ -535,8 +537,12 @@ bool MavlinkFtpClient::download_burst_continue(
             item.transferred[i] = DownloadBurstItem::Transferred::Yes;
         }
 
-        const size_t bytes_transferred = std::count(
-            item.transferred.begin(), item.transferred.end(), DownloadBurstItem::Transferred::Yes);
+        if (_debugging) {
+            LogDebug() << "Received " << payload->offset << " to "
+                       << payload->size + payload->offset;
+        }
+
+        const size_t bytes_transferred = burst_bytes_transferred(item);
 
         if (bytes_transferred == item.transferred.size()) {
             if (_debugging) {
@@ -567,8 +573,9 @@ bool MavlinkFtpClient::download_burst_continue(
                     static_cast<uint32_t>(item.transferred.size())});
 
             if (payload->burst_complete) {
-                // The burst is supposedly complete but we still need data, so request next burst.
-                request_next_burst(work, item);
+                // The burst is supposedly complete but we still need data, so request next without
+                // burst.
+                request_next_rest(work, item);
 
             } else {
                 // There might be more coming, just wait for now.
@@ -578,13 +585,88 @@ bool MavlinkFtpClient::download_burst_continue(
             return true;
         }
 
+    } else if (payload->req_opcode == CMD_READ_FILE) {
+        if (_debugging) {
+            LogWarn() << "Burst download continue missing pieces, write at " << payload->offset
+                      << " for " << std::to_string(payload->size);
+        }
+
+        item.ofstream.seekp(payload->offset);
+        if (item.ofstream.fail()) {
+            LogWarn() << "Seek failed";
+            item.callback(ClientResult::FileIoError, {});
+            return false;
+        }
+
+        item.ofstream.write(reinterpret_cast<const char*>(payload->data), payload->size);
+        if (!item.ofstream) {
+            item.callback(ClientResult::FileIoError, {});
+            return false;
+        }
+
+        // Keep track of what was written.
+        for (size_t i = payload->offset; i < payload->offset + payload->size; ++i) {
+            item.transferred[i] = DownloadBurstItem::Transferred::Yes;
+        }
+
+        const size_t bytes_transferred = burst_bytes_transferred(item);
+
+        if (_debugging) {
+            LogDebug() << "Written " << bytes_transferred << " of " << item.transferred.size()
+                       << " bytes";
+        }
+
+        if (bytes_transferred == item.transferred.size()) {
+            // Final step
+            work.last_opcode = CMD_TERMINATE_SESSION;
+
+            work.payload = {};
+            work.payload.seq_number = work.last_sent_seq_number++;
+            work.payload.session = _session;
+
+            work.payload.opcode = work.last_opcode;
+            work.payload.offset = 0;
+            work.payload.size = 0;
+
+            start_timer();
+            send_mavlink_ftp_message(work.payload);
+            return true;
+        } else {
+            item.callback(
+                ClientResult::Next,
+                ProgressData{
+                    static_cast<uint32_t>(bytes_transferred),
+                    static_cast<uint32_t>(item.transferred.size())});
+
+            request_next_rest(work, item);
+            return true;
+        }
+
     } else {
         LogErr() << "Unexpected req_opcode";
         return false;
     }
 }
 
-void MavlinkFtpClient::request_next_burst(Work& work, DownloadBurstItem& item)
+void MavlinkFtpClient::request_burst(Work& work, DownloadBurstItem& item)
+{
+    UNUSED(item);
+
+    work.last_opcode = CMD_BURST_READ_FILE;
+    work.payload = {};
+    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.session = _session;
+    work.payload.opcode = work.last_opcode;
+    work.payload.offset = 0;
+
+    // Fill up the whole packet.
+    work.payload.size = max_data_length;
+
+    start_timer();
+    send_mavlink_ftp_message(work.payload);
+}
+
+void MavlinkFtpClient::request_next_rest(Work& work, DownloadBurstItem& item)
 {
     const auto first_missing = std::find(
         item.transferred.begin(), item.transferred.end(), DownloadBurstItem::Transferred::No);
@@ -597,6 +679,7 @@ void MavlinkFtpClient::request_next_burst(Work& work, DownloadBurstItem& item)
         std::find(first_missing, item.transferred.end(), DownloadBurstItem::Transferred::Yes);
 
     const size_t offset = std::distance(item.transferred.begin(), first_missing);
+
     const uint32_t size =
         static_cast<uint32_t>(std::distance(first_missing, last_missing_plus_one));
 
@@ -605,18 +688,28 @@ void MavlinkFtpClient::request_next_burst(Work& work, DownloadBurstItem& item)
         return;
     }
 
-    work.last_opcode = CMD_BURST_READ_FILE;
+    if (_debugging) {
+        LogDebug() << "Re-requesting from " << offset << " with size " << size;
+    }
+
+    work.last_opcode = CMD_READ_FILE;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = offset;
 
-    work.payload.size = 4;
-    std::memcpy(&work.payload.data, &size, 4);
+    work.payload.size =
+        static_cast<uint8_t>(std::min(static_cast<uint32_t>(max_data_length), size));
 
     start_timer();
     send_mavlink_ftp_message(work.payload);
+}
+
+size_t MavlinkFtpClient::burst_bytes_transferred(DownloadBurstItem& item)
+{
+    return std::count(
+        item.transferred.begin(), item.transferred.end(), DownloadBurstItem::Transferred::Yes);
 }
 
 bool MavlinkFtpClient::upload_start(Work& work, UploadItem& item)
@@ -1117,8 +1210,15 @@ void MavlinkFtpClient::timeout()
                     LogDebug() << "Retries left: " << work->retries;
                 }
 
-                start_timer();
-                send_mavlink_ftp_message(work->payload);
+                {
+                    const size_t bytes_transferred = burst_bytes_transferred(item);
+                    if (bytes_transferred == 0 || bytes_transferred == item.transferred.size()) {
+                        start_timer();
+                        send_mavlink_ftp_message(work->payload);
+                    } else {
+                        request_next_rest(*work, item);
+                    }
+                }
             },
             [&](UploadItem& item) {
                 if (--work->retries == 0) {

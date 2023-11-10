@@ -141,7 +141,7 @@ private:
     struct SessionInfo {
         uint32_t file_size{0};
         uint32_t burst_offset{0};
-        uint32_t burst_end{0};
+        uint8_t burst_chunk_size{0};
         std::ifstream ifstream;
         std::ofstream ofstream;
     } _session_info{};

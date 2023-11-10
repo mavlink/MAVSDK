@@ -707,6 +707,10 @@ void MavlinkFtpServer::_work_read(const PayloadHeader& payload)
         return;
     }
 
+    if (_debugging) {
+        LogWarn() << "Read at " << payload.offset << " for " << int(payload.size);
+    }
+
     _session_info.ifstream.read(reinterpret_cast<char*>(response.data), payload.size);
 
     if (_session_info.ifstream.fail()) {
@@ -720,6 +724,7 @@ void MavlinkFtpServer::_work_read(const PayloadHeader& payload)
 
     const uint32_t bytes_read = _session_info.ifstream.gcount();
 
+    response.offset = payload.offset;
     response.size = bytes_read;
     response.opcode = Opcode::RSP_ACK;
 
@@ -764,20 +769,7 @@ void MavlinkFtpServer::_work_burst(const PayloadHeader& payload)
     }
 
     _session_info.burst_offset = payload.offset;
-
-    if (payload.size != 4) {
-        response.seq_number = payload.seq_number + 1;
-        response.opcode = Opcode::RSP_NAK;
-        response.size = 1;
-        response.data[0] = ServerResult::ERR_INVALID_DATA_SIZE;
-        LogErr() << "Burst size invalid";
-        _send_mavlink_ftp_message(response);
-        return;
-    }
-
-    uint32_t burst_size;
-    std::memcpy(&burst_size, &payload.data, payload.size);
-    _session_info.burst_end = _session_info.burst_offset + burst_size;
+    _session_info.burst_chunk_size = payload.size;
 
     _burst_seq = payload.seq_number + 1;
 
@@ -815,8 +807,8 @@ void MavlinkFtpServer::_send_burst_packet()
 void MavlinkFtpServer::_make_burst_packet(PayloadHeader& packet)
 {
     uint32_t bytes_to_read = std::min(
-        static_cast<uint32_t>(max_data_length),
-        _session_info.burst_end - _session_info.burst_offset);
+        static_cast<uint32_t>(_session_info.burst_chunk_size),
+        _session_info.file_size - _session_info.burst_offset);
 
     if (_debugging) {
         LogDebug() << "Burst read of " << bytes_to_read << " bytes";
@@ -838,7 +830,7 @@ void MavlinkFtpServer::_make_burst_packet(PayloadHeader& packet)
     packet.offset = _session_info.burst_offset;
     _session_info.burst_offset += bytes_read;
 
-    if (_session_info.burst_offset == _session_info.burst_end) {
+    if (_session_info.burst_offset == _session_info.file_size) {
         // Last read, we are done for this burst.
         packet.burst_complete = 1;
         if (_debugging) {
