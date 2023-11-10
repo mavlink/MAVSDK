@@ -904,11 +904,11 @@ mavlink_message_t make_mission_request(uint8_t type, int sequence)
 {
     mavlink_message_t message;
     mavlink_msg_mission_request_pack(
-        own_address.system_id,
-        own_address.component_id,
-        &message,
         target_address.system_id,
         target_address.component_id,
+        &message,
+        own_address.system_id,
+        own_address.component_id,
         sequence,
         type);
     return message;
