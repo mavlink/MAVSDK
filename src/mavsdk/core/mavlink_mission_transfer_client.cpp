@@ -339,7 +339,6 @@ void MavlinkMissionTransferClient::UploadWorkItem::process_mission_request(
         std::lock_guard<std::mutex> lock(_mutex);
 
         // We only support int, so we nack this and thus tell the autopilot to use int.
-        UNUSED(request_message);
 
         if (!_sender.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
                 mavlink_message_t message;
@@ -348,8 +347,8 @@ void MavlinkMissionTransferClient::UploadWorkItem::process_mission_request(
                     mavlink_address.component_id,
                     channel,
                     &message,
-                    request.target_system,
-                    request.target_component,
+                    request_message.sysid,
+                    request_message.compid,
                     MAV_MISSION_UNSUPPORTED,
                     _type);
                 return message;
