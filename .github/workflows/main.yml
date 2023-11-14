@@ -389,6 +389,11 @@ jobs:
           - name: macOS-framework
             build-framework: ON
     steps:
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          architecture: 'x64'
       - uses: actions/checkout@v3
         with:
           submodules: recursive
@@ -443,6 +448,11 @@ jobs:
             platform: SIMULATOR64
             sdk: iphonesimulator
     steps:
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          architecture: 'x64'
       - uses: actions/checkout@v3
         with:
           submodules: recursive
