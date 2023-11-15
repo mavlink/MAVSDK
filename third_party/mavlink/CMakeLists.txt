@@ -11,9 +11,18 @@ list(APPEND CMAKE_ARGS
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     )
 
-# Without this GitHub actions picks the wrong python3 executable.
-set(Python3_FIND_REGISTRY "NEVER")
-set(Python3_FIND_FRAMEWORK "NEVER")
+if (POLICY CMP0094)
+    cmake_policy(SET CMP0094 NEW)  # FindPython should return the first matching Python
+endif ()
+
+# Needed to find the right Python on macOS
+if (NOT DEFINED Python_FIND_FRAMEWORK)
+    set(Python_FIND_FRAMEWORK "LAST")
+endif()
+
+# Needed to find the right Python on Windows
+set(Python_FIND_REGISTRY "FIRST")
+
 find_package(Python3 COMPONENTS Interpreter REQUIRED)
 
 ExternalProject_add(
