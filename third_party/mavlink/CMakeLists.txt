@@ -21,7 +21,7 @@ if (NOT DEFINED Python_FIND_FRAMEWORK)
 endif()
 
 # Needed to find the right Python on Windows
-set(Python_FIND_REGISTRY "FIRST")
+set(Python3_FIND_REGISTRY "NEVER")
 
 find_package(Python3 COMPONENTS Interpreter REQUIRED)
 
