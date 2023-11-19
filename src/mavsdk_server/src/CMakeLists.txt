@@ -76,6 +76,7 @@ target_link_libraries(mavsdk_server
     mavsdk
     gRPC::grpc++
     ${COMPONENTS_PROTOGENS}
+    ${CMAKE_DL_LIBS}
 )
 
 set_target_properties(mavsdk_server
