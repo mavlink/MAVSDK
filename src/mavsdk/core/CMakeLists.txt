@@ -71,6 +71,11 @@ set_target_properties(mavsdk PROPERTIES
     VERSION ${MAVSDK_VERSION_STRING}
     SOVERSION ${MAVSDK_SOVERSION_STRING}
 )
+if (MSVC)
+    set_target_properties(mavsdk PROPERTIES
+        DEBUG_POSTFIX "d"
+    )
+endif()
 
 if (IOS)
     target_link_libraries(mavsdk
