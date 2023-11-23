@@ -2,6 +2,7 @@
 
 #include "mavsdk.h"
 #include "mavlink_receiver.h"
+#include <atomic>
 #include <memory>
 #include <unordered_set>
 
