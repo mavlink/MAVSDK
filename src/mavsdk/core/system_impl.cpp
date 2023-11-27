@@ -509,12 +509,14 @@ void SystemImpl::send_autopilot_version_request_async(
         // release.
         command.command = MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES;
         command.params.maybe_param1 = 1.0f;
+        send_command_async(command, callback);
     } else {
-        command.command = MAV_CMD_REQUEST_MESSAGE;
-        command.params.maybe_param1 = {static_cast<float>(MAVLINK_MSG_ID_AUTOPILOT_VERSION)};
+        _request_message.request(MAVLINK_MSG_ID_AUTOPILOT_VERSION, get_autopilot_id(),
+            [callback](MavlinkCommandSender::Result result, const mavlink_message_t&) {
+                callback(result, NAN);
+            }
+        );
     }
-
-    send_command_async(command, callback);
 }
 
 void SystemImpl::send_flight_information_request()
@@ -530,17 +532,21 @@ void SystemImpl::send_flight_information_request()
         // release.
         command.command = MAV_CMD_REQUEST_FLIGHT_INFORMATION;
         command.params.maybe_param1 = 1.0f;
-    } else {
-        command.command = MAV_CMD_REQUEST_MESSAGE;
-        command.params.maybe_param1 = {static_cast<float>(MAVLINK_MSG_ID_FLIGHT_INFORMATION)};
+        send_command_async(command,
+            [&prom](MavlinkCommandSender::Result result, float) { prom.set_value(result); });
+
+        if (fut.get() == MavlinkCommandSender::Result::Unsupported) {
+            _old_message_528_supported = false;
+            LogWarn() << "Trying alternative command (512)..";
+        }
     }
 
-    send_command_async(
-        command, [&prom](MavlinkCommandSender::Result result, float) { prom.set_value(result); });
-    if (fut.get() == MavlinkCommandSender::Result::Unsupported) {
-        _old_message_528_supported = false;
-        LogWarn() << "Trying alternative command (512)..";
-        send_flight_information_request();
+    if (!_old_message_528_supported) {
+        _request_message.request(MAVLINK_MSG_ID_FLIGHT_INFORMATION, get_autopilot_id(),
+            [&prom](MavlinkCommandSender::Result result, const mavlink_message_t&) {
+                prom.set_value(result);
+            }
+        );
     }
 }
 

@@ -55,6 +55,13 @@ void RequestMessage::request(
 
 void RequestMessage::send_request(uint32_t message_id, uint8_t target_component)
 {
+    std::unique_lock<std::mutex> lock(_mutex);
+
+    if(_unsupported_message_ids[target_component].find(message_id) != _unsupported_message_ids[target_component].end()) {
+        LogWarn() << "Target component" << target_component << "does not support requested message" << message_id;
+        return;
+    }
+
     MavlinkCommandSender::CommandLong command_request_message{};
     command_request_message.command = MAV_CMD_REQUEST_MESSAGE;
     command_request_message.target_system_id = _system_impl.get_system_id();
@@ -65,7 +72,8 @@ void RequestMessage::send_request(uint32_t message_id, uint8_t target_component)
             if (result != MavlinkCommandSender::Result::InProgress) {
                 handle_command_result(message_id, result);
             }
-        });
+        }
+    );
 }
 
 void RequestMessage::handle_any_message(const mavlink_message_t& message)
@@ -125,6 +133,9 @@ void RequestMessage::handle_command_result(uint32_t message_id, MavlinkCommandSe
             case MavlinkCommandSender::Result::Busy:
                 // FALLTHROUGH
             case MavlinkCommandSender::Result::Denied:
+                if (_system_impl->autopilot() == SystemImpl::Autopilot::Px4) {
+                    _unsupported_message_ids[it->target_component].insert(it->message_id);
+                }
                 // FALLTHROUGH
             case MavlinkCommandSender::Result::Unsupported:
                 // FALLTHROUGH
@@ -133,6 +144,9 @@ void RequestMessage::handle_command_result(uint32_t message_id, MavlinkCommandSe
             case MavlinkCommandSender::Result::TemporarilyRejected:
                 // FALLTHROUGH
             case MavlinkCommandSender::Result::Failed:
+                if (_system_impl->autopilot() == SystemImpl::Autopilot::ArduPilot) {
+                    _unsupported_message_ids[it->target_component].insert(it->message_id);
+                }
                 // FALLTHROUGH
             case MavlinkCommandSender::Result::Cancelled:
                 // FALLTHROUGH
