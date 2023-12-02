@@ -216,7 +216,7 @@ public:
     /**
      * @brief Unsubscribe from subscribe_message.
      */
-    void unsubscribe_message(MessageHandle handle);
+    void unsubscribe_message(uint16_t message_id, MessageHandle handle);
 
     /**
      * @brief Get our own system ID.

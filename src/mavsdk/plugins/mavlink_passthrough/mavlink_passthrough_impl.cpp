@@ -207,12 +207,11 @@ MavlinkPassthrough::MessageHandle MavlinkPassthroughImpl::subscribe_message(
     return _message_subscriptions[message_id].subscribe(callback);
 }
 
-void MavlinkPassthroughImpl::unsubscribe_message(MavlinkPassthrough::MessageHandle handle)
+void MavlinkPassthroughImpl::unsubscribe_message(
+    uint16_t message_id, MavlinkPassthrough::MessageHandle handle)
 {
-    // We don't know which subscription holds the handle, so we have to go
-    // through all of them.
-    for (auto& subscription : _message_subscriptions) {
-        subscription.second.unsubscribe(handle);
+    if (_message_subscriptions.find(message_id) != _message_subscriptions.end()) {
+        _message_subscriptions[message_id].unsubscribe(handle);
     }
 }
 

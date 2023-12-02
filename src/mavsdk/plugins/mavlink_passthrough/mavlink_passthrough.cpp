@@ -63,9 +63,9 @@ MavlinkPassthrough::subscribe_message(uint16_t message_id, const MessageCallback
     return _impl->subscribe_message(message_id, callback);
 }
 
-void MavlinkPassthrough::unsubscribe_message(MessageHandle handle)
+void MavlinkPassthrough::unsubscribe_message(uint16_t message_id, MessageHandle handle)
 {
-    _impl->unsubscribe_message(handle);
+    _impl->unsubscribe_message(message_id, handle);
 }
 
 std::ostream& operator<<(std::ostream& str, MavlinkPassthrough::Result const& result)
