@@ -721,7 +721,7 @@ bool test_device_information(MavlinkPassthrough& mavlink_passthrough, AttitudeDa
                 });
 
             // We only need it once.
-            mavlink_passthrough.unsubscribe_message(handle);
+            mavlink_passthrough.unsubscribe_message(MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION, handle);
             prom.set_value();
         });
 
