@@ -215,8 +215,11 @@ public:
 
     /**
      * @brief Unsubscribe from subscribe_message.
+     *
+     * @param message_id The MAVLink message ID.
+     * @param handle The handle returned from subscribe_message.
      */
-    void unsubscribe_message(MessageHandle handle);
+    void unsubscribe_message(uint16_t message_id, MessageHandle handle);
 
     /**
      * @brief Get our own system ID.

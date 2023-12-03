@@ -40,7 +40,7 @@ public:
     MavlinkPassthrough::MessageHandle
     subscribe_message(uint16_t message_id, const MavlinkPassthrough::MessageCallback& callback);
 
-    void unsubscribe_message(MavlinkPassthrough::MessageHandle handle);
+    void unsubscribe_message(uint16_t message_id, MavlinkPassthrough::MessageHandle handle);
 
     uint8_t get_our_sysid() const;
     uint8_t get_our_compid() const;
