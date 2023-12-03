@@ -210,8 +210,9 @@ MavlinkPassthrough::MessageHandle MavlinkPassthroughImpl::subscribe_message(
 void MavlinkPassthroughImpl::unsubscribe_message(
     uint16_t message_id, MavlinkPassthrough::MessageHandle handle)
 {
-    if (_message_subscriptions.find(message_id) != _message_subscriptions.end()) {
-        _message_subscriptions[message_id].unsubscribe(handle);
+    auto it = _message_subscriptions.find(message_id);
+    if (it != _message_subscriptions.end()) {
+        it->unsubscribe(handle);
     }
 }
 
