@@ -212,7 +212,7 @@ void MavlinkPassthroughImpl::unsubscribe_message(
 {
     auto it = _message_subscriptions.find(message_id);
     if (it != _message_subscriptions.end()) {
-        it->unsubscribe(handle);
+        it->second.unsubscribe(handle);
     }
 }
 
