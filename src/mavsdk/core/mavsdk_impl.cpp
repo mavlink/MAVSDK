@@ -391,10 +391,11 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
         return;
     }
 
+    mavlink_message_handler.process_message(message);
+
     for (auto& system : _systems) {
         if (system.first == message.sysid) {
-            // system.second->system_impl()->process_mavlink_message(message);
-            mavlink_message_handler.process_message(message);
+            system.second->system_impl()->process_mavlink_message(message);
             break;
         }
     }

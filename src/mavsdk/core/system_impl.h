@@ -49,19 +49,21 @@ public:
     System::IsConnectedHandle subscribe_is_connected(const System::IsConnectedCallback& callback);
     void unsubscribe_is_connected(System::IsConnectedHandle handle);
 
-    // void process_mavlink_message(mavlink_message_t& message);
-
-    using MavlinkMessageHandler = std::function<void(const mavlink_message_t&)>;
+    void process_mavlink_message(mavlink_message_t& message);
 
     void register_mavlink_message_handler(
-        uint16_t msg_id, const MavlinkMessageHandler& callback, const void* cookie);
-    void register_mavlink_message_handler(
-        uint16_t msg_id, uint8_t cmp_id, const MavlinkMessageHandler& callback, const void* cookie);
+        uint16_t msg_id, const MavlinkMessageHandler::Callback& callback, const void* cookie);
+    void register_mavlink_message_handler_with_compid(
+        uint16_t msg_id,
+        uint8_t cmp_id,
+        const MavlinkMessageHandler::Callback& callback,
+        const void* cookie);
 
     void unregister_mavlink_message_handler(uint16_t msg_id, const void* cookie);
     void unregister_all_mavlink_message_handlers(const void* cookie);
 
-    void update_componentid_messages_handler(uint16_t msg_id, uint8_t cmp_id, const void* cookie);
+    void
+    update_component_id_messages_handler(uint16_t msg_id, uint8_t component_id, const void* cookie);
 
     void register_timeout_handler(
         const std::function<void()>& callback, double duration_s, void** cookie);
@@ -347,6 +349,8 @@ private:
     MavlinkAddress _target_address{};
 
     AutopilotTime _autopilot_time{};
+
+    MavlinkMessageHandler _mavlink_message_handler{};
 
     MavlinkStatustextHandler _statustext_handler{};
 
