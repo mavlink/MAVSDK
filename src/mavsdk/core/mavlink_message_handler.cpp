@@ -1,36 +1,34 @@
 #include <mutex>
 #include "mavlink_message_handler.h"
+#include "log.h"
 
 namespace mavsdk {
+
+MavlinkMessageHandler::MavlinkMessageHandler()
+{
+    if (const char* env_p = std::getenv("MAVSDK_MESSAGE_HANDLER_DEBUGGING")) {
+        if (std::string(env_p) == "1") {
+            LogDebug() << "Mavlink message handler debugging is on.";
+            _debugging = true;
+        }
+    }
+}
 
 void MavlinkMessageHandler::register_one(
     uint16_t msg_id, const Callback& callback, const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
-    Entry entry = {msg_id, {}, {}, callback, cookie};
+    Entry entry = {msg_id, {}, callback, cookie};
     _table.push_back(entry);
 }
 
-void MavlinkMessageHandler::register_one_with_system_id(
-    uint16_t msg_id, uint8_t system_id, const Callback& callback, const void* cookie)
+void MavlinkMessageHandler::register_one_with_component_id(
+    uint16_t msg_id, uint8_t component_id, const Callback& callback, const void* cookie)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
-    Entry entry = {msg_id, system_id, {}, callback, cookie};
-    _table.push_back(entry);
-}
-
-void MavlinkMessageHandler::register_one_with_system_id_and_component_id(
-    uint16_t msg_id,
-    uint8_t system_id,
-    uint8_t component_id,
-    const Callback& callback,
-    const void* cookie)
-{
-    std::lock_guard<std::mutex> lock(_mutex);
-
-    Entry entry = {msg_id, system_id, component_id, callback, cookie};
+    Entry entry = {msg_id, component_id, callback, cookie};
     _table.push_back(entry);
 }
 
@@ -66,27 +64,34 @@ void MavlinkMessageHandler::process_message(const mavlink_message_t& message)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
-#if MESSAGE_DEBUGGING == 1
     bool forwarded = false;
-#endif
+
+    if (_debugging) {
+        LogDebug() << "Table entries: ";
+    }
+
     for (auto& entry : _table) {
+        if (_debugging) {
+            LogDebug() << "Msg id: " << entry.msg_id << ", component id: "
+                       << (entry.component_id.has_value() ?
+                               std::to_string(entry.component_id.value()) :
+                               "none");
+        }
+
         if (entry.msg_id == message.msgid &&
-            (!entry.system_id.has_value() || entry.system_id.value() == message.sysid) &&
             (!entry.component_id.has_value() || entry.component_id.value() == message.compid)) {
-#if MESSAGE_DEBUGGING == 1
-            LogDebug() << "Forwarding msg " << int(message.msgid) << " to "
-                       << size_t(entry->cookie);
+            if (_debugging) {
+                LogDebug() << "Using msg " << int(message.msgid) << " to " << size_t(entry.cookie);
+            }
+
             forwarded = true;
-#endif
             entry.callback(message);
         }
     }
 
-#if MESSAGE_DEBUGGING == 1
-    if (!forwarded) {
+    if (_debugging && !forwarded) {
         LogDebug() << "Ignoring msg " << int(message.msgid);
     }
-#endif
 }
 
 void MavlinkMessageHandler::update_component_id(
