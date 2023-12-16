@@ -99,13 +99,18 @@ bool SystemImpl::is_connected() const
 void SystemImpl::register_mavlink_message_handler(
     uint16_t msg_id, const MavlinkMessageHandler& callback, const void* cookie)
 {
-    _mavsdk_impl.mavlink_message_handler.register_one(msg_id, callback, cookie);
+    _mavsdk_impl.mavlink_message_handler.register_one_with_system_id(
+        msg_id, get_system_id(), callback, cookie);
 }
 
-void SystemImpl::register_mavlink_message_handler(
-    uint16_t msg_id, uint8_t cmp_id, const MavlinkMessageHandler& callback, const void* cookie)
+void SystemImpl::register_mavlink_message_handler_with_compid(
+    uint16_t msg_id,
+    uint8_t component_id,
+    const MavlinkMessageHandler& callback,
+    const void* cookie)
 {
-    _mavsdk_impl.mavlink_message_handler.register_one(msg_id, cmp_id, callback, cookie);
+    _mavsdk_impl.mavlink_message_handler.register_one_with_system_id_and_component_id(
+        msg_id, get_system_id(), component_id, callback, cookie);
 }
 
 void SystemImpl::unregister_mavlink_message_handler(uint16_t msg_id, const void* cookie)
@@ -118,10 +123,10 @@ void SystemImpl::unregister_all_mavlink_message_handlers(const void* cookie)
     _mavsdk_impl.mavlink_message_handler.unregister_all(cookie);
 }
 
-void SystemImpl::update_componentid_messages_handler(
-    uint16_t msg_id, uint8_t cmp_id, const void* cookie)
+void SystemImpl::update_component_id_messages_handler(
+    uint16_t msg_id, uint8_t component_id, const void* cookie)
 {
-    _mavsdk_impl.mavlink_message_handler.update_component_id(msg_id, cmp_id, cookie);
+    _mavsdk_impl.mavlink_message_handler.update_component_id(msg_id, component_id, cookie);
 }
 
 void SystemImpl::register_timeout_handler(

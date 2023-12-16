@@ -102,12 +102,6 @@ void ServerComponentImpl::register_mavlink_message_handler(
     _mavsdk_impl.mavlink_message_handler.register_one(msg_id, callback, cookie);
 }
 
-void ServerComponentImpl::register_mavlink_message_handler(
-    uint16_t msg_id, uint8_t cmp_id, const MavlinkMessageHandler& callback, const void* cookie)
-{
-    _mavsdk_impl.mavlink_message_handler.register_one(msg_id, cmp_id, callback, cookie);
-}
-
 void ServerComponentImpl::unregister_mavlink_message_handler(uint16_t msg_id, const void* cookie)
 {
     _mavsdk_impl.mavlink_message_handler.unregister_one(msg_id, cookie);

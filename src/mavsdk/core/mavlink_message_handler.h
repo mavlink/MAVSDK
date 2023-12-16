@@ -15,15 +15,19 @@ public:
 
     struct Entry {
         uint32_t msg_id;
-        std::optional<uint8_t> cmp_id;
+        std::optional<uint8_t> system_id;
+        std::optional<uint8_t> component_id;
         Callback callback;
         const void* cookie; // This is the identification to unregister.
     };
 
     void register_one(uint16_t msg_id, const Callback& callback, const void* cookie);
-    void register_one(
+    void register_one_with_system_id(
+        uint16_t msg_id, uint8_t system_id, const Callback& callback, const void* cookie);
+    void register_one_with_system_id_and_component_id(
         uint16_t msg_id,
-        std::optional<uint8_t> cmp_id,
+        uint8_t system_id,
+        uint8_t component_id,
         const Callback& callback,
         const void* cookie);
     void unregister_one(uint16_t msg_id, const void* cookie);

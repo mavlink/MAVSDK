@@ -55,13 +55,14 @@ public:
 
     void register_mavlink_message_handler(
         uint16_t msg_id, const MavlinkMessageHandler& callback, const void* cookie);
-    void register_mavlink_message_handler(
+    void register_mavlink_message_handler_with_compid(
         uint16_t msg_id, uint8_t cmp_id, const MavlinkMessageHandler& callback, const void* cookie);
 
     void unregister_mavlink_message_handler(uint16_t msg_id, const void* cookie);
     void unregister_all_mavlink_message_handlers(const void* cookie);
 
-    void update_componentid_messages_handler(uint16_t msg_id, uint8_t cmp_id, const void* cookie);
+    void
+    update_component_id_messages_handler(uint16_t msg_id, uint8_t component_id, const void* cookie);
 
     void register_timeout_handler(
         const std::function<void()>& callback, double duration_s, void** cookie);
