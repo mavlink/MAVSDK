@@ -404,7 +404,9 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
 {
     if (_message_logging_on) {
         LogDebug() << "Sending message " << message.msgid << " from "
-                   << static_cast<int>(message.sysid) << "/" << static_cast<int>(message.compid);
+                   << static_cast<int>(message.sysid) << "/" << static_cast<int>(message.compid)
+                   << " to " << static_cast<int>(get_target_system_id(message)) << "/"
+                   << static_cast<int>(get_target_component_id(message));
     }
 
     // This is a low level interface where outgoing messages can be tampered
@@ -922,7 +924,7 @@ uint8_t MavsdkImpl::get_target_component_id(const mavlink_message_t& message)
         return 0;
     }
 
-    return (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
+    return (_MAV_PAYLOAD(&message))[meta->target_component_ofs];
 }
 
 Sender& MavsdkImpl::sender()
