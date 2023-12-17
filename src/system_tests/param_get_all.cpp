@@ -7,6 +7,7 @@
 #include <vector>
 #include <thread>
 #include <map>
+#include <thread>
 
 using namespace mavsdk;
 
@@ -61,20 +62,19 @@ TEST(SystemTest, ParamGetAll)
 {
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
-        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
+        Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation});
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
     Mavsdk mavsdk_autopilot;
-    mavsdk_autopilot.set_configuration(
-        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::Autopilot});
+    mavsdk_autopilot.set_configuration(Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot});
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(
         mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
 
-    auto param_server = ParamServer{
-        mavsdk_autopilot.server_component_by_type(Mavsdk::ServerComponentType::Autopilot)};
+    auto param_server =
+        ParamServer{mavsdk_autopilot.server_component_by_type(Mavsdk::ComponentType::Autopilot)};
 
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);
@@ -115,18 +115,19 @@ TEST(SystemTest, ParamGetAll)
         assert_equal<float, Param::FloatParam>(test_float_params, all_params.float_params);
         assert_equal<std::string, Param::CustomParam>(test_string_params, all_params.custom_params);
     }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST(SystemTest, ParamGetAllLossy)
 {
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
-        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
+        Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation});
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
     Mavsdk mavsdk_autopilot;
-    mavsdk_autopilot.set_configuration(
-        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::Autopilot});
+    mavsdk_autopilot.set_configuration(Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot});
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     // Drop every third message
@@ -140,8 +141,8 @@ TEST(SystemTest, ParamGetAllLossy)
     ASSERT_EQ(
         mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
 
-    auto param_server = ParamServer{
-        mavsdk_autopilot.server_component_by_type(Mavsdk::ServerComponentType::Autopilot)};
+    auto param_server =
+        ParamServer{mavsdk_autopilot.server_component_by_type(Mavsdk::ComponentType::Autopilot)};
 
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);
@@ -187,4 +188,6 @@ TEST(SystemTest, ParamGetAllLossy)
     // drop_some callback which accesses the local counter variable.
     mavsdk_groundstation.intercept_incoming_messages_async(nullptr);
     mavsdk_groundstation.intercept_outgoing_messages_async(nullptr);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

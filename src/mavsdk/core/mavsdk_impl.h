@@ -100,8 +100,8 @@ public:
     void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
     void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
-    std::shared_ptr<ServerComponent> server_component_by_type(
-        Mavsdk::ServerComponentType server_component_type, unsigned instance = 0);
+    std::shared_ptr<ServerComponent>
+    server_component_by_type(Mavsdk::ComponentType server_component_type, unsigned instance = 0);
     std::shared_ptr<ServerComponent> server_component_by_id(uint8_t component_id);
 
     Time time{};
@@ -149,7 +149,7 @@ private:
 
     CallbackList<> _new_system_callbacks{};
 
-    Mavsdk::Configuration _configuration{Mavsdk::Configuration::UsageType::GroundStation};
+    Mavsdk::Configuration _configuration{Mavsdk::ComponentType::GroundStation};
 
     struct UserCallback {
         UserCallback() = default;

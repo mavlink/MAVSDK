@@ -29,7 +29,7 @@ int main(int argc, char** argv)
     }
 
     Mavsdk mavsdk;
-    Mavsdk::Configuration configuration(Mavsdk::Configuration::UsageType::CompanionComputer);
+    Mavsdk::Configuration configuration(Mavsdk::ComponentType::CompanionComputer);
     mavsdk.set_configuration(configuration);
     ConnectionResult connection_result = mavsdk.setup_udp_remote(argv[1], std::stoi(argv[2]));
     if (connection_result != ConnectionResult::Success) {
@@ -38,7 +38,7 @@ int main(int argc, char** argv)
     }
 
     auto component =
-        mavsdk.server_component_by_type(mavsdk::Mavsdk::ServerComponentType::CompanionComputer);
+        mavsdk.server_component_by_type(mavsdk::Mavsdk::ComponentType::CompanionComputer);
     auto ftp_server = FtpServer{component};
     ftp_server.set_root_dir(argv[3]);
 

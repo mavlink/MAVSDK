@@ -5,6 +5,7 @@
 #include <chrono>
 #include <future>
 #include <fstream>
+#include <thread>
 #include "plugins/ftp/ftp.h"
 #include "plugins/ftp_server/ftp_server.h"
 #include "fs_helpers.h"
@@ -30,20 +31,19 @@ TEST(SystemTest, FtpCompareFiles)
 
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
-        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
+        Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation});
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
     Mavsdk mavsdk_autopilot;
-    mavsdk_autopilot.set_configuration(
-        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::Autopilot});
+    mavsdk_autopilot.set_configuration(Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot});
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(
         mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
 
-    auto ftp_server = FtpServer{
-        mavsdk_autopilot.server_component_by_type(Mavsdk::ServerComponentType::Autopilot)};
+    auto ftp_server =
+        FtpServer{mavsdk_autopilot.server_component_by_type(Mavsdk::ComponentType::Autopilot)};
 
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);
@@ -73,4 +73,6 @@ TEST(SystemTest, FtpCompareFiles)
         (temp_dir_provided / temp_file).string(), temp_file_different.string());
     EXPECT_EQ(result.first, Ftp::Result::Success);
     EXPECT_EQ(result.second, false);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

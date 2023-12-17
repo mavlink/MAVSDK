@@ -12,17 +12,16 @@ TEST(CameraTest, TakePhotoSingle)
 {
     Mavsdk mavsdk_groundstation;
     mavsdk_groundstation.set_configuration(
-        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::GroundStation});
+        Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation});
 
     Mavsdk mavsdk_camera;
-    mavsdk_camera.set_configuration(
-        Mavsdk::Configuration{Mavsdk::Configuration::UsageType::Camera});
+    mavsdk_camera.set_configuration(Mavsdk::Configuration{Mavsdk::ComponentType::Camera});
 
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(mavsdk_camera.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
 
     auto camera_server =
-        CameraServer{mavsdk_camera.server_component_by_type(Mavsdk::ServerComponentType::Camera)};
+        CameraServer{mavsdk_camera.server_component_by_type(Mavsdk::ComponentType::Camera)};
     camera_server.subscribe_take_photo([&camera_server](int32_t index) {
         LogInfo() << "Let's take photo " << index;
 
