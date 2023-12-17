@@ -151,10 +151,10 @@
 cmake_minimum_required(VERSION 3.8.0)
 
 # CMake invokes the toolchain file twice during the first build, but only once during subsequent rebuilds.
-if(DEFINED ENV{_IOS_TOOLCHAIN_HAS_RUN})
-  return()
-endif()
-set(ENV{_IOS_TOOLCHAIN_HAS_RUN} true)
+#if(DEFINED ENV{_IOS_TOOLCHAIN_HAS_RUN})
+#  return()
+#endif()
+#set(ENV{_IOS_TOOLCHAIN_HAS_RUN} true)
 
 # List of supported platform values
 list(APPEND _supported_platforms
