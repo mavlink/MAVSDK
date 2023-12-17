@@ -3,7 +3,6 @@
 #include "system.h"
 #include "mavsdk_math.h"
 #include "http_loader.h"
-#include "camera_definition_files.h"
 #include "unused.h"
 #include "callback_list.tpp"
 
@@ -1214,11 +1213,7 @@ Camera::Result CameraImpl::fetch_camera_definition(
     auto result =
         download_definition_file(camera_information.cam_definition_uri, camera_definition_out);
 
-    if (result == Camera::Result::Success) {
-        return result;
-    }
-
-    return load_stored_definition(camera_information, camera_definition_out);
+    return result;
 }
 
 Camera::Result
@@ -1238,52 +1233,6 @@ CameraImpl::download_definition_file(const std::string& uri, std::string& camera
 #endif
 
     return Camera::Result::Success;
-}
-
-Camera::Result CameraImpl::load_stored_definition(
-    const mavlink_camera_information_t& camera_information, std::string& camera_definition_out)
-{
-    // TODO: we might also try to support the correct version of the xml files.
-
-    const auto vendor_name = std::string(
-        reinterpret_cast<const char*>(std::begin(camera_information.vendor_name)),
-        reinterpret_cast<const char*>(std::end(camera_information.vendor_name)));
-
-    const auto model_name = std::string(
-        reinterpret_cast<const char*>(std::begin(camera_information.model_name)),
-        reinterpret_cast<const char*>(std::end(camera_information.model_name)));
-
-    if (vendor_name == "Yuneec") {
-        if (model_name == "E90") {
-            LogInfo() << "Using cached file for Yuneec E90.";
-            camera_definition_out = e90xml;
-            return Camera::Result::Success;
-        } else if (model_name == "E50") {
-            LogInfo() << "Using cached file for Yuneec E50.";
-            camera_definition_out = e50xml;
-            return Camera::Result::Success;
-        } else if (model_name == "CGOET") {
-            LogInfo() << "Using cached file for Yuneec ET.";
-            camera_definition_out = cgoetxml;
-            return Camera::Result::Success;
-        } else if (model_name == "E10T") {
-            LogInfo() << "Using cached file for Yuneec E10T.";
-            camera_definition_out = e10txml;
-            return Camera::Result::Success;
-        } else if (model_name == "E30Z") {
-            LogInfo() << "Using cached file for Yuneec E30Z.";
-            camera_definition_out = e30zxml;
-            return Camera::Result::Success;
-        }
-    } else if (vendor_name == "Sony") {
-        if (model_name == "ILCE-7RM4") {
-            LogInfo() << "Using cached file for Sony ILCE-7RM4.";
-            camera_definition_out = ILCE7RM4xml;
-            return Camera::Result::Success;
-        }
-    }
-
-    return Camera::Result::Error;
 }
 
 void CameraImpl::process_video_information(const mavlink_message_t& message)
