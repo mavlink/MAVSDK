@@ -17,14 +17,12 @@ target_sources(mavsdk
     call_every_handler.cpp
     connection.cpp
     connection_result.cpp
-    curl_wrapper.cpp
     crc32.cpp
     system.cpp
     system_impl.cpp
     flight_mode.cpp
     mavsdk.cpp
     mavsdk_impl.cpp
-    http_loader.cpp
     mavlink_channels.cpp
     mavlink_command_receiver.cpp
     mavlink_command_sender.cpp
@@ -62,10 +60,32 @@ target_sources(mavsdk
 cmake_policy(SET CMP0079 NEW)
 target_link_libraries(mavsdk
     PRIVATE
-    MAVLink::mavlink
-    CURL::libcurl
     Threads::Threads
 )
+
+if (NOT BUILD_WITHOUT_CURL)
+    target_sources(mavsdk
+        PRIVATE
+        curl_wrapper.cpp
+        http_loader.cpp
+    )
+
+    target_link_libraries(mavsdk
+        PRIVATE
+        CURL::libcurl
+    )
+
+    list(APPEND UNIT_TEST_SOURCES
+        # TODO: add this again
+        ${PROJECT_SOURCE_DIR}/mavsdk/core/curl_test.cpp
+        #${PROJECT_SOURCE_DIR}/mavsdk/core/http_loader_test.cpp
+    )
+else()
+    target_compile_definitions(mavsdk
+        PRIVATE
+        BUILD_WITHOUT_CURL=1
+    )
+endif()
 
 set_target_properties(mavsdk PROPERTIES
     VERSION ${MAVSDK_VERSION_STRING}
@@ -151,11 +171,8 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/callback_list_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/call_every_handler_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/cli_arg_test.cpp
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/curl_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/locked_queue_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/geometry_test.cpp
-    # TODO: add this again
-    #${PROJECT_SOURCE_DIR}/mavsdk/core/http_loader_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_math_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_time_test.cpp
