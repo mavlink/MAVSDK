@@ -36,8 +36,7 @@ TEST(SystemTest, FtpDownloadBurstFile)
     ASSERT_EQ(
         mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
 
-    auto ftp_server =
-        FtpServer{mavsdk_autopilot.server_component_by_type(Mavsdk::ComponentType::Autopilot)};
+    auto ftp_server = FtpServer{mavsdk_autopilot.server_component()};
 
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);
@@ -108,8 +107,7 @@ TEST(SystemTest, FtpDownloadBurstBigFile)
     ASSERT_EQ(
         mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
 
-    auto ftp_server =
-        FtpServer{mavsdk_autopilot.server_component_by_type(Mavsdk::ComponentType::Autopilot)};
+    auto ftp_server = FtpServer{mavsdk_autopilot.server_component()};
 
     ftp_server.set_root_dir(temp_dir_provided.string());
 
@@ -167,8 +165,7 @@ TEST(SystemTest, FtpDownloadBurstBigFileLossy)
     ASSERT_EQ(
         mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
 
-    auto ftp_server =
-        FtpServer{mavsdk_autopilot.server_component_by_type(Mavsdk::ComponentType::Autopilot)};
+    auto ftp_server = FtpServer{mavsdk_autopilot.server_component()};
 
     ftp_server.set_root_dir(temp_dir_provided.string());
 
@@ -232,8 +229,7 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
     ASSERT_EQ(
         mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
 
-    auto ftp_server =
-        FtpServer{mavsdk_autopilot.server_component_by_type(Mavsdk::ComponentType::Autopilot)};
+    auto ftp_server = FtpServer{mavsdk_autopilot.server_component()};
 
     ftp_server.set_root_dir(temp_dir_provided.string());
 
@@ -312,8 +308,7 @@ TEST(SystemTest, FtpDownloadBurstFileOutsideOfRoot)
     ASSERT_EQ(
         mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
 
-    auto ftp_server =
-        FtpServer{mavsdk_autopilot.server_component_by_type(Mavsdk::ComponentType::Autopilot)};
+    auto ftp_server = FtpServer{mavsdk_autopilot.server_component()};
 
     auto maybe_system = mavsdk_groundstation.first_autopilot(10.0);
     ASSERT_TRUE(maybe_system);

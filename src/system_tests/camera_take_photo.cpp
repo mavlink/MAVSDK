@@ -18,8 +18,7 @@ TEST(SystemTest, CameraTakePhoto)
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(mavsdk_camera.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
 
-    auto camera_server =
-        CameraServer{mavsdk_camera.server_component_by_type(Mavsdk::ComponentType::Camera)};
+    auto camera_server = CameraServer{mavsdk_camera.server_component()};
     camera_server.subscribe_take_photo([&camera_server](int32_t index) {
         LogInfo() << "Let's take photo " << index;
 

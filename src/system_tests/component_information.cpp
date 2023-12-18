@@ -30,8 +30,7 @@ TEST(SystemTest, DISABLED_ComponentInformationConnect)
     ASSERT_TRUE(maybe_system);
     auto system = maybe_system.value();
 
-    auto server = ComponentInformationServer{
-        mavsdk_companion.server_component_by_type(Mavsdk::ComponentType::CompanionComputer)};
+    auto server = ComponentInformationServer{mavsdk_companion.server_component()};
 
     auto param = ComponentInformationServer::FloatParam{};
     param.name = "ANG_RATE_ACC_MAX";

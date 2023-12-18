@@ -15,8 +15,7 @@ int main(int argc, char** argv)
     }
     std::cout << "Created camera server connection" << std::endl;
 
-    auto camera_server = mavsdk::CameraServer{
-        mavsdk.server_component_by_type(mavsdk::Mavsdk::ComponentType::Camera)};
+    auto camera_server = mavsdk::CameraServer{mavsdk.server_component()};
 
     // First add all subscriptions. This defines the camera capabilities.
 

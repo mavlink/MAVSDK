@@ -381,6 +381,14 @@ public:
     void unsubscribe_on_new_system(NewSystemHandle handle);
 
     /**
+     * @brief Get server component with default type of Mavsdk instance.
+     *
+     * @return A valid shared pointer to a server component if it was successful, an empty pointer
+     * otherwise.
+     */
+    std::shared_ptr<ServerComponent> server_component(unsigned instance = 0);
+
+    /**
      * @brief Get server component by a high level type.
      *
      * This represents a server component of the MAVSDK instance.

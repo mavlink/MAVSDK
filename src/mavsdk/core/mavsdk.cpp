@@ -95,6 +95,11 @@ void Mavsdk::unsubscribe_on_new_system(NewSystemHandle handle)
     _impl->unsubscribe_on_new_system(handle);
 }
 
+std::shared_ptr<ServerComponent> Mavsdk::server_component(unsigned instance)
+{
+    return _impl->server_component(instance);
+}
+
 std::shared_ptr<ServerComponent>
 Mavsdk::server_component_by_type(ComponentType server_component_type, unsigned instance)
 {

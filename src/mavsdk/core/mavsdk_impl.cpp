@@ -168,6 +168,22 @@ std::optional<std::shared_ptr<System>> MavsdkImpl::first_autopilot(double timeou
     }
 }
 
+std::shared_ptr<ServerComponent> MavsdkImpl::server_component(unsigned instance)
+{
+    auto component_type = _configuration.get_component_type();
+    switch (component_type) {
+        case Mavsdk::ComponentType::Autopilot:
+        case Mavsdk::ComponentType::GroundStation:
+        case Mavsdk::ComponentType::CompanionComputer:
+        case Mavsdk::ComponentType::Camera:
+        case Mavsdk::ComponentType::Custom:
+            return server_component_by_type(component_type, instance);
+        default:
+            LogErr() << "Unknown component type";
+            return {};
+    }
+}
+
 std::shared_ptr<ServerComponent>
 MavsdkImpl::server_component_by_type(Mavsdk::ComponentType server_component_type, unsigned instance)
 {

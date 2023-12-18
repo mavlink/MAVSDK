@@ -66,8 +66,7 @@ int main(int argc, char** argv)
             std::cout << "Connected autopilot server side!" << std::endl;
         }
 
-        auto server_component =
-            mavsdkTester.server_component_by_type(Mavsdk::ComponentType::Autopilot);
+        auto server_component = mavsdkTester.server_component();
 
         // Create server plugins
         auto paramServer = mavsdk::ParamServer{server_component};

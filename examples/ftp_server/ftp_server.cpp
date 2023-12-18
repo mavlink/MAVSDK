@@ -35,8 +35,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    auto component =
-        mavsdk.server_component_by_type(mavsdk::Mavsdk::ComponentType::CompanionComputer);
+    auto component = mavsdk.server_component();
     auto ftp_server = FtpServer{component};
     ftp_server.set_root_dir(argv[3]);
 
