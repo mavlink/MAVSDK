@@ -1236,7 +1236,8 @@ bool operator==(const Telemetry::DistanceSensor& lhs, const Telemetry::DistanceS
            ((std::isnan(rhs.maximum_distance_m) && std::isnan(lhs.maximum_distance_m)) ||
             rhs.maximum_distance_m == lhs.maximum_distance_m) &&
            ((std::isnan(rhs.current_distance_m) && std::isnan(lhs.current_distance_m)) ||
-            rhs.current_distance_m == lhs.current_distance_m);
+            rhs.current_distance_m == lhs.current_distance_m) &&
+           (rhs.orientation == lhs.orientation);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::DistanceSensor const& distance_sensor)
@@ -1246,6 +1247,7 @@ std::ostream& operator<<(std::ostream& str, Telemetry::DistanceSensor const& dis
     str << "    minimum_distance_m: " << distance_sensor.minimum_distance_m << '\n';
     str << "    maximum_distance_m: " << distance_sensor.maximum_distance_m << '\n';
     str << "    current_distance_m: " << distance_sensor.current_distance_m << '\n';
+    str << "    orientation: " << distance_sensor.orientation << '\n';
     str << '}';
     return str;
 }

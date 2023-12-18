@@ -22861,10 +22861,25 @@ class DistanceSensor final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kOrientationFieldNumber = 4,
     kMinimumDistanceMFieldNumber = 1,
     kMaximumDistanceMFieldNumber = 2,
     kCurrentDistanceMFieldNumber = 3,
   };
+  // .mavsdk.rpc.telemetry.EulerAngle orientation = 4;
+  bool has_orientation() const;
+  void clear_orientation() ;
+  const ::mavsdk::rpc::telemetry::EulerAngle& orientation() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry::EulerAngle* release_orientation();
+  ::mavsdk::rpc::telemetry::EulerAngle* mutable_orientation();
+  void set_allocated_orientation(::mavsdk::rpc::telemetry::EulerAngle* orientation);
+  private:
+  const ::mavsdk::rpc::telemetry::EulerAngle& _internal_orientation() const;
+  ::mavsdk::rpc::telemetry::EulerAngle* _internal_mutable_orientation();
+  public:
+  void unsafe_arena_set_allocated_orientation(
+      ::mavsdk::rpc::telemetry::EulerAngle* orientation);
+  ::mavsdk::rpc::telemetry::EulerAngle* unsafe_arena_release_orientation();
   // float minimum_distance_m = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_minimum_distance_m() ;
   float minimum_distance_m() const;
@@ -22903,10 +22918,12 @@ class DistanceSensor final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::telemetry::EulerAngle* orientation_;
     float minimum_distance_m_;
     float maximum_distance_m_;
     float current_distance_m_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
@@ -33377,6 +33394,93 @@ inline float DistanceSensor::_internal_current_distance_m() const {
 inline void DistanceSensor::_internal_set_current_distance_m(float value) {
   ;
   _impl_.current_distance_m_ = value;
+}
+
+// .mavsdk.rpc.telemetry.EulerAngle orientation = 4;
+inline bool DistanceSensor::has_orientation() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.orientation_ != nullptr);
+  return value;
+}
+inline void DistanceSensor::clear_orientation() {
+  if (_impl_.orientation_ != nullptr) _impl_.orientation_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::telemetry::EulerAngle& DistanceSensor::_internal_orientation() const {
+  const ::mavsdk::rpc::telemetry::EulerAngle* p = _impl_.orientation_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry::EulerAngle&>(
+      ::mavsdk::rpc::telemetry::_EulerAngle_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry::EulerAngle& DistanceSensor::orientation() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.DistanceSensor.orientation)
+  return _internal_orientation();
+}
+inline void DistanceSensor::unsafe_arena_set_allocated_orientation(
+    ::mavsdk::rpc::telemetry::EulerAngle* orientation) {
+  if (GetArenaForAllocation() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.orientation_);
+  }
+  _impl_.orientation_ = orientation;
+  if (orientation) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry.DistanceSensor.orientation)
+}
+inline ::mavsdk::rpc::telemetry::EulerAngle* DistanceSensor::release_orientation() {
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::telemetry::EulerAngle* temp = _impl_.orientation_;
+  _impl_.orientation_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
+  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  if (GetArenaForAllocation() == nullptr) { delete old; }
+#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArenaForAllocation() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::EulerAngle* DistanceSensor::unsafe_arena_release_orientation() {
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.DistanceSensor.orientation)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::telemetry::EulerAngle* temp = _impl_.orientation_;
+  _impl_.orientation_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::EulerAngle* DistanceSensor::_internal_mutable_orientation() {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.orientation_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::EulerAngle>(GetArenaForAllocation());
+    _impl_.orientation_ = p;
+  }
+  return _impl_.orientation_;
+}
+inline ::mavsdk::rpc::telemetry::EulerAngle* DistanceSensor::mutable_orientation() {
+  ::mavsdk::rpc::telemetry::EulerAngle* _msg = _internal_mutable_orientation();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.DistanceSensor.orientation)
+  return _msg;
+}
+inline void DistanceSensor::set_allocated_orientation(::mavsdk::rpc::telemetry::EulerAngle* orientation) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  if (message_arena == nullptr) {
+    delete _impl_.orientation_;
+  }
+  if (orientation) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(orientation);
+    if (message_arena != submessage_arena) {
+      orientation = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, orientation, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.orientation_ = orientation;
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.DistanceSensor.orientation)
 }
 
 // -------------------------------------------------------------------
