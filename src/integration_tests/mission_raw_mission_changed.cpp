@@ -16,7 +16,7 @@ static void validate_items(const std::vector<MissionRaw::MissionItem>& items);
 
 TEST_F(SitlTest, PX4MissionRawMissionChanged)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);

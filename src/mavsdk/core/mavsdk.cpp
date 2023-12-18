@@ -4,9 +4,9 @@
 
 namespace mavsdk {
 
-Mavsdk::Mavsdk()
+Mavsdk::Mavsdk(Configuration configuration)
 {
-    _impl = std::make_shared<MavsdkImpl>();
+    _impl = std::make_shared<MavsdkImpl>(configuration);
 }
 
 Mavsdk::~Mavsdk() = default;

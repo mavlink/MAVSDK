@@ -8,7 +8,7 @@ using namespace mavsdk;
 
 TEST_F(SitlTest, PX4ParamSad)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -46,7 +46,7 @@ TEST_F(SitlTest, PX4ParamSad)
 
 TEST_F(SitlTest, PX4ParamHappy)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -127,7 +127,7 @@ TEST_F(SitlTest, PX4ParamHappy)
 
 TEST_F(SitlTest, GetAllParams)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -168,7 +168,7 @@ TEST_F(SitlTest, GetAllParams)
 
 TEST_F(SitlTest, APParam)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);

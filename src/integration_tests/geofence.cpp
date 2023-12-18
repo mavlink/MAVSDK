@@ -11,7 +11,7 @@ static Geofence::Point add_point(double latitude_deg, double longitude_deg);
 
 TEST_F(SitlTest, PX4GeofenceInclusion)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);

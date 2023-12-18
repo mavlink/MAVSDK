@@ -16,7 +16,7 @@ static void receive_calibration_callback(
 
 TEST(HardwareTest, CalibrationGyro)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -45,7 +45,7 @@ TEST(HardwareTest, CalibrationGyro)
 
 TEST(HardwareTest, CalibrationAccelerometer)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -74,7 +74,7 @@ TEST(HardwareTest, CalibrationAccelerometer)
 
 TEST(HardwareTest, CalibrationMagnetometer)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -103,7 +103,7 @@ TEST(HardwareTest, CalibrationMagnetometer)
 
 TEST(HardwareTest, CalibrationLevelHorizon)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -132,7 +132,7 @@ TEST(HardwareTest, CalibrationLevelHorizon)
 
 TEST(HardwareTest, CalibrationGimbalAccelerometer)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -161,7 +161,7 @@ TEST(HardwareTest, CalibrationGimbalAccelerometer)
 
 TEST(HardwareTest, CalibrationGyroWithTelemetry)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -204,7 +204,7 @@ TEST(HardwareTest, CalibrationGyroWithTelemetry)
 
 TEST(HardwareTest, CalibrationGyroCancelled)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);

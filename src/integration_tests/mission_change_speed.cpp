@@ -22,7 +22,7 @@ const static float speeds[4] = {10.0f, 3.0f, 8.0f, 5.0f};
 // Test to check speed set for mission items.
 TEST_F(SitlTest, PX4MissionChangeSpeed)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);

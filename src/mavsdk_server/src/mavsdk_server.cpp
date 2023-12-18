@@ -6,11 +6,12 @@
 #include "mavsdk.h"
 #include "grpc_server.h"
 
+using namespace mavsdk;
 using namespace mavsdk::mavsdk_server;
 
 class MavsdkServer::Impl {
 public:
-    Impl() {}
+    Impl() : _mavsdk(Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}) {}
     ~Impl() {}
 
     bool connect(const std::string& connection_url)

@@ -25,7 +25,7 @@ using namespace std::chrono;
  */
 TEST(SitlTestMultiple, SystemMultipleComponents)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     // For both Autopilot and Camera
     ASSERT_EQ(mavsdk.add_udp_connection(), ConnectionResult::Success);

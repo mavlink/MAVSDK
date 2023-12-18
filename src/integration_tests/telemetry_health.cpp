@@ -10,7 +10,7 @@ void print_rc_status(Telemetry::RcStatus rc_status);
 
 TEST_F(SitlTest, TelemetryHealth)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);

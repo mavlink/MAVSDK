@@ -5,9 +5,7 @@
 
 int main(int argc, char** argv)
 {
-    mavsdk::Mavsdk mavsdk;
-    mavsdk::Mavsdk::Configuration configuration(mavsdk::Mavsdk::ComponentType::Camera);
-    mavsdk.set_configuration(configuration);
+    mavsdk::Mavsdk mavsdk{mavsdk::Mavsdk::Configuration{mavsdk::Mavsdk::ComponentType::Camera}};
 
     // 14030 is the default camera port for PX4 SITL
     auto result = mavsdk.add_any_connection("udp://127.0.0.1:14030");

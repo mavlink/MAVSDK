@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     size_t total_udp_ports = argc - 1;
 

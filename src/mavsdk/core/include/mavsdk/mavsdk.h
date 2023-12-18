@@ -52,18 +52,6 @@ public:
     static constexpr double DEFAULT_TIMEOUT_S = 0.5;
 
     /**
-     * @brief Constructor.
-     */
-    Mavsdk();
-
-    /**
-     * @brief Destructor.
-     *
-     * Disconnects all connected vehicles and releases all resources.
-     */
-    ~Mavsdk();
-
-    /**
      * @brief Returns the version of MAVSDK.
      *
      * Note, you're not supposed to request the version too many times.
@@ -308,6 +296,31 @@ public:
 
         static Mavsdk::ComponentType component_type_for_component_id(uint8_t component_id);
     };
+
+    /**
+     * @brief Default constructor without configuration, no longer recommended.
+     *
+     * @note This has been removed because MAVSDK used to identify itself as a
+     *       ground station by default which isn't always the safest choice.
+     *       For instance, when MAVSDK is used on a companion computer (set as
+     *       a ground station) it means that the appropriate failsafe doesn't
+     *       trigger.
+     */
+    Mavsdk() = delete;
+
+    /**
+     * @brief Constructor with configuration.
+     *
+     * @param configuration Configuration to use in MAVSDK instance.
+     */
+    Mavsdk(Configuration configuration);
+
+    /**
+     * @brief Destructor.
+     *
+     * Disconnects all connected vehicles and releases all resources.
+     */
+    ~Mavsdk();
 
     /**
      * @brief Set `Configuration` of SDK.

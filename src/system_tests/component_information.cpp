@@ -19,14 +19,10 @@ using namespace mavsdk;
 // split across system_impl, and server_component_impl.
 TEST(SystemTest, DISABLED_ComponentInformationConnect)
 {
-    Mavsdk mavsdk_groundstation;
-    mavsdk_groundstation.set_configuration(
-        Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation});
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
 
-    Mavsdk mavsdk_companion;
-    mavsdk_companion.set_configuration(
-        Mavsdk::Configuration{Mavsdk::ComponentType::CompanionComputer});
+    Mavsdk mavsdk_companion{Mavsdk::Configuration{Mavsdk::ComponentType::CompanionComputer}};
     ASSERT_EQ(
         mavsdk_companion.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
 

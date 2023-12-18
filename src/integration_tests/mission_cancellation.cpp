@@ -24,7 +24,7 @@ static Mission::MissionItem add_waypoint(
 
 TEST_F(SitlTest, PX4MissionUploadCancellation)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -80,7 +80,7 @@ TEST_F(SitlTest, PX4MissionUploadCancellation)
 
 TEST_F(SitlTest, PX4MissionDownloadCancellation)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);

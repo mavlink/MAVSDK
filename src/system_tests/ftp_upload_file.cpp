@@ -30,13 +30,10 @@ TEST(SystemTest, FtpUploadFile)
     ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 50));
     ASSERT_TRUE(reset_directories(temp_dir_provided));
 
-    Mavsdk mavsdk_groundstation;
-    mavsdk_groundstation.set_configuration(
-        Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation});
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
-    Mavsdk mavsdk_autopilot;
-    mavsdk_autopilot.set_configuration(Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot});
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
@@ -103,13 +100,10 @@ TEST(SystemTest, FtpUploadBigFile)
     ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 10000));
     ASSERT_TRUE(reset_directories(temp_dir_provided));
 
-    Mavsdk mavsdk_groundstation;
-    mavsdk_groundstation.set_configuration(
-        Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation});
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
-    Mavsdk mavsdk_autopilot;
-    mavsdk_autopilot.set_configuration(Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot});
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
@@ -160,13 +154,10 @@ TEST(SystemTest, FtpUploadBigFileLossy)
     ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 10000));
     ASSERT_TRUE(reset_directories(temp_dir_provided));
 
-    Mavsdk mavsdk_groundstation;
-    mavsdk_groundstation.set_configuration(
-        Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation});
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
-    Mavsdk mavsdk_autopilot;
-    mavsdk_autopilot.set_configuration(Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot});
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     unsigned counter = 0;
@@ -226,13 +217,10 @@ TEST(SystemTest, FtpUploadStopAndTryAgain)
     ASSERT_TRUE(create_temp_file(temp_dir_to_upload / temp_file, 1000));
     ASSERT_TRUE(reset_directories(temp_dir_provided));
 
-    Mavsdk mavsdk_groundstation;
-    mavsdk_groundstation.set_configuration(
-        Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation});
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
-    Mavsdk mavsdk_autopilot;
-    mavsdk_autopilot.set_configuration(Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot});
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     // Once we received half, we want to stop all traffic.
@@ -317,13 +305,10 @@ TEST(SystemTest, FtpUploadFileOutsideOfRoot)
     // A test trying to push something into the parent (../) directory which
     // shouldn't be allowed!
 
-    Mavsdk mavsdk_groundstation;
-    mavsdk_groundstation.set_configuration(
-        Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation});
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
-    Mavsdk mavsdk_autopilot;
-    mavsdk_autopilot.set_configuration(Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot});
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);

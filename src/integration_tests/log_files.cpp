@@ -11,7 +11,7 @@ using namespace mavsdk;
 
 TEST(HardwareTest, LogFiles)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     // ConnectionResult ret = mavsdk.add_serial_connection("/dev/ttyACM0");
     ConnectionResult ret = mavsdk.add_udp_connection();
@@ -66,7 +66,7 @@ TEST(HardwareTest, LogFiles)
 
 TEST(HardwareTest, LogFilesDownloadFailsIfPathIsDirectory)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     // ConnectionResult ret = mavsdk.add_serial_connection("/dev/ttyACM0");
     ConnectionResult ret = mavsdk.add_udp_connection();
@@ -122,7 +122,7 @@ TEST(HardwareTest, LogFilesDownloadFailsIfPathIsDirectory)
 
 TEST(HardwareTest, LogFilesDownloadFailsIfFileAlreadyExists)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     // ConnectionResult ret = mavsdk.add_serial_connection("/dev/ttyACM0");
     ConnectionResult ret = mavsdk.add_udp_connection();

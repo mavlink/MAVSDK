@@ -28,9 +28,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    Mavsdk mavsdk;
-    Mavsdk::Configuration configuration(Mavsdk::ComponentType::CompanionComputer);
-    mavsdk.set_configuration(configuration);
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::CompanionComputer}};
     ConnectionResult connection_result = mavsdk.setup_udp_remote(argv[1], std::stoi(argv[2]));
     if (connection_result != ConnectionResult::Success) {
         std::cerr << "Error setting up Mavlink FTP server.\n";
