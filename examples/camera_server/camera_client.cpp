@@ -1,6 +1,7 @@
 #include <chrono>
 #include <future>
 #include <iostream>
+#include <thread>
 
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/camera/camera.h>
