@@ -418,7 +418,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_start_video_streaming
     MavlinkCommandSender::CommandLong cmd_start_video_streaming{};
 
     cmd_start_video_streaming.command = MAV_CMD_VIDEO_START_STREAMING;
-    cmd_start_video_streaming.params.maybe_param1 = stream_id;
+    cmd_start_video_streaming.params.maybe_param1 = static_cast<float>(stream_id);
     cmd_start_video_streaming.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
 
     return cmd_start_video_streaming;
@@ -429,7 +429,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_stop_video_streaming(
     MavlinkCommandSender::CommandLong cmd_stop_video_streaming{};
 
     cmd_stop_video_streaming.command = MAV_CMD_VIDEO_STOP_STREAMING;
-    cmd_stop_video_streaming.params.maybe_param1 = stream_id;
+    cmd_stop_video_streaming.params.maybe_param1 = static_cast<float>(stream_id);
     cmd_stop_video_streaming.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
 
     return cmd_stop_video_streaming;
@@ -1977,7 +1977,7 @@ void CameraImpl::reset_settings_async(const Camera::ResultCallback callback)
     MavlinkCommandSender::CommandLong cmd_format{};
 
     cmd_format.command = MAV_CMD_RESET_CAMERA_SETTINGS;
-    cmd_format.params.maybe_param1 = 1.0; // reset
+    cmd_format.params.maybe_param1 = 1.0f; // reset
     cmd_format.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
 
     _system_impl->send_command_async(
