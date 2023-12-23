@@ -58,17 +58,15 @@ int main(int argc, char** argv)
     // We run the server plugins on a seperate thead so we can use the main
     // thread as a ground station.
     std::thread autopilotThread([]() {
-        mavsdk::Mavsdk mavsdkTester;
-        mavsdk::Mavsdk::Configuration configuration(mavsdk::Mavsdk::ComponentType::Autopilot);
-        mavsdkTester.set_configuration(configuration);
+        mavsdk::Mavsdk mavsdkTester{
+            mavsdk::Mavsdk::Configuration{mavsdk::Mavsdk::ComponentType::Autopilot}};
 
         auto result = mavsdkTester.add_any_connection("udp://127.0.0.1:14551");
         if (result == mavsdk::ConnectionResult::Success) {
             std::cout << "Connected autopilot server side!" << std::endl;
         }
 
-        auto server_component =
-            mavsdkTester.server_component_by_type(Mavsdk::ComponentType::Autopilot);
+        auto server_component = mavsdkTester.server_component();
 
         // Create server plugins
         auto paramServer = mavsdk::ParamServer{server_component};
@@ -146,9 +144,7 @@ int main(int argc, char** argv)
 
     // Now this is the main thread, we run client plugins to act as the GCS
     // to communicate with the autopilot server plugins.
-    mavsdk::Mavsdk mavsdk;
-    mavsdk::Mavsdk::Configuration configuration(mavsdk::Mavsdk::ComponentType::GroundStation);
-    mavsdk.set_configuration(configuration);
+    mavsdk::Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     auto result = mavsdk.add_any_connection("udp://:14551");
     if (result == mavsdk::ConnectionResult::Success) {

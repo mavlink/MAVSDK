@@ -6,7 +6,7 @@ using namespace mavsdk;
 
 TEST(SitlTestDisabled, TelemetryGpsOrigin)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);

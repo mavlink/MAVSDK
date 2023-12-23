@@ -12,7 +12,7 @@ using namespace mavsdk;
 
 TEST_F(SitlTest, OffboardVelocityNED)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ConnectionResult::Success, ret);
@@ -134,7 +134,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
 
 TEST_F(SitlTest, OffboardVelocityBody)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ConnectionResult::Success, ret);

@@ -32,7 +32,7 @@ int main(int argc, char** argv)
     const int index = std::stod(argv[2]);
     const float value = std::stof(argv[3]);
 
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
     const ConnectionResult connection_result = mavsdk.add_any_connection(connection_url);
 
     if (connection_result != ConnectionResult::Success) {

@@ -28,7 +28,7 @@ void test_mission_raw(
 
 TEST_F(SitlTest, PX4MissionRawImportAndFly)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -89,7 +89,7 @@ TEST_F(SitlTest, PX4MissionRawImportAndFly)
 
 TEST_F(SitlTest, APMissionRawImportAndFly)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);

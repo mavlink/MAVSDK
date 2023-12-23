@@ -796,7 +796,9 @@ void usage(const std::string& bin_name)
 
 int main(int argc, char** argv)
 {
-    Mavsdk mavsdk;
+    Mavsdk::Configuration config(Mavsdk::ComponentType::Autopilot);
+    config.set_system_id(own_sysid);
+    Mavsdk mavsdk{config};
     std::string connection_url;
     ConnectionResult connection_result;
 
@@ -815,10 +817,6 @@ int main(int argc, char** argv)
         std::cout << "-> connection failed: " << connection_result << '\n';
         return 1;
     }
-
-    Mavsdk::Configuration config(Mavsdk::ComponentType::Autopilot);
-    config.set_system_id(own_sysid);
-    mavsdk.set_configuration(config);
 
     {
         std::promise<void> prom;

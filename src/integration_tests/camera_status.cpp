@@ -11,7 +11,7 @@ static void print_camera_status(const Camera::Status& status);
 
 TEST(CameraTest, Status)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);

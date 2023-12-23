@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
 
     const std::string connection_url = argv[1];
 
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     std::cout << "Waiting to discover system...\n";
     auto prom = std::promise<std::shared_ptr<System>>{};

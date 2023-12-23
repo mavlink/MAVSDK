@@ -23,7 +23,7 @@ void receive_gimbal_attitude_euler_angles(Telemetry::EulerAngle euler_angle);
 
 TEST(SitlTestGimbal, GimbalMove)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -75,7 +75,7 @@ TEST(SitlTestGimbal, GimbalMove)
 
 TEST(SitlTestGimbal, GimbalAngles)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -127,7 +127,7 @@ TEST(SitlTestGimbal, GimbalAngles)
 
 TEST(SitlTestGimbal, GimbalTakeoffAndMove)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -243,7 +243,7 @@ void gimbal_pattern(std::shared_ptr<Gimbal> gimbal)
 
 TEST(SitlTestGimbal, GimbalROIOffboard)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);

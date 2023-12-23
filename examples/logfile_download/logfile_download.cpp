@@ -47,7 +47,7 @@ int main(int argc, char** argv)
         }
     }
 
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {

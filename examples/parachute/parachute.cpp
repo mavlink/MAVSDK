@@ -79,12 +79,11 @@ int main(int argc, char* argv[])
 
     const std::string connection_url = argv[1];
 
-    Mavsdk mavsdk;
-
     // We start with sysid 1 but adapt to the one of the autopilot once
     // we have discoverd it.
     uint8_t our_sysid = 1;
-    mavsdk.set_configuration(Mavsdk::Configuration{our_sysid, MAV_COMP_ID_PARACHUTE, false});
+
+    Mavsdk mavsdk{Mavsdk::Configuration{our_sysid, MAV_COMP_ID_PARACHUTE, false}};
 
     const ConnectionResult connection_result = mavsdk.add_any_connection(connection_url);
 

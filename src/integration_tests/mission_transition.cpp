@@ -15,7 +15,7 @@ using namespace mavsdk;
 
 TEST_F(SitlTest, MissionTakeoffTransitionAndLand_standard_vtol)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
     float mission_altitude_m = 40;
 
     {

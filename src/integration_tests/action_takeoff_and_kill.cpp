@@ -8,7 +8,7 @@ using namespace mavsdk;
 
 TEST_F(SitlTest, ActionTakeoffAndKill)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
     ASSERT_EQ(mavsdk.add_udp_connection(), ConnectionResult::Success);
 
     {

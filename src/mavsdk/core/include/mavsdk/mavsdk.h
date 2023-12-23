@@ -52,18 +52,6 @@ public:
     static constexpr double DEFAULT_TIMEOUT_S = 0.5;
 
     /**
-     * @brief Constructor.
-     */
-    Mavsdk();
-
-    /**
-     * @brief Destructor.
-     *
-     * Disconnects all connected vehicles and releases all resources.
-     */
-    ~Mavsdk();
-
-    /**
      * @brief Returns the version of MAVSDK.
      *
      * Note, you're not supposed to request the version too many times.
@@ -310,6 +298,31 @@ public:
     };
 
     /**
+     * @brief Default constructor without configuration, no longer recommended.
+     *
+     * @note This has been removed because MAVSDK used to identify itself as a
+     *       ground station by default which isn't always the safest choice.
+     *       For instance, when MAVSDK is used on a companion computer (set as
+     *       a ground station) it means that the appropriate failsafe doesn't
+     *       trigger.
+     */
+    Mavsdk() = delete;
+
+    /**
+     * @brief Constructor with configuration.
+     *
+     * @param configuration Configuration to use in MAVSDK instance.
+     */
+    Mavsdk(Configuration configuration);
+
+    /**
+     * @brief Destructor.
+     *
+     * Disconnects all connected vehicles and releases all resources.
+     */
+    ~Mavsdk();
+
+    /**
      * @brief Set `Configuration` of SDK.
      *
      * The default configuration is `Configuration::GroundStation`
@@ -366,6 +379,14 @@ public:
      * @param handle Handle received on subscription.
      */
     void unsubscribe_on_new_system(NewSystemHandle handle);
+
+    /**
+     * @brief Get server component with default type of Mavsdk instance.
+     *
+     * @return A valid shared pointer to a server component if it was successful, an empty pointer
+     * otherwise.
+     */
+    std::shared_ptr<ServerComponent> server_component(unsigned instance = 0);
 
     /**
      * @brief Get server component by a high level type.

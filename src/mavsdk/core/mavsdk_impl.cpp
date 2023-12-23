@@ -19,7 +19,9 @@ namespace mavsdk {
 
 template class CallbackList<>;
 
-MavsdkImpl::MavsdkImpl() : timeout_handler(time), call_every_handler(time)
+MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
+    timeout_handler(time),
+    call_every_handler(time)
 {
     LogInfo() << "MAVSDK version: " << mavsdk_version;
 
@@ -36,6 +38,8 @@ MavsdkImpl::MavsdkImpl() : timeout_handler(time), call_every_handler(time)
             _message_logging_on = true;
         }
     }
+
+    set_configuration(configuration);
 
     _work_thread = new std::thread(&MavsdkImpl::work_thread, this);
 
@@ -161,6 +165,22 @@ std::optional<std::shared_ptr<System>> MavsdkImpl::first_autopilot(double timeou
         fut.wait();
         unsubscribe_on_new_system(handle);
         return std::optional(fut.get());
+    }
+}
+
+std::shared_ptr<ServerComponent> MavsdkImpl::server_component(unsigned instance)
+{
+    auto component_type = _configuration.get_component_type();
+    switch (component_type) {
+        case Mavsdk::ComponentType::Autopilot:
+        case Mavsdk::ComponentType::GroundStation:
+        case Mavsdk::ComponentType::CompanionComputer:
+        case Mavsdk::ComponentType::Camera:
+        case Mavsdk::ComponentType::Custom:
+            return server_component_by_type(component_type, instance);
+        default:
+            LogErr() << "Unknown component type";
+            return {};
     }
 }
 

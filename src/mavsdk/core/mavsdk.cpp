@@ -4,9 +4,9 @@
 
 namespace mavsdk {
 
-Mavsdk::Mavsdk()
+Mavsdk::Mavsdk(Configuration configuration)
 {
-    _impl = std::make_shared<MavsdkImpl>();
+    _impl = std::make_shared<MavsdkImpl>(configuration);
 }
 
 Mavsdk::~Mavsdk() = default;
@@ -93,6 +93,11 @@ Mavsdk::NewSystemHandle Mavsdk::subscribe_on_new_system(const NewSystemCallback&
 void Mavsdk::unsubscribe_on_new_system(NewSystemHandle handle)
 {
     _impl->unsubscribe_on_new_system(handle);
+}
+
+std::shared_ptr<ServerComponent> Mavsdk::server_component(unsigned instance)
+{
+    return _impl->server_component(instance);
 }
 
 std::shared_ptr<ServerComponent>

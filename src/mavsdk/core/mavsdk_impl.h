@@ -45,7 +45,7 @@ public:
     /** @brief Default Component ID for Camera configuration type. */
     static constexpr int DEFAULT_COMPONENT_ID_CAMERA = MAV_COMP_ID_CAMERA;
 
-    MavsdkImpl();
+    MavsdkImpl(const Mavsdk::Configuration& configuration);
     ~MavsdkImpl();
     MavsdkImpl(const MavsdkImpl&) = delete;
     void operator=(const MavsdkImpl&) = delete;
@@ -99,6 +99,8 @@ public:
 
     void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
     void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
+
+    std::shared_ptr<ServerComponent> server_component(unsigned instance = 0);
 
     std::shared_ptr<ServerComponent>
     server_component_by_type(Mavsdk::ComponentType server_component_type, unsigned instance = 0);

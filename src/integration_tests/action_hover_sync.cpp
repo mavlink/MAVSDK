@@ -46,7 +46,7 @@ TEST_F(SitlTest, APMActionHoverSyncLower)
 
 void takeoff_and_hover_at_altitude(float altitude_m)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -123,7 +123,7 @@ void takeoff_and_hover_at_altitude(float altitude_m)
 
 void takeoff_and_hover_at_altitude_apm(float altitude_m)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ret, ConnectionResult::Success);

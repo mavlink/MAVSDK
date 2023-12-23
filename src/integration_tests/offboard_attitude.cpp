@@ -18,7 +18,7 @@ static void turn_yaw(const Offboard& offboard);
 
 TEST(SitlTestDisabled, OffboardAttitudeRate)
 {
-    Mavsdk mavsdk;
+    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_udp_connection();
     ASSERT_EQ(ConnectionResult::Success, ret);
