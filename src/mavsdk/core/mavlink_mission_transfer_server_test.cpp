@@ -83,7 +83,8 @@ static mavlink_message_t make_mission_count(unsigned count)
         target_address.system_id,
         target_address.component_id,
         count,
-        MAV_MISSION_TYPE_MISSION);
+        MAV_MISSION_TYPE_MISSION,
+        0);
     return message;
 }
 

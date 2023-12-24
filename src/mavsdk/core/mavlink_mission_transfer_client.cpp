@@ -275,7 +275,8 @@ void MavlinkMissionTransferClient::UploadWorkItem::send_count()
                 _target_system_id,
                 MAV_COMP_ID_AUTOPILOT1,
                 _items.size(),
-                _type);
+                _type,
+                0);
             return message;
         })) {
         _timeout_handler.remove(_cookie);
@@ -303,7 +304,8 @@ void MavlinkMissionTransferClient::UploadWorkItem::send_cancel_and_finish()
                 _target_system_id,
                 MAV_COMP_ID_AUTOPILOT1,
                 MAV_MISSION_OPERATION_CANCELLED,
-                _type);
+                _type,
+                0);
             return message;
         })) {
         callback_and_reset(Result::ConnectionError);
@@ -350,7 +352,8 @@ void MavlinkMissionTransferClient::UploadWorkItem::process_mission_request(
                     request_message.sysid,
                     request_message.compid,
                     MAV_MISSION_UNSUPPORTED,
-                    _type);
+                    _type,
+                    0);
                 return message;
             })) {
             _timeout_handler.remove(_cookie);
@@ -670,7 +673,8 @@ void MavlinkMissionTransferClient::DownloadWorkItem::send_ack_and_finish()
                 _target_system_id,
                 MAV_COMP_ID_AUTOPILOT1,
                 MAV_MISSION_ACCEPTED,
-                _type);
+                _type,
+                0);
             return message;
         })) {
         callback_and_reset(Result::ConnectionError);
@@ -693,7 +697,8 @@ void MavlinkMissionTransferClient::DownloadWorkItem::send_cancel_and_finish()
                 _target_system_id,
                 MAV_COMP_ID_AUTOPILOT1,
                 MAV_MISSION_OPERATION_CANCELLED,
-                _type);
+                _type,
+                0);
             return message;
         })) {
         callback_and_reset(Result::ConnectionError);
