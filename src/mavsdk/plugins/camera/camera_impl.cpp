@@ -1944,7 +1944,7 @@ void CameraImpl::format_storage_async(int32_t storage_id, Camera::ResultCallback
     MavlinkCommandSender::CommandLong cmd_format{};
 
     cmd_format.command = MAV_CMD_STORAGE_FORMAT;
-    cmd_format.params.maybe_param1 = storage_id; // storage ID
+    cmd_format.params.maybe_param1 = static_cast<float>(storage_id); // storage ID
     cmd_format.params.maybe_param2 = 1.0f; // format
     cmd_format.params.maybe_param3 = 1.0f; // clear
     cmd_format.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
