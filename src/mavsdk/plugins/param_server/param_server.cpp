@@ -57,6 +57,39 @@ ParamServer::AllParams ParamServer::retrieve_all_params() const
     return _impl->retrieve_all_params();
 }
 
+ParamServer::ChangedParamIntHandle
+ParamServer::subscribe_changed_param_int(const ChangedParamIntCallback& callback)
+{
+    return _impl->subscribe_changed_param_int(callback);
+}
+
+void ParamServer::unsubscribe_changed_param_int(ChangedParamIntHandle handle)
+{
+    _impl->unsubscribe_changed_param_int(handle);
+}
+
+ParamServer::ChangedParamFloatHandle
+ParamServer::subscribe_changed_param_float(const ChangedParamFloatCallback& callback)
+{
+    return _impl->subscribe_changed_param_float(callback);
+}
+
+void ParamServer::unsubscribe_changed_param_float(ChangedParamFloatHandle handle)
+{
+    _impl->unsubscribe_changed_param_float(handle);
+}
+
+ParamServer::ChangedParamCustomHandle
+ParamServer::subscribe_changed_param_custom(const ChangedParamCustomCallback& callback)
+{
+    return _impl->subscribe_changed_param_custom(callback);
+}
+
+void ParamServer::unsubscribe_changed_param_custom(ChangedParamCustomHandle handle)
+{
+    _impl->unsubscribe_changed_param_custom(handle);
+}
+
 bool operator==(const ParamServer::IntParam& lhs, const ParamServer::IntParam& rhs)
 {
     return (rhs.name == lhs.name) && (rhs.value == lhs.value);

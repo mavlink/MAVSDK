@@ -857,7 +857,7 @@ public:
 
     grpc::Status StartVideoStreaming(
         grpc::ServerContext* /* context */,
-        const rpc::camera::StartVideoStreamingRequest* /* request */,
+        const rpc::camera::StartVideoStreamingRequest* request,
         rpc::camera::StartVideoStreamingResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
@@ -869,7 +869,12 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _lazy_plugin.maybe_plugin()->start_video_streaming();
+        if (request == nullptr) {
+            LogWarn() << "StartVideoStreaming sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->start_video_streaming(request->stream_id());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -880,7 +885,7 @@ public:
 
     grpc::Status StopVideoStreaming(
         grpc::ServerContext* /* context */,
-        const rpc::camera::StopVideoStreamingRequest* /* request */,
+        const rpc::camera::StopVideoStreamingRequest* request,
         rpc::camera::StopVideoStreamingResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
@@ -892,7 +897,12 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _lazy_plugin.maybe_plugin()->stop_video_streaming();
+        if (request == nullptr) {
+            LogWarn() << "StopVideoStreaming sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->stop_video_streaming(request->stream_id());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -1319,7 +1329,7 @@ public:
 
     grpc::Status FormatStorage(
         grpc::ServerContext* /* context */,
-        const rpc::camera::FormatStorageRequest* /* request */,
+        const rpc::camera::FormatStorageRequest* request,
         rpc::camera::FormatStorageResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
@@ -1331,7 +1341,12 @@ public:
             return grpc::Status::OK;
         }
 
-        auto result = _lazy_plugin.maybe_plugin()->format_storage();
+        if (request == nullptr) {
+            LogWarn() << "FormatStorage sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->format_storage(request->storage_id());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -1360,6 +1375,29 @@ public:
         }
 
         auto result = _lazy_plugin.maybe_plugin()->select_camera(request->camera_id());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status ResetSettings(
+        grpc::ServerContext* /* context */,
+        const rpc::camera::ResetSettingsRequest* /* request */,
+        rpc::camera::ResetSettingsResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Camera::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->reset_settings();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

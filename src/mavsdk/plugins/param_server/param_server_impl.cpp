@@ -1,6 +1,11 @@
 #include "param_server_impl.h"
+#include "callback_list.tpp"
 
 namespace mavsdk {
+
+template class CallbackList<ParamServer::IntParam>;
+template class CallbackList<ParamServer::FloatParam>;
+template class CallbackList<ParamServer::CustomParam>;
 
 ParamServerImpl::ParamServerImpl(std::shared_ptr<ServerComponent> server_component) :
     ServerPluginImplBase(server_component)
@@ -16,7 +21,10 @@ ParamServerImpl::~ParamServerImpl()
 
 void ParamServerImpl::init() {}
 
-void ParamServerImpl::deinit() {}
+void ParamServerImpl::deinit()
+{
+    _server_component_impl->mavlink_parameter_server().unsubscribe_all_params_changed(this);
+}
 
 std::pair<ParamServer::Result, int32_t> ParamServerImpl::retrieve_param_int(std::string name) const
 {
@@ -36,6 +44,12 @@ ParamServer::Result ParamServerImpl::provide_param_int(std::string name, int32_t
         return ParamServer::Result::ParamNameTooLong;
     }
     _server_component_impl->mavlink_parameter_server().provide_server_param_int(name, value);
+    _server_component_impl->mavlink_parameter_server().subscribe_param_int_changed(
+        name,
+        [name, this](int32_t new_value) {
+            _changed_param_int_callbacks({name, new_value});
+        },
+        this);
     return ParamServer::Result::Success;
 }
 
@@ -57,6 +71,12 @@ ParamServer::Result ParamServerImpl::provide_param_float(std::string name, float
         return ParamServer::Result::ParamNameTooLong;
     }
     _server_component_impl->mavlink_parameter_server().provide_server_param_float(name, value);
+    _server_component_impl->mavlink_parameter_server().subscribe_param_float_changed(
+        name,
+        [name, this](float new_value) {
+            _changed_param_float_callbacks({name, new_value});
+        },
+        this);
     return ParamServer::Result::Success;
 }
 
@@ -80,6 +100,12 @@ ParamServerImpl::provide_param_custom(std::string name, const std::string& value
         return ParamServer::Result::ParamNameTooLong;
     }
     _server_component_impl->mavlink_parameter_server().provide_server_param_custom(name, value);
+    _server_component_impl->mavlink_parameter_server().subscribe_param_custom_changed(
+        name,
+        [name, this](std::string new_value) {
+            _changed_param_custom_callbacks({name, new_value});
+        },
+        this);
     return ParamServer::Result::Success;
 }
 
@@ -104,6 +130,39 @@ ParamServer::AllParams ParamServerImpl::retrieve_all_params() const
     }
 
     return res;
+}
+
+ParamServer::ChangedParamIntHandle
+ParamServerImpl::subscribe_changed_param_int(const ParamServer::ChangedParamIntCallback& callback)
+{
+    return _changed_param_int_callbacks.subscribe(callback);
+}
+
+void ParamServerImpl::unsubscribe_changed_param_int(ParamServer::ChangedParamIntHandle handle)
+{
+    _changed_param_int_callbacks.unsubscribe(handle);
+}
+
+ParamServer::ChangedParamFloatHandle ParamServerImpl::subscribe_changed_param_float(
+    const ParamServer::ChangedParamFloatCallback& callback)
+{
+    return _changed_param_float_callbacks.subscribe(callback);
+}
+
+void ParamServerImpl::unsubscribe_changed_param_float(ParamServer::ChangedParamFloatHandle handle)
+{
+    _changed_param_float_callbacks.unsubscribe(handle);
+}
+
+ParamServer::ChangedParamCustomHandle ParamServerImpl::subscribe_changed_param_custom(
+    const ParamServer::ChangedParamCustomCallback& callback)
+{
+    return _changed_param_custom_callbacks.subscribe(callback);
+}
+
+void ParamServerImpl::unsubscribe_changed_param_custom(ParamServer::ChangedParamCustomHandle handle)
+{
+    _changed_param_custom_callbacks.unsubscribe(handle);
 }
 
 ParamServer::Result

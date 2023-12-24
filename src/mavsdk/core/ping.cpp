@@ -60,7 +60,7 @@ void Ping::process_ping(const mavlink_message_t& message)
     } else {
         // Answer from ping request.
         if (ping.seq != _ping_sequence) {
-            LogWarn() << "Ignoring unknown ping sequence";
+            // Ignoring unknown ping sequence.
             return;
         }
 

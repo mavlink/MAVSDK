@@ -46,9 +46,9 @@ public:
     ~CameraServer() override;
 
     /**
-     * @brief Possible results when taking a photo.
+     * @brief Possible feedback results for camera respond command.
      */
-    enum class TakePhotoFeedback {
+    enum class CameraFeedback {
         Unknown, /**< @brief Unknown. */
         Ok, /**< @brief Ok. */
         Busy, /**< @brief Busy. */
@@ -56,12 +56,28 @@ public:
     };
 
     /**
-     * @brief Stream operator to print information about a `CameraServer::TakePhotoFeedback`.
+     * @brief Stream operator to print information about a `CameraServer::CameraFeedback`.
      *
      * @return A reference to the stream.
      */
     friend std::ostream&
-    operator<<(std::ostream& str, CameraServer::TakePhotoFeedback const& take_photo_feedback);
+    operator<<(std::ostream& str, CameraServer::CameraFeedback const& camera_feedback);
+
+    /**
+     * @brief Camera mode type.
+     */
+    enum class Mode {
+        Unknown, /**< @brief Unknown mode. */
+        Photo, /**< @brief Photo mode. */
+        Video, /**< @brief Video mode. */
+    };
+
+    /**
+     * @brief Stream operator to print information about a `CameraServer::Mode`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, CameraServer::Mode const& mode);
 
     /**
      * @brief Type to represent a camera information.
@@ -98,6 +114,30 @@ public:
      */
     friend std::ostream&
     operator<<(std::ostream& str, CameraServer::Information const& information);
+
+    /**
+     * @brief Type to represent video streaming settings
+     */
+    struct VideoStreaming {
+        bool has_rtsp_server{}; /**< @brief True if the capture was successful */
+        std::string rtsp_uri{}; /**< @brief RTSP URI (e.g. rtsp://192.168.1.42:8554/live) */
+    };
+
+    /**
+     * @brief Equal operator to compare two `CameraServer::VideoStreaming` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const CameraServer::VideoStreaming& lhs, const CameraServer::VideoStreaming& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `CameraServer::VideoStreaming`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, CameraServer::VideoStreaming const& video_streaming);
 
     /**
      * @brief Position type in global coordinates.
@@ -207,6 +247,139 @@ public:
     friend std::ostream& operator<<(std::ostream& str, CameraServer::Result const& result);
 
     /**
+     * @brief Information about the camera storage.
+     */
+    struct StorageInformation {
+        /**
+         * @brief Storage status type.
+         */
+        enum class StorageStatus {
+            NotAvailable, /**< @brief Storage not available. */
+            Unformatted, /**< @brief Storage is not formatted (i.e. has no recognized file system).
+                          */
+            Formatted, /**< @brief Storage is formatted (i.e. has recognized a file system). */
+            NotSupported, /**< @brief Storage status is not supported. */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `CameraServer::StorageStatus`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream& operator<<(
+            std::ostream& str,
+            CameraServer::StorageInformation::StorageStatus const& storage_status);
+
+        /**
+         * @brief Storage type.
+         */
+        enum class StorageType {
+            Unknown, /**< @brief Storage type unknown. */
+            UsbStick, /**< @brief Storage type USB stick. */
+            Sd, /**< @brief Storage type SD card. */
+            Microsd, /**< @brief Storage type MicroSD card. */
+            Hd, /**< @brief Storage type HD mass storage. */
+            Other, /**< @brief Storage type other, not listed. */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `CameraServer::StorageType`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream& operator<<(
+            std::ostream& str, CameraServer::StorageInformation::StorageType const& storage_type);
+
+        float used_storage_mib{}; /**< @brief Used storage (in MiB) */
+        float available_storage_mib{}; /**< @brief Available storage (in MiB) */
+        float total_storage_mib{}; /**< @brief Total storage (in MiB) */
+        StorageStatus storage_status{}; /**< @brief Storage status */
+        uint32_t storage_id{}; /**< @brief Storage ID starting at 1 */
+        StorageType storage_type{}; /**< @brief Storage type */
+        float read_speed_mib_s{}; /**< @brief Read speed [MiB/s] */
+        float write_speed_mib_s{}; /**< @brief Write speed [MiB/s] */
+    };
+
+    /**
+     * @brief Equal operator to compare two `CameraServer::StorageInformation` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(
+        const CameraServer::StorageInformation& lhs, const CameraServer::StorageInformation& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `CameraServer::StorageInformation`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, CameraServer::StorageInformation const& storage_information);
+
+    /**
+     * @brief
+     */
+    struct CaptureStatus {
+        /**
+         * @brief
+         */
+        enum class ImageStatus {
+            Idle, /**< @brief idle. */
+            CaptureInProgress, /**< @brief capture in progress. */
+            IntervalIdle, /**< @brief interval set but idle. */
+            IntervalInProgress, /**< @brief interval set and capture in progress). */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `CameraServer::ImageStatus`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream&
+        operator<<(std::ostream& str, CameraServer::CaptureStatus::ImageStatus const& image_status);
+
+        /**
+         * @brief
+         */
+        enum class VideoStatus {
+            Idle, /**< @brief idle. */
+            CaptureInProgress, /**< @brief capture in progress. */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `CameraServer::VideoStatus`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream&
+        operator<<(std::ostream& str, CameraServer::CaptureStatus::VideoStatus const& video_status);
+
+        float image_interval_s{}; /**< @brief Image capture interval (in s) */
+        float recording_time_s{}; /**< @brief Elapsed time since recording started (in s) */
+        float available_capacity_mib{}; /**< @brief Available storage capacity. (in MiB) */
+        ImageStatus image_status{}; /**< @brief Current status of image capturing */
+        VideoStatus video_status{}; /**< @brief Current status of video capturing */
+        int32_t image_count{}; /**< @brief Total number of images captured ('forever', or until
+                                  reset using MAV_CMD_STORAGE_FORMAT) */
+    };
+
+    /**
+     * @brief Equal operator to compare two `CameraServer::CaptureStatus` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const CameraServer::CaptureStatus& lhs, const CameraServer::CaptureStatus& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `CameraServer::CaptureStatus`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, CameraServer::CaptureStatus const& capture_status);
+
+    /**
      * @brief Callback type for asynchronous CameraServer calls.
      */
     using ResultCallback = std::function<void(Result)>;
@@ -220,6 +393,15 @@ public:
      * @return Result of request.
      */
     Result set_information(Information information) const;
+
+    /**
+     * @brief Sets video streaming settings.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result set_video_streaming(VideoStreaming video_streaming) const;
 
     /**
      * @brief Sets image capture in progress status flags. This should be set to true when the
@@ -259,8 +441,283 @@ public:
      *
      * @return Result of request.
      */
-    Result
-    respond_take_photo(TakePhotoFeedback take_photo_feedback, CaptureInfo capture_info) const;
+    Result respond_take_photo(CameraFeedback take_photo_feedback, CaptureInfo capture_info) const;
+
+    /**
+     * @brief Callback type for subscribe_start_video.
+     */
+    using StartVideoCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_start_video.
+     */
+    using StartVideoHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to start video requests. Each request received should respond to using
+     * RespondStartVideo
+     */
+    StartVideoHandle subscribe_start_video(const StartVideoCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_start_video
+     */
+    void unsubscribe_start_video(StartVideoHandle handle);
+
+    /**
+     * @brief Subscribe to stop video requests. Each request received should respond using
+     * StopVideoResponse
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_start_video(CameraFeedback start_video_feedback) const;
+
+    /**
+     * @brief Callback type for subscribe_stop_video.
+     */
+    using StopVideoCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_stop_video.
+     */
+    using StopVideoHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to stop video requests. Each request received should response to using
+     * RespondStopVideo
+     */
+    StopVideoHandle subscribe_stop_video(const StopVideoCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_stop_video
+     */
+    void unsubscribe_stop_video(StopVideoHandle handle);
+
+    /**
+     * @brief Respond to stop video request from SubscribeStopVideo.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_stop_video(CameraFeedback stop_video_feedback) const;
+
+    /**
+     * @brief Callback type for subscribe_start_video_streaming.
+     */
+    using StartVideoStreamingCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_start_video_streaming.
+     */
+    using StartVideoStreamingHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to start video streaming requests. Each request received should response to
+     * using RespondStartVideoStreaming
+     */
+    StartVideoStreamingHandle
+    subscribe_start_video_streaming(const StartVideoStreamingCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_start_video_streaming
+     */
+    void unsubscribe_start_video_streaming(StartVideoStreamingHandle handle);
+
+    /**
+     * @brief Respond to start video streaming from SubscribeStartVideoStreaming.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_start_video_streaming(CameraFeedback start_video_streaming_feedback) const;
+
+    /**
+     * @brief Callback type for subscribe_stop_video_streaming.
+     */
+    using StopVideoStreamingCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_stop_video_streaming.
+     */
+    using StopVideoStreamingHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to stop video streaming requests. Each request received should response to
+     * using RespondStopVideoStreaming
+     */
+    StopVideoStreamingHandle
+    subscribe_stop_video_streaming(const StopVideoStreamingCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_stop_video_streaming
+     */
+    void unsubscribe_stop_video_streaming(StopVideoStreamingHandle handle);
+
+    /**
+     * @brief Respond to stop video streaming from SubscribeStopVideoStreaming.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_stop_video_streaming(CameraFeedback stop_video_streaming_feedback) const;
+
+    /**
+     * @brief Callback type for subscribe_set_mode.
+     */
+    using SetModeCallback = std::function<void(Mode)>;
+
+    /**
+     * @brief Handle type for subscribe_set_mode.
+     */
+    using SetModeHandle = Handle<Mode>;
+
+    /**
+     * @brief Subscribe to set camera mode requests. Each request received should response to using
+     * RespondSetMode
+     */
+    SetModeHandle subscribe_set_mode(const SetModeCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_set_mode
+     */
+    void unsubscribe_set_mode(SetModeHandle handle);
+
+    /**
+     * @brief Respond to set camera mode from SubscribeSetMode.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_set_mode(CameraFeedback set_mode_feedback) const;
+
+    /**
+     * @brief Callback type for subscribe_storage_information.
+     */
+    using StorageInformationCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_storage_information.
+     */
+    using StorageInformationHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to camera storage information requests. Each request received should
+     * response to using RespondStorageInformation
+     */
+    StorageInformationHandle
+    subscribe_storage_information(const StorageInformationCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_storage_information
+     */
+    void unsubscribe_storage_information(StorageInformationHandle handle);
+
+    /**
+     * @brief Respond to camera storage information from SubscribeStorageInformation.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_storage_information(
+        CameraFeedback storage_information_feedback, StorageInformation storage_information) const;
+
+    /**
+     * @brief Callback type for subscribe_capture_status.
+     */
+    using CaptureStatusCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_capture_status.
+     */
+    using CaptureStatusHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to camera capture status requests. Each request received should response to
+     * using RespondCaptureStatus
+     */
+    CaptureStatusHandle subscribe_capture_status(const CaptureStatusCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_capture_status
+     */
+    void unsubscribe_capture_status(CaptureStatusHandle handle);
+
+    /**
+     * @brief Respond to camera capture status from SubscribeCaptureStatus.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_capture_status(
+        CameraFeedback capture_status_feedback, CaptureStatus capture_status) const;
+
+    /**
+     * @brief Callback type for subscribe_format_storage.
+     */
+    using FormatStorageCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_format_storage.
+     */
+    using FormatStorageHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to format storage requests. Each request received should response to using
+     * RespondFormatStorage
+     */
+    FormatStorageHandle subscribe_format_storage(const FormatStorageCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_format_storage
+     */
+    void unsubscribe_format_storage(FormatStorageHandle handle);
+
+    /**
+     * @brief Respond to format storage from SubscribeFormatStorage.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_format_storage(CameraFeedback format_storage_feedback) const;
+
+    /**
+     * @brief Callback type for subscribe_reset_settings.
+     */
+    using ResetSettingsCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_reset_settings.
+     */
+    using ResetSettingsHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to reset settings requests. Each request received should response to using
+     * RespondResetSettings
+     */
+    ResetSettingsHandle subscribe_reset_settings(const ResetSettingsCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_reset_settings
+     */
+    void unsubscribe_reset_settings(ResetSettingsHandle handle);
+
+    /**
+     * @brief Respond to reset settings from SubscribeResetSettings.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_reset_settings(CameraFeedback reset_settings_feedback) const;
 
     /**
      * @brief Copy constructor.

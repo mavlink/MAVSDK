@@ -83,7 +83,8 @@ mavlink_message_t make_mission_count(unsigned count)
         target_address.system_id,
         target_address.component_id,
         count,
-        MAV_MISSION_TYPE_MISSION);
+        MAV_MISSION_TYPE_MISSION,
+        0);
     return message;
 }
 
@@ -419,7 +420,8 @@ mavlink_message_t make_mission_ack(uint8_t type, uint8_t result)
         target_address.system_id,
         target_address.component_id,
         result,
-        type);
+        type,
+        0);
     return message;
 }
 
@@ -1695,7 +1697,7 @@ mavlink_message_t make_mission_current(uint16_t seq)
 {
     mavlink_message_t message;
     mavlink_msg_mission_current_pack(
-        own_address.system_id, own_address.component_id, &message, seq, 0, 0, 0);
+        own_address.system_id, own_address.component_id, &message, seq, 0, 0, 0, 0, 0, 0);
     return message;
 }
 

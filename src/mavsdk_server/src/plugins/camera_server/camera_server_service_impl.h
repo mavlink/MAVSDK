@@ -44,41 +44,71 @@ public:
         response->set_allocated_camera_server_result(rpc_camera_server_result);
     }
 
-    static rpc::camera_server::TakePhotoFeedback translateToRpcTakePhotoFeedback(
-        const mavsdk::CameraServer::TakePhotoFeedback& take_photo_feedback)
+    static rpc::camera_server::CameraFeedback
+    translateToRpcCameraFeedback(const mavsdk::CameraServer::CameraFeedback& camera_feedback)
     {
-        switch (take_photo_feedback) {
+        switch (camera_feedback) {
             default:
-                LogErr() << "Unknown take_photo_feedback enum value: "
-                         << static_cast<int>(take_photo_feedback);
+                LogErr() << "Unknown camera_feedback enum value: "
+                         << static_cast<int>(camera_feedback);
             // FALLTHROUGH
-            case mavsdk::CameraServer::TakePhotoFeedback::Unknown:
-                return rpc::camera_server::TAKE_PHOTO_FEEDBACK_UNKNOWN;
-            case mavsdk::CameraServer::TakePhotoFeedback::Ok:
-                return rpc::camera_server::TAKE_PHOTO_FEEDBACK_OK;
-            case mavsdk::CameraServer::TakePhotoFeedback::Busy:
-                return rpc::camera_server::TAKE_PHOTO_FEEDBACK_BUSY;
-            case mavsdk::CameraServer::TakePhotoFeedback::Failed:
-                return rpc::camera_server::TAKE_PHOTO_FEEDBACK_FAILED;
+            case mavsdk::CameraServer::CameraFeedback::Unknown:
+                return rpc::camera_server::CAMERA_FEEDBACK_UNKNOWN;
+            case mavsdk::CameraServer::CameraFeedback::Ok:
+                return rpc::camera_server::CAMERA_FEEDBACK_OK;
+            case mavsdk::CameraServer::CameraFeedback::Busy:
+                return rpc::camera_server::CAMERA_FEEDBACK_BUSY;
+            case mavsdk::CameraServer::CameraFeedback::Failed:
+                return rpc::camera_server::CAMERA_FEEDBACK_FAILED;
         }
     }
 
-    static mavsdk::CameraServer::TakePhotoFeedback translateFromRpcTakePhotoFeedback(
-        const rpc::camera_server::TakePhotoFeedback take_photo_feedback)
+    static mavsdk::CameraServer::CameraFeedback
+    translateFromRpcCameraFeedback(const rpc::camera_server::CameraFeedback camera_feedback)
     {
-        switch (take_photo_feedback) {
+        switch (camera_feedback) {
             default:
-                LogErr() << "Unknown take_photo_feedback enum value: "
-                         << static_cast<int>(take_photo_feedback);
+                LogErr() << "Unknown camera_feedback enum value: "
+                         << static_cast<int>(camera_feedback);
             // FALLTHROUGH
-            case rpc::camera_server::TAKE_PHOTO_FEEDBACK_UNKNOWN:
-                return mavsdk::CameraServer::TakePhotoFeedback::Unknown;
-            case rpc::camera_server::TAKE_PHOTO_FEEDBACK_OK:
-                return mavsdk::CameraServer::TakePhotoFeedback::Ok;
-            case rpc::camera_server::TAKE_PHOTO_FEEDBACK_BUSY:
-                return mavsdk::CameraServer::TakePhotoFeedback::Busy;
-            case rpc::camera_server::TAKE_PHOTO_FEEDBACK_FAILED:
-                return mavsdk::CameraServer::TakePhotoFeedback::Failed;
+            case rpc::camera_server::CAMERA_FEEDBACK_UNKNOWN:
+                return mavsdk::CameraServer::CameraFeedback::Unknown;
+            case rpc::camera_server::CAMERA_FEEDBACK_OK:
+                return mavsdk::CameraServer::CameraFeedback::Ok;
+            case rpc::camera_server::CAMERA_FEEDBACK_BUSY:
+                return mavsdk::CameraServer::CameraFeedback::Busy;
+            case rpc::camera_server::CAMERA_FEEDBACK_FAILED:
+                return mavsdk::CameraServer::CameraFeedback::Failed;
+        }
+    }
+
+    static rpc::camera_server::Mode translateToRpcMode(const mavsdk::CameraServer::Mode& mode)
+    {
+        switch (mode) {
+            default:
+                LogErr() << "Unknown mode enum value: " << static_cast<int>(mode);
+            // FALLTHROUGH
+            case mavsdk::CameraServer::Mode::Unknown:
+                return rpc::camera_server::MODE_UNKNOWN;
+            case mavsdk::CameraServer::Mode::Photo:
+                return rpc::camera_server::MODE_PHOTO;
+            case mavsdk::CameraServer::Mode::Video:
+                return rpc::camera_server::MODE_VIDEO;
+        }
+    }
+
+    static mavsdk::CameraServer::Mode translateFromRpcMode(const rpc::camera_server::Mode mode)
+    {
+        switch (mode) {
+            default:
+                LogErr() << "Unknown mode enum value: " << static_cast<int>(mode);
+            // FALLTHROUGH
+            case rpc::camera_server::MODE_UNKNOWN:
+                return mavsdk::CameraServer::Mode::Unknown;
+            case rpc::camera_server::MODE_PHOTO:
+                return mavsdk::CameraServer::Mode::Photo;
+            case rpc::camera_server::MODE_VIDEO:
+                return mavsdk::CameraServer::Mode::Video;
         }
     }
 
@@ -138,6 +168,30 @@ public:
         obj.definition_file_version = information.definition_file_version();
 
         obj.definition_file_uri = information.definition_file_uri();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::camera_server::VideoStreaming>
+    translateToRpcVideoStreaming(const mavsdk::CameraServer::VideoStreaming& video_streaming)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera_server::VideoStreaming>();
+
+        rpc_obj->set_has_rtsp_server(video_streaming.has_rtsp_server);
+
+        rpc_obj->set_rtsp_uri(video_streaming.rtsp_uri);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::CameraServer::VideoStreaming
+    translateFromRpcVideoStreaming(const rpc::camera_server::VideoStreaming& video_streaming)
+    {
+        mavsdk::CameraServer::VideoStreaming obj;
+
+        obj.has_rtsp_server = video_streaming.has_rtsp_server();
+
+        obj.rtsp_uri = video_streaming.rtsp_uri();
 
         return obj;
     }
@@ -303,6 +357,248 @@ public:
         }
     }
 
+    static rpc::camera_server::StorageInformation::StorageStatus translateToRpcStorageStatus(
+        const mavsdk::CameraServer::StorageInformation::StorageStatus& storage_status)
+    {
+        switch (storage_status) {
+            default:
+                LogErr() << "Unknown storage_status enum value: "
+                         << static_cast<int>(storage_status);
+            // FALLTHROUGH
+            case mavsdk::CameraServer::StorageInformation::StorageStatus::NotAvailable:
+                return rpc::camera_server::
+                    StorageInformation_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE;
+            case mavsdk::CameraServer::StorageInformation::StorageStatus::Unformatted:
+                return rpc::camera_server::
+                    StorageInformation_StorageStatus_STORAGE_STATUS_UNFORMATTED;
+            case mavsdk::CameraServer::StorageInformation::StorageStatus::Formatted:
+                return rpc::camera_server::
+                    StorageInformation_StorageStatus_STORAGE_STATUS_FORMATTED;
+            case mavsdk::CameraServer::StorageInformation::StorageStatus::NotSupported:
+                return rpc::camera_server::
+                    StorageInformation_StorageStatus_STORAGE_STATUS_NOT_SUPPORTED;
+        }
+    }
+
+    static mavsdk::CameraServer::StorageInformation::StorageStatus translateFromRpcStorageStatus(
+        const rpc::camera_server::StorageInformation::StorageStatus storage_status)
+    {
+        switch (storage_status) {
+            default:
+                LogErr() << "Unknown storage_status enum value: "
+                         << static_cast<int>(storage_status);
+            // FALLTHROUGH
+            case rpc::camera_server::StorageInformation_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE:
+                return mavsdk::CameraServer::StorageInformation::StorageStatus::NotAvailable;
+            case rpc::camera_server::StorageInformation_StorageStatus_STORAGE_STATUS_UNFORMATTED:
+                return mavsdk::CameraServer::StorageInformation::StorageStatus::Unformatted;
+            case rpc::camera_server::StorageInformation_StorageStatus_STORAGE_STATUS_FORMATTED:
+                return mavsdk::CameraServer::StorageInformation::StorageStatus::Formatted;
+            case rpc::camera_server::StorageInformation_StorageStatus_STORAGE_STATUS_NOT_SUPPORTED:
+                return mavsdk::CameraServer::StorageInformation::StorageStatus::NotSupported;
+        }
+    }
+
+    static rpc::camera_server::StorageInformation::StorageType translateToRpcStorageType(
+        const mavsdk::CameraServer::StorageInformation::StorageType& storage_type)
+    {
+        switch (storage_type) {
+            default:
+                LogErr() << "Unknown storage_type enum value: " << static_cast<int>(storage_type);
+            // FALLTHROUGH
+            case mavsdk::CameraServer::StorageInformation::StorageType::Unknown:
+                return rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_UNKNOWN;
+            case mavsdk::CameraServer::StorageInformation::StorageType::UsbStick:
+                return rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_USB_STICK;
+            case mavsdk::CameraServer::StorageInformation::StorageType::Sd:
+                return rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_SD;
+            case mavsdk::CameraServer::StorageInformation::StorageType::Microsd:
+                return rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_MICROSD;
+            case mavsdk::CameraServer::StorageInformation::StorageType::Hd:
+                return rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_HD;
+            case mavsdk::CameraServer::StorageInformation::StorageType::Other:
+                return rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_OTHER;
+        }
+    }
+
+    static mavsdk::CameraServer::StorageInformation::StorageType translateFromRpcStorageType(
+        const rpc::camera_server::StorageInformation::StorageType storage_type)
+    {
+        switch (storage_type) {
+            default:
+                LogErr() << "Unknown storage_type enum value: " << static_cast<int>(storage_type);
+            // FALLTHROUGH
+            case rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_UNKNOWN:
+                return mavsdk::CameraServer::StorageInformation::StorageType::Unknown;
+            case rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_USB_STICK:
+                return mavsdk::CameraServer::StorageInformation::StorageType::UsbStick;
+            case rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_SD:
+                return mavsdk::CameraServer::StorageInformation::StorageType::Sd;
+            case rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_MICROSD:
+                return mavsdk::CameraServer::StorageInformation::StorageType::Microsd;
+            case rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_HD:
+                return mavsdk::CameraServer::StorageInformation::StorageType::Hd;
+            case rpc::camera_server::StorageInformation_StorageType_STORAGE_TYPE_OTHER:
+                return mavsdk::CameraServer::StorageInformation::StorageType::Other;
+        }
+    }
+
+    static std::unique_ptr<rpc::camera_server::StorageInformation> translateToRpcStorageInformation(
+        const mavsdk::CameraServer::StorageInformation& storage_information)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera_server::StorageInformation>();
+
+        rpc_obj->set_used_storage_mib(storage_information.used_storage_mib);
+
+        rpc_obj->set_available_storage_mib(storage_information.available_storage_mib);
+
+        rpc_obj->set_total_storage_mib(storage_information.total_storage_mib);
+
+        rpc_obj->set_storage_status(
+            translateToRpcStorageStatus(storage_information.storage_status));
+
+        rpc_obj->set_storage_id(storage_information.storage_id);
+
+        rpc_obj->set_storage_type(translateToRpcStorageType(storage_information.storage_type));
+
+        rpc_obj->set_read_speed_mib_s(storage_information.read_speed_mib_s);
+
+        rpc_obj->set_write_speed_mib_s(storage_information.write_speed_mib_s);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::CameraServer::StorageInformation translateFromRpcStorageInformation(
+        const rpc::camera_server::StorageInformation& storage_information)
+    {
+        mavsdk::CameraServer::StorageInformation obj;
+
+        obj.used_storage_mib = storage_information.used_storage_mib();
+
+        obj.available_storage_mib = storage_information.available_storage_mib();
+
+        obj.total_storage_mib = storage_information.total_storage_mib();
+
+        obj.storage_status = translateFromRpcStorageStatus(storage_information.storage_status());
+
+        obj.storage_id = storage_information.storage_id();
+
+        obj.storage_type = translateFromRpcStorageType(storage_information.storage_type());
+
+        obj.read_speed_mib_s = storage_information.read_speed_mib_s();
+
+        obj.write_speed_mib_s = storage_information.write_speed_mib_s();
+
+        return obj;
+    }
+
+    static rpc::camera_server::CaptureStatus::ImageStatus
+    translateToRpcImageStatus(const mavsdk::CameraServer::CaptureStatus::ImageStatus& image_status)
+    {
+        switch (image_status) {
+            default:
+                LogErr() << "Unknown image_status enum value: " << static_cast<int>(image_status);
+            // FALLTHROUGH
+            case mavsdk::CameraServer::CaptureStatus::ImageStatus::Idle:
+                return rpc::camera_server::CaptureStatus_ImageStatus_IMAGE_STATUS_IDLE;
+            case mavsdk::CameraServer::CaptureStatus::ImageStatus::CaptureInProgress:
+                return rpc::camera_server::
+                    CaptureStatus_ImageStatus_IMAGE_STATUS_CAPTURE_IN_PROGRESS;
+            case mavsdk::CameraServer::CaptureStatus::ImageStatus::IntervalIdle:
+                return rpc::camera_server::CaptureStatus_ImageStatus_IMAGE_STATUS_INTERVAL_IDLE;
+            case mavsdk::CameraServer::CaptureStatus::ImageStatus::IntervalInProgress:
+                return rpc::camera_server::
+                    CaptureStatus_ImageStatus_IMAGE_STATUS_INTERVAL_IN_PROGRESS;
+        }
+    }
+
+    static mavsdk::CameraServer::CaptureStatus::ImageStatus
+    translateFromRpcImageStatus(const rpc::camera_server::CaptureStatus::ImageStatus image_status)
+    {
+        switch (image_status) {
+            default:
+                LogErr() << "Unknown image_status enum value: " << static_cast<int>(image_status);
+            // FALLTHROUGH
+            case rpc::camera_server::CaptureStatus_ImageStatus_IMAGE_STATUS_IDLE:
+                return mavsdk::CameraServer::CaptureStatus::ImageStatus::Idle;
+            case rpc::camera_server::CaptureStatus_ImageStatus_IMAGE_STATUS_CAPTURE_IN_PROGRESS:
+                return mavsdk::CameraServer::CaptureStatus::ImageStatus::CaptureInProgress;
+            case rpc::camera_server::CaptureStatus_ImageStatus_IMAGE_STATUS_INTERVAL_IDLE:
+                return mavsdk::CameraServer::CaptureStatus::ImageStatus::IntervalIdle;
+            case rpc::camera_server::CaptureStatus_ImageStatus_IMAGE_STATUS_INTERVAL_IN_PROGRESS:
+                return mavsdk::CameraServer::CaptureStatus::ImageStatus::IntervalInProgress;
+        }
+    }
+
+    static rpc::camera_server::CaptureStatus::VideoStatus
+    translateToRpcVideoStatus(const mavsdk::CameraServer::CaptureStatus::VideoStatus& video_status)
+    {
+        switch (video_status) {
+            default:
+                LogErr() << "Unknown video_status enum value: " << static_cast<int>(video_status);
+            // FALLTHROUGH
+            case mavsdk::CameraServer::CaptureStatus::VideoStatus::Idle:
+                return rpc::camera_server::CaptureStatus_VideoStatus_VIDEO_STATUS_IDLE;
+            case mavsdk::CameraServer::CaptureStatus::VideoStatus::CaptureInProgress:
+                return rpc::camera_server::
+                    CaptureStatus_VideoStatus_VIDEO_STATUS_CAPTURE_IN_PROGRESS;
+        }
+    }
+
+    static mavsdk::CameraServer::CaptureStatus::VideoStatus
+    translateFromRpcVideoStatus(const rpc::camera_server::CaptureStatus::VideoStatus video_status)
+    {
+        switch (video_status) {
+            default:
+                LogErr() << "Unknown video_status enum value: " << static_cast<int>(video_status);
+            // FALLTHROUGH
+            case rpc::camera_server::CaptureStatus_VideoStatus_VIDEO_STATUS_IDLE:
+                return mavsdk::CameraServer::CaptureStatus::VideoStatus::Idle;
+            case rpc::camera_server::CaptureStatus_VideoStatus_VIDEO_STATUS_CAPTURE_IN_PROGRESS:
+                return mavsdk::CameraServer::CaptureStatus::VideoStatus::CaptureInProgress;
+        }
+    }
+
+    static std::unique_ptr<rpc::camera_server::CaptureStatus>
+    translateToRpcCaptureStatus(const mavsdk::CameraServer::CaptureStatus& capture_status)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera_server::CaptureStatus>();
+
+        rpc_obj->set_image_interval_s(capture_status.image_interval_s);
+
+        rpc_obj->set_recording_time_s(capture_status.recording_time_s);
+
+        rpc_obj->set_available_capacity_mib(capture_status.available_capacity_mib);
+
+        rpc_obj->set_image_status(translateToRpcImageStatus(capture_status.image_status));
+
+        rpc_obj->set_video_status(translateToRpcVideoStatus(capture_status.video_status));
+
+        rpc_obj->set_image_count(capture_status.image_count);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::CameraServer::CaptureStatus
+    translateFromRpcCaptureStatus(const rpc::camera_server::CaptureStatus& capture_status)
+    {
+        mavsdk::CameraServer::CaptureStatus obj;
+
+        obj.image_interval_s = capture_status.image_interval_s();
+
+        obj.recording_time_s = capture_status.recording_time_s();
+
+        obj.available_capacity_mib = capture_status.available_capacity_mib();
+
+        obj.image_status = translateFromRpcImageStatus(capture_status.image_status());
+
+        obj.video_status = translateFromRpcVideoStatus(capture_status.video_status());
+
+        obj.image_count = capture_status.image_count();
+
+        return obj;
+    }
+
     grpc::Status SetInformation(
         grpc::ServerContext* /* context */,
         const rpc::camera_server::SetInformationRequest* request,
@@ -326,6 +622,37 @@ public:
 
         auto result = _lazy_plugin.maybe_plugin()->set_information(
             translateFromRpcInformation(request->information()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetVideoStreaming(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::SetVideoStreamingRequest* request,
+        rpc::camera_server::SetVideoStreamingResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetVideoStreaming sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->set_video_streaming(
+            translateFromRpcVideoStreaming(request->video_streaming()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -427,8 +754,658 @@ public:
         }
 
         auto result = _lazy_plugin.maybe_plugin()->respond_take_photo(
-            translateFromRpcTakePhotoFeedback(request->take_photo_feedback()),
+            translateFromRpcCameraFeedback(request->take_photo_feedback()),
             translateFromRpcCaptureInfo(request->capture_info()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeStartVideo(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeStartVideoRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::StartVideoResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::StartVideoHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_start_video(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const int32_t start_video) {
+                    rpc::camera_server::StartVideoResponse rpc_response;
+
+                    rpc_response.set_stream_id(start_video);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_start_video(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondStartVideo(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondStartVideoRequest* request,
+        rpc::camera_server::RespondStartVideoResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondStartVideo sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_start_video(
+            translateFromRpcCameraFeedback(request->start_video_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeStopVideo(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeStopVideoRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::StopVideoResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::StopVideoHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_stop_video(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const int32_t stop_video) {
+                    rpc::camera_server::StopVideoResponse rpc_response;
+
+                    rpc_response.set_stream_id(stop_video);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_stop_video(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondStopVideo(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondStopVideoRequest* request,
+        rpc::camera_server::RespondStopVideoResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondStopVideo sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_stop_video(
+            translateFromRpcCameraFeedback(request->stop_video_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeStartVideoStreaming(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeStartVideoStreamingRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::StartVideoStreamingResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::StartVideoStreamingHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_start_video_streaming(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const int32_t start_video_streaming) {
+                    rpc::camera_server::StartVideoStreamingResponse rpc_response;
+
+                    rpc_response.set_stream_id(start_video_streaming);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_start_video_streaming(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondStartVideoStreaming(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondStartVideoStreamingRequest* request,
+        rpc::camera_server::RespondStartVideoStreamingResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondStartVideoStreaming sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_start_video_streaming(
+            translateFromRpcCameraFeedback(request->start_video_streaming_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeStopVideoStreaming(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeStopVideoStreamingRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::StopVideoStreamingResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::StopVideoStreamingHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_stop_video_streaming(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const int32_t stop_video_streaming) {
+                    rpc::camera_server::StopVideoStreamingResponse rpc_response;
+
+                    rpc_response.set_stream_id(stop_video_streaming);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_stop_video_streaming(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondStopVideoStreaming(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondStopVideoStreamingRequest* request,
+        rpc::camera_server::RespondStopVideoStreamingResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondStopVideoStreaming sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_stop_video_streaming(
+            translateFromRpcCameraFeedback(request->stop_video_streaming_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeSetMode(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeSetModeRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::SetModeResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::SetModeHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_set_mode(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const mavsdk::CameraServer::Mode set_mode) {
+                    rpc::camera_server::SetModeResponse rpc_response;
+
+                    rpc_response.set_mode(translateToRpcMode(set_mode));
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_set_mode(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondSetMode(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondSetModeRequest* request,
+        rpc::camera_server::RespondSetModeResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondSetMode sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_set_mode(
+            translateFromRpcCameraFeedback(request->set_mode_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeStorageInformation(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeStorageInformationRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::StorageInformationResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::StorageInformationHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_storage_information(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const int32_t storage_information) {
+                    rpc::camera_server::StorageInformationResponse rpc_response;
+
+                    rpc_response.set_storage_id(storage_information);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_storage_information(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondStorageInformation(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondStorageInformationRequest* request,
+        rpc::camera_server::RespondStorageInformationResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondStorageInformation sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_storage_information(
+            translateFromRpcCameraFeedback(request->storage_information_feedback()),
+            translateFromRpcStorageInformation(request->storage_information()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeCaptureStatus(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeCaptureStatusRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::CaptureStatusResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::CaptureStatusHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_capture_status(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const int32_t capture_status) {
+                    rpc::camera_server::CaptureStatusResponse rpc_response;
+
+                    rpc_response.set_reserved(capture_status);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_capture_status(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondCaptureStatus(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondCaptureStatusRequest* request,
+        rpc::camera_server::RespondCaptureStatusResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondCaptureStatus sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_capture_status(
+            translateFromRpcCameraFeedback(request->capture_status_feedback()),
+            translateFromRpcCaptureStatus(request->capture_status()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeFormatStorage(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeFormatStorageRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::FormatStorageResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::FormatStorageHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_format_storage(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const int32_t format_storage) {
+                    rpc::camera_server::FormatStorageResponse rpc_response;
+
+                    rpc_response.set_storage_id(format_storage);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_format_storage(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondFormatStorage(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondFormatStorageRequest* request,
+        rpc::camera_server::RespondFormatStorageResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondFormatStorage sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_format_storage(
+            translateFromRpcCameraFeedback(request->format_storage_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeResetSettings(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeResetSettingsRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::ResetSettingsResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::ResetSettingsHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_reset_settings(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const int32_t reset_settings) {
+                    rpc::camera_server::ResetSettingsResponse rpc_response;
+
+                    rpc_response.set_reserved(reset_settings);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_reset_settings(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondResetSettings(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondResetSettingsRequest* request,
+        rpc::camera_server::RespondResetSettingsResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondResetSettings sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_reset_settings(
+            translateFromRpcCameraFeedback(request->reset_settings_feedback()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

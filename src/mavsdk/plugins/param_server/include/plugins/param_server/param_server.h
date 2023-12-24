@@ -240,6 +240,68 @@ public:
     ParamServer::AllParams retrieve_all_params() const;
 
     /**
+     * @brief Callback type for subscribe_changed_param_int.
+     */
+    using ChangedParamIntCallback = std::function<void(IntParam)>;
+
+    /**
+     * @brief Handle type for subscribe_changed_param_int.
+     */
+    using ChangedParamIntHandle = Handle<IntParam>;
+
+    /**
+     * @brief Subscribe to changed int param.
+     */
+    ChangedParamIntHandle subscribe_changed_param_int(const ChangedParamIntCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_changed_param_int
+     */
+    void unsubscribe_changed_param_int(ChangedParamIntHandle handle);
+
+    /**
+     * @brief Callback type for subscribe_changed_param_float.
+     */
+    using ChangedParamFloatCallback = std::function<void(FloatParam)>;
+
+    /**
+     * @brief Handle type for subscribe_changed_param_float.
+     */
+    using ChangedParamFloatHandle = Handle<FloatParam>;
+
+    /**
+     * @brief Subscribe to changed float param.
+     */
+    ChangedParamFloatHandle
+    subscribe_changed_param_float(const ChangedParamFloatCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_changed_param_float
+     */
+    void unsubscribe_changed_param_float(ChangedParamFloatHandle handle);
+
+    /**
+     * @brief Callback type for subscribe_changed_param_custom.
+     */
+    using ChangedParamCustomCallback = std::function<void(CustomParam)>;
+
+    /**
+     * @brief Handle type for subscribe_changed_param_custom.
+     */
+    using ChangedParamCustomHandle = Handle<CustomParam>;
+
+    /**
+     * @brief Subscribe to changed custom param.
+     */
+    ChangedParamCustomHandle
+    subscribe_changed_param_custom(const ChangedParamCustomCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_changed_param_custom
+     */
+    void unsubscribe_changed_param_custom(ChangedParamCustomHandle handle);
+
+    /**
      * @brief Copy constructor.
      */
     ParamServer(const ParamServer& other);

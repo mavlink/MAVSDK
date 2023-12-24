@@ -90,14 +90,14 @@ Camera::Result Camera::stop_video() const
     return _impl->stop_video();
 }
 
-Camera::Result Camera::start_video_streaming() const
+Camera::Result Camera::start_video_streaming(int32_t stream_id) const
 {
-    return _impl->start_video_streaming();
+    return _impl->start_video_streaming(stream_id);
 }
 
-Camera::Result Camera::stop_video_streaming() const
+Camera::Result Camera::stop_video_streaming(int32_t stream_id) const
 {
-    return _impl->stop_video_streaming();
+    return _impl->stop_video_streaming(stream_id);
 }
 
 void Camera::set_mode_async(Mode mode, const ResultCallback callback)
@@ -239,19 +239,29 @@ std::pair<Camera::Result, Camera::Setting> Camera::get_setting(Setting setting) 
     return _impl->get_setting(setting);
 }
 
-void Camera::format_storage_async(const ResultCallback callback)
+void Camera::format_storage_async(int32_t storage_id, const ResultCallback callback)
 {
-    _impl->format_storage_async(callback);
+    _impl->format_storage_async(storage_id, callback);
 }
 
-Camera::Result Camera::format_storage() const
+Camera::Result Camera::format_storage(int32_t storage_id) const
 {
-    return _impl->format_storage();
+    return _impl->format_storage(storage_id);
 }
 
 Camera::Result Camera::select_camera(int32_t camera_id) const
 {
     return _impl->select_camera(camera_id);
+}
+
+void Camera::reset_settings_async(const ResultCallback callback)
+{
+    _impl->reset_settings_async(callback);
+}
+
+Camera::Result Camera::reset_settings() const
+{
+    return _impl->reset_settings();
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::Result const& result)

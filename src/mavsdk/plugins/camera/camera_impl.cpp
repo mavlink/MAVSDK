@@ -413,21 +413,23 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_request_storage_info(
     return cmd_req_storage_info;
 }
 
-MavlinkCommandSender::CommandLong CameraImpl::make_command_start_video_streaming()
+MavlinkCommandSender::CommandLong CameraImpl::make_command_start_video_streaming(int32_t stream_id)
 {
     MavlinkCommandSender::CommandLong cmd_start_video_streaming{};
 
     cmd_start_video_streaming.command = MAV_CMD_VIDEO_START_STREAMING;
+    cmd_start_video_streaming.params.maybe_param1 = static_cast<float>(stream_id);
     cmd_start_video_streaming.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
 
     return cmd_start_video_streaming;
 }
 
-MavlinkCommandSender::CommandLong CameraImpl::make_command_stop_video_streaming()
+MavlinkCommandSender::CommandLong CameraImpl::make_command_stop_video_streaming(int32_t stream_id)
 {
     MavlinkCommandSender::CommandLong cmd_stop_video_streaming{};
 
     cmd_stop_video_streaming.command = MAV_CMD_VIDEO_STOP_STREAMING;
+    cmd_stop_video_streaming.params.maybe_param1 = static_cast<float>(stream_id);
     cmd_stop_video_streaming.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
 
     return cmd_stop_video_streaming;
@@ -596,6 +598,21 @@ CameraImpl::subscribe_information(const Camera::InformationCallback& callback)
     std::lock_guard<std::mutex> lock(_information.mutex);
     auto handle = _information.subscription_callbacks.subscribe(callback);
 
+    // If there was already a subscription, cancel the call
+    if (_status.call_every_cookie) {
+        _system_impl->remove_call_every(_status.call_every_cookie);
+    }
+
+    if (callback) {
+        if (_status.call_every_cookie == nullptr) {
+            _system_impl->add_call_every(
+                [this]() { request_status(); }, 1.0, &_status.call_every_cookie);
+        }
+    } else {
+        _system_impl->remove_call_every(_status.call_every_cookie);
+        _status.call_every_cookie = nullptr;
+    }
+
     return handle;
 }
 
@@ -605,7 +622,7 @@ void CameraImpl::unsubscribe_information(Camera::InformationHandle handle)
     _information.subscription_callbacks.unsubscribe(handle);
 }
 
-Camera::Result CameraImpl::start_video_streaming()
+Camera::Result CameraImpl::start_video_streaming(int32_t stream_id)
 {
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
 
@@ -615,7 +632,7 @@ Camera::Result CameraImpl::start_video_streaming()
     }
 
     // TODO Check whether we're in video mode
-    auto command = make_command_start_video_streaming();
+    auto command = make_command_start_video_streaming(stream_id);
 
     auto result = camera_result_from_command_result(_system_impl->send_command(command));
     // if (result == Camera::Result::Success) {
@@ -626,12 +643,12 @@ Camera::Result CameraImpl::start_video_streaming()
     return result;
 }
 
-Camera::Result CameraImpl::stop_video_streaming()
+Camera::Result CameraImpl::stop_video_streaming(int32_t stream_id)
 {
     // TODO I think we need to maintain current state, whether we issued
     // video capture request or video streaming request, etc.We shouldn't
     // send stop video streaming if we've not started it!
-    auto command = make_command_stop_video_streaming();
+    auto command = make_command_stop_video_streaming(stream_id);
 
     auto result = camera_result_from_command_result(_system_impl->send_command(command));
     {
@@ -1912,22 +1929,22 @@ void CameraImpl::request_camera_information()
     _system_impl->send_command_async(command_camera_info, nullptr);
 }
 
-Camera::Result CameraImpl::format_storage()
+Camera::Result CameraImpl::format_storage(int32_t storage_id)
 {
     auto prom = std::make_shared<std::promise<Camera::Result>>();
     auto ret = prom->get_future();
 
-    format_storage_async([prom](Camera::Result result) { prom->set_value(result); });
+    format_storage_async(storage_id, [prom](Camera::Result result) { prom->set_value(result); });
 
     return ret.get();
 }
 
-void CameraImpl::format_storage_async(Camera::ResultCallback callback)
+void CameraImpl::format_storage_async(int32_t storage_id, Camera::ResultCallback callback)
 {
     MavlinkCommandSender::CommandLong cmd_format{};
 
     cmd_format.command = MAV_CMD_STORAGE_FORMAT;
-    cmd_format.params.maybe_param1 = 1.0f; // storage ID
+    cmd_format.params.maybe_param1 = static_cast<float>(storage_id); // storage ID
     cmd_format.params.maybe_param2 = 1.0f; // format
     cmd_format.params.maybe_param3 = 1.0f; // clear
     cmd_format.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
@@ -1941,6 +1958,33 @@ void CameraImpl::format_storage_async(Camera::ResultCallback callback)
                     reset_following_format_storage();
                 }
 
+                callback(camera_result);
+            });
+        });
+}
+
+Camera::Result CameraImpl::reset_settings()
+{
+    auto prom = std::make_shared<std::promise<Camera::Result>>();
+    auto ret = prom->get_future();
+
+    reset_settings_async([prom](Camera::Result result) { prom->set_value(result); });
+
+    return ret.get();
+}
+void CameraImpl::reset_settings_async(const Camera::ResultCallback callback)
+{
+    MavlinkCommandSender::CommandLong cmd_format{};
+
+    cmd_format.command = MAV_CMD_RESET_CAMERA_SETTINGS;
+    cmd_format.params.maybe_param1 = 1.0f; // reset
+    cmd_format.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
+
+    _system_impl->send_command_async(
+        cmd_format, [this, callback](MavlinkCommandSender::Result result, float progress) {
+            UNUSED(progress);
+
+            receive_command_result(result, [this, callback](Camera::Result camera_result) {
                 callback(camera_result);
             });
         });

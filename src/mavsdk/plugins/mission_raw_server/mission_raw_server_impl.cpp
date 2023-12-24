@@ -261,7 +261,8 @@ void MissionRawServerImpl::process_mission_clear(const mavlink_message_t message
             message.sysid,
             message.compid,
             MAV_MISSION_RESULT::MAV_MISSION_ACCEPTED,
-            clear_all.mission_type);
+            clear_all.mission_type,
+            0);
         return response_message;
     });
 }
@@ -368,6 +369,9 @@ void MissionRawServerImpl::set_current_seq(std::size_t seq)
             channel,
             &message,
             static_cast<uint16_t>(_current_seq),
+            0,
+            0,
+            0,
             0,
             0,
             0);

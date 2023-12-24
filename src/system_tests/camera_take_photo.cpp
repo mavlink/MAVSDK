@@ -26,7 +26,7 @@ TEST(SystemTest, CameraTakePhoto)
         info.index = index;
         info.is_success = true;
 
-        camera_server.respond_take_photo(CameraServer::TakePhotoFeedback::Ok, info);
+        camera_server.respond_take_photo(CameraServer::CameraFeedback::Ok, info);
     });
 
     auto prom = std::promise<std::shared_ptr<System>>();
