@@ -31,7 +31,7 @@ The MAVSDK C++ part consists of:
 - [MAVSDK-JavaScript](https://github.com/mavlink/MAVSDK-JavaScript) - MAVSDK client in JavaScript (proof of concept, 2019).
 - [MAVSDK-Rust](https://github.com/mavlink/MAVSDK-Rust) - MAVSDK client for Rust (proof of concept, 2019).
 - [MAVSDK-CSharp](https://github.com/mavlink/MAVSDK-CSharp) - MAVSDK client for CSharp (proof of concept, 2019).
-- [Docs](https://github.com/mavlink/MAVSDK-docs) - MAVSDK docs source.
+- [Docs](https://github.com/mavlink/MAVSDK-docs) - MAVSDK [docs](https://mavsdk.mavlink.io/main/en/) source.
 
 ## Docs (Build instructions etc.)
 
@@ -50,3 +50,22 @@ Quick Links:
 ## License
 
 This project is licensed under the permissive BSD 3-clause, see [LICENSE.md](LICENSE.md).
+
+## Maintenance
+
+This project is maintained by volunteers:
+- [Julian Oes](https://github.com/julianoes) ([sponsoring](https://github.com/sponsors/julianoes), [consulting](https://julianoes.com)).
+- [Jonas Vautherin](https://github.com/JonasVautherin)
+
+Maintenance is not sponsored by any company, however, the [docs](https://mavsdk.mavlink.io/main/en/) and [forum](https://discuss.px4.io/c/mavsdk/) hosting is provided by the [Dronecode Foundation](https://dronecode.org).
+
+## Support and issues
+
+If you just have a question, consider asking in the [forum](https://discuss.px4.io/c/mavsdk/).
+
+If you have found run into an issue, discovered a bug, or want to request a feature, create an [issue](https://github.com/mavlink/MAVSDK/issues). If this is important or urgent to you, consider sponsoring any of the maintainers
+
+If you need private support, consider paid consulting:
+- [Julian Oes consulting](https://julianoes.com)
+
+(Create a pull request if you wish to be listed here.)
