@@ -10,7 +10,8 @@
 void handler(int sig)
 {
     mavsdk::LogErr() << "Got signal: " << strsignal(sig) << " (" << sig << ")";
-    cpptrace::print_trace();
+    cpptrace::generate_trace().print();
+    ;
     exit(1);
 }
 #endif
