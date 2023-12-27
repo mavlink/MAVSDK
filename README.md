@@ -17,8 +17,8 @@ In order to support multiple programming languages, MAVSDK implements a gRPC ser
 This architecture allows the clients to be implemented in idiomatic patterns, so using the tooling and syntax expected by end users. For example, the Python library can be installed from PyPi using `pip`.
 
 The MAVSDK C++ part consists of:
-- The [core library](https://github.com/mavlink/MAVSDK/tree/main/src/core) implementing the basic MAVLink communication.
-- The [plugin libraries](https://github.com/mavlink/MAVSDK/tree/main/src/plugins) implementing the MAVLink communication specific to a feature.
+- The [core library](https://github.com/mavlink/MAVSDK/tree/main/src/mavsdk/core) implementing the basic MAVLink communication.
+- The [plugin libraries](https://github.com/mavlink/MAVSDK/tree/main/src/mavsdk/plugins) implementing the MAVLink communication specific to a feature.
 - The [mavsdk_server](https://github.com/mavlink/MAVSDK/tree/main/src/mavsdk_server) implementing the gRPC server for the language clients.
 
 ## Repos
@@ -31,7 +31,7 @@ The MAVSDK C++ part consists of:
 - [MAVSDK-JavaScript](https://github.com/mavlink/MAVSDK-JavaScript) - MAVSDK client in JavaScript (proof of concept, 2019).
 - [MAVSDK-Rust](https://github.com/mavlink/MAVSDK-Rust) - MAVSDK client for Rust (proof of concept, 2019).
 - [MAVSDK-CSharp](https://github.com/mavlink/MAVSDK-CSharp) - MAVSDK client for CSharp (proof of concept, 2019).
-- [Other Repos](https://github.com/mavlink?q=MAVSDK) - Docs, examples, etc.
+- [Docs](https://github.com/mavlink/MAVSDK-docs) - MAVSDK [docs](https://mavsdk.mavlink.io/main/en/) source.
 
 ## Docs (Build instructions etc.)
 
@@ -39,9 +39,10 @@ Instructions for how to use the C++ library can be found in the [MAVSDK docs](ht
 
 Quick Links:
 
-- [QuickStart](https://mavsdk.mavlink.io/main/en/cpp/#getting-started)
+- [Getting started](https://mavsdk.mavlink.io/main/en/cpp/#getting-started)
 - [C++ API Overview](https://mavsdk.mavlink.io/main/en/cpp/#api-overview)
 - [API Reference](https://mavsdk.mavlink.io/main/en/cpp/api_reference/)
+- [Installing the Library](https://mavsdk.mavlink.io/main/en/cpp/guide/installation.html)
 - [Building the Library](https://mavsdk.mavlink.io/main/en/cpp/guide/build.html)
 - [Examples](https://mavsdk.mavlink.io/main/en/cpp/examples/)
 - [FAQ](https://mavsdk.mavlink.io/main/en/faq.html)
@@ -49,3 +50,22 @@ Quick Links:
 ## License
 
 This project is licensed under the permissive BSD 3-clause, see [LICENSE.md](LICENSE.md).
+
+## Maintenance
+
+This project is maintained by volunteers:
+- [Julian Oes](https://github.com/julianoes) ([sponsoring](https://github.com/sponsors/julianoes), [consulting](https://julianoes.com)).
+- [Jonas Vautherin](https://github.com/JonasVautherin)
+
+Maintenance is not sponsored by any company, however, hosting of the [docs](https://mavsdk.mavlink.io/main/en/) and the [forum](https://discuss.px4.io/c/mavsdk/) is provided by the [Dronecode Foundation](https://dronecode.org).
+
+## Support and issues
+
+If you just have a question, consider asking in the [forum](https://discuss.px4.io/c/mavsdk/).
+
+If you have run into an issue, discovered a bug, or want to request a feature, create an [issue](https://github.com/mavlink/MAVSDK/issues). If it is important or urgent to you, consider sponsoring any of the maintainers to move the issue up on their todo list.
+
+If you need private support, consider paid consulting:
+- [Julian Oes consulting](https://julianoes.com)
+
+(Create a pull request if you wish to be listed here.)
