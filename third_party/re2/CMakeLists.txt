@@ -26,7 +26,7 @@ endforeach()
 
 ExternalProject_add(
     re2
-    URL https://github.com/google/re2/archive/2022-04-01.tar.gz
+    URL https://github.com/google/re2/archive/2023-11-01.tar.gz
     PREFIX re2
     CMAKE_ARGS "${CMAKE_ARGS}"
     )

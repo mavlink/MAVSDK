@@ -5,7 +5,7 @@ include(ExternalProject)
 
 message(STATUS "Preparing external project \"openssl\"")
 
-set(OPENSSL_VERSION 3.0.9)
+set(OPENSSL_VERSION 3.2.0)
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     set(OPENSSL_BUILD_TYPE "--debug")
