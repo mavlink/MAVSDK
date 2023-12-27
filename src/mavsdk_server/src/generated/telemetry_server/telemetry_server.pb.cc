@@ -11,974 +11,29 @@
 #include "google/protobuf/generated_message_reflection.h"
 #include "google/protobuf/reflection_ops.h"
 #include "google/protobuf/wire_format.h"
+#include "google/protobuf/generated_message_tctable_impl.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
 #include "google/protobuf/port_def.inc"
 PROTOBUF_PRAGMA_INIT_SEG
-namespace _pb = ::PROTOBUF_NAMESPACE_ID;
-namespace _pbi = ::PROTOBUF_NAMESPACE_ID::internal;
+namespace _pb = ::google::protobuf;
+namespace _pbi = ::google::protobuf::internal;
+namespace _fl = ::google::protobuf::internal::field_layout;
 namespace mavsdk {
 namespace rpc {
 namespace telemetry_server {
+
+inline constexpr VelocityNed::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : north_m_s_{0},
+        east_m_s_{0},
+        down_m_s_{0},
+        _cached_size_{0} {}
+
 template <typename>
-PROTOBUF_CONSTEXPR PublishPositionRequest::PublishPositionRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.position_)*/nullptr
-  , /*decltype(_impl_.velocity_ned_)*/nullptr
-  , /*decltype(_impl_.heading_)*/nullptr} {}
-struct PublishPositionRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishPositionRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishPositionRequestDefaultTypeInternal() {}
-  union {
-    PublishPositionRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishPositionRequestDefaultTypeInternal _PublishPositionRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishHomeRequest::PublishHomeRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.home_)*/nullptr} {}
-struct PublishHomeRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishHomeRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishHomeRequestDefaultTypeInternal() {}
-  union {
-    PublishHomeRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishHomeRequestDefaultTypeInternal _PublishHomeRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishSysStatusRequest::PublishSysStatusRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.battery_)*/nullptr
-  , /*decltype(_impl_.rc_receiver_status_)*/ false
-
-  , /*decltype(_impl_.gyro_status_)*/ false
-
-  , /*decltype(_impl_.accel_status_)*/ false
-
-  , /*decltype(_impl_.mag_status_)*/ false
-
-  , /*decltype(_impl_.gps_status_)*/ false
-} {}
-struct PublishSysStatusRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishSysStatusRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishSysStatusRequestDefaultTypeInternal() {}
-  union {
-    PublishSysStatusRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishSysStatusRequestDefaultTypeInternal _PublishSysStatusRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishExtendedSysStateRequest::PublishExtendedSysStateRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.vtol_state_)*/ 0
-
-  , /*decltype(_impl_.landed_state_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct PublishExtendedSysStateRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishExtendedSysStateRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishExtendedSysStateRequestDefaultTypeInternal() {}
-  union {
-    PublishExtendedSysStateRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishExtendedSysStateRequestDefaultTypeInternal _PublishExtendedSysStateRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishInAirRequest::PublishInAirRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.is_in_air_)*/ false
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct PublishInAirRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishInAirRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishInAirRequestDefaultTypeInternal() {}
-  union {
-    PublishInAirRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishInAirRequestDefaultTypeInternal _PublishInAirRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishLandedStateRequest::PublishLandedStateRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.landed_state_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct PublishLandedStateRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishLandedStateRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishLandedStateRequestDefaultTypeInternal() {}
-  union {
-    PublishLandedStateRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishLandedStateRequestDefaultTypeInternal _PublishLandedStateRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishRawGpsRequest::PublishRawGpsRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.raw_gps_)*/nullptr
-  , /*decltype(_impl_.gps_info_)*/nullptr} {}
-struct PublishRawGpsRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishRawGpsRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishRawGpsRequestDefaultTypeInternal() {}
-  union {
-    PublishRawGpsRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishRawGpsRequestDefaultTypeInternal _PublishRawGpsRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishBatteryRequest::PublishBatteryRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.battery_)*/nullptr} {}
-struct PublishBatteryRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishBatteryRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishBatteryRequestDefaultTypeInternal() {}
-  union {
-    PublishBatteryRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishBatteryRequestDefaultTypeInternal _PublishBatteryRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishRcStatusRequest::PublishRcStatusRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.rc_status_)*/nullptr} {}
-struct PublishRcStatusRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishRcStatusRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishRcStatusRequestDefaultTypeInternal() {}
-  union {
-    PublishRcStatusRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishRcStatusRequestDefaultTypeInternal _PublishRcStatusRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishStatusTextRequest::PublishStatusTextRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.status_text_)*/nullptr} {}
-struct PublishStatusTextRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishStatusTextRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishStatusTextRequestDefaultTypeInternal() {}
-  union {
-    PublishStatusTextRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishStatusTextRequestDefaultTypeInternal _PublishStatusTextRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishOdometryRequest::PublishOdometryRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.odometry_)*/nullptr} {}
-struct PublishOdometryRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishOdometryRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishOdometryRequestDefaultTypeInternal() {}
-  union {
-    PublishOdometryRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishOdometryRequestDefaultTypeInternal _PublishOdometryRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishPositionVelocityNedRequest::PublishPositionVelocityNedRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.position_velocity_ned_)*/nullptr} {}
-struct PublishPositionVelocityNedRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishPositionVelocityNedRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishPositionVelocityNedRequestDefaultTypeInternal() {}
-  union {
-    PublishPositionVelocityNedRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishPositionVelocityNedRequestDefaultTypeInternal _PublishPositionVelocityNedRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishGroundTruthRequest::PublishGroundTruthRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.ground_truth_)*/nullptr} {}
-struct PublishGroundTruthRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishGroundTruthRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishGroundTruthRequestDefaultTypeInternal() {}
-  union {
-    PublishGroundTruthRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishGroundTruthRequestDefaultTypeInternal _PublishGroundTruthRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishImuRequest::PublishImuRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.imu_)*/nullptr} {}
-struct PublishImuRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishImuRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishImuRequestDefaultTypeInternal() {}
-  union {
-    PublishImuRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishImuRequestDefaultTypeInternal _PublishImuRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishScaledImuRequest::PublishScaledImuRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.imu_)*/nullptr} {}
-struct PublishScaledImuRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishScaledImuRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishScaledImuRequestDefaultTypeInternal() {}
-  union {
-    PublishScaledImuRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishScaledImuRequestDefaultTypeInternal _PublishScaledImuRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishRawImuRequest::PublishRawImuRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.imu_)*/nullptr} {}
-struct PublishRawImuRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishRawImuRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishRawImuRequestDefaultTypeInternal() {}
-  union {
-    PublishRawImuRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishRawImuRequestDefaultTypeInternal _PublishRawImuRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishUnixEpochTimeRequest::PublishUnixEpochTimeRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.time_us_)*/ ::uint64_t{0u}
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct PublishUnixEpochTimeRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishUnixEpochTimeRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishUnixEpochTimeRequestDefaultTypeInternal() {}
-  union {
-    PublishUnixEpochTimeRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishUnixEpochTimeRequestDefaultTypeInternal _PublishUnixEpochTimeRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishDistanceSensorRequest::PublishDistanceSensorRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.distance_sensor_)*/nullptr} {}
-struct PublishDistanceSensorRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishDistanceSensorRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishDistanceSensorRequestDefaultTypeInternal() {}
-  union {
-    PublishDistanceSensorRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishDistanceSensorRequestDefaultTypeInternal _PublishDistanceSensorRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishPositionResponse::PublishPositionResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.telemetry_server_result_)*/nullptr} {}
-struct PublishPositionResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishPositionResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishPositionResponseDefaultTypeInternal() {}
-  union {
-    PublishPositionResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishPositionResponseDefaultTypeInternal _PublishPositionResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishHomeResponse::PublishHomeResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.telemetry_server_result_)*/nullptr} {}
-struct PublishHomeResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishHomeResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishHomeResponseDefaultTypeInternal() {}
-  union {
-    PublishHomeResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishHomeResponseDefaultTypeInternal _PublishHomeResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishSysStatusResponse::PublishSysStatusResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.telemetry_server_result_)*/nullptr} {}
-struct PublishSysStatusResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishSysStatusResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishSysStatusResponseDefaultTypeInternal() {}
-  union {
-    PublishSysStatusResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishSysStatusResponseDefaultTypeInternal _PublishSysStatusResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishExtendedSysStateResponse::PublishExtendedSysStateResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.telemetry_server_result_)*/nullptr} {}
-struct PublishExtendedSysStateResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishExtendedSysStateResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishExtendedSysStateResponseDefaultTypeInternal() {}
-  union {
-    PublishExtendedSysStateResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishExtendedSysStateResponseDefaultTypeInternal _PublishExtendedSysStateResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishRawGpsResponse::PublishRawGpsResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.telemetry_server_result_)*/nullptr} {}
-struct PublishRawGpsResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishRawGpsResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishRawGpsResponseDefaultTypeInternal() {}
-  union {
-    PublishRawGpsResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishRawGpsResponseDefaultTypeInternal _PublishRawGpsResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishBatteryResponse::PublishBatteryResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.telemetry_server_result_)*/nullptr} {}
-struct PublishBatteryResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishBatteryResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishBatteryResponseDefaultTypeInternal() {}
-  union {
-    PublishBatteryResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishBatteryResponseDefaultTypeInternal _PublishBatteryResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishStatusTextResponse::PublishStatusTextResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.telemetry_server_result_)*/nullptr} {}
-struct PublishStatusTextResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishStatusTextResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishStatusTextResponseDefaultTypeInternal() {}
-  union {
-    PublishStatusTextResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishStatusTextResponseDefaultTypeInternal _PublishStatusTextResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishOdometryResponse::PublishOdometryResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.telemetry_server_result_)*/nullptr} {}
-struct PublishOdometryResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishOdometryResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishOdometryResponseDefaultTypeInternal() {}
-  union {
-    PublishOdometryResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishOdometryResponseDefaultTypeInternal _PublishOdometryResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishPositionVelocityNedResponse::PublishPositionVelocityNedResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.telemetry_server_result_)*/nullptr} {}
-struct PublishPositionVelocityNedResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishPositionVelocityNedResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishPositionVelocityNedResponseDefaultTypeInternal() {}
-  union {
-    PublishPositionVelocityNedResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishPositionVelocityNedResponseDefaultTypeInternal _PublishPositionVelocityNedResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishGroundTruthResponse::PublishGroundTruthResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.telemetry_server_result_)*/nullptr} {}
-struct PublishGroundTruthResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishGroundTruthResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishGroundTruthResponseDefaultTypeInternal() {}
-  union {
-    PublishGroundTruthResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishGroundTruthResponseDefaultTypeInternal _PublishGroundTruthResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishImuResponse::PublishImuResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.telemetry_server_result_)*/nullptr} {}
-struct PublishImuResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishImuResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishImuResponseDefaultTypeInternal() {}
-  union {
-    PublishImuResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishImuResponseDefaultTypeInternal _PublishImuResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishScaledImuResponse::PublishScaledImuResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.telemetry_server_result_)*/nullptr} {}
-struct PublishScaledImuResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishScaledImuResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishScaledImuResponseDefaultTypeInternal() {}
-  union {
-    PublishScaledImuResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishScaledImuResponseDefaultTypeInternal _PublishScaledImuResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishRawImuResponse::PublishRawImuResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.telemetry_server_result_)*/nullptr} {}
-struct PublishRawImuResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishRawImuResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishRawImuResponseDefaultTypeInternal() {}
-  union {
-    PublishRawImuResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishRawImuResponseDefaultTypeInternal _PublishRawImuResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishUnixEpochTimeResponse::PublishUnixEpochTimeResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.telemetry_server_result_)*/nullptr} {}
-struct PublishUnixEpochTimeResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishUnixEpochTimeResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishUnixEpochTimeResponseDefaultTypeInternal() {}
-  union {
-    PublishUnixEpochTimeResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishUnixEpochTimeResponseDefaultTypeInternal _PublishUnixEpochTimeResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PublishDistanceSensorResponse::PublishDistanceSensorResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.telemetry_server_result_)*/nullptr} {}
-struct PublishDistanceSensorResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PublishDistanceSensorResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PublishDistanceSensorResponseDefaultTypeInternal() {}
-  union {
-    PublishDistanceSensorResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishDistanceSensorResponseDefaultTypeInternal _PublishDistanceSensorResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR Position::Position(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.latitude_deg_)*/ 0
-
-  , /*decltype(_impl_.longitude_deg_)*/ 0
-
-  , /*decltype(_impl_.absolute_altitude_m_)*/ 0
-
-  , /*decltype(_impl_.relative_altitude_m_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct PositionDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PositionDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PositionDefaultTypeInternal() {}
-  union {
-    Position _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PositionDefaultTypeInternal _Position_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR Heading::Heading(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.heading_deg_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct HeadingDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR HeadingDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~HeadingDefaultTypeInternal() {}
-  union {
-    Heading _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 HeadingDefaultTypeInternal _Heading_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR Quaternion::Quaternion(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.w_)*/ 0
-
-  , /*decltype(_impl_.x_)*/ 0
-
-  , /*decltype(_impl_.y_)*/ 0
-
-  , /*decltype(_impl_.z_)*/ 0
-
-  , /*decltype(_impl_.timestamp_us_)*/ ::uint64_t{0u}
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct QuaternionDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR QuaternionDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~QuaternionDefaultTypeInternal() {}
-  union {
-    Quaternion _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 QuaternionDefaultTypeInternal _Quaternion_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR EulerAngle::EulerAngle(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.roll_deg_)*/ 0
-
-  , /*decltype(_impl_.pitch_deg_)*/ 0
-
-  , /*decltype(_impl_.timestamp_us_)*/ ::uint64_t{0u}
-
-  , /*decltype(_impl_.yaw_deg_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct EulerAngleDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR EulerAngleDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~EulerAngleDefaultTypeInternal() {}
-  union {
-    EulerAngle _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 EulerAngleDefaultTypeInternal _EulerAngle_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR AngularVelocityBody::AngularVelocityBody(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.roll_rad_s_)*/ 0
-
-  , /*decltype(_impl_.pitch_rad_s_)*/ 0
-
-  , /*decltype(_impl_.yaw_rad_s_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct AngularVelocityBodyDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR AngularVelocityBodyDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~AngularVelocityBodyDefaultTypeInternal() {}
-  union {
-    AngularVelocityBody _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AngularVelocityBodyDefaultTypeInternal _AngularVelocityBody_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR GpsInfo::GpsInfo(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.num_satellites_)*/ 0
-
-  , /*decltype(_impl_.fix_type_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct GpsInfoDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR GpsInfoDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~GpsInfoDefaultTypeInternal() {}
-  union {
-    GpsInfo _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GpsInfoDefaultTypeInternal _GpsInfo_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR RawGps::RawGps(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.timestamp_us_)*/ ::uint64_t{0u}
-
-  , /*decltype(_impl_.latitude_deg_)*/ 0
-
-  , /*decltype(_impl_.longitude_deg_)*/ 0
-
-  , /*decltype(_impl_.absolute_altitude_m_)*/ 0
-
-  , /*decltype(_impl_.hdop_)*/ 0
-
-  , /*decltype(_impl_.vdop_)*/ 0
-
-  , /*decltype(_impl_.velocity_m_s_)*/ 0
-
-  , /*decltype(_impl_.cog_deg_)*/ 0
-
-  , /*decltype(_impl_.altitude_ellipsoid_m_)*/ 0
-
-  , /*decltype(_impl_.horizontal_uncertainty_m_)*/ 0
-
-  , /*decltype(_impl_.vertical_uncertainty_m_)*/ 0
-
-  , /*decltype(_impl_.velocity_uncertainty_m_s_)*/ 0
-
-  , /*decltype(_impl_.heading_uncertainty_deg_)*/ 0
-
-  , /*decltype(_impl_.yaw_deg_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct RawGpsDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RawGpsDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~RawGpsDefaultTypeInternal() {}
-  union {
-    RawGps _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RawGpsDefaultTypeInternal _RawGps_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR Battery::Battery(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.voltage_v_)*/ 0
-
-  , /*decltype(_impl_.remaining_percent_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct BatteryDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR BatteryDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~BatteryDefaultTypeInternal() {}
-  union {
-    Battery _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 BatteryDefaultTypeInternal _Battery_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR RcStatus::RcStatus(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.was_available_once_)*/ false
-
-  , /*decltype(_impl_.is_available_)*/ false
-
-  , /*decltype(_impl_.signal_strength_percent_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct RcStatusDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR RcStatusDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~RcStatusDefaultTypeInternal() {}
-  union {
-    RcStatus _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RcStatusDefaultTypeInternal _RcStatus_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR StatusText::StatusText(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.text_)*/ {
-    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
-  }
-
-  , /*decltype(_impl_.type_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct StatusTextDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR StatusTextDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~StatusTextDefaultTypeInternal() {}
-  union {
-    StatusText _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StatusTextDefaultTypeInternal _StatusText_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR ActuatorControlTarget::ActuatorControlTarget(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.controls_)*/ {}
-
-  , /*decltype(_impl_.group_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct ActuatorControlTargetDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ActuatorControlTargetDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~ActuatorControlTargetDefaultTypeInternal() {}
-  union {
-    ActuatorControlTarget _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ActuatorControlTargetDefaultTypeInternal _ActuatorControlTarget_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR ActuatorOutputStatus::ActuatorOutputStatus(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.actuator_)*/ {}
-
-  , /*decltype(_impl_.active_)*/ 0u
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct ActuatorOutputStatusDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ActuatorOutputStatusDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~ActuatorOutputStatusDefaultTypeInternal() {}
-  union {
-    ActuatorOutputStatus _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ActuatorOutputStatusDefaultTypeInternal _ActuatorOutputStatus_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR Covariance::Covariance(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.covariance_matrix_)*/ {}
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct CovarianceDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR CovarianceDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~CovarianceDefaultTypeInternal() {}
-  union {
-    Covariance _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CovarianceDefaultTypeInternal _Covariance_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR VelocityBody::VelocityBody(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.x_m_s_)*/ 0
-
-  , /*decltype(_impl_.y_m_s_)*/ 0
-
-  , /*decltype(_impl_.z_m_s_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct VelocityBodyDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR VelocityBodyDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~VelocityBodyDefaultTypeInternal() {}
-  union {
-    VelocityBody _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 VelocityBodyDefaultTypeInternal _VelocityBody_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PositionBody::PositionBody(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.x_m_)*/ 0
-
-  , /*decltype(_impl_.y_m_)*/ 0
-
-  , /*decltype(_impl_.z_m_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct PositionBodyDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PositionBodyDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PositionBodyDefaultTypeInternal() {}
-  union {
-    PositionBody _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PositionBodyDefaultTypeInternal _PositionBody_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR Odometry::Odometry(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.position_body_)*/nullptr
-  , /*decltype(_impl_.q_)*/nullptr
-  , /*decltype(_impl_.velocity_body_)*/nullptr
-  , /*decltype(_impl_.angular_velocity_body_)*/nullptr
-  , /*decltype(_impl_.pose_covariance_)*/nullptr
-  , /*decltype(_impl_.velocity_covariance_)*/nullptr
-  , /*decltype(_impl_.time_usec_)*/ ::uint64_t{0u}
-
-  , /*decltype(_impl_.frame_id_)*/ 0
-
-  , /*decltype(_impl_.child_frame_id_)*/ 0
-} {}
-struct OdometryDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR OdometryDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~OdometryDefaultTypeInternal() {}
-  union {
-    Odometry _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 OdometryDefaultTypeInternal _Odometry_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR DistanceSensor::DistanceSensor(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.minimum_distance_m_)*/ 0
-
-  , /*decltype(_impl_.maximum_distance_m_)*/ 0
-
-  , /*decltype(_impl_.current_distance_m_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct DistanceSensorDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR DistanceSensorDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~DistanceSensorDefaultTypeInternal() {}
-  union {
-    DistanceSensor _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DistanceSensorDefaultTypeInternal _DistanceSensor_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR ScaledPressure::ScaledPressure(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.timestamp_us_)*/ ::uint64_t{0u}
-
-  , /*decltype(_impl_.absolute_pressure_hpa_)*/ 0
-
-  , /*decltype(_impl_.differential_pressure_hpa_)*/ 0
-
-  , /*decltype(_impl_.temperature_deg_)*/ 0
-
-  , /*decltype(_impl_.differential_pressure_temperature_deg_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct ScaledPressureDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ScaledPressureDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~ScaledPressureDefaultTypeInternal() {}
-  union {
-    ScaledPressure _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ScaledPressureDefaultTypeInternal _ScaledPressure_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR PositionNed::PositionNed(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.north_m_)*/ 0
-
-  , /*decltype(_impl_.east_m_)*/ 0
-
-  , /*decltype(_impl_.down_m_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct PositionNedDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PositionNedDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PositionNedDefaultTypeInternal() {}
-  union {
-    PositionNed _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PositionNedDefaultTypeInternal _PositionNed_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR VelocityNed::VelocityNed(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.north_m_s_)*/ 0
-
-  , /*decltype(_impl_.east_m_s_)*/ 0
-
-  , /*decltype(_impl_.down_m_s_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
+PROTOBUF_CONSTEXPR VelocityNed::VelocityNed(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
 struct VelocityNedDefaultTypeInternal {
   PROTOBUF_CONSTEXPR VelocityNedDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~VelocityNedDefaultTypeInternal() {}
@@ -989,155 +44,39 @@ struct VelocityNedDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 VelocityNedDefaultTypeInternal _VelocityNed_default_instance_;
+
+inline constexpr VelocityBody::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : x_m_s_{0},
+        y_m_s_{0},
+        z_m_s_{0},
+        _cached_size_{0} {}
+
 template <typename>
-PROTOBUF_CONSTEXPR PositionVelocityNed::PositionVelocityNed(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.position_)*/nullptr
-  , /*decltype(_impl_.velocity_)*/nullptr} {}
-struct PositionVelocityNedDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PositionVelocityNedDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PositionVelocityNedDefaultTypeInternal() {}
+PROTOBUF_CONSTEXPR VelocityBody::VelocityBody(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct VelocityBodyDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR VelocityBodyDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~VelocityBodyDefaultTypeInternal() {}
   union {
-    PositionVelocityNed _instance;
+    VelocityBody _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PositionVelocityNedDefaultTypeInternal _PositionVelocityNed_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 VelocityBodyDefaultTypeInternal _VelocityBody_default_instance_;
+
+inline constexpr TelemetryServerResult::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : result_str_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        result_{static_cast< ::mavsdk::rpc::telemetry_server::TelemetryServerResult_Result >(0)},
+        _cached_size_{0} {}
+
 template <typename>
-PROTOBUF_CONSTEXPR GroundTruth::GroundTruth(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.latitude_deg_)*/ 0
-
-  , /*decltype(_impl_.longitude_deg_)*/ 0
-
-  , /*decltype(_impl_.absolute_altitude_m_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct GroundTruthDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR GroundTruthDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~GroundTruthDefaultTypeInternal() {}
-  union {
-    GroundTruth _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GroundTruthDefaultTypeInternal _GroundTruth_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR FixedwingMetrics::FixedwingMetrics(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.airspeed_m_s_)*/ 0
-
-  , /*decltype(_impl_.throttle_percentage_)*/ 0
-
-  , /*decltype(_impl_.climb_rate_m_s_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct FixedwingMetricsDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR FixedwingMetricsDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~FixedwingMetricsDefaultTypeInternal() {}
-  union {
-    FixedwingMetrics _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FixedwingMetricsDefaultTypeInternal _FixedwingMetrics_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR AccelerationFrd::AccelerationFrd(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.forward_m_s2_)*/ 0
-
-  , /*decltype(_impl_.right_m_s2_)*/ 0
-
-  , /*decltype(_impl_.down_m_s2_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct AccelerationFrdDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR AccelerationFrdDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~AccelerationFrdDefaultTypeInternal() {}
-  union {
-    AccelerationFrd _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AccelerationFrdDefaultTypeInternal _AccelerationFrd_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR AngularVelocityFrd::AngularVelocityFrd(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.forward_rad_s_)*/ 0
-
-  , /*decltype(_impl_.right_rad_s_)*/ 0
-
-  , /*decltype(_impl_.down_rad_s_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct AngularVelocityFrdDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR AngularVelocityFrdDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~AngularVelocityFrdDefaultTypeInternal() {}
-  union {
-    AngularVelocityFrd _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AngularVelocityFrdDefaultTypeInternal _AngularVelocityFrd_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR MagneticFieldFrd::MagneticFieldFrd(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.forward_gauss_)*/ 0
-
-  , /*decltype(_impl_.right_gauss_)*/ 0
-
-  , /*decltype(_impl_.down_gauss_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct MagneticFieldFrdDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR MagneticFieldFrdDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~MagneticFieldFrdDefaultTypeInternal() {}
-  union {
-    MagneticFieldFrd _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MagneticFieldFrdDefaultTypeInternal _MagneticFieldFrd_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR Imu::Imu(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.acceleration_frd_)*/nullptr
-  , /*decltype(_impl_.angular_velocity_frd_)*/nullptr
-  , /*decltype(_impl_.magnetic_field_frd_)*/nullptr
-  , /*decltype(_impl_.timestamp_us_)*/ ::uint64_t{0u}
-
-  , /*decltype(_impl_.temperature_degc_)*/ 0
-} {}
-struct ImuDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ImuDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~ImuDefaultTypeInternal() {}
-  union {
-    Imu _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ImuDefaultTypeInternal _Imu_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR TelemetryServerResult::TelemetryServerResult(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.result_str_)*/ {
-    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
-  }
-
-  , /*decltype(_impl_.result_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
+PROTOBUF_CONSTEXPR TelemetryServerResult::TelemetryServerResult(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
 struct TelemetryServerResultDefaultTypeInternal {
   PROTOBUF_CONSTEXPR TelemetryServerResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~TelemetryServerResultDefaultTypeInternal() {}
@@ -1148,6 +87,1184 @@ struct TelemetryServerResultDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TelemetryServerResultDefaultTypeInternal _TelemetryServerResult_default_instance_;
+
+inline constexpr StatusText::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : text_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        type_{static_cast< ::mavsdk::rpc::telemetry_server::StatusTextType >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR StatusText::StatusText(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct StatusTextDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR StatusTextDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~StatusTextDefaultTypeInternal() {}
+  union {
+    StatusText _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StatusTextDefaultTypeInternal _StatusText_default_instance_;
+
+inline constexpr ScaledPressure::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : timestamp_us_{::uint64_t{0u}},
+        absolute_pressure_hpa_{0},
+        differential_pressure_hpa_{0},
+        temperature_deg_{0},
+        differential_pressure_temperature_deg_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ScaledPressure::ScaledPressure(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct ScaledPressureDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ScaledPressureDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ScaledPressureDefaultTypeInternal() {}
+  union {
+    ScaledPressure _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ScaledPressureDefaultTypeInternal _ScaledPressure_default_instance_;
+
+inline constexpr RcStatus::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : was_available_once_{false},
+        is_available_{false},
+        signal_strength_percent_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RcStatus::RcStatus(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct RcStatusDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RcStatusDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RcStatusDefaultTypeInternal() {}
+  union {
+    RcStatus _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RcStatusDefaultTypeInternal _RcStatus_default_instance_;
+
+inline constexpr RawGps::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : timestamp_us_{::uint64_t{0u}},
+        latitude_deg_{0},
+        longitude_deg_{0},
+        absolute_altitude_m_{0},
+        hdop_{0},
+        vdop_{0},
+        velocity_m_s_{0},
+        cog_deg_{0},
+        altitude_ellipsoid_m_{0},
+        horizontal_uncertainty_m_{0},
+        vertical_uncertainty_m_{0},
+        velocity_uncertainty_m_s_{0},
+        heading_uncertainty_deg_{0},
+        yaw_deg_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RawGps::RawGps(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct RawGpsDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RawGpsDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RawGpsDefaultTypeInternal() {}
+  union {
+    RawGps _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RawGpsDefaultTypeInternal _RawGps_default_instance_;
+
+inline constexpr Quaternion::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : w_{0},
+        x_{0},
+        y_{0},
+        z_{0},
+        timestamp_us_{::uint64_t{0u}},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR Quaternion::Quaternion(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct QuaternionDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR QuaternionDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~QuaternionDefaultTypeInternal() {}
+  union {
+    Quaternion _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 QuaternionDefaultTypeInternal _Quaternion_default_instance_;
+
+inline constexpr PublishUnixEpochTimeRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : time_us_{::uint64_t{0u}},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishUnixEpochTimeRequest::PublishUnixEpochTimeRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishUnixEpochTimeRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishUnixEpochTimeRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishUnixEpochTimeRequestDefaultTypeInternal() {}
+  union {
+    PublishUnixEpochTimeRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishUnixEpochTimeRequestDefaultTypeInternal _PublishUnixEpochTimeRequest_default_instance_;
+
+inline constexpr PublishLandedStateRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : landed_state_{static_cast< ::mavsdk::rpc::telemetry_server::LandedState >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishLandedStateRequest::PublishLandedStateRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishLandedStateRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishLandedStateRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishLandedStateRequestDefaultTypeInternal() {}
+  union {
+    PublishLandedStateRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishLandedStateRequestDefaultTypeInternal _PublishLandedStateRequest_default_instance_;
+
+inline constexpr PublishInAirRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : is_in_air_{false},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishInAirRequest::PublishInAirRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishInAirRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishInAirRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishInAirRequestDefaultTypeInternal() {}
+  union {
+    PublishInAirRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishInAirRequestDefaultTypeInternal _PublishInAirRequest_default_instance_;
+
+inline constexpr PublishExtendedSysStateRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : vtol_state_{static_cast< ::mavsdk::rpc::telemetry_server::VtolState >(0)},
+        landed_state_{static_cast< ::mavsdk::rpc::telemetry_server::LandedState >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishExtendedSysStateRequest::PublishExtendedSysStateRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishExtendedSysStateRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishExtendedSysStateRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishExtendedSysStateRequestDefaultTypeInternal() {}
+  union {
+    PublishExtendedSysStateRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishExtendedSysStateRequestDefaultTypeInternal _PublishExtendedSysStateRequest_default_instance_;
+
+inline constexpr PositionNed::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : north_m_{0},
+        east_m_{0},
+        down_m_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PositionNed::PositionNed(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PositionNedDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PositionNedDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PositionNedDefaultTypeInternal() {}
+  union {
+    PositionNed _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PositionNedDefaultTypeInternal _PositionNed_default_instance_;
+
+inline constexpr PositionBody::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : x_m_{0},
+        y_m_{0},
+        z_m_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PositionBody::PositionBody(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PositionBodyDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PositionBodyDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PositionBodyDefaultTypeInternal() {}
+  union {
+    PositionBody _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PositionBodyDefaultTypeInternal _PositionBody_default_instance_;
+
+inline constexpr Position::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : latitude_deg_{0},
+        longitude_deg_{0},
+        absolute_altitude_m_{0},
+        relative_altitude_m_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR Position::Position(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PositionDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PositionDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PositionDefaultTypeInternal() {}
+  union {
+    Position _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PositionDefaultTypeInternal _Position_default_instance_;
+
+inline constexpr MagneticFieldFrd::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : forward_gauss_{0},
+        right_gauss_{0},
+        down_gauss_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR MagneticFieldFrd::MagneticFieldFrd(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct MagneticFieldFrdDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR MagneticFieldFrdDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~MagneticFieldFrdDefaultTypeInternal() {}
+  union {
+    MagneticFieldFrd _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MagneticFieldFrdDefaultTypeInternal _MagneticFieldFrd_default_instance_;
+
+inline constexpr Heading::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : heading_deg_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR Heading::Heading(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct HeadingDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR HeadingDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~HeadingDefaultTypeInternal() {}
+  union {
+    Heading _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 HeadingDefaultTypeInternal _Heading_default_instance_;
+
+inline constexpr GroundTruth::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : latitude_deg_{0},
+        longitude_deg_{0},
+        absolute_altitude_m_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR GroundTruth::GroundTruth(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct GroundTruthDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GroundTruthDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GroundTruthDefaultTypeInternal() {}
+  union {
+    GroundTruth _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GroundTruthDefaultTypeInternal _GroundTruth_default_instance_;
+
+inline constexpr GpsInfo::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : num_satellites_{0},
+        fix_type_{static_cast< ::mavsdk::rpc::telemetry_server::FixType >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR GpsInfo::GpsInfo(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct GpsInfoDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GpsInfoDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GpsInfoDefaultTypeInternal() {}
+  union {
+    GpsInfo _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GpsInfoDefaultTypeInternal _GpsInfo_default_instance_;
+
+inline constexpr FixedwingMetrics::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : airspeed_m_s_{0},
+        throttle_percentage_{0},
+        climb_rate_m_s_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR FixedwingMetrics::FixedwingMetrics(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct FixedwingMetricsDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR FixedwingMetricsDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~FixedwingMetricsDefaultTypeInternal() {}
+  union {
+    FixedwingMetrics _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FixedwingMetricsDefaultTypeInternal _FixedwingMetrics_default_instance_;
+
+inline constexpr EulerAngle::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : roll_deg_{0},
+        pitch_deg_{0},
+        timestamp_us_{::uint64_t{0u}},
+        yaw_deg_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR EulerAngle::EulerAngle(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct EulerAngleDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR EulerAngleDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~EulerAngleDefaultTypeInternal() {}
+  union {
+    EulerAngle _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 EulerAngleDefaultTypeInternal _EulerAngle_default_instance_;
+
+inline constexpr DistanceSensor::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : minimum_distance_m_{0},
+        maximum_distance_m_{0},
+        current_distance_m_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR DistanceSensor::DistanceSensor(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct DistanceSensorDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR DistanceSensorDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~DistanceSensorDefaultTypeInternal() {}
+  union {
+    DistanceSensor _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DistanceSensorDefaultTypeInternal _DistanceSensor_default_instance_;
+
+inline constexpr Covariance::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : covariance_matrix_{},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR Covariance::Covariance(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct CovarianceDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CovarianceDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CovarianceDefaultTypeInternal() {}
+  union {
+    Covariance _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CovarianceDefaultTypeInternal _Covariance_default_instance_;
+
+inline constexpr Battery::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : voltage_v_{0},
+        remaining_percent_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR Battery::Battery(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct BatteryDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR BatteryDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~BatteryDefaultTypeInternal() {}
+  union {
+    Battery _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 BatteryDefaultTypeInternal _Battery_default_instance_;
+
+inline constexpr AngularVelocityFrd::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : forward_rad_s_{0},
+        right_rad_s_{0},
+        down_rad_s_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR AngularVelocityFrd::AngularVelocityFrd(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct AngularVelocityFrdDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR AngularVelocityFrdDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~AngularVelocityFrdDefaultTypeInternal() {}
+  union {
+    AngularVelocityFrd _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AngularVelocityFrdDefaultTypeInternal _AngularVelocityFrd_default_instance_;
+
+inline constexpr AngularVelocityBody::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : roll_rad_s_{0},
+        pitch_rad_s_{0},
+        yaw_rad_s_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR AngularVelocityBody::AngularVelocityBody(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct AngularVelocityBodyDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR AngularVelocityBodyDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~AngularVelocityBodyDefaultTypeInternal() {}
+  union {
+    AngularVelocityBody _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AngularVelocityBodyDefaultTypeInternal _AngularVelocityBody_default_instance_;
+
+inline constexpr ActuatorOutputStatus::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : actuator_{},
+        active_{0u},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ActuatorOutputStatus::ActuatorOutputStatus(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct ActuatorOutputStatusDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ActuatorOutputStatusDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ActuatorOutputStatusDefaultTypeInternal() {}
+  union {
+    ActuatorOutputStatus _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ActuatorOutputStatusDefaultTypeInternal _ActuatorOutputStatus_default_instance_;
+
+inline constexpr ActuatorControlTarget::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : controls_{},
+        group_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ActuatorControlTarget::ActuatorControlTarget(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct ActuatorControlTargetDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ActuatorControlTargetDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ActuatorControlTargetDefaultTypeInternal() {}
+  union {
+    ActuatorControlTarget _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ActuatorControlTargetDefaultTypeInternal _ActuatorControlTarget_default_instance_;
+
+inline constexpr AccelerationFrd::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : forward_m_s2_{0},
+        right_m_s2_{0},
+        down_m_s2_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR AccelerationFrd::AccelerationFrd(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct AccelerationFrdDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR AccelerationFrdDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~AccelerationFrdDefaultTypeInternal() {}
+  union {
+    AccelerationFrd _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AccelerationFrdDefaultTypeInternal _AccelerationFrd_default_instance_;
+
+inline constexpr PublishUnixEpochTimeResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        telemetry_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishUnixEpochTimeResponse::PublishUnixEpochTimeResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishUnixEpochTimeResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishUnixEpochTimeResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishUnixEpochTimeResponseDefaultTypeInternal() {}
+  union {
+    PublishUnixEpochTimeResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishUnixEpochTimeResponseDefaultTypeInternal _PublishUnixEpochTimeResponse_default_instance_;
+
+inline constexpr PublishSysStatusResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        telemetry_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishSysStatusResponse::PublishSysStatusResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishSysStatusResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishSysStatusResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishSysStatusResponseDefaultTypeInternal() {}
+  union {
+    PublishSysStatusResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishSysStatusResponseDefaultTypeInternal _PublishSysStatusResponse_default_instance_;
+
+inline constexpr PublishSysStatusRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        battery_{nullptr},
+        rc_receiver_status_{false},
+        gyro_status_{false},
+        accel_status_{false},
+        mag_status_{false},
+        gps_status_{false} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishSysStatusRequest::PublishSysStatusRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishSysStatusRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishSysStatusRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishSysStatusRequestDefaultTypeInternal() {}
+  union {
+    PublishSysStatusRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishSysStatusRequestDefaultTypeInternal _PublishSysStatusRequest_default_instance_;
+
+inline constexpr PublishStatusTextResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        telemetry_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishStatusTextResponse::PublishStatusTextResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishStatusTextResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishStatusTextResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishStatusTextResponseDefaultTypeInternal() {}
+  union {
+    PublishStatusTextResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishStatusTextResponseDefaultTypeInternal _PublishStatusTextResponse_default_instance_;
+
+inline constexpr PublishStatusTextRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        status_text_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishStatusTextRequest::PublishStatusTextRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishStatusTextRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishStatusTextRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishStatusTextRequestDefaultTypeInternal() {}
+  union {
+    PublishStatusTextRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishStatusTextRequestDefaultTypeInternal _PublishStatusTextRequest_default_instance_;
+
+inline constexpr PublishScaledImuResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        telemetry_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishScaledImuResponse::PublishScaledImuResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishScaledImuResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishScaledImuResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishScaledImuResponseDefaultTypeInternal() {}
+  union {
+    PublishScaledImuResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishScaledImuResponseDefaultTypeInternal _PublishScaledImuResponse_default_instance_;
+
+inline constexpr PublishRcStatusRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        rc_status_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishRcStatusRequest::PublishRcStatusRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishRcStatusRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishRcStatusRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishRcStatusRequestDefaultTypeInternal() {}
+  union {
+    PublishRcStatusRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishRcStatusRequestDefaultTypeInternal _PublishRcStatusRequest_default_instance_;
+
+inline constexpr PublishRawImuResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        telemetry_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishRawImuResponse::PublishRawImuResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishRawImuResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishRawImuResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishRawImuResponseDefaultTypeInternal() {}
+  union {
+    PublishRawImuResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishRawImuResponseDefaultTypeInternal _PublishRawImuResponse_default_instance_;
+
+inline constexpr PublishRawGpsResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        telemetry_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishRawGpsResponse::PublishRawGpsResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishRawGpsResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishRawGpsResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishRawGpsResponseDefaultTypeInternal() {}
+  union {
+    PublishRawGpsResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishRawGpsResponseDefaultTypeInternal _PublishRawGpsResponse_default_instance_;
+
+inline constexpr PublishRawGpsRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        raw_gps_{nullptr},
+        gps_info_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishRawGpsRequest::PublishRawGpsRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishRawGpsRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishRawGpsRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishRawGpsRequestDefaultTypeInternal() {}
+  union {
+    PublishRawGpsRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishRawGpsRequestDefaultTypeInternal _PublishRawGpsRequest_default_instance_;
+
+inline constexpr PublishPositionVelocityNedResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        telemetry_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishPositionVelocityNedResponse::PublishPositionVelocityNedResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishPositionVelocityNedResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishPositionVelocityNedResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishPositionVelocityNedResponseDefaultTypeInternal() {}
+  union {
+    PublishPositionVelocityNedResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishPositionVelocityNedResponseDefaultTypeInternal _PublishPositionVelocityNedResponse_default_instance_;
+
+inline constexpr PublishPositionResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        telemetry_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishPositionResponse::PublishPositionResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishPositionResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishPositionResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishPositionResponseDefaultTypeInternal() {}
+  union {
+    PublishPositionResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishPositionResponseDefaultTypeInternal _PublishPositionResponse_default_instance_;
+
+inline constexpr PublishPositionRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        position_{nullptr},
+        velocity_ned_{nullptr},
+        heading_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishPositionRequest::PublishPositionRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishPositionRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishPositionRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishPositionRequestDefaultTypeInternal() {}
+  union {
+    PublishPositionRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishPositionRequestDefaultTypeInternal _PublishPositionRequest_default_instance_;
+
+inline constexpr PublishOdometryResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        telemetry_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishOdometryResponse::PublishOdometryResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishOdometryResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishOdometryResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishOdometryResponseDefaultTypeInternal() {}
+  union {
+    PublishOdometryResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishOdometryResponseDefaultTypeInternal _PublishOdometryResponse_default_instance_;
+
+inline constexpr PublishImuResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        telemetry_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishImuResponse::PublishImuResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishImuResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishImuResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishImuResponseDefaultTypeInternal() {}
+  union {
+    PublishImuResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishImuResponseDefaultTypeInternal _PublishImuResponse_default_instance_;
+
+inline constexpr PublishHomeResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        telemetry_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishHomeResponse::PublishHomeResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishHomeResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishHomeResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishHomeResponseDefaultTypeInternal() {}
+  union {
+    PublishHomeResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishHomeResponseDefaultTypeInternal _PublishHomeResponse_default_instance_;
+
+inline constexpr PublishHomeRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        home_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishHomeRequest::PublishHomeRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishHomeRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishHomeRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishHomeRequestDefaultTypeInternal() {}
+  union {
+    PublishHomeRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishHomeRequestDefaultTypeInternal _PublishHomeRequest_default_instance_;
+
+inline constexpr PublishGroundTruthResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        telemetry_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishGroundTruthResponse::PublishGroundTruthResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishGroundTruthResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishGroundTruthResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishGroundTruthResponseDefaultTypeInternal() {}
+  union {
+    PublishGroundTruthResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishGroundTruthResponseDefaultTypeInternal _PublishGroundTruthResponse_default_instance_;
+
+inline constexpr PublishGroundTruthRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        ground_truth_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishGroundTruthRequest::PublishGroundTruthRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishGroundTruthRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishGroundTruthRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishGroundTruthRequestDefaultTypeInternal() {}
+  union {
+    PublishGroundTruthRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishGroundTruthRequestDefaultTypeInternal _PublishGroundTruthRequest_default_instance_;
+
+inline constexpr PublishExtendedSysStateResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        telemetry_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishExtendedSysStateResponse::PublishExtendedSysStateResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishExtendedSysStateResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishExtendedSysStateResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishExtendedSysStateResponseDefaultTypeInternal() {}
+  union {
+    PublishExtendedSysStateResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishExtendedSysStateResponseDefaultTypeInternal _PublishExtendedSysStateResponse_default_instance_;
+
+inline constexpr PublishDistanceSensorResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        telemetry_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishDistanceSensorResponse::PublishDistanceSensorResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishDistanceSensorResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishDistanceSensorResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishDistanceSensorResponseDefaultTypeInternal() {}
+  union {
+    PublishDistanceSensorResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishDistanceSensorResponseDefaultTypeInternal _PublishDistanceSensorResponse_default_instance_;
+
+inline constexpr PublishDistanceSensorRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        distance_sensor_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishDistanceSensorRequest::PublishDistanceSensorRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishDistanceSensorRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishDistanceSensorRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishDistanceSensorRequestDefaultTypeInternal() {}
+  union {
+    PublishDistanceSensorRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishDistanceSensorRequestDefaultTypeInternal _PublishDistanceSensorRequest_default_instance_;
+
+inline constexpr PublishBatteryResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        telemetry_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishBatteryResponse::PublishBatteryResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishBatteryResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishBatteryResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishBatteryResponseDefaultTypeInternal() {}
+  union {
+    PublishBatteryResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishBatteryResponseDefaultTypeInternal _PublishBatteryResponse_default_instance_;
+
+inline constexpr PublishBatteryRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        battery_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishBatteryRequest::PublishBatteryRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishBatteryRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishBatteryRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishBatteryRequestDefaultTypeInternal() {}
+  union {
+    PublishBatteryRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishBatteryRequestDefaultTypeInternal _PublishBatteryRequest_default_instance_;
+
+inline constexpr PositionVelocityNed::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        position_{nullptr},
+        velocity_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PositionVelocityNed::PositionVelocityNed(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PositionVelocityNedDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PositionVelocityNedDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PositionVelocityNedDefaultTypeInternal() {}
+  union {
+    PositionVelocityNed _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PositionVelocityNedDefaultTypeInternal _PositionVelocityNed_default_instance_;
+
+inline constexpr Odometry::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        position_body_{nullptr},
+        q_{nullptr},
+        velocity_body_{nullptr},
+        angular_velocity_body_{nullptr},
+        pose_covariance_{nullptr},
+        velocity_covariance_{nullptr},
+        time_usec_{::uint64_t{0u}},
+        frame_id_{static_cast< ::mavsdk::rpc::telemetry_server::Odometry_MavFrame >(0)},
+        child_frame_id_{static_cast< ::mavsdk::rpc::telemetry_server::Odometry_MavFrame >(0)} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR Odometry::Odometry(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct OdometryDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR OdometryDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~OdometryDefaultTypeInternal() {}
+  union {
+    Odometry _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 OdometryDefaultTypeInternal _Odometry_default_instance_;
+
+inline constexpr Imu::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        acceleration_frd_{nullptr},
+        angular_velocity_frd_{nullptr},
+        magnetic_field_frd_{nullptr},
+        timestamp_us_{::uint64_t{0u}},
+        temperature_degc_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR Imu::Imu(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct ImuDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ImuDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ImuDefaultTypeInternal() {}
+  union {
+    Imu _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ImuDefaultTypeInternal _Imu_default_instance_;
+
+inline constexpr PublishScaledImuRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        imu_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishScaledImuRequest::PublishScaledImuRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishScaledImuRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishScaledImuRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishScaledImuRequestDefaultTypeInternal() {}
+  union {
+    PublishScaledImuRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishScaledImuRequestDefaultTypeInternal _PublishScaledImuRequest_default_instance_;
+
+inline constexpr PublishRawImuRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        imu_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishRawImuRequest::PublishRawImuRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishRawImuRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishRawImuRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishRawImuRequestDefaultTypeInternal() {}
+  union {
+    PublishRawImuRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishRawImuRequestDefaultTypeInternal _PublishRawImuRequest_default_instance_;
+
+inline constexpr PublishPositionVelocityNedRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        position_velocity_ned_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishPositionVelocityNedRequest::PublishPositionVelocityNedRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishPositionVelocityNedRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishPositionVelocityNedRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishPositionVelocityNedRequestDefaultTypeInternal() {}
+  union {
+    PublishPositionVelocityNedRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishPositionVelocityNedRequestDefaultTypeInternal _PublishPositionVelocityNedRequest_default_instance_;
+
+inline constexpr PublishOdometryRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        odometry_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishOdometryRequest::PublishOdometryRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishOdometryRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishOdometryRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishOdometryRequestDefaultTypeInternal() {}
+  union {
+    PublishOdometryRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishOdometryRequestDefaultTypeInternal _PublishOdometryRequest_default_instance_;
+
+inline constexpr PublishImuRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        imu_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishImuRequest::PublishImuRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PublishImuRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishImuRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishImuRequestDefaultTypeInternal() {}
+  union {
+    PublishImuRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishImuRequestDefaultTypeInternal _PublishImuRequest_default_instance_;
 }  // namespace telemetry_server
 }  // namespace rpc
 }  // namespace mavsdk
@@ -1842,67 +1959,67 @@ const ::uint32_t TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto::of
 
 static const ::_pbi::MigrationSchema
     schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-        { 0, 11, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishPositionRequest)},
-        { 14, 23, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishHomeRequest)},
-        { 24, 38, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishSysStatusRequest)},
-        { 44, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishExtendedSysStateRequest)},
-        { 54, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishInAirRequest)},
-        { 63, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishLandedStateRequest)},
-        { 72, 82, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishRawGpsRequest)},
-        { 84, 93, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishBatteryRequest)},
-        { 94, 103, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishRcStatusRequest)},
-        { 104, 113, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishStatusTextRequest)},
-        { 114, 123, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishOdometryRequest)},
-        { 124, 133, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishPositionVelocityNedRequest)},
-        { 134, 143, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishGroundTruthRequest)},
-        { 144, 153, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishImuRequest)},
-        { 154, 163, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishScaledImuRequest)},
-        { 164, 173, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishRawImuRequest)},
-        { 174, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeRequest)},
-        { 183, 192, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest)},
-        { 193, 202, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishPositionResponse)},
-        { 203, 212, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishHomeResponse)},
-        { 213, 222, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishSysStatusResponse)},
-        { 223, 232, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishExtendedSysStateResponse)},
-        { 233, 242, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishRawGpsResponse)},
-        { 243, 252, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishBatteryResponse)},
-        { 253, 262, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishStatusTextResponse)},
-        { 263, 272, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishOdometryResponse)},
-        { 273, 282, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishPositionVelocityNedResponse)},
-        { 283, 292, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishGroundTruthResponse)},
-        { 293, 302, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishImuResponse)},
-        { 303, 312, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishScaledImuResponse)},
-        { 313, 322, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishRawImuResponse)},
-        { 323, 332, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeResponse)},
-        { 333, 342, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse)},
-        { 343, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Position)},
-        { 355, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Heading)},
-        { 364, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Quaternion)},
-        { 377, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::EulerAngle)},
-        { 389, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::AngularVelocityBody)},
-        { 400, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::GpsInfo)},
-        { 410, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::RawGps)},
-        { 432, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Battery)},
-        { 442, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::RcStatus)},
-        { 453, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::StatusText)},
-        { 463, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::ActuatorControlTarget)},
-        { 473, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::ActuatorOutputStatus)},
-        { 483, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Covariance)},
-        { 492, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::VelocityBody)},
-        { 503, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::PositionBody)},
-        { 514, 531, -1, sizeof(::mavsdk::rpc::telemetry_server::Odometry)},
-        { 540, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::DistanceSensor)},
-        { 551, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::ScaledPressure)},
-        { 564, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::PositionNed)},
-        { 575, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::VelocityNed)},
-        { 586, 596, -1, sizeof(::mavsdk::rpc::telemetry_server::PositionVelocityNed)},
-        { 598, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::GroundTruth)},
-        { 609, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::FixedwingMetrics)},
-        { 620, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::AccelerationFrd)},
-        { 631, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::AngularVelocityFrd)},
-        { 642, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::MagneticFieldFrd)},
-        { 653, 666, -1, sizeof(::mavsdk::rpc::telemetry_server::Imu)},
-        { 671, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::TelemetryServerResult)},
+        {0, 11, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishPositionRequest)},
+        {14, 23, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishHomeRequest)},
+        {24, 38, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishSysStatusRequest)},
+        {44, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishExtendedSysStateRequest)},
+        {54, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishInAirRequest)},
+        {63, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishLandedStateRequest)},
+        {72, 82, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishRawGpsRequest)},
+        {84, 93, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishBatteryRequest)},
+        {94, 103, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishRcStatusRequest)},
+        {104, 113, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishStatusTextRequest)},
+        {114, 123, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishOdometryRequest)},
+        {124, 133, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishPositionVelocityNedRequest)},
+        {134, 143, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishGroundTruthRequest)},
+        {144, 153, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishImuRequest)},
+        {154, 163, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishScaledImuRequest)},
+        {164, 173, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishRawImuRequest)},
+        {174, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeRequest)},
+        {183, 192, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest)},
+        {193, 202, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishPositionResponse)},
+        {203, 212, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishHomeResponse)},
+        {213, 222, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishSysStatusResponse)},
+        {223, 232, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishExtendedSysStateResponse)},
+        {233, 242, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishRawGpsResponse)},
+        {243, 252, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishBatteryResponse)},
+        {253, 262, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishStatusTextResponse)},
+        {263, 272, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishOdometryResponse)},
+        {273, 282, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishPositionVelocityNedResponse)},
+        {283, 292, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishGroundTruthResponse)},
+        {293, 302, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishImuResponse)},
+        {303, 312, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishScaledImuResponse)},
+        {313, 322, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishRawImuResponse)},
+        {323, 332, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeResponse)},
+        {333, 342, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse)},
+        {343, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Position)},
+        {355, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Heading)},
+        {364, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Quaternion)},
+        {377, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::EulerAngle)},
+        {389, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::AngularVelocityBody)},
+        {400, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::GpsInfo)},
+        {410, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::RawGps)},
+        {432, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Battery)},
+        {442, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::RcStatus)},
+        {453, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::StatusText)},
+        {463, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::ActuatorControlTarget)},
+        {473, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::ActuatorOutputStatus)},
+        {483, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Covariance)},
+        {492, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::VelocityBody)},
+        {503, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::PositionBody)},
+        {514, 531, -1, sizeof(::mavsdk::rpc::telemetry_server::Odometry)},
+        {540, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::DistanceSensor)},
+        {551, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::ScaledPressure)},
+        {564, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::PositionNed)},
+        {575, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::VelocityNed)},
+        {586, 596, -1, sizeof(::mavsdk::rpc::telemetry_server::PositionVelocityNed)},
+        {598, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::GroundTruth)},
+        {609, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::FixedwingMetrics)},
+        {620, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::AccelerationFrd)},
+        {631, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::AngularVelocityFrd)},
+        {642, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::MagneticFieldFrd)},
+        {653, 666, -1, sizeof(::mavsdk::rpc::telemetry_server::Imu)},
+        {671, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::TelemetryServerResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -2276,20 +2393,14 @@ static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_telemetry_5fserver_2ftele
 namespace mavsdk {
 namespace rpc {
 namespace telemetry_server {
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Odometry_MavFrame_descriptor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto);
+const ::google::protobuf::EnumDescriptor* Odometry_MavFrame_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto);
   return file_level_enum_descriptors_telemetry_5fserver_2ftelemetry_5fserver_2eproto[0];
 }
+PROTOBUF_CONSTINIT const uint32_t Odometry_MavFrame_internal_data_[] = {
+    65536u, 32u, 163968u, };
 bool Odometry_MavFrame_IsValid(int value) {
-  switch (value) {
-    case 0:
-    case 8:
-    case 16:
-    case 18:
-      return true;
-    default:
-      return false;
-  }
+  return 0 <= value && value <= 18 && ((327937u >> value) & 1) != 0;
 }
 #if (__cplusplus < 201703) && \
   (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
@@ -2304,24 +2415,14 @@ constexpr int Odometry::MavFrame_ARRAYSIZE;
 
 #endif  // (__cplusplus < 201703) &&
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* TelemetryServerResult_Result_descriptor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto);
+const ::google::protobuf::EnumDescriptor* TelemetryServerResult_Result_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto);
   return file_level_enum_descriptors_telemetry_5fserver_2ftelemetry_5fserver_2eproto[1];
 }
+PROTOBUF_CONSTINIT const uint32_t TelemetryServerResult_Result_internal_data_[] = {
+    524288u, 0u, };
 bool TelemetryServerResult_Result_IsValid(int value) {
-  switch (value) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-      return true;
-    default:
-      return false;
-  }
+  return 0 <= value && value <= 7;
 }
 #if (__cplusplus < 201703) && \
   (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
@@ -2340,74 +2441,41 @@ constexpr int TelemetryServerResult::Result_ARRAYSIZE;
 
 #endif  // (__cplusplus < 201703) &&
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* FixType_descriptor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto);
+const ::google::protobuf::EnumDescriptor* FixType_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto);
   return file_level_enum_descriptors_telemetry_5fserver_2ftelemetry_5fserver_2eproto[2];
 }
+PROTOBUF_CONSTINIT const uint32_t FixType_internal_data_[] = {
+    458752u, 0u, };
 bool FixType_IsValid(int value) {
-  switch (value) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-      return true;
-    default:
-      return false;
-  }
+  return 0 <= value && value <= 6;
 }
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* VtolState_descriptor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto);
+const ::google::protobuf::EnumDescriptor* VtolState_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto);
   return file_level_enum_descriptors_telemetry_5fserver_2ftelemetry_5fserver_2eproto[3];
 }
+PROTOBUF_CONSTINIT const uint32_t VtolState_internal_data_[] = {
+    327680u, 0u, };
 bool VtolState_IsValid(int value) {
-  switch (value) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-      return true;
-    default:
-      return false;
-  }
+  return 0 <= value && value <= 4;
 }
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* StatusTextType_descriptor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto);
+const ::google::protobuf::EnumDescriptor* StatusTextType_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto);
   return file_level_enum_descriptors_telemetry_5fserver_2ftelemetry_5fserver_2eproto[4];
 }
+PROTOBUF_CONSTINIT const uint32_t StatusTextType_internal_data_[] = {
+    524288u, 0u, };
 bool StatusTextType_IsValid(int value) {
-  switch (value) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-      return true;
-    default:
-      return false;
-  }
+  return 0 <= value && value <= 7;
 }
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* LandedState_descriptor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto);
+const ::google::protobuf::EnumDescriptor* LandedState_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto);
   return file_level_enum_descriptors_telemetry_5fserver_2ftelemetry_5fserver_2eproto[5];
 }
+PROTOBUF_CONSTINIT const uint32_t LandedState_internal_data_[] = {
+    327680u, 0u, };
 bool LandedState_IsValid(int value) {
-  switch (value) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-      return true;
-    default:
-      return false;
-  }
+  return 0 <= value && value <= 4;
 }
 // ===================================================================
 
@@ -2430,79 +2498,78 @@ class PublishPositionRequest::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::Position&
-PublishPositionRequest::_Internal::position(const PublishPositionRequest* msg) {
+const ::mavsdk::rpc::telemetry_server::Position& PublishPositionRequest::_Internal::position(const PublishPositionRequest* msg) {
   return *msg->_impl_.position_;
 }
-const ::mavsdk::rpc::telemetry_server::VelocityNed&
-PublishPositionRequest::_Internal::velocity_ned(const PublishPositionRequest* msg) {
+const ::mavsdk::rpc::telemetry_server::VelocityNed& PublishPositionRequest::_Internal::velocity_ned(const PublishPositionRequest* msg) {
   return *msg->_impl_.velocity_ned_;
 }
-const ::mavsdk::rpc::telemetry_server::Heading&
-PublishPositionRequest::_Internal::heading(const PublishPositionRequest* msg) {
+const ::mavsdk::rpc::telemetry_server::Heading& PublishPositionRequest::_Internal::heading(const PublishPositionRequest* msg) {
   return *msg->_impl_.heading_;
 }
-PublishPositionRequest::PublishPositionRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishPositionRequest::PublishPositionRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishPositionRequest)
 }
-PublishPositionRequest::PublishPositionRequest(const PublishPositionRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishPositionRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.position_){nullptr}
-    , decltype(_impl_.velocity_ned_){nullptr}
-    , decltype(_impl_.heading_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishPositionRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.position_ = new ::mavsdk::rpc::telemetry_server::Position(*from._impl_.position_);
-  }
-  if ((from._impl_._has_bits_[0] & 0x00000002u) != 0) {
-    _this->_impl_.velocity_ned_ = new ::mavsdk::rpc::telemetry_server::VelocityNed(*from._impl_.velocity_ned_);
-  }
-  if ((from._impl_._has_bits_[0] & 0x00000004u) != 0) {
-    _this->_impl_.heading_ = new ::mavsdk::rpc::telemetry_server::Heading(*from._impl_.heading_);
-  }
+PublishPositionRequest::PublishPositionRequest(
+    ::google::protobuf::Arena* arena,
+    const PublishPositionRequest& from)
+    : ::google::protobuf::Message(arena) {
+  PublishPositionRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.position_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Position>(arena, *from._impl_.position_)
+                : nullptr;
+  _impl_.velocity_ned_ = (cached_has_bits & 0x00000002u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::VelocityNed>(arena, *from._impl_.velocity_ned_)
+                : nullptr;
+  _impl_.heading_ = (cached_has_bits & 0x00000004u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Heading>(arena, *from._impl_.heading_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishPositionRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishPositionRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishPositionRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.position_){nullptr}
-    , decltype(_impl_.velocity_ned_){nullptr}
-    , decltype(_impl_.heading_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, position_),
+           0,
+           offsetof(Impl_, heading_) -
+               offsetof(Impl_, position_) +
+               sizeof(Impl_::heading_));
 }
-
 PublishPositionRequest::~PublishPositionRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishPositionRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishPositionRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.position_;
-  if (this != internal_default_instance()) delete _impl_.velocity_ned_;
-  if (this != internal_default_instance()) delete _impl_.heading_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.position_;
+  delete _impl_.velocity_ned_;
+  delete _impl_.heading_;
+  _impl_.~Impl_();
 }
 
-void PublishPositionRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishPositionRequest::Clear() {
+PROTOBUF_NOINLINE void PublishPositionRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishPositionRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -2523,98 +2590,94 @@ void PublishPositionRequest::Clear() {
     }
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishPositionRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.Position position = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_position(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.telemetry_server.VelocityNed velocity_ned = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
-          ptr = ctx->ParseMessage(_internal_mutable_velocity_ned(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.telemetry_server.Heading heading = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 26)) {
-          ptr = ctx->ParseMessage(_internal_mutable_heading(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishPositionRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 3, 0, 2> PublishPositionRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishPositionRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    3,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishPositionRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // .mavsdk.rpc.telemetry_server.Position position = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishPositionRequest, _impl_.position_)}},
+    // .mavsdk.rpc.telemetry_server.VelocityNed velocity_ned = 2;
+    {::_pbi::TcParser::FastMtS1,
+     {18, 1, 1, PROTOBUF_FIELD_OFFSET(PublishPositionRequest, _impl_.velocity_ned_)}},
+    // .mavsdk.rpc.telemetry_server.Heading heading = 3;
+    {::_pbi::TcParser::FastMtS1,
+     {26, 2, 2, PROTOBUF_FIELD_OFFSET(PublishPositionRequest, _impl_.heading_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.Position position = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishPositionRequest, _impl_.position_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.telemetry_server.VelocityNed velocity_ned = 2;
+    {PROTOBUF_FIELD_OFFSET(PublishPositionRequest, _impl_.velocity_ned_), _Internal::kHasBitsOffset + 1, 1,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.telemetry_server.Heading heading = 3;
+    {PROTOBUF_FIELD_OFFSET(PublishPositionRequest, _impl_.heading_), _Internal::kHasBitsOffset + 2, 2,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::Position>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::VelocityNed>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::Heading>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishPositionRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishPositionRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.Position position = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::position(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::position(this),
         _Internal::position(this).GetCachedSize(), target, stream);
   }
 
   // .mavsdk.rpc.telemetry_server.VelocityNed velocity_ned = 2;
   if (cached_has_bits & 0x00000002u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(2, _Internal::velocity_ned(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        2, _Internal::velocity_ned(this),
         _Internal::velocity_ned(this).GetCachedSize(), target, stream);
   }
 
   // .mavsdk.rpc.telemetry_server.Heading heading = 3;
   if (cached_has_bits & 0x00000004u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(3, _Internal::heading(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        3, _Internal::heading(this),
         _Internal::heading(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishPositionRequest)
   return target;
@@ -2632,37 +2695,35 @@ failure:
   if (cached_has_bits & 0x00000007u) {
     // .mavsdk.rpc.telemetry_server.Position position = 1;
     if (cached_has_bits & 0x00000001u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.position_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.position_);
     }
 
     // .mavsdk.rpc.telemetry_server.VelocityNed velocity_ned = 2;
     if (cached_has_bits & 0x00000002u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.velocity_ned_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.velocity_ned_);
     }
 
     // .mavsdk.rpc.telemetry_server.Heading heading = 3;
     if (cached_has_bits & 0x00000004u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.heading_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.heading_);
     }
 
   }
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishPositionRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishPositionRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishPositionRequest::_class_data_ = {
+    PublishPositionRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishPositionRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishPositionRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishPositionRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishPositionRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishPositionRequest*>(&to_msg);
   auto& from = static_cast<const PublishPositionRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishPositionRequest)
@@ -2685,7 +2746,7 @@ void PublishPositionRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg,
           from._internal_heading());
     }
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishPositionRequest::CopyFrom(const PublishPositionRequest& from) {
@@ -2695,15 +2756,18 @@ void PublishPositionRequest::CopyFrom(const PublishPositionRequest& from) {
   MergeFrom(from);
 }
 
-bool PublishPositionRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishPositionRequest::IsInitialized() const {
   return true;
 }
 
-void PublishPositionRequest::InternalSwap(PublishPositionRequest* other) {
+::_pbi::CachedSize* PublishPositionRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishPositionRequest::InternalSwap(PublishPositionRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(PublishPositionRequest, _impl_.heading_)
       + sizeof(PublishPositionRequest::_impl_.heading_)
       - PROTOBUF_FIELD_OFFSET(PublishPositionRequest, _impl_.position_)>(
@@ -2711,7 +2775,7 @@ void PublishPositionRequest::InternalSwap(PublishPositionRequest* other) {
           reinterpret_cast<char*>(&other->_impl_.position_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishPositionRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishPositionRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[0]);
@@ -2729,59 +2793,59 @@ class PublishHomeRequest::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::Position&
-PublishHomeRequest::_Internal::home(const PublishHomeRequest* msg) {
+const ::mavsdk::rpc::telemetry_server::Position& PublishHomeRequest::_Internal::home(const PublishHomeRequest* msg) {
   return *msg->_impl_.home_;
 }
-PublishHomeRequest::PublishHomeRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishHomeRequest::PublishHomeRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishHomeRequest)
 }
-PublishHomeRequest::PublishHomeRequest(const PublishHomeRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishHomeRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.home_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishHomeRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.home_ = new ::mavsdk::rpc::telemetry_server::Position(*from._impl_.home_);
-  }
+PublishHomeRequest::PublishHomeRequest(
+    ::google::protobuf::Arena* arena,
+    const PublishHomeRequest& from)
+    : ::google::protobuf::Message(arena) {
+  PublishHomeRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.home_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Position>(arena, *from._impl_.home_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishHomeRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishHomeRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishHomeRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.home_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.home_ = {};
 }
-
 PublishHomeRequest::~PublishHomeRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishHomeRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishHomeRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.home_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.home_;
+  _impl_.~Impl_();
 }
 
-void PublishHomeRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishHomeRequest::Clear() {
+PROTOBUF_NOINLINE void PublishHomeRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishHomeRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -2792,66 +2856,65 @@ void PublishHomeRequest::Clear() {
     _impl_.home_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishHomeRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.Position home = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_home(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishHomeRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishHomeRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishHomeRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishHomeRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.Position home = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishHomeRequest, _impl_.home_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.Position home = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishHomeRequest, _impl_.home_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::Position>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishHomeRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishHomeRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.Position home = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::home(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::home(this),
         _Internal::home(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishHomeRequest)
   return target;
@@ -2868,22 +2931,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.Position home = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.home_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.home_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishHomeRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishHomeRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishHomeRequest::_class_data_ = {
+    PublishHomeRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishHomeRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishHomeRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishHomeRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishHomeRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishHomeRequest*>(&to_msg);
   auto& from = static_cast<const PublishHomeRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishHomeRequest)
@@ -2895,7 +2958,7 @@ void PublishHomeRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, con
     _this->_internal_mutable_home()->::mavsdk::rpc::telemetry_server::Position::MergeFrom(
         from._internal_home());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishHomeRequest::CopyFrom(const PublishHomeRequest& from) {
@@ -2905,18 +2968,21 @@ void PublishHomeRequest::CopyFrom(const PublishHomeRequest& from) {
   MergeFrom(from);
 }
 
-bool PublishHomeRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishHomeRequest::IsInitialized() const {
   return true;
 }
 
-void PublishHomeRequest::InternalSwap(PublishHomeRequest* other) {
+::_pbi::CachedSize* PublishHomeRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishHomeRequest::InternalSwap(PublishHomeRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.home_, other->_impl_.home_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishHomeRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishHomeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[1]);
@@ -2934,82 +3000,71 @@ class PublishSysStatusRequest::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::Battery&
-PublishSysStatusRequest::_Internal::battery(const PublishSysStatusRequest* msg) {
+const ::mavsdk::rpc::telemetry_server::Battery& PublishSysStatusRequest::_Internal::battery(const PublishSysStatusRequest* msg) {
   return *msg->_impl_.battery_;
 }
-PublishSysStatusRequest::PublishSysStatusRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishSysStatusRequest::PublishSysStatusRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishSysStatusRequest)
 }
-PublishSysStatusRequest::PublishSysStatusRequest(const PublishSysStatusRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishSysStatusRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.battery_){nullptr}
-    , decltype(_impl_.rc_receiver_status_) {}
+inline PROTOBUF_NDEBUG_INLINE PublishSysStatusRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-    , decltype(_impl_.gyro_status_) {}
+PublishSysStatusRequest::PublishSysStatusRequest(
+    ::google::protobuf::Arena* arena,
+    const PublishSysStatusRequest& from)
+    : ::google::protobuf::Message(arena) {
+  PublishSysStatusRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.battery_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Battery>(arena, *from._impl_.battery_)
+                : nullptr;
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, rc_receiver_status_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, rc_receiver_status_),
+           offsetof(Impl_, gps_status_) -
+               offsetof(Impl_, rc_receiver_status_) +
+               sizeof(Impl_::gps_status_));
 
-    , decltype(_impl_.accel_status_) {}
-
-    , decltype(_impl_.mag_status_) {}
-
-    , decltype(_impl_.gps_status_) {}
-  };
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.battery_ = new ::mavsdk::rpc::telemetry_server::Battery(*from._impl_.battery_);
-  }
-  ::memcpy(&_impl_.rc_receiver_status_, &from._impl_.rc_receiver_status_,
-    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.gps_status_) -
-    reinterpret_cast<char*>(&_impl_.rc_receiver_status_)) + sizeof(_impl_.gps_status_));
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishSysStatusRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishSysStatusRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishSysStatusRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.battery_){nullptr}
-    , decltype(_impl_.rc_receiver_status_) { false }
-
-    , decltype(_impl_.gyro_status_) { false }
-
-    , decltype(_impl_.accel_status_) { false }
-
-    , decltype(_impl_.mag_status_) { false }
-
-    , decltype(_impl_.gps_status_) { false }
-
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, battery_),
+           0,
+           offsetof(Impl_, gps_status_) -
+               offsetof(Impl_, battery_) +
+               sizeof(Impl_::gps_status_));
 }
-
 PublishSysStatusRequest::~PublishSysStatusRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishSysStatusRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishSysStatusRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.battery_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.battery_;
+  _impl_.~Impl_();
 }
 
-void PublishSysStatusRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishSysStatusRequest::Clear() {
+PROTOBUF_NOINLINE void PublishSysStatusRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishSysStatusRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -3023,105 +3078,90 @@ void PublishSysStatusRequest::Clear() {
       reinterpret_cast<char*>(&_impl_.gps_status_) -
       reinterpret_cast<char*>(&_impl_.rc_receiver_status_)) + sizeof(_impl_.gps_status_));
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishSysStatusRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.Battery battery = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_battery(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // bool rc_receiver_status = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
-          _impl_.rc_receiver_status_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // bool gyro_status = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 24)) {
-          _impl_.gyro_status_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // bool accel_status = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 32)) {
-          _impl_.accel_status_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // bool mag_status = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 40)) {
-          _impl_.mag_status_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // bool gps_status = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 48)) {
-          _impl_.gps_status_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishSysStatusRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 6, 1, 0, 2> PublishSysStatusRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishSysStatusRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    6, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967232,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    6,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishSysStatusRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // .mavsdk.rpc.telemetry_server.Battery battery = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishSysStatusRequest, _impl_.battery_)}},
+    // bool rc_receiver_status = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(PublishSysStatusRequest, _impl_.rc_receiver_status_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(PublishSysStatusRequest, _impl_.rc_receiver_status_)}},
+    // bool gyro_status = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(PublishSysStatusRequest, _impl_.gyro_status_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(PublishSysStatusRequest, _impl_.gyro_status_)}},
+    // bool accel_status = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(PublishSysStatusRequest, _impl_.accel_status_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(PublishSysStatusRequest, _impl_.accel_status_)}},
+    // bool mag_status = 5;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(PublishSysStatusRequest, _impl_.mag_status_), 63>(),
+     {40, 63, 0, PROTOBUF_FIELD_OFFSET(PublishSysStatusRequest, _impl_.mag_status_)}},
+    // bool gps_status = 6;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(PublishSysStatusRequest, _impl_.gps_status_), 63>(),
+     {48, 63, 0, PROTOBUF_FIELD_OFFSET(PublishSysStatusRequest, _impl_.gps_status_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.Battery battery = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishSysStatusRequest, _impl_.battery_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // bool rc_receiver_status = 2;
+    {PROTOBUF_FIELD_OFFSET(PublishSysStatusRequest, _impl_.rc_receiver_status_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // bool gyro_status = 3;
+    {PROTOBUF_FIELD_OFFSET(PublishSysStatusRequest, _impl_.gyro_status_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // bool accel_status = 4;
+    {PROTOBUF_FIELD_OFFSET(PublishSysStatusRequest, _impl_.accel_status_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // bool mag_status = 5;
+    {PROTOBUF_FIELD_OFFSET(PublishSysStatusRequest, _impl_.mag_status_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // bool gps_status = 6;
+    {PROTOBUF_FIELD_OFFSET(PublishSysStatusRequest, _impl_.gps_status_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::Battery>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishSysStatusRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishSysStatusRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.Battery battery = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::battery(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::battery(this),
         _Internal::battery(this).GetCachedSize(), target, stream);
   }
 
@@ -3161,8 +3201,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishSysStatusRequest)
   return target;
@@ -3179,9 +3220,8 @@ failure:
   // .mavsdk.rpc.telemetry_server.Battery battery = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.battery_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.battery_);
   }
 
   // bool rc_receiver_status = 2;
@@ -3212,14 +3252,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishSysStatusRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishSysStatusRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishSysStatusRequest::_class_data_ = {
+    PublishSysStatusRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishSysStatusRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishSysStatusRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishSysStatusRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishSysStatusRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishSysStatusRequest*>(&to_msg);
   auto& from = static_cast<const PublishSysStatusRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishSysStatusRequest)
@@ -3246,7 +3287,7 @@ void PublishSysStatusRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg
   if (from._internal_gps_status() != 0) {
     _this->_internal_set_gps_status(from._internal_gps_status());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishSysStatusRequest::CopyFrom(const PublishSysStatusRequest& from) {
@@ -3256,15 +3297,18 @@ void PublishSysStatusRequest::CopyFrom(const PublishSysStatusRequest& from) {
   MergeFrom(from);
 }
 
-bool PublishSysStatusRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishSysStatusRequest::IsInitialized() const {
   return true;
 }
 
-void PublishSysStatusRequest::InternalSwap(PublishSysStatusRequest* other) {
+::_pbi::CachedSize* PublishSysStatusRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishSysStatusRequest::InternalSwap(PublishSysStatusRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(PublishSysStatusRequest, _impl_.gps_status_)
       + sizeof(PublishSysStatusRequest::_impl_.gps_status_)
       - PROTOBUF_FIELD_OFFSET(PublishSysStatusRequest, _impl_.battery_)>(
@@ -3272,7 +3316,7 @@ void PublishSysStatusRequest::InternalSwap(PublishSysStatusRequest* other) {
           reinterpret_cast<char*>(&other->_impl_.battery_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishSysStatusRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishSysStatusRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[2]);
@@ -3283,48 +3327,43 @@ class PublishExtendedSysStateRequest::_Internal {
  public:
 };
 
-PublishExtendedSysStateRequest::PublishExtendedSysStateRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishExtendedSysStateRequest::PublishExtendedSysStateRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishExtendedSysStateRequest)
 }
-PublishExtendedSysStateRequest::PublishExtendedSysStateRequest(const PublishExtendedSysStateRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishExtendedSysStateRequest)
+PublishExtendedSysStateRequest::PublishExtendedSysStateRequest(
+    ::google::protobuf::Arena* arena, const PublishExtendedSysStateRequest& from)
+    : PublishExtendedSysStateRequest(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE PublishExtendedSysStateRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishExtendedSysStateRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.vtol_state_) { 0 }
-
-    , decltype(_impl_.landed_state_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, vtol_state_),
+           0,
+           offsetof(Impl_, landed_state_) -
+               offsetof(Impl_, vtol_state_) +
+               sizeof(Impl_::landed_state_));
 }
-
 PublishExtendedSysStateRequest::~PublishExtendedSysStateRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishExtendedSysStateRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishExtendedSysStateRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void PublishExtendedSysStateRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishExtendedSysStateRequest::Clear() {
+PROTOBUF_NOINLINE void PublishExtendedSysStateRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishExtendedSysStateRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -3332,63 +3371,58 @@ void PublishExtendedSysStateRequest::Clear() {
   ::memset(&_impl_.vtol_state_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.landed_state_) -
       reinterpret_cast<char*>(&_impl_.vtol_state_)) + sizeof(_impl_.landed_state_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishExtendedSysStateRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.VtolState vtol_state = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-          _internal_set_vtol_state(static_cast<::mavsdk::rpc::telemetry_server::VtolState>(val));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.telemetry_server.LandedState landed_state = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
-          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-          _internal_set_landed_state(static_cast<::mavsdk::rpc::telemetry_server::LandedState>(val));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* PublishExtendedSysStateRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2> PublishExtendedSysStateRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_PublishExtendedSysStateRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.LandedState landed_state = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(PublishExtendedSysStateRequest, _impl_.landed_state_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(PublishExtendedSysStateRequest, _impl_.landed_state_)}},
+    // .mavsdk.rpc.telemetry_server.VtolState vtol_state = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(PublishExtendedSysStateRequest, _impl_.vtol_state_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(PublishExtendedSysStateRequest, _impl_.vtol_state_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.VtolState vtol_state = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishExtendedSysStateRequest, _impl_.vtol_state_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // .mavsdk.rpc.telemetry_server.LandedState landed_state = 2;
+    {PROTOBUF_FIELD_OFFSET(PublishExtendedSysStateRequest, _impl_.landed_state_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* PublishExtendedSysStateRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishExtendedSysStateRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // .mavsdk.rpc.telemetry_server.VtolState vtol_state = 1;
   if (this->_internal_vtol_state() != 0) {
@@ -3405,8 +3439,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishExtendedSysStateRequest)
   return target;
@@ -3435,14 +3470,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishExtendedSysStateRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishExtendedSysStateRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishExtendedSysStateRequest::_class_data_ = {
+    PublishExtendedSysStateRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishExtendedSysStateRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishExtendedSysStateRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishExtendedSysStateRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishExtendedSysStateRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishExtendedSysStateRequest*>(&to_msg);
   auto& from = static_cast<const PublishExtendedSysStateRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishExtendedSysStateRequest)
@@ -3456,7 +3492,7 @@ void PublishExtendedSysStateRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message&
   if (from._internal_landed_state() != 0) {
     _this->_internal_set_landed_state(from._internal_landed_state());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishExtendedSysStateRequest::CopyFrom(const PublishExtendedSysStateRequest& from) {
@@ -3466,14 +3502,17 @@ void PublishExtendedSysStateRequest::CopyFrom(const PublishExtendedSysStateReque
   MergeFrom(from);
 }
 
-bool PublishExtendedSysStateRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishExtendedSysStateRequest::IsInitialized() const {
   return true;
 }
 
-void PublishExtendedSysStateRequest::InternalSwap(PublishExtendedSysStateRequest* other) {
+::_pbi::CachedSize* PublishExtendedSysStateRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishExtendedSysStateRequest::InternalSwap(PublishExtendedSysStateRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(PublishExtendedSysStateRequest, _impl_.landed_state_)
       + sizeof(PublishExtendedSysStateRequest::_impl_.landed_state_)
       - PROTOBUF_FIELD_OFFSET(PublishExtendedSysStateRequest, _impl_.vtol_state_)>(
@@ -3481,7 +3520,7 @@ void PublishExtendedSysStateRequest::InternalSwap(PublishExtendedSysStateRequest
           reinterpret_cast<char*>(&other->_impl_.vtol_state_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishExtendedSysStateRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishExtendedSysStateRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[3]);
@@ -3492,97 +3531,89 @@ class PublishInAirRequest::_Internal {
  public:
 };
 
-PublishInAirRequest::PublishInAirRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishInAirRequest::PublishInAirRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishInAirRequest)
 }
-PublishInAirRequest::PublishInAirRequest(const PublishInAirRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishInAirRequest)
+PublishInAirRequest::PublishInAirRequest(
+    ::google::protobuf::Arena* arena, const PublishInAirRequest& from)
+    : PublishInAirRequest(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE PublishInAirRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishInAirRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.is_in_air_) { false }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.is_in_air_ = {};
 }
-
 PublishInAirRequest::~PublishInAirRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishInAirRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishInAirRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void PublishInAirRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishInAirRequest::Clear() {
+PROTOBUF_NOINLINE void PublishInAirRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishInAirRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.is_in_air_ = false;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishInAirRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // bool is_in_air = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          _impl_.is_in_air_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* PublishInAirRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> PublishInAirRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_PublishInAirRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // bool is_in_air = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(PublishInAirRequest, _impl_.is_in_air_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(PublishInAirRequest, _impl_.is_in_air_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // bool is_in_air = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishInAirRequest, _impl_.is_in_air_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* PublishInAirRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishInAirRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // bool is_in_air = 1;
   if (this->_internal_is_in_air() != 0) {
@@ -3592,8 +3623,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishInAirRequest)
   return target;
@@ -3615,14 +3647,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishInAirRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishInAirRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishInAirRequest::_class_data_ = {
+    PublishInAirRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishInAirRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishInAirRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishInAirRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishInAirRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishInAirRequest*>(&to_msg);
   auto& from = static_cast<const PublishInAirRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishInAirRequest)
@@ -3633,7 +3666,7 @@ void PublishInAirRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, co
   if (from._internal_is_in_air() != 0) {
     _this->_internal_set_is_in_air(from._internal_is_in_air());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishInAirRequest::CopyFrom(const PublishInAirRequest& from) {
@@ -3643,18 +3676,20 @@ void PublishInAirRequest::CopyFrom(const PublishInAirRequest& from) {
   MergeFrom(from);
 }
 
-bool PublishInAirRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishInAirRequest::IsInitialized() const {
   return true;
 }
 
-void PublishInAirRequest::InternalSwap(PublishInAirRequest* other) {
+::_pbi::CachedSize* PublishInAirRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishInAirRequest::InternalSwap(PublishInAirRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-
-  swap(_impl_.is_in_air_, other->_impl_.is_in_air_);
+        swap(_impl_.is_in_air_, other->_impl_.is_in_air_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishInAirRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishInAirRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[4]);
@@ -3665,98 +3700,89 @@ class PublishLandedStateRequest::_Internal {
  public:
 };
 
-PublishLandedStateRequest::PublishLandedStateRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishLandedStateRequest::PublishLandedStateRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishLandedStateRequest)
 }
-PublishLandedStateRequest::PublishLandedStateRequest(const PublishLandedStateRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishLandedStateRequest)
+PublishLandedStateRequest::PublishLandedStateRequest(
+    ::google::protobuf::Arena* arena, const PublishLandedStateRequest& from)
+    : PublishLandedStateRequest(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE PublishLandedStateRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishLandedStateRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.landed_state_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.landed_state_ = {};
 }
-
 PublishLandedStateRequest::~PublishLandedStateRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishLandedStateRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishLandedStateRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void PublishLandedStateRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishLandedStateRequest::Clear() {
+PROTOBUF_NOINLINE void PublishLandedStateRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishLandedStateRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.landed_state_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishLandedStateRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.LandedState landed_state = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-          _internal_set_landed_state(static_cast<::mavsdk::rpc::telemetry_server::LandedState>(val));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* PublishLandedStateRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> PublishLandedStateRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_PublishLandedStateRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.LandedState landed_state = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(PublishLandedStateRequest, _impl_.landed_state_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(PublishLandedStateRequest, _impl_.landed_state_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.LandedState landed_state = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishLandedStateRequest, _impl_.landed_state_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* PublishLandedStateRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishLandedStateRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // .mavsdk.rpc.telemetry_server.LandedState landed_state = 1;
   if (this->_internal_landed_state() != 0) {
@@ -3766,8 +3792,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishLandedStateRequest)
   return target;
@@ -3790,14 +3817,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishLandedStateRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishLandedStateRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishLandedStateRequest::_class_data_ = {
+    PublishLandedStateRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishLandedStateRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishLandedStateRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishLandedStateRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishLandedStateRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishLandedStateRequest*>(&to_msg);
   auto& from = static_cast<const PublishLandedStateRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishLandedStateRequest)
@@ -3808,7 +3836,7 @@ void PublishLandedStateRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_m
   if (from._internal_landed_state() != 0) {
     _this->_internal_set_landed_state(from._internal_landed_state());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishLandedStateRequest::CopyFrom(const PublishLandedStateRequest& from) {
@@ -3818,17 +3846,20 @@ void PublishLandedStateRequest::CopyFrom(const PublishLandedStateRequest& from) 
   MergeFrom(from);
 }
 
-bool PublishLandedStateRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishLandedStateRequest::IsInitialized() const {
   return true;
 }
 
-void PublishLandedStateRequest::InternalSwap(PublishLandedStateRequest* other) {
+::_pbi::CachedSize* PublishLandedStateRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishLandedStateRequest::InternalSwap(PublishLandedStateRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_.landed_state_, other->_impl_.landed_state_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishLandedStateRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishLandedStateRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[5]);
@@ -3850,69 +3881,71 @@ class PublishRawGpsRequest::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::RawGps&
-PublishRawGpsRequest::_Internal::raw_gps(const PublishRawGpsRequest* msg) {
+const ::mavsdk::rpc::telemetry_server::RawGps& PublishRawGpsRequest::_Internal::raw_gps(const PublishRawGpsRequest* msg) {
   return *msg->_impl_.raw_gps_;
 }
-const ::mavsdk::rpc::telemetry_server::GpsInfo&
-PublishRawGpsRequest::_Internal::gps_info(const PublishRawGpsRequest* msg) {
+const ::mavsdk::rpc::telemetry_server::GpsInfo& PublishRawGpsRequest::_Internal::gps_info(const PublishRawGpsRequest* msg) {
   return *msg->_impl_.gps_info_;
 }
-PublishRawGpsRequest::PublishRawGpsRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishRawGpsRequest::PublishRawGpsRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishRawGpsRequest)
 }
-PublishRawGpsRequest::PublishRawGpsRequest(const PublishRawGpsRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishRawGpsRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.raw_gps_){nullptr}
-    , decltype(_impl_.gps_info_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishRawGpsRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.raw_gps_ = new ::mavsdk::rpc::telemetry_server::RawGps(*from._impl_.raw_gps_);
-  }
-  if ((from._impl_._has_bits_[0] & 0x00000002u) != 0) {
-    _this->_impl_.gps_info_ = new ::mavsdk::rpc::telemetry_server::GpsInfo(*from._impl_.gps_info_);
-  }
+PublishRawGpsRequest::PublishRawGpsRequest(
+    ::google::protobuf::Arena* arena,
+    const PublishRawGpsRequest& from)
+    : ::google::protobuf::Message(arena) {
+  PublishRawGpsRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.raw_gps_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::RawGps>(arena, *from._impl_.raw_gps_)
+                : nullptr;
+  _impl_.gps_info_ = (cached_has_bits & 0x00000002u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::GpsInfo>(arena, *from._impl_.gps_info_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishRawGpsRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishRawGpsRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishRawGpsRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.raw_gps_){nullptr}
-    , decltype(_impl_.gps_info_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, raw_gps_),
+           0,
+           offsetof(Impl_, gps_info_) -
+               offsetof(Impl_, raw_gps_) +
+               sizeof(Impl_::gps_info_));
 }
-
 PublishRawGpsRequest::~PublishRawGpsRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishRawGpsRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishRawGpsRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.raw_gps_;
-  if (this != internal_default_instance()) delete _impl_.gps_info_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.raw_gps_;
+  delete _impl_.gps_info_;
+  _impl_.~Impl_();
 }
 
-void PublishRawGpsRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishRawGpsRequest::Clear() {
+PROTOBUF_NOINLINE void PublishRawGpsRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishRawGpsRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -3929,82 +3962,79 @@ void PublishRawGpsRequest::Clear() {
     }
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishRawGpsRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.RawGps raw_gps = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_raw_gps(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.telemetry_server.GpsInfo gps_info = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
-          ptr = ctx->ParseMessage(_internal_mutable_gps_info(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishRawGpsRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 2, 0, 2> PublishRawGpsRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishRawGpsRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    2,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishRawGpsRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.GpsInfo gps_info = 2;
+    {::_pbi::TcParser::FastMtS1,
+     {18, 1, 1, PROTOBUF_FIELD_OFFSET(PublishRawGpsRequest, _impl_.gps_info_)}},
+    // .mavsdk.rpc.telemetry_server.RawGps raw_gps = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishRawGpsRequest, _impl_.raw_gps_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.RawGps raw_gps = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishRawGpsRequest, _impl_.raw_gps_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.telemetry_server.GpsInfo gps_info = 2;
+    {PROTOBUF_FIELD_OFFSET(PublishRawGpsRequest, _impl_.gps_info_), _Internal::kHasBitsOffset + 1, 1,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::RawGps>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::GpsInfo>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishRawGpsRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishRawGpsRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.RawGps raw_gps = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::raw_gps(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::raw_gps(this),
         _Internal::raw_gps(this).GetCachedSize(), target, stream);
   }
 
   // .mavsdk.rpc.telemetry_server.GpsInfo gps_info = 2;
   if (cached_has_bits & 0x00000002u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(2, _Internal::gps_info(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        2, _Internal::gps_info(this),
         _Internal::gps_info(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishRawGpsRequest)
   return target;
@@ -4022,30 +4052,29 @@ failure:
   if (cached_has_bits & 0x00000003u) {
     // .mavsdk.rpc.telemetry_server.RawGps raw_gps = 1;
     if (cached_has_bits & 0x00000001u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.raw_gps_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.raw_gps_);
     }
 
     // .mavsdk.rpc.telemetry_server.GpsInfo gps_info = 2;
     if (cached_has_bits & 0x00000002u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.gps_info_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.gps_info_);
     }
 
   }
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishRawGpsRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishRawGpsRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishRawGpsRequest::_class_data_ = {
+    PublishRawGpsRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishRawGpsRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishRawGpsRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishRawGpsRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishRawGpsRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishRawGpsRequest*>(&to_msg);
   auto& from = static_cast<const PublishRawGpsRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishRawGpsRequest)
@@ -4064,7 +4093,7 @@ void PublishRawGpsRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, c
           from._internal_gps_info());
     }
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishRawGpsRequest::CopyFrom(const PublishRawGpsRequest& from) {
@@ -4074,15 +4103,18 @@ void PublishRawGpsRequest::CopyFrom(const PublishRawGpsRequest& from) {
   MergeFrom(from);
 }
 
-bool PublishRawGpsRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishRawGpsRequest::IsInitialized() const {
   return true;
 }
 
-void PublishRawGpsRequest::InternalSwap(PublishRawGpsRequest* other) {
+::_pbi::CachedSize* PublishRawGpsRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishRawGpsRequest::InternalSwap(PublishRawGpsRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(PublishRawGpsRequest, _impl_.gps_info_)
       + sizeof(PublishRawGpsRequest::_impl_.gps_info_)
       - PROTOBUF_FIELD_OFFSET(PublishRawGpsRequest, _impl_.raw_gps_)>(
@@ -4090,7 +4122,7 @@ void PublishRawGpsRequest::InternalSwap(PublishRawGpsRequest* other) {
           reinterpret_cast<char*>(&other->_impl_.raw_gps_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishRawGpsRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishRawGpsRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[6]);
@@ -4108,59 +4140,59 @@ class PublishBatteryRequest::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::Battery&
-PublishBatteryRequest::_Internal::battery(const PublishBatteryRequest* msg) {
+const ::mavsdk::rpc::telemetry_server::Battery& PublishBatteryRequest::_Internal::battery(const PublishBatteryRequest* msg) {
   return *msg->_impl_.battery_;
 }
-PublishBatteryRequest::PublishBatteryRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishBatteryRequest::PublishBatteryRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishBatteryRequest)
 }
-PublishBatteryRequest::PublishBatteryRequest(const PublishBatteryRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishBatteryRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.battery_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishBatteryRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.battery_ = new ::mavsdk::rpc::telemetry_server::Battery(*from._impl_.battery_);
-  }
+PublishBatteryRequest::PublishBatteryRequest(
+    ::google::protobuf::Arena* arena,
+    const PublishBatteryRequest& from)
+    : ::google::protobuf::Message(arena) {
+  PublishBatteryRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.battery_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Battery>(arena, *from._impl_.battery_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishBatteryRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishBatteryRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishBatteryRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.battery_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.battery_ = {};
 }
-
 PublishBatteryRequest::~PublishBatteryRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishBatteryRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishBatteryRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.battery_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.battery_;
+  _impl_.~Impl_();
 }
 
-void PublishBatteryRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishBatteryRequest::Clear() {
+PROTOBUF_NOINLINE void PublishBatteryRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishBatteryRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -4171,66 +4203,65 @@ void PublishBatteryRequest::Clear() {
     _impl_.battery_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishBatteryRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.Battery battery = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_battery(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishBatteryRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishBatteryRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishBatteryRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishBatteryRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.Battery battery = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishBatteryRequest, _impl_.battery_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.Battery battery = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishBatteryRequest, _impl_.battery_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::Battery>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishBatteryRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishBatteryRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.Battery battery = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::battery(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::battery(this),
         _Internal::battery(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishBatteryRequest)
   return target;
@@ -4247,22 +4278,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.Battery battery = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.battery_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.battery_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishBatteryRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishBatteryRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishBatteryRequest::_class_data_ = {
+    PublishBatteryRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishBatteryRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishBatteryRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishBatteryRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishBatteryRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishBatteryRequest*>(&to_msg);
   auto& from = static_cast<const PublishBatteryRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishBatteryRequest)
@@ -4274,7 +4305,7 @@ void PublishBatteryRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, 
     _this->_internal_mutable_battery()->::mavsdk::rpc::telemetry_server::Battery::MergeFrom(
         from._internal_battery());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishBatteryRequest::CopyFrom(const PublishBatteryRequest& from) {
@@ -4284,18 +4315,21 @@ void PublishBatteryRequest::CopyFrom(const PublishBatteryRequest& from) {
   MergeFrom(from);
 }
 
-bool PublishBatteryRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishBatteryRequest::IsInitialized() const {
   return true;
 }
 
-void PublishBatteryRequest::InternalSwap(PublishBatteryRequest* other) {
+::_pbi::CachedSize* PublishBatteryRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishBatteryRequest::InternalSwap(PublishBatteryRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.battery_, other->_impl_.battery_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishBatteryRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishBatteryRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[7]);
@@ -4313,59 +4347,59 @@ class PublishRcStatusRequest::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::RcStatus&
-PublishRcStatusRequest::_Internal::rc_status(const PublishRcStatusRequest* msg) {
+const ::mavsdk::rpc::telemetry_server::RcStatus& PublishRcStatusRequest::_Internal::rc_status(const PublishRcStatusRequest* msg) {
   return *msg->_impl_.rc_status_;
 }
-PublishRcStatusRequest::PublishRcStatusRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishRcStatusRequest::PublishRcStatusRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishRcStatusRequest)
 }
-PublishRcStatusRequest::PublishRcStatusRequest(const PublishRcStatusRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishRcStatusRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.rc_status_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishRcStatusRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.rc_status_ = new ::mavsdk::rpc::telemetry_server::RcStatus(*from._impl_.rc_status_);
-  }
+PublishRcStatusRequest::PublishRcStatusRequest(
+    ::google::protobuf::Arena* arena,
+    const PublishRcStatusRequest& from)
+    : ::google::protobuf::Message(arena) {
+  PublishRcStatusRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.rc_status_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::RcStatus>(arena, *from._impl_.rc_status_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishRcStatusRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishRcStatusRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishRcStatusRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.rc_status_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.rc_status_ = {};
 }
-
 PublishRcStatusRequest::~PublishRcStatusRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishRcStatusRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishRcStatusRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.rc_status_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.rc_status_;
+  _impl_.~Impl_();
 }
 
-void PublishRcStatusRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishRcStatusRequest::Clear() {
+PROTOBUF_NOINLINE void PublishRcStatusRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishRcStatusRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -4376,66 +4410,65 @@ void PublishRcStatusRequest::Clear() {
     _impl_.rc_status_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishRcStatusRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.RcStatus rc_status = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_rc_status(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishRcStatusRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishRcStatusRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishRcStatusRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishRcStatusRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.RcStatus rc_status = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishRcStatusRequest, _impl_.rc_status_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.RcStatus rc_status = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishRcStatusRequest, _impl_.rc_status_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::RcStatus>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishRcStatusRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishRcStatusRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.RcStatus rc_status = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::rc_status(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::rc_status(this),
         _Internal::rc_status(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishRcStatusRequest)
   return target;
@@ -4452,22 +4485,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.RcStatus rc_status = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.rc_status_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.rc_status_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishRcStatusRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishRcStatusRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishRcStatusRequest::_class_data_ = {
+    PublishRcStatusRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishRcStatusRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishRcStatusRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishRcStatusRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishRcStatusRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishRcStatusRequest*>(&to_msg);
   auto& from = static_cast<const PublishRcStatusRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishRcStatusRequest)
@@ -4479,7 +4512,7 @@ void PublishRcStatusRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg,
     _this->_internal_mutable_rc_status()->::mavsdk::rpc::telemetry_server::RcStatus::MergeFrom(
         from._internal_rc_status());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishRcStatusRequest::CopyFrom(const PublishRcStatusRequest& from) {
@@ -4489,18 +4522,21 @@ void PublishRcStatusRequest::CopyFrom(const PublishRcStatusRequest& from) {
   MergeFrom(from);
 }
 
-bool PublishRcStatusRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishRcStatusRequest::IsInitialized() const {
   return true;
 }
 
-void PublishRcStatusRequest::InternalSwap(PublishRcStatusRequest* other) {
+::_pbi::CachedSize* PublishRcStatusRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishRcStatusRequest::InternalSwap(PublishRcStatusRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.rc_status_, other->_impl_.rc_status_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishRcStatusRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishRcStatusRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[8]);
@@ -4518,59 +4554,59 @@ class PublishStatusTextRequest::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::StatusText&
-PublishStatusTextRequest::_Internal::status_text(const PublishStatusTextRequest* msg) {
+const ::mavsdk::rpc::telemetry_server::StatusText& PublishStatusTextRequest::_Internal::status_text(const PublishStatusTextRequest* msg) {
   return *msg->_impl_.status_text_;
 }
-PublishStatusTextRequest::PublishStatusTextRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishStatusTextRequest::PublishStatusTextRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishStatusTextRequest)
 }
-PublishStatusTextRequest::PublishStatusTextRequest(const PublishStatusTextRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishStatusTextRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.status_text_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishStatusTextRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.status_text_ = new ::mavsdk::rpc::telemetry_server::StatusText(*from._impl_.status_text_);
-  }
+PublishStatusTextRequest::PublishStatusTextRequest(
+    ::google::protobuf::Arena* arena,
+    const PublishStatusTextRequest& from)
+    : ::google::protobuf::Message(arena) {
+  PublishStatusTextRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.status_text_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::StatusText>(arena, *from._impl_.status_text_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishStatusTextRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishStatusTextRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishStatusTextRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.status_text_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.status_text_ = {};
 }
-
 PublishStatusTextRequest::~PublishStatusTextRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishStatusTextRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishStatusTextRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.status_text_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.status_text_;
+  _impl_.~Impl_();
 }
 
-void PublishStatusTextRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishStatusTextRequest::Clear() {
+PROTOBUF_NOINLINE void PublishStatusTextRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishStatusTextRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -4581,66 +4617,65 @@ void PublishStatusTextRequest::Clear() {
     _impl_.status_text_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishStatusTextRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.StatusText status_text = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_status_text(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishStatusTextRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishStatusTextRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishStatusTextRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishStatusTextRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.StatusText status_text = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishStatusTextRequest, _impl_.status_text_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.StatusText status_text = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishStatusTextRequest, _impl_.status_text_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::StatusText>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishStatusTextRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishStatusTextRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.StatusText status_text = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::status_text(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::status_text(this),
         _Internal::status_text(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishStatusTextRequest)
   return target;
@@ -4657,22 +4692,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.StatusText status_text = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.status_text_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.status_text_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishStatusTextRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishStatusTextRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishStatusTextRequest::_class_data_ = {
+    PublishStatusTextRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishStatusTextRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishStatusTextRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishStatusTextRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishStatusTextRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishStatusTextRequest*>(&to_msg);
   auto& from = static_cast<const PublishStatusTextRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishStatusTextRequest)
@@ -4684,7 +4719,7 @@ void PublishStatusTextRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_ms
     _this->_internal_mutable_status_text()->::mavsdk::rpc::telemetry_server::StatusText::MergeFrom(
         from._internal_status_text());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishStatusTextRequest::CopyFrom(const PublishStatusTextRequest& from) {
@@ -4694,18 +4729,21 @@ void PublishStatusTextRequest::CopyFrom(const PublishStatusTextRequest& from) {
   MergeFrom(from);
 }
 
-bool PublishStatusTextRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishStatusTextRequest::IsInitialized() const {
   return true;
 }
 
-void PublishStatusTextRequest::InternalSwap(PublishStatusTextRequest* other) {
+::_pbi::CachedSize* PublishStatusTextRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishStatusTextRequest::InternalSwap(PublishStatusTextRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.status_text_, other->_impl_.status_text_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishStatusTextRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishStatusTextRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[9]);
@@ -4723,59 +4761,59 @@ class PublishOdometryRequest::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::Odometry&
-PublishOdometryRequest::_Internal::odometry(const PublishOdometryRequest* msg) {
+const ::mavsdk::rpc::telemetry_server::Odometry& PublishOdometryRequest::_Internal::odometry(const PublishOdometryRequest* msg) {
   return *msg->_impl_.odometry_;
 }
-PublishOdometryRequest::PublishOdometryRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishOdometryRequest::PublishOdometryRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishOdometryRequest)
 }
-PublishOdometryRequest::PublishOdometryRequest(const PublishOdometryRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishOdometryRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.odometry_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishOdometryRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.odometry_ = new ::mavsdk::rpc::telemetry_server::Odometry(*from._impl_.odometry_);
-  }
+PublishOdometryRequest::PublishOdometryRequest(
+    ::google::protobuf::Arena* arena,
+    const PublishOdometryRequest& from)
+    : ::google::protobuf::Message(arena) {
+  PublishOdometryRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.odometry_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Odometry>(arena, *from._impl_.odometry_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishOdometryRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishOdometryRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishOdometryRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.odometry_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.odometry_ = {};
 }
-
 PublishOdometryRequest::~PublishOdometryRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishOdometryRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishOdometryRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.odometry_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.odometry_;
+  _impl_.~Impl_();
 }
 
-void PublishOdometryRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishOdometryRequest::Clear() {
+PROTOBUF_NOINLINE void PublishOdometryRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishOdometryRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -4786,66 +4824,65 @@ void PublishOdometryRequest::Clear() {
     _impl_.odometry_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishOdometryRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.Odometry odometry = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_odometry(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishOdometryRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishOdometryRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishOdometryRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishOdometryRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.Odometry odometry = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishOdometryRequest, _impl_.odometry_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.Odometry odometry = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishOdometryRequest, _impl_.odometry_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::Odometry>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishOdometryRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishOdometryRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.Odometry odometry = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::odometry(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::odometry(this),
         _Internal::odometry(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishOdometryRequest)
   return target;
@@ -4862,22 +4899,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.Odometry odometry = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.odometry_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.odometry_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishOdometryRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishOdometryRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishOdometryRequest::_class_data_ = {
+    PublishOdometryRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishOdometryRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishOdometryRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishOdometryRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishOdometryRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishOdometryRequest*>(&to_msg);
   auto& from = static_cast<const PublishOdometryRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishOdometryRequest)
@@ -4889,7 +4926,7 @@ void PublishOdometryRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg,
     _this->_internal_mutable_odometry()->::mavsdk::rpc::telemetry_server::Odometry::MergeFrom(
         from._internal_odometry());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishOdometryRequest::CopyFrom(const PublishOdometryRequest& from) {
@@ -4899,18 +4936,21 @@ void PublishOdometryRequest::CopyFrom(const PublishOdometryRequest& from) {
   MergeFrom(from);
 }
 
-bool PublishOdometryRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishOdometryRequest::IsInitialized() const {
   return true;
 }
 
-void PublishOdometryRequest::InternalSwap(PublishOdometryRequest* other) {
+::_pbi::CachedSize* PublishOdometryRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishOdometryRequest::InternalSwap(PublishOdometryRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.odometry_, other->_impl_.odometry_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishOdometryRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishOdometryRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[10]);
@@ -4928,59 +4968,59 @@ class PublishPositionVelocityNedRequest::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::PositionVelocityNed&
-PublishPositionVelocityNedRequest::_Internal::position_velocity_ned(const PublishPositionVelocityNedRequest* msg) {
+const ::mavsdk::rpc::telemetry_server::PositionVelocityNed& PublishPositionVelocityNedRequest::_Internal::position_velocity_ned(const PublishPositionVelocityNedRequest* msg) {
   return *msg->_impl_.position_velocity_ned_;
 }
-PublishPositionVelocityNedRequest::PublishPositionVelocityNedRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishPositionVelocityNedRequest::PublishPositionVelocityNedRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishPositionVelocityNedRequest)
 }
-PublishPositionVelocityNedRequest::PublishPositionVelocityNedRequest(const PublishPositionVelocityNedRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishPositionVelocityNedRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.position_velocity_ned_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishPositionVelocityNedRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.position_velocity_ned_ = new ::mavsdk::rpc::telemetry_server::PositionVelocityNed(*from._impl_.position_velocity_ned_);
-  }
+PublishPositionVelocityNedRequest::PublishPositionVelocityNedRequest(
+    ::google::protobuf::Arena* arena,
+    const PublishPositionVelocityNedRequest& from)
+    : ::google::protobuf::Message(arena) {
+  PublishPositionVelocityNedRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.position_velocity_ned_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PositionVelocityNed>(arena, *from._impl_.position_velocity_ned_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishPositionVelocityNedRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishPositionVelocityNedRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishPositionVelocityNedRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.position_velocity_ned_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.position_velocity_ned_ = {};
 }
-
 PublishPositionVelocityNedRequest::~PublishPositionVelocityNedRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishPositionVelocityNedRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishPositionVelocityNedRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.position_velocity_ned_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.position_velocity_ned_;
+  _impl_.~Impl_();
 }
 
-void PublishPositionVelocityNedRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishPositionVelocityNedRequest::Clear() {
+PROTOBUF_NOINLINE void PublishPositionVelocityNedRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishPositionVelocityNedRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -4991,66 +5031,65 @@ void PublishPositionVelocityNedRequest::Clear() {
     _impl_.position_velocity_ned_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishPositionVelocityNedRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.PositionVelocityNed position_velocity_ned = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_position_velocity_ned(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishPositionVelocityNedRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishPositionVelocityNedRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishPositionVelocityNedRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishPositionVelocityNedRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.PositionVelocityNed position_velocity_ned = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishPositionVelocityNedRequest, _impl_.position_velocity_ned_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.PositionVelocityNed position_velocity_ned = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishPositionVelocityNedRequest, _impl_.position_velocity_ned_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::PositionVelocityNed>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishPositionVelocityNedRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishPositionVelocityNedRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.PositionVelocityNed position_velocity_ned = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::position_velocity_ned(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::position_velocity_ned(this),
         _Internal::position_velocity_ned(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishPositionVelocityNedRequest)
   return target;
@@ -5067,22 +5106,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.PositionVelocityNed position_velocity_ned = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.position_velocity_ned_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.position_velocity_ned_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishPositionVelocityNedRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishPositionVelocityNedRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishPositionVelocityNedRequest::_class_data_ = {
+    PublishPositionVelocityNedRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishPositionVelocityNedRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishPositionVelocityNedRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishPositionVelocityNedRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishPositionVelocityNedRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishPositionVelocityNedRequest*>(&to_msg);
   auto& from = static_cast<const PublishPositionVelocityNedRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishPositionVelocityNedRequest)
@@ -5094,7 +5133,7 @@ void PublishPositionVelocityNedRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Messa
     _this->_internal_mutable_position_velocity_ned()->::mavsdk::rpc::telemetry_server::PositionVelocityNed::MergeFrom(
         from._internal_position_velocity_ned());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishPositionVelocityNedRequest::CopyFrom(const PublishPositionVelocityNedRequest& from) {
@@ -5104,18 +5143,21 @@ void PublishPositionVelocityNedRequest::CopyFrom(const PublishPositionVelocityNe
   MergeFrom(from);
 }
 
-bool PublishPositionVelocityNedRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishPositionVelocityNedRequest::IsInitialized() const {
   return true;
 }
 
-void PublishPositionVelocityNedRequest::InternalSwap(PublishPositionVelocityNedRequest* other) {
+::_pbi::CachedSize* PublishPositionVelocityNedRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishPositionVelocityNedRequest::InternalSwap(PublishPositionVelocityNedRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.position_velocity_ned_, other->_impl_.position_velocity_ned_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishPositionVelocityNedRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishPositionVelocityNedRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[11]);
@@ -5133,59 +5175,59 @@ class PublishGroundTruthRequest::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::GroundTruth&
-PublishGroundTruthRequest::_Internal::ground_truth(const PublishGroundTruthRequest* msg) {
+const ::mavsdk::rpc::telemetry_server::GroundTruth& PublishGroundTruthRequest::_Internal::ground_truth(const PublishGroundTruthRequest* msg) {
   return *msg->_impl_.ground_truth_;
 }
-PublishGroundTruthRequest::PublishGroundTruthRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishGroundTruthRequest::PublishGroundTruthRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishGroundTruthRequest)
 }
-PublishGroundTruthRequest::PublishGroundTruthRequest(const PublishGroundTruthRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishGroundTruthRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.ground_truth_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishGroundTruthRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.ground_truth_ = new ::mavsdk::rpc::telemetry_server::GroundTruth(*from._impl_.ground_truth_);
-  }
+PublishGroundTruthRequest::PublishGroundTruthRequest(
+    ::google::protobuf::Arena* arena,
+    const PublishGroundTruthRequest& from)
+    : ::google::protobuf::Message(arena) {
+  PublishGroundTruthRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.ground_truth_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::GroundTruth>(arena, *from._impl_.ground_truth_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishGroundTruthRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishGroundTruthRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishGroundTruthRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.ground_truth_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.ground_truth_ = {};
 }
-
 PublishGroundTruthRequest::~PublishGroundTruthRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishGroundTruthRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishGroundTruthRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.ground_truth_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.ground_truth_;
+  _impl_.~Impl_();
 }
 
-void PublishGroundTruthRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishGroundTruthRequest::Clear() {
+PROTOBUF_NOINLINE void PublishGroundTruthRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishGroundTruthRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -5196,66 +5238,65 @@ void PublishGroundTruthRequest::Clear() {
     _impl_.ground_truth_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishGroundTruthRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.GroundTruth ground_truth = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_ground_truth(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishGroundTruthRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishGroundTruthRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishGroundTruthRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishGroundTruthRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.GroundTruth ground_truth = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishGroundTruthRequest, _impl_.ground_truth_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.GroundTruth ground_truth = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishGroundTruthRequest, _impl_.ground_truth_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::GroundTruth>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishGroundTruthRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishGroundTruthRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.GroundTruth ground_truth = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::ground_truth(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::ground_truth(this),
         _Internal::ground_truth(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishGroundTruthRequest)
   return target;
@@ -5272,22 +5313,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.GroundTruth ground_truth = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.ground_truth_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.ground_truth_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishGroundTruthRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishGroundTruthRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishGroundTruthRequest::_class_data_ = {
+    PublishGroundTruthRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishGroundTruthRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishGroundTruthRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishGroundTruthRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishGroundTruthRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishGroundTruthRequest*>(&to_msg);
   auto& from = static_cast<const PublishGroundTruthRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishGroundTruthRequest)
@@ -5299,7 +5340,7 @@ void PublishGroundTruthRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_m
     _this->_internal_mutable_ground_truth()->::mavsdk::rpc::telemetry_server::GroundTruth::MergeFrom(
         from._internal_ground_truth());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishGroundTruthRequest::CopyFrom(const PublishGroundTruthRequest& from) {
@@ -5309,18 +5350,21 @@ void PublishGroundTruthRequest::CopyFrom(const PublishGroundTruthRequest& from) 
   MergeFrom(from);
 }
 
-bool PublishGroundTruthRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishGroundTruthRequest::IsInitialized() const {
   return true;
 }
 
-void PublishGroundTruthRequest::InternalSwap(PublishGroundTruthRequest* other) {
+::_pbi::CachedSize* PublishGroundTruthRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishGroundTruthRequest::InternalSwap(PublishGroundTruthRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.ground_truth_, other->_impl_.ground_truth_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishGroundTruthRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishGroundTruthRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[12]);
@@ -5338,59 +5382,59 @@ class PublishImuRequest::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::Imu&
-PublishImuRequest::_Internal::imu(const PublishImuRequest* msg) {
+const ::mavsdk::rpc::telemetry_server::Imu& PublishImuRequest::_Internal::imu(const PublishImuRequest* msg) {
   return *msg->_impl_.imu_;
 }
-PublishImuRequest::PublishImuRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishImuRequest::PublishImuRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishImuRequest)
 }
-PublishImuRequest::PublishImuRequest(const PublishImuRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishImuRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.imu_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishImuRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.imu_ = new ::mavsdk::rpc::telemetry_server::Imu(*from._impl_.imu_);
-  }
+PublishImuRequest::PublishImuRequest(
+    ::google::protobuf::Arena* arena,
+    const PublishImuRequest& from)
+    : ::google::protobuf::Message(arena) {
+  PublishImuRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.imu_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Imu>(arena, *from._impl_.imu_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishImuRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishImuRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishImuRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.imu_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.imu_ = {};
 }
-
 PublishImuRequest::~PublishImuRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishImuRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishImuRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.imu_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.imu_;
+  _impl_.~Impl_();
 }
 
-void PublishImuRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishImuRequest::Clear() {
+PROTOBUF_NOINLINE void PublishImuRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishImuRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -5401,66 +5445,65 @@ void PublishImuRequest::Clear() {
     _impl_.imu_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishImuRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.Imu imu = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_imu(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishImuRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishImuRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishImuRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishImuRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.Imu imu = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishImuRequest, _impl_.imu_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.Imu imu = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishImuRequest, _impl_.imu_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::Imu>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishImuRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishImuRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.Imu imu = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::imu(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::imu(this),
         _Internal::imu(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishImuRequest)
   return target;
@@ -5477,22 +5520,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.Imu imu = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.imu_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.imu_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishImuRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishImuRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishImuRequest::_class_data_ = {
+    PublishImuRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishImuRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishImuRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishImuRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishImuRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishImuRequest*>(&to_msg);
   auto& from = static_cast<const PublishImuRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishImuRequest)
@@ -5504,7 +5547,7 @@ void PublishImuRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, cons
     _this->_internal_mutable_imu()->::mavsdk::rpc::telemetry_server::Imu::MergeFrom(
         from._internal_imu());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishImuRequest::CopyFrom(const PublishImuRequest& from) {
@@ -5514,18 +5557,21 @@ void PublishImuRequest::CopyFrom(const PublishImuRequest& from) {
   MergeFrom(from);
 }
 
-bool PublishImuRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishImuRequest::IsInitialized() const {
   return true;
 }
 
-void PublishImuRequest::InternalSwap(PublishImuRequest* other) {
+::_pbi::CachedSize* PublishImuRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishImuRequest::InternalSwap(PublishImuRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.imu_, other->_impl_.imu_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishImuRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishImuRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[13]);
@@ -5543,59 +5589,59 @@ class PublishScaledImuRequest::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::Imu&
-PublishScaledImuRequest::_Internal::imu(const PublishScaledImuRequest* msg) {
+const ::mavsdk::rpc::telemetry_server::Imu& PublishScaledImuRequest::_Internal::imu(const PublishScaledImuRequest* msg) {
   return *msg->_impl_.imu_;
 }
-PublishScaledImuRequest::PublishScaledImuRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishScaledImuRequest::PublishScaledImuRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishScaledImuRequest)
 }
-PublishScaledImuRequest::PublishScaledImuRequest(const PublishScaledImuRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishScaledImuRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.imu_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishScaledImuRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.imu_ = new ::mavsdk::rpc::telemetry_server::Imu(*from._impl_.imu_);
-  }
+PublishScaledImuRequest::PublishScaledImuRequest(
+    ::google::protobuf::Arena* arena,
+    const PublishScaledImuRequest& from)
+    : ::google::protobuf::Message(arena) {
+  PublishScaledImuRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.imu_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Imu>(arena, *from._impl_.imu_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishScaledImuRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishScaledImuRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishScaledImuRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.imu_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.imu_ = {};
 }
-
 PublishScaledImuRequest::~PublishScaledImuRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishScaledImuRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishScaledImuRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.imu_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.imu_;
+  _impl_.~Impl_();
 }
 
-void PublishScaledImuRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishScaledImuRequest::Clear() {
+PROTOBUF_NOINLINE void PublishScaledImuRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishScaledImuRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -5606,66 +5652,65 @@ void PublishScaledImuRequest::Clear() {
     _impl_.imu_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishScaledImuRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.Imu imu = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_imu(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishScaledImuRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishScaledImuRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishScaledImuRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishScaledImuRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.Imu imu = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishScaledImuRequest, _impl_.imu_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.Imu imu = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishScaledImuRequest, _impl_.imu_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::Imu>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishScaledImuRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishScaledImuRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.Imu imu = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::imu(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::imu(this),
         _Internal::imu(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishScaledImuRequest)
   return target;
@@ -5682,22 +5727,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.Imu imu = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.imu_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.imu_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishScaledImuRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishScaledImuRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishScaledImuRequest::_class_data_ = {
+    PublishScaledImuRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishScaledImuRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishScaledImuRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishScaledImuRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishScaledImuRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishScaledImuRequest*>(&to_msg);
   auto& from = static_cast<const PublishScaledImuRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishScaledImuRequest)
@@ -5709,7 +5754,7 @@ void PublishScaledImuRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg
     _this->_internal_mutable_imu()->::mavsdk::rpc::telemetry_server::Imu::MergeFrom(
         from._internal_imu());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishScaledImuRequest::CopyFrom(const PublishScaledImuRequest& from) {
@@ -5719,18 +5764,21 @@ void PublishScaledImuRequest::CopyFrom(const PublishScaledImuRequest& from) {
   MergeFrom(from);
 }
 
-bool PublishScaledImuRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishScaledImuRequest::IsInitialized() const {
   return true;
 }
 
-void PublishScaledImuRequest::InternalSwap(PublishScaledImuRequest* other) {
+::_pbi::CachedSize* PublishScaledImuRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishScaledImuRequest::InternalSwap(PublishScaledImuRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.imu_, other->_impl_.imu_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishScaledImuRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishScaledImuRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[14]);
@@ -5748,59 +5796,59 @@ class PublishRawImuRequest::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::Imu&
-PublishRawImuRequest::_Internal::imu(const PublishRawImuRequest* msg) {
+const ::mavsdk::rpc::telemetry_server::Imu& PublishRawImuRequest::_Internal::imu(const PublishRawImuRequest* msg) {
   return *msg->_impl_.imu_;
 }
-PublishRawImuRequest::PublishRawImuRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishRawImuRequest::PublishRawImuRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishRawImuRequest)
 }
-PublishRawImuRequest::PublishRawImuRequest(const PublishRawImuRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishRawImuRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.imu_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishRawImuRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.imu_ = new ::mavsdk::rpc::telemetry_server::Imu(*from._impl_.imu_);
-  }
+PublishRawImuRequest::PublishRawImuRequest(
+    ::google::protobuf::Arena* arena,
+    const PublishRawImuRequest& from)
+    : ::google::protobuf::Message(arena) {
+  PublishRawImuRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.imu_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Imu>(arena, *from._impl_.imu_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishRawImuRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishRawImuRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishRawImuRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.imu_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.imu_ = {};
 }
-
 PublishRawImuRequest::~PublishRawImuRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishRawImuRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishRawImuRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.imu_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.imu_;
+  _impl_.~Impl_();
 }
 
-void PublishRawImuRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishRawImuRequest::Clear() {
+PROTOBUF_NOINLINE void PublishRawImuRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishRawImuRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -5811,66 +5859,65 @@ void PublishRawImuRequest::Clear() {
     _impl_.imu_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishRawImuRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.Imu imu = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_imu(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishRawImuRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishRawImuRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishRawImuRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishRawImuRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.Imu imu = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishRawImuRequest, _impl_.imu_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.Imu imu = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishRawImuRequest, _impl_.imu_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::Imu>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishRawImuRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishRawImuRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.Imu imu = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::imu(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::imu(this),
         _Internal::imu(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishRawImuRequest)
   return target;
@@ -5887,22 +5934,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.Imu imu = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.imu_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.imu_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishRawImuRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishRawImuRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishRawImuRequest::_class_data_ = {
+    PublishRawImuRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishRawImuRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishRawImuRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishRawImuRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishRawImuRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishRawImuRequest*>(&to_msg);
   auto& from = static_cast<const PublishRawImuRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishRawImuRequest)
@@ -5914,7 +5961,7 @@ void PublishRawImuRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, c
     _this->_internal_mutable_imu()->::mavsdk::rpc::telemetry_server::Imu::MergeFrom(
         from._internal_imu());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishRawImuRequest::CopyFrom(const PublishRawImuRequest& from) {
@@ -5924,18 +5971,21 @@ void PublishRawImuRequest::CopyFrom(const PublishRawImuRequest& from) {
   MergeFrom(from);
 }
 
-bool PublishRawImuRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishRawImuRequest::IsInitialized() const {
   return true;
 }
 
-void PublishRawImuRequest::InternalSwap(PublishRawImuRequest* other) {
+::_pbi::CachedSize* PublishRawImuRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishRawImuRequest::InternalSwap(PublishRawImuRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.imu_, other->_impl_.imu_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishRawImuRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishRawImuRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[15]);
@@ -5946,97 +5996,89 @@ class PublishUnixEpochTimeRequest::_Internal {
  public:
 };
 
-PublishUnixEpochTimeRequest::PublishUnixEpochTimeRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishUnixEpochTimeRequest::PublishUnixEpochTimeRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishUnixEpochTimeRequest)
 }
-PublishUnixEpochTimeRequest::PublishUnixEpochTimeRequest(const PublishUnixEpochTimeRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishUnixEpochTimeRequest)
+PublishUnixEpochTimeRequest::PublishUnixEpochTimeRequest(
+    ::google::protobuf::Arena* arena, const PublishUnixEpochTimeRequest& from)
+    : PublishUnixEpochTimeRequest(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE PublishUnixEpochTimeRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishUnixEpochTimeRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.time_us_) { ::uint64_t{0u} }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.time_us_ = {};
 }
-
 PublishUnixEpochTimeRequest::~PublishUnixEpochTimeRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishUnixEpochTimeRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishUnixEpochTimeRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void PublishUnixEpochTimeRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishUnixEpochTimeRequest::Clear() {
+PROTOBUF_NOINLINE void PublishUnixEpochTimeRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishUnixEpochTimeRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.time_us_ = ::uint64_t{0u};
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishUnixEpochTimeRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // uint64 time_us = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          _impl_.time_us_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* PublishUnixEpochTimeRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> PublishUnixEpochTimeRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_PublishUnixEpochTimeRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // uint64 time_us = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(PublishUnixEpochTimeRequest, _impl_.time_us_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(PublishUnixEpochTimeRequest, _impl_.time_us_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint64 time_us = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishUnixEpochTimeRequest, _impl_.time_us_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* PublishUnixEpochTimeRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishUnixEpochTimeRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // uint64 time_us = 1;
   if (this->_internal_time_us() != 0) {
@@ -6046,8 +6088,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishUnixEpochTimeRequest)
   return target;
@@ -6070,14 +6113,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishUnixEpochTimeRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishUnixEpochTimeRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishUnixEpochTimeRequest::_class_data_ = {
+    PublishUnixEpochTimeRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishUnixEpochTimeRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishUnixEpochTimeRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishUnixEpochTimeRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishUnixEpochTimeRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishUnixEpochTimeRequest*>(&to_msg);
   auto& from = static_cast<const PublishUnixEpochTimeRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishUnixEpochTimeRequest)
@@ -6088,7 +6132,7 @@ void PublishUnixEpochTimeRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to
   if (from._internal_time_us() != 0) {
     _this->_internal_set_time_us(from._internal_time_us());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishUnixEpochTimeRequest::CopyFrom(const PublishUnixEpochTimeRequest& from) {
@@ -6098,18 +6142,20 @@ void PublishUnixEpochTimeRequest::CopyFrom(const PublishUnixEpochTimeRequest& fr
   MergeFrom(from);
 }
 
-bool PublishUnixEpochTimeRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishUnixEpochTimeRequest::IsInitialized() const {
   return true;
 }
 
-void PublishUnixEpochTimeRequest::InternalSwap(PublishUnixEpochTimeRequest* other) {
+::_pbi::CachedSize* PublishUnixEpochTimeRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishUnixEpochTimeRequest::InternalSwap(PublishUnixEpochTimeRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-
-  swap(_impl_.time_us_, other->_impl_.time_us_);
+        swap(_impl_.time_us_, other->_impl_.time_us_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishUnixEpochTimeRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishUnixEpochTimeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[16]);
@@ -6127,59 +6173,59 @@ class PublishDistanceSensorRequest::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::DistanceSensor&
-PublishDistanceSensorRequest::_Internal::distance_sensor(const PublishDistanceSensorRequest* msg) {
+const ::mavsdk::rpc::telemetry_server::DistanceSensor& PublishDistanceSensorRequest::_Internal::distance_sensor(const PublishDistanceSensorRequest* msg) {
   return *msg->_impl_.distance_sensor_;
 }
-PublishDistanceSensorRequest::PublishDistanceSensorRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishDistanceSensorRequest::PublishDistanceSensorRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishDistanceSensorRequest)
 }
-PublishDistanceSensorRequest::PublishDistanceSensorRequest(const PublishDistanceSensorRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishDistanceSensorRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.distance_sensor_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishDistanceSensorRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.distance_sensor_ = new ::mavsdk::rpc::telemetry_server::DistanceSensor(*from._impl_.distance_sensor_);
-  }
+PublishDistanceSensorRequest::PublishDistanceSensorRequest(
+    ::google::protobuf::Arena* arena,
+    const PublishDistanceSensorRequest& from)
+    : ::google::protobuf::Message(arena) {
+  PublishDistanceSensorRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.distance_sensor_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::DistanceSensor>(arena, *from._impl_.distance_sensor_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishDistanceSensorRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishDistanceSensorRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishDistanceSensorRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.distance_sensor_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.distance_sensor_ = {};
 }
-
 PublishDistanceSensorRequest::~PublishDistanceSensorRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishDistanceSensorRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishDistanceSensorRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.distance_sensor_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.distance_sensor_;
+  _impl_.~Impl_();
 }
 
-void PublishDistanceSensorRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishDistanceSensorRequest::Clear() {
+PROTOBUF_NOINLINE void PublishDistanceSensorRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishDistanceSensorRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -6190,66 +6236,65 @@ void PublishDistanceSensorRequest::Clear() {
     _impl_.distance_sensor_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishDistanceSensorRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.DistanceSensor distance_sensor = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_distance_sensor(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishDistanceSensorRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishDistanceSensorRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishDistanceSensorRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishDistanceSensorRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.DistanceSensor distance_sensor = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishDistanceSensorRequest, _impl_.distance_sensor_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.DistanceSensor distance_sensor = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishDistanceSensorRequest, _impl_.distance_sensor_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::DistanceSensor>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishDistanceSensorRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishDistanceSensorRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.DistanceSensor distance_sensor = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::distance_sensor(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::distance_sensor(this),
         _Internal::distance_sensor(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishDistanceSensorRequest)
   return target;
@@ -6266,22 +6311,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.DistanceSensor distance_sensor = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.distance_sensor_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.distance_sensor_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishDistanceSensorRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishDistanceSensorRequest::MergeImpl
+const ::google::protobuf::Message::ClassData PublishDistanceSensorRequest::_class_data_ = {
+    PublishDistanceSensorRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishDistanceSensorRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishDistanceSensorRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishDistanceSensorRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishDistanceSensorRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishDistanceSensorRequest*>(&to_msg);
   auto& from = static_cast<const PublishDistanceSensorRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishDistanceSensorRequest)
@@ -6293,7 +6338,7 @@ void PublishDistanceSensorRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& t
     _this->_internal_mutable_distance_sensor()->::mavsdk::rpc::telemetry_server::DistanceSensor::MergeFrom(
         from._internal_distance_sensor());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishDistanceSensorRequest::CopyFrom(const PublishDistanceSensorRequest& from) {
@@ -6303,18 +6348,21 @@ void PublishDistanceSensorRequest::CopyFrom(const PublishDistanceSensorRequest& 
   MergeFrom(from);
 }
 
-bool PublishDistanceSensorRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishDistanceSensorRequest::IsInitialized() const {
   return true;
 }
 
-void PublishDistanceSensorRequest::InternalSwap(PublishDistanceSensorRequest* other) {
+::_pbi::CachedSize* PublishDistanceSensorRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishDistanceSensorRequest::InternalSwap(PublishDistanceSensorRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.distance_sensor_, other->_impl_.distance_sensor_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishDistanceSensorRequest::GetMetadata() const {
+::google::protobuf::Metadata PublishDistanceSensorRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[17]);
@@ -6332,59 +6380,59 @@ class PublishPositionResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&
-PublishPositionResponse::_Internal::telemetry_server_result(const PublishPositionResponse* msg) {
+const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishPositionResponse::_Internal::telemetry_server_result(const PublishPositionResponse* msg) {
   return *msg->_impl_.telemetry_server_result_;
 }
-PublishPositionResponse::PublishPositionResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishPositionResponse::PublishPositionResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishPositionResponse)
 }
-PublishPositionResponse::PublishPositionResponse(const PublishPositionResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishPositionResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishPositionResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.telemetry_server_result_ = new ::mavsdk::rpc::telemetry_server::TelemetryServerResult(*from._impl_.telemetry_server_result_);
-  }
+PublishPositionResponse::PublishPositionResponse(
+    ::google::protobuf::Arena* arena,
+    const PublishPositionResponse& from)
+    : ::google::protobuf::Message(arena) {
+  PublishPositionResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.telemetry_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(arena, *from._impl_.telemetry_server_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishPositionResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishPositionResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishPositionResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.telemetry_server_result_ = {};
 }
-
 PublishPositionResponse::~PublishPositionResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishPositionResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishPositionResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.telemetry_server_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.telemetry_server_result_;
+  _impl_.~Impl_();
 }
 
-void PublishPositionResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishPositionResponse::Clear() {
+PROTOBUF_NOINLINE void PublishPositionResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishPositionResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -6395,66 +6443,65 @@ void PublishPositionResponse::Clear() {
     _impl_.telemetry_server_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishPositionResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_telemetry_server_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishPositionResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishPositionResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishPositionResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishPositionResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishPositionResponse, _impl_.telemetry_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishPositionResponse, _impl_.telemetry_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::TelemetryServerResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishPositionResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishPositionResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::telemetry_server_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::telemetry_server_result(this),
         _Internal::telemetry_server_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishPositionResponse)
   return target;
@@ -6471,22 +6518,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.telemetry_server_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.telemetry_server_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishPositionResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishPositionResponse::MergeImpl
+const ::google::protobuf::Message::ClassData PublishPositionResponse::_class_data_ = {
+    PublishPositionResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishPositionResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishPositionResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishPositionResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishPositionResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishPositionResponse*>(&to_msg);
   auto& from = static_cast<const PublishPositionResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishPositionResponse)
@@ -6498,7 +6545,7 @@ void PublishPositionResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg
     _this->_internal_mutable_telemetry_server_result()->::mavsdk::rpc::telemetry_server::TelemetryServerResult::MergeFrom(
         from._internal_telemetry_server_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishPositionResponse::CopyFrom(const PublishPositionResponse& from) {
@@ -6508,18 +6555,21 @@ void PublishPositionResponse::CopyFrom(const PublishPositionResponse& from) {
   MergeFrom(from);
 }
 
-bool PublishPositionResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishPositionResponse::IsInitialized() const {
   return true;
 }
 
-void PublishPositionResponse::InternalSwap(PublishPositionResponse* other) {
+::_pbi::CachedSize* PublishPositionResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishPositionResponse::InternalSwap(PublishPositionResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.telemetry_server_result_, other->_impl_.telemetry_server_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishPositionResponse::GetMetadata() const {
+::google::protobuf::Metadata PublishPositionResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[18]);
@@ -6537,59 +6587,59 @@ class PublishHomeResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&
-PublishHomeResponse::_Internal::telemetry_server_result(const PublishHomeResponse* msg) {
+const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishHomeResponse::_Internal::telemetry_server_result(const PublishHomeResponse* msg) {
   return *msg->_impl_.telemetry_server_result_;
 }
-PublishHomeResponse::PublishHomeResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishHomeResponse::PublishHomeResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishHomeResponse)
 }
-PublishHomeResponse::PublishHomeResponse(const PublishHomeResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishHomeResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishHomeResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.telemetry_server_result_ = new ::mavsdk::rpc::telemetry_server::TelemetryServerResult(*from._impl_.telemetry_server_result_);
-  }
+PublishHomeResponse::PublishHomeResponse(
+    ::google::protobuf::Arena* arena,
+    const PublishHomeResponse& from)
+    : ::google::protobuf::Message(arena) {
+  PublishHomeResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.telemetry_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(arena, *from._impl_.telemetry_server_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishHomeResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishHomeResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishHomeResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.telemetry_server_result_ = {};
 }
-
 PublishHomeResponse::~PublishHomeResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishHomeResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishHomeResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.telemetry_server_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.telemetry_server_result_;
+  _impl_.~Impl_();
 }
 
-void PublishHomeResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishHomeResponse::Clear() {
+PROTOBUF_NOINLINE void PublishHomeResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishHomeResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -6600,66 +6650,65 @@ void PublishHomeResponse::Clear() {
     _impl_.telemetry_server_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishHomeResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_telemetry_server_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishHomeResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishHomeResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishHomeResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishHomeResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishHomeResponse, _impl_.telemetry_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishHomeResponse, _impl_.telemetry_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::TelemetryServerResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishHomeResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishHomeResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::telemetry_server_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::telemetry_server_result(this),
         _Internal::telemetry_server_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishHomeResponse)
   return target;
@@ -6676,22 +6725,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.telemetry_server_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.telemetry_server_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishHomeResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishHomeResponse::MergeImpl
+const ::google::protobuf::Message::ClassData PublishHomeResponse::_class_data_ = {
+    PublishHomeResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishHomeResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishHomeResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishHomeResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishHomeResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishHomeResponse*>(&to_msg);
   auto& from = static_cast<const PublishHomeResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishHomeResponse)
@@ -6703,7 +6752,7 @@ void PublishHomeResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, co
     _this->_internal_mutable_telemetry_server_result()->::mavsdk::rpc::telemetry_server::TelemetryServerResult::MergeFrom(
         from._internal_telemetry_server_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishHomeResponse::CopyFrom(const PublishHomeResponse& from) {
@@ -6713,18 +6762,21 @@ void PublishHomeResponse::CopyFrom(const PublishHomeResponse& from) {
   MergeFrom(from);
 }
 
-bool PublishHomeResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishHomeResponse::IsInitialized() const {
   return true;
 }
 
-void PublishHomeResponse::InternalSwap(PublishHomeResponse* other) {
+::_pbi::CachedSize* PublishHomeResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishHomeResponse::InternalSwap(PublishHomeResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.telemetry_server_result_, other->_impl_.telemetry_server_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishHomeResponse::GetMetadata() const {
+::google::protobuf::Metadata PublishHomeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[19]);
@@ -6742,59 +6794,59 @@ class PublishSysStatusResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&
-PublishSysStatusResponse::_Internal::telemetry_server_result(const PublishSysStatusResponse* msg) {
+const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishSysStatusResponse::_Internal::telemetry_server_result(const PublishSysStatusResponse* msg) {
   return *msg->_impl_.telemetry_server_result_;
 }
-PublishSysStatusResponse::PublishSysStatusResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishSysStatusResponse::PublishSysStatusResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishSysStatusResponse)
 }
-PublishSysStatusResponse::PublishSysStatusResponse(const PublishSysStatusResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishSysStatusResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishSysStatusResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.telemetry_server_result_ = new ::mavsdk::rpc::telemetry_server::TelemetryServerResult(*from._impl_.telemetry_server_result_);
-  }
+PublishSysStatusResponse::PublishSysStatusResponse(
+    ::google::protobuf::Arena* arena,
+    const PublishSysStatusResponse& from)
+    : ::google::protobuf::Message(arena) {
+  PublishSysStatusResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.telemetry_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(arena, *from._impl_.telemetry_server_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishSysStatusResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishSysStatusResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishSysStatusResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.telemetry_server_result_ = {};
 }
-
 PublishSysStatusResponse::~PublishSysStatusResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishSysStatusResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishSysStatusResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.telemetry_server_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.telemetry_server_result_;
+  _impl_.~Impl_();
 }
 
-void PublishSysStatusResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishSysStatusResponse::Clear() {
+PROTOBUF_NOINLINE void PublishSysStatusResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishSysStatusResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -6805,66 +6857,65 @@ void PublishSysStatusResponse::Clear() {
     _impl_.telemetry_server_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishSysStatusResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_telemetry_server_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishSysStatusResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishSysStatusResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishSysStatusResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishSysStatusResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishSysStatusResponse, _impl_.telemetry_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishSysStatusResponse, _impl_.telemetry_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::TelemetryServerResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishSysStatusResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishSysStatusResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::telemetry_server_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::telemetry_server_result(this),
         _Internal::telemetry_server_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishSysStatusResponse)
   return target;
@@ -6881,22 +6932,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.telemetry_server_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.telemetry_server_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishSysStatusResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishSysStatusResponse::MergeImpl
+const ::google::protobuf::Message::ClassData PublishSysStatusResponse::_class_data_ = {
+    PublishSysStatusResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishSysStatusResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishSysStatusResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishSysStatusResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishSysStatusResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishSysStatusResponse*>(&to_msg);
   auto& from = static_cast<const PublishSysStatusResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishSysStatusResponse)
@@ -6908,7 +6959,7 @@ void PublishSysStatusResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_ms
     _this->_internal_mutable_telemetry_server_result()->::mavsdk::rpc::telemetry_server::TelemetryServerResult::MergeFrom(
         from._internal_telemetry_server_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishSysStatusResponse::CopyFrom(const PublishSysStatusResponse& from) {
@@ -6918,18 +6969,21 @@ void PublishSysStatusResponse::CopyFrom(const PublishSysStatusResponse& from) {
   MergeFrom(from);
 }
 
-bool PublishSysStatusResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishSysStatusResponse::IsInitialized() const {
   return true;
 }
 
-void PublishSysStatusResponse::InternalSwap(PublishSysStatusResponse* other) {
+::_pbi::CachedSize* PublishSysStatusResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishSysStatusResponse::InternalSwap(PublishSysStatusResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.telemetry_server_result_, other->_impl_.telemetry_server_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishSysStatusResponse::GetMetadata() const {
+::google::protobuf::Metadata PublishSysStatusResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[20]);
@@ -6947,59 +7001,59 @@ class PublishExtendedSysStateResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&
-PublishExtendedSysStateResponse::_Internal::telemetry_server_result(const PublishExtendedSysStateResponse* msg) {
+const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishExtendedSysStateResponse::_Internal::telemetry_server_result(const PublishExtendedSysStateResponse* msg) {
   return *msg->_impl_.telemetry_server_result_;
 }
-PublishExtendedSysStateResponse::PublishExtendedSysStateResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishExtendedSysStateResponse::PublishExtendedSysStateResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishExtendedSysStateResponse)
 }
-PublishExtendedSysStateResponse::PublishExtendedSysStateResponse(const PublishExtendedSysStateResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishExtendedSysStateResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishExtendedSysStateResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.telemetry_server_result_ = new ::mavsdk::rpc::telemetry_server::TelemetryServerResult(*from._impl_.telemetry_server_result_);
-  }
+PublishExtendedSysStateResponse::PublishExtendedSysStateResponse(
+    ::google::protobuf::Arena* arena,
+    const PublishExtendedSysStateResponse& from)
+    : ::google::protobuf::Message(arena) {
+  PublishExtendedSysStateResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.telemetry_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(arena, *from._impl_.telemetry_server_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishExtendedSysStateResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishExtendedSysStateResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishExtendedSysStateResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.telemetry_server_result_ = {};
 }
-
 PublishExtendedSysStateResponse::~PublishExtendedSysStateResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishExtendedSysStateResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishExtendedSysStateResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.telemetry_server_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.telemetry_server_result_;
+  _impl_.~Impl_();
 }
 
-void PublishExtendedSysStateResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishExtendedSysStateResponse::Clear() {
+PROTOBUF_NOINLINE void PublishExtendedSysStateResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishExtendedSysStateResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -7010,66 +7064,65 @@ void PublishExtendedSysStateResponse::Clear() {
     _impl_.telemetry_server_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishExtendedSysStateResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_telemetry_server_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishExtendedSysStateResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishExtendedSysStateResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishExtendedSysStateResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishExtendedSysStateResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishExtendedSysStateResponse, _impl_.telemetry_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishExtendedSysStateResponse, _impl_.telemetry_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::TelemetryServerResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishExtendedSysStateResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishExtendedSysStateResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::telemetry_server_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::telemetry_server_result(this),
         _Internal::telemetry_server_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishExtendedSysStateResponse)
   return target;
@@ -7086,22 +7139,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.telemetry_server_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.telemetry_server_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishExtendedSysStateResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishExtendedSysStateResponse::MergeImpl
+const ::google::protobuf::Message::ClassData PublishExtendedSysStateResponse::_class_data_ = {
+    PublishExtendedSysStateResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishExtendedSysStateResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishExtendedSysStateResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishExtendedSysStateResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishExtendedSysStateResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishExtendedSysStateResponse*>(&to_msg);
   auto& from = static_cast<const PublishExtendedSysStateResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishExtendedSysStateResponse)
@@ -7113,7 +7166,7 @@ void PublishExtendedSysStateResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message
     _this->_internal_mutable_telemetry_server_result()->::mavsdk::rpc::telemetry_server::TelemetryServerResult::MergeFrom(
         from._internal_telemetry_server_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishExtendedSysStateResponse::CopyFrom(const PublishExtendedSysStateResponse& from) {
@@ -7123,18 +7176,21 @@ void PublishExtendedSysStateResponse::CopyFrom(const PublishExtendedSysStateResp
   MergeFrom(from);
 }
 
-bool PublishExtendedSysStateResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishExtendedSysStateResponse::IsInitialized() const {
   return true;
 }
 
-void PublishExtendedSysStateResponse::InternalSwap(PublishExtendedSysStateResponse* other) {
+::_pbi::CachedSize* PublishExtendedSysStateResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishExtendedSysStateResponse::InternalSwap(PublishExtendedSysStateResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.telemetry_server_result_, other->_impl_.telemetry_server_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishExtendedSysStateResponse::GetMetadata() const {
+::google::protobuf::Metadata PublishExtendedSysStateResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[21]);
@@ -7152,59 +7208,59 @@ class PublishRawGpsResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&
-PublishRawGpsResponse::_Internal::telemetry_server_result(const PublishRawGpsResponse* msg) {
+const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishRawGpsResponse::_Internal::telemetry_server_result(const PublishRawGpsResponse* msg) {
   return *msg->_impl_.telemetry_server_result_;
 }
-PublishRawGpsResponse::PublishRawGpsResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishRawGpsResponse::PublishRawGpsResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishRawGpsResponse)
 }
-PublishRawGpsResponse::PublishRawGpsResponse(const PublishRawGpsResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishRawGpsResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishRawGpsResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.telemetry_server_result_ = new ::mavsdk::rpc::telemetry_server::TelemetryServerResult(*from._impl_.telemetry_server_result_);
-  }
+PublishRawGpsResponse::PublishRawGpsResponse(
+    ::google::protobuf::Arena* arena,
+    const PublishRawGpsResponse& from)
+    : ::google::protobuf::Message(arena) {
+  PublishRawGpsResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.telemetry_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(arena, *from._impl_.telemetry_server_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishRawGpsResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishRawGpsResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishRawGpsResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.telemetry_server_result_ = {};
 }
-
 PublishRawGpsResponse::~PublishRawGpsResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishRawGpsResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishRawGpsResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.telemetry_server_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.telemetry_server_result_;
+  _impl_.~Impl_();
 }
 
-void PublishRawGpsResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishRawGpsResponse::Clear() {
+PROTOBUF_NOINLINE void PublishRawGpsResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishRawGpsResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -7215,66 +7271,65 @@ void PublishRawGpsResponse::Clear() {
     _impl_.telemetry_server_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishRawGpsResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_telemetry_server_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishRawGpsResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishRawGpsResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishRawGpsResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishRawGpsResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishRawGpsResponse, _impl_.telemetry_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishRawGpsResponse, _impl_.telemetry_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::TelemetryServerResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishRawGpsResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishRawGpsResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::telemetry_server_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::telemetry_server_result(this),
         _Internal::telemetry_server_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishRawGpsResponse)
   return target;
@@ -7291,22 +7346,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.telemetry_server_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.telemetry_server_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishRawGpsResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishRawGpsResponse::MergeImpl
+const ::google::protobuf::Message::ClassData PublishRawGpsResponse::_class_data_ = {
+    PublishRawGpsResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishRawGpsResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishRawGpsResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishRawGpsResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishRawGpsResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishRawGpsResponse*>(&to_msg);
   auto& from = static_cast<const PublishRawGpsResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishRawGpsResponse)
@@ -7318,7 +7373,7 @@ void PublishRawGpsResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, 
     _this->_internal_mutable_telemetry_server_result()->::mavsdk::rpc::telemetry_server::TelemetryServerResult::MergeFrom(
         from._internal_telemetry_server_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishRawGpsResponse::CopyFrom(const PublishRawGpsResponse& from) {
@@ -7328,18 +7383,21 @@ void PublishRawGpsResponse::CopyFrom(const PublishRawGpsResponse& from) {
   MergeFrom(from);
 }
 
-bool PublishRawGpsResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishRawGpsResponse::IsInitialized() const {
   return true;
 }
 
-void PublishRawGpsResponse::InternalSwap(PublishRawGpsResponse* other) {
+::_pbi::CachedSize* PublishRawGpsResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishRawGpsResponse::InternalSwap(PublishRawGpsResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.telemetry_server_result_, other->_impl_.telemetry_server_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishRawGpsResponse::GetMetadata() const {
+::google::protobuf::Metadata PublishRawGpsResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[22]);
@@ -7357,59 +7415,59 @@ class PublishBatteryResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&
-PublishBatteryResponse::_Internal::telemetry_server_result(const PublishBatteryResponse* msg) {
+const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishBatteryResponse::_Internal::telemetry_server_result(const PublishBatteryResponse* msg) {
   return *msg->_impl_.telemetry_server_result_;
 }
-PublishBatteryResponse::PublishBatteryResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishBatteryResponse::PublishBatteryResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishBatteryResponse)
 }
-PublishBatteryResponse::PublishBatteryResponse(const PublishBatteryResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishBatteryResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishBatteryResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.telemetry_server_result_ = new ::mavsdk::rpc::telemetry_server::TelemetryServerResult(*from._impl_.telemetry_server_result_);
-  }
+PublishBatteryResponse::PublishBatteryResponse(
+    ::google::protobuf::Arena* arena,
+    const PublishBatteryResponse& from)
+    : ::google::protobuf::Message(arena) {
+  PublishBatteryResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.telemetry_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(arena, *from._impl_.telemetry_server_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishBatteryResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishBatteryResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishBatteryResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.telemetry_server_result_ = {};
 }
-
 PublishBatteryResponse::~PublishBatteryResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishBatteryResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishBatteryResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.telemetry_server_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.telemetry_server_result_;
+  _impl_.~Impl_();
 }
 
-void PublishBatteryResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishBatteryResponse::Clear() {
+PROTOBUF_NOINLINE void PublishBatteryResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishBatteryResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -7420,66 +7478,65 @@ void PublishBatteryResponse::Clear() {
     _impl_.telemetry_server_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishBatteryResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_telemetry_server_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishBatteryResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishBatteryResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishBatteryResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishBatteryResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishBatteryResponse, _impl_.telemetry_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishBatteryResponse, _impl_.telemetry_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::TelemetryServerResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishBatteryResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishBatteryResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::telemetry_server_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::telemetry_server_result(this),
         _Internal::telemetry_server_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishBatteryResponse)
   return target;
@@ -7496,22 +7553,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.telemetry_server_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.telemetry_server_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishBatteryResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishBatteryResponse::MergeImpl
+const ::google::protobuf::Message::ClassData PublishBatteryResponse::_class_data_ = {
+    PublishBatteryResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishBatteryResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishBatteryResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishBatteryResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishBatteryResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishBatteryResponse*>(&to_msg);
   auto& from = static_cast<const PublishBatteryResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishBatteryResponse)
@@ -7523,7 +7580,7 @@ void PublishBatteryResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg,
     _this->_internal_mutable_telemetry_server_result()->::mavsdk::rpc::telemetry_server::TelemetryServerResult::MergeFrom(
         from._internal_telemetry_server_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishBatteryResponse::CopyFrom(const PublishBatteryResponse& from) {
@@ -7533,18 +7590,21 @@ void PublishBatteryResponse::CopyFrom(const PublishBatteryResponse& from) {
   MergeFrom(from);
 }
 
-bool PublishBatteryResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishBatteryResponse::IsInitialized() const {
   return true;
 }
 
-void PublishBatteryResponse::InternalSwap(PublishBatteryResponse* other) {
+::_pbi::CachedSize* PublishBatteryResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishBatteryResponse::InternalSwap(PublishBatteryResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.telemetry_server_result_, other->_impl_.telemetry_server_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishBatteryResponse::GetMetadata() const {
+::google::protobuf::Metadata PublishBatteryResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[23]);
@@ -7562,59 +7622,59 @@ class PublishStatusTextResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&
-PublishStatusTextResponse::_Internal::telemetry_server_result(const PublishStatusTextResponse* msg) {
+const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishStatusTextResponse::_Internal::telemetry_server_result(const PublishStatusTextResponse* msg) {
   return *msg->_impl_.telemetry_server_result_;
 }
-PublishStatusTextResponse::PublishStatusTextResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishStatusTextResponse::PublishStatusTextResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishStatusTextResponse)
 }
-PublishStatusTextResponse::PublishStatusTextResponse(const PublishStatusTextResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishStatusTextResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishStatusTextResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.telemetry_server_result_ = new ::mavsdk::rpc::telemetry_server::TelemetryServerResult(*from._impl_.telemetry_server_result_);
-  }
+PublishStatusTextResponse::PublishStatusTextResponse(
+    ::google::protobuf::Arena* arena,
+    const PublishStatusTextResponse& from)
+    : ::google::protobuf::Message(arena) {
+  PublishStatusTextResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.telemetry_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(arena, *from._impl_.telemetry_server_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishStatusTextResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishStatusTextResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishStatusTextResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.telemetry_server_result_ = {};
 }
-
 PublishStatusTextResponse::~PublishStatusTextResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishStatusTextResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishStatusTextResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.telemetry_server_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.telemetry_server_result_;
+  _impl_.~Impl_();
 }
 
-void PublishStatusTextResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishStatusTextResponse::Clear() {
+PROTOBUF_NOINLINE void PublishStatusTextResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishStatusTextResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -7625,66 +7685,65 @@ void PublishStatusTextResponse::Clear() {
     _impl_.telemetry_server_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishStatusTextResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_telemetry_server_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishStatusTextResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishStatusTextResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishStatusTextResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishStatusTextResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishStatusTextResponse, _impl_.telemetry_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishStatusTextResponse, _impl_.telemetry_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::TelemetryServerResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishStatusTextResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishStatusTextResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::telemetry_server_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::telemetry_server_result(this),
         _Internal::telemetry_server_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishStatusTextResponse)
   return target;
@@ -7701,22 +7760,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.telemetry_server_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.telemetry_server_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishStatusTextResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishStatusTextResponse::MergeImpl
+const ::google::protobuf::Message::ClassData PublishStatusTextResponse::_class_data_ = {
+    PublishStatusTextResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishStatusTextResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishStatusTextResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishStatusTextResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishStatusTextResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishStatusTextResponse*>(&to_msg);
   auto& from = static_cast<const PublishStatusTextResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishStatusTextResponse)
@@ -7728,7 +7787,7 @@ void PublishStatusTextResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_m
     _this->_internal_mutable_telemetry_server_result()->::mavsdk::rpc::telemetry_server::TelemetryServerResult::MergeFrom(
         from._internal_telemetry_server_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishStatusTextResponse::CopyFrom(const PublishStatusTextResponse& from) {
@@ -7738,18 +7797,21 @@ void PublishStatusTextResponse::CopyFrom(const PublishStatusTextResponse& from) 
   MergeFrom(from);
 }
 
-bool PublishStatusTextResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishStatusTextResponse::IsInitialized() const {
   return true;
 }
 
-void PublishStatusTextResponse::InternalSwap(PublishStatusTextResponse* other) {
+::_pbi::CachedSize* PublishStatusTextResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishStatusTextResponse::InternalSwap(PublishStatusTextResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.telemetry_server_result_, other->_impl_.telemetry_server_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishStatusTextResponse::GetMetadata() const {
+::google::protobuf::Metadata PublishStatusTextResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[24]);
@@ -7767,59 +7829,59 @@ class PublishOdometryResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&
-PublishOdometryResponse::_Internal::telemetry_server_result(const PublishOdometryResponse* msg) {
+const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishOdometryResponse::_Internal::telemetry_server_result(const PublishOdometryResponse* msg) {
   return *msg->_impl_.telemetry_server_result_;
 }
-PublishOdometryResponse::PublishOdometryResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishOdometryResponse::PublishOdometryResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishOdometryResponse)
 }
-PublishOdometryResponse::PublishOdometryResponse(const PublishOdometryResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishOdometryResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishOdometryResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.telemetry_server_result_ = new ::mavsdk::rpc::telemetry_server::TelemetryServerResult(*from._impl_.telemetry_server_result_);
-  }
+PublishOdometryResponse::PublishOdometryResponse(
+    ::google::protobuf::Arena* arena,
+    const PublishOdometryResponse& from)
+    : ::google::protobuf::Message(arena) {
+  PublishOdometryResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.telemetry_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(arena, *from._impl_.telemetry_server_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishOdometryResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishOdometryResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishOdometryResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.telemetry_server_result_ = {};
 }
-
 PublishOdometryResponse::~PublishOdometryResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishOdometryResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishOdometryResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.telemetry_server_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.telemetry_server_result_;
+  _impl_.~Impl_();
 }
 
-void PublishOdometryResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishOdometryResponse::Clear() {
+PROTOBUF_NOINLINE void PublishOdometryResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishOdometryResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -7830,66 +7892,65 @@ void PublishOdometryResponse::Clear() {
     _impl_.telemetry_server_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishOdometryResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_telemetry_server_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishOdometryResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishOdometryResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishOdometryResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishOdometryResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishOdometryResponse, _impl_.telemetry_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishOdometryResponse, _impl_.telemetry_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::TelemetryServerResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishOdometryResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishOdometryResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::telemetry_server_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::telemetry_server_result(this),
         _Internal::telemetry_server_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishOdometryResponse)
   return target;
@@ -7906,22 +7967,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.telemetry_server_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.telemetry_server_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishOdometryResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishOdometryResponse::MergeImpl
+const ::google::protobuf::Message::ClassData PublishOdometryResponse::_class_data_ = {
+    PublishOdometryResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishOdometryResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishOdometryResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishOdometryResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishOdometryResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishOdometryResponse*>(&to_msg);
   auto& from = static_cast<const PublishOdometryResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishOdometryResponse)
@@ -7933,7 +7994,7 @@ void PublishOdometryResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg
     _this->_internal_mutable_telemetry_server_result()->::mavsdk::rpc::telemetry_server::TelemetryServerResult::MergeFrom(
         from._internal_telemetry_server_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishOdometryResponse::CopyFrom(const PublishOdometryResponse& from) {
@@ -7943,18 +8004,21 @@ void PublishOdometryResponse::CopyFrom(const PublishOdometryResponse& from) {
   MergeFrom(from);
 }
 
-bool PublishOdometryResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishOdometryResponse::IsInitialized() const {
   return true;
 }
 
-void PublishOdometryResponse::InternalSwap(PublishOdometryResponse* other) {
+::_pbi::CachedSize* PublishOdometryResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishOdometryResponse::InternalSwap(PublishOdometryResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.telemetry_server_result_, other->_impl_.telemetry_server_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishOdometryResponse::GetMetadata() const {
+::google::protobuf::Metadata PublishOdometryResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[25]);
@@ -7972,59 +8036,59 @@ class PublishPositionVelocityNedResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&
-PublishPositionVelocityNedResponse::_Internal::telemetry_server_result(const PublishPositionVelocityNedResponse* msg) {
+const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishPositionVelocityNedResponse::_Internal::telemetry_server_result(const PublishPositionVelocityNedResponse* msg) {
   return *msg->_impl_.telemetry_server_result_;
 }
-PublishPositionVelocityNedResponse::PublishPositionVelocityNedResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishPositionVelocityNedResponse::PublishPositionVelocityNedResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishPositionVelocityNedResponse)
 }
-PublishPositionVelocityNedResponse::PublishPositionVelocityNedResponse(const PublishPositionVelocityNedResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishPositionVelocityNedResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishPositionVelocityNedResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.telemetry_server_result_ = new ::mavsdk::rpc::telemetry_server::TelemetryServerResult(*from._impl_.telemetry_server_result_);
-  }
+PublishPositionVelocityNedResponse::PublishPositionVelocityNedResponse(
+    ::google::protobuf::Arena* arena,
+    const PublishPositionVelocityNedResponse& from)
+    : ::google::protobuf::Message(arena) {
+  PublishPositionVelocityNedResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.telemetry_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(arena, *from._impl_.telemetry_server_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishPositionVelocityNedResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishPositionVelocityNedResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishPositionVelocityNedResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.telemetry_server_result_ = {};
 }
-
 PublishPositionVelocityNedResponse::~PublishPositionVelocityNedResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishPositionVelocityNedResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishPositionVelocityNedResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.telemetry_server_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.telemetry_server_result_;
+  _impl_.~Impl_();
 }
 
-void PublishPositionVelocityNedResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishPositionVelocityNedResponse::Clear() {
+PROTOBUF_NOINLINE void PublishPositionVelocityNedResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishPositionVelocityNedResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -8035,66 +8099,65 @@ void PublishPositionVelocityNedResponse::Clear() {
     _impl_.telemetry_server_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishPositionVelocityNedResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_telemetry_server_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishPositionVelocityNedResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishPositionVelocityNedResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishPositionVelocityNedResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishPositionVelocityNedResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishPositionVelocityNedResponse, _impl_.telemetry_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishPositionVelocityNedResponse, _impl_.telemetry_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::TelemetryServerResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishPositionVelocityNedResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishPositionVelocityNedResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::telemetry_server_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::telemetry_server_result(this),
         _Internal::telemetry_server_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishPositionVelocityNedResponse)
   return target;
@@ -8111,22 +8174,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.telemetry_server_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.telemetry_server_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishPositionVelocityNedResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishPositionVelocityNedResponse::MergeImpl
+const ::google::protobuf::Message::ClassData PublishPositionVelocityNedResponse::_class_data_ = {
+    PublishPositionVelocityNedResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishPositionVelocityNedResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishPositionVelocityNedResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishPositionVelocityNedResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishPositionVelocityNedResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishPositionVelocityNedResponse*>(&to_msg);
   auto& from = static_cast<const PublishPositionVelocityNedResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishPositionVelocityNedResponse)
@@ -8138,7 +8201,7 @@ void PublishPositionVelocityNedResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Mess
     _this->_internal_mutable_telemetry_server_result()->::mavsdk::rpc::telemetry_server::TelemetryServerResult::MergeFrom(
         from._internal_telemetry_server_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishPositionVelocityNedResponse::CopyFrom(const PublishPositionVelocityNedResponse& from) {
@@ -8148,18 +8211,21 @@ void PublishPositionVelocityNedResponse::CopyFrom(const PublishPositionVelocityN
   MergeFrom(from);
 }
 
-bool PublishPositionVelocityNedResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishPositionVelocityNedResponse::IsInitialized() const {
   return true;
 }
 
-void PublishPositionVelocityNedResponse::InternalSwap(PublishPositionVelocityNedResponse* other) {
+::_pbi::CachedSize* PublishPositionVelocityNedResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishPositionVelocityNedResponse::InternalSwap(PublishPositionVelocityNedResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.telemetry_server_result_, other->_impl_.telemetry_server_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishPositionVelocityNedResponse::GetMetadata() const {
+::google::protobuf::Metadata PublishPositionVelocityNedResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[26]);
@@ -8177,59 +8243,59 @@ class PublishGroundTruthResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&
-PublishGroundTruthResponse::_Internal::telemetry_server_result(const PublishGroundTruthResponse* msg) {
+const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishGroundTruthResponse::_Internal::telemetry_server_result(const PublishGroundTruthResponse* msg) {
   return *msg->_impl_.telemetry_server_result_;
 }
-PublishGroundTruthResponse::PublishGroundTruthResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishGroundTruthResponse::PublishGroundTruthResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishGroundTruthResponse)
 }
-PublishGroundTruthResponse::PublishGroundTruthResponse(const PublishGroundTruthResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishGroundTruthResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishGroundTruthResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.telemetry_server_result_ = new ::mavsdk::rpc::telemetry_server::TelemetryServerResult(*from._impl_.telemetry_server_result_);
-  }
+PublishGroundTruthResponse::PublishGroundTruthResponse(
+    ::google::protobuf::Arena* arena,
+    const PublishGroundTruthResponse& from)
+    : ::google::protobuf::Message(arena) {
+  PublishGroundTruthResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.telemetry_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(arena, *from._impl_.telemetry_server_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishGroundTruthResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishGroundTruthResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishGroundTruthResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.telemetry_server_result_ = {};
 }
-
 PublishGroundTruthResponse::~PublishGroundTruthResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishGroundTruthResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishGroundTruthResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.telemetry_server_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.telemetry_server_result_;
+  _impl_.~Impl_();
 }
 
-void PublishGroundTruthResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishGroundTruthResponse::Clear() {
+PROTOBUF_NOINLINE void PublishGroundTruthResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishGroundTruthResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -8240,66 +8306,65 @@ void PublishGroundTruthResponse::Clear() {
     _impl_.telemetry_server_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishGroundTruthResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_telemetry_server_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishGroundTruthResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishGroundTruthResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishGroundTruthResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishGroundTruthResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishGroundTruthResponse, _impl_.telemetry_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishGroundTruthResponse, _impl_.telemetry_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::TelemetryServerResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishGroundTruthResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishGroundTruthResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::telemetry_server_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::telemetry_server_result(this),
         _Internal::telemetry_server_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishGroundTruthResponse)
   return target;
@@ -8316,22 +8381,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.telemetry_server_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.telemetry_server_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishGroundTruthResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishGroundTruthResponse::MergeImpl
+const ::google::protobuf::Message::ClassData PublishGroundTruthResponse::_class_data_ = {
+    PublishGroundTruthResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishGroundTruthResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishGroundTruthResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishGroundTruthResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishGroundTruthResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishGroundTruthResponse*>(&to_msg);
   auto& from = static_cast<const PublishGroundTruthResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishGroundTruthResponse)
@@ -8343,7 +8408,7 @@ void PublishGroundTruthResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_
     _this->_internal_mutable_telemetry_server_result()->::mavsdk::rpc::telemetry_server::TelemetryServerResult::MergeFrom(
         from._internal_telemetry_server_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishGroundTruthResponse::CopyFrom(const PublishGroundTruthResponse& from) {
@@ -8353,18 +8418,21 @@ void PublishGroundTruthResponse::CopyFrom(const PublishGroundTruthResponse& from
   MergeFrom(from);
 }
 
-bool PublishGroundTruthResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishGroundTruthResponse::IsInitialized() const {
   return true;
 }
 
-void PublishGroundTruthResponse::InternalSwap(PublishGroundTruthResponse* other) {
+::_pbi::CachedSize* PublishGroundTruthResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishGroundTruthResponse::InternalSwap(PublishGroundTruthResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.telemetry_server_result_, other->_impl_.telemetry_server_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishGroundTruthResponse::GetMetadata() const {
+::google::protobuf::Metadata PublishGroundTruthResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[27]);
@@ -8382,59 +8450,59 @@ class PublishImuResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&
-PublishImuResponse::_Internal::telemetry_server_result(const PublishImuResponse* msg) {
+const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishImuResponse::_Internal::telemetry_server_result(const PublishImuResponse* msg) {
   return *msg->_impl_.telemetry_server_result_;
 }
-PublishImuResponse::PublishImuResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishImuResponse::PublishImuResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishImuResponse)
 }
-PublishImuResponse::PublishImuResponse(const PublishImuResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishImuResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishImuResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.telemetry_server_result_ = new ::mavsdk::rpc::telemetry_server::TelemetryServerResult(*from._impl_.telemetry_server_result_);
-  }
+PublishImuResponse::PublishImuResponse(
+    ::google::protobuf::Arena* arena,
+    const PublishImuResponse& from)
+    : ::google::protobuf::Message(arena) {
+  PublishImuResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.telemetry_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(arena, *from._impl_.telemetry_server_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishImuResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishImuResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishImuResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.telemetry_server_result_ = {};
 }
-
 PublishImuResponse::~PublishImuResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishImuResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishImuResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.telemetry_server_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.telemetry_server_result_;
+  _impl_.~Impl_();
 }
 
-void PublishImuResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishImuResponse::Clear() {
+PROTOBUF_NOINLINE void PublishImuResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishImuResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -8445,66 +8513,65 @@ void PublishImuResponse::Clear() {
     _impl_.telemetry_server_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishImuResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_telemetry_server_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishImuResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishImuResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishImuResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishImuResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishImuResponse, _impl_.telemetry_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishImuResponse, _impl_.telemetry_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::TelemetryServerResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishImuResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishImuResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::telemetry_server_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::telemetry_server_result(this),
         _Internal::telemetry_server_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishImuResponse)
   return target;
@@ -8521,22 +8588,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.telemetry_server_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.telemetry_server_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishImuResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishImuResponse::MergeImpl
+const ::google::protobuf::Message::ClassData PublishImuResponse::_class_data_ = {
+    PublishImuResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishImuResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishImuResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishImuResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishImuResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishImuResponse*>(&to_msg);
   auto& from = static_cast<const PublishImuResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishImuResponse)
@@ -8548,7 +8615,7 @@ void PublishImuResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, con
     _this->_internal_mutable_telemetry_server_result()->::mavsdk::rpc::telemetry_server::TelemetryServerResult::MergeFrom(
         from._internal_telemetry_server_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishImuResponse::CopyFrom(const PublishImuResponse& from) {
@@ -8558,18 +8625,21 @@ void PublishImuResponse::CopyFrom(const PublishImuResponse& from) {
   MergeFrom(from);
 }
 
-bool PublishImuResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishImuResponse::IsInitialized() const {
   return true;
 }
 
-void PublishImuResponse::InternalSwap(PublishImuResponse* other) {
+::_pbi::CachedSize* PublishImuResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishImuResponse::InternalSwap(PublishImuResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.telemetry_server_result_, other->_impl_.telemetry_server_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishImuResponse::GetMetadata() const {
+::google::protobuf::Metadata PublishImuResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[28]);
@@ -8587,59 +8657,59 @@ class PublishScaledImuResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&
-PublishScaledImuResponse::_Internal::telemetry_server_result(const PublishScaledImuResponse* msg) {
+const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishScaledImuResponse::_Internal::telemetry_server_result(const PublishScaledImuResponse* msg) {
   return *msg->_impl_.telemetry_server_result_;
 }
-PublishScaledImuResponse::PublishScaledImuResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishScaledImuResponse::PublishScaledImuResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishScaledImuResponse)
 }
-PublishScaledImuResponse::PublishScaledImuResponse(const PublishScaledImuResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishScaledImuResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishScaledImuResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.telemetry_server_result_ = new ::mavsdk::rpc::telemetry_server::TelemetryServerResult(*from._impl_.telemetry_server_result_);
-  }
+PublishScaledImuResponse::PublishScaledImuResponse(
+    ::google::protobuf::Arena* arena,
+    const PublishScaledImuResponse& from)
+    : ::google::protobuf::Message(arena) {
+  PublishScaledImuResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.telemetry_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(arena, *from._impl_.telemetry_server_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishScaledImuResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishScaledImuResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishScaledImuResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.telemetry_server_result_ = {};
 }
-
 PublishScaledImuResponse::~PublishScaledImuResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishScaledImuResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishScaledImuResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.telemetry_server_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.telemetry_server_result_;
+  _impl_.~Impl_();
 }
 
-void PublishScaledImuResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishScaledImuResponse::Clear() {
+PROTOBUF_NOINLINE void PublishScaledImuResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishScaledImuResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -8650,66 +8720,65 @@ void PublishScaledImuResponse::Clear() {
     _impl_.telemetry_server_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishScaledImuResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_telemetry_server_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishScaledImuResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishScaledImuResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishScaledImuResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishScaledImuResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishScaledImuResponse, _impl_.telemetry_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishScaledImuResponse, _impl_.telemetry_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::TelemetryServerResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishScaledImuResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishScaledImuResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::telemetry_server_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::telemetry_server_result(this),
         _Internal::telemetry_server_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishScaledImuResponse)
   return target;
@@ -8726,22 +8795,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.telemetry_server_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.telemetry_server_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishScaledImuResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishScaledImuResponse::MergeImpl
+const ::google::protobuf::Message::ClassData PublishScaledImuResponse::_class_data_ = {
+    PublishScaledImuResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishScaledImuResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishScaledImuResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishScaledImuResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishScaledImuResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishScaledImuResponse*>(&to_msg);
   auto& from = static_cast<const PublishScaledImuResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishScaledImuResponse)
@@ -8753,7 +8822,7 @@ void PublishScaledImuResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_ms
     _this->_internal_mutable_telemetry_server_result()->::mavsdk::rpc::telemetry_server::TelemetryServerResult::MergeFrom(
         from._internal_telemetry_server_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishScaledImuResponse::CopyFrom(const PublishScaledImuResponse& from) {
@@ -8763,18 +8832,21 @@ void PublishScaledImuResponse::CopyFrom(const PublishScaledImuResponse& from) {
   MergeFrom(from);
 }
 
-bool PublishScaledImuResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishScaledImuResponse::IsInitialized() const {
   return true;
 }
 
-void PublishScaledImuResponse::InternalSwap(PublishScaledImuResponse* other) {
+::_pbi::CachedSize* PublishScaledImuResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishScaledImuResponse::InternalSwap(PublishScaledImuResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.telemetry_server_result_, other->_impl_.telemetry_server_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishScaledImuResponse::GetMetadata() const {
+::google::protobuf::Metadata PublishScaledImuResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[29]);
@@ -8792,59 +8864,59 @@ class PublishRawImuResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&
-PublishRawImuResponse::_Internal::telemetry_server_result(const PublishRawImuResponse* msg) {
+const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishRawImuResponse::_Internal::telemetry_server_result(const PublishRawImuResponse* msg) {
   return *msg->_impl_.telemetry_server_result_;
 }
-PublishRawImuResponse::PublishRawImuResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishRawImuResponse::PublishRawImuResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishRawImuResponse)
 }
-PublishRawImuResponse::PublishRawImuResponse(const PublishRawImuResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishRawImuResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishRawImuResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.telemetry_server_result_ = new ::mavsdk::rpc::telemetry_server::TelemetryServerResult(*from._impl_.telemetry_server_result_);
-  }
+PublishRawImuResponse::PublishRawImuResponse(
+    ::google::protobuf::Arena* arena,
+    const PublishRawImuResponse& from)
+    : ::google::protobuf::Message(arena) {
+  PublishRawImuResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.telemetry_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(arena, *from._impl_.telemetry_server_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishRawImuResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishRawImuResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishRawImuResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.telemetry_server_result_ = {};
 }
-
 PublishRawImuResponse::~PublishRawImuResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishRawImuResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishRawImuResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.telemetry_server_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.telemetry_server_result_;
+  _impl_.~Impl_();
 }
 
-void PublishRawImuResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishRawImuResponse::Clear() {
+PROTOBUF_NOINLINE void PublishRawImuResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishRawImuResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -8855,66 +8927,65 @@ void PublishRawImuResponse::Clear() {
     _impl_.telemetry_server_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishRawImuResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_telemetry_server_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishRawImuResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishRawImuResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishRawImuResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishRawImuResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishRawImuResponse, _impl_.telemetry_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishRawImuResponse, _impl_.telemetry_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::TelemetryServerResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishRawImuResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishRawImuResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::telemetry_server_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::telemetry_server_result(this),
         _Internal::telemetry_server_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishRawImuResponse)
   return target;
@@ -8931,22 +9002,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.telemetry_server_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.telemetry_server_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishRawImuResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishRawImuResponse::MergeImpl
+const ::google::protobuf::Message::ClassData PublishRawImuResponse::_class_data_ = {
+    PublishRawImuResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishRawImuResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishRawImuResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishRawImuResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishRawImuResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishRawImuResponse*>(&to_msg);
   auto& from = static_cast<const PublishRawImuResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishRawImuResponse)
@@ -8958,7 +9029,7 @@ void PublishRawImuResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, 
     _this->_internal_mutable_telemetry_server_result()->::mavsdk::rpc::telemetry_server::TelemetryServerResult::MergeFrom(
         from._internal_telemetry_server_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishRawImuResponse::CopyFrom(const PublishRawImuResponse& from) {
@@ -8968,18 +9039,21 @@ void PublishRawImuResponse::CopyFrom(const PublishRawImuResponse& from) {
   MergeFrom(from);
 }
 
-bool PublishRawImuResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishRawImuResponse::IsInitialized() const {
   return true;
 }
 
-void PublishRawImuResponse::InternalSwap(PublishRawImuResponse* other) {
+::_pbi::CachedSize* PublishRawImuResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishRawImuResponse::InternalSwap(PublishRawImuResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.telemetry_server_result_, other->_impl_.telemetry_server_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishRawImuResponse::GetMetadata() const {
+::google::protobuf::Metadata PublishRawImuResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[30]);
@@ -8997,59 +9071,59 @@ class PublishUnixEpochTimeResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&
-PublishUnixEpochTimeResponse::_Internal::telemetry_server_result(const PublishUnixEpochTimeResponse* msg) {
+const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishUnixEpochTimeResponse::_Internal::telemetry_server_result(const PublishUnixEpochTimeResponse* msg) {
   return *msg->_impl_.telemetry_server_result_;
 }
-PublishUnixEpochTimeResponse::PublishUnixEpochTimeResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishUnixEpochTimeResponse::PublishUnixEpochTimeResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishUnixEpochTimeResponse)
 }
-PublishUnixEpochTimeResponse::PublishUnixEpochTimeResponse(const PublishUnixEpochTimeResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishUnixEpochTimeResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishUnixEpochTimeResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.telemetry_server_result_ = new ::mavsdk::rpc::telemetry_server::TelemetryServerResult(*from._impl_.telemetry_server_result_);
-  }
+PublishUnixEpochTimeResponse::PublishUnixEpochTimeResponse(
+    ::google::protobuf::Arena* arena,
+    const PublishUnixEpochTimeResponse& from)
+    : ::google::protobuf::Message(arena) {
+  PublishUnixEpochTimeResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.telemetry_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(arena, *from._impl_.telemetry_server_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishUnixEpochTimeResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishUnixEpochTimeResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishUnixEpochTimeResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.telemetry_server_result_ = {};
 }
-
 PublishUnixEpochTimeResponse::~PublishUnixEpochTimeResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishUnixEpochTimeResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishUnixEpochTimeResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.telemetry_server_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.telemetry_server_result_;
+  _impl_.~Impl_();
 }
 
-void PublishUnixEpochTimeResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishUnixEpochTimeResponse::Clear() {
+PROTOBUF_NOINLINE void PublishUnixEpochTimeResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishUnixEpochTimeResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -9060,66 +9134,65 @@ void PublishUnixEpochTimeResponse::Clear() {
     _impl_.telemetry_server_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishUnixEpochTimeResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_telemetry_server_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishUnixEpochTimeResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishUnixEpochTimeResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishUnixEpochTimeResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishUnixEpochTimeResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishUnixEpochTimeResponse, _impl_.telemetry_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishUnixEpochTimeResponse, _impl_.telemetry_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::TelemetryServerResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishUnixEpochTimeResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishUnixEpochTimeResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::telemetry_server_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::telemetry_server_result(this),
         _Internal::telemetry_server_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishUnixEpochTimeResponse)
   return target;
@@ -9136,22 +9209,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.telemetry_server_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.telemetry_server_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishUnixEpochTimeResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishUnixEpochTimeResponse::MergeImpl
+const ::google::protobuf::Message::ClassData PublishUnixEpochTimeResponse::_class_data_ = {
+    PublishUnixEpochTimeResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishUnixEpochTimeResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishUnixEpochTimeResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishUnixEpochTimeResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishUnixEpochTimeResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishUnixEpochTimeResponse*>(&to_msg);
   auto& from = static_cast<const PublishUnixEpochTimeResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishUnixEpochTimeResponse)
@@ -9163,7 +9236,7 @@ void PublishUnixEpochTimeResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& t
     _this->_internal_mutable_telemetry_server_result()->::mavsdk::rpc::telemetry_server::TelemetryServerResult::MergeFrom(
         from._internal_telemetry_server_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishUnixEpochTimeResponse::CopyFrom(const PublishUnixEpochTimeResponse& from) {
@@ -9173,18 +9246,21 @@ void PublishUnixEpochTimeResponse::CopyFrom(const PublishUnixEpochTimeResponse& 
   MergeFrom(from);
 }
 
-bool PublishUnixEpochTimeResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishUnixEpochTimeResponse::IsInitialized() const {
   return true;
 }
 
-void PublishUnixEpochTimeResponse::InternalSwap(PublishUnixEpochTimeResponse* other) {
+::_pbi::CachedSize* PublishUnixEpochTimeResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishUnixEpochTimeResponse::InternalSwap(PublishUnixEpochTimeResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.telemetry_server_result_, other->_impl_.telemetry_server_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishUnixEpochTimeResponse::GetMetadata() const {
+::google::protobuf::Metadata PublishUnixEpochTimeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[31]);
@@ -9202,59 +9278,59 @@ class PublishDistanceSensorResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&
-PublishDistanceSensorResponse::_Internal::telemetry_server_result(const PublishDistanceSensorResponse* msg) {
+const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishDistanceSensorResponse::_Internal::telemetry_server_result(const PublishDistanceSensorResponse* msg) {
   return *msg->_impl_.telemetry_server_result_;
 }
-PublishDistanceSensorResponse::PublishDistanceSensorResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PublishDistanceSensorResponse::PublishDistanceSensorResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishDistanceSensorResponse)
 }
-PublishDistanceSensorResponse::PublishDistanceSensorResponse(const PublishDistanceSensorResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PublishDistanceSensorResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PublishDistanceSensorResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.telemetry_server_result_ = new ::mavsdk::rpc::telemetry_server::TelemetryServerResult(*from._impl_.telemetry_server_result_);
-  }
+PublishDistanceSensorResponse::PublishDistanceSensorResponse(
+    ::google::protobuf::Arena* arena,
+    const PublishDistanceSensorResponse& from)
+    : ::google::protobuf::Message(arena) {
+  PublishDistanceSensorResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.telemetry_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(arena, *from._impl_.telemetry_server_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishDistanceSensorResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE PublishDistanceSensorResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PublishDistanceSensorResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.telemetry_server_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.telemetry_server_result_ = {};
 }
-
 PublishDistanceSensorResponse::~PublishDistanceSensorResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishDistanceSensorResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PublishDistanceSensorResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.telemetry_server_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.telemetry_server_result_;
+  _impl_.~Impl_();
 }
 
-void PublishDistanceSensorResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PublishDistanceSensorResponse::Clear() {
+PROTOBUF_NOINLINE void PublishDistanceSensorResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishDistanceSensorResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -9265,66 +9341,65 @@ void PublishDistanceSensorResponse::Clear() {
     _impl_.telemetry_server_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PublishDistanceSensorResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_telemetry_server_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PublishDistanceSensorResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishDistanceSensorResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishDistanceSensorResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PublishDistanceSensorResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishDistanceSensorResponse, _impl_.telemetry_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishDistanceSensorResponse, _impl_.telemetry_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::TelemetryServerResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PublishDistanceSensorResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishDistanceSensorResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::telemetry_server_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::telemetry_server_result(this),
         _Internal::telemetry_server_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishDistanceSensorResponse)
   return target;
@@ -9341,22 +9416,22 @@ failure:
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.telemetry_server_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.telemetry_server_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PublishDistanceSensorResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PublishDistanceSensorResponse::MergeImpl
+const ::google::protobuf::Message::ClassData PublishDistanceSensorResponse::_class_data_ = {
+    PublishDistanceSensorResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PublishDistanceSensorResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PublishDistanceSensorResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PublishDistanceSensorResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PublishDistanceSensorResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PublishDistanceSensorResponse*>(&to_msg);
   auto& from = static_cast<const PublishDistanceSensorResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishDistanceSensorResponse)
@@ -9368,7 +9443,7 @@ void PublishDistanceSensorResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& 
     _this->_internal_mutable_telemetry_server_result()->::mavsdk::rpc::telemetry_server::TelemetryServerResult::MergeFrom(
         from._internal_telemetry_server_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PublishDistanceSensorResponse::CopyFrom(const PublishDistanceSensorResponse& from) {
@@ -9378,18 +9453,21 @@ void PublishDistanceSensorResponse::CopyFrom(const PublishDistanceSensorResponse
   MergeFrom(from);
 }
 
-bool PublishDistanceSensorResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool PublishDistanceSensorResponse::IsInitialized() const {
   return true;
 }
 
-void PublishDistanceSensorResponse::InternalSwap(PublishDistanceSensorResponse* other) {
+::_pbi::CachedSize* PublishDistanceSensorResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PublishDistanceSensorResponse::InternalSwap(PublishDistanceSensorResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.telemetry_server_result_, other->_impl_.telemetry_server_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PublishDistanceSensorResponse::GetMetadata() const {
+::google::protobuf::Metadata PublishDistanceSensorResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[32]);
@@ -9400,52 +9478,43 @@ class Position::_Internal {
  public:
 };
 
-Position::Position(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+Position::Position(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.Position)
 }
-Position::Position(const Position& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.Position)
+Position::Position(
+    ::google::protobuf::Arena* arena, const Position& from)
+    : Position(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE Position::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void Position::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.latitude_deg_) { 0 }
-
-    , decltype(_impl_.longitude_deg_) { 0 }
-
-    , decltype(_impl_.absolute_altitude_m_) { 0 }
-
-    , decltype(_impl_.relative_altitude_m_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, latitude_deg_),
+           0,
+           offsetof(Impl_, relative_altitude_m_) -
+               offsetof(Impl_, latitude_deg_) +
+               sizeof(Impl_::relative_altitude_m_));
 }
-
 Position::~Position() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.Position)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void Position::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void Position::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void Position::Clear() {
+PROTOBUF_NOINLINE void Position::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.Position)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -9453,82 +9522,74 @@ void Position::Clear() {
   ::memset(&_impl_.latitude_deg_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.relative_altitude_m_) -
       reinterpret_cast<char*>(&_impl_.latitude_deg_)) + sizeof(_impl_.relative_altitude_m_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* Position::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 9)) {
-          _impl_.latitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
-          ptr += sizeof(double);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 17)) {
-          _impl_.longitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
-          ptr += sizeof(double);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
-          _impl_.absolute_altitude_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float relative_altitude_m = 4 [(.mavsdk.options.default_value) = "NaN"];
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 37)) {
-          _impl_.relative_altitude_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* Position::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 4, 0, 0, 2> Position::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    4, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967280,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    4,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_Position_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // float relative_altitude_m = 4 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {37, 63, 0, PROTOBUF_FIELD_OFFSET(Position, _impl_.relative_altitude_m_)}},
+    // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF64S1,
+     {9, 63, 0, PROTOBUF_FIELD_OFFSET(Position, _impl_.latitude_deg_)}},
+    // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF64S1,
+     {17, 63, 0, PROTOBUF_FIELD_OFFSET(Position, _impl_.longitude_deg_)}},
+    // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(Position, _impl_.absolute_altitude_m_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Position, _impl_.latitude_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
+    // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Position, _impl_.longitude_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
+    // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Position, _impl_.absolute_altitude_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float relative_altitude_m = 4 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Position, _impl_.relative_altitude_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* Position::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.Position)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_latitude_deg = this->_internal_latitude_deg();
   ::uint64_t raw_latitude_deg;
   memcpy(&raw_latitude_deg, &tmp_latitude_deg, sizeof(tmp_latitude_deg));
@@ -9539,7 +9600,8 @@ failure:
   }
 
   // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_longitude_deg = this->_internal_longitude_deg();
   ::uint64_t raw_longitude_deg;
   memcpy(&raw_longitude_deg, &tmp_longitude_deg, sizeof(tmp_longitude_deg));
@@ -9550,7 +9612,8 @@ failure:
   }
 
   // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_absolute_altitude_m = this->_internal_absolute_altitude_m();
   ::uint32_t raw_absolute_altitude_m;
   memcpy(&raw_absolute_altitude_m, &tmp_absolute_altitude_m, sizeof(tmp_absolute_altitude_m));
@@ -9561,7 +9624,8 @@ failure:
   }
 
   // float relative_altitude_m = 4 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_relative_altitude_m = this->_internal_relative_altitude_m();
   ::uint32_t raw_relative_altitude_m;
   memcpy(&raw_relative_altitude_m, &tmp_relative_altitude_m, sizeof(tmp_relative_altitude_m));
@@ -9572,8 +9636,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.Position)
   return target;
@@ -9588,7 +9653,8 @@ failure:
   (void) cached_has_bits;
 
   // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_latitude_deg = this->_internal_latitude_deg();
   ::uint64_t raw_latitude_deg;
   memcpy(&raw_latitude_deg, &tmp_latitude_deg, sizeof(tmp_latitude_deg));
@@ -9597,7 +9663,8 @@ failure:
   }
 
   // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_longitude_deg = this->_internal_longitude_deg();
   ::uint64_t raw_longitude_deg;
   memcpy(&raw_longitude_deg, &tmp_longitude_deg, sizeof(tmp_longitude_deg));
@@ -9606,7 +9673,8 @@ failure:
   }
 
   // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_absolute_altitude_m = this->_internal_absolute_altitude_m();
   ::uint32_t raw_absolute_altitude_m;
   memcpy(&raw_absolute_altitude_m, &tmp_absolute_altitude_m, sizeof(tmp_absolute_altitude_m));
@@ -9615,7 +9683,8 @@ failure:
   }
 
   // float relative_altitude_m = 4 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_relative_altitude_m = this->_internal_relative_altitude_m();
   ::uint32_t raw_relative_altitude_m;
   memcpy(&raw_relative_altitude_m, &tmp_relative_altitude_m, sizeof(tmp_relative_altitude_m));
@@ -9626,14 +9695,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Position::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    Position::MergeImpl
+const ::google::protobuf::Message::ClassData Position::_class_data_ = {
+    Position::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Position::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* Position::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void Position::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void Position::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<Position*>(&to_msg);
   auto& from = static_cast<const Position&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.Position)
@@ -9641,35 +9711,39 @@ void Position::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTO
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_latitude_deg = from._internal_latitude_deg();
   ::uint64_t raw_latitude_deg;
   memcpy(&raw_latitude_deg, &tmp_latitude_deg, sizeof(tmp_latitude_deg));
   if (raw_latitude_deg != 0) {
     _this->_internal_set_latitude_deg(from._internal_latitude_deg());
   }
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_longitude_deg = from._internal_longitude_deg();
   ::uint64_t raw_longitude_deg;
   memcpy(&raw_longitude_deg, &tmp_longitude_deg, sizeof(tmp_longitude_deg));
   if (raw_longitude_deg != 0) {
     _this->_internal_set_longitude_deg(from._internal_longitude_deg());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_absolute_altitude_m = from._internal_absolute_altitude_m();
   ::uint32_t raw_absolute_altitude_m;
   memcpy(&raw_absolute_altitude_m, &tmp_absolute_altitude_m, sizeof(tmp_absolute_altitude_m));
   if (raw_absolute_altitude_m != 0) {
     _this->_internal_set_absolute_altitude_m(from._internal_absolute_altitude_m());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_relative_altitude_m = from._internal_relative_altitude_m();
   ::uint32_t raw_relative_altitude_m;
   memcpy(&raw_relative_altitude_m, &tmp_relative_altitude_m, sizeof(tmp_relative_altitude_m));
   if (raw_relative_altitude_m != 0) {
     _this->_internal_set_relative_altitude_m(from._internal_relative_altitude_m());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Position::CopyFrom(const Position& from) {
@@ -9679,14 +9753,17 @@ void Position::CopyFrom(const Position& from) {
   MergeFrom(from);
 }
 
-bool Position::IsInitialized() const {
+PROTOBUF_NOINLINE bool Position::IsInitialized() const {
   return true;
 }
 
-void Position::InternalSwap(Position* other) {
+::_pbi::CachedSize* Position::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void Position::InternalSwap(Position* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Position, _impl_.relative_altitude_m_)
       + sizeof(Position::_impl_.relative_altitude_m_)
       - PROTOBUF_FIELD_OFFSET(Position, _impl_.latitude_deg_)>(
@@ -9694,7 +9771,7 @@ void Position::InternalSwap(Position* other) {
           reinterpret_cast<char*>(&other->_impl_.latitude_deg_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Position::GetMetadata() const {
+::google::protobuf::Metadata Position::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[33]);
@@ -9705,100 +9782,93 @@ class Heading::_Internal {
  public:
 };
 
-Heading::Heading(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+Heading::Heading(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.Heading)
 }
-Heading::Heading(const Heading& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.Heading)
+Heading::Heading(
+    ::google::protobuf::Arena* arena, const Heading& from)
+    : Heading(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE Heading::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void Heading::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.heading_deg_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.heading_deg_ = {};
 }
-
 Heading::~Heading() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.Heading)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void Heading::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void Heading::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void Heading::Clear() {
+PROTOBUF_NOINLINE void Heading::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.Heading)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.heading_deg_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* Heading::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // double heading_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 9)) {
-          _impl_.heading_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
-          ptr += sizeof(double);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* Heading::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> Heading::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_Heading_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // double heading_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF64S1,
+     {9, 63, 0, PROTOBUF_FIELD_OFFSET(Heading, _impl_.heading_deg_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // double heading_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Heading, _impl_.heading_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* Heading::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.Heading)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // double heading_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_heading_deg = this->_internal_heading_deg();
   ::uint64_t raw_heading_deg;
   memcpy(&raw_heading_deg, &tmp_heading_deg, sizeof(tmp_heading_deg));
@@ -9809,8 +9879,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.Heading)
   return target;
@@ -9825,7 +9896,8 @@ failure:
   (void) cached_has_bits;
 
   // double heading_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_heading_deg = this->_internal_heading_deg();
   ::uint64_t raw_heading_deg;
   memcpy(&raw_heading_deg, &tmp_heading_deg, sizeof(tmp_heading_deg));
@@ -9836,14 +9908,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Heading::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    Heading::MergeImpl
+const ::google::protobuf::Message::ClassData Heading::_class_data_ = {
+    Heading::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Heading::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* Heading::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void Heading::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void Heading::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<Heading*>(&to_msg);
   auto& from = static_cast<const Heading&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.Heading)
@@ -9851,14 +9924,15 @@ void Heading::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOB
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_heading_deg = from._internal_heading_deg();
   ::uint64_t raw_heading_deg;
   memcpy(&raw_heading_deg, &tmp_heading_deg, sizeof(tmp_heading_deg));
   if (raw_heading_deg != 0) {
     _this->_internal_set_heading_deg(from._internal_heading_deg());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Heading::CopyFrom(const Heading& from) {
@@ -9868,18 +9942,20 @@ void Heading::CopyFrom(const Heading& from) {
   MergeFrom(from);
 }
 
-bool Heading::IsInitialized() const {
+PROTOBUF_NOINLINE bool Heading::IsInitialized() const {
   return true;
 }
 
-void Heading::InternalSwap(Heading* other) {
+::_pbi::CachedSize* Heading::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void Heading::InternalSwap(Heading* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-
-  swap(_impl_.heading_deg_, other->_impl_.heading_deg_);
+        swap(_impl_.heading_deg_, other->_impl_.heading_deg_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Heading::GetMetadata() const {
+::google::protobuf::Metadata Heading::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[34]);
@@ -9890,54 +9966,43 @@ class Quaternion::_Internal {
  public:
 };
 
-Quaternion::Quaternion(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+Quaternion::Quaternion(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.Quaternion)
 }
-Quaternion::Quaternion(const Quaternion& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.Quaternion)
+Quaternion::Quaternion(
+    ::google::protobuf::Arena* arena, const Quaternion& from)
+    : Quaternion(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE Quaternion::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void Quaternion::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.w_) { 0 }
-
-    , decltype(_impl_.x_) { 0 }
-
-    , decltype(_impl_.y_) { 0 }
-
-    , decltype(_impl_.z_) { 0 }
-
-    , decltype(_impl_.timestamp_us_) { ::uint64_t{0u} }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, w_),
+           0,
+           offsetof(Impl_, timestamp_us_) -
+               offsetof(Impl_, w_) +
+               sizeof(Impl_::timestamp_us_));
 }
-
 Quaternion::~Quaternion() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.Quaternion)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void Quaternion::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void Quaternion::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void Quaternion::Clear() {
+PROTOBUF_NOINLINE void Quaternion::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.Quaternion)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -9945,91 +10010,83 @@ void Quaternion::Clear() {
   ::memset(&_impl_.w_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.timestamp_us_) -
       reinterpret_cast<char*>(&_impl_.w_)) + sizeof(_impl_.timestamp_us_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* Quaternion::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
-          _impl_.w_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
-          _impl_.x_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
-          _impl_.y_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 37)) {
-          _impl_.z_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // uint64 timestamp_us = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 40)) {
-          _impl_.timestamp_us_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* Quaternion::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 5, 0, 0, 2> Quaternion::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    5, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967264,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    5,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_Quaternion_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.w_)}},
+    // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.x_)}},
+    // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.y_)}},
+    // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {37, 63, 0, PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.z_)}},
+    // uint64 timestamp_us = 5;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(Quaternion, _impl_.timestamp_us_), 63>(),
+     {40, 63, 0, PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.timestamp_us_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.w_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.x_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.y_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.z_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // uint64 timestamp_us = 5;
+    {PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.timestamp_us_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* Quaternion::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.Quaternion)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_w = this->_internal_w();
   ::uint32_t raw_w;
   memcpy(&raw_w, &tmp_w, sizeof(tmp_w));
@@ -10040,7 +10097,8 @@ failure:
   }
 
   // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_x = this->_internal_x();
   ::uint32_t raw_x;
   memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
@@ -10051,7 +10109,8 @@ failure:
   }
 
   // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_y = this->_internal_y();
   ::uint32_t raw_y;
   memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
@@ -10062,7 +10121,8 @@ failure:
   }
 
   // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_z = this->_internal_z();
   ::uint32_t raw_z;
   memcpy(&raw_z, &tmp_z, sizeof(tmp_z));
@@ -10080,8 +10140,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.Quaternion)
   return target;
@@ -10096,7 +10157,8 @@ failure:
   (void) cached_has_bits;
 
   // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_w = this->_internal_w();
   ::uint32_t raw_w;
   memcpy(&raw_w, &tmp_w, sizeof(tmp_w));
@@ -10105,7 +10167,8 @@ failure:
   }
 
   // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_x = this->_internal_x();
   ::uint32_t raw_x;
   memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
@@ -10114,7 +10177,8 @@ failure:
   }
 
   // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_y = this->_internal_y();
   ::uint32_t raw_y;
   memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
@@ -10123,7 +10187,8 @@ failure:
   }
 
   // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_z = this->_internal_z();
   ::uint32_t raw_z;
   memcpy(&raw_z, &tmp_z, sizeof(tmp_z));
@@ -10140,14 +10205,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Quaternion::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    Quaternion::MergeImpl
+const ::google::protobuf::Message::ClassData Quaternion::_class_data_ = {
+    Quaternion::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Quaternion::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* Quaternion::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void Quaternion::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void Quaternion::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<Quaternion*>(&to_msg);
   auto& from = static_cast<const Quaternion&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.Quaternion)
@@ -10155,28 +10221,32 @@ void Quaternion::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PRO
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_w = from._internal_w();
   ::uint32_t raw_w;
   memcpy(&raw_w, &tmp_w, sizeof(tmp_w));
   if (raw_w != 0) {
     _this->_internal_set_w(from._internal_w());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_x = from._internal_x();
   ::uint32_t raw_x;
   memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
   if (raw_x != 0) {
     _this->_internal_set_x(from._internal_x());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_y = from._internal_y();
   ::uint32_t raw_y;
   memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
   if (raw_y != 0) {
     _this->_internal_set_y(from._internal_y());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_z = from._internal_z();
   ::uint32_t raw_z;
   memcpy(&raw_z, &tmp_z, sizeof(tmp_z));
@@ -10186,7 +10256,7 @@ void Quaternion::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PRO
   if (from._internal_timestamp_us() != 0) {
     _this->_internal_set_timestamp_us(from._internal_timestamp_us());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Quaternion::CopyFrom(const Quaternion& from) {
@@ -10196,14 +10266,17 @@ void Quaternion::CopyFrom(const Quaternion& from) {
   MergeFrom(from);
 }
 
-bool Quaternion::IsInitialized() const {
+PROTOBUF_NOINLINE bool Quaternion::IsInitialized() const {
   return true;
 }
 
-void Quaternion::InternalSwap(Quaternion* other) {
+::_pbi::CachedSize* Quaternion::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void Quaternion::InternalSwap(Quaternion* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.timestamp_us_)
       + sizeof(Quaternion::_impl_.timestamp_us_)
       - PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.w_)>(
@@ -10211,7 +10284,7 @@ void Quaternion::InternalSwap(Quaternion* other) {
           reinterpret_cast<char*>(&other->_impl_.w_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Quaternion::GetMetadata() const {
+::google::protobuf::Metadata Quaternion::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[35]);
@@ -10222,52 +10295,43 @@ class EulerAngle::_Internal {
  public:
 };
 
-EulerAngle::EulerAngle(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+EulerAngle::EulerAngle(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.EulerAngle)
 }
-EulerAngle::EulerAngle(const EulerAngle& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.EulerAngle)
+EulerAngle::EulerAngle(
+    ::google::protobuf::Arena* arena, const EulerAngle& from)
+    : EulerAngle(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE EulerAngle::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void EulerAngle::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.roll_deg_) { 0 }
-
-    , decltype(_impl_.pitch_deg_) { 0 }
-
-    , decltype(_impl_.timestamp_us_) { ::uint64_t{0u} }
-
-    , decltype(_impl_.yaw_deg_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, roll_deg_),
+           0,
+           offsetof(Impl_, yaw_deg_) -
+               offsetof(Impl_, roll_deg_) +
+               sizeof(Impl_::yaw_deg_));
 }
-
 EulerAngle::~EulerAngle() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.EulerAngle)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void EulerAngle::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void EulerAngle::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void EulerAngle::Clear() {
+PROTOBUF_NOINLINE void EulerAngle::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.EulerAngle)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -10275,82 +10339,74 @@ void EulerAngle::Clear() {
   ::memset(&_impl_.roll_deg_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.yaw_deg_) -
       reinterpret_cast<char*>(&_impl_.roll_deg_)) + sizeof(_impl_.yaw_deg_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* EulerAngle::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
-          _impl_.roll_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
-          _impl_.pitch_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
-          _impl_.yaw_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // uint64 timestamp_us = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 32)) {
-          _impl_.timestamp_us_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* EulerAngle::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 4, 0, 0, 2> EulerAngle::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    4, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967280,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    4,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_EulerAngle_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // uint64 timestamp_us = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(EulerAngle, _impl_.timestamp_us_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.timestamp_us_)}},
+    // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.roll_deg_)}},
+    // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.pitch_deg_)}},
+    // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.yaw_deg_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.roll_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.pitch_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.yaw_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // uint64 timestamp_us = 4;
+    {PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.timestamp_us_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* EulerAngle::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.EulerAngle)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_roll_deg = this->_internal_roll_deg();
   ::uint32_t raw_roll_deg;
   memcpy(&raw_roll_deg, &tmp_roll_deg, sizeof(tmp_roll_deg));
@@ -10361,7 +10417,8 @@ failure:
   }
 
   // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_pitch_deg = this->_internal_pitch_deg();
   ::uint32_t raw_pitch_deg;
   memcpy(&raw_pitch_deg, &tmp_pitch_deg, sizeof(tmp_pitch_deg));
@@ -10372,7 +10429,8 @@ failure:
   }
 
   // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_yaw_deg = this->_internal_yaw_deg();
   ::uint32_t raw_yaw_deg;
   memcpy(&raw_yaw_deg, &tmp_yaw_deg, sizeof(tmp_yaw_deg));
@@ -10390,8 +10448,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.EulerAngle)
   return target;
@@ -10406,7 +10465,8 @@ failure:
   (void) cached_has_bits;
 
   // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_roll_deg = this->_internal_roll_deg();
   ::uint32_t raw_roll_deg;
   memcpy(&raw_roll_deg, &tmp_roll_deg, sizeof(tmp_roll_deg));
@@ -10415,7 +10475,8 @@ failure:
   }
 
   // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_pitch_deg = this->_internal_pitch_deg();
   ::uint32_t raw_pitch_deg;
   memcpy(&raw_pitch_deg, &tmp_pitch_deg, sizeof(tmp_pitch_deg));
@@ -10430,7 +10491,8 @@ failure:
   }
 
   // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_yaw_deg = this->_internal_yaw_deg();
   ::uint32_t raw_yaw_deg;
   memcpy(&raw_yaw_deg, &tmp_yaw_deg, sizeof(tmp_yaw_deg));
@@ -10441,14 +10503,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData EulerAngle::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    EulerAngle::MergeImpl
+const ::google::protobuf::Message::ClassData EulerAngle::_class_data_ = {
+    EulerAngle::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*EulerAngle::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* EulerAngle::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void EulerAngle::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void EulerAngle::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<EulerAngle*>(&to_msg);
   auto& from = static_cast<const EulerAngle&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.EulerAngle)
@@ -10456,14 +10519,16 @@ void EulerAngle::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PRO
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_roll_deg = from._internal_roll_deg();
   ::uint32_t raw_roll_deg;
   memcpy(&raw_roll_deg, &tmp_roll_deg, sizeof(tmp_roll_deg));
   if (raw_roll_deg != 0) {
     _this->_internal_set_roll_deg(from._internal_roll_deg());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_pitch_deg = from._internal_pitch_deg();
   ::uint32_t raw_pitch_deg;
   memcpy(&raw_pitch_deg, &tmp_pitch_deg, sizeof(tmp_pitch_deg));
@@ -10473,14 +10538,15 @@ void EulerAngle::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PRO
   if (from._internal_timestamp_us() != 0) {
     _this->_internal_set_timestamp_us(from._internal_timestamp_us());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_yaw_deg = from._internal_yaw_deg();
   ::uint32_t raw_yaw_deg;
   memcpy(&raw_yaw_deg, &tmp_yaw_deg, sizeof(tmp_yaw_deg));
   if (raw_yaw_deg != 0) {
     _this->_internal_set_yaw_deg(from._internal_yaw_deg());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void EulerAngle::CopyFrom(const EulerAngle& from) {
@@ -10490,14 +10556,17 @@ void EulerAngle::CopyFrom(const EulerAngle& from) {
   MergeFrom(from);
 }
 
-bool EulerAngle::IsInitialized() const {
+PROTOBUF_NOINLINE bool EulerAngle::IsInitialized() const {
   return true;
 }
 
-void EulerAngle::InternalSwap(EulerAngle* other) {
+::_pbi::CachedSize* EulerAngle::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void EulerAngle::InternalSwap(EulerAngle* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.yaw_deg_)
       + sizeof(EulerAngle::_impl_.yaw_deg_)
       - PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.roll_deg_)>(
@@ -10505,7 +10574,7 @@ void EulerAngle::InternalSwap(EulerAngle* other) {
           reinterpret_cast<char*>(&other->_impl_.roll_deg_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata EulerAngle::GetMetadata() const {
+::google::protobuf::Metadata EulerAngle::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[36]);
@@ -10516,50 +10585,43 @@ class AngularVelocityBody::_Internal {
  public:
 };
 
-AngularVelocityBody::AngularVelocityBody(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+AngularVelocityBody::AngularVelocityBody(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.AngularVelocityBody)
 }
-AngularVelocityBody::AngularVelocityBody(const AngularVelocityBody& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.AngularVelocityBody)
+AngularVelocityBody::AngularVelocityBody(
+    ::google::protobuf::Arena* arena, const AngularVelocityBody& from)
+    : AngularVelocityBody(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE AngularVelocityBody::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void AngularVelocityBody::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.roll_rad_s_) { 0 }
-
-    , decltype(_impl_.pitch_rad_s_) { 0 }
-
-    , decltype(_impl_.yaw_rad_s_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, roll_rad_s_),
+           0,
+           offsetof(Impl_, yaw_rad_s_) -
+               offsetof(Impl_, roll_rad_s_) +
+               sizeof(Impl_::yaw_rad_s_));
 }
-
 AngularVelocityBody::~AngularVelocityBody() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.AngularVelocityBody)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void AngularVelocityBody::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void AngularVelocityBody::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void AngularVelocityBody::Clear() {
+PROTOBUF_NOINLINE void AngularVelocityBody::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.AngularVelocityBody)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -10567,73 +10629,69 @@ void AngularVelocityBody::Clear() {
   ::memset(&_impl_.roll_rad_s_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.yaw_rad_s_) -
       reinterpret_cast<char*>(&_impl_.roll_rad_s_)) + sizeof(_impl_.yaw_rad_s_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* AngularVelocityBody::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
-          _impl_.roll_rad_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
-          _impl_.pitch_rad_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
-          _impl_.yaw_rad_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* AngularVelocityBody::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> AngularVelocityBody::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_AngularVelocityBody_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.roll_rad_s_)}},
+    // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.pitch_rad_s_)}},
+    // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.yaw_rad_s_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.roll_rad_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.pitch_rad_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.yaw_rad_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* AngularVelocityBody::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.AngularVelocityBody)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_roll_rad_s = this->_internal_roll_rad_s();
   ::uint32_t raw_roll_rad_s;
   memcpy(&raw_roll_rad_s, &tmp_roll_rad_s, sizeof(tmp_roll_rad_s));
@@ -10644,7 +10702,8 @@ failure:
   }
 
   // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_pitch_rad_s = this->_internal_pitch_rad_s();
   ::uint32_t raw_pitch_rad_s;
   memcpy(&raw_pitch_rad_s, &tmp_pitch_rad_s, sizeof(tmp_pitch_rad_s));
@@ -10655,7 +10714,8 @@ failure:
   }
 
   // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_yaw_rad_s = this->_internal_yaw_rad_s();
   ::uint32_t raw_yaw_rad_s;
   memcpy(&raw_yaw_rad_s, &tmp_yaw_rad_s, sizeof(tmp_yaw_rad_s));
@@ -10666,8 +10726,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.AngularVelocityBody)
   return target;
@@ -10682,7 +10743,8 @@ failure:
   (void) cached_has_bits;
 
   // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_roll_rad_s = this->_internal_roll_rad_s();
   ::uint32_t raw_roll_rad_s;
   memcpy(&raw_roll_rad_s, &tmp_roll_rad_s, sizeof(tmp_roll_rad_s));
@@ -10691,7 +10753,8 @@ failure:
   }
 
   // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_pitch_rad_s = this->_internal_pitch_rad_s();
   ::uint32_t raw_pitch_rad_s;
   memcpy(&raw_pitch_rad_s, &tmp_pitch_rad_s, sizeof(tmp_pitch_rad_s));
@@ -10700,7 +10763,8 @@ failure:
   }
 
   // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_yaw_rad_s = this->_internal_yaw_rad_s();
   ::uint32_t raw_yaw_rad_s;
   memcpy(&raw_yaw_rad_s, &tmp_yaw_rad_s, sizeof(tmp_yaw_rad_s));
@@ -10711,14 +10775,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData AngularVelocityBody::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    AngularVelocityBody::MergeImpl
+const ::google::protobuf::Message::ClassData AngularVelocityBody::_class_data_ = {
+    AngularVelocityBody::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*AngularVelocityBody::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* AngularVelocityBody::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void AngularVelocityBody::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void AngularVelocityBody::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<AngularVelocityBody*>(&to_msg);
   auto& from = static_cast<const AngularVelocityBody&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.AngularVelocityBody)
@@ -10726,28 +10791,31 @@ void AngularVelocityBody::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, co
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_roll_rad_s = from._internal_roll_rad_s();
   ::uint32_t raw_roll_rad_s;
   memcpy(&raw_roll_rad_s, &tmp_roll_rad_s, sizeof(tmp_roll_rad_s));
   if (raw_roll_rad_s != 0) {
     _this->_internal_set_roll_rad_s(from._internal_roll_rad_s());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_pitch_rad_s = from._internal_pitch_rad_s();
   ::uint32_t raw_pitch_rad_s;
   memcpy(&raw_pitch_rad_s, &tmp_pitch_rad_s, sizeof(tmp_pitch_rad_s));
   if (raw_pitch_rad_s != 0) {
     _this->_internal_set_pitch_rad_s(from._internal_pitch_rad_s());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_yaw_rad_s = from._internal_yaw_rad_s();
   ::uint32_t raw_yaw_rad_s;
   memcpy(&raw_yaw_rad_s, &tmp_yaw_rad_s, sizeof(tmp_yaw_rad_s));
   if (raw_yaw_rad_s != 0) {
     _this->_internal_set_yaw_rad_s(from._internal_yaw_rad_s());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void AngularVelocityBody::CopyFrom(const AngularVelocityBody& from) {
@@ -10757,14 +10825,17 @@ void AngularVelocityBody::CopyFrom(const AngularVelocityBody& from) {
   MergeFrom(from);
 }
 
-bool AngularVelocityBody::IsInitialized() const {
+PROTOBUF_NOINLINE bool AngularVelocityBody::IsInitialized() const {
   return true;
 }
 
-void AngularVelocityBody::InternalSwap(AngularVelocityBody* other) {
+::_pbi::CachedSize* AngularVelocityBody::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void AngularVelocityBody::InternalSwap(AngularVelocityBody* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.yaw_rad_s_)
       + sizeof(AngularVelocityBody::_impl_.yaw_rad_s_)
       - PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.roll_rad_s_)>(
@@ -10772,7 +10843,7 @@ void AngularVelocityBody::InternalSwap(AngularVelocityBody* other) {
           reinterpret_cast<char*>(&other->_impl_.roll_rad_s_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata AngularVelocityBody::GetMetadata() const {
+::google::protobuf::Metadata AngularVelocityBody::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[37]);
@@ -10783,48 +10854,43 @@ class GpsInfo::_Internal {
  public:
 };
 
-GpsInfo::GpsInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+GpsInfo::GpsInfo(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.GpsInfo)
 }
-GpsInfo::GpsInfo(const GpsInfo& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.GpsInfo)
+GpsInfo::GpsInfo(
+    ::google::protobuf::Arena* arena, const GpsInfo& from)
+    : GpsInfo(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE GpsInfo::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void GpsInfo::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.num_satellites_) { 0 }
-
-    , decltype(_impl_.fix_type_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, num_satellites_),
+           0,
+           offsetof(Impl_, fix_type_) -
+               offsetof(Impl_, num_satellites_) +
+               sizeof(Impl_::fix_type_));
 }
-
 GpsInfo::~GpsInfo() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.GpsInfo)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void GpsInfo::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void GpsInfo::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void GpsInfo::Clear() {
+PROTOBUF_NOINLINE void GpsInfo::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.GpsInfo)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -10832,68 +10898,64 @@ void GpsInfo::Clear() {
   ::memset(&_impl_.num_satellites_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.fix_type_) -
       reinterpret_cast<char*>(&_impl_.num_satellites_)) + sizeof(_impl_.fix_type_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* GpsInfo::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // int32 num_satellites = 1 [(.mavsdk.options.default_value) = "0"];
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          _impl_.num_satellites_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.telemetry_server.FixType fix_type = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
-          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-          _internal_set_fix_type(static_cast<::mavsdk::rpc::telemetry_server::FixType>(val));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* GpsInfo::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2> GpsInfo::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_GpsInfo_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.FixType fix_type = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GpsInfo, _impl_.fix_type_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(GpsInfo, _impl_.fix_type_)}},
+    // int32 num_satellites = 1 [(.mavsdk.options.default_value) = "0"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GpsInfo, _impl_.num_satellites_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(GpsInfo, _impl_.num_satellites_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 num_satellites = 1 [(.mavsdk.options.default_value) = "0"];
+    {PROTOBUF_FIELD_OFFSET(GpsInfo, _impl_.num_satellites_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // .mavsdk.rpc.telemetry_server.FixType fix_type = 2;
+    {PROTOBUF_FIELD_OFFSET(GpsInfo, _impl_.fix_type_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* GpsInfo::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.GpsInfo)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // int32 num_satellites = 1 [(.mavsdk.options.default_value) = "0"];
   if (this->_internal_num_satellites() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
-        1, this->_internal_num_satellites(), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt32ToArrayWithField<1>(
+            stream, this->_internal_num_satellites(), target);
   }
 
   // .mavsdk.rpc.telemetry_server.FixType fix_type = 2;
@@ -10904,8 +10966,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.GpsInfo)
   return target;
@@ -10934,14 +10997,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GpsInfo::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    GpsInfo::MergeImpl
+const ::google::protobuf::Message::ClassData GpsInfo::_class_data_ = {
+    GpsInfo::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GpsInfo::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* GpsInfo::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void GpsInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void GpsInfo::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<GpsInfo*>(&to_msg);
   auto& from = static_cast<const GpsInfo&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.GpsInfo)
@@ -10955,7 +11019,7 @@ void GpsInfo::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOB
   if (from._internal_fix_type() != 0) {
     _this->_internal_set_fix_type(from._internal_fix_type());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void GpsInfo::CopyFrom(const GpsInfo& from) {
@@ -10965,14 +11029,17 @@ void GpsInfo::CopyFrom(const GpsInfo& from) {
   MergeFrom(from);
 }
 
-bool GpsInfo::IsInitialized() const {
+PROTOBUF_NOINLINE bool GpsInfo::IsInitialized() const {
   return true;
 }
 
-void GpsInfo::InternalSwap(GpsInfo* other) {
+::_pbi::CachedSize* GpsInfo::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void GpsInfo::InternalSwap(GpsInfo* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(GpsInfo, _impl_.fix_type_)
       + sizeof(GpsInfo::_impl_.fix_type_)
       - PROTOBUF_FIELD_OFFSET(GpsInfo, _impl_.num_satellites_)>(
@@ -10980,7 +11047,7 @@ void GpsInfo::InternalSwap(GpsInfo* other) {
           reinterpret_cast<char*>(&other->_impl_.num_satellites_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata GpsInfo::GetMetadata() const {
+::google::protobuf::Metadata GpsInfo::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[38]);
@@ -10991,72 +11058,43 @@ class RawGps::_Internal {
  public:
 };
 
-RawGps::RawGps(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+RawGps::RawGps(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.RawGps)
 }
-RawGps::RawGps(const RawGps& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.RawGps)
+RawGps::RawGps(
+    ::google::protobuf::Arena* arena, const RawGps& from)
+    : RawGps(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE RawGps::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void RawGps::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.timestamp_us_) { ::uint64_t{0u} }
-
-    , decltype(_impl_.latitude_deg_) { 0 }
-
-    , decltype(_impl_.longitude_deg_) { 0 }
-
-    , decltype(_impl_.absolute_altitude_m_) { 0 }
-
-    , decltype(_impl_.hdop_) { 0 }
-
-    , decltype(_impl_.vdop_) { 0 }
-
-    , decltype(_impl_.velocity_m_s_) { 0 }
-
-    , decltype(_impl_.cog_deg_) { 0 }
-
-    , decltype(_impl_.altitude_ellipsoid_m_) { 0 }
-
-    , decltype(_impl_.horizontal_uncertainty_m_) { 0 }
-
-    , decltype(_impl_.vertical_uncertainty_m_) { 0 }
-
-    , decltype(_impl_.velocity_uncertainty_m_s_) { 0 }
-
-    , decltype(_impl_.heading_uncertainty_deg_) { 0 }
-
-    , decltype(_impl_.yaw_deg_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, timestamp_us_),
+           0,
+           offsetof(Impl_, yaw_deg_) -
+               offsetof(Impl_, timestamp_us_) +
+               sizeof(Impl_::yaw_deg_));
 }
-
 RawGps::~RawGps() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.RawGps)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void RawGps::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void RawGps::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void RawGps::Clear() {
+PROTOBUF_NOINLINE void RawGps::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.RawGps)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -11064,169 +11102,132 @@ void RawGps::Clear() {
   ::memset(&_impl_.timestamp_us_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.yaw_deg_) -
       reinterpret_cast<char*>(&_impl_.timestamp_us_)) + sizeof(_impl_.yaw_deg_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* RawGps::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // uint64 timestamp_us = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          _impl_.timestamp_us_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // double latitude_deg = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 17)) {
-          _impl_.latitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
-          ptr += sizeof(double);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // double longitude_deg = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 25)) {
-          _impl_.longitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
-          ptr += sizeof(double);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float absolute_altitude_m = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 37)) {
-          _impl_.absolute_altitude_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float hdop = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 45)) {
-          _impl_.hdop_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float vdop = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 53)) {
-          _impl_.vdop_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float velocity_m_s = 7;
-      case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 61)) {
-          _impl_.velocity_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float cog_deg = 8;
-      case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 69)) {
-          _impl_.cog_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float altitude_ellipsoid_m = 9;
-      case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 77)) {
-          _impl_.altitude_ellipsoid_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float horizontal_uncertainty_m = 10;
-      case 10:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 85)) {
-          _impl_.horizontal_uncertainty_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float vertical_uncertainty_m = 11;
-      case 11:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 93)) {
-          _impl_.vertical_uncertainty_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float velocity_uncertainty_m_s = 12;
-      case 12:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 101)) {
-          _impl_.velocity_uncertainty_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float heading_uncertainty_deg = 13;
-      case 13:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 109)) {
-          _impl_.heading_uncertainty_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float yaw_deg = 14;
-      case 14:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 117)) {
-          _impl_.yaw_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* RawGps::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<4, 14, 0, 0, 2> RawGps::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    14, 120,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294950912,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    14,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_RawGps_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // uint64 timestamp_us = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(RawGps, _impl_.timestamp_us_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(RawGps, _impl_.timestamp_us_)}},
+    // double latitude_deg = 2;
+    {::_pbi::TcParser::FastF64S1,
+     {17, 63, 0, PROTOBUF_FIELD_OFFSET(RawGps, _impl_.latitude_deg_)}},
+    // double longitude_deg = 3;
+    {::_pbi::TcParser::FastF64S1,
+     {25, 63, 0, PROTOBUF_FIELD_OFFSET(RawGps, _impl_.longitude_deg_)}},
+    // float absolute_altitude_m = 4;
+    {::_pbi::TcParser::FastF32S1,
+     {37, 63, 0, PROTOBUF_FIELD_OFFSET(RawGps, _impl_.absolute_altitude_m_)}},
+    // float hdop = 5;
+    {::_pbi::TcParser::FastF32S1,
+     {45, 63, 0, PROTOBUF_FIELD_OFFSET(RawGps, _impl_.hdop_)}},
+    // float vdop = 6;
+    {::_pbi::TcParser::FastF32S1,
+     {53, 63, 0, PROTOBUF_FIELD_OFFSET(RawGps, _impl_.vdop_)}},
+    // float velocity_m_s = 7;
+    {::_pbi::TcParser::FastF32S1,
+     {61, 63, 0, PROTOBUF_FIELD_OFFSET(RawGps, _impl_.velocity_m_s_)}},
+    // float cog_deg = 8;
+    {::_pbi::TcParser::FastF32S1,
+     {69, 63, 0, PROTOBUF_FIELD_OFFSET(RawGps, _impl_.cog_deg_)}},
+    // float altitude_ellipsoid_m = 9;
+    {::_pbi::TcParser::FastF32S1,
+     {77, 63, 0, PROTOBUF_FIELD_OFFSET(RawGps, _impl_.altitude_ellipsoid_m_)}},
+    // float horizontal_uncertainty_m = 10;
+    {::_pbi::TcParser::FastF32S1,
+     {85, 63, 0, PROTOBUF_FIELD_OFFSET(RawGps, _impl_.horizontal_uncertainty_m_)}},
+    // float vertical_uncertainty_m = 11;
+    {::_pbi::TcParser::FastF32S1,
+     {93, 63, 0, PROTOBUF_FIELD_OFFSET(RawGps, _impl_.vertical_uncertainty_m_)}},
+    // float velocity_uncertainty_m_s = 12;
+    {::_pbi::TcParser::FastF32S1,
+     {101, 63, 0, PROTOBUF_FIELD_OFFSET(RawGps, _impl_.velocity_uncertainty_m_s_)}},
+    // float heading_uncertainty_deg = 13;
+    {::_pbi::TcParser::FastF32S1,
+     {109, 63, 0, PROTOBUF_FIELD_OFFSET(RawGps, _impl_.heading_uncertainty_deg_)}},
+    // float yaw_deg = 14;
+    {::_pbi::TcParser::FastF32S1,
+     {117, 63, 0, PROTOBUF_FIELD_OFFSET(RawGps, _impl_.yaw_deg_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint64 timestamp_us = 1;
+    {PROTOBUF_FIELD_OFFSET(RawGps, _impl_.timestamp_us_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+    // double latitude_deg = 2;
+    {PROTOBUF_FIELD_OFFSET(RawGps, _impl_.latitude_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
+    // double longitude_deg = 3;
+    {PROTOBUF_FIELD_OFFSET(RawGps, _impl_.longitude_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
+    // float absolute_altitude_m = 4;
+    {PROTOBUF_FIELD_OFFSET(RawGps, _impl_.absolute_altitude_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float hdop = 5;
+    {PROTOBUF_FIELD_OFFSET(RawGps, _impl_.hdop_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float vdop = 6;
+    {PROTOBUF_FIELD_OFFSET(RawGps, _impl_.vdop_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float velocity_m_s = 7;
+    {PROTOBUF_FIELD_OFFSET(RawGps, _impl_.velocity_m_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float cog_deg = 8;
+    {PROTOBUF_FIELD_OFFSET(RawGps, _impl_.cog_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float altitude_ellipsoid_m = 9;
+    {PROTOBUF_FIELD_OFFSET(RawGps, _impl_.altitude_ellipsoid_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float horizontal_uncertainty_m = 10;
+    {PROTOBUF_FIELD_OFFSET(RawGps, _impl_.horizontal_uncertainty_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float vertical_uncertainty_m = 11;
+    {PROTOBUF_FIELD_OFFSET(RawGps, _impl_.vertical_uncertainty_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float velocity_uncertainty_m_s = 12;
+    {PROTOBUF_FIELD_OFFSET(RawGps, _impl_.velocity_uncertainty_m_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float heading_uncertainty_deg = 13;
+    {PROTOBUF_FIELD_OFFSET(RawGps, _impl_.heading_uncertainty_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float yaw_deg = 14;
+    {PROTOBUF_FIELD_OFFSET(RawGps, _impl_.yaw_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* RawGps::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.RawGps)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // uint64 timestamp_us = 1;
   if (this->_internal_timestamp_us() != 0) {
@@ -11236,7 +11237,8 @@ failure:
   }
 
   // double latitude_deg = 2;
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_latitude_deg = this->_internal_latitude_deg();
   ::uint64_t raw_latitude_deg;
   memcpy(&raw_latitude_deg, &tmp_latitude_deg, sizeof(tmp_latitude_deg));
@@ -11247,7 +11249,8 @@ failure:
   }
 
   // double longitude_deg = 3;
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_longitude_deg = this->_internal_longitude_deg();
   ::uint64_t raw_longitude_deg;
   memcpy(&raw_longitude_deg, &tmp_longitude_deg, sizeof(tmp_longitude_deg));
@@ -11258,7 +11261,8 @@ failure:
   }
 
   // float absolute_altitude_m = 4;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_absolute_altitude_m = this->_internal_absolute_altitude_m();
   ::uint32_t raw_absolute_altitude_m;
   memcpy(&raw_absolute_altitude_m, &tmp_absolute_altitude_m, sizeof(tmp_absolute_altitude_m));
@@ -11269,7 +11273,8 @@ failure:
   }
 
   // float hdop = 5;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_hdop = this->_internal_hdop();
   ::uint32_t raw_hdop;
   memcpy(&raw_hdop, &tmp_hdop, sizeof(tmp_hdop));
@@ -11280,7 +11285,8 @@ failure:
   }
 
   // float vdop = 6;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_vdop = this->_internal_vdop();
   ::uint32_t raw_vdop;
   memcpy(&raw_vdop, &tmp_vdop, sizeof(tmp_vdop));
@@ -11291,7 +11297,8 @@ failure:
   }
 
   // float velocity_m_s = 7;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_velocity_m_s = this->_internal_velocity_m_s();
   ::uint32_t raw_velocity_m_s;
   memcpy(&raw_velocity_m_s, &tmp_velocity_m_s, sizeof(tmp_velocity_m_s));
@@ -11302,7 +11309,8 @@ failure:
   }
 
   // float cog_deg = 8;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_cog_deg = this->_internal_cog_deg();
   ::uint32_t raw_cog_deg;
   memcpy(&raw_cog_deg, &tmp_cog_deg, sizeof(tmp_cog_deg));
@@ -11313,7 +11321,8 @@ failure:
   }
 
   // float altitude_ellipsoid_m = 9;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_altitude_ellipsoid_m = this->_internal_altitude_ellipsoid_m();
   ::uint32_t raw_altitude_ellipsoid_m;
   memcpy(&raw_altitude_ellipsoid_m, &tmp_altitude_ellipsoid_m, sizeof(tmp_altitude_ellipsoid_m));
@@ -11324,7 +11333,8 @@ failure:
   }
 
   // float horizontal_uncertainty_m = 10;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_horizontal_uncertainty_m = this->_internal_horizontal_uncertainty_m();
   ::uint32_t raw_horizontal_uncertainty_m;
   memcpy(&raw_horizontal_uncertainty_m, &tmp_horizontal_uncertainty_m, sizeof(tmp_horizontal_uncertainty_m));
@@ -11335,7 +11345,8 @@ failure:
   }
 
   // float vertical_uncertainty_m = 11;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_vertical_uncertainty_m = this->_internal_vertical_uncertainty_m();
   ::uint32_t raw_vertical_uncertainty_m;
   memcpy(&raw_vertical_uncertainty_m, &tmp_vertical_uncertainty_m, sizeof(tmp_vertical_uncertainty_m));
@@ -11346,7 +11357,8 @@ failure:
   }
 
   // float velocity_uncertainty_m_s = 12;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_velocity_uncertainty_m_s = this->_internal_velocity_uncertainty_m_s();
   ::uint32_t raw_velocity_uncertainty_m_s;
   memcpy(&raw_velocity_uncertainty_m_s, &tmp_velocity_uncertainty_m_s, sizeof(tmp_velocity_uncertainty_m_s));
@@ -11357,7 +11369,8 @@ failure:
   }
 
   // float heading_uncertainty_deg = 13;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_heading_uncertainty_deg = this->_internal_heading_uncertainty_deg();
   ::uint32_t raw_heading_uncertainty_deg;
   memcpy(&raw_heading_uncertainty_deg, &tmp_heading_uncertainty_deg, sizeof(tmp_heading_uncertainty_deg));
@@ -11368,7 +11381,8 @@ failure:
   }
 
   // float yaw_deg = 14;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_yaw_deg = this->_internal_yaw_deg();
   ::uint32_t raw_yaw_deg;
   memcpy(&raw_yaw_deg, &tmp_yaw_deg, sizeof(tmp_yaw_deg));
@@ -11379,8 +11393,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.RawGps)
   return target;
@@ -11401,7 +11416,8 @@ failure:
   }
 
   // double latitude_deg = 2;
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_latitude_deg = this->_internal_latitude_deg();
   ::uint64_t raw_latitude_deg;
   memcpy(&raw_latitude_deg, &tmp_latitude_deg, sizeof(tmp_latitude_deg));
@@ -11410,7 +11426,8 @@ failure:
   }
 
   // double longitude_deg = 3;
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_longitude_deg = this->_internal_longitude_deg();
   ::uint64_t raw_longitude_deg;
   memcpy(&raw_longitude_deg, &tmp_longitude_deg, sizeof(tmp_longitude_deg));
@@ -11419,7 +11436,8 @@ failure:
   }
 
   // float absolute_altitude_m = 4;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_absolute_altitude_m = this->_internal_absolute_altitude_m();
   ::uint32_t raw_absolute_altitude_m;
   memcpy(&raw_absolute_altitude_m, &tmp_absolute_altitude_m, sizeof(tmp_absolute_altitude_m));
@@ -11428,7 +11446,8 @@ failure:
   }
 
   // float hdop = 5;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_hdop = this->_internal_hdop();
   ::uint32_t raw_hdop;
   memcpy(&raw_hdop, &tmp_hdop, sizeof(tmp_hdop));
@@ -11437,7 +11456,8 @@ failure:
   }
 
   // float vdop = 6;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_vdop = this->_internal_vdop();
   ::uint32_t raw_vdop;
   memcpy(&raw_vdop, &tmp_vdop, sizeof(tmp_vdop));
@@ -11446,7 +11466,8 @@ failure:
   }
 
   // float velocity_m_s = 7;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_velocity_m_s = this->_internal_velocity_m_s();
   ::uint32_t raw_velocity_m_s;
   memcpy(&raw_velocity_m_s, &tmp_velocity_m_s, sizeof(tmp_velocity_m_s));
@@ -11455,7 +11476,8 @@ failure:
   }
 
   // float cog_deg = 8;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_cog_deg = this->_internal_cog_deg();
   ::uint32_t raw_cog_deg;
   memcpy(&raw_cog_deg, &tmp_cog_deg, sizeof(tmp_cog_deg));
@@ -11464,7 +11486,8 @@ failure:
   }
 
   // float altitude_ellipsoid_m = 9;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_altitude_ellipsoid_m = this->_internal_altitude_ellipsoid_m();
   ::uint32_t raw_altitude_ellipsoid_m;
   memcpy(&raw_altitude_ellipsoid_m, &tmp_altitude_ellipsoid_m, sizeof(tmp_altitude_ellipsoid_m));
@@ -11473,7 +11496,8 @@ failure:
   }
 
   // float horizontal_uncertainty_m = 10;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_horizontal_uncertainty_m = this->_internal_horizontal_uncertainty_m();
   ::uint32_t raw_horizontal_uncertainty_m;
   memcpy(&raw_horizontal_uncertainty_m, &tmp_horizontal_uncertainty_m, sizeof(tmp_horizontal_uncertainty_m));
@@ -11482,7 +11506,8 @@ failure:
   }
 
   // float vertical_uncertainty_m = 11;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_vertical_uncertainty_m = this->_internal_vertical_uncertainty_m();
   ::uint32_t raw_vertical_uncertainty_m;
   memcpy(&raw_vertical_uncertainty_m, &tmp_vertical_uncertainty_m, sizeof(tmp_vertical_uncertainty_m));
@@ -11491,7 +11516,8 @@ failure:
   }
 
   // float velocity_uncertainty_m_s = 12;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_velocity_uncertainty_m_s = this->_internal_velocity_uncertainty_m_s();
   ::uint32_t raw_velocity_uncertainty_m_s;
   memcpy(&raw_velocity_uncertainty_m_s, &tmp_velocity_uncertainty_m_s, sizeof(tmp_velocity_uncertainty_m_s));
@@ -11500,7 +11526,8 @@ failure:
   }
 
   // float heading_uncertainty_deg = 13;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_heading_uncertainty_deg = this->_internal_heading_uncertainty_deg();
   ::uint32_t raw_heading_uncertainty_deg;
   memcpy(&raw_heading_uncertainty_deg, &tmp_heading_uncertainty_deg, sizeof(tmp_heading_uncertainty_deg));
@@ -11509,7 +11536,8 @@ failure:
   }
 
   // float yaw_deg = 14;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_yaw_deg = this->_internal_yaw_deg();
   ::uint32_t raw_yaw_deg;
   memcpy(&raw_yaw_deg, &tmp_yaw_deg, sizeof(tmp_yaw_deg));
@@ -11520,14 +11548,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RawGps::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    RawGps::MergeImpl
+const ::google::protobuf::Message::ClassData RawGps::_class_data_ = {
+    RawGps::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RawGps::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* RawGps::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void RawGps::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void RawGps::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<RawGps*>(&to_msg);
   auto& from = static_cast<const RawGps&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.RawGps)
@@ -11538,98 +11567,111 @@ void RawGps::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBU
   if (from._internal_timestamp_us() != 0) {
     _this->_internal_set_timestamp_us(from._internal_timestamp_us());
   }
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_latitude_deg = from._internal_latitude_deg();
   ::uint64_t raw_latitude_deg;
   memcpy(&raw_latitude_deg, &tmp_latitude_deg, sizeof(tmp_latitude_deg));
   if (raw_latitude_deg != 0) {
     _this->_internal_set_latitude_deg(from._internal_latitude_deg());
   }
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_longitude_deg = from._internal_longitude_deg();
   ::uint64_t raw_longitude_deg;
   memcpy(&raw_longitude_deg, &tmp_longitude_deg, sizeof(tmp_longitude_deg));
   if (raw_longitude_deg != 0) {
     _this->_internal_set_longitude_deg(from._internal_longitude_deg());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_absolute_altitude_m = from._internal_absolute_altitude_m();
   ::uint32_t raw_absolute_altitude_m;
   memcpy(&raw_absolute_altitude_m, &tmp_absolute_altitude_m, sizeof(tmp_absolute_altitude_m));
   if (raw_absolute_altitude_m != 0) {
     _this->_internal_set_absolute_altitude_m(from._internal_absolute_altitude_m());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_hdop = from._internal_hdop();
   ::uint32_t raw_hdop;
   memcpy(&raw_hdop, &tmp_hdop, sizeof(tmp_hdop));
   if (raw_hdop != 0) {
     _this->_internal_set_hdop(from._internal_hdop());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_vdop = from._internal_vdop();
   ::uint32_t raw_vdop;
   memcpy(&raw_vdop, &tmp_vdop, sizeof(tmp_vdop));
   if (raw_vdop != 0) {
     _this->_internal_set_vdop(from._internal_vdop());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_velocity_m_s = from._internal_velocity_m_s();
   ::uint32_t raw_velocity_m_s;
   memcpy(&raw_velocity_m_s, &tmp_velocity_m_s, sizeof(tmp_velocity_m_s));
   if (raw_velocity_m_s != 0) {
     _this->_internal_set_velocity_m_s(from._internal_velocity_m_s());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_cog_deg = from._internal_cog_deg();
   ::uint32_t raw_cog_deg;
   memcpy(&raw_cog_deg, &tmp_cog_deg, sizeof(tmp_cog_deg));
   if (raw_cog_deg != 0) {
     _this->_internal_set_cog_deg(from._internal_cog_deg());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_altitude_ellipsoid_m = from._internal_altitude_ellipsoid_m();
   ::uint32_t raw_altitude_ellipsoid_m;
   memcpy(&raw_altitude_ellipsoid_m, &tmp_altitude_ellipsoid_m, sizeof(tmp_altitude_ellipsoid_m));
   if (raw_altitude_ellipsoid_m != 0) {
     _this->_internal_set_altitude_ellipsoid_m(from._internal_altitude_ellipsoid_m());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_horizontal_uncertainty_m = from._internal_horizontal_uncertainty_m();
   ::uint32_t raw_horizontal_uncertainty_m;
   memcpy(&raw_horizontal_uncertainty_m, &tmp_horizontal_uncertainty_m, sizeof(tmp_horizontal_uncertainty_m));
   if (raw_horizontal_uncertainty_m != 0) {
     _this->_internal_set_horizontal_uncertainty_m(from._internal_horizontal_uncertainty_m());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_vertical_uncertainty_m = from._internal_vertical_uncertainty_m();
   ::uint32_t raw_vertical_uncertainty_m;
   memcpy(&raw_vertical_uncertainty_m, &tmp_vertical_uncertainty_m, sizeof(tmp_vertical_uncertainty_m));
   if (raw_vertical_uncertainty_m != 0) {
     _this->_internal_set_vertical_uncertainty_m(from._internal_vertical_uncertainty_m());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_velocity_uncertainty_m_s = from._internal_velocity_uncertainty_m_s();
   ::uint32_t raw_velocity_uncertainty_m_s;
   memcpy(&raw_velocity_uncertainty_m_s, &tmp_velocity_uncertainty_m_s, sizeof(tmp_velocity_uncertainty_m_s));
   if (raw_velocity_uncertainty_m_s != 0) {
     _this->_internal_set_velocity_uncertainty_m_s(from._internal_velocity_uncertainty_m_s());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_heading_uncertainty_deg = from._internal_heading_uncertainty_deg();
   ::uint32_t raw_heading_uncertainty_deg;
   memcpy(&raw_heading_uncertainty_deg, &tmp_heading_uncertainty_deg, sizeof(tmp_heading_uncertainty_deg));
   if (raw_heading_uncertainty_deg != 0) {
     _this->_internal_set_heading_uncertainty_deg(from._internal_heading_uncertainty_deg());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_yaw_deg = from._internal_yaw_deg();
   ::uint32_t raw_yaw_deg;
   memcpy(&raw_yaw_deg, &tmp_yaw_deg, sizeof(tmp_yaw_deg));
   if (raw_yaw_deg != 0) {
     _this->_internal_set_yaw_deg(from._internal_yaw_deg());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void RawGps::CopyFrom(const RawGps& from) {
@@ -11639,14 +11681,17 @@ void RawGps::CopyFrom(const RawGps& from) {
   MergeFrom(from);
 }
 
-bool RawGps::IsInitialized() const {
+PROTOBUF_NOINLINE bool RawGps::IsInitialized() const {
   return true;
 }
 
-void RawGps::InternalSwap(RawGps* other) {
+::_pbi::CachedSize* RawGps::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void RawGps::InternalSwap(RawGps* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(RawGps, _impl_.yaw_deg_)
       + sizeof(RawGps::_impl_.yaw_deg_)
       - PROTOBUF_FIELD_OFFSET(RawGps, _impl_.timestamp_us_)>(
@@ -11654,7 +11699,7 @@ void RawGps::InternalSwap(RawGps* other) {
           reinterpret_cast<char*>(&other->_impl_.timestamp_us_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata RawGps::GetMetadata() const {
+::google::protobuf::Metadata RawGps::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[39]);
@@ -11665,48 +11710,43 @@ class Battery::_Internal {
  public:
 };
 
-Battery::Battery(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+Battery::Battery(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.Battery)
 }
-Battery::Battery(const Battery& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.Battery)
+Battery::Battery(
+    ::google::protobuf::Arena* arena, const Battery& from)
+    : Battery(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE Battery::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void Battery::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.voltage_v_) { 0 }
-
-    , decltype(_impl_.remaining_percent_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, voltage_v_),
+           0,
+           offsetof(Impl_, remaining_percent_) -
+               offsetof(Impl_, voltage_v_) +
+               sizeof(Impl_::remaining_percent_));
 }
-
 Battery::~Battery() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.Battery)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void Battery::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void Battery::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void Battery::Clear() {
+PROTOBUF_NOINLINE void Battery::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.Battery)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -11714,64 +11754,62 @@ void Battery::Clear() {
   ::memset(&_impl_.voltage_v_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.remaining_percent_) -
       reinterpret_cast<char*>(&_impl_.voltage_v_)) + sizeof(_impl_.remaining_percent_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* Battery::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // float voltage_v = 1 [(.mavsdk.options.default_value) = "NaN"];
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
-          _impl_.voltage_v_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float remaining_percent = 2 [(.mavsdk.options.default_value) = "NaN"];
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
-          _impl_.remaining_percent_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* Battery::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2> Battery::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_Battery_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // float remaining_percent = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(Battery, _impl_.remaining_percent_)}},
+    // float voltage_v = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(Battery, _impl_.voltage_v_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float voltage_v = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Battery, _impl_.voltage_v_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float remaining_percent = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Battery, _impl_.remaining_percent_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* Battery::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.Battery)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // float voltage_v = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_voltage_v = this->_internal_voltage_v();
   ::uint32_t raw_voltage_v;
   memcpy(&raw_voltage_v, &tmp_voltage_v, sizeof(tmp_voltage_v));
@@ -11782,7 +11820,8 @@ failure:
   }
 
   // float remaining_percent = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_remaining_percent = this->_internal_remaining_percent();
   ::uint32_t raw_remaining_percent;
   memcpy(&raw_remaining_percent, &tmp_remaining_percent, sizeof(tmp_remaining_percent));
@@ -11793,8 +11832,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.Battery)
   return target;
@@ -11809,7 +11849,8 @@ failure:
   (void) cached_has_bits;
 
   // float voltage_v = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_voltage_v = this->_internal_voltage_v();
   ::uint32_t raw_voltage_v;
   memcpy(&raw_voltage_v, &tmp_voltage_v, sizeof(tmp_voltage_v));
@@ -11818,7 +11859,8 @@ failure:
   }
 
   // float remaining_percent = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_remaining_percent = this->_internal_remaining_percent();
   ::uint32_t raw_remaining_percent;
   memcpy(&raw_remaining_percent, &tmp_remaining_percent, sizeof(tmp_remaining_percent));
@@ -11829,14 +11871,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Battery::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    Battery::MergeImpl
+const ::google::protobuf::Message::ClassData Battery::_class_data_ = {
+    Battery::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Battery::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* Battery::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void Battery::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void Battery::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<Battery*>(&to_msg);
   auto& from = static_cast<const Battery&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.Battery)
@@ -11844,21 +11887,23 @@ void Battery::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOB
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_voltage_v = from._internal_voltage_v();
   ::uint32_t raw_voltage_v;
   memcpy(&raw_voltage_v, &tmp_voltage_v, sizeof(tmp_voltage_v));
   if (raw_voltage_v != 0) {
     _this->_internal_set_voltage_v(from._internal_voltage_v());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_remaining_percent = from._internal_remaining_percent();
   ::uint32_t raw_remaining_percent;
   memcpy(&raw_remaining_percent, &tmp_remaining_percent, sizeof(tmp_remaining_percent));
   if (raw_remaining_percent != 0) {
     _this->_internal_set_remaining_percent(from._internal_remaining_percent());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Battery::CopyFrom(const Battery& from) {
@@ -11868,14 +11913,17 @@ void Battery::CopyFrom(const Battery& from) {
   MergeFrom(from);
 }
 
-bool Battery::IsInitialized() const {
+PROTOBUF_NOINLINE bool Battery::IsInitialized() const {
   return true;
 }
 
-void Battery::InternalSwap(Battery* other) {
+::_pbi::CachedSize* Battery::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void Battery::InternalSwap(Battery* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Battery, _impl_.remaining_percent_)
       + sizeof(Battery::_impl_.remaining_percent_)
       - PROTOBUF_FIELD_OFFSET(Battery, _impl_.voltage_v_)>(
@@ -11883,7 +11931,7 @@ void Battery::InternalSwap(Battery* other) {
           reinterpret_cast<char*>(&other->_impl_.voltage_v_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Battery::GetMetadata() const {
+::google::protobuf::Metadata Battery::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[40]);
@@ -11894,50 +11942,43 @@ class RcStatus::_Internal {
  public:
 };
 
-RcStatus::RcStatus(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+RcStatus::RcStatus(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.RcStatus)
 }
-RcStatus::RcStatus(const RcStatus& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.RcStatus)
+RcStatus::RcStatus(
+    ::google::protobuf::Arena* arena, const RcStatus& from)
+    : RcStatus(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE RcStatus::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void RcStatus::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.was_available_once_) { false }
-
-    , decltype(_impl_.is_available_) { false }
-
-    , decltype(_impl_.signal_strength_percent_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, was_available_once_),
+           0,
+           offsetof(Impl_, signal_strength_percent_) -
+               offsetof(Impl_, was_available_once_) +
+               sizeof(Impl_::signal_strength_percent_));
 }
-
 RcStatus::~RcStatus() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.RcStatus)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void RcStatus::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void RcStatus::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void RcStatus::Clear() {
+PROTOBUF_NOINLINE void RcStatus::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.RcStatus)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -11945,70 +11986,65 @@ void RcStatus::Clear() {
   ::memset(&_impl_.was_available_once_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.signal_strength_percent_) -
       reinterpret_cast<char*>(&_impl_.was_available_once_)) + sizeof(_impl_.signal_strength_percent_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* RcStatus::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // bool was_available_once = 1 [(.mavsdk.options.default_value) = "false"];
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          _impl_.was_available_once_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // bool is_available = 2 [(.mavsdk.options.default_value) = "false"];
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
-          _impl_.is_available_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float signal_strength_percent = 3 [(.mavsdk.options.default_value) = "NaN"];
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
-          _impl_.signal_strength_percent_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* RcStatus::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> RcStatus::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_RcStatus_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // bool was_available_once = 1 [(.mavsdk.options.default_value) = "false"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(RcStatus, _impl_.was_available_once_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(RcStatus, _impl_.was_available_once_)}},
+    // bool is_available = 2 [(.mavsdk.options.default_value) = "false"];
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(RcStatus, _impl_.is_available_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(RcStatus, _impl_.is_available_)}},
+    // float signal_strength_percent = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(RcStatus, _impl_.signal_strength_percent_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // bool was_available_once = 1 [(.mavsdk.options.default_value) = "false"];
+    {PROTOBUF_FIELD_OFFSET(RcStatus, _impl_.was_available_once_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // bool is_available = 2 [(.mavsdk.options.default_value) = "false"];
+    {PROTOBUF_FIELD_OFFSET(RcStatus, _impl_.is_available_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // float signal_strength_percent = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(RcStatus, _impl_.signal_strength_percent_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* RcStatus::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.RcStatus)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // bool was_available_once = 1 [(.mavsdk.options.default_value) = "false"];
   if (this->_internal_was_available_once() != 0) {
@@ -12025,7 +12061,8 @@ failure:
   }
 
   // float signal_strength_percent = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_signal_strength_percent = this->_internal_signal_strength_percent();
   ::uint32_t raw_signal_strength_percent;
   memcpy(&raw_signal_strength_percent, &tmp_signal_strength_percent, sizeof(tmp_signal_strength_percent));
@@ -12036,8 +12073,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.RcStatus)
   return target;
@@ -12062,7 +12100,8 @@ failure:
   }
 
   // float signal_strength_percent = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_signal_strength_percent = this->_internal_signal_strength_percent();
   ::uint32_t raw_signal_strength_percent;
   memcpy(&raw_signal_strength_percent, &tmp_signal_strength_percent, sizeof(tmp_signal_strength_percent));
@@ -12073,14 +12112,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RcStatus::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    RcStatus::MergeImpl
+const ::google::protobuf::Message::ClassData RcStatus::_class_data_ = {
+    RcStatus::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RcStatus::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* RcStatus::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void RcStatus::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void RcStatus::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<RcStatus*>(&to_msg);
   auto& from = static_cast<const RcStatus&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.RcStatus)
@@ -12094,14 +12134,15 @@ void RcStatus::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTO
   if (from._internal_is_available() != 0) {
     _this->_internal_set_is_available(from._internal_is_available());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_signal_strength_percent = from._internal_signal_strength_percent();
   ::uint32_t raw_signal_strength_percent;
   memcpy(&raw_signal_strength_percent, &tmp_signal_strength_percent, sizeof(tmp_signal_strength_percent));
   if (raw_signal_strength_percent != 0) {
     _this->_internal_set_signal_strength_percent(from._internal_signal_strength_percent());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void RcStatus::CopyFrom(const RcStatus& from) {
@@ -12111,14 +12152,17 @@ void RcStatus::CopyFrom(const RcStatus& from) {
   MergeFrom(from);
 }
 
-bool RcStatus::IsInitialized() const {
+PROTOBUF_NOINLINE bool RcStatus::IsInitialized() const {
   return true;
 }
 
-void RcStatus::InternalSwap(RcStatus* other) {
+::_pbi::CachedSize* RcStatus::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void RcStatus::InternalSwap(RcStatus* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(RcStatus, _impl_.signal_strength_percent_)
       + sizeof(RcStatus::_impl_.signal_strength_percent_)
       - PROTOBUF_FIELD_OFFSET(RcStatus, _impl_.was_available_once_)>(
@@ -12126,7 +12170,7 @@ void RcStatus::InternalSwap(RcStatus* other) {
           reinterpret_cast<char*>(&other->_impl_.was_available_once_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata RcStatus::GetMetadata() const {
+::google::protobuf::Metadata RcStatus::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[41]);
@@ -12137,132 +12181,115 @@ class StatusText::_Internal {
  public:
 };
 
-StatusText::StatusText(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+StatusText::StatusText(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.StatusText)
 }
-StatusText::StatusText(const StatusText& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  StatusText* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.text_) {}
+inline PROTOBUF_NDEBUG_INLINE StatusText::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : text_(arena, from.text_),
+        _cached_size_{0} {}
 
-    , decltype(_impl_.type_) {}
+StatusText::StatusText(
+    ::google::protobuf::Arena* arena,
+    const StatusText& from)
+    : ::google::protobuf::Message(arena) {
+  StatusText* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  _impl_.type_ = from._impl_.type_;
 
-    , /*decltype(_impl_._cached_size_)*/{}};
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.text_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.text_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_text().empty()) {
-    _this->_impl_.text_.Set(from._internal_text(), _this->GetArenaForAllocation());
-  }
-  _this->_impl_.type_ = from._impl_.type_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.StatusText)
 }
+inline PROTOBUF_NDEBUG_INLINE StatusText::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : text_(arena),
+        _cached_size_{0} {}
 
 inline void StatusText::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.text_) {}
-
-    , decltype(_impl_.type_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.text_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.text_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.type_ = {};
 }
-
 StatusText::~StatusText() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.StatusText)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void StatusText::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.text_.Destroy();
+  _impl_.~Impl_();
 }
 
-void StatusText::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void StatusText::Clear() {
+PROTOBUF_NOINLINE void StatusText::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.StatusText)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.text_.ClearToEmpty();
   _impl_.type_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* StatusText::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.StatusTextType type = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-          _internal_set_type(static_cast<::mavsdk::rpc::telemetry_server::StatusTextType>(val));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // string text = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
-          auto str = _internal_mutable_text();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.telemetry_server.StatusText.text"));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* StatusText::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 51, 2> StatusText::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_StatusText_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // string text = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(StatusText, _impl_.text_)}},
+    // .mavsdk.rpc.telemetry_server.StatusTextType type = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(StatusText, _impl_.type_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(StatusText, _impl_.type_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.StatusTextType type = 1;
+    {PROTOBUF_FIELD_OFFSET(StatusText, _impl_.type_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // string text = 2;
+    {PROTOBUF_FIELD_OFFSET(StatusText, _impl_.text_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\46\0\4\0\0\0\0\0"
+    "mavsdk.rpc.telemetry_server.StatusText"
+    "text"
+  }},
+};
 
 ::uint8_t* StatusText::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.StatusText)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // .mavsdk.rpc.telemetry_server.StatusTextType type = 1;
   if (this->_internal_type() != 0) {
@@ -12274,14 +12301,15 @@ failure:
   // string text = 2;
   if (!this->_internal_text().empty()) {
     const std::string& _s = this->_internal_text();
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.telemetry_server.StatusText.text");
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.telemetry_server.StatusText.text");
     target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.StatusText)
   return target;
@@ -12297,7 +12325,7 @@ failure:
 
   // string text = 2;
   if (!this->_internal_text().empty()) {
-    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                     this->_internal_text());
   }
 
@@ -12310,14 +12338,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData StatusText::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    StatusText::MergeImpl
+const ::google::protobuf::Message::ClassData StatusText::_class_data_ = {
+    StatusText::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*StatusText::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* StatusText::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void StatusText::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void StatusText::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<StatusText*>(&to_msg);
   auto& from = static_cast<const StatusText&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.StatusText)
@@ -12331,7 +12360,7 @@ void StatusText::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PRO
   if (from._internal_type() != 0) {
     _this->_internal_set_type(from._internal_type());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void StatusText::CopyFrom(const StatusText& from) {
@@ -12341,21 +12370,23 @@ void StatusText::CopyFrom(const StatusText& from) {
   MergeFrom(from);
 }
 
-bool StatusText::IsInitialized() const {
+PROTOBUF_NOINLINE bool StatusText::IsInitialized() const {
   return true;
 }
 
-void StatusText::InternalSwap(StatusText* other) {
+::_pbi::CachedSize* StatusText::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void StatusText::InternalSwap(StatusText* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.text_, lhs_arena,
-                                       &other->_impl_.text_, rhs_arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.text_, &other->_impl_.text_, arena);
   swap(_impl_.type_, other->_impl_.type_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata StatusText::GetMetadata() const {
+::google::protobuf::Metadata StatusText::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[42]);
@@ -12366,127 +12397,117 @@ class ActuatorControlTarget::_Internal {
  public:
 };
 
-ActuatorControlTarget::ActuatorControlTarget(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+ActuatorControlTarget::ActuatorControlTarget(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.ActuatorControlTarget)
 }
-ActuatorControlTarget::ActuatorControlTarget(const ActuatorControlTarget& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  ActuatorControlTarget* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.controls_) { from._impl_.controls_ }
+inline PROTOBUF_NDEBUG_INLINE ActuatorControlTarget::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : controls_{visibility, arena, from.controls_},
+        _cached_size_{0} {}
 
-    , decltype(_impl_.group_) {}
+ActuatorControlTarget::ActuatorControlTarget(
+    ::google::protobuf::Arena* arena,
+    const ActuatorControlTarget& from)
+    : ::google::protobuf::Message(arena) {
+  ActuatorControlTarget* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  _impl_.group_ = from._impl_.group_;
 
-    , /*decltype(_impl_._cached_size_)*/{}};
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _this->_impl_.group_ = from._impl_.group_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.ActuatorControlTarget)
 }
+inline PROTOBUF_NDEBUG_INLINE ActuatorControlTarget::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : controls_{visibility, arena},
+        _cached_size_{0} {}
 
 inline void ActuatorControlTarget::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.controls_) { arena }
-
-    , decltype(_impl_.group_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.group_ = {};
 }
-
 ActuatorControlTarget::~ActuatorControlTarget() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.ActuatorControlTarget)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void ActuatorControlTarget::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.controls_.~RepeatedField();
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void ActuatorControlTarget::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void ActuatorControlTarget::Clear() {
+PROTOBUF_NOINLINE void ActuatorControlTarget::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.ActuatorControlTarget)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _internal_mutable_controls()->Clear();
+  _impl_.controls_.Clear();
   _impl_.group_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* ActuatorControlTarget::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // int32 group = 1 [(.mavsdk.options.default_value) = "0"];
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          _impl_.group_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // repeated float controls = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedFloatParser(_internal_mutable_controls(), ptr, ctx);
-          CHK_(ptr);
-        } else if (static_cast<::uint8_t>(tag) == 21) {
-          _internal_add_controls(::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr));
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* ActuatorControlTarget::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2> ActuatorControlTarget::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_ActuatorControlTarget_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // repeated float controls = 2;
+    {::_pbi::TcParser::FastF32P1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(ActuatorControlTarget, _impl_.controls_)}},
+    // int32 group = 1 [(.mavsdk.options.default_value) = "0"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ActuatorControlTarget, _impl_.group_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(ActuatorControlTarget, _impl_.group_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 group = 1 [(.mavsdk.options.default_value) = "0"];
+    {PROTOBUF_FIELD_OFFSET(ActuatorControlTarget, _impl_.group_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // repeated float controls = 2;
+    {PROTOBUF_FIELD_OFFSET(ActuatorControlTarget, _impl_.controls_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kPackedFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* ActuatorControlTarget::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.ActuatorControlTarget)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // int32 group = 1 [(.mavsdk.options.default_value) = "0"];
   if (this->_internal_group() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt32ToArray(
-        1, this->_internal_group(), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt32ToArrayWithField<1>(
+            stream, this->_internal_group(), target);
   }
 
   // repeated float controls = 2;
@@ -12495,8 +12516,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.ActuatorControlTarget)
   return target;
@@ -12522,7 +12544,6 @@ failure:
     ;
     total_size += tag_size + data_size;
   }
-
   // int32 group = 1 [(.mavsdk.options.default_value) = "0"];
   if (this->_internal_group() != 0) {
     total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
@@ -12532,14 +12553,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ActuatorControlTarget::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    ActuatorControlTarget::MergeImpl
+const ::google::protobuf::Message::ClassData ActuatorControlTarget::_class_data_ = {
+    ActuatorControlTarget::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ActuatorControlTarget::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* ActuatorControlTarget::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void ActuatorControlTarget::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void ActuatorControlTarget::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<ActuatorControlTarget*>(&to_msg);
   auto& from = static_cast<const ActuatorControlTarget&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.ActuatorControlTarget)
@@ -12547,11 +12569,11 @@ void ActuatorControlTarget::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, 
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_impl_.controls_.MergeFrom(from._impl_.controls_);
+  _this->_internal_mutable_controls()->MergeFrom(from._internal_controls());
   if (from._internal_group() != 0) {
     _this->_internal_set_group(from._internal_group());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ActuatorControlTarget::CopyFrom(const ActuatorControlTarget& from) {
@@ -12561,19 +12583,21 @@ void ActuatorControlTarget::CopyFrom(const ActuatorControlTarget& from) {
   MergeFrom(from);
 }
 
-bool ActuatorControlTarget::IsInitialized() const {
+PROTOBUF_NOINLINE bool ActuatorControlTarget::IsInitialized() const {
   return true;
 }
 
-void ActuatorControlTarget::InternalSwap(ActuatorControlTarget* other) {
+::_pbi::CachedSize* ActuatorControlTarget::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void ActuatorControlTarget::InternalSwap(ActuatorControlTarget* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   _impl_.controls_.InternalSwap(&other->_impl_.controls_);
-
-  swap(_impl_.group_, other->_impl_.group_);
+        swap(_impl_.group_, other->_impl_.group_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata ActuatorControlTarget::GetMetadata() const {
+::google::protobuf::Metadata ActuatorControlTarget::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[43]);
@@ -12584,121 +12608,111 @@ class ActuatorOutputStatus::_Internal {
  public:
 };
 
-ActuatorOutputStatus::ActuatorOutputStatus(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+ActuatorOutputStatus::ActuatorOutputStatus(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.ActuatorOutputStatus)
 }
-ActuatorOutputStatus::ActuatorOutputStatus(const ActuatorOutputStatus& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  ActuatorOutputStatus* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.actuator_) { from._impl_.actuator_ }
+inline PROTOBUF_NDEBUG_INLINE ActuatorOutputStatus::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : actuator_{visibility, arena, from.actuator_},
+        _cached_size_{0} {}
 
-    , decltype(_impl_.active_) {}
+ActuatorOutputStatus::ActuatorOutputStatus(
+    ::google::protobuf::Arena* arena,
+    const ActuatorOutputStatus& from)
+    : ::google::protobuf::Message(arena) {
+  ActuatorOutputStatus* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  _impl_.active_ = from._impl_.active_;
 
-    , /*decltype(_impl_._cached_size_)*/{}};
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _this->_impl_.active_ = from._impl_.active_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.ActuatorOutputStatus)
 }
+inline PROTOBUF_NDEBUG_INLINE ActuatorOutputStatus::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : actuator_{visibility, arena},
+        _cached_size_{0} {}
 
 inline void ActuatorOutputStatus::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.actuator_) { arena }
-
-    , decltype(_impl_.active_) { 0u }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.active_ = {};
 }
-
 ActuatorOutputStatus::~ActuatorOutputStatus() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.ActuatorOutputStatus)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void ActuatorOutputStatus::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.actuator_.~RepeatedField();
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void ActuatorOutputStatus::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void ActuatorOutputStatus::Clear() {
+PROTOBUF_NOINLINE void ActuatorOutputStatus::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.ActuatorOutputStatus)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _internal_mutable_actuator()->Clear();
+  _impl_.actuator_.Clear();
   _impl_.active_ = 0u;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* ActuatorOutputStatus::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // uint32 active = 1 [(.mavsdk.options.default_value) = "0"];
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          _impl_.active_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // repeated float actuator = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedFloatParser(_internal_mutable_actuator(), ptr, ctx);
-          CHK_(ptr);
-        } else if (static_cast<::uint8_t>(tag) == 21) {
-          _internal_add_actuator(::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr));
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* ActuatorOutputStatus::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2> ActuatorOutputStatus::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_ActuatorOutputStatus_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // repeated float actuator = 2;
+    {::_pbi::TcParser::FastF32P1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(ActuatorOutputStatus, _impl_.actuator_)}},
+    // uint32 active = 1 [(.mavsdk.options.default_value) = "0"];
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ActuatorOutputStatus, _impl_.active_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(ActuatorOutputStatus, _impl_.active_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint32 active = 1 [(.mavsdk.options.default_value) = "0"];
+    {PROTOBUF_FIELD_OFFSET(ActuatorOutputStatus, _impl_.active_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // repeated float actuator = 2;
+    {PROTOBUF_FIELD_OFFSET(ActuatorOutputStatus, _impl_.actuator_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kPackedFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* ActuatorOutputStatus::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.ActuatorOutputStatus)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // uint32 active = 1 [(.mavsdk.options.default_value) = "0"];
   if (this->_internal_active() != 0) {
@@ -12713,8 +12727,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.ActuatorOutputStatus)
   return target;
@@ -12740,7 +12755,6 @@ failure:
     ;
     total_size += tag_size + data_size;
   }
-
   // uint32 active = 1 [(.mavsdk.options.default_value) = "0"];
   if (this->_internal_active() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
@@ -12750,14 +12764,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ActuatorOutputStatus::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    ActuatorOutputStatus::MergeImpl
+const ::google::protobuf::Message::ClassData ActuatorOutputStatus::_class_data_ = {
+    ActuatorOutputStatus::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ActuatorOutputStatus::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* ActuatorOutputStatus::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void ActuatorOutputStatus::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void ActuatorOutputStatus::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<ActuatorOutputStatus*>(&to_msg);
   auto& from = static_cast<const ActuatorOutputStatus&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.ActuatorOutputStatus)
@@ -12765,11 +12780,11 @@ void ActuatorOutputStatus::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, c
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_impl_.actuator_.MergeFrom(from._impl_.actuator_);
+  _this->_internal_mutable_actuator()->MergeFrom(from._internal_actuator());
   if (from._internal_active() != 0) {
     _this->_internal_set_active(from._internal_active());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ActuatorOutputStatus::CopyFrom(const ActuatorOutputStatus& from) {
@@ -12779,19 +12794,21 @@ void ActuatorOutputStatus::CopyFrom(const ActuatorOutputStatus& from) {
   MergeFrom(from);
 }
 
-bool ActuatorOutputStatus::IsInitialized() const {
+PROTOBUF_NOINLINE bool ActuatorOutputStatus::IsInitialized() const {
   return true;
 }
 
-void ActuatorOutputStatus::InternalSwap(ActuatorOutputStatus* other) {
+::_pbi::CachedSize* ActuatorOutputStatus::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void ActuatorOutputStatus::InternalSwap(ActuatorOutputStatus* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   _impl_.actuator_.InternalSwap(&other->_impl_.actuator_);
-
-  swap(_impl_.active_, other->_impl_.active_);
+        swap(_impl_.active_, other->_impl_.active_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata ActuatorOutputStatus::GetMetadata() const {
+::google::protobuf::Metadata ActuatorOutputStatus::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[44]);
@@ -12802,106 +12819,102 @@ class Covariance::_Internal {
  public:
 };
 
-Covariance::Covariance(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+Covariance::Covariance(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.Covariance)
 }
-Covariance::Covariance(const Covariance& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  Covariance* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.covariance_matrix_) { from._impl_.covariance_matrix_ }
+inline PROTOBUF_NDEBUG_INLINE Covariance::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : covariance_matrix_{visibility, arena, from.covariance_matrix_},
+        _cached_size_{0} {}
 
-    , /*decltype(_impl_._cached_size_)*/{}};
+Covariance::Covariance(
+    ::google::protobuf::Arena* arena,
+    const Covariance& from)
+    : ::google::protobuf::Message(arena) {
+  Covariance* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.Covariance)
 }
+inline PROTOBUF_NDEBUG_INLINE Covariance::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : covariance_matrix_{visibility, arena},
+        _cached_size_{0} {}
 
 inline void Covariance::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.covariance_matrix_) { arena }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
 }
-
 Covariance::~Covariance() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.Covariance)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void Covariance::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  _impl_.covariance_matrix_.~RepeatedField();
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void Covariance::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void Covariance::Clear() {
+PROTOBUF_NOINLINE void Covariance::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.Covariance)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _internal_mutable_covariance_matrix()->Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _impl_.covariance_matrix_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* Covariance::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // repeated float covariance_matrix = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedFloatParser(_internal_mutable_covariance_matrix(), ptr, ctx);
-          CHK_(ptr);
-        } else if (static_cast<::uint8_t>(tag) == 13) {
-          _internal_add_covariance_matrix(::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr));
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* Covariance::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> Covariance::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_Covariance_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // repeated float covariance_matrix = 1;
+    {::_pbi::TcParser::FastF32P1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(Covariance, _impl_.covariance_matrix_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // repeated float covariance_matrix = 1;
+    {PROTOBUF_FIELD_OFFSET(Covariance, _impl_.covariance_matrix_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kPackedFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* Covariance::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.Covariance)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // repeated float covariance_matrix = 1;
   if (this->_internal_covariance_matrix_size() > 0) {
@@ -12909,8 +12922,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.Covariance)
   return target;
@@ -12936,18 +12950,18 @@ failure:
     ;
     total_size += tag_size + data_size;
   }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Covariance::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    Covariance::MergeImpl
+const ::google::protobuf::Message::ClassData Covariance::_class_data_ = {
+    Covariance::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Covariance::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* Covariance::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void Covariance::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void Covariance::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<Covariance*>(&to_msg);
   auto& from = static_cast<const Covariance&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.Covariance)
@@ -12955,8 +12969,8 @@ void Covariance::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PRO
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_impl_.covariance_matrix_.MergeFrom(from._impl_.covariance_matrix_);
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_mutable_covariance_matrix()->MergeFrom(from._internal_covariance_matrix());
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Covariance::CopyFrom(const Covariance& from) {
@@ -12966,17 +12980,20 @@ void Covariance::CopyFrom(const Covariance& from) {
   MergeFrom(from);
 }
 
-bool Covariance::IsInitialized() const {
+PROTOBUF_NOINLINE bool Covariance::IsInitialized() const {
   return true;
 }
 
-void Covariance::InternalSwap(Covariance* other) {
+::_pbi::CachedSize* Covariance::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void Covariance::InternalSwap(Covariance* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   _impl_.covariance_matrix_.InternalSwap(&other->_impl_.covariance_matrix_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Covariance::GetMetadata() const {
+::google::protobuf::Metadata Covariance::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[45]);
@@ -12987,50 +13004,43 @@ class VelocityBody::_Internal {
  public:
 };
 
-VelocityBody::VelocityBody(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+VelocityBody::VelocityBody(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.VelocityBody)
 }
-VelocityBody::VelocityBody(const VelocityBody& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.VelocityBody)
+VelocityBody::VelocityBody(
+    ::google::protobuf::Arena* arena, const VelocityBody& from)
+    : VelocityBody(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE VelocityBody::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void VelocityBody::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.x_m_s_) { 0 }
-
-    , decltype(_impl_.y_m_s_) { 0 }
-
-    , decltype(_impl_.z_m_s_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, x_m_s_),
+           0,
+           offsetof(Impl_, z_m_s_) -
+               offsetof(Impl_, x_m_s_) +
+               sizeof(Impl_::z_m_s_));
 }
-
 VelocityBody::~VelocityBody() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.VelocityBody)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void VelocityBody::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void VelocityBody::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void VelocityBody::Clear() {
+PROTOBUF_NOINLINE void VelocityBody::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.VelocityBody)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -13038,73 +13048,69 @@ void VelocityBody::Clear() {
   ::memset(&_impl_.x_m_s_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.z_m_s_) -
       reinterpret_cast<char*>(&_impl_.x_m_s_)) + sizeof(_impl_.z_m_s_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* VelocityBody::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // float x_m_s = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
-          _impl_.x_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float y_m_s = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
-          _impl_.y_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float z_m_s = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
-          _impl_.z_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* VelocityBody::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> VelocityBody::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_VelocityBody_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // float x_m_s = 1;
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(VelocityBody, _impl_.x_m_s_)}},
+    // float y_m_s = 2;
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(VelocityBody, _impl_.y_m_s_)}},
+    // float z_m_s = 3;
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(VelocityBody, _impl_.z_m_s_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float x_m_s = 1;
+    {PROTOBUF_FIELD_OFFSET(VelocityBody, _impl_.x_m_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float y_m_s = 2;
+    {PROTOBUF_FIELD_OFFSET(VelocityBody, _impl_.y_m_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float z_m_s = 3;
+    {PROTOBUF_FIELD_OFFSET(VelocityBody, _impl_.z_m_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* VelocityBody::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.VelocityBody)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // float x_m_s = 1;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_x_m_s = this->_internal_x_m_s();
   ::uint32_t raw_x_m_s;
   memcpy(&raw_x_m_s, &tmp_x_m_s, sizeof(tmp_x_m_s));
@@ -13115,7 +13121,8 @@ failure:
   }
 
   // float y_m_s = 2;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_y_m_s = this->_internal_y_m_s();
   ::uint32_t raw_y_m_s;
   memcpy(&raw_y_m_s, &tmp_y_m_s, sizeof(tmp_y_m_s));
@@ -13126,7 +13133,8 @@ failure:
   }
 
   // float z_m_s = 3;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_z_m_s = this->_internal_z_m_s();
   ::uint32_t raw_z_m_s;
   memcpy(&raw_z_m_s, &tmp_z_m_s, sizeof(tmp_z_m_s));
@@ -13137,8 +13145,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.VelocityBody)
   return target;
@@ -13153,7 +13162,8 @@ failure:
   (void) cached_has_bits;
 
   // float x_m_s = 1;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_x_m_s = this->_internal_x_m_s();
   ::uint32_t raw_x_m_s;
   memcpy(&raw_x_m_s, &tmp_x_m_s, sizeof(tmp_x_m_s));
@@ -13162,7 +13172,8 @@ failure:
   }
 
   // float y_m_s = 2;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_y_m_s = this->_internal_y_m_s();
   ::uint32_t raw_y_m_s;
   memcpy(&raw_y_m_s, &tmp_y_m_s, sizeof(tmp_y_m_s));
@@ -13171,7 +13182,8 @@ failure:
   }
 
   // float z_m_s = 3;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_z_m_s = this->_internal_z_m_s();
   ::uint32_t raw_z_m_s;
   memcpy(&raw_z_m_s, &tmp_z_m_s, sizeof(tmp_z_m_s));
@@ -13182,14 +13194,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData VelocityBody::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    VelocityBody::MergeImpl
+const ::google::protobuf::Message::ClassData VelocityBody::_class_data_ = {
+    VelocityBody::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*VelocityBody::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* VelocityBody::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void VelocityBody::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void VelocityBody::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<VelocityBody*>(&to_msg);
   auto& from = static_cast<const VelocityBody&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.VelocityBody)
@@ -13197,28 +13210,31 @@ void VelocityBody::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::P
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_x_m_s = from._internal_x_m_s();
   ::uint32_t raw_x_m_s;
   memcpy(&raw_x_m_s, &tmp_x_m_s, sizeof(tmp_x_m_s));
   if (raw_x_m_s != 0) {
     _this->_internal_set_x_m_s(from._internal_x_m_s());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_y_m_s = from._internal_y_m_s();
   ::uint32_t raw_y_m_s;
   memcpy(&raw_y_m_s, &tmp_y_m_s, sizeof(tmp_y_m_s));
   if (raw_y_m_s != 0) {
     _this->_internal_set_y_m_s(from._internal_y_m_s());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_z_m_s = from._internal_z_m_s();
   ::uint32_t raw_z_m_s;
   memcpy(&raw_z_m_s, &tmp_z_m_s, sizeof(tmp_z_m_s));
   if (raw_z_m_s != 0) {
     _this->_internal_set_z_m_s(from._internal_z_m_s());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void VelocityBody::CopyFrom(const VelocityBody& from) {
@@ -13228,14 +13244,17 @@ void VelocityBody::CopyFrom(const VelocityBody& from) {
   MergeFrom(from);
 }
 
-bool VelocityBody::IsInitialized() const {
+PROTOBUF_NOINLINE bool VelocityBody::IsInitialized() const {
   return true;
 }
 
-void VelocityBody::InternalSwap(VelocityBody* other) {
+::_pbi::CachedSize* VelocityBody::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void VelocityBody::InternalSwap(VelocityBody* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(VelocityBody, _impl_.z_m_s_)
       + sizeof(VelocityBody::_impl_.z_m_s_)
       - PROTOBUF_FIELD_OFFSET(VelocityBody, _impl_.x_m_s_)>(
@@ -13243,7 +13262,7 @@ void VelocityBody::InternalSwap(VelocityBody* other) {
           reinterpret_cast<char*>(&other->_impl_.x_m_s_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata VelocityBody::GetMetadata() const {
+::google::protobuf::Metadata VelocityBody::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[46]);
@@ -13254,50 +13273,43 @@ class PositionBody::_Internal {
  public:
 };
 
-PositionBody::PositionBody(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PositionBody::PositionBody(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PositionBody)
 }
-PositionBody::PositionBody(const PositionBody& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PositionBody)
+PositionBody::PositionBody(
+    ::google::protobuf::Arena* arena, const PositionBody& from)
+    : PositionBody(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE PositionBody::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PositionBody::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.x_m_) { 0 }
-
-    , decltype(_impl_.y_m_) { 0 }
-
-    , decltype(_impl_.z_m_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, x_m_),
+           0,
+           offsetof(Impl_, z_m_) -
+               offsetof(Impl_, x_m_) +
+               sizeof(Impl_::z_m_));
 }
-
 PositionBody::~PositionBody() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PositionBody)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PositionBody::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void PositionBody::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PositionBody::Clear() {
+PROTOBUF_NOINLINE void PositionBody::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PositionBody)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -13305,73 +13317,69 @@ void PositionBody::Clear() {
   ::memset(&_impl_.x_m_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.z_m_) -
       reinterpret_cast<char*>(&_impl_.x_m_)) + sizeof(_impl_.z_m_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PositionBody::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // float x_m = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
-          _impl_.x_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float y_m = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
-          _impl_.y_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float z_m = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
-          _impl_.z_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* PositionBody::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> PositionBody::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_PositionBody_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // float x_m = 1;
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(PositionBody, _impl_.x_m_)}},
+    // float y_m = 2;
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(PositionBody, _impl_.y_m_)}},
+    // float z_m = 3;
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(PositionBody, _impl_.z_m_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float x_m = 1;
+    {PROTOBUF_FIELD_OFFSET(PositionBody, _impl_.x_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float y_m = 2;
+    {PROTOBUF_FIELD_OFFSET(PositionBody, _impl_.y_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float z_m = 3;
+    {PROTOBUF_FIELD_OFFSET(PositionBody, _impl_.z_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* PositionBody::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PositionBody)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // float x_m = 1;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_x_m = this->_internal_x_m();
   ::uint32_t raw_x_m;
   memcpy(&raw_x_m, &tmp_x_m, sizeof(tmp_x_m));
@@ -13382,7 +13390,8 @@ failure:
   }
 
   // float y_m = 2;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_y_m = this->_internal_y_m();
   ::uint32_t raw_y_m;
   memcpy(&raw_y_m, &tmp_y_m, sizeof(tmp_y_m));
@@ -13393,7 +13402,8 @@ failure:
   }
 
   // float z_m = 3;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_z_m = this->_internal_z_m();
   ::uint32_t raw_z_m;
   memcpy(&raw_z_m, &tmp_z_m, sizeof(tmp_z_m));
@@ -13404,8 +13414,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PositionBody)
   return target;
@@ -13420,7 +13431,8 @@ failure:
   (void) cached_has_bits;
 
   // float x_m = 1;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_x_m = this->_internal_x_m();
   ::uint32_t raw_x_m;
   memcpy(&raw_x_m, &tmp_x_m, sizeof(tmp_x_m));
@@ -13429,7 +13441,8 @@ failure:
   }
 
   // float y_m = 2;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_y_m = this->_internal_y_m();
   ::uint32_t raw_y_m;
   memcpy(&raw_y_m, &tmp_y_m, sizeof(tmp_y_m));
@@ -13438,7 +13451,8 @@ failure:
   }
 
   // float z_m = 3;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_z_m = this->_internal_z_m();
   ::uint32_t raw_z_m;
   memcpy(&raw_z_m, &tmp_z_m, sizeof(tmp_z_m));
@@ -13449,14 +13463,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PositionBody::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PositionBody::MergeImpl
+const ::google::protobuf::Message::ClassData PositionBody::_class_data_ = {
+    PositionBody::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PositionBody::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PositionBody::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PositionBody::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PositionBody::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PositionBody*>(&to_msg);
   auto& from = static_cast<const PositionBody&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PositionBody)
@@ -13464,28 +13479,31 @@ void PositionBody::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::P
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_x_m = from._internal_x_m();
   ::uint32_t raw_x_m;
   memcpy(&raw_x_m, &tmp_x_m, sizeof(tmp_x_m));
   if (raw_x_m != 0) {
     _this->_internal_set_x_m(from._internal_x_m());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_y_m = from._internal_y_m();
   ::uint32_t raw_y_m;
   memcpy(&raw_y_m, &tmp_y_m, sizeof(tmp_y_m));
   if (raw_y_m != 0) {
     _this->_internal_set_y_m(from._internal_y_m());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_z_m = from._internal_z_m();
   ::uint32_t raw_z_m;
   memcpy(&raw_z_m, &tmp_z_m, sizeof(tmp_z_m));
   if (raw_z_m != 0) {
     _this->_internal_set_z_m(from._internal_z_m());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PositionBody::CopyFrom(const PositionBody& from) {
@@ -13495,14 +13513,17 @@ void PositionBody::CopyFrom(const PositionBody& from) {
   MergeFrom(from);
 }
 
-bool PositionBody::IsInitialized() const {
+PROTOBUF_NOINLINE bool PositionBody::IsInitialized() const {
   return true;
 }
 
-void PositionBody::InternalSwap(PositionBody* other) {
+::_pbi::CachedSize* PositionBody::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PositionBody::InternalSwap(PositionBody* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(PositionBody, _impl_.z_m_)
       + sizeof(PositionBody::_impl_.z_m_)
       - PROTOBUF_FIELD_OFFSET(PositionBody, _impl_.x_m_)>(
@@ -13510,7 +13531,7 @@ void PositionBody::InternalSwap(PositionBody* other) {
           reinterpret_cast<char*>(&other->_impl_.x_m_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PositionBody::GetMetadata() const {
+::google::protobuf::Metadata PositionBody::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[47]);
@@ -13548,124 +13569,106 @@ class Odometry::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::PositionBody&
-Odometry::_Internal::position_body(const Odometry* msg) {
+const ::mavsdk::rpc::telemetry_server::PositionBody& Odometry::_Internal::position_body(const Odometry* msg) {
   return *msg->_impl_.position_body_;
 }
-const ::mavsdk::rpc::telemetry_server::Quaternion&
-Odometry::_Internal::q(const Odometry* msg) {
+const ::mavsdk::rpc::telemetry_server::Quaternion& Odometry::_Internal::q(const Odometry* msg) {
   return *msg->_impl_.q_;
 }
-const ::mavsdk::rpc::telemetry_server::VelocityBody&
-Odometry::_Internal::velocity_body(const Odometry* msg) {
+const ::mavsdk::rpc::telemetry_server::VelocityBody& Odometry::_Internal::velocity_body(const Odometry* msg) {
   return *msg->_impl_.velocity_body_;
 }
-const ::mavsdk::rpc::telemetry_server::AngularVelocityBody&
-Odometry::_Internal::angular_velocity_body(const Odometry* msg) {
+const ::mavsdk::rpc::telemetry_server::AngularVelocityBody& Odometry::_Internal::angular_velocity_body(const Odometry* msg) {
   return *msg->_impl_.angular_velocity_body_;
 }
-const ::mavsdk::rpc::telemetry_server::Covariance&
-Odometry::_Internal::pose_covariance(const Odometry* msg) {
+const ::mavsdk::rpc::telemetry_server::Covariance& Odometry::_Internal::pose_covariance(const Odometry* msg) {
   return *msg->_impl_.pose_covariance_;
 }
-const ::mavsdk::rpc::telemetry_server::Covariance&
-Odometry::_Internal::velocity_covariance(const Odometry* msg) {
+const ::mavsdk::rpc::telemetry_server::Covariance& Odometry::_Internal::velocity_covariance(const Odometry* msg) {
   return *msg->_impl_.velocity_covariance_;
 }
-Odometry::Odometry(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+Odometry::Odometry(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.Odometry)
 }
-Odometry::Odometry(const Odometry& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  Odometry* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.position_body_){nullptr}
-    , decltype(_impl_.q_){nullptr}
-    , decltype(_impl_.velocity_body_){nullptr}
-    , decltype(_impl_.angular_velocity_body_){nullptr}
-    , decltype(_impl_.pose_covariance_){nullptr}
-    , decltype(_impl_.velocity_covariance_){nullptr}
-    , decltype(_impl_.time_usec_) {}
+inline PROTOBUF_NDEBUG_INLINE Odometry::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-    , decltype(_impl_.frame_id_) {}
+Odometry::Odometry(
+    ::google::protobuf::Arena* arena,
+    const Odometry& from)
+    : ::google::protobuf::Message(arena) {
+  Odometry* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.position_body_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PositionBody>(arena, *from._impl_.position_body_)
+                : nullptr;
+  _impl_.q_ = (cached_has_bits & 0x00000002u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Quaternion>(arena, *from._impl_.q_)
+                : nullptr;
+  _impl_.velocity_body_ = (cached_has_bits & 0x00000004u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::VelocityBody>(arena, *from._impl_.velocity_body_)
+                : nullptr;
+  _impl_.angular_velocity_body_ = (cached_has_bits & 0x00000008u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::AngularVelocityBody>(arena, *from._impl_.angular_velocity_body_)
+                : nullptr;
+  _impl_.pose_covariance_ = (cached_has_bits & 0x00000010u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Covariance>(arena, *from._impl_.pose_covariance_)
+                : nullptr;
+  _impl_.velocity_covariance_ = (cached_has_bits & 0x00000020u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::Covariance>(arena, *from._impl_.velocity_covariance_)
+                : nullptr;
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, time_usec_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, time_usec_),
+           offsetof(Impl_, child_frame_id_) -
+               offsetof(Impl_, time_usec_) +
+               sizeof(Impl_::child_frame_id_));
 
-    , decltype(_impl_.child_frame_id_) {}
-  };
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.position_body_ = new ::mavsdk::rpc::telemetry_server::PositionBody(*from._impl_.position_body_);
-  }
-  if ((from._impl_._has_bits_[0] & 0x00000002u) != 0) {
-    _this->_impl_.q_ = new ::mavsdk::rpc::telemetry_server::Quaternion(*from._impl_.q_);
-  }
-  if ((from._impl_._has_bits_[0] & 0x00000004u) != 0) {
-    _this->_impl_.velocity_body_ = new ::mavsdk::rpc::telemetry_server::VelocityBody(*from._impl_.velocity_body_);
-  }
-  if ((from._impl_._has_bits_[0] & 0x00000008u) != 0) {
-    _this->_impl_.angular_velocity_body_ = new ::mavsdk::rpc::telemetry_server::AngularVelocityBody(*from._impl_.angular_velocity_body_);
-  }
-  if ((from._impl_._has_bits_[0] & 0x00000010u) != 0) {
-    _this->_impl_.pose_covariance_ = new ::mavsdk::rpc::telemetry_server::Covariance(*from._impl_.pose_covariance_);
-  }
-  if ((from._impl_._has_bits_[0] & 0x00000020u) != 0) {
-    _this->_impl_.velocity_covariance_ = new ::mavsdk::rpc::telemetry_server::Covariance(*from._impl_.velocity_covariance_);
-  }
-  ::memcpy(&_impl_.time_usec_, &from._impl_.time_usec_,
-    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.child_frame_id_) -
-    reinterpret_cast<char*>(&_impl_.time_usec_)) + sizeof(_impl_.child_frame_id_));
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.Odometry)
 }
+inline PROTOBUF_NDEBUG_INLINE Odometry::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void Odometry::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.position_body_){nullptr}
-    , decltype(_impl_.q_){nullptr}
-    , decltype(_impl_.velocity_body_){nullptr}
-    , decltype(_impl_.angular_velocity_body_){nullptr}
-    , decltype(_impl_.pose_covariance_){nullptr}
-    , decltype(_impl_.velocity_covariance_){nullptr}
-    , decltype(_impl_.time_usec_) { ::uint64_t{0u} }
-
-    , decltype(_impl_.frame_id_) { 0 }
-
-    , decltype(_impl_.child_frame_id_) { 0 }
-
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, position_body_),
+           0,
+           offsetof(Impl_, child_frame_id_) -
+               offsetof(Impl_, position_body_) +
+               sizeof(Impl_::child_frame_id_));
 }
-
 Odometry::~Odometry() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.Odometry)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void Odometry::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.position_body_;
-  if (this != internal_default_instance()) delete _impl_.q_;
-  if (this != internal_default_instance()) delete _impl_.velocity_body_;
-  if (this != internal_default_instance()) delete _impl_.angular_velocity_body_;
-  if (this != internal_default_instance()) delete _impl_.pose_covariance_;
-  if (this != internal_default_instance()) delete _impl_.velocity_covariance_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.position_body_;
+  delete _impl_.q_;
+  delete _impl_.velocity_body_;
+  delete _impl_.angular_velocity_body_;
+  delete _impl_.pose_covariance_;
+  delete _impl_.velocity_covariance_;
+  _impl_.~Impl_();
 }
 
-void Odometry::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void Odometry::Clear() {
+PROTOBUF_NOINLINE void Odometry::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.Odometry)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -13701,128 +13704,112 @@ void Odometry::Clear() {
       reinterpret_cast<char*>(&_impl_.child_frame_id_) -
       reinterpret_cast<char*>(&_impl_.time_usec_)) + sizeof(_impl_.child_frame_id_));
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* Odometry::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // uint64 time_usec = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          _impl_.time_usec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.telemetry_server.Odometry.MavFrame frame_id = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
-          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-          _internal_set_frame_id(static_cast<::mavsdk::rpc::telemetry_server::Odometry_MavFrame>(val));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.telemetry_server.Odometry.MavFrame child_frame_id = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 24)) {
-          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-          _internal_set_child_frame_id(static_cast<::mavsdk::rpc::telemetry_server::Odometry_MavFrame>(val));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.telemetry_server.PositionBody position_body = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 34)) {
-          ptr = ctx->ParseMessage(_internal_mutable_position_body(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.telemetry_server.Quaternion q = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 42)) {
-          ptr = ctx->ParseMessage(_internal_mutable_q(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.telemetry_server.VelocityBody velocity_body = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 50)) {
-          ptr = ctx->ParseMessage(_internal_mutable_velocity_body(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.telemetry_server.AngularVelocityBody angular_velocity_body = 7;
-      case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 58)) {
-          ptr = ctx->ParseMessage(_internal_mutable_angular_velocity_body(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.telemetry_server.Covariance pose_covariance = 8;
-      case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 66)) {
-          ptr = ctx->ParseMessage(_internal_mutable_pose_covariance(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.telemetry_server.Covariance velocity_covariance = 9;
-      case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 74)) {
-          ptr = ctx->ParseMessage(_internal_mutable_velocity_covariance(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* Odometry::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<4, 9, 6, 0, 2> Odometry::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(Odometry, _impl_._has_bits_),
+    0, // no _extensions_
+    9, 120,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294966784,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    9,  // num_field_entries
+    6,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_Odometry_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // uint64 time_usec = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(Odometry, _impl_.time_usec_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(Odometry, _impl_.time_usec_)}},
+    // .mavsdk.rpc.telemetry_server.Odometry.MavFrame frame_id = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Odometry, _impl_.frame_id_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Odometry, _impl_.frame_id_)}},
+    // .mavsdk.rpc.telemetry_server.Odometry.MavFrame child_frame_id = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Odometry, _impl_.child_frame_id_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(Odometry, _impl_.child_frame_id_)}},
+    // .mavsdk.rpc.telemetry_server.PositionBody position_body = 4;
+    {::_pbi::TcParser::FastMtS1,
+     {34, 0, 0, PROTOBUF_FIELD_OFFSET(Odometry, _impl_.position_body_)}},
+    // .mavsdk.rpc.telemetry_server.Quaternion q = 5;
+    {::_pbi::TcParser::FastMtS1,
+     {42, 1, 1, PROTOBUF_FIELD_OFFSET(Odometry, _impl_.q_)}},
+    // .mavsdk.rpc.telemetry_server.VelocityBody velocity_body = 6;
+    {::_pbi::TcParser::FastMtS1,
+     {50, 2, 2, PROTOBUF_FIELD_OFFSET(Odometry, _impl_.velocity_body_)}},
+    // .mavsdk.rpc.telemetry_server.AngularVelocityBody angular_velocity_body = 7;
+    {::_pbi::TcParser::FastMtS1,
+     {58, 3, 3, PROTOBUF_FIELD_OFFSET(Odometry, _impl_.angular_velocity_body_)}},
+    // .mavsdk.rpc.telemetry_server.Covariance pose_covariance = 8;
+    {::_pbi::TcParser::FastMtS1,
+     {66, 4, 4, PROTOBUF_FIELD_OFFSET(Odometry, _impl_.pose_covariance_)}},
+    // .mavsdk.rpc.telemetry_server.Covariance velocity_covariance = 9;
+    {::_pbi::TcParser::FastMtS1,
+     {74, 5, 5, PROTOBUF_FIELD_OFFSET(Odometry, _impl_.velocity_covariance_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint64 time_usec = 1;
+    {PROTOBUF_FIELD_OFFSET(Odometry, _impl_.time_usec_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+    // .mavsdk.rpc.telemetry_server.Odometry.MavFrame frame_id = 2;
+    {PROTOBUF_FIELD_OFFSET(Odometry, _impl_.frame_id_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // .mavsdk.rpc.telemetry_server.Odometry.MavFrame child_frame_id = 3;
+    {PROTOBUF_FIELD_OFFSET(Odometry, _impl_.child_frame_id_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // .mavsdk.rpc.telemetry_server.PositionBody position_body = 4;
+    {PROTOBUF_FIELD_OFFSET(Odometry, _impl_.position_body_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.telemetry_server.Quaternion q = 5;
+    {PROTOBUF_FIELD_OFFSET(Odometry, _impl_.q_), _Internal::kHasBitsOffset + 1, 1,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.telemetry_server.VelocityBody velocity_body = 6;
+    {PROTOBUF_FIELD_OFFSET(Odometry, _impl_.velocity_body_), _Internal::kHasBitsOffset + 2, 2,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.telemetry_server.AngularVelocityBody angular_velocity_body = 7;
+    {PROTOBUF_FIELD_OFFSET(Odometry, _impl_.angular_velocity_body_), _Internal::kHasBitsOffset + 3, 3,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.telemetry_server.Covariance pose_covariance = 8;
+    {PROTOBUF_FIELD_OFFSET(Odometry, _impl_.pose_covariance_), _Internal::kHasBitsOffset + 4, 4,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.telemetry_server.Covariance velocity_covariance = 9;
+    {PROTOBUF_FIELD_OFFSET(Odometry, _impl_.velocity_covariance_), _Internal::kHasBitsOffset + 5, 5,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::PositionBody>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::Quaternion>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::VelocityBody>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::AngularVelocityBody>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::Covariance>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::Covariance>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* Odometry::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.Odometry)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // uint64 time_usec = 1;
   if (this->_internal_time_usec() != 0) {
@@ -13848,49 +13835,50 @@ failure:
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.PositionBody position_body = 4;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(4, _Internal::position_body(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        4, _Internal::position_body(this),
         _Internal::position_body(this).GetCachedSize(), target, stream);
   }
 
   // .mavsdk.rpc.telemetry_server.Quaternion q = 5;
   if (cached_has_bits & 0x00000002u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(5, _Internal::q(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        5, _Internal::q(this),
         _Internal::q(this).GetCachedSize(), target, stream);
   }
 
   // .mavsdk.rpc.telemetry_server.VelocityBody velocity_body = 6;
   if (cached_has_bits & 0x00000004u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(6, _Internal::velocity_body(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        6, _Internal::velocity_body(this),
         _Internal::velocity_body(this).GetCachedSize(), target, stream);
   }
 
   // .mavsdk.rpc.telemetry_server.AngularVelocityBody angular_velocity_body = 7;
   if (cached_has_bits & 0x00000008u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(7, _Internal::angular_velocity_body(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        7, _Internal::angular_velocity_body(this),
         _Internal::angular_velocity_body(this).GetCachedSize(), target, stream);
   }
 
   // .mavsdk.rpc.telemetry_server.Covariance pose_covariance = 8;
   if (cached_has_bits & 0x00000010u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(8, _Internal::pose_covariance(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        8, _Internal::pose_covariance(this),
         _Internal::pose_covariance(this).GetCachedSize(), target, stream);
   }
 
   // .mavsdk.rpc.telemetry_server.Covariance velocity_covariance = 9;
   if (cached_has_bits & 0x00000020u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(9, _Internal::velocity_covariance(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        9, _Internal::velocity_covariance(this),
         _Internal::velocity_covariance(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.Odometry)
   return target;
@@ -13908,44 +13896,38 @@ failure:
   if (cached_has_bits & 0x0000003fu) {
     // .mavsdk.rpc.telemetry_server.PositionBody position_body = 4;
     if (cached_has_bits & 0x00000001u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.position_body_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.position_body_);
     }
 
     // .mavsdk.rpc.telemetry_server.Quaternion q = 5;
     if (cached_has_bits & 0x00000002u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.q_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.q_);
     }
 
     // .mavsdk.rpc.telemetry_server.VelocityBody velocity_body = 6;
     if (cached_has_bits & 0x00000004u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.velocity_body_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.velocity_body_);
     }
 
     // .mavsdk.rpc.telemetry_server.AngularVelocityBody angular_velocity_body = 7;
     if (cached_has_bits & 0x00000008u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.angular_velocity_body_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.angular_velocity_body_);
     }
 
     // .mavsdk.rpc.telemetry_server.Covariance pose_covariance = 8;
     if (cached_has_bits & 0x00000010u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.pose_covariance_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.pose_covariance_);
     }
 
     // .mavsdk.rpc.telemetry_server.Covariance velocity_covariance = 9;
     if (cached_has_bits & 0x00000020u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.velocity_covariance_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.velocity_covariance_);
     }
 
   }
@@ -13970,14 +13952,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Odometry::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    Odometry::MergeImpl
+const ::google::protobuf::Message::ClassData Odometry::_class_data_ = {
+    Odometry::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Odometry::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* Odometry::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void Odometry::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void Odometry::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<Odometry*>(&to_msg);
   auto& from = static_cast<const Odometry&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.Odometry)
@@ -14021,7 +14004,7 @@ void Odometry::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTO
   if (from._internal_child_frame_id() != 0) {
     _this->_internal_set_child_frame_id(from._internal_child_frame_id());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Odometry::CopyFrom(const Odometry& from) {
@@ -14031,15 +14014,18 @@ void Odometry::CopyFrom(const Odometry& from) {
   MergeFrom(from);
 }
 
-bool Odometry::IsInitialized() const {
+PROTOBUF_NOINLINE bool Odometry::IsInitialized() const {
   return true;
 }
 
-void Odometry::InternalSwap(Odometry* other) {
+::_pbi::CachedSize* Odometry::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void Odometry::InternalSwap(Odometry* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Odometry, _impl_.child_frame_id_)
       + sizeof(Odometry::_impl_.child_frame_id_)
       - PROTOBUF_FIELD_OFFSET(Odometry, _impl_.position_body_)>(
@@ -14047,7 +14033,7 @@ void Odometry::InternalSwap(Odometry* other) {
           reinterpret_cast<char*>(&other->_impl_.position_body_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Odometry::GetMetadata() const {
+::google::protobuf::Metadata Odometry::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[48]);
@@ -14058,50 +14044,43 @@ class DistanceSensor::_Internal {
  public:
 };
 
-DistanceSensor::DistanceSensor(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+DistanceSensor::DistanceSensor(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.DistanceSensor)
 }
-DistanceSensor::DistanceSensor(const DistanceSensor& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.DistanceSensor)
+DistanceSensor::DistanceSensor(
+    ::google::protobuf::Arena* arena, const DistanceSensor& from)
+    : DistanceSensor(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE DistanceSensor::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void DistanceSensor::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.minimum_distance_m_) { 0 }
-
-    , decltype(_impl_.maximum_distance_m_) { 0 }
-
-    , decltype(_impl_.current_distance_m_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, minimum_distance_m_),
+           0,
+           offsetof(Impl_, current_distance_m_) -
+               offsetof(Impl_, minimum_distance_m_) +
+               sizeof(Impl_::current_distance_m_));
 }
-
 DistanceSensor::~DistanceSensor() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.DistanceSensor)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void DistanceSensor::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void DistanceSensor::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void DistanceSensor::Clear() {
+PROTOBUF_NOINLINE void DistanceSensor::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.DistanceSensor)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -14109,73 +14088,69 @@ void DistanceSensor::Clear() {
   ::memset(&_impl_.minimum_distance_m_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.current_distance_m_) -
       reinterpret_cast<char*>(&_impl_.minimum_distance_m_)) + sizeof(_impl_.current_distance_m_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* DistanceSensor::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // float minimum_distance_m = 1 [(.mavsdk.options.default_value) = "NaN"];
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
-          _impl_.minimum_distance_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float maximum_distance_m = 2 [(.mavsdk.options.default_value) = "NaN"];
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
-          _impl_.maximum_distance_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float current_distance_m = 3 [(.mavsdk.options.default_value) = "NaN"];
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
-          _impl_.current_distance_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* DistanceSensor::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> DistanceSensor::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_DistanceSensor_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // float minimum_distance_m = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(DistanceSensor, _impl_.minimum_distance_m_)}},
+    // float maximum_distance_m = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(DistanceSensor, _impl_.maximum_distance_m_)}},
+    // float current_distance_m = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(DistanceSensor, _impl_.current_distance_m_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float minimum_distance_m = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(DistanceSensor, _impl_.minimum_distance_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float maximum_distance_m = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(DistanceSensor, _impl_.maximum_distance_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float current_distance_m = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(DistanceSensor, _impl_.current_distance_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* DistanceSensor::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.DistanceSensor)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // float minimum_distance_m = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_minimum_distance_m = this->_internal_minimum_distance_m();
   ::uint32_t raw_minimum_distance_m;
   memcpy(&raw_minimum_distance_m, &tmp_minimum_distance_m, sizeof(tmp_minimum_distance_m));
@@ -14186,7 +14161,8 @@ failure:
   }
 
   // float maximum_distance_m = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_maximum_distance_m = this->_internal_maximum_distance_m();
   ::uint32_t raw_maximum_distance_m;
   memcpy(&raw_maximum_distance_m, &tmp_maximum_distance_m, sizeof(tmp_maximum_distance_m));
@@ -14197,7 +14173,8 @@ failure:
   }
 
   // float current_distance_m = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_current_distance_m = this->_internal_current_distance_m();
   ::uint32_t raw_current_distance_m;
   memcpy(&raw_current_distance_m, &tmp_current_distance_m, sizeof(tmp_current_distance_m));
@@ -14208,8 +14185,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.DistanceSensor)
   return target;
@@ -14224,7 +14202,8 @@ failure:
   (void) cached_has_bits;
 
   // float minimum_distance_m = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_minimum_distance_m = this->_internal_minimum_distance_m();
   ::uint32_t raw_minimum_distance_m;
   memcpy(&raw_minimum_distance_m, &tmp_minimum_distance_m, sizeof(tmp_minimum_distance_m));
@@ -14233,7 +14212,8 @@ failure:
   }
 
   // float maximum_distance_m = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_maximum_distance_m = this->_internal_maximum_distance_m();
   ::uint32_t raw_maximum_distance_m;
   memcpy(&raw_maximum_distance_m, &tmp_maximum_distance_m, sizeof(tmp_maximum_distance_m));
@@ -14242,7 +14222,8 @@ failure:
   }
 
   // float current_distance_m = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_current_distance_m = this->_internal_current_distance_m();
   ::uint32_t raw_current_distance_m;
   memcpy(&raw_current_distance_m, &tmp_current_distance_m, sizeof(tmp_current_distance_m));
@@ -14253,14 +14234,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData DistanceSensor::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    DistanceSensor::MergeImpl
+const ::google::protobuf::Message::ClassData DistanceSensor::_class_data_ = {
+    DistanceSensor::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*DistanceSensor::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* DistanceSensor::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void DistanceSensor::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void DistanceSensor::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<DistanceSensor*>(&to_msg);
   auto& from = static_cast<const DistanceSensor&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.DistanceSensor)
@@ -14268,28 +14250,31 @@ void DistanceSensor::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const :
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_minimum_distance_m = from._internal_minimum_distance_m();
   ::uint32_t raw_minimum_distance_m;
   memcpy(&raw_minimum_distance_m, &tmp_minimum_distance_m, sizeof(tmp_minimum_distance_m));
   if (raw_minimum_distance_m != 0) {
     _this->_internal_set_minimum_distance_m(from._internal_minimum_distance_m());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_maximum_distance_m = from._internal_maximum_distance_m();
   ::uint32_t raw_maximum_distance_m;
   memcpy(&raw_maximum_distance_m, &tmp_maximum_distance_m, sizeof(tmp_maximum_distance_m));
   if (raw_maximum_distance_m != 0) {
     _this->_internal_set_maximum_distance_m(from._internal_maximum_distance_m());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_current_distance_m = from._internal_current_distance_m();
   ::uint32_t raw_current_distance_m;
   memcpy(&raw_current_distance_m, &tmp_current_distance_m, sizeof(tmp_current_distance_m));
   if (raw_current_distance_m != 0) {
     _this->_internal_set_current_distance_m(from._internal_current_distance_m());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void DistanceSensor::CopyFrom(const DistanceSensor& from) {
@@ -14299,14 +14284,17 @@ void DistanceSensor::CopyFrom(const DistanceSensor& from) {
   MergeFrom(from);
 }
 
-bool DistanceSensor::IsInitialized() const {
+PROTOBUF_NOINLINE bool DistanceSensor::IsInitialized() const {
   return true;
 }
 
-void DistanceSensor::InternalSwap(DistanceSensor* other) {
+::_pbi::CachedSize* DistanceSensor::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void DistanceSensor::InternalSwap(DistanceSensor* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(DistanceSensor, _impl_.current_distance_m_)
       + sizeof(DistanceSensor::_impl_.current_distance_m_)
       - PROTOBUF_FIELD_OFFSET(DistanceSensor, _impl_.minimum_distance_m_)>(
@@ -14314,7 +14302,7 @@ void DistanceSensor::InternalSwap(DistanceSensor* other) {
           reinterpret_cast<char*>(&other->_impl_.minimum_distance_m_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata DistanceSensor::GetMetadata() const {
+::google::protobuf::Metadata DistanceSensor::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[49]);
@@ -14325,54 +14313,43 @@ class ScaledPressure::_Internal {
  public:
 };
 
-ScaledPressure::ScaledPressure(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+ScaledPressure::ScaledPressure(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.ScaledPressure)
 }
-ScaledPressure::ScaledPressure(const ScaledPressure& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.ScaledPressure)
+ScaledPressure::ScaledPressure(
+    ::google::protobuf::Arena* arena, const ScaledPressure& from)
+    : ScaledPressure(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE ScaledPressure::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void ScaledPressure::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.timestamp_us_) { ::uint64_t{0u} }
-
-    , decltype(_impl_.absolute_pressure_hpa_) { 0 }
-
-    , decltype(_impl_.differential_pressure_hpa_) { 0 }
-
-    , decltype(_impl_.temperature_deg_) { 0 }
-
-    , decltype(_impl_.differential_pressure_temperature_deg_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, timestamp_us_),
+           0,
+           offsetof(Impl_, differential_pressure_temperature_deg_) -
+               offsetof(Impl_, timestamp_us_) +
+               sizeof(Impl_::differential_pressure_temperature_deg_));
 }
-
 ScaledPressure::~ScaledPressure() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.ScaledPressure)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void ScaledPressure::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void ScaledPressure::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void ScaledPressure::Clear() {
+PROTOBUF_NOINLINE void ScaledPressure::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.ScaledPressure)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -14380,88 +14357,79 @@ void ScaledPressure::Clear() {
   ::memset(&_impl_.timestamp_us_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.differential_pressure_temperature_deg_) -
       reinterpret_cast<char*>(&_impl_.timestamp_us_)) + sizeof(_impl_.differential_pressure_temperature_deg_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* ScaledPressure::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // uint64 timestamp_us = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          _impl_.timestamp_us_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float absolute_pressure_hpa = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
-          _impl_.absolute_pressure_hpa_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float differential_pressure_hpa = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
-          _impl_.differential_pressure_hpa_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float temperature_deg = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 37)) {
-          _impl_.temperature_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float differential_pressure_temperature_deg = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 45)) {
-          _impl_.differential_pressure_temperature_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* ScaledPressure::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 5, 0, 0, 2> ScaledPressure::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    5, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967264,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    5,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_ScaledPressure_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // uint64 timestamp_us = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(ScaledPressure, _impl_.timestamp_us_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(ScaledPressure, _impl_.timestamp_us_)}},
+    // float absolute_pressure_hpa = 2;
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(ScaledPressure, _impl_.absolute_pressure_hpa_)}},
+    // float differential_pressure_hpa = 3;
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(ScaledPressure, _impl_.differential_pressure_hpa_)}},
+    // float temperature_deg = 4;
+    {::_pbi::TcParser::FastF32S1,
+     {37, 63, 0, PROTOBUF_FIELD_OFFSET(ScaledPressure, _impl_.temperature_deg_)}},
+    // float differential_pressure_temperature_deg = 5;
+    {::_pbi::TcParser::FastF32S1,
+     {45, 63, 0, PROTOBUF_FIELD_OFFSET(ScaledPressure, _impl_.differential_pressure_temperature_deg_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint64 timestamp_us = 1;
+    {PROTOBUF_FIELD_OFFSET(ScaledPressure, _impl_.timestamp_us_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+    // float absolute_pressure_hpa = 2;
+    {PROTOBUF_FIELD_OFFSET(ScaledPressure, _impl_.absolute_pressure_hpa_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float differential_pressure_hpa = 3;
+    {PROTOBUF_FIELD_OFFSET(ScaledPressure, _impl_.differential_pressure_hpa_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float temperature_deg = 4;
+    {PROTOBUF_FIELD_OFFSET(ScaledPressure, _impl_.temperature_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float differential_pressure_temperature_deg = 5;
+    {PROTOBUF_FIELD_OFFSET(ScaledPressure, _impl_.differential_pressure_temperature_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* ScaledPressure::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.ScaledPressure)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // uint64 timestamp_us = 1;
   if (this->_internal_timestamp_us() != 0) {
@@ -14471,7 +14439,8 @@ failure:
   }
 
   // float absolute_pressure_hpa = 2;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_absolute_pressure_hpa = this->_internal_absolute_pressure_hpa();
   ::uint32_t raw_absolute_pressure_hpa;
   memcpy(&raw_absolute_pressure_hpa, &tmp_absolute_pressure_hpa, sizeof(tmp_absolute_pressure_hpa));
@@ -14482,7 +14451,8 @@ failure:
   }
 
   // float differential_pressure_hpa = 3;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_differential_pressure_hpa = this->_internal_differential_pressure_hpa();
   ::uint32_t raw_differential_pressure_hpa;
   memcpy(&raw_differential_pressure_hpa, &tmp_differential_pressure_hpa, sizeof(tmp_differential_pressure_hpa));
@@ -14493,7 +14463,8 @@ failure:
   }
 
   // float temperature_deg = 4;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_temperature_deg = this->_internal_temperature_deg();
   ::uint32_t raw_temperature_deg;
   memcpy(&raw_temperature_deg, &tmp_temperature_deg, sizeof(tmp_temperature_deg));
@@ -14504,7 +14475,8 @@ failure:
   }
 
   // float differential_pressure_temperature_deg = 5;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_differential_pressure_temperature_deg = this->_internal_differential_pressure_temperature_deg();
   ::uint32_t raw_differential_pressure_temperature_deg;
   memcpy(&raw_differential_pressure_temperature_deg, &tmp_differential_pressure_temperature_deg, sizeof(tmp_differential_pressure_temperature_deg));
@@ -14515,8 +14487,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.ScaledPressure)
   return target;
@@ -14537,7 +14510,8 @@ failure:
   }
 
   // float absolute_pressure_hpa = 2;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_absolute_pressure_hpa = this->_internal_absolute_pressure_hpa();
   ::uint32_t raw_absolute_pressure_hpa;
   memcpy(&raw_absolute_pressure_hpa, &tmp_absolute_pressure_hpa, sizeof(tmp_absolute_pressure_hpa));
@@ -14546,7 +14520,8 @@ failure:
   }
 
   // float differential_pressure_hpa = 3;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_differential_pressure_hpa = this->_internal_differential_pressure_hpa();
   ::uint32_t raw_differential_pressure_hpa;
   memcpy(&raw_differential_pressure_hpa, &tmp_differential_pressure_hpa, sizeof(tmp_differential_pressure_hpa));
@@ -14555,7 +14530,8 @@ failure:
   }
 
   // float temperature_deg = 4;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_temperature_deg = this->_internal_temperature_deg();
   ::uint32_t raw_temperature_deg;
   memcpy(&raw_temperature_deg, &tmp_temperature_deg, sizeof(tmp_temperature_deg));
@@ -14564,7 +14540,8 @@ failure:
   }
 
   // float differential_pressure_temperature_deg = 5;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_differential_pressure_temperature_deg = this->_internal_differential_pressure_temperature_deg();
   ::uint32_t raw_differential_pressure_temperature_deg;
   memcpy(&raw_differential_pressure_temperature_deg, &tmp_differential_pressure_temperature_deg, sizeof(tmp_differential_pressure_temperature_deg));
@@ -14575,14 +14552,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ScaledPressure::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    ScaledPressure::MergeImpl
+const ::google::protobuf::Message::ClassData ScaledPressure::_class_data_ = {
+    ScaledPressure::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ScaledPressure::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* ScaledPressure::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void ScaledPressure::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void ScaledPressure::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<ScaledPressure*>(&to_msg);
   auto& from = static_cast<const ScaledPressure&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.ScaledPressure)
@@ -14593,35 +14571,39 @@ void ScaledPressure::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const :
   if (from._internal_timestamp_us() != 0) {
     _this->_internal_set_timestamp_us(from._internal_timestamp_us());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_absolute_pressure_hpa = from._internal_absolute_pressure_hpa();
   ::uint32_t raw_absolute_pressure_hpa;
   memcpy(&raw_absolute_pressure_hpa, &tmp_absolute_pressure_hpa, sizeof(tmp_absolute_pressure_hpa));
   if (raw_absolute_pressure_hpa != 0) {
     _this->_internal_set_absolute_pressure_hpa(from._internal_absolute_pressure_hpa());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_differential_pressure_hpa = from._internal_differential_pressure_hpa();
   ::uint32_t raw_differential_pressure_hpa;
   memcpy(&raw_differential_pressure_hpa, &tmp_differential_pressure_hpa, sizeof(tmp_differential_pressure_hpa));
   if (raw_differential_pressure_hpa != 0) {
     _this->_internal_set_differential_pressure_hpa(from._internal_differential_pressure_hpa());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_temperature_deg = from._internal_temperature_deg();
   ::uint32_t raw_temperature_deg;
   memcpy(&raw_temperature_deg, &tmp_temperature_deg, sizeof(tmp_temperature_deg));
   if (raw_temperature_deg != 0) {
     _this->_internal_set_temperature_deg(from._internal_temperature_deg());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_differential_pressure_temperature_deg = from._internal_differential_pressure_temperature_deg();
   ::uint32_t raw_differential_pressure_temperature_deg;
   memcpy(&raw_differential_pressure_temperature_deg, &tmp_differential_pressure_temperature_deg, sizeof(tmp_differential_pressure_temperature_deg));
   if (raw_differential_pressure_temperature_deg != 0) {
     _this->_internal_set_differential_pressure_temperature_deg(from._internal_differential_pressure_temperature_deg());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ScaledPressure::CopyFrom(const ScaledPressure& from) {
@@ -14631,14 +14613,17 @@ void ScaledPressure::CopyFrom(const ScaledPressure& from) {
   MergeFrom(from);
 }
 
-bool ScaledPressure::IsInitialized() const {
+PROTOBUF_NOINLINE bool ScaledPressure::IsInitialized() const {
   return true;
 }
 
-void ScaledPressure::InternalSwap(ScaledPressure* other) {
+::_pbi::CachedSize* ScaledPressure::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void ScaledPressure::InternalSwap(ScaledPressure* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(ScaledPressure, _impl_.differential_pressure_temperature_deg_)
       + sizeof(ScaledPressure::_impl_.differential_pressure_temperature_deg_)
       - PROTOBUF_FIELD_OFFSET(ScaledPressure, _impl_.timestamp_us_)>(
@@ -14646,7 +14631,7 @@ void ScaledPressure::InternalSwap(ScaledPressure* other) {
           reinterpret_cast<char*>(&other->_impl_.timestamp_us_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata ScaledPressure::GetMetadata() const {
+::google::protobuf::Metadata ScaledPressure::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[50]);
@@ -14657,50 +14642,43 @@ class PositionNed::_Internal {
  public:
 };
 
-PositionNed::PositionNed(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PositionNed::PositionNed(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PositionNed)
 }
-PositionNed::PositionNed(const PositionNed& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PositionNed)
+PositionNed::PositionNed(
+    ::google::protobuf::Arena* arena, const PositionNed& from)
+    : PositionNed(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE PositionNed::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PositionNed::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.north_m_) { 0 }
-
-    , decltype(_impl_.east_m_) { 0 }
-
-    , decltype(_impl_.down_m_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, north_m_),
+           0,
+           offsetof(Impl_, down_m_) -
+               offsetof(Impl_, north_m_) +
+               sizeof(Impl_::down_m_));
 }
-
 PositionNed::~PositionNed() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PositionNed)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PositionNed::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void PositionNed::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PositionNed::Clear() {
+PROTOBUF_NOINLINE void PositionNed::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PositionNed)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -14708,73 +14686,69 @@ void PositionNed::Clear() {
   ::memset(&_impl_.north_m_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.down_m_) -
       reinterpret_cast<char*>(&_impl_.north_m_)) + sizeof(_impl_.down_m_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PositionNed::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // float north_m = 1 [(.mavsdk.options.default_value) = "NaN"];
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
-          _impl_.north_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float east_m = 2 [(.mavsdk.options.default_value) = "NaN"];
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
-          _impl_.east_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float down_m = 3 [(.mavsdk.options.default_value) = "NaN"];
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
-          _impl_.down_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* PositionNed::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> PositionNed::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_PositionNed_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // float north_m = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(PositionNed, _impl_.north_m_)}},
+    // float east_m = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(PositionNed, _impl_.east_m_)}},
+    // float down_m = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(PositionNed, _impl_.down_m_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float north_m = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(PositionNed, _impl_.north_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float east_m = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(PositionNed, _impl_.east_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float down_m = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(PositionNed, _impl_.down_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* PositionNed::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PositionNed)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // float north_m = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_north_m = this->_internal_north_m();
   ::uint32_t raw_north_m;
   memcpy(&raw_north_m, &tmp_north_m, sizeof(tmp_north_m));
@@ -14785,7 +14759,8 @@ failure:
   }
 
   // float east_m = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_east_m = this->_internal_east_m();
   ::uint32_t raw_east_m;
   memcpy(&raw_east_m, &tmp_east_m, sizeof(tmp_east_m));
@@ -14796,7 +14771,8 @@ failure:
   }
 
   // float down_m = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_down_m = this->_internal_down_m();
   ::uint32_t raw_down_m;
   memcpy(&raw_down_m, &tmp_down_m, sizeof(tmp_down_m));
@@ -14807,8 +14783,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PositionNed)
   return target;
@@ -14823,7 +14800,8 @@ failure:
   (void) cached_has_bits;
 
   // float north_m = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_north_m = this->_internal_north_m();
   ::uint32_t raw_north_m;
   memcpy(&raw_north_m, &tmp_north_m, sizeof(tmp_north_m));
@@ -14832,7 +14810,8 @@ failure:
   }
 
   // float east_m = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_east_m = this->_internal_east_m();
   ::uint32_t raw_east_m;
   memcpy(&raw_east_m, &tmp_east_m, sizeof(tmp_east_m));
@@ -14841,7 +14820,8 @@ failure:
   }
 
   // float down_m = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_down_m = this->_internal_down_m();
   ::uint32_t raw_down_m;
   memcpy(&raw_down_m, &tmp_down_m, sizeof(tmp_down_m));
@@ -14852,14 +14832,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PositionNed::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PositionNed::MergeImpl
+const ::google::protobuf::Message::ClassData PositionNed::_class_data_ = {
+    PositionNed::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PositionNed::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PositionNed::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PositionNed::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PositionNed::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PositionNed*>(&to_msg);
   auto& from = static_cast<const PositionNed&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PositionNed)
@@ -14867,28 +14848,31 @@ void PositionNed::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PR
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_north_m = from._internal_north_m();
   ::uint32_t raw_north_m;
   memcpy(&raw_north_m, &tmp_north_m, sizeof(tmp_north_m));
   if (raw_north_m != 0) {
     _this->_internal_set_north_m(from._internal_north_m());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_east_m = from._internal_east_m();
   ::uint32_t raw_east_m;
   memcpy(&raw_east_m, &tmp_east_m, sizeof(tmp_east_m));
   if (raw_east_m != 0) {
     _this->_internal_set_east_m(from._internal_east_m());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_down_m = from._internal_down_m();
   ::uint32_t raw_down_m;
   memcpy(&raw_down_m, &tmp_down_m, sizeof(tmp_down_m));
   if (raw_down_m != 0) {
     _this->_internal_set_down_m(from._internal_down_m());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PositionNed::CopyFrom(const PositionNed& from) {
@@ -14898,14 +14882,17 @@ void PositionNed::CopyFrom(const PositionNed& from) {
   MergeFrom(from);
 }
 
-bool PositionNed::IsInitialized() const {
+PROTOBUF_NOINLINE bool PositionNed::IsInitialized() const {
   return true;
 }
 
-void PositionNed::InternalSwap(PositionNed* other) {
+::_pbi::CachedSize* PositionNed::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PositionNed::InternalSwap(PositionNed* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(PositionNed, _impl_.down_m_)
       + sizeof(PositionNed::_impl_.down_m_)
       - PROTOBUF_FIELD_OFFSET(PositionNed, _impl_.north_m_)>(
@@ -14913,7 +14900,7 @@ void PositionNed::InternalSwap(PositionNed* other) {
           reinterpret_cast<char*>(&other->_impl_.north_m_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PositionNed::GetMetadata() const {
+::google::protobuf::Metadata PositionNed::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[51]);
@@ -14924,50 +14911,43 @@ class VelocityNed::_Internal {
  public:
 };
 
-VelocityNed::VelocityNed(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+VelocityNed::VelocityNed(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.VelocityNed)
 }
-VelocityNed::VelocityNed(const VelocityNed& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.VelocityNed)
+VelocityNed::VelocityNed(
+    ::google::protobuf::Arena* arena, const VelocityNed& from)
+    : VelocityNed(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE VelocityNed::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void VelocityNed::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.north_m_s_) { 0 }
-
-    , decltype(_impl_.east_m_s_) { 0 }
-
-    , decltype(_impl_.down_m_s_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, north_m_s_),
+           0,
+           offsetof(Impl_, down_m_s_) -
+               offsetof(Impl_, north_m_s_) +
+               sizeof(Impl_::down_m_s_));
 }
-
 VelocityNed::~VelocityNed() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.VelocityNed)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void VelocityNed::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void VelocityNed::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void VelocityNed::Clear() {
+PROTOBUF_NOINLINE void VelocityNed::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.VelocityNed)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -14975,73 +14955,69 @@ void VelocityNed::Clear() {
   ::memset(&_impl_.north_m_s_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.down_m_s_) -
       reinterpret_cast<char*>(&_impl_.north_m_s_)) + sizeof(_impl_.down_m_s_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* VelocityNed::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // float north_m_s = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
-          _impl_.north_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float east_m_s = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
-          _impl_.east_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float down_m_s = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
-          _impl_.down_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* VelocityNed::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> VelocityNed::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_VelocityNed_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // float north_m_s = 1;
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(VelocityNed, _impl_.north_m_s_)}},
+    // float east_m_s = 2;
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(VelocityNed, _impl_.east_m_s_)}},
+    // float down_m_s = 3;
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(VelocityNed, _impl_.down_m_s_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float north_m_s = 1;
+    {PROTOBUF_FIELD_OFFSET(VelocityNed, _impl_.north_m_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float east_m_s = 2;
+    {PROTOBUF_FIELD_OFFSET(VelocityNed, _impl_.east_m_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float down_m_s = 3;
+    {PROTOBUF_FIELD_OFFSET(VelocityNed, _impl_.down_m_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* VelocityNed::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.VelocityNed)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // float north_m_s = 1;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_north_m_s = this->_internal_north_m_s();
   ::uint32_t raw_north_m_s;
   memcpy(&raw_north_m_s, &tmp_north_m_s, sizeof(tmp_north_m_s));
@@ -15052,7 +15028,8 @@ failure:
   }
 
   // float east_m_s = 2;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_east_m_s = this->_internal_east_m_s();
   ::uint32_t raw_east_m_s;
   memcpy(&raw_east_m_s, &tmp_east_m_s, sizeof(tmp_east_m_s));
@@ -15063,7 +15040,8 @@ failure:
   }
 
   // float down_m_s = 3;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_down_m_s = this->_internal_down_m_s();
   ::uint32_t raw_down_m_s;
   memcpy(&raw_down_m_s, &tmp_down_m_s, sizeof(tmp_down_m_s));
@@ -15074,8 +15052,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.VelocityNed)
   return target;
@@ -15090,7 +15069,8 @@ failure:
   (void) cached_has_bits;
 
   // float north_m_s = 1;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_north_m_s = this->_internal_north_m_s();
   ::uint32_t raw_north_m_s;
   memcpy(&raw_north_m_s, &tmp_north_m_s, sizeof(tmp_north_m_s));
@@ -15099,7 +15079,8 @@ failure:
   }
 
   // float east_m_s = 2;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_east_m_s = this->_internal_east_m_s();
   ::uint32_t raw_east_m_s;
   memcpy(&raw_east_m_s, &tmp_east_m_s, sizeof(tmp_east_m_s));
@@ -15108,7 +15089,8 @@ failure:
   }
 
   // float down_m_s = 3;
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_down_m_s = this->_internal_down_m_s();
   ::uint32_t raw_down_m_s;
   memcpy(&raw_down_m_s, &tmp_down_m_s, sizeof(tmp_down_m_s));
@@ -15119,14 +15101,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData VelocityNed::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    VelocityNed::MergeImpl
+const ::google::protobuf::Message::ClassData VelocityNed::_class_data_ = {
+    VelocityNed::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*VelocityNed::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* VelocityNed::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void VelocityNed::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void VelocityNed::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<VelocityNed*>(&to_msg);
   auto& from = static_cast<const VelocityNed&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.VelocityNed)
@@ -15134,28 +15117,31 @@ void VelocityNed::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PR
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_north_m_s = from._internal_north_m_s();
   ::uint32_t raw_north_m_s;
   memcpy(&raw_north_m_s, &tmp_north_m_s, sizeof(tmp_north_m_s));
   if (raw_north_m_s != 0) {
     _this->_internal_set_north_m_s(from._internal_north_m_s());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_east_m_s = from._internal_east_m_s();
   ::uint32_t raw_east_m_s;
   memcpy(&raw_east_m_s, &tmp_east_m_s, sizeof(tmp_east_m_s));
   if (raw_east_m_s != 0) {
     _this->_internal_set_east_m_s(from._internal_east_m_s());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_down_m_s = from._internal_down_m_s();
   ::uint32_t raw_down_m_s;
   memcpy(&raw_down_m_s, &tmp_down_m_s, sizeof(tmp_down_m_s));
   if (raw_down_m_s != 0) {
     _this->_internal_set_down_m_s(from._internal_down_m_s());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void VelocityNed::CopyFrom(const VelocityNed& from) {
@@ -15165,14 +15151,17 @@ void VelocityNed::CopyFrom(const VelocityNed& from) {
   MergeFrom(from);
 }
 
-bool VelocityNed::IsInitialized() const {
+PROTOBUF_NOINLINE bool VelocityNed::IsInitialized() const {
   return true;
 }
 
-void VelocityNed::InternalSwap(VelocityNed* other) {
+::_pbi::CachedSize* VelocityNed::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void VelocityNed::InternalSwap(VelocityNed* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(VelocityNed, _impl_.down_m_s_)
       + sizeof(VelocityNed::_impl_.down_m_s_)
       - PROTOBUF_FIELD_OFFSET(VelocityNed, _impl_.north_m_s_)>(
@@ -15180,7 +15169,7 @@ void VelocityNed::InternalSwap(VelocityNed* other) {
           reinterpret_cast<char*>(&other->_impl_.north_m_s_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata VelocityNed::GetMetadata() const {
+::google::protobuf::Metadata VelocityNed::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[52]);
@@ -15202,69 +15191,71 @@ class PositionVelocityNed::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::PositionNed&
-PositionVelocityNed::_Internal::position(const PositionVelocityNed* msg) {
+const ::mavsdk::rpc::telemetry_server::PositionNed& PositionVelocityNed::_Internal::position(const PositionVelocityNed* msg) {
   return *msg->_impl_.position_;
 }
-const ::mavsdk::rpc::telemetry_server::VelocityNed&
-PositionVelocityNed::_Internal::velocity(const PositionVelocityNed* msg) {
+const ::mavsdk::rpc::telemetry_server::VelocityNed& PositionVelocityNed::_Internal::velocity(const PositionVelocityNed* msg) {
   return *msg->_impl_.velocity_;
 }
-PositionVelocityNed::PositionVelocityNed(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+PositionVelocityNed::PositionVelocityNed(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PositionVelocityNed)
 }
-PositionVelocityNed::PositionVelocityNed(const PositionVelocityNed& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PositionVelocityNed* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.position_){nullptr}
-    , decltype(_impl_.velocity_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE PositionVelocityNed::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.position_ = new ::mavsdk::rpc::telemetry_server::PositionNed(*from._impl_.position_);
-  }
-  if ((from._impl_._has_bits_[0] & 0x00000002u) != 0) {
-    _this->_impl_.velocity_ = new ::mavsdk::rpc::telemetry_server::VelocityNed(*from._impl_.velocity_);
-  }
+PositionVelocityNed::PositionVelocityNed(
+    ::google::protobuf::Arena* arena,
+    const PositionVelocityNed& from)
+    : ::google::protobuf::Message(arena) {
+  PositionVelocityNed* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.position_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::PositionNed>(arena, *from._impl_.position_)
+                : nullptr;
+  _impl_.velocity_ = (cached_has_bits & 0x00000002u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::VelocityNed>(arena, *from._impl_.velocity_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PositionVelocityNed)
 }
+inline PROTOBUF_NDEBUG_INLINE PositionVelocityNed::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void PositionVelocityNed::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.position_){nullptr}
-    , decltype(_impl_.velocity_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, position_),
+           0,
+           offsetof(Impl_, velocity_) -
+               offsetof(Impl_, position_) +
+               sizeof(Impl_::velocity_));
 }
-
 PositionVelocityNed::~PositionVelocityNed() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PositionVelocityNed)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PositionVelocityNed::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.position_;
-  if (this != internal_default_instance()) delete _impl_.velocity_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.position_;
+  delete _impl_.velocity_;
+  _impl_.~Impl_();
 }
 
-void PositionVelocityNed::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void PositionVelocityNed::Clear() {
+PROTOBUF_NOINLINE void PositionVelocityNed::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PositionVelocityNed)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -15281,82 +15272,79 @@ void PositionVelocityNed::Clear() {
     }
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PositionVelocityNed::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.PositionNed position = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_position(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.telemetry_server.VelocityNed velocity = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
-          ptr = ctx->ParseMessage(_internal_mutable_velocity(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* PositionVelocityNed::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 2, 0, 2> PositionVelocityNed::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PositionVelocityNed, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    2,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PositionVelocityNed_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.telemetry_server.VelocityNed velocity = 2;
+    {::_pbi::TcParser::FastMtS1,
+     {18, 1, 1, PROTOBUF_FIELD_OFFSET(PositionVelocityNed, _impl_.velocity_)}},
+    // .mavsdk.rpc.telemetry_server.PositionNed position = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PositionVelocityNed, _impl_.position_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.PositionNed position = 1;
+    {PROTOBUF_FIELD_OFFSET(PositionVelocityNed, _impl_.position_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.telemetry_server.VelocityNed velocity = 2;
+    {PROTOBUF_FIELD_OFFSET(PositionVelocityNed, _impl_.velocity_), _Internal::kHasBitsOffset + 1, 1,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::PositionNed>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::VelocityNed>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* PositionVelocityNed::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PositionVelocityNed)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.PositionNed position = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::position(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::position(this),
         _Internal::position(this).GetCachedSize(), target, stream);
   }
 
   // .mavsdk.rpc.telemetry_server.VelocityNed velocity = 2;
   if (cached_has_bits & 0x00000002u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(2, _Internal::velocity(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        2, _Internal::velocity(this),
         _Internal::velocity(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PositionVelocityNed)
   return target;
@@ -15374,30 +15362,29 @@ failure:
   if (cached_has_bits & 0x00000003u) {
     // .mavsdk.rpc.telemetry_server.PositionNed position = 1;
     if (cached_has_bits & 0x00000001u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.position_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.position_);
     }
 
     // .mavsdk.rpc.telemetry_server.VelocityNed velocity = 2;
     if (cached_has_bits & 0x00000002u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.velocity_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.velocity_);
     }
 
   }
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PositionVelocityNed::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    PositionVelocityNed::MergeImpl
+const ::google::protobuf::Message::ClassData PositionVelocityNed::_class_data_ = {
+    PositionVelocityNed::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PositionVelocityNed::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* PositionVelocityNed::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void PositionVelocityNed::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PositionVelocityNed::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PositionVelocityNed*>(&to_msg);
   auto& from = static_cast<const PositionVelocityNed&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PositionVelocityNed)
@@ -15416,7 +15403,7 @@ void PositionVelocityNed::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, co
           from._internal_velocity());
     }
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PositionVelocityNed::CopyFrom(const PositionVelocityNed& from) {
@@ -15426,15 +15413,18 @@ void PositionVelocityNed::CopyFrom(const PositionVelocityNed& from) {
   MergeFrom(from);
 }
 
-bool PositionVelocityNed::IsInitialized() const {
+PROTOBUF_NOINLINE bool PositionVelocityNed::IsInitialized() const {
   return true;
 }
 
-void PositionVelocityNed::InternalSwap(PositionVelocityNed* other) {
+::_pbi::CachedSize* PositionVelocityNed::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void PositionVelocityNed::InternalSwap(PositionVelocityNed* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(PositionVelocityNed, _impl_.velocity_)
       + sizeof(PositionVelocityNed::_impl_.velocity_)
       - PROTOBUF_FIELD_OFFSET(PositionVelocityNed, _impl_.position_)>(
@@ -15442,7 +15432,7 @@ void PositionVelocityNed::InternalSwap(PositionVelocityNed* other) {
           reinterpret_cast<char*>(&other->_impl_.position_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PositionVelocityNed::GetMetadata() const {
+::google::protobuf::Metadata PositionVelocityNed::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[53]);
@@ -15453,50 +15443,43 @@ class GroundTruth::_Internal {
  public:
 };
 
-GroundTruth::GroundTruth(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+GroundTruth::GroundTruth(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.GroundTruth)
 }
-GroundTruth::GroundTruth(const GroundTruth& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.GroundTruth)
+GroundTruth::GroundTruth(
+    ::google::protobuf::Arena* arena, const GroundTruth& from)
+    : GroundTruth(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE GroundTruth::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void GroundTruth::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.latitude_deg_) { 0 }
-
-    , decltype(_impl_.longitude_deg_) { 0 }
-
-    , decltype(_impl_.absolute_altitude_m_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, latitude_deg_),
+           0,
+           offsetof(Impl_, absolute_altitude_m_) -
+               offsetof(Impl_, latitude_deg_) +
+               sizeof(Impl_::absolute_altitude_m_));
 }
-
 GroundTruth::~GroundTruth() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.GroundTruth)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void GroundTruth::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void GroundTruth::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void GroundTruth::Clear() {
+PROTOBUF_NOINLINE void GroundTruth::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.GroundTruth)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -15504,73 +15487,69 @@ void GroundTruth::Clear() {
   ::memset(&_impl_.latitude_deg_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.absolute_altitude_m_) -
       reinterpret_cast<char*>(&_impl_.latitude_deg_)) + sizeof(_impl_.absolute_altitude_m_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* GroundTruth::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 9)) {
-          _impl_.latitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
-          ptr += sizeof(double);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 17)) {
-          _impl_.longitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
-          ptr += sizeof(double);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
-          _impl_.absolute_altitude_m_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* GroundTruth::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> GroundTruth::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_GroundTruth_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF64S1,
+     {9, 63, 0, PROTOBUF_FIELD_OFFSET(GroundTruth, _impl_.latitude_deg_)}},
+    // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF64S1,
+     {17, 63, 0, PROTOBUF_FIELD_OFFSET(GroundTruth, _impl_.longitude_deg_)}},
+    // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(GroundTruth, _impl_.absolute_altitude_m_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(GroundTruth, _impl_.latitude_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
+    // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(GroundTruth, _impl_.longitude_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
+    // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(GroundTruth, _impl_.absolute_altitude_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* GroundTruth::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.GroundTruth)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_latitude_deg = this->_internal_latitude_deg();
   ::uint64_t raw_latitude_deg;
   memcpy(&raw_latitude_deg, &tmp_latitude_deg, sizeof(tmp_latitude_deg));
@@ -15581,7 +15560,8 @@ failure:
   }
 
   // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_longitude_deg = this->_internal_longitude_deg();
   ::uint64_t raw_longitude_deg;
   memcpy(&raw_longitude_deg, &tmp_longitude_deg, sizeof(tmp_longitude_deg));
@@ -15592,7 +15572,8 @@ failure:
   }
 
   // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_absolute_altitude_m = this->_internal_absolute_altitude_m();
   ::uint32_t raw_absolute_altitude_m;
   memcpy(&raw_absolute_altitude_m, &tmp_absolute_altitude_m, sizeof(tmp_absolute_altitude_m));
@@ -15603,8 +15584,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.GroundTruth)
   return target;
@@ -15619,7 +15601,8 @@ failure:
   (void) cached_has_bits;
 
   // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_latitude_deg = this->_internal_latitude_deg();
   ::uint64_t raw_latitude_deg;
   memcpy(&raw_latitude_deg, &tmp_latitude_deg, sizeof(tmp_latitude_deg));
@@ -15628,7 +15611,8 @@ failure:
   }
 
   // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_longitude_deg = this->_internal_longitude_deg();
   ::uint64_t raw_longitude_deg;
   memcpy(&raw_longitude_deg, &tmp_longitude_deg, sizeof(tmp_longitude_deg));
@@ -15637,7 +15621,8 @@ failure:
   }
 
   // float absolute_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_absolute_altitude_m = this->_internal_absolute_altitude_m();
   ::uint32_t raw_absolute_altitude_m;
   memcpy(&raw_absolute_altitude_m, &tmp_absolute_altitude_m, sizeof(tmp_absolute_altitude_m));
@@ -15648,14 +15633,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GroundTruth::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    GroundTruth::MergeImpl
+const ::google::protobuf::Message::ClassData GroundTruth::_class_data_ = {
+    GroundTruth::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GroundTruth::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* GroundTruth::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void GroundTruth::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void GroundTruth::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<GroundTruth*>(&to_msg);
   auto& from = static_cast<const GroundTruth&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.GroundTruth)
@@ -15663,28 +15649,31 @@ void GroundTruth::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PR
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_latitude_deg = from._internal_latitude_deg();
   ::uint64_t raw_latitude_deg;
   memcpy(&raw_latitude_deg, &tmp_latitude_deg, sizeof(tmp_latitude_deg));
   if (raw_latitude_deg != 0) {
     _this->_internal_set_latitude_deg(from._internal_latitude_deg());
   }
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_longitude_deg = from._internal_longitude_deg();
   ::uint64_t raw_longitude_deg;
   memcpy(&raw_longitude_deg, &tmp_longitude_deg, sizeof(tmp_longitude_deg));
   if (raw_longitude_deg != 0) {
     _this->_internal_set_longitude_deg(from._internal_longitude_deg());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_absolute_altitude_m = from._internal_absolute_altitude_m();
   ::uint32_t raw_absolute_altitude_m;
   memcpy(&raw_absolute_altitude_m, &tmp_absolute_altitude_m, sizeof(tmp_absolute_altitude_m));
   if (raw_absolute_altitude_m != 0) {
     _this->_internal_set_absolute_altitude_m(from._internal_absolute_altitude_m());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void GroundTruth::CopyFrom(const GroundTruth& from) {
@@ -15694,14 +15683,17 @@ void GroundTruth::CopyFrom(const GroundTruth& from) {
   MergeFrom(from);
 }
 
-bool GroundTruth::IsInitialized() const {
+PROTOBUF_NOINLINE bool GroundTruth::IsInitialized() const {
   return true;
 }
 
-void GroundTruth::InternalSwap(GroundTruth* other) {
+::_pbi::CachedSize* GroundTruth::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void GroundTruth::InternalSwap(GroundTruth* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(GroundTruth, _impl_.absolute_altitude_m_)
       + sizeof(GroundTruth::_impl_.absolute_altitude_m_)
       - PROTOBUF_FIELD_OFFSET(GroundTruth, _impl_.latitude_deg_)>(
@@ -15709,7 +15701,7 @@ void GroundTruth::InternalSwap(GroundTruth* other) {
           reinterpret_cast<char*>(&other->_impl_.latitude_deg_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata GroundTruth::GetMetadata() const {
+::google::protobuf::Metadata GroundTruth::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[54]);
@@ -15720,50 +15712,43 @@ class FixedwingMetrics::_Internal {
  public:
 };
 
-FixedwingMetrics::FixedwingMetrics(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+FixedwingMetrics::FixedwingMetrics(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.FixedwingMetrics)
 }
-FixedwingMetrics::FixedwingMetrics(const FixedwingMetrics& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.FixedwingMetrics)
+FixedwingMetrics::FixedwingMetrics(
+    ::google::protobuf::Arena* arena, const FixedwingMetrics& from)
+    : FixedwingMetrics(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE FixedwingMetrics::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void FixedwingMetrics::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.airspeed_m_s_) { 0 }
-
-    , decltype(_impl_.throttle_percentage_) { 0 }
-
-    , decltype(_impl_.climb_rate_m_s_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, airspeed_m_s_),
+           0,
+           offsetof(Impl_, climb_rate_m_s_) -
+               offsetof(Impl_, airspeed_m_s_) +
+               sizeof(Impl_::climb_rate_m_s_));
 }
-
 FixedwingMetrics::~FixedwingMetrics() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.FixedwingMetrics)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void FixedwingMetrics::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void FixedwingMetrics::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void FixedwingMetrics::Clear() {
+PROTOBUF_NOINLINE void FixedwingMetrics::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.FixedwingMetrics)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -15771,73 +15756,69 @@ void FixedwingMetrics::Clear() {
   ::memset(&_impl_.airspeed_m_s_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.climb_rate_m_s_) -
       reinterpret_cast<char*>(&_impl_.airspeed_m_s_)) + sizeof(_impl_.climb_rate_m_s_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* FixedwingMetrics::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // float airspeed_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
-          _impl_.airspeed_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float throttle_percentage = 2 [(.mavsdk.options.default_value) = "NaN"];
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
-          _impl_.throttle_percentage_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float climb_rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
-          _impl_.climb_rate_m_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* FixedwingMetrics::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> FixedwingMetrics::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_FixedwingMetrics_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // float airspeed_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.airspeed_m_s_)}},
+    // float throttle_percentage = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.throttle_percentage_)}},
+    // float climb_rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.climb_rate_m_s_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float airspeed_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.airspeed_m_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float throttle_percentage = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.throttle_percentage_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float climb_rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.climb_rate_m_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* FixedwingMetrics::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.FixedwingMetrics)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // float airspeed_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_airspeed_m_s = this->_internal_airspeed_m_s();
   ::uint32_t raw_airspeed_m_s;
   memcpy(&raw_airspeed_m_s, &tmp_airspeed_m_s, sizeof(tmp_airspeed_m_s));
@@ -15848,7 +15829,8 @@ failure:
   }
 
   // float throttle_percentage = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_throttle_percentage = this->_internal_throttle_percentage();
   ::uint32_t raw_throttle_percentage;
   memcpy(&raw_throttle_percentage, &tmp_throttle_percentage, sizeof(tmp_throttle_percentage));
@@ -15859,7 +15841,8 @@ failure:
   }
 
   // float climb_rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_climb_rate_m_s = this->_internal_climb_rate_m_s();
   ::uint32_t raw_climb_rate_m_s;
   memcpy(&raw_climb_rate_m_s, &tmp_climb_rate_m_s, sizeof(tmp_climb_rate_m_s));
@@ -15870,8 +15853,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.FixedwingMetrics)
   return target;
@@ -15886,7 +15870,8 @@ failure:
   (void) cached_has_bits;
 
   // float airspeed_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_airspeed_m_s = this->_internal_airspeed_m_s();
   ::uint32_t raw_airspeed_m_s;
   memcpy(&raw_airspeed_m_s, &tmp_airspeed_m_s, sizeof(tmp_airspeed_m_s));
@@ -15895,7 +15880,8 @@ failure:
   }
 
   // float throttle_percentage = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_throttle_percentage = this->_internal_throttle_percentage();
   ::uint32_t raw_throttle_percentage;
   memcpy(&raw_throttle_percentage, &tmp_throttle_percentage, sizeof(tmp_throttle_percentage));
@@ -15904,7 +15890,8 @@ failure:
   }
 
   // float climb_rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_climb_rate_m_s = this->_internal_climb_rate_m_s();
   ::uint32_t raw_climb_rate_m_s;
   memcpy(&raw_climb_rate_m_s, &tmp_climb_rate_m_s, sizeof(tmp_climb_rate_m_s));
@@ -15915,14 +15902,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData FixedwingMetrics::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    FixedwingMetrics::MergeImpl
+const ::google::protobuf::Message::ClassData FixedwingMetrics::_class_data_ = {
+    FixedwingMetrics::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*FixedwingMetrics::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* FixedwingMetrics::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void FixedwingMetrics::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void FixedwingMetrics::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<FixedwingMetrics*>(&to_msg);
   auto& from = static_cast<const FixedwingMetrics&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.FixedwingMetrics)
@@ -15930,28 +15918,31 @@ void FixedwingMetrics::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_airspeed_m_s = from._internal_airspeed_m_s();
   ::uint32_t raw_airspeed_m_s;
   memcpy(&raw_airspeed_m_s, &tmp_airspeed_m_s, sizeof(tmp_airspeed_m_s));
   if (raw_airspeed_m_s != 0) {
     _this->_internal_set_airspeed_m_s(from._internal_airspeed_m_s());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_throttle_percentage = from._internal_throttle_percentage();
   ::uint32_t raw_throttle_percentage;
   memcpy(&raw_throttle_percentage, &tmp_throttle_percentage, sizeof(tmp_throttle_percentage));
   if (raw_throttle_percentage != 0) {
     _this->_internal_set_throttle_percentage(from._internal_throttle_percentage());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_climb_rate_m_s = from._internal_climb_rate_m_s();
   ::uint32_t raw_climb_rate_m_s;
   memcpy(&raw_climb_rate_m_s, &tmp_climb_rate_m_s, sizeof(tmp_climb_rate_m_s));
   if (raw_climb_rate_m_s != 0) {
     _this->_internal_set_climb_rate_m_s(from._internal_climb_rate_m_s());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void FixedwingMetrics::CopyFrom(const FixedwingMetrics& from) {
@@ -15961,14 +15952,17 @@ void FixedwingMetrics::CopyFrom(const FixedwingMetrics& from) {
   MergeFrom(from);
 }
 
-bool FixedwingMetrics::IsInitialized() const {
+PROTOBUF_NOINLINE bool FixedwingMetrics::IsInitialized() const {
   return true;
 }
 
-void FixedwingMetrics::InternalSwap(FixedwingMetrics* other) {
+::_pbi::CachedSize* FixedwingMetrics::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void FixedwingMetrics::InternalSwap(FixedwingMetrics* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.climb_rate_m_s_)
       + sizeof(FixedwingMetrics::_impl_.climb_rate_m_s_)
       - PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.airspeed_m_s_)>(
@@ -15976,7 +15970,7 @@ void FixedwingMetrics::InternalSwap(FixedwingMetrics* other) {
           reinterpret_cast<char*>(&other->_impl_.airspeed_m_s_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata FixedwingMetrics::GetMetadata() const {
+::google::protobuf::Metadata FixedwingMetrics::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[55]);
@@ -15987,50 +15981,43 @@ class AccelerationFrd::_Internal {
  public:
 };
 
-AccelerationFrd::AccelerationFrd(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+AccelerationFrd::AccelerationFrd(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.AccelerationFrd)
 }
-AccelerationFrd::AccelerationFrd(const AccelerationFrd& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.AccelerationFrd)
+AccelerationFrd::AccelerationFrd(
+    ::google::protobuf::Arena* arena, const AccelerationFrd& from)
+    : AccelerationFrd(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE AccelerationFrd::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void AccelerationFrd::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.forward_m_s2_) { 0 }
-
-    , decltype(_impl_.right_m_s2_) { 0 }
-
-    , decltype(_impl_.down_m_s2_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, forward_m_s2_),
+           0,
+           offsetof(Impl_, down_m_s2_) -
+               offsetof(Impl_, forward_m_s2_) +
+               sizeof(Impl_::down_m_s2_));
 }
-
 AccelerationFrd::~AccelerationFrd() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.AccelerationFrd)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void AccelerationFrd::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void AccelerationFrd::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void AccelerationFrd::Clear() {
+PROTOBUF_NOINLINE void AccelerationFrd::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.AccelerationFrd)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -16038,73 +16025,69 @@ void AccelerationFrd::Clear() {
   ::memset(&_impl_.forward_m_s2_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.down_m_s2_) -
       reinterpret_cast<char*>(&_impl_.forward_m_s2_)) + sizeof(_impl_.down_m_s2_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* AccelerationFrd::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // float forward_m_s2 = 1 [(.mavsdk.options.default_value) = "NaN"];
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
-          _impl_.forward_m_s2_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float right_m_s2 = 2 [(.mavsdk.options.default_value) = "NaN"];
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
-          _impl_.right_m_s2_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float down_m_s2 = 3 [(.mavsdk.options.default_value) = "NaN"];
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
-          _impl_.down_m_s2_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* AccelerationFrd::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> AccelerationFrd::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_AccelerationFrd_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // float forward_m_s2 = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(AccelerationFrd, _impl_.forward_m_s2_)}},
+    // float right_m_s2 = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(AccelerationFrd, _impl_.right_m_s2_)}},
+    // float down_m_s2 = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(AccelerationFrd, _impl_.down_m_s2_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float forward_m_s2 = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(AccelerationFrd, _impl_.forward_m_s2_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float right_m_s2 = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(AccelerationFrd, _impl_.right_m_s2_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float down_m_s2 = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(AccelerationFrd, _impl_.down_m_s2_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* AccelerationFrd::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.AccelerationFrd)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // float forward_m_s2 = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_forward_m_s2 = this->_internal_forward_m_s2();
   ::uint32_t raw_forward_m_s2;
   memcpy(&raw_forward_m_s2, &tmp_forward_m_s2, sizeof(tmp_forward_m_s2));
@@ -16115,7 +16098,8 @@ failure:
   }
 
   // float right_m_s2 = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_right_m_s2 = this->_internal_right_m_s2();
   ::uint32_t raw_right_m_s2;
   memcpy(&raw_right_m_s2, &tmp_right_m_s2, sizeof(tmp_right_m_s2));
@@ -16126,7 +16110,8 @@ failure:
   }
 
   // float down_m_s2 = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_down_m_s2 = this->_internal_down_m_s2();
   ::uint32_t raw_down_m_s2;
   memcpy(&raw_down_m_s2, &tmp_down_m_s2, sizeof(tmp_down_m_s2));
@@ -16137,8 +16122,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.AccelerationFrd)
   return target;
@@ -16153,7 +16139,8 @@ failure:
   (void) cached_has_bits;
 
   // float forward_m_s2 = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_forward_m_s2 = this->_internal_forward_m_s2();
   ::uint32_t raw_forward_m_s2;
   memcpy(&raw_forward_m_s2, &tmp_forward_m_s2, sizeof(tmp_forward_m_s2));
@@ -16162,7 +16149,8 @@ failure:
   }
 
   // float right_m_s2 = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_right_m_s2 = this->_internal_right_m_s2();
   ::uint32_t raw_right_m_s2;
   memcpy(&raw_right_m_s2, &tmp_right_m_s2, sizeof(tmp_right_m_s2));
@@ -16171,7 +16159,8 @@ failure:
   }
 
   // float down_m_s2 = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_down_m_s2 = this->_internal_down_m_s2();
   ::uint32_t raw_down_m_s2;
   memcpy(&raw_down_m_s2, &tmp_down_m_s2, sizeof(tmp_down_m_s2));
@@ -16182,14 +16171,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData AccelerationFrd::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    AccelerationFrd::MergeImpl
+const ::google::protobuf::Message::ClassData AccelerationFrd::_class_data_ = {
+    AccelerationFrd::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*AccelerationFrd::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* AccelerationFrd::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void AccelerationFrd::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void AccelerationFrd::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<AccelerationFrd*>(&to_msg);
   auto& from = static_cast<const AccelerationFrd&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.AccelerationFrd)
@@ -16197,28 +16187,31 @@ void AccelerationFrd::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const 
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_forward_m_s2 = from._internal_forward_m_s2();
   ::uint32_t raw_forward_m_s2;
   memcpy(&raw_forward_m_s2, &tmp_forward_m_s2, sizeof(tmp_forward_m_s2));
   if (raw_forward_m_s2 != 0) {
     _this->_internal_set_forward_m_s2(from._internal_forward_m_s2());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_right_m_s2 = from._internal_right_m_s2();
   ::uint32_t raw_right_m_s2;
   memcpy(&raw_right_m_s2, &tmp_right_m_s2, sizeof(tmp_right_m_s2));
   if (raw_right_m_s2 != 0) {
     _this->_internal_set_right_m_s2(from._internal_right_m_s2());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_down_m_s2 = from._internal_down_m_s2();
   ::uint32_t raw_down_m_s2;
   memcpy(&raw_down_m_s2, &tmp_down_m_s2, sizeof(tmp_down_m_s2));
   if (raw_down_m_s2 != 0) {
     _this->_internal_set_down_m_s2(from._internal_down_m_s2());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void AccelerationFrd::CopyFrom(const AccelerationFrd& from) {
@@ -16228,14 +16221,17 @@ void AccelerationFrd::CopyFrom(const AccelerationFrd& from) {
   MergeFrom(from);
 }
 
-bool AccelerationFrd::IsInitialized() const {
+PROTOBUF_NOINLINE bool AccelerationFrd::IsInitialized() const {
   return true;
 }
 
-void AccelerationFrd::InternalSwap(AccelerationFrd* other) {
+::_pbi::CachedSize* AccelerationFrd::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void AccelerationFrd::InternalSwap(AccelerationFrd* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(AccelerationFrd, _impl_.down_m_s2_)
       + sizeof(AccelerationFrd::_impl_.down_m_s2_)
       - PROTOBUF_FIELD_OFFSET(AccelerationFrd, _impl_.forward_m_s2_)>(
@@ -16243,7 +16239,7 @@ void AccelerationFrd::InternalSwap(AccelerationFrd* other) {
           reinterpret_cast<char*>(&other->_impl_.forward_m_s2_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata AccelerationFrd::GetMetadata() const {
+::google::protobuf::Metadata AccelerationFrd::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[56]);
@@ -16254,50 +16250,43 @@ class AngularVelocityFrd::_Internal {
  public:
 };
 
-AngularVelocityFrd::AngularVelocityFrd(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+AngularVelocityFrd::AngularVelocityFrd(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.AngularVelocityFrd)
 }
-AngularVelocityFrd::AngularVelocityFrd(const AngularVelocityFrd& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.AngularVelocityFrd)
+AngularVelocityFrd::AngularVelocityFrd(
+    ::google::protobuf::Arena* arena, const AngularVelocityFrd& from)
+    : AngularVelocityFrd(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE AngularVelocityFrd::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void AngularVelocityFrd::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.forward_rad_s_) { 0 }
-
-    , decltype(_impl_.right_rad_s_) { 0 }
-
-    , decltype(_impl_.down_rad_s_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, forward_rad_s_),
+           0,
+           offsetof(Impl_, down_rad_s_) -
+               offsetof(Impl_, forward_rad_s_) +
+               sizeof(Impl_::down_rad_s_));
 }
-
 AngularVelocityFrd::~AngularVelocityFrd() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.AngularVelocityFrd)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void AngularVelocityFrd::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void AngularVelocityFrd::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void AngularVelocityFrd::Clear() {
+PROTOBUF_NOINLINE void AngularVelocityFrd::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.AngularVelocityFrd)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -16305,73 +16294,69 @@ void AngularVelocityFrd::Clear() {
   ::memset(&_impl_.forward_rad_s_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.down_rad_s_) -
       reinterpret_cast<char*>(&_impl_.forward_rad_s_)) + sizeof(_impl_.down_rad_s_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* AngularVelocityFrd::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // float forward_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
-          _impl_.forward_rad_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float right_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
-          _impl_.right_rad_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float down_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
-          _impl_.down_rad_s_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* AngularVelocityFrd::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> AngularVelocityFrd::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_AngularVelocityFrd_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // float forward_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(AngularVelocityFrd, _impl_.forward_rad_s_)}},
+    // float right_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(AngularVelocityFrd, _impl_.right_rad_s_)}},
+    // float down_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(AngularVelocityFrd, _impl_.down_rad_s_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float forward_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(AngularVelocityFrd, _impl_.forward_rad_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float right_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(AngularVelocityFrd, _impl_.right_rad_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float down_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(AngularVelocityFrd, _impl_.down_rad_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* AngularVelocityFrd::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.AngularVelocityFrd)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // float forward_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_forward_rad_s = this->_internal_forward_rad_s();
   ::uint32_t raw_forward_rad_s;
   memcpy(&raw_forward_rad_s, &tmp_forward_rad_s, sizeof(tmp_forward_rad_s));
@@ -16382,7 +16367,8 @@ failure:
   }
 
   // float right_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_right_rad_s = this->_internal_right_rad_s();
   ::uint32_t raw_right_rad_s;
   memcpy(&raw_right_rad_s, &tmp_right_rad_s, sizeof(tmp_right_rad_s));
@@ -16393,7 +16379,8 @@ failure:
   }
 
   // float down_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_down_rad_s = this->_internal_down_rad_s();
   ::uint32_t raw_down_rad_s;
   memcpy(&raw_down_rad_s, &tmp_down_rad_s, sizeof(tmp_down_rad_s));
@@ -16404,8 +16391,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.AngularVelocityFrd)
   return target;
@@ -16420,7 +16408,8 @@ failure:
   (void) cached_has_bits;
 
   // float forward_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_forward_rad_s = this->_internal_forward_rad_s();
   ::uint32_t raw_forward_rad_s;
   memcpy(&raw_forward_rad_s, &tmp_forward_rad_s, sizeof(tmp_forward_rad_s));
@@ -16429,7 +16418,8 @@ failure:
   }
 
   // float right_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_right_rad_s = this->_internal_right_rad_s();
   ::uint32_t raw_right_rad_s;
   memcpy(&raw_right_rad_s, &tmp_right_rad_s, sizeof(tmp_right_rad_s));
@@ -16438,7 +16428,8 @@ failure:
   }
 
   // float down_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_down_rad_s = this->_internal_down_rad_s();
   ::uint32_t raw_down_rad_s;
   memcpy(&raw_down_rad_s, &tmp_down_rad_s, sizeof(tmp_down_rad_s));
@@ -16449,14 +16440,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData AngularVelocityFrd::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    AngularVelocityFrd::MergeImpl
+const ::google::protobuf::Message::ClassData AngularVelocityFrd::_class_data_ = {
+    AngularVelocityFrd::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*AngularVelocityFrd::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* AngularVelocityFrd::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void AngularVelocityFrd::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void AngularVelocityFrd::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<AngularVelocityFrd*>(&to_msg);
   auto& from = static_cast<const AngularVelocityFrd&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.AngularVelocityFrd)
@@ -16464,28 +16456,31 @@ void AngularVelocityFrd::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, con
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_forward_rad_s = from._internal_forward_rad_s();
   ::uint32_t raw_forward_rad_s;
   memcpy(&raw_forward_rad_s, &tmp_forward_rad_s, sizeof(tmp_forward_rad_s));
   if (raw_forward_rad_s != 0) {
     _this->_internal_set_forward_rad_s(from._internal_forward_rad_s());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_right_rad_s = from._internal_right_rad_s();
   ::uint32_t raw_right_rad_s;
   memcpy(&raw_right_rad_s, &tmp_right_rad_s, sizeof(tmp_right_rad_s));
   if (raw_right_rad_s != 0) {
     _this->_internal_set_right_rad_s(from._internal_right_rad_s());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_down_rad_s = from._internal_down_rad_s();
   ::uint32_t raw_down_rad_s;
   memcpy(&raw_down_rad_s, &tmp_down_rad_s, sizeof(tmp_down_rad_s));
   if (raw_down_rad_s != 0) {
     _this->_internal_set_down_rad_s(from._internal_down_rad_s());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void AngularVelocityFrd::CopyFrom(const AngularVelocityFrd& from) {
@@ -16495,14 +16490,17 @@ void AngularVelocityFrd::CopyFrom(const AngularVelocityFrd& from) {
   MergeFrom(from);
 }
 
-bool AngularVelocityFrd::IsInitialized() const {
+PROTOBUF_NOINLINE bool AngularVelocityFrd::IsInitialized() const {
   return true;
 }
 
-void AngularVelocityFrd::InternalSwap(AngularVelocityFrd* other) {
+::_pbi::CachedSize* AngularVelocityFrd::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void AngularVelocityFrd::InternalSwap(AngularVelocityFrd* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(AngularVelocityFrd, _impl_.down_rad_s_)
       + sizeof(AngularVelocityFrd::_impl_.down_rad_s_)
       - PROTOBUF_FIELD_OFFSET(AngularVelocityFrd, _impl_.forward_rad_s_)>(
@@ -16510,7 +16508,7 @@ void AngularVelocityFrd::InternalSwap(AngularVelocityFrd* other) {
           reinterpret_cast<char*>(&other->_impl_.forward_rad_s_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata AngularVelocityFrd::GetMetadata() const {
+::google::protobuf::Metadata AngularVelocityFrd::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[57]);
@@ -16521,50 +16519,43 @@ class MagneticFieldFrd::_Internal {
  public:
 };
 
-MagneticFieldFrd::MagneticFieldFrd(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+MagneticFieldFrd::MagneticFieldFrd(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.MagneticFieldFrd)
 }
-MagneticFieldFrd::MagneticFieldFrd(const MagneticFieldFrd& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.MagneticFieldFrd)
+MagneticFieldFrd::MagneticFieldFrd(
+    ::google::protobuf::Arena* arena, const MagneticFieldFrd& from)
+    : MagneticFieldFrd(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE MagneticFieldFrd::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void MagneticFieldFrd::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.forward_gauss_) { 0 }
-
-    , decltype(_impl_.right_gauss_) { 0 }
-
-    , decltype(_impl_.down_gauss_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, forward_gauss_),
+           0,
+           offsetof(Impl_, down_gauss_) -
+               offsetof(Impl_, forward_gauss_) +
+               sizeof(Impl_::down_gauss_));
 }
-
 MagneticFieldFrd::~MagneticFieldFrd() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.MagneticFieldFrd)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void MagneticFieldFrd::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void MagneticFieldFrd::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void MagneticFieldFrd::Clear() {
+PROTOBUF_NOINLINE void MagneticFieldFrd::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.MagneticFieldFrd)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -16572,73 +16563,69 @@ void MagneticFieldFrd::Clear() {
   ::memset(&_impl_.forward_gauss_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.down_gauss_) -
       reinterpret_cast<char*>(&_impl_.forward_gauss_)) + sizeof(_impl_.down_gauss_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* MagneticFieldFrd::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // float forward_gauss = 1 [(.mavsdk.options.default_value) = "NaN"];
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 13)) {
-          _impl_.forward_gauss_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float right_gauss = 2 [(.mavsdk.options.default_value) = "NaN"];
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
-          _impl_.right_gauss_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float down_gauss = 3 [(.mavsdk.options.default_value) = "NaN"];
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 29)) {
-          _impl_.down_gauss_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* MagneticFieldFrd::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> MagneticFieldFrd::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_MagneticFieldFrd_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // float forward_gauss = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(MagneticFieldFrd, _impl_.forward_gauss_)}},
+    // float right_gauss = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(MagneticFieldFrd, _impl_.right_gauss_)}},
+    // float down_gauss = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(MagneticFieldFrd, _impl_.down_gauss_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float forward_gauss = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(MagneticFieldFrd, _impl_.forward_gauss_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float right_gauss = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(MagneticFieldFrd, _impl_.right_gauss_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float down_gauss = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(MagneticFieldFrd, _impl_.down_gauss_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* MagneticFieldFrd::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.MagneticFieldFrd)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // float forward_gauss = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_forward_gauss = this->_internal_forward_gauss();
   ::uint32_t raw_forward_gauss;
   memcpy(&raw_forward_gauss, &tmp_forward_gauss, sizeof(tmp_forward_gauss));
@@ -16649,7 +16636,8 @@ failure:
   }
 
   // float right_gauss = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_right_gauss = this->_internal_right_gauss();
   ::uint32_t raw_right_gauss;
   memcpy(&raw_right_gauss, &tmp_right_gauss, sizeof(tmp_right_gauss));
@@ -16660,7 +16648,8 @@ failure:
   }
 
   // float down_gauss = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_down_gauss = this->_internal_down_gauss();
   ::uint32_t raw_down_gauss;
   memcpy(&raw_down_gauss, &tmp_down_gauss, sizeof(tmp_down_gauss));
@@ -16671,8 +16660,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.MagneticFieldFrd)
   return target;
@@ -16687,7 +16677,8 @@ failure:
   (void) cached_has_bits;
 
   // float forward_gauss = 1 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_forward_gauss = this->_internal_forward_gauss();
   ::uint32_t raw_forward_gauss;
   memcpy(&raw_forward_gauss, &tmp_forward_gauss, sizeof(tmp_forward_gauss));
@@ -16696,7 +16687,8 @@ failure:
   }
 
   // float right_gauss = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_right_gauss = this->_internal_right_gauss();
   ::uint32_t raw_right_gauss;
   memcpy(&raw_right_gauss, &tmp_right_gauss, sizeof(tmp_right_gauss));
@@ -16705,7 +16697,8 @@ failure:
   }
 
   // float down_gauss = 3 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_down_gauss = this->_internal_down_gauss();
   ::uint32_t raw_down_gauss;
   memcpy(&raw_down_gauss, &tmp_down_gauss, sizeof(tmp_down_gauss));
@@ -16716,14 +16709,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData MagneticFieldFrd::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    MagneticFieldFrd::MergeImpl
+const ::google::protobuf::Message::ClassData MagneticFieldFrd::_class_data_ = {
+    MagneticFieldFrd::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*MagneticFieldFrd::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* MagneticFieldFrd::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void MagneticFieldFrd::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void MagneticFieldFrd::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<MagneticFieldFrd*>(&to_msg);
   auto& from = static_cast<const MagneticFieldFrd&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.MagneticFieldFrd)
@@ -16731,28 +16725,31 @@ void MagneticFieldFrd::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_forward_gauss = from._internal_forward_gauss();
   ::uint32_t raw_forward_gauss;
   memcpy(&raw_forward_gauss, &tmp_forward_gauss, sizeof(tmp_forward_gauss));
   if (raw_forward_gauss != 0) {
     _this->_internal_set_forward_gauss(from._internal_forward_gauss());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_right_gauss = from._internal_right_gauss();
   ::uint32_t raw_right_gauss;
   memcpy(&raw_right_gauss, &tmp_right_gauss, sizeof(tmp_right_gauss));
   if (raw_right_gauss != 0) {
     _this->_internal_set_right_gauss(from._internal_right_gauss());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_down_gauss = from._internal_down_gauss();
   ::uint32_t raw_down_gauss;
   memcpy(&raw_down_gauss, &tmp_down_gauss, sizeof(tmp_down_gauss));
   if (raw_down_gauss != 0) {
     _this->_internal_set_down_gauss(from._internal_down_gauss());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void MagneticFieldFrd::CopyFrom(const MagneticFieldFrd& from) {
@@ -16762,14 +16759,17 @@ void MagneticFieldFrd::CopyFrom(const MagneticFieldFrd& from) {
   MergeFrom(from);
 }
 
-bool MagneticFieldFrd::IsInitialized() const {
+PROTOBUF_NOINLINE bool MagneticFieldFrd::IsInitialized() const {
   return true;
 }
 
-void MagneticFieldFrd::InternalSwap(MagneticFieldFrd* other) {
+::_pbi::CachedSize* MagneticFieldFrd::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void MagneticFieldFrd::InternalSwap(MagneticFieldFrd* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(MagneticFieldFrd, _impl_.down_gauss_)
       + sizeof(MagneticFieldFrd::_impl_.down_gauss_)
       - PROTOBUF_FIELD_OFFSET(MagneticFieldFrd, _impl_.forward_gauss_)>(
@@ -16777,7 +16777,7 @@ void MagneticFieldFrd::InternalSwap(MagneticFieldFrd* other) {
           reinterpret_cast<char*>(&other->_impl_.forward_gauss_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata MagneticFieldFrd::GetMetadata() const {
+::google::protobuf::Metadata MagneticFieldFrd::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[58]);
@@ -16803,90 +16803,85 @@ class Imu::_Internal {
   }
 };
 
-const ::mavsdk::rpc::telemetry_server::AccelerationFrd&
-Imu::_Internal::acceleration_frd(const Imu* msg) {
+const ::mavsdk::rpc::telemetry_server::AccelerationFrd& Imu::_Internal::acceleration_frd(const Imu* msg) {
   return *msg->_impl_.acceleration_frd_;
 }
-const ::mavsdk::rpc::telemetry_server::AngularVelocityFrd&
-Imu::_Internal::angular_velocity_frd(const Imu* msg) {
+const ::mavsdk::rpc::telemetry_server::AngularVelocityFrd& Imu::_Internal::angular_velocity_frd(const Imu* msg) {
   return *msg->_impl_.angular_velocity_frd_;
 }
-const ::mavsdk::rpc::telemetry_server::MagneticFieldFrd&
-Imu::_Internal::magnetic_field_frd(const Imu* msg) {
+const ::mavsdk::rpc::telemetry_server::MagneticFieldFrd& Imu::_Internal::magnetic_field_frd(const Imu* msg) {
   return *msg->_impl_.magnetic_field_frd_;
 }
-Imu::Imu(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+Imu::Imu(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.Imu)
 }
-Imu::Imu(const Imu& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  Imu* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.acceleration_frd_){nullptr}
-    , decltype(_impl_.angular_velocity_frd_){nullptr}
-    , decltype(_impl_.magnetic_field_frd_){nullptr}
-    , decltype(_impl_.timestamp_us_) {}
+inline PROTOBUF_NDEBUG_INLINE Imu::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-    , decltype(_impl_.temperature_degc_) {}
-  };
+Imu::Imu(
+    ::google::protobuf::Arena* arena,
+    const Imu& from)
+    : ::google::protobuf::Message(arena) {
+  Imu* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.acceleration_frd_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::AccelerationFrd>(arena, *from._impl_.acceleration_frd_)
+                : nullptr;
+  _impl_.angular_velocity_frd_ = (cached_has_bits & 0x00000002u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::AngularVelocityFrd>(arena, *from._impl_.angular_velocity_frd_)
+                : nullptr;
+  _impl_.magnetic_field_frd_ = (cached_has_bits & 0x00000004u)
+                ? CreateMaybeMessage<::mavsdk::rpc::telemetry_server::MagneticFieldFrd>(arena, *from._impl_.magnetic_field_frd_)
+                : nullptr;
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, timestamp_us_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, timestamp_us_),
+           offsetof(Impl_, temperature_degc_) -
+               offsetof(Impl_, timestamp_us_) +
+               sizeof(Impl_::temperature_degc_));
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.acceleration_frd_ = new ::mavsdk::rpc::telemetry_server::AccelerationFrd(*from._impl_.acceleration_frd_);
-  }
-  if ((from._impl_._has_bits_[0] & 0x00000002u) != 0) {
-    _this->_impl_.angular_velocity_frd_ = new ::mavsdk::rpc::telemetry_server::AngularVelocityFrd(*from._impl_.angular_velocity_frd_);
-  }
-  if ((from._impl_._has_bits_[0] & 0x00000004u) != 0) {
-    _this->_impl_.magnetic_field_frd_ = new ::mavsdk::rpc::telemetry_server::MagneticFieldFrd(*from._impl_.magnetic_field_frd_);
-  }
-  ::memcpy(&_impl_.timestamp_us_, &from._impl_.timestamp_us_,
-    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.temperature_degc_) -
-    reinterpret_cast<char*>(&_impl_.timestamp_us_)) + sizeof(_impl_.temperature_degc_));
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.Imu)
 }
+inline PROTOBUF_NDEBUG_INLINE Imu::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void Imu::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.acceleration_frd_){nullptr}
-    , decltype(_impl_.angular_velocity_frd_){nullptr}
-    , decltype(_impl_.magnetic_field_frd_){nullptr}
-    , decltype(_impl_.timestamp_us_) { ::uint64_t{0u} }
-
-    , decltype(_impl_.temperature_degc_) { 0 }
-
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, acceleration_frd_),
+           0,
+           offsetof(Impl_, temperature_degc_) -
+               offsetof(Impl_, acceleration_frd_) +
+               sizeof(Impl_::temperature_degc_));
 }
-
 Imu::~Imu() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.Imu)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void Imu::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.acceleration_frd_;
-  if (this != internal_default_instance()) delete _impl_.angular_velocity_frd_;
-  if (this != internal_default_instance()) delete _impl_.magnetic_field_frd_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.acceleration_frd_;
+  delete _impl_.angular_velocity_frd_;
+  delete _impl_.magnetic_field_frd_;
+  _impl_.~Impl_();
 }
 
-void Imu::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void Imu::Clear() {
+PROTOBUF_NOINLINE void Imu::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.Imu)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -16910,115 +16905,107 @@ void Imu::Clear() {
       reinterpret_cast<char*>(&_impl_.temperature_degc_) -
       reinterpret_cast<char*>(&_impl_.timestamp_us_)) + sizeof(_impl_.temperature_degc_));
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* Imu::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.AccelerationFrd acceleration_frd = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_acceleration_frd(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.telemetry_server.AngularVelocityFrd angular_velocity_frd = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
-          ptr = ctx->ParseMessage(_internal_mutable_angular_velocity_frd(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.telemetry_server.MagneticFieldFrd magnetic_field_frd = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 26)) {
-          ptr = ctx->ParseMessage(_internal_mutable_magnetic_field_frd(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float temperature_degc = 4 [(.mavsdk.options.default_value) = "NaN"];
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 37)) {
-          _impl_.temperature_degc_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // uint64 timestamp_us = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 40)) {
-          _impl_.timestamp_us_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* Imu::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 5, 3, 0, 2> Imu::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(Imu, _impl_._has_bits_),
+    0, // no _extensions_
+    5, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967264,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    5,  // num_field_entries
+    3,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_Imu_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // .mavsdk.rpc.telemetry_server.AccelerationFrd acceleration_frd = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(Imu, _impl_.acceleration_frd_)}},
+    // .mavsdk.rpc.telemetry_server.AngularVelocityFrd angular_velocity_frd = 2;
+    {::_pbi::TcParser::FastMtS1,
+     {18, 1, 1, PROTOBUF_FIELD_OFFSET(Imu, _impl_.angular_velocity_frd_)}},
+    // .mavsdk.rpc.telemetry_server.MagneticFieldFrd magnetic_field_frd = 3;
+    {::_pbi::TcParser::FastMtS1,
+     {26, 2, 2, PROTOBUF_FIELD_OFFSET(Imu, _impl_.magnetic_field_frd_)}},
+    // float temperature_degc = 4 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {37, 63, 0, PROTOBUF_FIELD_OFFSET(Imu, _impl_.temperature_degc_)}},
+    // uint64 timestamp_us = 5;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(Imu, _impl_.timestamp_us_), 63>(),
+     {40, 63, 0, PROTOBUF_FIELD_OFFSET(Imu, _impl_.timestamp_us_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.AccelerationFrd acceleration_frd = 1;
+    {PROTOBUF_FIELD_OFFSET(Imu, _impl_.acceleration_frd_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.telemetry_server.AngularVelocityFrd angular_velocity_frd = 2;
+    {PROTOBUF_FIELD_OFFSET(Imu, _impl_.angular_velocity_frd_), _Internal::kHasBitsOffset + 1, 1,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.telemetry_server.MagneticFieldFrd magnetic_field_frd = 3;
+    {PROTOBUF_FIELD_OFFSET(Imu, _impl_.magnetic_field_frd_), _Internal::kHasBitsOffset + 2, 2,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // float temperature_degc = 4 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Imu, _impl_.temperature_degc_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // uint64 timestamp_us = 5;
+    {PROTOBUF_FIELD_OFFSET(Imu, _impl_.timestamp_us_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::AccelerationFrd>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::AngularVelocityFrd>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::MagneticFieldFrd>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* Imu::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.Imu)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.telemetry_server.AccelerationFrd acceleration_frd = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::acceleration_frd(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::acceleration_frd(this),
         _Internal::acceleration_frd(this).GetCachedSize(), target, stream);
   }
 
   // .mavsdk.rpc.telemetry_server.AngularVelocityFrd angular_velocity_frd = 2;
   if (cached_has_bits & 0x00000002u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(2, _Internal::angular_velocity_frd(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        2, _Internal::angular_velocity_frd(this),
         _Internal::angular_velocity_frd(this).GetCachedSize(), target, stream);
   }
 
   // .mavsdk.rpc.telemetry_server.MagneticFieldFrd magnetic_field_frd = 3;
   if (cached_has_bits & 0x00000004u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(3, _Internal::magnetic_field_frd(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        3, _Internal::magnetic_field_frd(this),
         _Internal::magnetic_field_frd(this).GetCachedSize(), target, stream);
   }
 
   // float temperature_degc = 4 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_temperature_degc = this->_internal_temperature_degc();
   ::uint32_t raw_temperature_degc;
   memcpy(&raw_temperature_degc, &tmp_temperature_degc, sizeof(tmp_temperature_degc));
@@ -17036,8 +17023,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.Imu)
   return target;
@@ -17055,23 +17043,20 @@ failure:
   if (cached_has_bits & 0x00000007u) {
     // .mavsdk.rpc.telemetry_server.AccelerationFrd acceleration_frd = 1;
     if (cached_has_bits & 0x00000001u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.acceleration_frd_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.acceleration_frd_);
     }
 
     // .mavsdk.rpc.telemetry_server.AngularVelocityFrd angular_velocity_frd = 2;
     if (cached_has_bits & 0x00000002u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.angular_velocity_frd_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.angular_velocity_frd_);
     }
 
     // .mavsdk.rpc.telemetry_server.MagneticFieldFrd magnetic_field_frd = 3;
     if (cached_has_bits & 0x00000004u) {
-      total_size += 1 +
-        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *_impl_.magnetic_field_frd_);
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.magnetic_field_frd_);
     }
 
   }
@@ -17082,7 +17067,8 @@ failure:
   }
 
   // float temperature_degc = 4 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_temperature_degc = this->_internal_temperature_degc();
   ::uint32_t raw_temperature_degc;
   memcpy(&raw_temperature_degc, &tmp_temperature_degc, sizeof(tmp_temperature_degc));
@@ -17093,14 +17079,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Imu::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    Imu::MergeImpl
+const ::google::protobuf::Message::ClassData Imu::_class_data_ = {
+    Imu::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Imu::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* Imu::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void Imu::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void Imu::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<Imu*>(&to_msg);
   auto& from = static_cast<const Imu&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.Imu)
@@ -17126,14 +17113,15 @@ void Imu::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_N
   if (from._internal_timestamp_us() != 0) {
     _this->_internal_set_timestamp_us(from._internal_timestamp_us());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_temperature_degc = from._internal_temperature_degc();
   ::uint32_t raw_temperature_degc;
   memcpy(&raw_temperature_degc, &tmp_temperature_degc, sizeof(tmp_temperature_degc));
   if (raw_temperature_degc != 0) {
     _this->_internal_set_temperature_degc(from._internal_temperature_degc());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Imu::CopyFrom(const Imu& from) {
@@ -17143,15 +17131,18 @@ void Imu::CopyFrom(const Imu& from) {
   MergeFrom(from);
 }
 
-bool Imu::IsInitialized() const {
+PROTOBUF_NOINLINE bool Imu::IsInitialized() const {
   return true;
 }
 
-void Imu::InternalSwap(Imu* other) {
+::_pbi::CachedSize* Imu::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void Imu::InternalSwap(Imu* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Imu, _impl_.temperature_degc_)
       + sizeof(Imu::_impl_.temperature_degc_)
       - PROTOBUF_FIELD_OFFSET(Imu, _impl_.acceleration_frd_)>(
@@ -17159,7 +17150,7 @@ void Imu::InternalSwap(Imu* other) {
           reinterpret_cast<char*>(&other->_impl_.acceleration_frd_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Imu::GetMetadata() const {
+::google::protobuf::Metadata Imu::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[59]);
@@ -17170,132 +17161,115 @@ class TelemetryServerResult::_Internal {
  public:
 };
 
-TelemetryServerResult::TelemetryServerResult(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+TelemetryServerResult::TelemetryServerResult(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.TelemetryServerResult)
 }
-TelemetryServerResult::TelemetryServerResult(const TelemetryServerResult& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  TelemetryServerResult* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.result_str_) {}
+inline PROTOBUF_NDEBUG_INLINE TelemetryServerResult::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : result_str_(arena, from.result_str_),
+        _cached_size_{0} {}
 
-    , decltype(_impl_.result_) {}
+TelemetryServerResult::TelemetryServerResult(
+    ::google::protobuf::Arena* arena,
+    const TelemetryServerResult& from)
+    : ::google::protobuf::Message(arena) {
+  TelemetryServerResult* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  _impl_.result_ = from._impl_.result_;
 
-    , /*decltype(_impl_._cached_size_)*/{}};
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.result_str_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.result_str_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_result_str().empty()) {
-    _this->_impl_.result_str_.Set(from._internal_result_str(), _this->GetArenaForAllocation());
-  }
-  _this->_impl_.result_ = from._impl_.result_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.TelemetryServerResult)
 }
+inline PROTOBUF_NDEBUG_INLINE TelemetryServerResult::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : result_str_(arena),
+        _cached_size_{0} {}
 
 inline void TelemetryServerResult::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.result_str_) {}
-
-    , decltype(_impl_.result_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.result_str_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.result_str_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.result_ = {};
 }
-
 TelemetryServerResult::~TelemetryServerResult() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.TelemetryServerResult)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void TelemetryServerResult::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.result_str_.Destroy();
+  _impl_.~Impl_();
 }
 
-void TelemetryServerResult::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void TelemetryServerResult::Clear() {
+PROTOBUF_NOINLINE void TelemetryServerResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.TelemetryServerResult)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.result_str_.ClearToEmpty();
   _impl_.result_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* TelemetryServerResult::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.telemetry_server.TelemetryServerResult.Result result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-          _internal_set_result(static_cast<::mavsdk::rpc::telemetry_server::TelemetryServerResult_Result>(val));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // string result_str = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
-          auto str = _internal_mutable_result_str();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.telemetry_server.TelemetryServerResult.result_str"));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* TelemetryServerResult::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 68, 2> TelemetryServerResult::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_TelemetryServerResult_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // string result_str = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(TelemetryServerResult, _impl_.result_str_)}},
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult.Result result = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(TelemetryServerResult, _impl_.result_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(TelemetryServerResult, _impl_.result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult.Result result = 1;
+    {PROTOBUF_FIELD_OFFSET(TelemetryServerResult, _impl_.result_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // string result_str = 2;
+    {PROTOBUF_FIELD_OFFSET(TelemetryServerResult, _impl_.result_str_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\61\0\12\0\0\0\0\0"
+    "mavsdk.rpc.telemetry_server.TelemetryServerResult"
+    "result_str"
+  }},
+};
 
 ::uint8_t* TelemetryServerResult::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.TelemetryServerResult)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // .mavsdk.rpc.telemetry_server.TelemetryServerResult.Result result = 1;
   if (this->_internal_result() != 0) {
@@ -17307,14 +17281,15 @@ failure:
   // string result_str = 2;
   if (!this->_internal_result_str().empty()) {
     const std::string& _s = this->_internal_result_str();
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.telemetry_server.TelemetryServerResult.result_str");
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.telemetry_server.TelemetryServerResult.result_str");
     target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.TelemetryServerResult)
   return target;
@@ -17330,7 +17305,7 @@ failure:
 
   // string result_str = 2;
   if (!this->_internal_result_str().empty()) {
-    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                     this->_internal_result_str());
   }
 
@@ -17343,14 +17318,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData TelemetryServerResult::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    TelemetryServerResult::MergeImpl
+const ::google::protobuf::Message::ClassData TelemetryServerResult::_class_data_ = {
+    TelemetryServerResult::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*TelemetryServerResult::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* TelemetryServerResult::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void TelemetryServerResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void TelemetryServerResult::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<TelemetryServerResult*>(&to_msg);
   auto& from = static_cast<const TelemetryServerResult&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.TelemetryServerResult)
@@ -17364,7 +17340,7 @@ void TelemetryServerResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, 
   if (from._internal_result() != 0) {
     _this->_internal_set_result(from._internal_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void TelemetryServerResult::CopyFrom(const TelemetryServerResult& from) {
@@ -17374,21 +17350,23 @@ void TelemetryServerResult::CopyFrom(const TelemetryServerResult& from) {
   MergeFrom(from);
 }
 
-bool TelemetryServerResult::IsInitialized() const {
+PROTOBUF_NOINLINE bool TelemetryServerResult::IsInitialized() const {
   return true;
 }
 
-void TelemetryServerResult::InternalSwap(TelemetryServerResult* other) {
+::_pbi::CachedSize* TelemetryServerResult::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void TelemetryServerResult::InternalSwap(TelemetryServerResult* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, lhs_arena,
-                                       &other->_impl_.result_str_, rhs_arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, &other->_impl_.result_str_, arena);
   swap(_impl_.result_, other->_impl_.result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata TelemetryServerResult::GetMetadata() const {
+::google::protobuf::Metadata TelemetryServerResult::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_getter, &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
       file_level_metadata_telemetry_5fserver_2ftelemetry_5fserver_2eproto[60]);
@@ -17397,251 +17375,9 @@ void TelemetryServerResult::InternalSwap(TelemetryServerResult* other) {
 }  // namespace telemetry_server
 }  // namespace rpc
 }  // namespace mavsdk
-PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishPositionRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishPositionRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishPositionRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishHomeRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishHomeRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishHomeRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishSysStatusRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishSysStatusRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishSysStatusRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishExtendedSysStateRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishExtendedSysStateRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishExtendedSysStateRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishInAirRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishInAirRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishInAirRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishLandedStateRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishLandedStateRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishLandedStateRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishRawGpsRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishRawGpsRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishRawGpsRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishBatteryRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishBatteryRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishBatteryRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishRcStatusRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishRcStatusRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishRcStatusRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishStatusTextRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishStatusTextRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishStatusTextRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishOdometryRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishOdometryRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishOdometryRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishPositionVelocityNedRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishPositionVelocityNedRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishPositionVelocityNedRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishGroundTruthRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishGroundTruthRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishGroundTruthRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishImuRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishImuRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishImuRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishScaledImuRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishScaledImuRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishScaledImuRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishRawImuRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishRawImuRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishRawImuRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishPositionResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishPositionResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishPositionResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishHomeResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishHomeResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishHomeResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishSysStatusResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishSysStatusResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishSysStatusResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishExtendedSysStateResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishExtendedSysStateResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishExtendedSysStateResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishRawGpsResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishRawGpsResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishRawGpsResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishBatteryResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishBatteryResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishBatteryResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishStatusTextResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishStatusTextResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishStatusTextResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishOdometryResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishOdometryResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishOdometryResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishPositionVelocityNedResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishPositionVelocityNedResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishPositionVelocityNedResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishGroundTruthResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishGroundTruthResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishGroundTruthResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishImuResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishImuResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishImuResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishScaledImuResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishScaledImuResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishScaledImuResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishRawImuResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishRawImuResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishRawImuResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::Position*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::Position >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::Position >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::Heading*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::Heading >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::Heading >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::Quaternion*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::Quaternion >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::Quaternion >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::EulerAngle*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::EulerAngle >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::EulerAngle >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::AngularVelocityBody*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::AngularVelocityBody >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::AngularVelocityBody >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::GpsInfo*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::GpsInfo >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::GpsInfo >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::RawGps*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::RawGps >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::RawGps >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::Battery*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::Battery >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::Battery >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::RcStatus*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::RcStatus >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::RcStatus >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::StatusText*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::StatusText >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::StatusText >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::ActuatorControlTarget*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::ActuatorControlTarget >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::ActuatorControlTarget >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::ActuatorOutputStatus*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::ActuatorOutputStatus >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::ActuatorOutputStatus >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::Covariance*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::Covariance >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::Covariance >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::VelocityBody*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::VelocityBody >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::VelocityBody >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PositionBody*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PositionBody >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PositionBody >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::Odometry*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::Odometry >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::Odometry >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::DistanceSensor*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::DistanceSensor >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::DistanceSensor >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::ScaledPressure*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::ScaledPressure >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::ScaledPressure >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PositionNed*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PositionNed >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PositionNed >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::VelocityNed*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::VelocityNed >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::VelocityNed >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::PositionVelocityNed*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::PositionVelocityNed >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::PositionVelocityNed >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::GroundTruth*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::GroundTruth >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::GroundTruth >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::FixedwingMetrics*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::FixedwingMetrics >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::FixedwingMetrics >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::AccelerationFrd*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::AccelerationFrd >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::AccelerationFrd >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::AngularVelocityFrd*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::AngularVelocityFrd >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::AngularVelocityFrd >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::MagneticFieldFrd*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::MagneticFieldFrd >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::MagneticFieldFrd >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::Imu*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::Imu >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::Imu >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::telemetry_server::TelemetryServerResult*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::telemetry_server::TelemetryServerResult >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::telemetry_server::TelemetryServerResult >(arena);
-}
-PROTOBUF_NAMESPACE_CLOSE
+namespace google {
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 // @@protoc_insertion_point(global_scope)
 #include "google/protobuf/port_undef.inc"

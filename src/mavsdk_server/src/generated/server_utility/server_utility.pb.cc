@@ -11,62 +11,30 @@
 #include "google/protobuf/generated_message_reflection.h"
 #include "google/protobuf/reflection_ops.h"
 #include "google/protobuf/wire_format.h"
+#include "google/protobuf/generated_message_tctable_impl.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
 #include "google/protobuf/port_def.inc"
 PROTOBUF_PRAGMA_INIT_SEG
-namespace _pb = ::PROTOBUF_NAMESPACE_ID;
-namespace _pbi = ::PROTOBUF_NAMESPACE_ID::internal;
+namespace _pb = ::google::protobuf;
+namespace _pbi = ::google::protobuf::internal;
+namespace _fl = ::google::protobuf::internal::field_layout;
 namespace mavsdk {
 namespace rpc {
 namespace server_utility {
+
+inline constexpr ServerUtilityResult::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : result_str_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        result_{static_cast< ::mavsdk::rpc::server_utility::ServerUtilityResult_Result >(0)},
+        _cached_size_{0} {}
+
 template <typename>
-PROTOBUF_CONSTEXPR SendStatusTextRequest::SendStatusTextRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.text_)*/ {
-    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
-  }
-
-  , /*decltype(_impl_.type_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct SendStatusTextRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SendStatusTextRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~SendStatusTextRequestDefaultTypeInternal() {}
-  union {
-    SendStatusTextRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SendStatusTextRequestDefaultTypeInternal _SendStatusTextRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR SendStatusTextResponse::SendStatusTextResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.server_utility_result_)*/nullptr} {}
-struct SendStatusTextResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SendStatusTextResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~SendStatusTextResponseDefaultTypeInternal() {}
-  union {
-    SendStatusTextResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SendStatusTextResponseDefaultTypeInternal _SendStatusTextResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR ServerUtilityResult::ServerUtilityResult(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.result_str_)*/ {
-    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
-  }
-
-  , /*decltype(_impl_.result_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
+PROTOBUF_CONSTEXPR ServerUtilityResult::ServerUtilityResult(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
 struct ServerUtilityResultDefaultTypeInternal {
   PROTOBUF_CONSTEXPR ServerUtilityResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ServerUtilityResultDefaultTypeInternal() {}
@@ -77,6 +45,47 @@ struct ServerUtilityResultDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ServerUtilityResultDefaultTypeInternal _ServerUtilityResult_default_instance_;
+
+inline constexpr SendStatusTextRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : text_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        type_{static_cast< ::mavsdk::rpc::server_utility::StatusTextType >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR SendStatusTextRequest::SendStatusTextRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct SendStatusTextRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SendStatusTextRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SendStatusTextRequestDefaultTypeInternal() {}
+  union {
+    SendStatusTextRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SendStatusTextRequestDefaultTypeInternal _SendStatusTextRequest_default_instance_;
+
+inline constexpr SendStatusTextResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        server_utility_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR SendStatusTextResponse::SendStatusTextResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct SendStatusTextResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SendStatusTextResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SendStatusTextResponseDefaultTypeInternal() {}
+  union {
+    SendStatusTextResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SendStatusTextResponseDefaultTypeInternal _SendStatusTextResponse_default_instance_;
 }  // namespace server_utility
 }  // namespace rpc
 }  // namespace mavsdk
@@ -120,9 +129,9 @@ const ::uint32_t TableStruct_server_5futility_2fserver_5futility_2eproto::offset
 
 static const ::_pbi::MigrationSchema
     schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-        { 0, -1, -1, sizeof(::mavsdk::rpc::server_utility::SendStatusTextRequest)},
-        { 10, 19, -1, sizeof(::mavsdk::rpc::server_utility::SendStatusTextResponse)},
-        { 20, -1, -1, sizeof(::mavsdk::rpc::server_utility::ServerUtilityResult)},
+        {0, -1, -1, sizeof(::mavsdk::rpc::server_utility::SendStatusTextRequest)},
+        {10, 19, -1, sizeof(::mavsdk::rpc::server_utility::SendStatusTextResponse)},
+        {20, -1, -1, sizeof(::mavsdk::rpc::server_utility::ServerUtilityResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -200,21 +209,14 @@ static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_server_5futility_2fserver
 namespace mavsdk {
 namespace rpc {
 namespace server_utility {
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* ServerUtilityResult_Result_descriptor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_server_5futility_2fserver_5futility_2eproto);
+const ::google::protobuf::EnumDescriptor* ServerUtilityResult_Result_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_server_5futility_2fserver_5futility_2eproto);
   return file_level_enum_descriptors_server_5futility_2fserver_5futility_2eproto[0];
 }
+PROTOBUF_CONSTINIT const uint32_t ServerUtilityResult_Result_internal_data_[] = {
+    327680u, 0u, };
 bool ServerUtilityResult_Result_IsValid(int value) {
-  switch (value) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-      return true;
-    default:
-      return false;
-  }
+  return 0 <= value && value <= 4;
 }
 #if (__cplusplus < 201703) && \
   (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
@@ -230,24 +232,14 @@ constexpr int ServerUtilityResult::Result_ARRAYSIZE;
 
 #endif  // (__cplusplus < 201703) &&
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* StatusTextType_descriptor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_server_5futility_2fserver_5futility_2eproto);
+const ::google::protobuf::EnumDescriptor* StatusTextType_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_server_5futility_2fserver_5futility_2eproto);
   return file_level_enum_descriptors_server_5futility_2fserver_5futility_2eproto[1];
 }
+PROTOBUF_CONSTINIT const uint32_t StatusTextType_internal_data_[] = {
+    524288u, 0u, };
 bool StatusTextType_IsValid(int value) {
-  switch (value) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-      return true;
-    default:
-      return false;
-  }
+  return 0 <= value && value <= 7;
 }
 // ===================================================================
 
@@ -255,132 +247,115 @@ class SendStatusTextRequest::_Internal {
  public:
 };
 
-SendStatusTextRequest::SendStatusTextRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+SendStatusTextRequest::SendStatusTextRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.server_utility.SendStatusTextRequest)
 }
-SendStatusTextRequest::SendStatusTextRequest(const SendStatusTextRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  SendStatusTextRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.text_) {}
+inline PROTOBUF_NDEBUG_INLINE SendStatusTextRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : text_(arena, from.text_),
+        _cached_size_{0} {}
 
-    , decltype(_impl_.type_) {}
+SendStatusTextRequest::SendStatusTextRequest(
+    ::google::protobuf::Arena* arena,
+    const SendStatusTextRequest& from)
+    : ::google::protobuf::Message(arena) {
+  SendStatusTextRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  _impl_.type_ = from._impl_.type_;
 
-    , /*decltype(_impl_._cached_size_)*/{}};
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.text_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.text_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_text().empty()) {
-    _this->_impl_.text_.Set(from._internal_text(), _this->GetArenaForAllocation());
-  }
-  _this->_impl_.type_ = from._impl_.type_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.server_utility.SendStatusTextRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE SendStatusTextRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : text_(arena),
+        _cached_size_{0} {}
 
 inline void SendStatusTextRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.text_) {}
-
-    , decltype(_impl_.type_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.text_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.text_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.type_ = {};
 }
-
 SendStatusTextRequest::~SendStatusTextRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.server_utility.SendStatusTextRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void SendStatusTextRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.text_.Destroy();
+  _impl_.~Impl_();
 }
 
-void SendStatusTextRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void SendStatusTextRequest::Clear() {
+PROTOBUF_NOINLINE void SendStatusTextRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.server_utility.SendStatusTextRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.text_.ClearToEmpty();
   _impl_.type_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* SendStatusTextRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.server_utility.StatusTextType type = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-          _internal_set_type(static_cast<::mavsdk::rpc::server_utility::StatusTextType>(val));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // string text = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
-          auto str = _internal_mutable_text();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.server_utility.SendStatusTextRequest.text"));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* SendStatusTextRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 60, 2> SendStatusTextRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_SendStatusTextRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // string text = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(SendStatusTextRequest, _impl_.text_)}},
+    // .mavsdk.rpc.server_utility.StatusTextType type = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SendStatusTextRequest, _impl_.type_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(SendStatusTextRequest, _impl_.type_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.server_utility.StatusTextType type = 1;
+    {PROTOBUF_FIELD_OFFSET(SendStatusTextRequest, _impl_.type_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // string text = 2;
+    {PROTOBUF_FIELD_OFFSET(SendStatusTextRequest, _impl_.text_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\57\0\4\0\0\0\0\0"
+    "mavsdk.rpc.server_utility.SendStatusTextRequest"
+    "text"
+  }},
+};
 
 ::uint8_t* SendStatusTextRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.server_utility.SendStatusTextRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // .mavsdk.rpc.server_utility.StatusTextType type = 1;
   if (this->_internal_type() != 0) {
@@ -392,14 +367,15 @@ failure:
   // string text = 2;
   if (!this->_internal_text().empty()) {
     const std::string& _s = this->_internal_text();
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.server_utility.SendStatusTextRequest.text");
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.server_utility.SendStatusTextRequest.text");
     target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.server_utility.SendStatusTextRequest)
   return target;
@@ -415,7 +391,7 @@ failure:
 
   // string text = 2;
   if (!this->_internal_text().empty()) {
-    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                     this->_internal_text());
   }
 
@@ -428,14 +404,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SendStatusTextRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    SendStatusTextRequest::MergeImpl
+const ::google::protobuf::Message::ClassData SendStatusTextRequest::_class_data_ = {
+    SendStatusTextRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SendStatusTextRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* SendStatusTextRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void SendStatusTextRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void SendStatusTextRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<SendStatusTextRequest*>(&to_msg);
   auto& from = static_cast<const SendStatusTextRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.server_utility.SendStatusTextRequest)
@@ -449,7 +426,7 @@ void SendStatusTextRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, 
   if (from._internal_type() != 0) {
     _this->_internal_set_type(from._internal_type());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SendStatusTextRequest::CopyFrom(const SendStatusTextRequest& from) {
@@ -459,21 +436,23 @@ void SendStatusTextRequest::CopyFrom(const SendStatusTextRequest& from) {
   MergeFrom(from);
 }
 
-bool SendStatusTextRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool SendStatusTextRequest::IsInitialized() const {
   return true;
 }
 
-void SendStatusTextRequest::InternalSwap(SendStatusTextRequest* other) {
+::_pbi::CachedSize* SendStatusTextRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void SendStatusTextRequest::InternalSwap(SendStatusTextRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.text_, lhs_arena,
-                                       &other->_impl_.text_, rhs_arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.text_, &other->_impl_.text_, arena);
   swap(_impl_.type_, other->_impl_.type_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata SendStatusTextRequest::GetMetadata() const {
+::google::protobuf::Metadata SendStatusTextRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_server_5futility_2fserver_5futility_2eproto_getter, &descriptor_table_server_5futility_2fserver_5futility_2eproto_once,
       file_level_metadata_server_5futility_2fserver_5futility_2eproto[0]);
@@ -491,59 +470,59 @@ class SendStatusTextResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::server_utility::ServerUtilityResult&
-SendStatusTextResponse::_Internal::server_utility_result(const SendStatusTextResponse* msg) {
+const ::mavsdk::rpc::server_utility::ServerUtilityResult& SendStatusTextResponse::_Internal::server_utility_result(const SendStatusTextResponse* msg) {
   return *msg->_impl_.server_utility_result_;
 }
-SendStatusTextResponse::SendStatusTextResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+SendStatusTextResponse::SendStatusTextResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.server_utility.SendStatusTextResponse)
 }
-SendStatusTextResponse::SendStatusTextResponse(const SendStatusTextResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  SendStatusTextResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.server_utility_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE SendStatusTextResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.server_utility_result_ = new ::mavsdk::rpc::server_utility::ServerUtilityResult(*from._impl_.server_utility_result_);
-  }
+SendStatusTextResponse::SendStatusTextResponse(
+    ::google::protobuf::Arena* arena,
+    const SendStatusTextResponse& from)
+    : ::google::protobuf::Message(arena) {
+  SendStatusTextResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.server_utility_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::server_utility::ServerUtilityResult>(arena, *from._impl_.server_utility_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.server_utility.SendStatusTextResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE SendStatusTextResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void SendStatusTextResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.server_utility_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.server_utility_result_ = {};
 }
-
 SendStatusTextResponse::~SendStatusTextResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.server_utility.SendStatusTextResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void SendStatusTextResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.server_utility_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.server_utility_result_;
+  _impl_.~Impl_();
 }
 
-void SendStatusTextResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void SendStatusTextResponse::Clear() {
+PROTOBUF_NOINLINE void SendStatusTextResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.server_utility.SendStatusTextResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -554,66 +533,65 @@ void SendStatusTextResponse::Clear() {
     _impl_.server_utility_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* SendStatusTextResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.server_utility.ServerUtilityResult server_utility_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_server_utility_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* SendStatusTextResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SendStatusTextResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(SendStatusTextResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_SendStatusTextResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.server_utility.ServerUtilityResult server_utility_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(SendStatusTextResponse, _impl_.server_utility_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.server_utility.ServerUtilityResult server_utility_result = 1;
+    {PROTOBUF_FIELD_OFFSET(SendStatusTextResponse, _impl_.server_utility_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::server_utility::ServerUtilityResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* SendStatusTextResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.server_utility.SendStatusTextResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.server_utility.ServerUtilityResult server_utility_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::server_utility_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::server_utility_result(this),
         _Internal::server_utility_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.server_utility.SendStatusTextResponse)
   return target;
@@ -630,22 +608,22 @@ failure:
   // .mavsdk.rpc.server_utility.ServerUtilityResult server_utility_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.server_utility_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.server_utility_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SendStatusTextResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    SendStatusTextResponse::MergeImpl
+const ::google::protobuf::Message::ClassData SendStatusTextResponse::_class_data_ = {
+    SendStatusTextResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SendStatusTextResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* SendStatusTextResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void SendStatusTextResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void SendStatusTextResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<SendStatusTextResponse*>(&to_msg);
   auto& from = static_cast<const SendStatusTextResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.server_utility.SendStatusTextResponse)
@@ -657,7 +635,7 @@ void SendStatusTextResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg,
     _this->_internal_mutable_server_utility_result()->::mavsdk::rpc::server_utility::ServerUtilityResult::MergeFrom(
         from._internal_server_utility_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SendStatusTextResponse::CopyFrom(const SendStatusTextResponse& from) {
@@ -667,18 +645,21 @@ void SendStatusTextResponse::CopyFrom(const SendStatusTextResponse& from) {
   MergeFrom(from);
 }
 
-bool SendStatusTextResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool SendStatusTextResponse::IsInitialized() const {
   return true;
 }
 
-void SendStatusTextResponse::InternalSwap(SendStatusTextResponse* other) {
+::_pbi::CachedSize* SendStatusTextResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void SendStatusTextResponse::InternalSwap(SendStatusTextResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.server_utility_result_, other->_impl_.server_utility_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata SendStatusTextResponse::GetMetadata() const {
+::google::protobuf::Metadata SendStatusTextResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_server_5futility_2fserver_5futility_2eproto_getter, &descriptor_table_server_5futility_2fserver_5futility_2eproto_once,
       file_level_metadata_server_5futility_2fserver_5futility_2eproto[1]);
@@ -689,132 +670,115 @@ class ServerUtilityResult::_Internal {
  public:
 };
 
-ServerUtilityResult::ServerUtilityResult(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+ServerUtilityResult::ServerUtilityResult(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.server_utility.ServerUtilityResult)
 }
-ServerUtilityResult::ServerUtilityResult(const ServerUtilityResult& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  ServerUtilityResult* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.result_str_) {}
+inline PROTOBUF_NDEBUG_INLINE ServerUtilityResult::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : result_str_(arena, from.result_str_),
+        _cached_size_{0} {}
 
-    , decltype(_impl_.result_) {}
+ServerUtilityResult::ServerUtilityResult(
+    ::google::protobuf::Arena* arena,
+    const ServerUtilityResult& from)
+    : ::google::protobuf::Message(arena) {
+  ServerUtilityResult* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  _impl_.result_ = from._impl_.result_;
 
-    , /*decltype(_impl_._cached_size_)*/{}};
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.result_str_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.result_str_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_result_str().empty()) {
-    _this->_impl_.result_str_.Set(from._internal_result_str(), _this->GetArenaForAllocation());
-  }
-  _this->_impl_.result_ = from._impl_.result_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.server_utility.ServerUtilityResult)
 }
+inline PROTOBUF_NDEBUG_INLINE ServerUtilityResult::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : result_str_(arena),
+        _cached_size_{0} {}
 
 inline void ServerUtilityResult::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.result_str_) {}
-
-    , decltype(_impl_.result_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.result_str_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.result_str_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.result_ = {};
 }
-
 ServerUtilityResult::~ServerUtilityResult() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.server_utility.ServerUtilityResult)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void ServerUtilityResult::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.result_str_.Destroy();
+  _impl_.~Impl_();
 }
 
-void ServerUtilityResult::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void ServerUtilityResult::Clear() {
+PROTOBUF_NOINLINE void ServerUtilityResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.server_utility.ServerUtilityResult)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.result_str_.ClearToEmpty();
   _impl_.result_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* ServerUtilityResult::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.server_utility.ServerUtilityResult.Result result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-          _internal_set_result(static_cast<::mavsdk::rpc::server_utility::ServerUtilityResult_Result>(val));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // string result_str = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
-          auto str = _internal_mutable_result_str();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.server_utility.ServerUtilityResult.result_str"));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* ServerUtilityResult::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 64, 2> ServerUtilityResult::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_ServerUtilityResult_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // string result_str = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(ServerUtilityResult, _impl_.result_str_)}},
+    // .mavsdk.rpc.server_utility.ServerUtilityResult.Result result = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ServerUtilityResult, _impl_.result_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(ServerUtilityResult, _impl_.result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.server_utility.ServerUtilityResult.Result result = 1;
+    {PROTOBUF_FIELD_OFFSET(ServerUtilityResult, _impl_.result_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // string result_str = 2;
+    {PROTOBUF_FIELD_OFFSET(ServerUtilityResult, _impl_.result_str_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\55\0\12\0\0\0\0\0"
+    "mavsdk.rpc.server_utility.ServerUtilityResult"
+    "result_str"
+  }},
+};
 
 ::uint8_t* ServerUtilityResult::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.server_utility.ServerUtilityResult)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // .mavsdk.rpc.server_utility.ServerUtilityResult.Result result = 1;
   if (this->_internal_result() != 0) {
@@ -826,14 +790,15 @@ failure:
   // string result_str = 2;
   if (!this->_internal_result_str().empty()) {
     const std::string& _s = this->_internal_result_str();
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.server_utility.ServerUtilityResult.result_str");
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.server_utility.ServerUtilityResult.result_str");
     target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.server_utility.ServerUtilityResult)
   return target;
@@ -849,7 +814,7 @@ failure:
 
   // string result_str = 2;
   if (!this->_internal_result_str().empty()) {
-    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                     this->_internal_result_str());
   }
 
@@ -862,14 +827,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ServerUtilityResult::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    ServerUtilityResult::MergeImpl
+const ::google::protobuf::Message::ClassData ServerUtilityResult::_class_data_ = {
+    ServerUtilityResult::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ServerUtilityResult::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* ServerUtilityResult::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void ServerUtilityResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void ServerUtilityResult::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<ServerUtilityResult*>(&to_msg);
   auto& from = static_cast<const ServerUtilityResult&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.server_utility.ServerUtilityResult)
@@ -883,7 +849,7 @@ void ServerUtilityResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, co
   if (from._internal_result() != 0) {
     _this->_internal_set_result(from._internal_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ServerUtilityResult::CopyFrom(const ServerUtilityResult& from) {
@@ -893,21 +859,23 @@ void ServerUtilityResult::CopyFrom(const ServerUtilityResult& from) {
   MergeFrom(from);
 }
 
-bool ServerUtilityResult::IsInitialized() const {
+PROTOBUF_NOINLINE bool ServerUtilityResult::IsInitialized() const {
   return true;
 }
 
-void ServerUtilityResult::InternalSwap(ServerUtilityResult* other) {
+::_pbi::CachedSize* ServerUtilityResult::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void ServerUtilityResult::InternalSwap(ServerUtilityResult* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, lhs_arena,
-                                       &other->_impl_.result_str_, rhs_arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, &other->_impl_.result_str_, arena);
   swap(_impl_.result_, other->_impl_.result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata ServerUtilityResult::GetMetadata() const {
+::google::protobuf::Metadata ServerUtilityResult::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_server_5futility_2fserver_5futility_2eproto_getter, &descriptor_table_server_5futility_2fserver_5futility_2eproto_once,
       file_level_metadata_server_5futility_2fserver_5futility_2eproto[2]);
@@ -916,19 +884,9 @@ void ServerUtilityResult::InternalSwap(ServerUtilityResult* other) {
 }  // namespace server_utility
 }  // namespace rpc
 }  // namespace mavsdk
-PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::server_utility::SendStatusTextRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::server_utility::SendStatusTextRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::server_utility::SendStatusTextRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::server_utility::SendStatusTextResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::server_utility::SendStatusTextResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::server_utility::SendStatusTextResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::server_utility::ServerUtilityResult*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::server_utility::ServerUtilityResult >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::server_utility::ServerUtilityResult >(arena);
-}
-PROTOBUF_NAMESPACE_CLOSE
+namespace google {
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 // @@protoc_insertion_point(global_scope)
 #include "google/protobuf/port_undef.inc"

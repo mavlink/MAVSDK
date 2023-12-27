@@ -11,24 +11,28 @@
 #include "google/protobuf/generated_message_reflection.h"
 #include "google/protobuf/reflection_ops.h"
 #include "google/protobuf/wire_format.h"
+#include "google/protobuf/generated_message_tctable_impl.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
 #include "google/protobuf/port_def.inc"
 PROTOBUF_PRAGMA_INIT_SEG
-namespace _pb = ::PROTOBUF_NAMESPACE_ID;
-namespace _pbi = ::PROTOBUF_NAMESPACE_ID::internal;
+namespace _pb = ::google::protobuf;
+namespace _pbi = ::google::protobuf::internal;
+namespace _fl = ::google::protobuf::internal::field_layout;
 namespace mavsdk {
 namespace rpc {
 namespace geofence {
+
+inline constexpr Point::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : latitude_deg_{0},
+        longitude_deg_{0},
+        _cached_size_{0} {}
+
 template <typename>
-PROTOBUF_CONSTEXPR Point::Point(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.latitude_deg_)*/ 0
-
-  , /*decltype(_impl_.longitude_deg_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
+PROTOBUF_CONSTEXPR Point::Point(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
 struct PointDefaultTypeInternal {
   PROTOBUF_CONSTEXPR PointDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~PointDefaultTypeInternal() {}
@@ -39,130 +43,18 @@ struct PointDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PointDefaultTypeInternal _Point_default_instance_;
+
+inline constexpr GeofenceResult::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : result_str_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        result_{static_cast< ::mavsdk::rpc::geofence::GeofenceResult_Result >(0)},
+        _cached_size_{0} {}
+
 template <typename>
-PROTOBUF_CONSTEXPR Polygon::Polygon(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.points_)*/{}
-  , /*decltype(_impl_.fence_type_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct PolygonDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PolygonDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PolygonDefaultTypeInternal() {}
-  union {
-    Polygon _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PolygonDefaultTypeInternal _Polygon_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR Circle::Circle(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.point_)*/nullptr
-  , /*decltype(_impl_.radius_)*/ 0
-
-  , /*decltype(_impl_.fence_type_)*/ 0
-} {}
-struct CircleDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR CircleDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~CircleDefaultTypeInternal() {}
-  union {
-    Circle _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CircleDefaultTypeInternal _Circle_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR GeofenceData::GeofenceData(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.polygons_)*/{}
-  , /*decltype(_impl_.circles_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}} {}
-struct GeofenceDataDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR GeofenceDataDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~GeofenceDataDefaultTypeInternal() {}
-  union {
-    GeofenceData _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GeofenceDataDefaultTypeInternal _GeofenceData_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR UploadGeofenceRequest::UploadGeofenceRequest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.geofence_data_)*/nullptr} {}
-struct UploadGeofenceRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR UploadGeofenceRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~UploadGeofenceRequestDefaultTypeInternal() {}
-  union {
-    UploadGeofenceRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UploadGeofenceRequestDefaultTypeInternal _UploadGeofenceRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR UploadGeofenceResponse::UploadGeofenceResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.geofence_result_)*/nullptr} {}
-struct UploadGeofenceResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR UploadGeofenceResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~UploadGeofenceResponseDefaultTypeInternal() {}
-  union {
-    UploadGeofenceResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UploadGeofenceResponseDefaultTypeInternal _UploadGeofenceResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR ClearGeofenceRequest::ClearGeofenceRequest(
-    ::_pbi::ConstantInitialized) {}
-struct ClearGeofenceRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ClearGeofenceRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~ClearGeofenceRequestDefaultTypeInternal() {}
-  union {
-    ClearGeofenceRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ClearGeofenceRequestDefaultTypeInternal _ClearGeofenceRequest_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR ClearGeofenceResponse::ClearGeofenceResponse(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.geofence_result_)*/nullptr} {}
-struct ClearGeofenceResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR ClearGeofenceResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~ClearGeofenceResponseDefaultTypeInternal() {}
-  union {
-    ClearGeofenceResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ClearGeofenceResponseDefaultTypeInternal _ClearGeofenceResponse_default_instance_;
-template <typename>
-PROTOBUF_CONSTEXPR GeofenceResult::GeofenceResult(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.result_str_)*/ {
-    &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
-  }
-
-  , /*decltype(_impl_.result_)*/ 0
-
-  , /*decltype(_impl_._cached_size_)*/{}} {}
+PROTOBUF_CONSTEXPR GeofenceResult::GeofenceResult(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
 struct GeofenceResultDefaultTypeInternal {
   PROTOBUF_CONSTEXPR GeofenceResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~GeofenceResultDefaultTypeInternal() {}
@@ -173,6 +65,136 @@ struct GeofenceResultDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GeofenceResultDefaultTypeInternal _GeofenceResult_default_instance_;
+      template <typename>
+PROTOBUF_CONSTEXPR ClearGeofenceRequest::ClearGeofenceRequest(::_pbi::ConstantInitialized) {}
+struct ClearGeofenceRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ClearGeofenceRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ClearGeofenceRequestDefaultTypeInternal() {}
+  union {
+    ClearGeofenceRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ClearGeofenceRequestDefaultTypeInternal _ClearGeofenceRequest_default_instance_;
+
+inline constexpr UploadGeofenceResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        geofence_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR UploadGeofenceResponse::UploadGeofenceResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct UploadGeofenceResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR UploadGeofenceResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~UploadGeofenceResponseDefaultTypeInternal() {}
+  union {
+    UploadGeofenceResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UploadGeofenceResponseDefaultTypeInternal _UploadGeofenceResponse_default_instance_;
+
+inline constexpr Polygon::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : points_{},
+        fence_type_{static_cast< ::mavsdk::rpc::geofence::FenceType >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR Polygon::Polygon(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PolygonDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PolygonDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PolygonDefaultTypeInternal() {}
+  union {
+    Polygon _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PolygonDefaultTypeInternal _Polygon_default_instance_;
+
+inline constexpr ClearGeofenceResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        geofence_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ClearGeofenceResponse::ClearGeofenceResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct ClearGeofenceResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ClearGeofenceResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ClearGeofenceResponseDefaultTypeInternal() {}
+  union {
+    ClearGeofenceResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ClearGeofenceResponseDefaultTypeInternal _ClearGeofenceResponse_default_instance_;
+
+inline constexpr Circle::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        point_{nullptr},
+        radius_{0},
+        fence_type_{static_cast< ::mavsdk::rpc::geofence::FenceType >(0)} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR Circle::Circle(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct CircleDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR CircleDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~CircleDefaultTypeInternal() {}
+  union {
+    Circle _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CircleDefaultTypeInternal _Circle_default_instance_;
+
+inline constexpr GeofenceData::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : polygons_{},
+        circles_{},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR GeofenceData::GeofenceData(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct GeofenceDataDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR GeofenceDataDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GeofenceDataDefaultTypeInternal() {}
+  union {
+    GeofenceData _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GeofenceDataDefaultTypeInternal _GeofenceData_default_instance_;
+
+inline constexpr UploadGeofenceRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        geofence_data_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR UploadGeofenceRequest::UploadGeofenceRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct UploadGeofenceRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR UploadGeofenceRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~UploadGeofenceRequestDefaultTypeInternal() {}
+  union {
+    UploadGeofenceRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UploadGeofenceRequestDefaultTypeInternal _UploadGeofenceRequest_default_instance_;
 }  // namespace geofence
 }  // namespace rpc
 }  // namespace mavsdk
@@ -278,15 +300,15 @@ const ::uint32_t TableStruct_geofence_2fgeofence_2eproto::offsets[] PROTOBUF_SEC
 
 static const ::_pbi::MigrationSchema
     schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-        { 0, -1, -1, sizeof(::mavsdk::rpc::geofence::Point)},
-        { 10, -1, -1, sizeof(::mavsdk::rpc::geofence::Polygon)},
-        { 20, 31, -1, sizeof(::mavsdk::rpc::geofence::Circle)},
-        { 34, -1, -1, sizeof(::mavsdk::rpc::geofence::GeofenceData)},
-        { 44, 53, -1, sizeof(::mavsdk::rpc::geofence::UploadGeofenceRequest)},
-        { 54, 63, -1, sizeof(::mavsdk::rpc::geofence::UploadGeofenceResponse)},
-        { 64, -1, -1, sizeof(::mavsdk::rpc::geofence::ClearGeofenceRequest)},
-        { 72, 81, -1, sizeof(::mavsdk::rpc::geofence::ClearGeofenceResponse)},
-        { 82, -1, -1, sizeof(::mavsdk::rpc::geofence::GeofenceResult)},
+        {0, -1, -1, sizeof(::mavsdk::rpc::geofence::Point)},
+        {10, -1, -1, sizeof(::mavsdk::rpc::geofence::Polygon)},
+        {20, 31, -1, sizeof(::mavsdk::rpc::geofence::Circle)},
+        {34, -1, -1, sizeof(::mavsdk::rpc::geofence::GeofenceData)},
+        {44, 53, -1, sizeof(::mavsdk::rpc::geofence::UploadGeofenceRequest)},
+        {54, 63, -1, sizeof(::mavsdk::rpc::geofence::UploadGeofenceResponse)},
+        {64, -1, -1, sizeof(::mavsdk::rpc::geofence::ClearGeofenceRequest)},
+        {72, 81, -1, sizeof(::mavsdk::rpc::geofence::ClearGeofenceResponse)},
+        {82, -1, -1, sizeof(::mavsdk::rpc::geofence::GeofenceResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -380,24 +402,14 @@ static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_geofence_2fgeofence_2epro
 namespace mavsdk {
 namespace rpc {
 namespace geofence {
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* GeofenceResult_Result_descriptor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_geofence_2fgeofence_2eproto);
+const ::google::protobuf::EnumDescriptor* GeofenceResult_Result_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_geofence_2fgeofence_2eproto);
   return file_level_enum_descriptors_geofence_2fgeofence_2eproto[0];
 }
+PROTOBUF_CONSTINIT const uint32_t GeofenceResult_Result_internal_data_[] = {
+    524288u, 0u, };
 bool GeofenceResult_Result_IsValid(int value) {
-  switch (value) {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-      return true;
-    default:
-      return false;
-  }
+  return 0 <= value && value <= 7;
 }
 #if (__cplusplus < 201703) && \
   (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
@@ -416,18 +428,14 @@ constexpr int GeofenceResult::Result_ARRAYSIZE;
 
 #endif  // (__cplusplus < 201703) &&
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* FenceType_descriptor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_geofence_2fgeofence_2eproto);
+const ::google::protobuf::EnumDescriptor* FenceType_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_geofence_2fgeofence_2eproto);
   return file_level_enum_descriptors_geofence_2fgeofence_2eproto[1];
 }
+PROTOBUF_CONSTINIT const uint32_t FenceType_internal_data_[] = {
+    131072u, 0u, };
 bool FenceType_IsValid(int value) {
-  switch (value) {
-    case 0:
-    case 1:
-      return true;
-    default:
-      return false;
-  }
+  return 0 <= value && value <= 1;
 }
 // ===================================================================
 
@@ -435,48 +443,43 @@ class Point::_Internal {
  public:
 };
 
-Point::Point(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+Point::Point(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.geofence.Point)
 }
-Point::Point(const Point& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
-      from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.geofence.Point)
+Point::Point(
+    ::google::protobuf::Arena* arena, const Point& from)
+    : Point(arena) {
+  MergeFrom(from);
 }
+inline PROTOBUF_NDEBUG_INLINE Point::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void Point::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.latitude_deg_) { 0 }
-
-    , decltype(_impl_.longitude_deg_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, latitude_deg_),
+           0,
+           offsetof(Impl_, longitude_deg_) -
+               offsetof(Impl_, latitude_deg_) +
+               sizeof(Impl_::longitude_deg_));
 }
-
 Point::~Point() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.geofence.Point)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void Point::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void Point::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void Point::Clear() {
+PROTOBUF_NOINLINE void Point::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.geofence.Point)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -484,64 +487,62 @@ void Point::Clear() {
   ::memset(&_impl_.latitude_deg_, 0, static_cast<::size_t>(
       reinterpret_cast<char*>(&_impl_.longitude_deg_) -
       reinterpret_cast<char*>(&_impl_.latitude_deg_)) + sizeof(_impl_.longitude_deg_));
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* Point::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // double latitude_deg = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 9)) {
-          _impl_.latitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
-          ptr += sizeof(double);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // double longitude_deg = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 17)) {
-          _impl_.longitude_deg_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
-          ptr += sizeof(double);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* Point::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2> Point::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_Point_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // double longitude_deg = 2;
+    {::_pbi::TcParser::FastF64S1,
+     {17, 63, 0, PROTOBUF_FIELD_OFFSET(Point, _impl_.longitude_deg_)}},
+    // double latitude_deg = 1;
+    {::_pbi::TcParser::FastF64S1,
+     {9, 63, 0, PROTOBUF_FIELD_OFFSET(Point, _impl_.latitude_deg_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // double latitude_deg = 1;
+    {PROTOBUF_FIELD_OFFSET(Point, _impl_.latitude_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
+    // double longitude_deg = 2;
+    {PROTOBUF_FIELD_OFFSET(Point, _impl_.longitude_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
 ::uint8_t* Point::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.geofence.Point)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // double latitude_deg = 1;
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_latitude_deg = this->_internal_latitude_deg();
   ::uint64_t raw_latitude_deg;
   memcpy(&raw_latitude_deg, &tmp_latitude_deg, sizeof(tmp_latitude_deg));
@@ -552,7 +553,8 @@ failure:
   }
 
   // double longitude_deg = 2;
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_longitude_deg = this->_internal_longitude_deg();
   ::uint64_t raw_longitude_deg;
   memcpy(&raw_longitude_deg, &tmp_longitude_deg, sizeof(tmp_longitude_deg));
@@ -563,8 +565,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.geofence.Point)
   return target;
@@ -579,7 +582,8 @@ failure:
   (void) cached_has_bits;
 
   // double latitude_deg = 1;
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_latitude_deg = this->_internal_latitude_deg();
   ::uint64_t raw_latitude_deg;
   memcpy(&raw_latitude_deg, &tmp_latitude_deg, sizeof(tmp_latitude_deg));
@@ -588,7 +592,8 @@ failure:
   }
 
   // double longitude_deg = 2;
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_longitude_deg = this->_internal_longitude_deg();
   ::uint64_t raw_longitude_deg;
   memcpy(&raw_longitude_deg, &tmp_longitude_deg, sizeof(tmp_longitude_deg));
@@ -599,14 +604,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Point::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    Point::MergeImpl
+const ::google::protobuf::Message::ClassData Point::_class_data_ = {
+    Point::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Point::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* Point::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void Point::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void Point::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<Point*>(&to_msg);
   auto& from = static_cast<const Point&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.geofence.Point)
@@ -614,21 +620,23 @@ void Point::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_latitude_deg = from._internal_latitude_deg();
   ::uint64_t raw_latitude_deg;
   memcpy(&raw_latitude_deg, &tmp_latitude_deg, sizeof(tmp_latitude_deg));
   if (raw_latitude_deg != 0) {
     _this->_internal_set_latitude_deg(from._internal_latitude_deg());
   }
-  static_assert(sizeof(::uint64_t) == sizeof(double), "Code assumes ::uint64_t and double are the same size.");
+  static_assert(sizeof(::uint64_t) == sizeof(double),
+                "Code assumes ::uint64_t and double are the same size.");
   double tmp_longitude_deg = from._internal_longitude_deg();
   ::uint64_t raw_longitude_deg;
   memcpy(&raw_longitude_deg, &tmp_longitude_deg, sizeof(tmp_longitude_deg));
   if (raw_longitude_deg != 0) {
     _this->_internal_set_longitude_deg(from._internal_longitude_deg());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Point::CopyFrom(const Point& from) {
@@ -638,14 +646,17 @@ void Point::CopyFrom(const Point& from) {
   MergeFrom(from);
 }
 
-bool Point::IsInitialized() const {
+PROTOBUF_NOINLINE bool Point::IsInitialized() const {
   return true;
 }
 
-void Point::InternalSwap(Point* other) {
+::_pbi::CachedSize* Point::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void Point::InternalSwap(Point* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Point, _impl_.longitude_deg_)
       + sizeof(Point::_impl_.longitude_deg_)
       - PROTOBUF_FIELD_OFFSET(Point, _impl_.latitude_deg_)>(
@@ -653,7 +664,7 @@ void Point::InternalSwap(Point* other) {
           reinterpret_cast<char*>(&other->_impl_.latitude_deg_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Point::GetMetadata() const {
+::google::protobuf::Metadata Point::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_geofence_2fgeofence_2eproto_getter, &descriptor_table_geofence_2fgeofence_2eproto_once,
       file_level_metadata_geofence_2fgeofence_2eproto[0]);
@@ -664,128 +675,117 @@ class Polygon::_Internal {
  public:
 };
 
-Polygon::Polygon(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+Polygon::Polygon(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.geofence.Polygon)
 }
-Polygon::Polygon(const Polygon& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  Polygon* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.points_){from._impl_.points_}
-    , decltype(_impl_.fence_type_) {}
+inline PROTOBUF_NDEBUG_INLINE Polygon::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : points_{visibility, arena, from.points_},
+        _cached_size_{0} {}
 
-    , /*decltype(_impl_._cached_size_)*/{}};
+Polygon::Polygon(
+    ::google::protobuf::Arena* arena,
+    const Polygon& from)
+    : ::google::protobuf::Message(arena) {
+  Polygon* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  _impl_.fence_type_ = from._impl_.fence_type_;
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _this->_impl_.fence_type_ = from._impl_.fence_type_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.geofence.Polygon)
 }
+inline PROTOBUF_NDEBUG_INLINE Polygon::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : points_{visibility, arena},
+        _cached_size_{0} {}
 
 inline void Polygon::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.points_){arena}
-    , decltype(_impl_.fence_type_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.fence_type_ = {};
 }
-
 Polygon::~Polygon() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.geofence.Polygon)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void Polygon::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  _internal_mutable_points()->~RepeatedPtrField();
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void Polygon::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void Polygon::Clear() {
+PROTOBUF_NOINLINE void Polygon::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.geofence.Polygon)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _internal_mutable_points()->Clear();
+  _impl_.points_.Clear();
   _impl_.fence_type_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* Polygon::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // repeated .mavsdk.rpc.geofence.Point points = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_points(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.geofence.FenceType fence_type = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
-          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-          _internal_set_fence_type(static_cast<::mavsdk::rpc::geofence::FenceType>(val));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* Polygon::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 1, 0, 2> Polygon::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_Polygon_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.geofence.FenceType fence_type = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Polygon, _impl_.fence_type_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(Polygon, _impl_.fence_type_)}},
+    // repeated .mavsdk.rpc.geofence.Point points = 1;
+    {::_pbi::TcParser::FastMtR1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(Polygon, _impl_.points_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // repeated .mavsdk.rpc.geofence.Point points = 1;
+    {PROTOBUF_FIELD_OFFSET(Polygon, _impl_.points_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.geofence.FenceType fence_type = 2;
+    {PROTOBUF_FIELD_OFFSET(Polygon, _impl_.fence_type_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::geofence::Point>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* Polygon::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.geofence.Polygon)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // repeated .mavsdk.rpc.geofence.Point points = 1;
   for (unsigned i = 0,
       n = static_cast<unsigned>(this->_internal_points_size()); i < n; i++) {
-    const auto& repfield = this->_internal_points(i);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+    const auto& repfield = this->_internal_points().Get(i);
+    target = ::google::protobuf::internal::WireFormatLite::
         InternalWriteMessage(1, repfield, repfield.GetCachedSize(), target, stream);
   }
 
@@ -797,8 +797,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.geofence.Polygon)
   return target;
@@ -816,9 +817,8 @@ failure:
   total_size += 1UL * this->_internal_points_size();
   for (const auto& msg : this->_internal_points()) {
     total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+      ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
   }
-
   // .mavsdk.rpc.geofence.FenceType fence_type = 2;
   if (this->_internal_fence_type() != 0) {
     total_size += 1 +
@@ -828,14 +828,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Polygon::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    Polygon::MergeImpl
+const ::google::protobuf::Message::ClassData Polygon::_class_data_ = {
+    Polygon::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Polygon::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* Polygon::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void Polygon::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void Polygon::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<Polygon*>(&to_msg);
   auto& from = static_cast<const Polygon&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.geofence.Polygon)
@@ -843,11 +844,12 @@ void Polygon::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOB
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_internal_mutable_points()->MergeFrom(from._internal_points());
+  _this->_internal_mutable_points()->MergeFrom(
+      from._internal_points());
   if (from._internal_fence_type() != 0) {
     _this->_internal_set_fence_type(from._internal_fence_type());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Polygon::CopyFrom(const Polygon& from) {
@@ -857,18 +859,21 @@ void Polygon::CopyFrom(const Polygon& from) {
   MergeFrom(from);
 }
 
-bool Polygon::IsInitialized() const {
+PROTOBUF_NOINLINE bool Polygon::IsInitialized() const {
   return true;
 }
 
-void Polygon::InternalSwap(Polygon* other) {
+::_pbi::CachedSize* Polygon::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void Polygon::InternalSwap(Polygon* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _internal_mutable_points()->InternalSwap(other->_internal_mutable_points());
+  _impl_.points_.InternalSwap(&other->_impl_.points_);
   swap(_impl_.fence_type_, other->_impl_.fence_type_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Polygon::GetMetadata() const {
+::google::protobuf::Metadata Polygon::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_geofence_2fgeofence_2eproto_getter, &descriptor_table_geofence_2fgeofence_2eproto_once,
       file_level_metadata_geofence_2fgeofence_2eproto[1]);
@@ -886,70 +891,71 @@ class Circle::_Internal {
   }
 };
 
-const ::mavsdk::rpc::geofence::Point&
-Circle::_Internal::point(const Circle* msg) {
+const ::mavsdk::rpc::geofence::Point& Circle::_Internal::point(const Circle* msg) {
   return *msg->_impl_.point_;
 }
-Circle::Circle(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+Circle::Circle(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.geofence.Circle)
 }
-Circle::Circle(const Circle& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  Circle* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.point_){nullptr}
-    , decltype(_impl_.radius_) {}
+inline PROTOBUF_NDEBUG_INLINE Circle::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-    , decltype(_impl_.fence_type_) {}
-  };
+Circle::Circle(
+    ::google::protobuf::Arena* arena,
+    const Circle& from)
+    : ::google::protobuf::Message(arena) {
+  Circle* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.point_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::geofence::Point>(arena, *from._impl_.point_)
+                : nullptr;
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, radius_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, radius_),
+           offsetof(Impl_, fence_type_) -
+               offsetof(Impl_, radius_) +
+               sizeof(Impl_::fence_type_));
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.point_ = new ::mavsdk::rpc::geofence::Point(*from._impl_.point_);
-  }
-  ::memcpy(&_impl_.radius_, &from._impl_.radius_,
-    static_cast<::size_t>(reinterpret_cast<char*>(&_impl_.fence_type_) -
-    reinterpret_cast<char*>(&_impl_.radius_)) + sizeof(_impl_.fence_type_));
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.geofence.Circle)
 }
+inline PROTOBUF_NDEBUG_INLINE Circle::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void Circle::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.point_){nullptr}
-    , decltype(_impl_.radius_) { 0 }
-
-    , decltype(_impl_.fence_type_) { 0 }
-
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, point_),
+           0,
+           offsetof(Impl_, fence_type_) -
+               offsetof(Impl_, point_) +
+               sizeof(Impl_::fence_type_));
 }
-
 Circle::~Circle() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.geofence.Circle)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void Circle::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.point_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.point_;
+  _impl_.~Impl_();
 }
 
-void Circle::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void Circle::Clear() {
+PROTOBUF_NOINLINE void Circle::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.geofence.Circle)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -963,84 +969,77 @@ void Circle::Clear() {
       reinterpret_cast<char*>(&_impl_.fence_type_) -
       reinterpret_cast<char*>(&_impl_.radius_)) + sizeof(_impl_.fence_type_));
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* Circle::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.geofence.Point point = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_point(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // float radius = 2 [(.mavsdk.options.default_value) = "NaN"];
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 21)) {
-          _impl_.radius_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
-          ptr += sizeof(float);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // .mavsdk.rpc.geofence.FenceType fence_type = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 24)) {
-          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-          _internal_set_fence_type(static_cast<::mavsdk::rpc::geofence::FenceType>(val));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* Circle::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 1, 0, 2> Circle::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(Circle, _impl_._has_bits_),
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_Circle_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // .mavsdk.rpc.geofence.Point point = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(Circle, _impl_.point_)}},
+    // float radius = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(Circle, _impl_.radius_)}},
+    // .mavsdk.rpc.geofence.FenceType fence_type = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Circle, _impl_.fence_type_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(Circle, _impl_.fence_type_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.geofence.Point point = 1;
+    {PROTOBUF_FIELD_OFFSET(Circle, _impl_.point_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // float radius = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Circle, _impl_.radius_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // .mavsdk.rpc.geofence.FenceType fence_type = 3;
+    {PROTOBUF_FIELD_OFFSET(Circle, _impl_.fence_type_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::geofence::Point>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* Circle::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.geofence.Circle)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.geofence.Point point = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::point(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::point(this),
         _Internal::point(this).GetCachedSize(), target, stream);
   }
 
   // float radius = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_radius = this->_internal_radius();
   ::uint32_t raw_radius;
   memcpy(&raw_radius, &tmp_radius, sizeof(tmp_radius));
@@ -1058,8 +1057,9 @@ failure:
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.geofence.Circle)
   return target;
@@ -1076,13 +1076,13 @@ failure:
   // .mavsdk.rpc.geofence.Point point = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.point_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.point_);
   }
 
   // float radius = 2 [(.mavsdk.options.default_value) = "NaN"];
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_radius = this->_internal_radius();
   ::uint32_t raw_radius;
   memcpy(&raw_radius, &tmp_radius, sizeof(tmp_radius));
@@ -1099,14 +1099,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Circle::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    Circle::MergeImpl
+const ::google::protobuf::Message::ClassData Circle::_class_data_ = {
+    Circle::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Circle::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* Circle::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void Circle::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void Circle::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<Circle*>(&to_msg);
   auto& from = static_cast<const Circle&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.geofence.Circle)
@@ -1118,7 +1119,8 @@ void Circle::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBU
     _this->_internal_mutable_point()->::mavsdk::rpc::geofence::Point::MergeFrom(
         from._internal_point());
   }
-  static_assert(sizeof(::uint32_t) == sizeof(float), "Code assumes ::uint32_t and float are the same size.");
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_radius = from._internal_radius();
   ::uint32_t raw_radius;
   memcpy(&raw_radius, &tmp_radius, sizeof(tmp_radius));
@@ -1128,7 +1130,7 @@ void Circle::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBU
   if (from._internal_fence_type() != 0) {
     _this->_internal_set_fence_type(from._internal_fence_type());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Circle::CopyFrom(const Circle& from) {
@@ -1138,15 +1140,18 @@ void Circle::CopyFrom(const Circle& from) {
   MergeFrom(from);
 }
 
-bool Circle::IsInitialized() const {
+PROTOBUF_NOINLINE bool Circle::IsInitialized() const {
   return true;
 }
 
-void Circle::InternalSwap(Circle* other) {
+::_pbi::CachedSize* Circle::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void Circle::InternalSwap(Circle* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+  ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Circle, _impl_.fence_type_)
       + sizeof(Circle::_impl_.fence_type_)
       - PROTOBUF_FIELD_OFFSET(Circle, _impl_.point_)>(
@@ -1154,7 +1159,7 @@ void Circle::InternalSwap(Circle* other) {
           reinterpret_cast<char*>(&other->_impl_.point_));
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Circle::GetMetadata() const {
+::google::protobuf::Metadata Circle::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_geofence_2fgeofence_2eproto_getter, &descriptor_table_geofence_2fgeofence_2eproto_once,
       file_level_metadata_geofence_2fgeofence_2eproto[2]);
@@ -1165,144 +1170,133 @@ class GeofenceData::_Internal {
  public:
 };
 
-GeofenceData::GeofenceData(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+GeofenceData::GeofenceData(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.geofence.GeofenceData)
 }
-GeofenceData::GeofenceData(const GeofenceData& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  GeofenceData* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.polygons_){from._impl_.polygons_}
-    , decltype(_impl_.circles_){from._impl_.circles_}
-    , /*decltype(_impl_._cached_size_)*/{}};
+inline PROTOBUF_NDEBUG_INLINE GeofenceData::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : polygons_{visibility, arena, from.polygons_},
+        circles_{visibility, arena, from.circles_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+GeofenceData::GeofenceData(
+    ::google::protobuf::Arena* arena,
+    const GeofenceData& from)
+    : ::google::protobuf::Message(arena) {
+  GeofenceData* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.geofence.GeofenceData)
 }
+inline PROTOBUF_NDEBUG_INLINE GeofenceData::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : polygons_{visibility, arena},
+        circles_{visibility, arena},
+        _cached_size_{0} {}
 
 inline void GeofenceData::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.polygons_){arena}
-    , decltype(_impl_.circles_){arena}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
 }
-
 GeofenceData::~GeofenceData() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.geofence.GeofenceData)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void GeofenceData::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  _internal_mutable_polygons()->~RepeatedPtrField();
-  _internal_mutable_circles()->~RepeatedPtrField();
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
 }
 
-void GeofenceData::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void GeofenceData::Clear() {
+PROTOBUF_NOINLINE void GeofenceData::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.geofence.GeofenceData)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _internal_mutable_polygons()->Clear();
-  _internal_mutable_circles()->Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _impl_.polygons_.Clear();
+  _impl_.circles_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* GeofenceData::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // repeated .mavsdk.rpc.geofence.Polygon polygons = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_polygons(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // repeated .mavsdk.rpc.geofence.Circle circles = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_circles(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* GeofenceData::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 2, 0, 2> GeofenceData::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    2,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_GeofenceData_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // repeated .mavsdk.rpc.geofence.Circle circles = 2;
+    {::_pbi::TcParser::FastMtR1,
+     {18, 63, 1, PROTOBUF_FIELD_OFFSET(GeofenceData, _impl_.circles_)}},
+    // repeated .mavsdk.rpc.geofence.Polygon polygons = 1;
+    {::_pbi::TcParser::FastMtR1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(GeofenceData, _impl_.polygons_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // repeated .mavsdk.rpc.geofence.Polygon polygons = 1;
+    {PROTOBUF_FIELD_OFFSET(GeofenceData, _impl_.polygons_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // repeated .mavsdk.rpc.geofence.Circle circles = 2;
+    {PROTOBUF_FIELD_OFFSET(GeofenceData, _impl_.circles_), 0, 1,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::geofence::Polygon>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::geofence::Circle>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* GeofenceData::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.geofence.GeofenceData)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // repeated .mavsdk.rpc.geofence.Polygon polygons = 1;
   for (unsigned i = 0,
       n = static_cast<unsigned>(this->_internal_polygons_size()); i < n; i++) {
-    const auto& repfield = this->_internal_polygons(i);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+    const auto& repfield = this->_internal_polygons().Get(i);
+    target = ::google::protobuf::internal::WireFormatLite::
         InternalWriteMessage(1, repfield, repfield.GetCachedSize(), target, stream);
   }
 
   // repeated .mavsdk.rpc.geofence.Circle circles = 2;
   for (unsigned i = 0,
       n = static_cast<unsigned>(this->_internal_circles_size()); i < n; i++) {
-    const auto& repfield = this->_internal_circles(i);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+    const auto& repfield = this->_internal_circles().Get(i);
+    target = ::google::protobuf::internal::WireFormatLite::
         InternalWriteMessage(2, repfield, repfield.GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.geofence.GeofenceData)
   return target;
@@ -1320,27 +1314,26 @@ failure:
   total_size += 1UL * this->_internal_polygons_size();
   for (const auto& msg : this->_internal_polygons()) {
     total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+      ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
   }
-
   // repeated .mavsdk.rpc.geofence.Circle circles = 2;
   total_size += 1UL * this->_internal_circles_size();
   for (const auto& msg : this->_internal_circles()) {
     total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+      ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
   }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GeofenceData::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    GeofenceData::MergeImpl
+const ::google::protobuf::Message::ClassData GeofenceData::_class_data_ = {
+    GeofenceData::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GeofenceData::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* GeofenceData::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void GeofenceData::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void GeofenceData::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<GeofenceData*>(&to_msg);
   auto& from = static_cast<const GeofenceData&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.geofence.GeofenceData)
@@ -1348,9 +1341,11 @@ void GeofenceData::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::P
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_internal_mutable_polygons()->MergeFrom(from._internal_polygons());
-  _this->_internal_mutable_circles()->MergeFrom(from._internal_circles());
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_mutable_polygons()->MergeFrom(
+      from._internal_polygons());
+  _this->_internal_mutable_circles()->MergeFrom(
+      from._internal_circles());
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void GeofenceData::CopyFrom(const GeofenceData& from) {
@@ -1360,18 +1355,21 @@ void GeofenceData::CopyFrom(const GeofenceData& from) {
   MergeFrom(from);
 }
 
-bool GeofenceData::IsInitialized() const {
+PROTOBUF_NOINLINE bool GeofenceData::IsInitialized() const {
   return true;
 }
 
-void GeofenceData::InternalSwap(GeofenceData* other) {
+::_pbi::CachedSize* GeofenceData::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void GeofenceData::InternalSwap(GeofenceData* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  _internal_mutable_polygons()->InternalSwap(other->_internal_mutable_polygons());
-  _internal_mutable_circles()->InternalSwap(other->_internal_mutable_circles());
+  _impl_.polygons_.InternalSwap(&other->_impl_.polygons_);
+  _impl_.circles_.InternalSwap(&other->_impl_.circles_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata GeofenceData::GetMetadata() const {
+::google::protobuf::Metadata GeofenceData::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_geofence_2fgeofence_2eproto_getter, &descriptor_table_geofence_2fgeofence_2eproto_once,
       file_level_metadata_geofence_2fgeofence_2eproto[3]);
@@ -1389,59 +1387,59 @@ class UploadGeofenceRequest::_Internal {
   }
 };
 
-const ::mavsdk::rpc::geofence::GeofenceData&
-UploadGeofenceRequest::_Internal::geofence_data(const UploadGeofenceRequest* msg) {
+const ::mavsdk::rpc::geofence::GeofenceData& UploadGeofenceRequest::_Internal::geofence_data(const UploadGeofenceRequest* msg) {
   return *msg->_impl_.geofence_data_;
 }
-UploadGeofenceRequest::UploadGeofenceRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+UploadGeofenceRequest::UploadGeofenceRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.geofence.UploadGeofenceRequest)
 }
-UploadGeofenceRequest::UploadGeofenceRequest(const UploadGeofenceRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  UploadGeofenceRequest* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.geofence_data_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE UploadGeofenceRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.geofence_data_ = new ::mavsdk::rpc::geofence::GeofenceData(*from._impl_.geofence_data_);
-  }
+UploadGeofenceRequest::UploadGeofenceRequest(
+    ::google::protobuf::Arena* arena,
+    const UploadGeofenceRequest& from)
+    : ::google::protobuf::Message(arena) {
+  UploadGeofenceRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.geofence_data_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::geofence::GeofenceData>(arena, *from._impl_.geofence_data_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.geofence.UploadGeofenceRequest)
 }
+inline PROTOBUF_NDEBUG_INLINE UploadGeofenceRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void UploadGeofenceRequest::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.geofence_data_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.geofence_data_ = {};
 }
-
 UploadGeofenceRequest::~UploadGeofenceRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.geofence.UploadGeofenceRequest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void UploadGeofenceRequest::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.geofence_data_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.geofence_data_;
+  _impl_.~Impl_();
 }
 
-void UploadGeofenceRequest::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void UploadGeofenceRequest::Clear() {
+PROTOBUF_NOINLINE void UploadGeofenceRequest::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.geofence.UploadGeofenceRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1452,66 +1450,65 @@ void UploadGeofenceRequest::Clear() {
     _impl_.geofence_data_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* UploadGeofenceRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.geofence.GeofenceData geofence_data = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_geofence_data(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* UploadGeofenceRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> UploadGeofenceRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(UploadGeofenceRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_UploadGeofenceRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.geofence.GeofenceData geofence_data = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(UploadGeofenceRequest, _impl_.geofence_data_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.geofence.GeofenceData geofence_data = 1;
+    {PROTOBUF_FIELD_OFFSET(UploadGeofenceRequest, _impl_.geofence_data_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::geofence::GeofenceData>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* UploadGeofenceRequest::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.geofence.UploadGeofenceRequest)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.geofence.GeofenceData geofence_data = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::geofence_data(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::geofence_data(this),
         _Internal::geofence_data(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.geofence.UploadGeofenceRequest)
   return target;
@@ -1528,22 +1525,22 @@ failure:
   // .mavsdk.rpc.geofence.GeofenceData geofence_data = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.geofence_data_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.geofence_data_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData UploadGeofenceRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    UploadGeofenceRequest::MergeImpl
+const ::google::protobuf::Message::ClassData UploadGeofenceRequest::_class_data_ = {
+    UploadGeofenceRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*UploadGeofenceRequest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* UploadGeofenceRequest::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void UploadGeofenceRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void UploadGeofenceRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<UploadGeofenceRequest*>(&to_msg);
   auto& from = static_cast<const UploadGeofenceRequest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.geofence.UploadGeofenceRequest)
@@ -1555,7 +1552,7 @@ void UploadGeofenceRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, 
     _this->_internal_mutable_geofence_data()->::mavsdk::rpc::geofence::GeofenceData::MergeFrom(
         from._internal_geofence_data());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void UploadGeofenceRequest::CopyFrom(const UploadGeofenceRequest& from) {
@@ -1565,18 +1562,21 @@ void UploadGeofenceRequest::CopyFrom(const UploadGeofenceRequest& from) {
   MergeFrom(from);
 }
 
-bool UploadGeofenceRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool UploadGeofenceRequest::IsInitialized() const {
   return true;
 }
 
-void UploadGeofenceRequest::InternalSwap(UploadGeofenceRequest* other) {
+::_pbi::CachedSize* UploadGeofenceRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void UploadGeofenceRequest::InternalSwap(UploadGeofenceRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.geofence_data_, other->_impl_.geofence_data_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata UploadGeofenceRequest::GetMetadata() const {
+::google::protobuf::Metadata UploadGeofenceRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_geofence_2fgeofence_2eproto_getter, &descriptor_table_geofence_2fgeofence_2eproto_once,
       file_level_metadata_geofence_2fgeofence_2eproto[4]);
@@ -1594,59 +1594,59 @@ class UploadGeofenceResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::geofence::GeofenceResult&
-UploadGeofenceResponse::_Internal::geofence_result(const UploadGeofenceResponse* msg) {
+const ::mavsdk::rpc::geofence::GeofenceResult& UploadGeofenceResponse::_Internal::geofence_result(const UploadGeofenceResponse* msg) {
   return *msg->_impl_.geofence_result_;
 }
-UploadGeofenceResponse::UploadGeofenceResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+UploadGeofenceResponse::UploadGeofenceResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.geofence.UploadGeofenceResponse)
 }
-UploadGeofenceResponse::UploadGeofenceResponse(const UploadGeofenceResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  UploadGeofenceResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.geofence_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE UploadGeofenceResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.geofence_result_ = new ::mavsdk::rpc::geofence::GeofenceResult(*from._impl_.geofence_result_);
-  }
+UploadGeofenceResponse::UploadGeofenceResponse(
+    ::google::protobuf::Arena* arena,
+    const UploadGeofenceResponse& from)
+    : ::google::protobuf::Message(arena) {
+  UploadGeofenceResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.geofence_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::geofence::GeofenceResult>(arena, *from._impl_.geofence_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.geofence.UploadGeofenceResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE UploadGeofenceResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void UploadGeofenceResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.geofence_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.geofence_result_ = {};
 }
-
 UploadGeofenceResponse::~UploadGeofenceResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.geofence.UploadGeofenceResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void UploadGeofenceResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.geofence_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.geofence_result_;
+  _impl_.~Impl_();
 }
 
-void UploadGeofenceResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void UploadGeofenceResponse::Clear() {
+PROTOBUF_NOINLINE void UploadGeofenceResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.geofence.UploadGeofenceResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1657,66 +1657,65 @@ void UploadGeofenceResponse::Clear() {
     _impl_.geofence_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* UploadGeofenceResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.geofence.GeofenceResult geofence_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_geofence_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* UploadGeofenceResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> UploadGeofenceResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(UploadGeofenceResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_UploadGeofenceResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.geofence.GeofenceResult geofence_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(UploadGeofenceResponse, _impl_.geofence_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.geofence.GeofenceResult geofence_result = 1;
+    {PROTOBUF_FIELD_OFFSET(UploadGeofenceResponse, _impl_.geofence_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::geofence::GeofenceResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* UploadGeofenceResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.geofence.UploadGeofenceResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.geofence.GeofenceResult geofence_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::geofence_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::geofence_result(this),
         _Internal::geofence_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.geofence.UploadGeofenceResponse)
   return target;
@@ -1733,22 +1732,22 @@ failure:
   // .mavsdk.rpc.geofence.GeofenceResult geofence_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.geofence_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.geofence_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData UploadGeofenceResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    UploadGeofenceResponse::MergeImpl
+const ::google::protobuf::Message::ClassData UploadGeofenceResponse::_class_data_ = {
+    UploadGeofenceResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*UploadGeofenceResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* UploadGeofenceResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void UploadGeofenceResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void UploadGeofenceResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<UploadGeofenceResponse*>(&to_msg);
   auto& from = static_cast<const UploadGeofenceResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.geofence.UploadGeofenceResponse)
@@ -1760,7 +1759,7 @@ void UploadGeofenceResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg,
     _this->_internal_mutable_geofence_result()->::mavsdk::rpc::geofence::GeofenceResult::MergeFrom(
         from._internal_geofence_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void UploadGeofenceResponse::CopyFrom(const UploadGeofenceResponse& from) {
@@ -1770,18 +1769,21 @@ void UploadGeofenceResponse::CopyFrom(const UploadGeofenceResponse& from) {
   MergeFrom(from);
 }
 
-bool UploadGeofenceResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool UploadGeofenceResponse::IsInitialized() const {
   return true;
 }
 
-void UploadGeofenceResponse::InternalSwap(UploadGeofenceResponse* other) {
+::_pbi::CachedSize* UploadGeofenceResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void UploadGeofenceResponse::InternalSwap(UploadGeofenceResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.geofence_result_, other->_impl_.geofence_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata UploadGeofenceResponse::GetMetadata() const {
+::google::protobuf::Metadata UploadGeofenceResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_geofence_2fgeofence_2eproto_getter, &descriptor_table_geofence_2fgeofence_2eproto_once,
       file_level_metadata_geofence_2fgeofence_2eproto[5]);
@@ -1792,14 +1794,19 @@ class ClearGeofenceRequest::_Internal {
  public:
 };
 
-ClearGeofenceRequest::ClearGeofenceRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase(arena) {
+ClearGeofenceRequest::ClearGeofenceRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.geofence.ClearGeofenceRequest)
 }
-ClearGeofenceRequest::ClearGeofenceRequest(const ClearGeofenceRequest& from)
-  : ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase() {
-  ClearGeofenceRequest* const _this = this; (void)_this;
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+ClearGeofenceRequest::ClearGeofenceRequest(
+    ::google::protobuf::Arena* arena,
+    const ClearGeofenceRequest& from)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+  ClearGeofenceRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.geofence.ClearGeofenceRequest)
 }
 
@@ -1807,19 +1814,11 @@ ClearGeofenceRequest::ClearGeofenceRequest(const ClearGeofenceRequest& from)
 
 
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ClearGeofenceRequest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::CopyImpl,
-    ::PROTOBUF_NAMESPACE_ID::internal::ZeroFieldsBase::MergeImpl,
-};
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ClearGeofenceRequest::GetClassData() const { return &_class_data_; }
 
 
 
 
-
-
-
-::PROTOBUF_NAMESPACE_ID::Metadata ClearGeofenceRequest::GetMetadata() const {
+::google::protobuf::Metadata ClearGeofenceRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_geofence_2fgeofence_2eproto_getter, &descriptor_table_geofence_2fgeofence_2eproto_once,
       file_level_metadata_geofence_2fgeofence_2eproto[6]);
@@ -1837,59 +1836,59 @@ class ClearGeofenceResponse::_Internal {
   }
 };
 
-const ::mavsdk::rpc::geofence::GeofenceResult&
-ClearGeofenceResponse::_Internal::geofence_result(const ClearGeofenceResponse* msg) {
+const ::mavsdk::rpc::geofence::GeofenceResult& ClearGeofenceResponse::_Internal::geofence_result(const ClearGeofenceResponse* msg) {
   return *msg->_impl_.geofence_result_;
 }
-ClearGeofenceResponse::ClearGeofenceResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+ClearGeofenceResponse::ClearGeofenceResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.geofence.ClearGeofenceResponse)
 }
-ClearGeofenceResponse::ClearGeofenceResponse(const ClearGeofenceResponse& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  ClearGeofenceResponse* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.geofence_result_){nullptr}};
+inline PROTOBUF_NDEBUG_INLINE ClearGeofenceResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.geofence_result_ = new ::mavsdk::rpc::geofence::GeofenceResult(*from._impl_.geofence_result_);
-  }
+ClearGeofenceResponse::ClearGeofenceResponse(
+    ::google::protobuf::Arena* arena,
+    const ClearGeofenceResponse& from)
+    : ::google::protobuf::Message(arena) {
+  ClearGeofenceResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.geofence_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::geofence::GeofenceResult>(arena, *from._impl_.geofence_result_)
+                : nullptr;
+
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.geofence.ClearGeofenceResponse)
 }
+inline PROTOBUF_NDEBUG_INLINE ClearGeofenceResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
 inline void ClearGeofenceResponse::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.geofence_result_){nullptr}
-  };
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.geofence_result_ = {};
 }
-
 ClearGeofenceResponse::~ClearGeofenceResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.geofence.ClearGeofenceResponse)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void ClearGeofenceResponse::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
-  if (this != internal_default_instance()) delete _impl_.geofence_result_;
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.geofence_result_;
+  _impl_.~Impl_();
 }
 
-void ClearGeofenceResponse::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void ClearGeofenceResponse::Clear() {
+PROTOBUF_NOINLINE void ClearGeofenceResponse::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.geofence.ClearGeofenceResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1900,66 +1899,65 @@ void ClearGeofenceResponse::Clear() {
     _impl_.geofence_result_->Clear();
   }
   _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* ClearGeofenceResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.geofence.GeofenceResult geofence_result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          ptr = ctx->ParseMessage(_internal_mutable_geofence_result(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
-  _impl_._has_bits_.Or(has_bits);
+const char* ClearGeofenceResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> ClearGeofenceResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(ClearGeofenceResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_ClearGeofenceResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.geofence.GeofenceResult geofence_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(ClearGeofenceResponse, _impl_.geofence_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.geofence.GeofenceResult geofence_result = 1;
+    {PROTOBUF_FIELD_OFFSET(ClearGeofenceResponse, _impl_.geofence_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::geofence::GeofenceResult>()},
+  }}, {{
+  }},
+};
 
 ::uint8_t* ClearGeofenceResponse::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.geofence.ClearGeofenceResponse)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
   // .mavsdk.rpc.geofence.GeofenceResult geofence_result = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, _Internal::geofence_result(this),
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::geofence_result(this),
         _Internal::geofence_result(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.geofence.ClearGeofenceResponse)
   return target;
@@ -1976,22 +1974,22 @@ failure:
   // .mavsdk.rpc.geofence.GeofenceResult geofence_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.geofence_result_);
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.geofence_result_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData ClearGeofenceResponse::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    ClearGeofenceResponse::MergeImpl
+const ::google::protobuf::Message::ClassData ClearGeofenceResponse::_class_data_ = {
+    ClearGeofenceResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*ClearGeofenceResponse::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* ClearGeofenceResponse::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void ClearGeofenceResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void ClearGeofenceResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<ClearGeofenceResponse*>(&to_msg);
   auto& from = static_cast<const ClearGeofenceResponse&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.geofence.ClearGeofenceResponse)
@@ -2003,7 +2001,7 @@ void ClearGeofenceResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, 
     _this->_internal_mutable_geofence_result()->::mavsdk::rpc::geofence::GeofenceResult::MergeFrom(
         from._internal_geofence_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void ClearGeofenceResponse::CopyFrom(const ClearGeofenceResponse& from) {
@@ -2013,18 +2011,21 @@ void ClearGeofenceResponse::CopyFrom(const ClearGeofenceResponse& from) {
   MergeFrom(from);
 }
 
-bool ClearGeofenceResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool ClearGeofenceResponse::IsInitialized() const {
   return true;
 }
 
-void ClearGeofenceResponse::InternalSwap(ClearGeofenceResponse* other) {
+::_pbi::CachedSize* ClearGeofenceResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void ClearGeofenceResponse::InternalSwap(ClearGeofenceResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.geofence_result_, other->_impl_.geofence_result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata ClearGeofenceResponse::GetMetadata() const {
+::google::protobuf::Metadata ClearGeofenceResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_geofence_2fgeofence_2eproto_getter, &descriptor_table_geofence_2fgeofence_2eproto_once,
       file_level_metadata_geofence_2fgeofence_2eproto[7]);
@@ -2035,132 +2036,115 @@ class GeofenceResult::_Internal {
  public:
 };
 
-GeofenceResult::GeofenceResult(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+GeofenceResult::GeofenceResult(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.geofence.GeofenceResult)
 }
-GeofenceResult::GeofenceResult(const GeofenceResult& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  GeofenceResult* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.result_str_) {}
+inline PROTOBUF_NDEBUG_INLINE GeofenceResult::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : result_str_(arena, from.result_str_),
+        _cached_size_{0} {}
 
-    , decltype(_impl_.result_) {}
+GeofenceResult::GeofenceResult(
+    ::google::protobuf::Arena* arena,
+    const GeofenceResult& from)
+    : ::google::protobuf::Message(arena) {
+  GeofenceResult* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  _impl_.result_ = from._impl_.result_;
 
-    , /*decltype(_impl_._cached_size_)*/{}};
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  _impl_.result_str_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.result_str_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (!from._internal_result_str().empty()) {
-    _this->_impl_.result_str_.Set(from._internal_result_str(), _this->GetArenaForAllocation());
-  }
-  _this->_impl_.result_ = from._impl_.result_;
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.geofence.GeofenceResult)
 }
+inline PROTOBUF_NDEBUG_INLINE GeofenceResult::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : result_str_(arena),
+        _cached_size_{0} {}
 
 inline void GeofenceResult::SharedCtor(::_pb::Arena* arena) {
-  (void)arena;
-  new (&_impl_) Impl_{
-      decltype(_impl_.result_str_) {}
-
-    , decltype(_impl_.result_) { 0 }
-
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
-  _impl_.result_str_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        _impl_.result_str_.Set("", GetArenaForAllocation());
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.result_ = {};
 }
-
 GeofenceResult::~GeofenceResult() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.geofence.GeofenceResult)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void GeofenceResult::SharedDtor() {
-  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArena() == nullptr);
   _impl_.result_str_.Destroy();
+  _impl_.~Impl_();
 }
 
-void GeofenceResult::SetCachedSize(int size) const {
-  _impl_._cached_size_.Set(size);
-}
-
-void GeofenceResult::Clear() {
+PROTOBUF_NOINLINE void GeofenceResult::Clear() {
 // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.geofence.GeofenceResult)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.result_str_.ClearToEmpty();
   _impl_.result_ = 0;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* GeofenceResult::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // .mavsdk.rpc.geofence.GeofenceResult.Result result = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
-          ::int32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
-          CHK_(ptr);
-          _internal_set_result(static_cast<::mavsdk::rpc::geofence::GeofenceResult_Result>(val));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      // string result_str = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
-          auto str = _internal_mutable_result_str();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "mavsdk.rpc.geofence.GeofenceResult.result_str"));
-        } else {
-          goto handle_unusual;
-        }
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* GeofenceResult::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 53, 2> GeofenceResult::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_GeofenceResult_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // string result_str = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(GeofenceResult, _impl_.result_str_)}},
+    // .mavsdk.rpc.geofence.GeofenceResult.Result result = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GeofenceResult, _impl_.result_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(GeofenceResult, _impl_.result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.geofence.GeofenceResult.Result result = 1;
+    {PROTOBUF_FIELD_OFFSET(GeofenceResult, _impl_.result_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // string result_str = 2;
+    {PROTOBUF_FIELD_OFFSET(GeofenceResult, _impl_.result_str_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\42\0\12\0\0\0\0\0"
+    "mavsdk.rpc.geofence.GeofenceResult"
+    "result_str"
+  }},
+};
 
 ::uint8_t* GeofenceResult::_InternalSerialize(
-    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.geofence.GeofenceResult)
   ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // .mavsdk.rpc.geofence.GeofenceResult.Result result = 1;
   if (this->_internal_result() != 0) {
@@ -2172,14 +2156,15 @@ failure:
   // string result_str = 2;
   if (!this->_internal_result_str().empty()) {
     const std::string& _s = this->_internal_result_str();
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-        _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.geofence.GeofenceResult.result_str");
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.geofence.GeofenceResult.result_str");
     target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.geofence.GeofenceResult)
   return target;
@@ -2195,7 +2180,7 @@ failure:
 
   // string result_str = 2;
   if (!this->_internal_result_str().empty()) {
-    total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                     this->_internal_result_str());
   }
 
@@ -2208,14 +2193,15 @@ failure:
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData GeofenceResult::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    GeofenceResult::MergeImpl
+const ::google::protobuf::Message::ClassData GeofenceResult::_class_data_ = {
+    GeofenceResult::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GeofenceResult::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData* GeofenceResult::GetClassData() const {
+  return &_class_data_;
+}
 
-
-void GeofenceResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void GeofenceResult::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<GeofenceResult*>(&to_msg);
   auto& from = static_cast<const GeofenceResult&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.geofence.GeofenceResult)
@@ -2229,7 +2215,7 @@ void GeofenceResult::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const :
   if (from._internal_result() != 0) {
     _this->_internal_set_result(from._internal_result());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void GeofenceResult::CopyFrom(const GeofenceResult& from) {
@@ -2239,21 +2225,23 @@ void GeofenceResult::CopyFrom(const GeofenceResult& from) {
   MergeFrom(from);
 }
 
-bool GeofenceResult::IsInitialized() const {
+PROTOBUF_NOINLINE bool GeofenceResult::IsInitialized() const {
   return true;
 }
 
-void GeofenceResult::InternalSwap(GeofenceResult* other) {
+::_pbi::CachedSize* GeofenceResult::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void GeofenceResult::InternalSwap(GeofenceResult* PROTOBUF_RESTRICT other) {
   using std::swap;
-  auto* lhs_arena = GetArenaForAllocation();
-  auto* rhs_arena = other->GetArenaForAllocation();
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, lhs_arena,
-                                       &other->_impl_.result_str_, rhs_arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, &other->_impl_.result_str_, arena);
   swap(_impl_.result_, other->_impl_.result_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata GeofenceResult::GetMetadata() const {
+::google::protobuf::Metadata GeofenceResult::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_geofence_2fgeofence_2eproto_getter, &descriptor_table_geofence_2fgeofence_2eproto_once,
       file_level_metadata_geofence_2fgeofence_2eproto[8]);
@@ -2262,43 +2250,9 @@ void GeofenceResult::InternalSwap(GeofenceResult* other) {
 }  // namespace geofence
 }  // namespace rpc
 }  // namespace mavsdk
-PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::geofence::Point*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::geofence::Point >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::geofence::Point >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::geofence::Polygon*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::geofence::Polygon >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::geofence::Polygon >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::geofence::Circle*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::geofence::Circle >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::geofence::Circle >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::geofence::GeofenceData*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::geofence::GeofenceData >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::geofence::GeofenceData >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::geofence::UploadGeofenceRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::geofence::UploadGeofenceRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::geofence::UploadGeofenceRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::geofence::UploadGeofenceResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::geofence::UploadGeofenceResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::geofence::UploadGeofenceResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::geofence::ClearGeofenceRequest*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::geofence::ClearGeofenceRequest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::geofence::ClearGeofenceRequest >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::geofence::ClearGeofenceResponse*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::geofence::ClearGeofenceResponse >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::geofence::ClearGeofenceResponse >(arena);
-}
-template<> PROTOBUF_NOINLINE ::mavsdk::rpc::geofence::GeofenceResult*
-Arena::CreateMaybeMessage< ::mavsdk::rpc::geofence::GeofenceResult >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::mavsdk::rpc::geofence::GeofenceResult >(arena);
-}
-PROTOBUF_NAMESPACE_CLOSE
+namespace google {
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 // @@protoc_insertion_point(global_scope)
 #include "google/protobuf/port_undef.inc"
