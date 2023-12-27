@@ -1,0 +1,62 @@
+From c48d153a8f410d27724f143340aa929b6cd53ab3 Mon Sep 17 00:00:00 2001
+From: Jonas Vautherin <dev@jonas.vautherin.ch>
+Date: Wed, 27 Dec 2023 23:48:35 +0100
+Subject: [PATCH] Remove LFS64 interfaces that are now unsupported in Musl
+
+---
+This patch comes from https://git.alpinelinux.org/aports/tree/main/tinyxml2/no-lfs64.patch
+but modified for Android, which requires the LFS64 interfaces.
+
+ CMakeLists.txt | 7 +++++++
+ Makefile       | 2 +-
+ tinyxml2.cpp   | 3 ---
+ 3 files changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8802fb8..799f210 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -33,6 +33,13 @@ target_compile_definitions(
+     PRIVATE $<$<CXX_COMPILER_ID:MSVC>:_CRT_SECURE_NO_WARNINGS>
+ )
+ 
++if (NOT ANDROID)
++    target_compile_definitions(
++        tinyxml2
++        PUBLIC _FILE_OFFSET_BITS=64
++    )
++endif ()
++
+ set_target_properties(
+     tinyxml2
+     PROPERTIES
+diff --git a/Makefile b/Makefile
+index e76d8ec..6ca8544 100644
+--- a/Makefile
++++ b/Makefile
+@@ -10,7 +10,7 @@ ARFLAGS = cr
+ RM = rm -f
+ RANLIB = ranlib
+ MKDIR = mkdir -p
+-CXXFLAGS = -fPIC
++CXXFLAGS = -D_FILE_OFFSET_BITS=64 -fPIC
+ 
+ INSTALL = install
+ INSTALL_PROGRAM = $(INSTALL)
+diff --git a/tinyxml2.cpp b/tinyxml2.cpp
+index 31925d9..1bfa8e8 100755
+--- a/tinyxml2.cpp
++++ b/tinyxml2.cpp
+@@ -106,9 +106,6 @@ distribution.
+ #elif defined(__APPLE__) || defined(__FreeBSD__) || defined(__ANDROID__)
+ 	#define TIXML_FSEEK fseeko
+ 	#define TIXML_FTELL ftello
+-#elif defined(__unix__) && defined(__x86_64__)
+-	#define TIXML_FSEEK fseeko64
+-	#define TIXML_FTELL ftello64
+ #else
+ 	#define TIXML_FSEEK fseek
+ 	#define TIXML_FTELL ftell
+-- 
+2.43.0
+
