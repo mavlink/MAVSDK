@@ -25,7 +25,7 @@ jobs:
         id: cache
         with:
           path: ./build/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-1
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/third_party/install" >> $GITHUB_ENV
@@ -86,7 +86,7 @@ jobs:
         id: cache
         with:
           path: ./build/release/third_party/install
-          key: ${{ github.job }}-${{ matrix.ubuntu_image }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ matrix.ubuntu_image }}-${{ hashFiles('./third_party/**') }}-1
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
@@ -125,7 +125,7 @@ jobs:
         id: cache
         with:
           path: ~/.hunter
-          key: ${{ github.job }}-${{ hashFiles('~/.hunter/**') }}-2
+          key: ${{ github.job }}-${{ hashFiles('~/.hunter/**') }}-3
       - name: install mavlink on the system
         run: |
             cmake -Bthird_party/mavlink/build -Sthird_party/mavlink
@@ -152,7 +152,7 @@ jobs:
         id: cache
         with:
           path: ./build/default/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-1
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/default/third_party/install" >> $GITHUB_ENV
@@ -232,7 +232,7 @@ jobs:
         id: cache
         with:
           path: ./build/linux-${{ matrix.arch_name }}/third_party/install
-          key: ${{ github.job }}-linux-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}-4
+          key: ${{ github.job }}-linux-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}-5
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/linux-${{ matrix.arch_name }}/third_party/install" >> $GITHUB_ENV
@@ -270,7 +270,7 @@ jobs:
         id: cache
         with:
           path: ./build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-1
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
@@ -316,7 +316,7 @@ jobs:
         id: cache
         with:
           path: ./build/${{ matrix.arch_name }}/third_party/install
-          key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}-1
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/${{ matrix.arch_name }}/third_party/install" >> $GITHUB_ENV
@@ -358,7 +358,7 @@ jobs:
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install
-          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}-1
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/${{ matrix.name }}/third_party/install" >> $GITHUB_ENV
@@ -402,7 +402,7 @@ jobs:
         id: cache
         with:
           path: ./build/macos/third_party/install
-          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}-1
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/macos/third_party/install" >> $GITHUB_ENV
@@ -461,7 +461,7 @@ jobs:
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install
-          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './tools/ios.toolchain.cmake') }}
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './tools/ios.toolchain.cmake') }}-1
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/${{ matrix.name }}/third_party/install" >> $GITHUB_ENV
@@ -540,7 +540,7 @@ jobs:
         id: cache
         with:
           path: ./build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-2
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-3
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
