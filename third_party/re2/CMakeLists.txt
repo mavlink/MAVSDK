@@ -4,6 +4,7 @@ project(external-re2)
 include(ExternalProject)
 
 list(APPEND CMAKE_ARGS
+    "-DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}"
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
     "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
@@ -26,7 +27,7 @@ endforeach()
 
 ExternalProject_add(
     re2
-    URL https://github.com/google/re2/archive/2022-04-01.tar.gz
+    URL https://github.com/google/re2/archive/2023-11-01.tar.gz
     PREFIX re2
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
