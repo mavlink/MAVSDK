@@ -200,6 +200,8 @@ CameraServerImpl::set_video_streaming(CameraServer::VideoStreaming video_streami
 CameraServer::Result CameraServerImpl::set_in_progress(bool in_progress)
 {
     _is_image_capture_in_progress = in_progress;
+
+    send_capture_status();
     return CameraServer::Result::Success;
 }
 
