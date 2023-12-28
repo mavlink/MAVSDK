@@ -253,9 +253,9 @@ jobs:
           overwrite: true
 
   alpine-linux:
-    name: alpine 3.16.0 (musl)
+    name: alpine 3.19.0 (musl)
     runs-on: ubuntu-20.04
-    container: alpine:3.16.0
+    container: alpine:3.19.0
     steps:
       - name: install tools
         run: apk update && apk add build-base cmake git linux-headers perl tar python3 py3-pip
@@ -270,7 +270,7 @@ jobs:
         id: cache
         with:
           path: ./build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-1
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
