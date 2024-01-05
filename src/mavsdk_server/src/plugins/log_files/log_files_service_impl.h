@@ -21,11 +21,15 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
+
 template<typename LogFiles = LogFiles, typename LazyPlugin = LazyPlugin<LogFiles>>
 
 class LogFilesServiceImpl final : public rpc::log_files::LogFilesService::Service {
 public:
+
     LogFilesServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
+
+
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::LogFiles::Result& result) const
@@ -41,36 +45,55 @@ public:
         response->set_allocated_log_files_result(rpc_log_files_result);
     }
 
-    static std::unique_ptr<rpc::log_files::ProgressData>
-    translateToRpcProgressData(const mavsdk::LogFiles::ProgressData& progress_data)
+
+
+
+    static std::unique_ptr<rpc::log_files::ProgressData> translateToRpcProgressData(const mavsdk::LogFiles::ProgressData &progress_data)
     {
         auto rpc_obj = std::make_unique<rpc::log_files::ProgressData>();
 
+
+            
         rpc_obj->set_progress(progress_data.progress);
+            
+        
 
         return rpc_obj;
     }
 
-    static mavsdk::LogFiles::ProgressData
-    translateFromRpcProgressData(const rpc::log_files::ProgressData& progress_data)
+    static mavsdk::LogFiles::ProgressData translateFromRpcProgressData(const rpc::log_files::ProgressData& progress_data)
     {
         mavsdk::LogFiles::ProgressData obj;
 
-        obj.progress = progress_data.progress();
 
+            
+        obj.progress = progress_data.progress();
+            
+        
         return obj;
     }
 
-    static std::unique_ptr<rpc::log_files::Entry>
-    translateToRpcEntry(const mavsdk::LogFiles::Entry& entry)
+
+
+
+
+    static std::unique_ptr<rpc::log_files::Entry> translateToRpcEntry(const mavsdk::LogFiles::Entry &entry)
     {
         auto rpc_obj = std::make_unique<rpc::log_files::Entry>();
 
+
+            
         rpc_obj->set_id(entry.id);
-
+            
+        
+            
         rpc_obj->set_date(entry.date);
-
+            
+        
+            
         rpc_obj->set_size_bytes(entry.size_bytes);
+            
+        
 
         return rpc_obj;
     }
@@ -79,17 +102,26 @@ public:
     {
         mavsdk::LogFiles::Entry obj;
 
+
+            
         obj.id = entry.id();
-
+            
+        
+            
         obj.date = entry.date();
-
+            
+        
+            
         obj.size_bytes = entry.size_bytes();
-
+            
+        
         return obj;
     }
 
-    static rpc::log_files::LogFilesResult::Result
-    translateToRpcResult(const mavsdk::LogFiles::Result& result)
+
+
+
+    static rpc::log_files::LogFilesResult::Result translateToRpcResult(const mavsdk::LogFiles::Result& result)
     {
         switch (result) {
             default:
@@ -114,8 +146,7 @@ public:
         }
     }
 
-    static mavsdk::LogFiles::Result
-    translateFromRpcResult(const rpc::log_files::LogFilesResult::Result result)
+    static mavsdk::LogFiles::Result translateFromRpcResult(const rpc::log_files::LogFilesResult::Result result)
     {
         switch (result) {
             default:
@@ -140,45 +171,53 @@ public:
         }
     }
 
+
+
+
     grpc::Status GetEntries(
         grpc::ServerContext* /* context */,
         const rpc::log_files::GetEntriesRequest* /* request */,
         rpc::log_files::GetEntriesResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::LogFiles::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
+
+        
 
         auto result = _lazy_plugin.maybe_plugin()->get_entries();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
-
+            
             for (auto elem : result.second) {
+                
                 auto* ptr = response->add_entries();
                 ptr->CopyFrom(*translateToRpcEntry(elem).release());
+                
             }
+            
         }
+
 
         return grpc::Status::OK;
     }
 
-    grpc::Status SubscribeDownloadLogFile(
-        grpc::ServerContext* /* context */,
-        const mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest* request,
-        grpc::ServerWriter<rpc::log_files::DownloadLogFileResponse>* writer) override
+    grpc::Status SubscribeDownloadLogFile(grpc::ServerContext* /* context */, const mavsdk::rpc::log_files::SubscribeDownloadLogFileRequest* request, grpc::ServerWriter<rpc::log_files::DownloadLogFileResponse>* writer) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
-            rpc::log_files::DownloadLogFileResponse rpc_response;
-            auto result = mavsdk::LogFiles::Result::NoSystem;
-            fillResponseWithResult(&rpc_response, result);
-            writer->Write(rpc_response);
-
+            
+                rpc::log_files::DownloadLogFileResponse rpc_response;
+                auto result = mavsdk::LogFiles::Result::NoSystem;
+                fillResponseWithResult(&rpc_response, result);
+                writer->Write(rpc_response);
+            
             return grpc::Status::OK;
         }
 
@@ -189,32 +228,32 @@ public:
         auto is_finished = std::make_shared<bool>(false);
         auto subscribe_mutex = std::make_shared<std::mutex>();
 
-        _lazy_plugin.maybe_plugin()->download_log_file_async(
-            translateFromRpcEntry(request->entry()),
-            request->path(),
-            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](
-                mavsdk::LogFiles::Result result,
-                const mavsdk::LogFiles::ProgressData download_log_file) {
-                rpc::log_files::DownloadLogFileResponse rpc_response;
+        _lazy_plugin.maybe_plugin()->download_log_file_async(translateFromRpcEntry(request->entry()), request->path(), 
+            [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex](mavsdk::LogFiles::Result result,const mavsdk::LogFiles::ProgressData download_log_file) {
 
-                rpc_response.set_allocated_progress(
-                    translateToRpcProgressData(download_log_file).release());
+            rpc::log_files::DownloadLogFileResponse rpc_response;
+        
+            rpc_response.set_allocated_progress(translateToRpcProgressData(download_log_file).release());
+        
 
-                auto rpc_result = translateToRpcResult(result);
-                auto* rpc_log_files_result = new rpc::log_files::LogFilesResult();
-                rpc_log_files_result->set_result(rpc_result);
-                std::stringstream ss;
-                ss << result;
-                rpc_log_files_result->set_result_str(ss.str());
-                rpc_response.set_allocated_log_files_result(rpc_log_files_result);
+        
+            auto rpc_result = translateToRpcResult(result);
+            auto* rpc_log_files_result = new rpc::log_files::LogFilesResult();
+            rpc_log_files_result->set_result(rpc_result);
+            std::stringstream ss;
+            ss << result;
+            rpc_log_files_result->set_result_str(ss.str());
+            rpc_response.set_allocated_log_files_result(rpc_log_files_result);
+        
 
-                std::unique_lock<std::mutex> lock(*subscribe_mutex);
-                if (!*is_finished && !writer->Write(rpc_response)) {
-                    *is_finished = true;
-                    unregister_stream_stop_promise(stream_closed_promise);
-                    stream_closed_promise->set_value();
-                }
-            });
+            std::unique_lock<std::mutex> lock(*subscribe_mutex);
+            if (!*is_finished && !writer->Write(rpc_response)) {
+                
+                *is_finished = true;
+                unregister_stream_stop_promise(stream_closed_promise);
+                stream_closed_promise->set_value();
+            }
+        });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);
@@ -229,25 +268,30 @@ public:
         rpc::log_files::EraseAllLogFilesResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::LogFiles::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
+        
         auto result = _lazy_plugin.maybe_plugin()->erase_all_log_files();
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -257,8 +301,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -269,10 +312,8 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -281,10 +322,11 @@ private:
         }
     }
 
+
     LazyPlugin& _lazy_plugin;
 
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace mavsdk_server

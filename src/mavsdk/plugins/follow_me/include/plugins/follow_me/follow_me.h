@@ -13,14 +13,15 @@
 #include <utility>
 #include <vector>
 
+
 #include "plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
 
-class System;
-class FollowMeImpl;
+
+class System;class FollowMeImpl;
 
 /**
  * @brief Allow users to command the vehicle to follow a specific target.
@@ -28,6 +29,7 @@ class FollowMeImpl;
  */
 class FollowMe : public PluginBase {
 public:
+
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -54,50 +56,44 @@ public:
      */
     explicit FollowMe(std::shared_ptr<System> system); // new
 
+
     /**
      * @brief Destructor (internal use only).
      */
     ~FollowMe() override;
 
+
+
+
+
+
     /**
      * @brief Configuration type.
      */
     struct Config {
+        
         /**
-         * @brief Altitude mode to configure which altitude the follow me will assume the target to
-         * be at.
-         */
-        enum class FollowAltitudeMode {
-            Constant, /**< @brief Target assumed to be mobing at a constant altitude of home
-                         position (where the vehicle armed). */
-            Terrain, /**< @brief Target assumed to be at the terrain level sensed by the distance
-                        sensor. */
-            TargetGps, /**< @brief Target GPS altitude taken into account to do 3D tracking. */
-        };
+     * @brief Altitude mode to configure which altitude the follow me will assume the target to be at.
+     */
+    enum class FollowAltitudeMode {
+        Constant, /**< @brief Target assumed to be mobing at a constant altitude of home position (where the vehicle armed). */
+        Terrain, /**< @brief Target assumed to be at the terrain level sensed by the distance sensor. */
+        TargetGps, /**< @brief Target GPS altitude taken into account to do 3D tracking. */
+    };
 
-        /**
-         * @brief Stream operator to print information about a `FollowMe::FollowAltitudeMode`.
-         *
-         * @return A reference to the stream.
-         */
-        friend std::ostream& operator<<(
-            std::ostream& str, FollowMe::Config::FollowAltitudeMode const& follow_altitude_mode);
-
-        float follow_height_m{
-            8.0f}; /**< @brief [m] Follow height in meters (recommended minimum 8 meters) */
-        float follow_distance_m{8.0f}; /**< @brief [m] Follow distance to target in meters
-                                          (recommended minimum 4 meter) */
-        float responsiveness{0.1f}; /**< @brief How responsive the vehicle is to the motion of the
-                                       target, Lower value = More responsive (range 0.0 to 1.0) */
+    /**
+     * @brief Stream operator to print information about a `FollowMe::FollowAltitudeMode`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, FollowMe::Config::FollowAltitudeMode const& follow_altitude_mode);
+        
+        float follow_height_m{8.0f}; /**< @brief [m] Follow height in meters (recommended minimum 8 meters) */
+        float follow_distance_m{8.0f}; /**< @brief [m] Follow distance to target in meters (recommended minimum 4 meter) */
+        float responsiveness{0.1f}; /**< @brief How responsive the vehicle is to the motion of the target, Lower value = More responsive (range 0.0 to 1.0) */
         FollowAltitudeMode altitude_mode{}; /**< @brief Follow Altitude control mode */
-        float max_tangential_vel_m_s{
-            8.0f}; /**< @brief [m/s] Maximum orbit tangential velocity relative to the target, in
-                      meters per second. Higher value = More aggressive follow angle tracking. */
-        float follow_angle_deg{
-            180.0f}; /**< @brief [deg] Follow Angle relative to the target. 0 equals following in
-                        front of the target's direction. Angle increases in Clockwise direction, so
-                        following from right would be 90 degrees, from the left is -90 degrees, and
-                        so on. */
+        float max_tangential_vel_m_s{8.0f}; /**< @brief [m/s] Maximum orbit tangential velocity relative to the target, in meters per second. Higher value = More aggressive follow angle tracking. */
+        float follow_angle_deg{180.0f}; /**< @brief [deg] Follow Angle relative to the target. 0 equals following in front of the target's direction. Angle increases in Clockwise direction, so following from right would be 90 degrees, from the left is -90 degrees, and so on. */
     };
 
     /**
@@ -114,19 +110,20 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, FollowMe::Config const& config);
 
+
+
+
     /**
      * @brief Target location for the vehicle to follow
      */
     struct TargetLocation {
+        
         double latitude_deg{double(NAN)}; /**< @brief Target latitude in degrees */
         double longitude_deg{double(NAN)}; /**< @brief Target longitude in degrees */
         float absolute_altitude_m{float(NAN)}; /**< @brief Target altitude in meters above MSL */
-        float velocity_x_m_s{
-            float(NAN)}; /**< @brief Target velocity in X axis, in meters per second */
-        float velocity_y_m_s{
-            float(NAN)}; /**< @brief Target velocity in Y axis, in meters per second */
-        float velocity_z_m_s{
-            float(NAN)}; /**< @brief Target velocity in Z axis, in meters per second */
+        float velocity_x_m_s{float(NAN)}; /**< @brief Target velocity in X axis, in meters per second */
+        float velocity_y_m_s{float(NAN)}; /**< @brief Target velocity in Y axis, in meters per second */
+        float velocity_z_m_s{float(NAN)}; /**< @brief Target velocity in Z axis, in meters per second */
     };
 
     /**
@@ -134,16 +131,18 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
-    operator==(const FollowMe::TargetLocation& lhs, const FollowMe::TargetLocation& rhs);
+    friend bool operator==(const FollowMe::TargetLocation& lhs, const FollowMe::TargetLocation& rhs);
 
     /**
      * @brief Stream operator to print information about a `FollowMe::TargetLocation`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, FollowMe::TargetLocation const& target_location);
+    friend std::ostream& operator<<(std::ostream& str, FollowMe::TargetLocation const& target_location);
+
+
+
+
 
     /**
      * @brief Possible results returned for followme operations
@@ -167,10 +166,17 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, FollowMe::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous FollowMe calls.
      */
     using ResultCallback = std::function<void(Result)>;
+
+
+
+
+
 
     /**
      * @brief Get current configuration.
@@ -181,6 +187,11 @@ public:
      */
     FollowMe::Config get_config() const;
 
+
+
+
+
+
     /**
      * @brief Apply configuration by sending it to the system.
      *
@@ -189,6 +200,11 @@ public:
      * @return Result of request.
      */
     Result set_config(Config config) const;
+
+
+
+
+
 
     /**
      * @brief Check if FollowMe is active.
@@ -199,6 +215,11 @@ public:
      */
     bool is_active() const;
 
+
+
+
+
+
     /**
      * @brief Set location of the moving target.
      *
@@ -207,6 +228,11 @@ public:
      * @return Result of request.
      */
     Result set_target_location(TargetLocation location) const;
+
+
+
+
+
 
     /**
      * @brief Get the last location of the target.
@@ -217,6 +243,11 @@ public:
      */
     FollowMe::TargetLocation get_last_location() const;
 
+
+
+
+
+
     /**
      * @brief Start FollowMe mode.
      *
@@ -226,6 +257,11 @@ public:
      */
     Result start() const;
 
+
+
+
+
+
     /**
      * @brief Stop FollowMe mode.
      *
@@ -234,6 +270,9 @@ public:
      * @return Result of request.
      */
     Result stop() const;
+
+
+
 
     /**
      * @brief Copy constructor.

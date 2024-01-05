@@ -21,11 +21,15 @@
 namespace mavsdk {
 namespace mavsdk_server {
 
+
 template<typename Gripper = Gripper, typename LazyPlugin = LazyPlugin<Gripper>>
 
 class GripperServiceImpl final : public rpc::gripper::GripperService::Service {
 public:
+
     GripperServiceImpl(LazyPlugin& lazy_plugin) : _lazy_plugin(lazy_plugin) {}
+
+
 
     template<typename ResponseType>
     void fillResponseWithResult(ResponseType* response, mavsdk::Gripper::Result& result) const
@@ -41,13 +45,12 @@ public:
         response->set_allocated_gripper_result(rpc_gripper_result);
     }
 
-    static rpc::gripper::GripperAction
-    translateToRpcGripperAction(const mavsdk::Gripper::GripperAction& gripper_action)
+
+    static rpc::gripper::GripperAction translateToRpcGripperAction(const mavsdk::Gripper::GripperAction& gripper_action)
     {
         switch (gripper_action) {
             default:
-                LogErr() << "Unknown gripper_action enum value: "
-                         << static_cast<int>(gripper_action);
+                LogErr() << "Unknown gripper_action enum value: " << static_cast<int>(gripper_action);
             // FALLTHROUGH
             case mavsdk::Gripper::GripperAction::Release:
                 return rpc::gripper::GRIPPER_ACTION_RELEASE;
@@ -56,13 +59,11 @@ public:
         }
     }
 
-    static mavsdk::Gripper::GripperAction
-    translateFromRpcGripperAction(const rpc::gripper::GripperAction gripper_action)
+    static mavsdk::Gripper::GripperAction translateFromRpcGripperAction(const rpc::gripper::GripperAction gripper_action)
     {
         switch (gripper_action) {
             default:
-                LogErr() << "Unknown gripper_action enum value: "
-                         << static_cast<int>(gripper_action);
+                LogErr() << "Unknown gripper_action enum value: " << static_cast<int>(gripper_action);
             // FALLTHROUGH
             case rpc::gripper::GRIPPER_ACTION_RELEASE:
                 return mavsdk::Gripper::GripperAction::Release;
@@ -71,8 +72,8 @@ public:
         }
     }
 
-    static rpc::gripper::GripperResult::Result
-    translateToRpcResult(const mavsdk::Gripper::Result& result)
+
+    static rpc::gripper::GripperResult::Result translateToRpcResult(const mavsdk::Gripper::Result& result)
     {
         switch (result) {
             default:
@@ -95,8 +96,7 @@ public:
         }
     }
 
-    static mavsdk::Gripper::Result
-    translateFromRpcResult(const rpc::gripper::GripperResult::Result result)
+    static mavsdk::Gripper::Result translateFromRpcResult(const rpc::gripper::GripperResult::Result result)
     {
         switch (result) {
             default:
@@ -119,17 +119,21 @@ public:
         }
     }
 
+
+
+
     grpc::Status Grab(
         grpc::ServerContext* /* context */,
         const rpc::gripper::GrabRequest* request,
         rpc::gripper::GrabResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Gripper::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -137,12 +141,16 @@ public:
             LogWarn() << "Grab sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->grab(request->instance());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
@@ -153,11 +161,12 @@ public:
         rpc::gripper::ReleaseResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            
             if (response != nullptr) {
                 auto result = mavsdk::Gripper::Result::NoSystem;
                 fillResponseWithResult(response, result);
             }
-
+            
             return grpc::Status::OK;
         }
 
@@ -165,18 +174,22 @@ public:
             LogWarn() << "Release sent with a null request! Ignoring...";
             return grpc::Status::OK;
         }
-
+            
+        
         auto result = _lazy_plugin.maybe_plugin()->release(request->instance());
+        
 
+        
         if (response != nullptr) {
             fillResponseWithResult(response, result);
         }
+        
 
         return grpc::Status::OK;
     }
 
-    void stop()
-    {
+
+    void stop() {
         _stopped.store(true);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
@@ -186,8 +199,7 @@ public:
     }
 
 private:
-    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom)
-    {
+    void register_stream_stop_promise(std::weak_ptr<std::promise<void>> prom) {
         // If we have already stopped, set promise immediately and don't add it to list.
         if (_stopped.load()) {
             if (auto handle = prom.lock()) {
@@ -198,10 +210,8 @@ private:
         }
     }
 
-    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
-    {
-        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
-             /* ++it */) {
+    void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom) {
+        for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end(); /* ++it */) {
             if (it->lock() == prom) {
                 it = _stream_stop_promises.erase(it);
             } else {
@@ -210,10 +220,11 @@ private:
         }
     }
 
+
     LazyPlugin& _lazy_plugin;
 
     std::atomic<bool> _stopped{false};
-    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
+    std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises {};
 };
 
 } // namespace mavsdk_server

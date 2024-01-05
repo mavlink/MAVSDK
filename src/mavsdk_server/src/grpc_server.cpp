@@ -22,6 +22,7 @@ int GrpcServer::run()
 
     builder.RegisterService(&_core);
 
+
 #ifdef ACTION_ENABLED
     builder.RegisterService(&_action_service);
 #endif
@@ -154,6 +155,7 @@ int GrpcServer::run()
     builder.RegisterService(&_winch_service);
 #endif
 
+
 #ifdef ENABLE_PROTO_REFLECTION
     grpc::reflection::InitProtoReflectionServerBuilderPlugin();
 #endif
@@ -184,6 +186,7 @@ void GrpcServer::stop()
 {
     if (_server != nullptr) {
         _core.stop();
+
 
 #ifdef ACTION_ENABLED
         _action_service.stop();

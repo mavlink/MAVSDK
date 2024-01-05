@@ -13,11 +13,13 @@
 #include <utility>
 #include <vector>
 
+
 #include "server_plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
+
 
 class ServerComponent;
 class FtpServerImpl;
@@ -27,6 +29,7 @@ class FtpServerImpl;
  */
 class FtpServer : public ServerPluginBase {
 public:
+
     /**
      * @brief Constructor. Creates the plugin for a ServerComponent instance.
      *
@@ -40,10 +43,16 @@ public:
      */
     explicit FtpServer(std::shared_ptr<ServerComponent> server_component);
 
+
     /**
      * @brief Destructor (internal use only).
      */
     ~FtpServer() override;
+
+
+
+
+
 
     /**
      * @brief Possible results returned for FTP server requests.
@@ -62,10 +71,17 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, FtpServer::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous FtpServer calls.
      */
     using ResultCallback = std::function<void(Result)>;
+
+
+
+
+
 
     /**
      * @brief Set root directory.
@@ -80,6 +96,9 @@ public:
      * @return Result of request.
      */
     Result set_root_dir(std::string path) const;
+
+
+
 
     /**
      * @brief Copy constructor.

@@ -13,20 +13,22 @@
 #include <utility>
 #include <vector>
 
+
 #include "plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
 
-class System;
-class GripperImpl;
+
+class System;class GripperImpl;
 
 /**
  * @brief Allows users to send gripper actions.
  */
 class Gripper : public PluginBase {
 public:
+
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -53,10 +55,12 @@ public:
      */
     explicit Gripper(std::shared_ptr<System> system); // new
 
+
     /**
      * @brief Destructor (internal use only).
      */
     ~Gripper() override;
+
 
     /**
      * @brief Gripper Actions.
@@ -74,8 +78,11 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Gripper::GripperAction const& gripper_action);
+    friend std::ostream& operator<<(std::ostream& str, Gripper::GripperAction const& gripper_action);
+
+
+
+
 
     /**
      * @brief Possible results returned for gripper action requests.
@@ -97,10 +104,15 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Gripper::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous Gripper calls.
      */
     using ResultCallback = std::function<void(Result)>;
+
+
+
 
     /**
      * @brief Gripper grab cargo.
@@ -108,6 +120,8 @@ public:
      * This function is non-blocking. See 'grab' for the blocking counterpart.
      */
     void grab_async(uint32_t instance, const ResultCallback callback);
+
+
 
     /**
      * @brief Gripper grab cargo.
@@ -118,12 +132,17 @@ public:
      */
     Result grab(uint32_t instance) const;
 
+
+
+
     /**
      * @brief Gripper release cargo.
      *
      * This function is non-blocking. See 'release' for the blocking counterpart.
      */
     void release_async(uint32_t instance, const ResultCallback callback);
+
+
 
     /**
      * @brief Gripper release cargo.
@@ -133,6 +152,9 @@ public:
      * @return Result of request.
      */
     Result release(uint32_t instance) const;
+
+
+
 
     /**
      * @brief Copy constructor.
