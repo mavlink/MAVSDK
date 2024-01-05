@@ -59,7 +59,7 @@ endif()
 
 ExternalProject_add(
     grpc
-    URL https://github.com/grpc/grpc/archive/v1.55.1.tar.gz
+    URL https://github.com/grpc/grpc/archive/v1.60.0.tar.gz
     PREFIX grpc
     PATCH_COMMAND "${PATCH_CMD}"
     CMAKE_ARGS "${CMAKE_ARGS}"

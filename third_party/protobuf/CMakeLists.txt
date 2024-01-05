@@ -38,7 +38,7 @@ endforeach()
 
 ExternalProject_add(
     protobuf
-    URL https://github.com/protocolbuffers/protobuf/releases/download/v23.2/protobuf-23.2.tar.gz
+    URL https://github.com/protocolbuffers/protobuf/releases/download/v25.1/protobuf-25.1.tar.gz
     PREFIX protobuf
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
