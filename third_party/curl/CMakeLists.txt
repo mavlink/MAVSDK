@@ -46,7 +46,7 @@ endforeach()
 ExternalProject_add(
     curl
     GIT_REPOSITORY https://github.com/curl/curl.git
-    GIT_TAG curl-7_84_0
+    GIT_TAG curl-7_88_1
     GIT_SHALLOW ON
     PREFIX curl
     CMAKE_ARGS "${CMAKE_ARGS}"

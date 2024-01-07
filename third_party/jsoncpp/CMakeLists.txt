@@ -30,7 +30,7 @@ endforeach()
 ExternalProject_Add(
     jsoncpp
     GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp
-    GIT_TAG 42e892d96e47b1f6e29844cc705e148ec4856448
+    GIT_TAG 69098a18b9af0c47549d9a271c054d13ca92b006
     PREFIX jsoncpp
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
