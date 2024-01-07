@@ -13,22 +13,20 @@
 #include <utility>
 #include <vector>
 
-
 #include "plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
 
-
-class System;class CalibrationImpl;
+class System;
+class CalibrationImpl;
 
 /**
  * @brief Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetometer.
  */
 class Calibration : public PluginBase {
 public:
-
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -55,16 +53,10 @@ public:
      */
     explicit Calibration(std::shared_ptr<System> system); // new
 
-
     /**
      * @brief Destructor (internal use only).
      */
     ~Calibration() override;
-
-
-
-
-
 
     /**
      * @brief Possible results returned for calibration commands
@@ -72,7 +64,8 @@ public:
     enum class Result {
         Unknown, /**< @brief Unknown result. */
         Success, /**< @brief The calibration succeeded. */
-        Next, /**< @brief Intermediate message showing progress or instructions on the next steps. */
+        Next, /**< @brief Intermediate message showing progress or instructions on the next steps.
+               */
         Failed, /**< @brief Calibration failed. */
         NoSystem, /**< @brief No system is connected. */
         ConnectionError, /**< @brief Connection error. */
@@ -91,20 +84,17 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Calibration::Result const& result);
 
-
-
-
-
     /**
      * @brief Progress data coming from calibration.
      *
      * Can be a progress percentage, or an instruction text.
      */
     struct ProgressData {
-        
-        bool has_progress{false}; /**< @brief Whether this ProgressData contains a 'progress' status or not */
+        bool has_progress{
+            false}; /**< @brief Whether this ProgressData contains a 'progress' status or not */
         float progress{float(NAN)}; /**< @brief Progress (percentage) */
-        bool has_status_text{false}; /**< @brief Whether this ProgressData contains a 'status_text' or not */
+        bool has_status_text{
+            false}; /**< @brief Whether this ProgressData contains a 'status_text' or not */
         std::string status_text{}; /**< @brief Instruction text */
     };
 
@@ -113,25 +103,22 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Calibration::ProgressData& lhs, const Calibration::ProgressData& rhs);
+    friend bool
+    operator==(const Calibration::ProgressData& lhs, const Calibration::ProgressData& rhs);
 
     /**
      * @brief Stream operator to print information about a `Calibration::ProgressData`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Calibration::ProgressData const& progress_data);
-
+    friend std::ostream&
+    operator<<(std::ostream& str, Calibration::ProgressData const& progress_data);
 
     /**
      * @brief Callback type for asynchronous Calibration calls.
      */
     using ResultCallback = std::function<void(Result)>;
 
-
-
-
-        
     /**
      * @brief Callback type for calibrate_gyro_async.
      */
@@ -142,14 +129,6 @@ public:
      */
     void calibrate_gyro_async(const CalibrateGyroCallback& callback);
 
-        
-
-
-
-
-
-
-        
     /**
      * @brief Callback type for calibrate_accelerometer_async.
      */
@@ -160,14 +139,6 @@ public:
      */
     void calibrate_accelerometer_async(const CalibrateAccelerometerCallback& callback);
 
-        
-
-
-
-
-
-
-        
     /**
      * @brief Callback type for calibrate_magnetometer_async.
      */
@@ -178,14 +149,6 @@ public:
      */
     void calibrate_magnetometer_async(const CalibrateMagnetometerCallback& callback);
 
-        
-
-
-
-
-
-
-        
     /**
      * @brief Callback type for calibrate_level_horizon_async.
      */
@@ -196,14 +159,6 @@ public:
      */
     void calibrate_level_horizon_async(const CalibrateLevelHorizonCallback& callback);
 
-        
-
-
-
-
-
-
-        
     /**
      * @brief Callback type for calibrate_gimbal_accelerometer_async.
      */
@@ -214,15 +169,6 @@ public:
      */
     void calibrate_gimbal_accelerometer_async(const CalibrateGimbalAccelerometerCallback& callback);
 
-        
-
-
-
-
-
-
-
-
     /**
      * @brief Cancel ongoing calibration process.
      *
@@ -231,9 +177,6 @@ public:
      * @return Result of request.
      */
     Result cancel() const;
-
-
-
 
     /**
      * @brief Copy constructor.

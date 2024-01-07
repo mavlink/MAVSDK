@@ -13,15 +13,14 @@
 #include <utility>
 #include <vector>
 
-
 #include "plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
 
-
-class System;class ShellImpl;
+class System;
+class ShellImpl;
 
 /**
  * @brief *
@@ -29,7 +28,6 @@ class System;class ShellImpl;
  */
 class Shell : public PluginBase {
 public:
-
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -56,16 +54,10 @@ public:
      */
     explicit Shell(std::shared_ptr<System> system); // new
 
-
     /**
      * @brief Destructor (internal use only).
      */
     ~Shell() override;
-
-
-
-
-
 
     /**
      * @brief Possible results returned for shell requests
@@ -86,17 +78,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Shell::Result const& result);
 
-
-
     /**
      * @brief Callback type for asynchronous Shell calls.
      */
     using ResultCallback = std::function<void(Result)>;
-
-
-
-
-
 
     /**
      * @brief Send a command line.
@@ -106,11 +91,6 @@ public:
      * @return Result of request.
      */
     Result send(std::string command) const;
-
-
-
-
-        
 
     /**
      * @brief Callback type for subscribe_receive.
@@ -125,7 +105,8 @@ public:
     /**
      * @brief Receive feedback from a sent command line.
      *
-     * This subscription needs to be made before a command line is sent, otherwise, no response will be sent.
+     * This subscription needs to be made before a command line is sent, otherwise, no response will
+     * be sent.
      */
     ReceiveHandle subscribe_receive(const ReceiveCallback& callback);
 
@@ -133,13 +114,6 @@ public:
      * @brief Unsubscribe from subscribe_receive
      */
     void unsubscribe_receive(ReceiveHandle handle);
-
-        
-
-
-
-
-
 
     /**
      * @brief Copy constructor.

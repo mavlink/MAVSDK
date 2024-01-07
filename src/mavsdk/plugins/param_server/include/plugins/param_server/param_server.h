@@ -13,13 +13,11 @@
 #include <utility>
 #include <vector>
 
-
 #include "server_plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
-
 
 class ServerComponent;
 class ParamServerImpl;
@@ -29,7 +27,6 @@ class ParamServerImpl;
  */
 class ParamServer : public ServerPluginBase {
 public:
-
     /**
      * @brief Constructor. Creates the plugin for a ServerComponent instance.
      *
@@ -43,21 +40,15 @@ public:
      */
     explicit ParamServer(std::shared_ptr<ServerComponent> server_component);
 
-
     /**
      * @brief Destructor (internal use only).
      */
     ~ParamServer() override;
 
-
-
-
-
     /**
      * @brief Type for integer parameters.
      */
     struct IntParam {
-        
         std::string name{}; /**< @brief Name of the parameter */
         int32_t value{}; /**< @brief Value of the parameter */
     };
@@ -76,14 +67,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, ParamServer::IntParam const& int_param);
 
-
-
-
     /**
      * @brief Type for float parameters.
      */
     struct FloatParam {
-        
         std::string name{}; /**< @brief Name of the parameter */
         float value{}; /**< @brief Value of the parameter */
     };
@@ -102,14 +89,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, ParamServer::FloatParam const& float_param);
 
-
-
-
     /**
      * @brief Type for float parameters.
      */
     struct CustomParam {
-        
         std::string name{}; /**< @brief Name of the parameter */
         std::string value{}; /**< @brief Value of the parameter */
     };
@@ -119,26 +102,27 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const ParamServer::CustomParam& lhs, const ParamServer::CustomParam& rhs);
+    friend bool
+    operator==(const ParamServer::CustomParam& lhs, const ParamServer::CustomParam& rhs);
 
     /**
      * @brief Stream operator to print information about a `ParamServer::CustomParam`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, ParamServer::CustomParam const& custom_param);
-
-
-
+    friend std::ostream&
+    operator<<(std::ostream& str, ParamServer::CustomParam const& custom_param);
 
     /**
      * @brief Type collecting all integer, float, and custom parameters.
      */
     struct AllParams {
-        
-        std::vector<IntParam> int_params{}; /**< @brief Collection of all parameter names and values of type int */
-        std::vector<FloatParam> float_params{}; /**< @brief Collection of all parameter names and values of type float */
-        std::vector<CustomParam> custom_params{}; /**< @brief Collection of all parameter names and values of type custom */
+        std::vector<IntParam>
+            int_params{}; /**< @brief Collection of all parameter names and values of type int */
+        std::vector<FloatParam> float_params{}; /**< @brief Collection of all parameter names and
+                                                   values of type float */
+        std::vector<CustomParam> custom_params{}; /**< @brief Collection of all parameter names and
+                                                     values of type custom */
     };
 
     /**
@@ -154,10 +138,6 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, ParamServer::AllParams const& all_params);
-
-
-
-
 
     /**
      * @brief Possible results returned for param requests.
@@ -179,17 +159,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, ParamServer::Result const& result);
 
-
-
     /**
      * @brief Callback type for asynchronous ParamServer calls.
      */
     using ResultCallback = std::function<void(Result)>;
-
-
-
-
-
 
     /**
      * @brief Retrieve an int parameter.
@@ -202,11 +175,6 @@ public:
      */
     std::pair<Result, int32_t> retrieve_param_int(std::string name) const;
 
-
-
-
-
-
     /**
      * @brief Provide an int parameter.
      *
@@ -217,11 +185,6 @@ public:
      * @return Result of request.
      */
     Result provide_param_int(std::string name, int32_t value) const;
-
-
-
-
-
 
     /**
      * @brief Retrieve a float parameter.
@@ -234,11 +197,6 @@ public:
      */
     std::pair<Result, float> retrieve_param_float(std::string name) const;
 
-
-
-
-
-
     /**
      * @brief Provide a float parameter.
      *
@@ -249,11 +207,6 @@ public:
      * @return Result of request.
      */
     Result provide_param_float(std::string name, float value) const;
-
-
-
-
-
 
     /**
      * @brief Retrieve a custom parameter.
@@ -266,11 +219,6 @@ public:
      */
     std::pair<Result, std::string> retrieve_param_custom(std::string name) const;
 
-
-
-
-
-
     /**
      * @brief Provide a custom parameter.
      *
@@ -282,11 +230,6 @@ public:
      */
     Result provide_param_custom(std::string name, std::string value) const;
 
-
-
-
-
-
     /**
      * @brief Retrieve all parameters.
      *
@@ -295,11 +238,6 @@ public:
      * @return Result of request.
      */
     ParamServer::AllParams retrieve_all_params() const;
-
-
-
-
-        
 
     /**
      * @brief Callback type for subscribe_changed_param_int.
@@ -321,15 +259,6 @@ public:
      */
     void unsubscribe_changed_param_int(ChangedParamIntHandle handle);
 
-        
-
-
-
-
-
-
-        
-
     /**
      * @brief Callback type for subscribe_changed_param_float.
      */
@@ -343,21 +272,13 @@ public:
     /**
      * @brief Subscribe to changed float param.
      */
-    ChangedParamFloatHandle subscribe_changed_param_float(const ChangedParamFloatCallback& callback);
+    ChangedParamFloatHandle
+    subscribe_changed_param_float(const ChangedParamFloatCallback& callback);
 
     /**
      * @brief Unsubscribe from subscribe_changed_param_float
      */
     void unsubscribe_changed_param_float(ChangedParamFloatHandle handle);
-
-        
-
-
-
-
-
-
-        
 
     /**
      * @brief Callback type for subscribe_changed_param_custom.
@@ -372,19 +293,13 @@ public:
     /**
      * @brief Subscribe to changed custom param.
      */
-    ChangedParamCustomHandle subscribe_changed_param_custom(const ChangedParamCustomCallback& callback);
+    ChangedParamCustomHandle
+    subscribe_changed_param_custom(const ChangedParamCustomCallback& callback);
 
     /**
      * @brief Unsubscribe from subscribe_changed_param_custom
      */
     void unsubscribe_changed_param_custom(ChangedParamCustomHandle handle);
-
-        
-
-
-
-
-
 
     /**
      * @brief Copy constructor.

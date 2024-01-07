@@ -13,15 +13,14 @@
 #include <utility>
 #include <vector>
 
-
 #include "plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
 
-
-class System;class OffboardImpl;
+class System;
+class OffboardImpl;
 
 /**
  * @brief *
@@ -36,7 +35,6 @@ class System;class OffboardImpl;
  */
 class Offboard : public PluginBase {
 public:
-
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -63,21 +61,15 @@ public:
      */
     explicit Offboard(std::shared_ptr<System> system); // new
 
-
     /**
      * @brief Destructor (internal use only).
      */
     ~Offboard() override;
 
-
-
-
-
     /**
      * @brief Type for attitude body angles in NED reference frame (roll, pitch, yaw and thrust)
      */
     struct Attitude {
-        
         float roll_deg{}; /**< @brief Roll angle (in degrees, positive is right side down) */
         float pitch_deg{}; /**< @brief Pitch angle (in degrees, positive is nose up) */
         float yaw_deg{}; /**< @brief Yaw angle (in degrees, positive is move nose to the right) */
@@ -98,15 +90,11 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Offboard::Attitude const& attitude);
 
-
-
-
     /**
      * @brief Eight controls that will be given to the group. Each control is a normalized
      * (-1..+1) command value, which will be mapped and scaled through the mixer.
      */
     struct ActuatorControlGroup {
-        
         std::vector<float> controls{}; /**< @brief Controls in the group */
     };
 
@@ -115,17 +103,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Offboard::ActuatorControlGroup& lhs, const Offboard::ActuatorControlGroup& rhs);
+    friend bool operator==(
+        const Offboard::ActuatorControlGroup& lhs, const Offboard::ActuatorControlGroup& rhs);
 
     /**
      * @brief Stream operator to print information about a `Offboard::ActuatorControlGroup`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Offboard::ActuatorControlGroup const& actuator_control_group);
-
-
-
+    friend std::ostream&
+    operator<<(std::ostream& str, Offboard::ActuatorControlGroup const& actuator_control_group);
 
     /**
      * @brief Type for actuator control.
@@ -145,7 +132,6 @@ public:
      * (https://github.com/PX4/Firmware/blob/v1.9.0/src/modules/mavlink/mavlink_receiver.cpp#L980).
      */
     struct ActuatorControl {
-        
         std::vector<ActuatorControlGroup> groups{}; /**< @brief Control groups. */
     };
 
@@ -154,26 +140,28 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Offboard::ActuatorControl& lhs, const Offboard::ActuatorControl& rhs);
+    friend bool
+    operator==(const Offboard::ActuatorControl& lhs, const Offboard::ActuatorControl& rhs);
 
     /**
      * @brief Stream operator to print information about a `Offboard::ActuatorControl`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Offboard::ActuatorControl const& actuator_control);
-
-
-
+    friend std::ostream&
+    operator<<(std::ostream& str, Offboard::ActuatorControl const& actuator_control);
 
     /**
-     * @brief Type for attitude rate commands in body coordinates (roll, pitch, yaw angular rate and thrust)
+     * @brief Type for attitude rate commands in body coordinates (roll, pitch, yaw angular rate and
+     * thrust)
      */
     struct AttitudeRate {
-        
-        float roll_deg_s{}; /**< @brief Roll angular rate (in degrees/second, positive for clock-wise looking from front) */
-        float pitch_deg_s{}; /**< @brief Pitch angular rate (in degrees/second, positive for head/front moving up) */
-        float yaw_deg_s{}; /**< @brief Yaw angular rate (in degrees/second, positive for clock-wise looking from above) */
+        float roll_deg_s{}; /**< @brief Roll angular rate (in degrees/second, positive for
+                               clock-wise looking from front) */
+        float pitch_deg_s{}; /**< @brief Pitch angular rate (in degrees/second, positive for
+                                head/front moving up) */
+        float yaw_deg_s{}; /**< @brief Yaw angular rate (in degrees/second, positive for clock-wise
+                              looking from above) */
         float thrust_value{}; /**< @brief Thrust (range: 0 to 1) */
     };
 
@@ -191,18 +179,15 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Offboard::AttitudeRate const& attitude_rate);
 
-
-
-
     /**
      * @brief Type for position commands in NED (North East Down) coordinates and yaw.
      */
     struct PositionNedYaw {
-        
         float north_m{}; /**< @brief Position North (in metres) */
         float east_m{}; /**< @brief Position East (in metres) */
         float down_m{}; /**< @brief Position Down (in metres) */
-        float yaw_deg{}; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from above) */
+        float yaw_deg{}; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from
+                            above) */
     };
 
     /**
@@ -210,44 +195,44 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Offboard::PositionNedYaw& lhs, const Offboard::PositionNedYaw& rhs);
+    friend bool
+    operator==(const Offboard::PositionNedYaw& lhs, const Offboard::PositionNedYaw& rhs);
 
     /**
      * @brief Stream operator to print information about a `Offboard::PositionNedYaw`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Offboard::PositionNedYaw const& position_ned_yaw);
-
-
-
-
+    friend std::ostream&
+    operator<<(std::ostream& str, Offboard::PositionNedYaw const& position_ned_yaw);
 
     /**
-     * @brief Type for position commands in Global (Latitude, Longitude, Altitude) coordinates and yaw.
+     * @brief Type for position commands in Global (Latitude, Longitude, Altitude) coordinates and
+     * yaw.
      */
     struct PositionGlobalYaw {
-        
         /**
-     * @brief Possible altitude options
-     */
-    enum class AltitudeType {
-        RelHome, /**< @brief Altitude relative to the Home position. */
-        Amsl, /**< @brief Altitude above mean sea level (AMSL). */
-        Agl, /**< @brief Altitude above ground level (AGL). */
-    };
+         * @brief Possible altitude options
+         */
+        enum class AltitudeType {
+            RelHome, /**< @brief Altitude relative to the Home position. */
+            Amsl, /**< @brief Altitude above mean sea level (AMSL). */
+            Agl, /**< @brief Altitude above ground level (AGL). */
+        };
 
-    /**
-     * @brief Stream operator to print information about a `Offboard::AltitudeType`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(std::ostream& str, Offboard::PositionGlobalYaw::AltitudeType const& altitude_type);
-        
+        /**
+         * @brief Stream operator to print information about a `Offboard::AltitudeType`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream& operator<<(
+            std::ostream& str, Offboard::PositionGlobalYaw::AltitudeType const& altitude_type);
+
         double lat_deg{}; /**< @brief Latitude (in degrees) */
         double lon_deg{}; /**< @brief Longitude (in degrees) */
         float alt_m{}; /**< @brief altitude (in metres) */
-        float yaw_deg{}; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from above) */
+        float yaw_deg{}; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from
+                            above) */
         AltitudeType altitude_type{}; /**< @brief altitude type for this position */
     };
 
@@ -256,27 +241,26 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Offboard::PositionGlobalYaw& lhs, const Offboard::PositionGlobalYaw& rhs);
+    friend bool
+    operator==(const Offboard::PositionGlobalYaw& lhs, const Offboard::PositionGlobalYaw& rhs);
 
     /**
      * @brief Stream operator to print information about a `Offboard::PositionGlobalYaw`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Offboard::PositionGlobalYaw const& position_global_yaw);
-
-
-
+    friend std::ostream&
+    operator<<(std::ostream& str, Offboard::PositionGlobalYaw const& position_global_yaw);
 
     /**
      * @brief Type for velocity commands in body coordinates.
      */
     struct VelocityBodyYawspeed {
-        
         float forward_m_s{}; /**< @brief Velocity forward (in metres/second) */
         float right_m_s{}; /**< @brief Velocity right (in metres/second) */
         float down_m_s{}; /**< @brief Velocity down (in metres/second) */
-        float yawspeed_deg_s{}; /**< @brief Yaw angular rate (in degrees/second, positive for clock-wise looking from above) */
+        float yawspeed_deg_s{}; /**< @brief Yaw angular rate (in degrees/second, positive for
+                                   clock-wise looking from above) */
     };
 
     /**
@@ -284,27 +268,26 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Offboard::VelocityBodyYawspeed& lhs, const Offboard::VelocityBodyYawspeed& rhs);
+    friend bool operator==(
+        const Offboard::VelocityBodyYawspeed& lhs, const Offboard::VelocityBodyYawspeed& rhs);
 
     /**
      * @brief Stream operator to print information about a `Offboard::VelocityBodyYawspeed`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Offboard::VelocityBodyYawspeed const& velocity_body_yawspeed);
-
-
-
+    friend std::ostream&
+    operator<<(std::ostream& str, Offboard::VelocityBodyYawspeed const& velocity_body_yawspeed);
 
     /**
      * @brief Type for velocity commands in NED (North East Down) coordinates and yaw.
      */
     struct VelocityNedYaw {
-        
         float north_m_s{}; /**< @brief Velocity North (in metres/second) */
         float east_m_s{}; /**< @brief Velocity East (in metres/second) */
         float down_m_s{}; /**< @brief Velocity Down (in metres/second) */
-        float yaw_deg{}; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from above) */
+        float yaw_deg{}; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from
+                            above) */
     };
 
     /**
@@ -312,23 +295,21 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Offboard::VelocityNedYaw& lhs, const Offboard::VelocityNedYaw& rhs);
+    friend bool
+    operator==(const Offboard::VelocityNedYaw& lhs, const Offboard::VelocityNedYaw& rhs);
 
     /**
      * @brief Stream operator to print information about a `Offboard::VelocityNedYaw`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Offboard::VelocityNedYaw const& velocity_ned_yaw);
-
-
-
+    friend std::ostream&
+    operator<<(std::ostream& str, Offboard::VelocityNedYaw const& velocity_ned_yaw);
 
     /**
      * @brief Type for acceleration commands in NED (North East Down) coordinates.
      */
     struct AccelerationNed {
-        
         float north_m_s2{}; /**< @brief Acceleration North (in metres/second^2) */
         float east_m_s2{}; /**< @brief Acceleration East (in metres/second^2) */
         float down_m_s2{}; /**< @brief Acceleration Down (in metres/second^2) */
@@ -339,18 +320,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Offboard::AccelerationNed& lhs, const Offboard::AccelerationNed& rhs);
+    friend bool
+    operator==(const Offboard::AccelerationNed& lhs, const Offboard::AccelerationNed& rhs);
 
     /**
      * @brief Stream operator to print information about a `Offboard::AccelerationNed`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Offboard::AccelerationNed const& acceleration_ned);
-
-
-
-
+    friend std::ostream&
+    operator<<(std::ostream& str, Offboard::AccelerationNed const& acceleration_ned);
 
     /**
      * @brief Possible results returned for offboard requests
@@ -374,15 +353,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Offboard::Result const& result);
 
-
-
     /**
      * @brief Callback type for asynchronous Offboard calls.
      */
     using ResultCallback = std::function<void(Result)>;
-
-
-
 
     /**
      * @brief Start offboard control.
@@ -390,8 +364,6 @@ public:
      * This function is non-blocking. See 'start' for the blocking counterpart.
      */
     void start_async(const ResultCallback callback);
-
-
 
     /**
      * @brief Start offboard control.
@@ -402,9 +374,6 @@ public:
      */
     Result start() const;
 
-
-
-
     /**
      * @brief Stop offboard control.
      *
@@ -413,8 +382,6 @@ public:
      * This function is non-blocking. See 'stop' for the blocking counterpart.
      */
     void stop_async(const ResultCallback callback);
-
-
 
     /**
      * @brief Stop offboard control.
@@ -426,11 +393,6 @@ public:
      * @return Result of request.
      */
     Result stop() const;
-
-
-
-
-
 
     /**
      * @brief Check if offboard control is active.
@@ -444,11 +406,6 @@ public:
      */
     bool is_active() const;
 
-
-
-
-
-
     /**
      * @brief Set the attitude in terms of roll, pitch and yaw in degrees with thrust.
      *
@@ -457,11 +414,6 @@ public:
      * @return Result of request.
      */
     Result set_attitude(Attitude attitude) const;
-
-
-
-
-
 
     /**
      * @brief Set direct actuator control values to groups #0 and #1.
@@ -475,11 +427,6 @@ public:
      */
     Result set_actuator_control(ActuatorControl actuator_control) const;
 
-
-
-
-
-
     /**
      * @brief Set the attitude rate in terms of pitch, roll and yaw angular rate along with thrust.
      *
@@ -488,11 +435,6 @@ public:
      * @return Result of request.
      */
     Result set_attitude_rate(AttitudeRate attitude_rate) const;
-
-
-
-
-
 
     /**
      * @brief Set the position in NED coordinates and yaw.
@@ -503,11 +445,6 @@ public:
      */
     Result set_position_ned(PositionNedYaw position_ned_yaw) const;
 
-
-
-
-
-
     /**
      * @brief Set the position in Global coordinates (latitude, longitude, altitude) and yaw
      *
@@ -517,24 +454,15 @@ public:
      */
     Result set_position_global(PositionGlobalYaw position_global_yaw) const;
 
-
-
-
-
-
     /**
-     * @brief Set the velocity in body coordinates and yaw angular rate. Not available for fixed-wing aircraft.
+     * @brief Set the velocity in body coordinates and yaw angular rate. Not available for
+     * fixed-wing aircraft.
      *
      * This function is blocking.
      *
      * @return Result of request.
      */
     Result set_velocity_body(VelocityBodyYawspeed velocity_body_yawspeed) const;
-
-
-
-
-
 
     /**
      * @brief Set the velocity in NED coordinates and yaw. Not available for fixed-wing aircraft.
@@ -545,11 +473,6 @@ public:
      */
     Result set_velocity_ned(VelocityNedYaw velocity_ned_yaw) const;
 
-
-
-
-
-
     /**
      * @brief Set the position in NED coordinates, with the velocity to be used as feed-forward.
      *
@@ -557,26 +480,21 @@ public:
      *
      * @return Result of request.
      */
-    Result set_position_velocity_ned(PositionNedYaw position_ned_yaw, VelocityNedYaw velocity_ned_yaw) const;
-
-
-
-
-
+    Result set_position_velocity_ned(
+        PositionNedYaw position_ned_yaw, VelocityNedYaw velocity_ned_yaw) const;
 
     /**
-     * @brief Set the position, velocity and acceleration in NED coordinates, with velocity and acceleration used as feed-forward.
+     * @brief Set the position, velocity and acceleration in NED coordinates, with velocity and
+     * acceleration used as feed-forward.
      *
      * This function is blocking.
      *
      * @return Result of request.
      */
-    Result set_position_velocity_acceleration_ned(PositionNedYaw position_ned_yaw, VelocityNedYaw velocity_ned_yaw, AccelerationNed acceleration_ned) const;
-
-
-
-
-
+    Result set_position_velocity_acceleration_ned(
+        PositionNedYaw position_ned_yaw,
+        VelocityNedYaw velocity_ned_yaw,
+        AccelerationNed acceleration_ned) const;
 
     /**
      * @brief Set the acceleration in NED coordinates.
@@ -586,9 +504,6 @@ public:
      * @return Result of request.
      */
     Result set_acceleration_ned(AccelerationNed acceleration_ned) const;
-
-
-
 
     /**
      * @brief Copy constructor.

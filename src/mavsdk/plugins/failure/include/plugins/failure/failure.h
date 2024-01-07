@@ -13,22 +13,20 @@
 #include <utility>
 #include <vector>
 
-
 #include "plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
 
-
-class System;class FailureImpl;
+class System;
+class FailureImpl;
 
 /**
  * @brief Inject failures into system to test failsafes.
  */
 class Failure : public PluginBase {
 public:
-
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -55,12 +53,10 @@ public:
      */
     explicit Failure(std::shared_ptr<System> system); // new
 
-
     /**
      * @brief Destructor (internal use only).
      */
     ~Failure() override;
-
 
     /**
      * @brief A failure unit.
@@ -111,10 +107,6 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Failure::FailureType const& failure_type);
 
-
-
-
-
     /**
      * @brief Possible results returned for failure requests.
      */
@@ -136,17 +128,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Failure::Result const& result);
 
-
-
     /**
      * @brief Callback type for asynchronous Failure calls.
      */
     using ResultCallback = std::function<void(Result)>;
-
-
-
-
-
 
     /**
      * @brief Injects a failure.
@@ -156,9 +141,6 @@ public:
      * @return Result of request.
      */
     Result inject(FailureUnit failure_unit, FailureType failure_type, int32_t instance) const;
-
-
-
 
     /**
      * @brief Copy constructor.

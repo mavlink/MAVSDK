@@ -12,19 +12,15 @@ namespace mavsdk {
 using StatusFlags = Winch::StatusFlags;
 using Status = Winch::Status;
 
-
-
-
 Winch::Winch(System& system) : PluginBase(), _impl{std::make_unique<WinchImpl>(system)} {}
 
-Winch::Winch(std::shared_ptr<System> system) : PluginBase(), _impl{std::make_unique<WinchImpl>(system)} {}
-
+Winch::Winch(std::shared_ptr<System> system) :
+    PluginBase(),
+    _impl{std::make_unique<WinchImpl>(system)}
+{}
 
 Winch::~Winch() {}
 
-
-
-    
 Winch::StatusHandle Winch::subscribe_status(const StatusCallback& callback)
 {
     return _impl->subscribe_status(callback);
@@ -34,183 +30,129 @@ void Winch::unsubscribe_status(StatusHandle handle)
 {
     _impl->unsubscribe_status(handle);
 }
-    
 
-
-
-
-Winch::Status
-Winch::status() const
+Winch::Status Winch::status() const
 {
     return _impl->status();
 }
-
-
 
 void Winch::relax_async(uint32_t instance, const ResultCallback callback)
 {
     _impl->relax_async(instance, callback);
 }
 
-
-
 Winch::Result Winch::relax(uint32_t instance) const
 {
     return _impl->relax(instance);
 }
 
-
-
-void Winch::relative_length_control_async(uint32_t instance, float length_m, float rate_m_s, const ResultCallback callback)
+void Winch::relative_length_control_async(
+    uint32_t instance, float length_m, float rate_m_s, const ResultCallback callback)
 {
     _impl->relative_length_control_async(instance, length_m, rate_m_s, callback);
 }
 
-
-
-Winch::Result Winch::relative_length_control(uint32_t instance, float length_m, float rate_m_s) const
+Winch::Result
+Winch::relative_length_control(uint32_t instance, float length_m, float rate_m_s) const
 {
     return _impl->relative_length_control(instance, length_m, rate_m_s);
 }
-
-
 
 void Winch::rate_control_async(uint32_t instance, float rate_m_s, const ResultCallback callback)
 {
     _impl->rate_control_async(instance, rate_m_s, callback);
 }
 
-
-
 Winch::Result Winch::rate_control(uint32_t instance, float rate_m_s) const
 {
     return _impl->rate_control(instance, rate_m_s);
 }
-
-
 
 void Winch::lock_async(uint32_t instance, const ResultCallback callback)
 {
     _impl->lock_async(instance, callback);
 }
 
-
-
 Winch::Result Winch::lock(uint32_t instance) const
 {
     return _impl->lock(instance);
 }
-
-
 
 void Winch::deliver_async(uint32_t instance, const ResultCallback callback)
 {
     _impl->deliver_async(instance, callback);
 }
 
-
-
 Winch::Result Winch::deliver(uint32_t instance) const
 {
     return _impl->deliver(instance);
 }
-
-
 
 void Winch::hold_async(uint32_t instance, const ResultCallback callback)
 {
     _impl->hold_async(instance, callback);
 }
 
-
-
 Winch::Result Winch::hold(uint32_t instance) const
 {
     return _impl->hold(instance);
 }
-
-
 
 void Winch::retract_async(uint32_t instance, const ResultCallback callback)
 {
     _impl->retract_async(instance, callback);
 }
 
-
-
 Winch::Result Winch::retract(uint32_t instance) const
 {
     return _impl->retract(instance);
 }
-
-
 
 void Winch::load_line_async(uint32_t instance, const ResultCallback callback)
 {
     _impl->load_line_async(instance, callback);
 }
 
-
-
 Winch::Result Winch::load_line(uint32_t instance) const
 {
     return _impl->load_line(instance);
 }
-
-
 
 void Winch::abandon_line_async(uint32_t instance, const ResultCallback callback)
 {
     _impl->abandon_line_async(instance, callback);
 }
 
-
-
 Winch::Result Winch::abandon_line(uint32_t instance) const
 {
     return _impl->abandon_line(instance);
 }
-
-
 
 void Winch::load_payload_async(uint32_t instance, const ResultCallback callback)
 {
     _impl->load_payload_async(instance, callback);
 }
 
-
-
 Winch::Result Winch::load_payload(uint32_t instance) const
 {
     return _impl->load_payload(instance);
 }
 
-
-
 bool operator==(const Winch::StatusFlags& lhs, const Winch::StatusFlags& rhs)
 {
-    return
-        (rhs.healthy == lhs.healthy) &&
-        (rhs.fully_retracted == lhs.fully_retracted) &&
-        (rhs.moving == lhs.moving) &&
-        (rhs.clutch_engaged == lhs.clutch_engaged) &&
-        (rhs.locked == lhs.locked) &&
-        (rhs.dropping == lhs.dropping) &&
-        (rhs.arresting == lhs.arresting) &&
-        (rhs.ground_sense == lhs.ground_sense) &&
-        (rhs.retracting == lhs.retracting) &&
-        (rhs.redeliver == lhs.redeliver) &&
-        (rhs.abandon_line == lhs.abandon_line) &&
-        (rhs.locking == lhs.locking) &&
-        (rhs.load_line == lhs.load_line) &&
-        (rhs.load_payload == lhs.load_payload);
+    return (rhs.healthy == lhs.healthy) && (rhs.fully_retracted == lhs.fully_retracted) &&
+           (rhs.moving == lhs.moving) && (rhs.clutch_engaged == lhs.clutch_engaged) &&
+           (rhs.locked == lhs.locked) && (rhs.dropping == lhs.dropping) &&
+           (rhs.arresting == lhs.arresting) && (rhs.ground_sense == lhs.ground_sense) &&
+           (rhs.retracting == lhs.retracting) && (rhs.redeliver == lhs.redeliver) &&
+           (rhs.abandon_line == lhs.abandon_line) && (rhs.locking == lhs.locking) &&
+           (rhs.load_line == lhs.load_line) && (rhs.load_payload == lhs.load_payload);
 }
 
 std::ostream& operator<<(std::ostream& str, Winch::StatusFlags const& status_flags)
 {
     str << std::setprecision(15);
-    str << "status_flags:" << '\n'
-        << "{\n";
+    str << "status_flags:" << '\n' << "{\n";
     str << "    healthy: " << status_flags.healthy << '\n';
     str << "    fully_retracted: " << status_flags.fully_retracted << '\n';
     str << "    moving: " << status_flags.moving << '\n';
@@ -229,25 +171,26 @@ std::ostream& operator<<(std::ostream& str, Winch::StatusFlags const& status_fla
     return str;
 }
 
-
 bool operator==(const Winch::Status& lhs, const Winch::Status& rhs)
 {
-    return
-        (rhs.time_usec == lhs.time_usec) &&
-        ((std::isnan(rhs.line_length_m) && std::isnan(lhs.line_length_m)) || rhs.line_length_m == lhs.line_length_m) &&
-        ((std::isnan(rhs.speed_m_s) && std::isnan(lhs.speed_m_s)) || rhs.speed_m_s == lhs.speed_m_s) &&
-        ((std::isnan(rhs.tension_kg) && std::isnan(lhs.tension_kg)) || rhs.tension_kg == lhs.tension_kg) &&
-        ((std::isnan(rhs.voltage_v) && std::isnan(lhs.voltage_v)) || rhs.voltage_v == lhs.voltage_v) &&
-        ((std::isnan(rhs.current_a) && std::isnan(lhs.current_a)) || rhs.current_a == lhs.current_a) &&
-        (rhs.temperature_c == lhs.temperature_c) &&
-        (rhs.status_flags == lhs.status_flags);
+    return (rhs.time_usec == lhs.time_usec) &&
+           ((std::isnan(rhs.line_length_m) && std::isnan(lhs.line_length_m)) ||
+            rhs.line_length_m == lhs.line_length_m) &&
+           ((std::isnan(rhs.speed_m_s) && std::isnan(lhs.speed_m_s)) ||
+            rhs.speed_m_s == lhs.speed_m_s) &&
+           ((std::isnan(rhs.tension_kg) && std::isnan(lhs.tension_kg)) ||
+            rhs.tension_kg == lhs.tension_kg) &&
+           ((std::isnan(rhs.voltage_v) && std::isnan(lhs.voltage_v)) ||
+            rhs.voltage_v == lhs.voltage_v) &&
+           ((std::isnan(rhs.current_a) && std::isnan(lhs.current_a)) ||
+            rhs.current_a == lhs.current_a) &&
+           (rhs.temperature_c == lhs.temperature_c) && (rhs.status_flags == lhs.status_flags);
 }
 
 std::ostream& operator<<(std::ostream& str, Winch::Status const& status)
 {
     str << std::setprecision(15);
-    str << "status:" << '\n'
-        << "{\n";
+    str << "status:" << '\n' << "{\n";
     str << "    time_usec: " << status.time_usec << '\n';
     str << "    line_length_m: " << status.line_length_m << '\n';
     str << "    speed_m_s: " << status.speed_m_s << '\n';
@@ -259,8 +202,6 @@ std::ostream& operator<<(std::ostream& str, Winch::Status const& status)
     str << '}';
     return str;
 }
-
-
 
 std::ostream& operator<<(std::ostream& str, Winch::Result const& result)
 {
@@ -283,8 +224,6 @@ std::ostream& operator<<(std::ostream& str, Winch::Result const& result)
             return str << "Unknown";
     }
 }
-
-
 
 std::ostream& operator<<(std::ostream& str, Winch::WinchAction const& winch_action)
 {
@@ -313,6 +252,5 @@ std::ostream& operator<<(std::ostream& str, Winch::WinchAction const& winch_acti
             return str << "Unknown";
     }
 }
-
 
 } // namespace mavsdk

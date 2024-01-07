@@ -13,22 +13,21 @@
 #include <utility>
 #include <vector>
 
-
 #include "plugin_base.h"
 
 #include "handle.h"
 
 namespace mavsdk {
 
-
-class System;class WinchImpl;
+class System;
+class WinchImpl;
 
 /**
- * @brief Allows users to send winch actions, as well as receive status information from winch systems.
+ * @brief Allows users to send winch actions, as well as receive status information from winch
+ * systems.
  */
 class Winch : public PluginBase {
 public:
-
     /**
      * @brief Constructor. Creates the plugin for a specific System.
      *
@@ -55,27 +54,29 @@ public:
      */
     explicit Winch(std::shared_ptr<System> system); // new
 
-
     /**
      * @brief Destructor (internal use only).
      */
     ~Winch() override;
-
 
     /**
      * @brief Winch Action type.
      */
     enum class WinchAction {
         Relaxed, /**< @brief Allow motor to freewheel. */
-        RelativeLengthControl, /**< @brief Wind or unwind specified length of line, optionally using specified rate. */
+        RelativeLengthControl, /**< @brief Wind or unwind specified length of line, optionally using
+                                  specified rate. */
         RateControl, /**< @brief Wind or unwind line at specified rate. */
-        Lock, /**< @brief Perform the locking sequence to relieve motor while in the fully retracted position. */
+        Lock, /**< @brief Perform the locking sequence to relieve motor while in the fully retracted
+                 position. */
         Deliver, /**< @brief Sequence of drop, slow down, touch down, reel up, lock. */
         Hold, /**< @brief Engage motor and hold current position. */
         Retract, /**< @brief Return the reel to the fully retracted position. */
-        LoadLine, /**< @brief Load the reel with line. The winch will calculate the total loaded length and stop when the tension exceeds a threshold. */
+        LoadLine, /**< @brief Load the reel with line. The winch will calculate the total loaded
+                     length and stop when the tension exceeds a threshold. */
         AbandonLine, /**< @brief Spool out the entire length of the line. */
-        LoadPayload, /**< @brief Spools out just enough to present the hook to the user to load the payload. */
+        LoadPayload, /**< @brief Spools out just enough to present the hook to the user to load the
+                        payload. */
     };
 
     /**
@@ -84,9 +85,6 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, Winch::WinchAction const& winch_action);
-
-
-
 
     /**
      * @brief Winch Status Flags.
@@ -98,7 +96,6 @@ public:
      * not specify which states are mutually exclusive.
      */
     struct StatusFlags {
-        
         bool healthy{}; /**< @brief Winch is healthy */
         bool fully_retracted{}; /**< @brief Winch line is fully retracted */
         bool moving{}; /**< @brief Winch motor is moving */
@@ -108,8 +105,11 @@ public:
         bool arresting{}; /**< @brief Winch is arresting payload descent */
         bool ground_sense{}; /**< @brief Winch is using torque measurements to sense the ground */
         bool retracting{}; /**< @brief Winch is returning to the fully retracted position */
-        bool redeliver{}; /**< @brief Winch is redelivering the payload. This is a failover state if the line tension goes above a threshold during RETRACTING. */
-        bool abandon_line{}; /**< @brief Winch is abandoning the line and possibly payload. Winch unspools the entire calculated line length. This is a failover state from REDELIVER if the number of attempts exceeds a threshold. */
+        bool redeliver{}; /**< @brief Winch is redelivering the payload. This is a failover state if
+                             the line tension goes above a threshold during RETRACTING. */
+        bool abandon_line{}; /**< @brief Winch is abandoning the line and possibly payload. Winch
+                                unspools the entire calculated line length. This is a failover state
+                                from REDELIVER if the number of attempts exceeds a threshold. */
         bool locking{}; /**< @brief Winch is engaging the locking mechanism */
         bool load_line{}; /**< @brief Winch is spooling on line */
         bool load_payload{}; /**< @brief Winch is loading a payload */
@@ -129,14 +129,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Winch::StatusFlags const& status_flags);
 
-
-
-
     /**
      * @brief Status type.
      */
     struct Status {
-        
         uint64_t time_usec{}; /**< @brief Time in usec */
         float line_length_m{}; /**< @brief Length of the line in meters */
         float speed_m_s{}; /**< @brief Speed in meters per second */
@@ -161,10 +157,6 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Winch::Status const& status);
 
-
-
-
-
     /**
      * @brief Possible results returned for winch action requests.
      */
@@ -185,17 +177,10 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Winch::Result const& result);
 
-
-
     /**
      * @brief Callback type for asynchronous Winch calls.
      */
     using ResultCallback = std::function<void(Result)>;
-
-
-
-
-        
 
     /**
      * @brief Callback type for subscribe_status.
@@ -217,10 +202,6 @@ public:
      */
     void unsubscribe_status(StatusHandle handle);
 
-        
-
-
-
     /**
      * @brief Poll for 'Status' (blocking).
      *
@@ -228,17 +209,12 @@ public:
      */
     Status status() const;
 
-
-
-
     /**
      * @brief Allow motor to freewheel.
      *
      * This function is non-blocking. See 'relax' for the blocking counterpart.
      */
     void relax_async(uint32_t instance, const ResultCallback callback);
-
-
 
     /**
      * @brief Allow motor to freewheel.
@@ -249,29 +225,23 @@ public:
      */
     Result relax(uint32_t instance) const;
 
-
-
-
     /**
      * @brief Wind or unwind specified length of line, optionally using specified rate.
      *
      * This function is non-blocking. See 'relative_length_control' for the blocking counterpart.
      */
-    void relative_length_control_async(uint32_t instance, float length_m, float rate_m_s, const ResultCallback callback);
-
-
+    void relative_length_control_async(
+        uint32_t instance, float length_m, float rate_m_s, const ResultCallback callback);
 
     /**
      * @brief Wind or unwind specified length of line, optionally using specified rate.
      *
-     * This function is blocking. See 'relative_length_control_async' for the non-blocking counterpart.
+     * This function is blocking. See 'relative_length_control_async' for the non-blocking
+     * counterpart.
      *
      * @return Result of request.
      */
     Result relative_length_control(uint32_t instance, float length_m, float rate_m_s) const;
-
-
-
 
     /**
      * @brief Wind or unwind line at specified rate.
@@ -279,8 +249,6 @@ public:
      * This function is non-blocking. See 'rate_control' for the blocking counterpart.
      */
     void rate_control_async(uint32_t instance, float rate_m_s, const ResultCallback callback);
-
-
 
     /**
      * @brief Wind or unwind line at specified rate.
@@ -291,17 +259,12 @@ public:
      */
     Result rate_control(uint32_t instance, float rate_m_s) const;
 
-
-
-
     /**
      * @brief Perform the locking sequence to relieve motor while in the fully retracted position.
      *
      * This function is non-blocking. See 'lock' for the blocking counterpart.
      */
     void lock_async(uint32_t instance, const ResultCallback callback);
-
-
 
     /**
      * @brief Perform the locking sequence to relieve motor while in the fully retracted position.
@@ -312,17 +275,12 @@ public:
      */
     Result lock(uint32_t instance) const;
 
-
-
-
     /**
      * @brief Sequence of drop, slow down, touch down, reel up, lock.
      *
      * This function is non-blocking. See 'deliver' for the blocking counterpart.
      */
     void deliver_async(uint32_t instance, const ResultCallback callback);
-
-
 
     /**
      * @brief Sequence of drop, slow down, touch down, reel up, lock.
@@ -333,17 +291,12 @@ public:
      */
     Result deliver(uint32_t instance) const;
 
-
-
-
     /**
      * @brief Engage motor and hold current position.
      *
      * This function is non-blocking. See 'hold' for the blocking counterpart.
      */
     void hold_async(uint32_t instance, const ResultCallback callback);
-
-
 
     /**
      * @brief Engage motor and hold current position.
@@ -354,17 +307,12 @@ public:
      */
     Result hold(uint32_t instance) const;
 
-
-
-
     /**
      * @brief Return the reel to the fully retracted position.
      *
      * This function is non-blocking. See 'retract' for the blocking counterpart.
      */
     void retract_async(uint32_t instance, const ResultCallback callback);
-
-
 
     /**
      * @brief Return the reel to the fully retracted position.
@@ -375,24 +323,21 @@ public:
      */
     Result retract(uint32_t instance) const;
 
-
-
-
     /**
      * @brief Load the reel with line.
      *
-     * The winch will calculate the total loaded length and stop when the tension exceeds a threshold.
+     * The winch will calculate the total loaded length and stop when the tension exceeds a
+     * threshold.
      *
      * This function is non-blocking. See 'load_line' for the blocking counterpart.
      */
     void load_line_async(uint32_t instance, const ResultCallback callback);
 
-
-
     /**
      * @brief Load the reel with line.
      *
-     * The winch will calculate the total loaded length and stop when the tension exceeds a threshold.
+     * The winch will calculate the total loaded length and stop when the tension exceeds a
+     * threshold.
      *
      * This function is blocking. See 'load_line_async' for the non-blocking counterpart.
      *
@@ -400,17 +345,12 @@ public:
      */
     Result load_line(uint32_t instance) const;
 
-
-
-
     /**
      * @brief Spool out the entire length of the line.
      *
      * This function is non-blocking. See 'abandon_line' for the blocking counterpart.
      */
     void abandon_line_async(uint32_t instance, const ResultCallback callback);
-
-
 
     /**
      * @brief Spool out the entire length of the line.
@@ -421,17 +361,12 @@ public:
      */
     Result abandon_line(uint32_t instance) const;
 
-
-
-
     /**
      * @brief Spools out just enough to present the hook to the user to load the payload.
      *
      * This function is non-blocking. See 'load_payload' for the blocking counterpart.
      */
     void load_payload_async(uint32_t instance, const ResultCallback callback);
-
-
 
     /**
      * @brief Spools out just enough to present the hook to the user to load the payload.
@@ -441,9 +376,6 @@ public:
      * @return Result of request.
      */
     Result load_payload(uint32_t instance) const;
-
-
-
 
     /**
      * @brief Copy constructor.
