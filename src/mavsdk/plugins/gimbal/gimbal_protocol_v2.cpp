@@ -90,7 +90,7 @@ void GimbalProtocolV2::set_angles_async(
     float pitch_deg, float yaw_deg, float roll_deg, Gimbal::ResultCallback callback)
 {
     // Sending the message should be quick and we can just do that straighaway.
-    Gimbal::Result result = set_angles_yaw(pitch_deg, yaw_deg, roll_deg);
+    Gimbal::Result result = set_angles(pitch_deg, yaw_deg, roll_deg);
 
     if (callback) {
         _system_impl.call_user_callback([callback, result]() { callback(result); });
