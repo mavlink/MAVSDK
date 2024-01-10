@@ -11,13 +11,15 @@
 #include "google/protobuf/generated_message_reflection.h"
 #include "google/protobuf/reflection_ops.h"
 #include "google/protobuf/wire_format.h"
+#include "google/protobuf/generated_message_tctable_impl.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
 #include "google/protobuf/port_def.inc"
 PROTOBUF_PRAGMA_INIT_SEG
-namespace _pb = ::PROTOBUF_NAMESPACE_ID;
-namespace _pbi = ::PROTOBUF_NAMESPACE_ID::internal;
+namespace _pb = ::google::protobuf;
+namespace _pbi = ::google::protobuf::internal;
+namespace _fl = ::google::protobuf::internal::field_layout;
 namespace mavsdk {
 namespace options {
 }  // namespace options
@@ -82,37 +84,34 @@ PROTOBUF_ATTRIBUTE_INIT_PRIORITY2
 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_mavsdk_5foptions_2eproto(&descriptor_table_mavsdk_5foptions_2eproto);
 namespace mavsdk {
 namespace options {
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* AsyncType_descriptor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_mavsdk_5foptions_2eproto);
+const ::google::protobuf::EnumDescriptor* AsyncType_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_mavsdk_5foptions_2eproto);
   return file_level_enum_descriptors_mavsdk_5foptions_2eproto[0];
 }
+PROTOBUF_CONSTINIT const uint32_t AsyncType_internal_data_[] = {
+    196608u, 0u, };
 bool AsyncType_IsValid(int value) {
-  switch (value) {
-    case 0:
-    case 1:
-    case 2:
-      return true;
-    default:
-      return false;
-  }
+  return 0 <= value && value <= 2;
 }
 const std::string default_value_default("");
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::PROTOBUF_NAMESPACE_ID::FieldOptions,
-    ::PROTOBUF_NAMESPACE_ID::internal::StringTypeTraits, 9, false>
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::google::protobuf::internal::ExtensionIdentifier< ::google::protobuf::FieldOptions,
+    ::google::protobuf::internal::StringTypeTraits, 9, false>
   default_value(kDefaultValueFieldNumber, default_value_default, nullptr);
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::PROTOBUF_NAMESPACE_ID::FieldOptions,
-    ::PROTOBUF_NAMESPACE_ID::internal::PrimitiveTypeTraits< double >, 1, false>
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::google::protobuf::internal::ExtensionIdentifier< ::google::protobuf::FieldOptions,
+    ::google::protobuf::internal::PrimitiveTypeTraits< double >, 1, false>
   epsilon(kEpsilonFieldNumber, 0, nullptr);
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::PROTOBUF_NAMESPACE_ID::MethodOptions,
-    ::PROTOBUF_NAMESPACE_ID::internal::EnumTypeTraits< ::mavsdk::options::AsyncType, ::mavsdk::options::AsyncType_IsValid>, 14, false>
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::google::protobuf::internal::ExtensionIdentifier< ::google::protobuf::MethodOptions,
+    ::google::protobuf::internal::EnumTypeTraits< ::mavsdk::options::AsyncType, ::mavsdk::options::AsyncType_IsValid>, 14, false>
   async_type(kAsyncTypeFieldNumber, static_cast< ::mavsdk::options::AsyncType >(0), nullptr);
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::PROTOBUF_NAMESPACE_ID::internal::ExtensionIdentifier< ::PROTOBUF_NAMESPACE_ID::MethodOptions,
-    ::PROTOBUF_NAMESPACE_ID::internal::PrimitiveTypeTraits< bool >, 8, false>
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::google::protobuf::internal::ExtensionIdentifier< ::google::protobuf::MethodOptions,
+    ::google::protobuf::internal::PrimitiveTypeTraits< bool >, 8, false>
   is_finite(kIsFiniteFieldNumber, false, nullptr);
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace options
 }  // namespace mavsdk
-PROTOBUF_NAMESPACE_OPEN
-PROTOBUF_NAMESPACE_CLOSE
+namespace google {
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 // @@protoc_insertion_point(global_scope)
 #include "google/protobuf/port_undef.inc"

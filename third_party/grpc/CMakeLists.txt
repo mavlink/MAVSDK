@@ -51,16 +51,9 @@ foreach(CMAKE_ARG ${CMAKE_ARGS})
     message(STATUS "-- ${CMAKE_ARG}")
 endforeach()
 
-if(CMAKE_CROSSCOMPILING)
-    set(PATCH_CMD patch -p 1 < ${PROJECT_SOURCE_DIR}/cmake_install_fix.patch)
-else()
-    set(PATCH_CMD "")
-endif()
-
 ExternalProject_add(
     grpc
-    URL https://github.com/grpc/grpc/archive/v1.55.1.tar.gz
+    URL https://github.com/grpc/grpc/archive/v1.60.0.tar.gz
     PREFIX grpc
-    PATCH_COMMAND "${PATCH_CMD}"
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
