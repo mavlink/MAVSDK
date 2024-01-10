@@ -13,7 +13,22 @@ GimbalProtocolV1::~GimbalProtocolV1()
     _system_impl.remove_call_every(_control_cookie);
 }
 
-Gimbal::Result GimbalProtocolV1::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
+Gimbal::Result GimbalProtocolV1::set_angles(float pitch_deg, float yaw_deg, float roll_deg)
+{
+    MavlinkCommandSender::CommandLong command{};
+
+    command.command = MAV_CMD_DO_MOUNT_CONTROL;
+    command.params.maybe_param1 = pitch_deg;
+    command.params.maybe_param2 = roll_deg;
+    command.params.maybe_param3 = yaw_deg;
+    command.params.maybe_param7 = static_cast<float>(MAV_MOUNT_MODE_MAVLINK_TARGETING);
+    command.target_component_id = _system_impl.get_autopilot_id();
+
+    return GimbalImpl::gimbal_result_from_command_result(_system_impl.send_command(command));
+}
+
+void GimbalProtocolV1::set_angles_async(
+    float pitch_deg, float yaw_deg, float roll_deg, Gimbal::ResultCallback callback)
 {
     const float roll_deg = 0.0f;
     MavlinkCommandSender::CommandLong command{};
@@ -25,7 +40,16 @@ Gimbal::Result GimbalProtocolV1::set_pitch_and_yaw(float pitch_deg, float yaw_de
     command.params.maybe_param7 = static_cast<float>(MAV_MOUNT_MODE_MAVLINK_TARGETING);
     command.target_component_id = _system_impl.get_autopilot_id();
 
-    return GimbalImpl::gimbal_result_from_command_result(_system_impl.send_command(command));
+    _system_impl.send_command_async(
+        command, [callback](MavlinkCommandSender::Result command_result, float progress) {
+            UNUSED(progress);
+            GimbalImpl::receive_command_result(command_result, callback);
+        });
+}
+
+Gimbal::Result GimbalProtocolV1::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
+{
+    return set_angles(pitch_deg, yaw_deg, 0);
 }
 
 void GimbalProtocolV1::set_pitch_and_yaw_async(
