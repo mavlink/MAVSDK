@@ -18,6 +18,15 @@ GimbalProtocolV2::GimbalProtocolV2(
     _gimbal_manager_compid(gimbal_manager_compid)
 {}
 
+GimbalProtocolV2::~GimbalProtocolV2()
+{
+    if (_is_mavlink_manager_status_registered) {
+        _is_mavlink_manager_status_registered = false;
+
+        _system_impl.unregister_mavlink_message_handler(MAVLINK_MSG_ID_GIMBAL_MANAGER_STATUS, this);
+    }
+}
+
 void GimbalProtocolV2::process_gimbal_manager_status(const mavlink_message_t& message)
 {
     Gimbal::ControlMode new_control_mode;
