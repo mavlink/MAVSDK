@@ -12,8 +12,8 @@ public:
     virtual ~GimbalProtocolBase() = default;
 
     virtual Gimbal::Result set_angles(float pitch_deg, float yaw_deg, float roll_deg) = 0;
-    virtual void
-    set_angles_async(float pitch_deg, float yaw_deg, float roll_deg, Gimbal::ResultCallback callback) = 0;
+    virtual void set_angles_async(
+        float pitch_deg, float yaw_deg, float roll_deg, Gimbal::ResultCallback callback) = 0;
 
     virtual Gimbal::Result set_pitch_and_yaw(float pitch_deg, float yaw_deg) = 0;
     virtual void

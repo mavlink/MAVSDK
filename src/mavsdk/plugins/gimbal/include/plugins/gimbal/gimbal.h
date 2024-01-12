@@ -63,7 +63,7 @@ public:
      */
     enum class GimbalMode {
         YawFollow, /**< @brief Yaw follow will point the gimbal to the vehicle heading. */
-        YawLock, /**< @brief Yaw lock will fix the gimbal pointing to an absolute direction. */
+        YawLock, /**< @brief Yaw lock will fix the gimbal poiting to an absolute direction. */
     };
 
     /**
@@ -142,6 +142,31 @@ public:
      * @brief Callback type for asynchronous Gimbal calls.
      */
     using ResultCallback = std::function<void(Result)>;
+
+    /**
+     * @brief Set gimbal pitch, yaw and roll angles.
+     *
+     * This sets the desired pitch, yaw and roll angles of a gimbal.
+     * Will return when the command is accepted, however, it might
+     * take the gimbal longer to actually be set to the new angles.
+     *
+     * This function is non-blocking. See 'set_angles' for the blocking counterpart.
+     */
+    void
+    set_angles_async(float pitch_deg, float yaw_deg, float roll_deg, const ResultCallback callback);
+
+    /**
+     * @brief Set gimbal pitch, yaw and roll angles.
+     *
+     * This sets the desired pitch, yaw and roll angles of a gimbal.
+     * Will return when the command is accepted, however, it might
+     * take the gimbal longer to actually be set to the new angles.
+     *
+     * This function is blocking. See 'set_angles_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result set_angles(float pitch_deg, float yaw_deg, float roll_deg) const;
 
     /**
      * @brief Set gimbal pitch and yaw angles.

@@ -181,6 +181,35 @@ public:
         }
     }
 
+    grpc::Status SetAngles(
+        grpc::ServerContext* /* context */,
+        const rpc::gimbal::SetAnglesRequest* request,
+        rpc::gimbal::SetAnglesResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Gimbal::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetAngles sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->set_angles(
+            request->pitch_deg(), request->yaw_deg(), request->roll_deg());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status SetPitchAndYaw(
         grpc::ServerContext* /* context */,
         const rpc::gimbal::SetPitchAndYawRequest* request,
