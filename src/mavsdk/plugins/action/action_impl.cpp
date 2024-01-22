@@ -407,8 +407,7 @@ void ActionImpl::takeoff_async_apm(const Action::ResultCallback& callback) const
                     if (callback) {
                         callback(action_result);
                     }
-                }
-                else {
+                } else {
                     send_takeoff_command();
                 }
             });
