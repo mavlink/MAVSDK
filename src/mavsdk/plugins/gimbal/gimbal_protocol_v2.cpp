@@ -52,7 +52,7 @@ void GimbalProtocolV2::process_gimbal_manager_status(const mavlink_message_t& me
     }
 }
 
-Gimbal::Result GimbalProtocolV2::set_angles(float pitch_deg, float yaw_deg, float roll_deg)
+Gimbal::Result GimbalProtocolV2::set_angles(float roll_deg, float pitch_deg, float yaw_deg)
 {
     const float roll_rad = to_rad_from_deg(roll_deg);
     const float pitch_rad = to_rad_from_deg(pitch_deg);
@@ -87,10 +87,10 @@ Gimbal::Result GimbalProtocolV2::set_angles(float pitch_deg, float yaw_deg, floa
 }
 
 void GimbalProtocolV2::set_angles_async(
-    float pitch_deg, float yaw_deg, float roll_deg, Gimbal::ResultCallback callback)
+    float roll_deg, float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback)
 {
     // Sending the message should be quick and we can just do that straighaway.
-    Gimbal::Result result = set_angles(pitch_deg, yaw_deg, roll_deg);
+    Gimbal::Result result = set_angles(roll_deg, pitch_deg, yaw_deg);
 
     if (callback) {
         _system_impl.call_user_callback([callback, result]() { callback(result); });
@@ -99,14 +99,14 @@ void GimbalProtocolV2::set_angles_async(
 
 Gimbal::Result GimbalProtocolV2::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {
-    return set_angles(pitch_deg, yaw_deg, 0.0f);
+    return set_angles(0.0f, pitch_deg, yaw_deg);
 }
 
 void GimbalProtocolV2::set_pitch_and_yaw_async(
     float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback)
 {
     // Sending the message should be quick and we can just do that straighaway.
-    Gimbal::Result result = set_angles(pitch_deg, yaw_deg, 0.0f);
+    Gimbal::Result result = set_angles(0.0f, pitch_deg, yaw_deg);
 
     if (callback) {
         _system_impl.call_user_callback([callback, result]() { callback(result); });

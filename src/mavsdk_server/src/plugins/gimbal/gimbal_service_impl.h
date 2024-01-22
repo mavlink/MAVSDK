@@ -201,7 +201,7 @@ public:
         }
 
         auto result = _lazy_plugin.maybe_plugin()->set_angles(
-            request->pitch_deg(), request->yaw_deg(), request->roll_deg());
+            request->roll_deg(), request->pitch_deg(), request->yaw_deg());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

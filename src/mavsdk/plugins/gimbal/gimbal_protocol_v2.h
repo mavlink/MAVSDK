@@ -14,9 +14,9 @@ public:
         uint8_t gimbal_manager_compid);
     ~GimbalProtocolV2() override = default;
 
-    Gimbal::Result set_angles(float pitch_deg, float yaw_deg, float roll_deg) override;
+    Gimbal::Result set_angles(float roll_deg, float pitch_deg, float yaw_deg) override;
     void set_angles_async(
-        float pitch_deg, float yaw_deg, float roll_deg, Gimbal::ResultCallback callback) override;
+        float roll_deg, float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback) override;
 
     Gimbal::Result set_pitch_and_yaw(float pitch_deg, float yaw_deg) override;
     void set_pitch_and_yaw_async(

@@ -81,28 +81,28 @@ int main(int argc, char** argv)
     }
 
     std::cout << "Test SetAngles...\n";
-    std::cout << "Pitch=0 Yaw=0 Roll=0\n";
+    std::cout << "Roll=0 Pitch=0 Yaw=0\n";
     gimbal.set_angles(0.0f, 0.0f, 0.0f);
     sleep_for(seconds(5));
-    std::cout << "Pitch=-30 Yaw=0 Roll=0\n";
+    std::cout << "Roll=-30 Pitch=0 Yaw=0\n";
     gimbal.set_angles(-30.0f, 0.0f, 0.0f);
     sleep_for(seconds(5));
-    std::cout << "Pitch=30 Yaw=0 Roll=0\n";
+    std::cout << "Roll=30 Pitch=0 Yaw=0\n";
     gimbal.set_angles(30.0f, 0.0f, 0.0f);
     sleep_for(seconds(5));
-    std::cout << "Pitch=0 Yaw=-30 Roll=0\n";
+    std::cout << "Roll=0 Pitch=-30 Yaw=0\n";
     gimbal.set_angles(0.0f, -30.0f,  0.0f);
     sleep_for(seconds(5));
-    std::cout << "Pitch=0 Yaw=30 Roll=0\n";
+    std::cout << "Roll=0 Pitch=30 Yaw=0\n";
     gimbal.set_angles(0.0f, 30.0f, 0.0f);
     sleep_for(seconds(5));
-    std::cout << "Pitch=0 Yaw=0 Roll=-30\n";
+    std::cout << "Roll=0 Pitch=0 Yaw=-30\n";
     gimbal.set_angles(0.0f, 0.0f, -30.0f);
     sleep_for(seconds(5));
-    std::cout << "Pitch=0 Yaw=0 Roll=30\n";
+    std::cout << "Roll=0 Pitch=0 Yaw=30\n";
     gimbal.set_angles(0.0f, 0.0f, 30.0f);
     sleep_for(seconds(5));
-    std::cout << "Pitch=0 Yaw=0 Roll=0\n";
+    std::cout << "Roll=0 Pitch=0 Yaw=0\n";
     gimbal.set_angles(0.0f, 0.0f, 0.0f);
     sleep_for(seconds(2));
 

@@ -144,21 +144,21 @@ public:
     using ResultCallback = std::function<void(Result)>;
 
     /**
-     * @brief Set gimbal pitch, yaw and roll angles.
+     * @brief Set gimbal roll, pitch and yaw angles.
      *
-     * This sets the desired pitch, yaw and roll angles of a gimbal.
+     * This sets the desired roll, pitch and yaw angles of a gimbal.
      * Will return when the command is accepted, however, it might
      * take the gimbal longer to actually be set to the new angles.
      *
      * This function is non-blocking. See 'set_angles' for the blocking counterpart.
      */
     void
-    set_angles_async(float pitch_deg, float yaw_deg, float roll_deg, const ResultCallback callback);
+    set_angles_async(float roll_deg, float pitch_deg, float yaw_deg, const ResultCallback callback);
 
     /**
-     * @brief Set gimbal pitch, yaw and roll angles.
+     * @brief Set gimbal roll, pitch and yaw angles.
      *
-     * This sets the desired pitch, yaw and roll angles of a gimbal.
+     * This sets the desired roll, pitch and yaw angles of a gimbal.
      * Will return when the command is accepted, however, it might
      * take the gimbal longer to actually be set to the new angles.
      *
@@ -166,7 +166,7 @@ public:
      *
      * @return Result of request.
      */
-    Result set_angles(float pitch_deg, float yaw_deg, float roll_deg) const;
+    Result set_angles(float roll_deg, float pitch_deg, float yaw_deg) const;
 
     /**
      * @brief Set gimbal pitch and yaw angles.

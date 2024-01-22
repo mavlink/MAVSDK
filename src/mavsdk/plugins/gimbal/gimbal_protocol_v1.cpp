@@ -13,7 +13,7 @@ GimbalProtocolV1::~GimbalProtocolV1()
     _system_impl.remove_call_every(_control_cookie);
 }
 
-Gimbal::Result GimbalProtocolV1::set_angles(float pitch_deg, float yaw_deg, float roll_deg)
+Gimbal::Result GimbalProtocolV1::set_angles(float roll_deg, float pitch_deg, float yaw_deg)
 {
     MavlinkCommandSender::CommandLong command{};
 
@@ -28,7 +28,7 @@ Gimbal::Result GimbalProtocolV1::set_angles(float pitch_deg, float yaw_deg, floa
 }
 
 void GimbalProtocolV1::set_angles_async(
-    float pitch_deg, float yaw_deg, float roll_deg, Gimbal::ResultCallback callback)
+    float roll_deg, float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback)
 {
     MavlinkCommandSender::CommandLong command{};
 
@@ -48,13 +48,13 @@ void GimbalProtocolV1::set_angles_async(
 
 Gimbal::Result GimbalProtocolV1::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {
-    return set_angles(pitch_deg, yaw_deg, 0.0f);
+    return set_angles(0.0f, pitch_deg, yaw_deg);
 }
 
 void GimbalProtocolV1::set_pitch_and_yaw_async(
     float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback)
 {
-    set_angles_async(pitch_deg, yaw_deg, 0.0f, callback);
+    set_angles_async(0.0f, pitch_deg, yaw_deg, callback);
 }
 
 Gimbal::Result
