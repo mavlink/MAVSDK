@@ -217,6 +217,7 @@ private:
     void set_status_text(Telemetry::StatusText status_text);
     void set_armed(bool armed);
     void set_attitude_quaternion(Telemetry::Quaternion quaternion);
+    void set_attitude_euler(Telemetry::EulerAngle euler);
     void set_attitude_angular_velocity_body(Telemetry::AngularVelocityBody angular_velocity_body);
     void set_fixedwing_metrics(Telemetry::FixedwingMetrics fixedwing_metrics);
     void set_ground_truth(Telemetry::GroundTruth ground_truth);
@@ -336,6 +337,9 @@ private:
 
     mutable std::mutex _attitude_quaternion_mutex{};
     Telemetry::Quaternion _attitude_quaternion{};
+
+    mutable std::mutex _attitude_euler_mutex{};
+    Telemetry::EulerAngle _attitude_euler{};
 
     mutable std::mutex _camera_attitude_euler_angle_mutex{};
     Telemetry::EulerAngle _camera_attitude_euler_angle{};
