@@ -137,9 +137,9 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr SetAnglesRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : pitch_deg_{0},
+      : roll_deg_{0},
+        pitch_deg_{0},
         yaw_deg_{0},
-        roll_deg_{0},
         _cached_size_{0} {}
 
 template <typename>
@@ -381,9 +381,9 @@ const ::uint32_t TableStruct_gimbal_2fgimbal_2eproto::offsets[] PROTOBUF_SECTION
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesRequest, _impl_.roll_deg_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesRequest, _impl_.pitch_deg_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesRequest, _impl_.yaw_deg_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesRequest, _impl_.roll_deg_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesResponse, _impl_._has_bits_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesResponse, _internal_metadata_),
     ~0u,  // no _extensions_
@@ -598,8 +598,8 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_gimbal_2fgimbal_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
     "\n\023gimbal/gimbal.proto\022\021mavsdk.rpc.gimbal"
-    "\"H\n\020SetAnglesRequest\022\021\n\tpitch_deg\030\001 \001(\002\022"
-    "\017\n\007yaw_deg\030\002 \001(\002\022\020\n\010roll_deg\030\003 \001(\002\"K\n\021Se"
+    "\"H\n\020SetAnglesRequest\022\020\n\010roll_deg\030\001 \001(\002\022\021"
+    "\n\tpitch_deg\030\002 \001(\002\022\017\n\007yaw_deg\030\003 \001(\002\"K\n\021Se"
     "tAnglesResponse\0226\n\rgimbal_result\030\001 \001(\0132\037"
     ".mavsdk.rpc.gimbal.GimbalResult\";\n\025SetPi"
     "tchAndYawRequest\022\021\n\tpitch_deg\030\001 \001(\002\022\017\n\007y"
@@ -770,11 +770,11 @@ inline PROTOBUF_NDEBUG_INLINE SetAnglesRequest::Impl_::Impl_(
 inline void SetAnglesRequest::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
   ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, pitch_deg_),
+               offsetof(Impl_, roll_deg_),
            0,
-           offsetof(Impl_, roll_deg_) -
-               offsetof(Impl_, pitch_deg_) +
-               sizeof(Impl_::roll_deg_));
+           offsetof(Impl_, yaw_deg_) -
+               offsetof(Impl_, roll_deg_) +
+               sizeof(Impl_::yaw_deg_));
 }
 SetAnglesRequest::~SetAnglesRequest() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetAnglesRequest)
@@ -793,9 +793,9 @@ PROTOBUF_NOINLINE void SetAnglesRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&_impl_.pitch_deg_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.roll_deg_) -
-      reinterpret_cast<char*>(&_impl_.pitch_deg_)) + sizeof(_impl_.roll_deg_));
+  ::memset(&_impl_.roll_deg_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.yaw_deg_) -
+      reinterpret_cast<char*>(&_impl_.roll_deg_)) + sizeof(_impl_.yaw_deg_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -822,26 +822,26 @@ const ::_pbi::TcParseTable<2, 3, 0, 0, 2> SetAnglesRequest::_table_ = {
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
-    // float pitch_deg = 1;
+    // float roll_deg = 1;
     {::_pbi::TcParser::FastF32S1,
-     {13, 63, 0, PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.pitch_deg_)}},
-    // float yaw_deg = 2;
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.roll_deg_)}},
+    // float pitch_deg = 2;
     {::_pbi::TcParser::FastF32S1,
-     {21, 63, 0, PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.yaw_deg_)}},
-    // float roll_deg = 3;
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.pitch_deg_)}},
+    // float yaw_deg = 3;
     {::_pbi::TcParser::FastF32S1,
-     {29, 63, 0, PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.roll_deg_)}},
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.yaw_deg_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // float pitch_deg = 1;
+    // float roll_deg = 1;
+    {PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.roll_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float pitch_deg = 2;
     {PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.pitch_deg_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float yaw_deg = 2;
+    // float yaw_deg = 3;
     {PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.yaw_deg_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float roll_deg = 3;
-    {PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.roll_deg_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
   }},
   // no aux_entries
@@ -856,31 +856,7 @@ const ::_pbi::TcParseTable<2, 3, 0, 0, 2> SetAnglesRequest::_table_ = {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // float pitch_deg = 1;
-  static_assert(sizeof(::uint32_t) == sizeof(float),
-                "Code assumes ::uint32_t and float are the same size.");
-  float tmp_pitch_deg = this->_internal_pitch_deg();
-  ::uint32_t raw_pitch_deg;
-  memcpy(&raw_pitch_deg, &tmp_pitch_deg, sizeof(tmp_pitch_deg));
-  if (raw_pitch_deg != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        1, this->_internal_pitch_deg(), target);
-  }
-
-  // float yaw_deg = 2;
-  static_assert(sizeof(::uint32_t) == sizeof(float),
-                "Code assumes ::uint32_t and float are the same size.");
-  float tmp_yaw_deg = this->_internal_yaw_deg();
-  ::uint32_t raw_yaw_deg;
-  memcpy(&raw_yaw_deg, &tmp_yaw_deg, sizeof(tmp_yaw_deg));
-  if (raw_yaw_deg != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        2, this->_internal_yaw_deg(), target);
-  }
-
-  // float roll_deg = 3;
+  // float roll_deg = 1;
   static_assert(sizeof(::uint32_t) == sizeof(float),
                 "Code assumes ::uint32_t and float are the same size.");
   float tmp_roll_deg = this->_internal_roll_deg();
@@ -889,7 +865,31 @@ const ::_pbi::TcParseTable<2, 3, 0, 0, 2> SetAnglesRequest::_table_ = {
   if (raw_roll_deg != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        3, this->_internal_roll_deg(), target);
+        1, this->_internal_roll_deg(), target);
+  }
+
+  // float pitch_deg = 2;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_pitch_deg = this->_internal_pitch_deg();
+  ::uint32_t raw_pitch_deg;
+  memcpy(&raw_pitch_deg, &tmp_pitch_deg, sizeof(tmp_pitch_deg));
+  if (raw_pitch_deg != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        2, this->_internal_pitch_deg(), target);
+  }
+
+  // float yaw_deg = 3;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_yaw_deg = this->_internal_yaw_deg();
+  ::uint32_t raw_yaw_deg;
+  memcpy(&raw_yaw_deg, &tmp_yaw_deg, sizeof(tmp_yaw_deg));
+  if (raw_yaw_deg != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        3, this->_internal_yaw_deg(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -909,7 +909,17 @@ const ::_pbi::TcParseTable<2, 3, 0, 0, 2> SetAnglesRequest::_table_ = {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // float pitch_deg = 1;
+  // float roll_deg = 1;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_roll_deg = this->_internal_roll_deg();
+  ::uint32_t raw_roll_deg;
+  memcpy(&raw_roll_deg, &tmp_roll_deg, sizeof(tmp_roll_deg));
+  if (raw_roll_deg != 0) {
+    total_size += 5;
+  }
+
+  // float pitch_deg = 2;
   static_assert(sizeof(::uint32_t) == sizeof(float),
                 "Code assumes ::uint32_t and float are the same size.");
   float tmp_pitch_deg = this->_internal_pitch_deg();
@@ -919,23 +929,13 @@ const ::_pbi::TcParseTable<2, 3, 0, 0, 2> SetAnglesRequest::_table_ = {
     total_size += 5;
   }
 
-  // float yaw_deg = 2;
+  // float yaw_deg = 3;
   static_assert(sizeof(::uint32_t) == sizeof(float),
                 "Code assumes ::uint32_t and float are the same size.");
   float tmp_yaw_deg = this->_internal_yaw_deg();
   ::uint32_t raw_yaw_deg;
   memcpy(&raw_yaw_deg, &tmp_yaw_deg, sizeof(tmp_yaw_deg));
   if (raw_yaw_deg != 0) {
-    total_size += 5;
-  }
-
-  // float roll_deg = 3;
-  static_assert(sizeof(::uint32_t) == sizeof(float),
-                "Code assumes ::uint32_t and float are the same size.");
-  float tmp_roll_deg = this->_internal_roll_deg();
-  ::uint32_t raw_roll_deg;
-  memcpy(&raw_roll_deg, &tmp_roll_deg, sizeof(tmp_roll_deg));
-  if (raw_roll_deg != 0) {
     total_size += 5;
   }
 
@@ -960,6 +960,14 @@ void SetAnglesRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::go
 
   static_assert(sizeof(::uint32_t) == sizeof(float),
                 "Code assumes ::uint32_t and float are the same size.");
+  float tmp_roll_deg = from._internal_roll_deg();
+  ::uint32_t raw_roll_deg;
+  memcpy(&raw_roll_deg, &tmp_roll_deg, sizeof(tmp_roll_deg));
+  if (raw_roll_deg != 0) {
+    _this->_internal_set_roll_deg(from._internal_roll_deg());
+  }
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
   float tmp_pitch_deg = from._internal_pitch_deg();
   ::uint32_t raw_pitch_deg;
   memcpy(&raw_pitch_deg, &tmp_pitch_deg, sizeof(tmp_pitch_deg));
@@ -973,14 +981,6 @@ void SetAnglesRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::go
   memcpy(&raw_yaw_deg, &tmp_yaw_deg, sizeof(tmp_yaw_deg));
   if (raw_yaw_deg != 0) {
     _this->_internal_set_yaw_deg(from._internal_yaw_deg());
-  }
-  static_assert(sizeof(::uint32_t) == sizeof(float),
-                "Code assumes ::uint32_t and float are the same size.");
-  float tmp_roll_deg = from._internal_roll_deg();
-  ::uint32_t raw_roll_deg;
-  memcpy(&raw_roll_deg, &tmp_roll_deg, sizeof(tmp_roll_deg));
-  if (raw_roll_deg != 0) {
-    _this->_internal_set_roll_deg(from._internal_roll_deg());
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -1003,11 +1003,11 @@ void SetAnglesRequest::InternalSwap(SetAnglesRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.roll_deg_)
-      + sizeof(SetAnglesRequest::_impl_.roll_deg_)
-      - PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.pitch_deg_)>(
-          reinterpret_cast<char*>(&_impl_.pitch_deg_),
-          reinterpret_cast<char*>(&other->_impl_.pitch_deg_));
+      PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.yaw_deg_)
+      + sizeof(SetAnglesRequest::_impl_.yaw_deg_)
+      - PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.roll_deg_)>(
+          reinterpret_cast<char*>(&_impl_.roll_deg_),
+          reinterpret_cast<char*>(&other->_impl_.roll_deg_));
 }
 
 ::google::protobuf::Metadata SetAnglesRequest::GetMetadata() const {

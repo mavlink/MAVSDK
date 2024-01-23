@@ -1426,11 +1426,21 @@ class SetAnglesRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPitchDegFieldNumber = 1,
-    kYawDegFieldNumber = 2,
-    kRollDegFieldNumber = 3,
+    kRollDegFieldNumber = 1,
+    kPitchDegFieldNumber = 2,
+    kYawDegFieldNumber = 3,
   };
-  // float pitch_deg = 1;
+  // float roll_deg = 1;
+  void clear_roll_deg() ;
+  float roll_deg() const;
+  void set_roll_deg(float value);
+
+  private:
+  float _internal_roll_deg() const;
+  void _internal_set_roll_deg(float value);
+
+  public:
+  // float pitch_deg = 2;
   void clear_pitch_deg() ;
   float pitch_deg() const;
   void set_pitch_deg(float value);
@@ -1440,7 +1450,7 @@ class SetAnglesRequest final :
   void _internal_set_pitch_deg(float value);
 
   public:
-  // float yaw_deg = 2;
+  // float yaw_deg = 3;
   void clear_yaw_deg() ;
   float yaw_deg() const;
   void set_yaw_deg(float value);
@@ -1448,16 +1458,6 @@ class SetAnglesRequest final :
   private:
   float _internal_yaw_deg() const;
   void _internal_set_yaw_deg(float value);
-
-  public:
-  // float roll_deg = 3;
-  void clear_roll_deg() ;
-  float roll_deg() const;
-  void set_roll_deg(float value);
-
-  private:
-  float _internal_roll_deg() const;
-  void _internal_set_roll_deg(float value);
 
   public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.SetAnglesRequest)
@@ -1483,9 +1483,9 @@ class SetAnglesRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    float roll_deg_;
     float pitch_deg_;
     float yaw_deg_;
-    float roll_deg_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -3533,7 +3533,30 @@ class ControlResponse final :
 
 // SetAnglesRequest
 
-// float pitch_deg = 1;
+// float roll_deg = 1;
+inline void SetAnglesRequest::clear_roll_deg() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.roll_deg_ = 0;
+}
+inline float SetAnglesRequest::roll_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.SetAnglesRequest.roll_deg)
+  return _internal_roll_deg();
+}
+inline void SetAnglesRequest::set_roll_deg(float value) {
+  _internal_set_roll_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.SetAnglesRequest.roll_deg)
+}
+inline float SetAnglesRequest::_internal_roll_deg() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.roll_deg_;
+}
+inline void SetAnglesRequest::_internal_set_roll_deg(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.roll_deg_ = value;
+}
+
+// float pitch_deg = 2;
 inline void SetAnglesRequest::clear_pitch_deg() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.pitch_deg_ = 0;
@@ -3556,7 +3579,7 @@ inline void SetAnglesRequest::_internal_set_pitch_deg(float value) {
   _impl_.pitch_deg_ = value;
 }
 
-// float yaw_deg = 2;
+// float yaw_deg = 3;
 inline void SetAnglesRequest::clear_yaw_deg() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.yaw_deg_ = 0;
@@ -3577,29 +3600,6 @@ inline void SetAnglesRequest::_internal_set_yaw_deg(float value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
   _impl_.yaw_deg_ = value;
-}
-
-// float roll_deg = 3;
-inline void SetAnglesRequest::clear_roll_deg() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.roll_deg_ = 0;
-}
-inline float SetAnglesRequest::roll_deg() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.SetAnglesRequest.roll_deg)
-  return _internal_roll_deg();
-}
-inline void SetAnglesRequest::set_roll_deg(float value) {
-  _internal_set_roll_deg(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.SetAnglesRequest.roll_deg)
-}
-inline float SetAnglesRequest::_internal_roll_deg() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.roll_deg_;
-}
-inline void SetAnglesRequest::_internal_set_roll_deg(float value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.roll_deg_ = value;
 }
 
 // -------------------------------------------------------------------

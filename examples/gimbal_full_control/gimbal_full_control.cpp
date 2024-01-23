@@ -91,7 +91,7 @@ int main(int argc, char** argv)
     gimbal.set_angles(30.0f, 0.0f, 0.0f);
     sleep_for(seconds(5));
     std::cout << "Roll=0 Pitch=-30 Yaw=0\n";
-    gimbal.set_angles(0.0f, -30.0f,  0.0f);
+    gimbal.set_angles(0.0f, -30.0f, 0.0f);
     sleep_for(seconds(5));
     std::cout << "Roll=0 Pitch=30 Yaw=0\n";
     gimbal.set_angles(0.0f, 30.0f, 0.0f);

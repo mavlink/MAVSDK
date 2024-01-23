@@ -40,9 +40,9 @@ class GimbalService final {
     virtual ~StubInterface() {}
     //
     //
-    // Set gimbal pitch, yaw and roll angles.
+    // Set gimbal roll, pitch and yaw angles.
     //
-    // This sets the desired pitch, yaw and roll angles of a gimbal.
+    // This sets the desired roll, pitch and yaw angles of a gimbal.
     // Will return when the command is accepted, however, it might
     // take the gimbal longer to actually be set to the new angles.
     virtual ::grpc::Status SetAngles(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetAnglesRequest& request, ::mavsdk::rpc::gimbal::SetAnglesResponse* response) = 0;
@@ -156,9 +156,9 @@ class GimbalService final {
       virtual ~async_interface() {}
       //
       //
-      // Set gimbal pitch, yaw and roll angles.
+      // Set gimbal roll, pitch and yaw angles.
       //
-      // This sets the desired pitch, yaw and roll angles of a gimbal.
+      // This sets the desired roll, pitch and yaw angles of a gimbal.
       // Will return when the command is accepted, however, it might
       // take the gimbal longer to actually be set to the new angles.
       virtual void SetAngles(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetAnglesRequest* request, ::mavsdk::rpc::gimbal::SetAnglesResponse* response, std::function<void(::grpc::Status)>) = 0;
@@ -371,9 +371,9 @@ class GimbalService final {
     virtual ~Service();
     //
     //
-    // Set gimbal pitch, yaw and roll angles.
+    // Set gimbal roll, pitch and yaw angles.
     //
-    // This sets the desired pitch, yaw and roll angles of a gimbal.
+    // This sets the desired roll, pitch and yaw angles of a gimbal.
     // Will return when the command is accepted, however, it might
     // take the gimbal longer to actually be set to the new angles.
     virtual ::grpc::Status SetAngles(::grpc::ServerContext* context, const ::mavsdk::rpc::gimbal::SetAnglesRequest* request, ::mavsdk::rpc::gimbal::SetAnglesResponse* response);
