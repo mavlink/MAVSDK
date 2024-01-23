@@ -787,6 +787,7 @@ void TelemetryImpl::process_attitude(const mavlink_message_t& message)
     euler_angle.pitch_deg = to_deg_from_rad(attitude.pitch);
     euler_angle.yaw_deg = to_deg_from_rad(attitude.yaw);
     euler_angle.timestamp_us = static_cast<uint64_t>(attitude.time_boot_ms) * 1000;
+    set_attitude_euler(euler_angle);
 
     Telemetry::AngularVelocityBody angular_velocity_body;
     angular_velocity_body.roll_rad_s = attitude.rollspeed;
@@ -2094,16 +2095,20 @@ Telemetry::FixedwingMetrics TelemetryImpl::fixedwing_metrics() const
 
 Telemetry::EulerAngle TelemetryImpl::attitude_euler() const
 {
-    std::lock_guard<std::mutex> lock(_attitude_quaternion_mutex);
-    Telemetry::EulerAngle euler = to_euler_angle_from_quaternion(_attitude_quaternion);
-
-    return euler;
+    std::lock_guard<std::mutex> lock(_attitude_euler_mutex);
+    return _attitude_euler;
 }
 
 void TelemetryImpl::set_attitude_quaternion(Telemetry::Quaternion quaternion)
 {
     std::lock_guard<std::mutex> lock(_attitude_quaternion_mutex);
     _attitude_quaternion = quaternion;
+}
+
+void TelemetryImpl::set_attitude_euler(Telemetry::EulerAngle euler)
+{
+    std::lock_guard<std::mutex> lock(_attitude_euler_mutex);
+    _attitude_euler = euler;
 }
 
 void TelemetryImpl::set_attitude_angular_velocity_body(
