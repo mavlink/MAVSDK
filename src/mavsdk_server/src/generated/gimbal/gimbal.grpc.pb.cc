@@ -24,6 +24,7 @@ namespace rpc {
 namespace gimbal {
 
 static const char* GimbalService_method_names[] = {
+  "/mavsdk.rpc.gimbal.GimbalService/SetAngles",
   "/mavsdk.rpc.gimbal.GimbalService/SetPitchAndYaw",
   "/mavsdk.rpc.gimbal.GimbalService/SetPitchRateAndYawRate",
   "/mavsdk.rpc.gimbal.GimbalService/SetMode",
@@ -40,14 +41,38 @@ std::unique_ptr< GimbalService::Stub> GimbalService::NewStub(const std::shared_p
 }
 
 GimbalService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
-  : channel_(channel), rpcmethod_SetPitchAndYaw_(GimbalService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetPitchRateAndYawRate_(GimbalService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetMode_(GimbalService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetRoiLocation_(GimbalService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_TakeControl_(GimbalService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_ReleaseControl_(GimbalService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SubscribeControl_(GimbalService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  : channel_(channel), rpcmethod_SetAngles_(GimbalService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetPitchAndYaw_(GimbalService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetPitchRateAndYawRate_(GimbalService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetMode_(GimbalService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRoiLocation_(GimbalService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_TakeControl_(GimbalService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_ReleaseControl_(GimbalService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeControl_(GimbalService_method_names[7], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   {}
+
+::grpc::Status GimbalService::Stub::SetAngles(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetAnglesRequest& request, ::mavsdk::rpc::gimbal::SetAnglesResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::gimbal::SetAnglesRequest, ::mavsdk::rpc::gimbal::SetAnglesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetAngles_, context, request, response);
+}
+
+void GimbalService::Stub::async::SetAngles(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetAnglesRequest* request, ::mavsdk::rpc::gimbal::SetAnglesResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::gimbal::SetAnglesRequest, ::mavsdk::rpc::gimbal::SetAnglesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetAngles_, context, request, response, std::move(f));
+}
+
+void GimbalService::Stub::async::SetAngles(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetAnglesRequest* request, ::mavsdk::rpc::gimbal::SetAnglesResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetAngles_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetAnglesResponse>* GimbalService::Stub::PrepareAsyncSetAnglesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetAnglesRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::gimbal::SetAnglesResponse, ::mavsdk::rpc::gimbal::SetAnglesRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetAngles_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::gimbal::SetAnglesResponse>* GimbalService::Stub::AsyncSetAnglesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetAnglesRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSetAnglesRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
 
 ::grpc::Status GimbalService::Stub::SetPitchAndYaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest& request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response) {
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::gimbal::SetPitchAndYawRequest, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetPitchAndYaw_, context, request, response);
@@ -207,6 +232,16 @@ GimbalService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       GimbalService_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< GimbalService::Service, ::mavsdk::rpc::gimbal::SetAnglesRequest, ::mavsdk::rpc::gimbal::SetAnglesResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](GimbalService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::gimbal::SetAnglesRequest* req,
+             ::mavsdk::rpc::gimbal::SetAnglesResponse* resp) {
+               return service->SetAngles(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      GimbalService_method_names[1],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< GimbalService::Service, ::mavsdk::rpc::gimbal::SetPitchAndYawRequest, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](GimbalService::Service* service,
              ::grpc::ServerContext* ctx,
@@ -215,7 +250,7 @@ GimbalService::Service::Service() {
                return service->SetPitchAndYaw(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      GimbalService_method_names[1],
+      GimbalService_method_names[2],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< GimbalService::Service, ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest, ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](GimbalService::Service* service,
@@ -225,7 +260,7 @@ GimbalService::Service::Service() {
                return service->SetPitchRateAndYawRate(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      GimbalService_method_names[2],
+      GimbalService_method_names[3],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< GimbalService::Service, ::mavsdk::rpc::gimbal::SetModeRequest, ::mavsdk::rpc::gimbal::SetModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](GimbalService::Service* service,
@@ -235,7 +270,7 @@ GimbalService::Service::Service() {
                return service->SetMode(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      GimbalService_method_names[3],
+      GimbalService_method_names[4],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< GimbalService::Service, ::mavsdk::rpc::gimbal::SetRoiLocationRequest, ::mavsdk::rpc::gimbal::SetRoiLocationResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](GimbalService::Service* service,
@@ -245,7 +280,7 @@ GimbalService::Service::Service() {
                return service->SetRoiLocation(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      GimbalService_method_names[4],
+      GimbalService_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< GimbalService::Service, ::mavsdk::rpc::gimbal::TakeControlRequest, ::mavsdk::rpc::gimbal::TakeControlResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](GimbalService::Service* service,
@@ -255,7 +290,7 @@ GimbalService::Service::Service() {
                return service->TakeControl(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      GimbalService_method_names[5],
+      GimbalService_method_names[6],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< GimbalService::Service, ::mavsdk::rpc::gimbal::ReleaseControlRequest, ::mavsdk::rpc::gimbal::ReleaseControlResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](GimbalService::Service* service,
@@ -265,7 +300,7 @@ GimbalService::Service::Service() {
                return service->ReleaseControl(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      GimbalService_method_names[6],
+      GimbalService_method_names[7],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
       new ::grpc::internal::ServerStreamingHandler< GimbalService::Service, ::mavsdk::rpc::gimbal::SubscribeControlRequest, ::mavsdk::rpc::gimbal::ControlResponse>(
           [](GimbalService::Service* service,
@@ -277,6 +312,13 @@ GimbalService::Service::Service() {
 }
 
 GimbalService::Service::~Service() {
+}
+
+::grpc::Status GimbalService::Service::SetAngles(::grpc::ServerContext* context, const ::mavsdk::rpc::gimbal::SetAnglesRequest* request, ::mavsdk::rpc::gimbal::SetAnglesResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
 ::grpc::Status GimbalService::Service::SetPitchAndYaw(::grpc::ServerContext* context, const ::mavsdk::rpc::gimbal::SetPitchAndYawRequest* request, ::mavsdk::rpc::gimbal::SetPitchAndYawResponse* response) {

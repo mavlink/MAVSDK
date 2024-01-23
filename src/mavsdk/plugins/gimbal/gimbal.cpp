@@ -20,6 +20,17 @@ Gimbal::Gimbal(std::shared_ptr<System> system) :
 
 Gimbal::~Gimbal() {}
 
+void Gimbal::set_angles_async(
+    float roll_deg, float pitch_deg, float yaw_deg, const ResultCallback callback)
+{
+    _impl->set_angles_async(roll_deg, pitch_deg, yaw_deg, callback);
+}
+
+Gimbal::Result Gimbal::set_angles(float roll_deg, float pitch_deg, float yaw_deg) const
+{
+    return _impl->set_angles(roll_deg, pitch_deg, yaw_deg);
+}
+
 void Gimbal::set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, const ResultCallback callback)
 {
     _impl->set_pitch_and_yaw_async(pitch_deg, yaw_deg, callback);

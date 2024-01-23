@@ -79,6 +79,20 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
     }
 }
 
+Gimbal::Result GimbalImpl::set_angles(float roll_deg, float pitch_deg, float yaw_deg)
+{
+    wait_for_protocol();
+
+    return _gimbal_protocol->set_angles(roll_deg, pitch_deg, yaw_deg);
+}
+
+void GimbalImpl::set_angles_async(
+    float roll_deg, float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback)
+{
+    wait_for_protocol_async(
+        [=]() { _gimbal_protocol->set_angles_async(roll_deg, pitch_deg, yaw_deg, callback); });
+}
+
 Gimbal::Result GimbalImpl::set_pitch_and_yaw(float pitch_deg, float yaw_deg)
 {
     wait_for_protocol();

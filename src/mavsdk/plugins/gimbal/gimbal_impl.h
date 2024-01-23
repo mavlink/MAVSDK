@@ -20,6 +20,10 @@ public:
     void enable() override;
     void disable() override;
 
+    Gimbal::Result set_angles(float roll_deg, float pitch_deg, float yaw_deg);
+    void set_angles_async(
+        float roll_deg, float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback);
+
     Gimbal::Result set_pitch_and_yaw(float pitch_deg, float yaw_deg);
     void set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, Gimbal::ResultCallback callback);
 
