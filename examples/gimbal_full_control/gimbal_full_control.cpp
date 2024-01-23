@@ -1,5 +1,5 @@
 //
-// Simple example to demonstrate how to control a gimbal.
+// Example to demonstrate how to control a gimbal including roll.
 //
 // Can be tested against PX4 SITL with Typhoon H480:
 //     make px4_sitl gazebo_typhoon_h480
