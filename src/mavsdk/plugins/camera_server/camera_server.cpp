@@ -283,6 +283,7 @@ bool operator==(const CameraServer::Information& lhs, const CameraServer::Inform
            (rhs.horizontal_resolution_px == lhs.horizontal_resolution_px) &&
            (rhs.vertical_resolution_px == lhs.vertical_resolution_px) &&
            (rhs.lens_id == lhs.lens_id) &&
+           (rhs.flags == lhs.flags) &&
            (rhs.definition_file_version == lhs.definition_file_version) &&
            (rhs.definition_file_uri == lhs.definition_file_uri);
 }
@@ -300,6 +301,7 @@ std::ostream& operator<<(std::ostream& str, CameraServer::Information const& inf
     str << "    horizontal_resolution_px: " << information.horizontal_resolution_px << '\n';
     str << "    vertical_resolution_px: " << information.vertical_resolution_px << '\n';
     str << "    lens_id: " << information.lens_id << '\n';
+    str << "    flags: " << information.flags << '\n';
     str << "    definition_file_version: " << information.definition_file_version << '\n';
     str << "    definition_file_uri: " << information.definition_file_uri << '\n';
     str << '}';

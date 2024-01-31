@@ -93,6 +93,7 @@ public:
         uint32_t horizontal_resolution_px{}; /**< @brief Horizontal image resolution in pixels */
         uint32_t vertical_resolution_px{}; /**< @brief Vertical image resolution in pixels */
         uint32_t lens_id{}; /**< @brief Lens ID */
+        uint32_t flags{}; /**< @brief Bitmap of camera capability flags */
         uint32_t
             definition_file_version{}; /**< @brief Camera definition file version (iteration) */
         std::string
