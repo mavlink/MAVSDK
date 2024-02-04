@@ -110,6 +110,7 @@ private:
     bool parse_version_string(const std::string& version_str, uint32_t& version);
     void start_image_capture_interval(float interval, int32_t count, int32_t index);
     void stop_image_capture_interval();
+    uint32_t camera_cap_flags_to_bitmask(const CameraServer::CameraCapFlags& flags) const;
 
     std::optional<mavlink_command_ack_t>
     process_camera_information_request(const MavlinkCommandReceiver::CommandLong& command);

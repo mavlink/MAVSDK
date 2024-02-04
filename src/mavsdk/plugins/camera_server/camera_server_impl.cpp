@@ -785,6 +785,21 @@ void CameraServerImpl::stop_image_capture_interval()
     _image_capture_timer_interval_s = 0;
 }
 
+uint32_t CameraServerImpl::camera_cap_flags_to_bitmask(const CameraServer::CameraCapFlags& flags) const {
+    return static_cast<uint32_t>(flags.capture_video) * CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAPTURE_VIDEO |
+           static_cast<uint32_t>(flags.capture_image) * CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAPTURE_IMAGE |
+           static_cast<uint32_t>(flags.has_modes) * CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_MODES |
+           static_cast<uint32_t>(flags.can_capture_image_in_video_mode) * CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAN_CAPTURE_IMAGE_IN_VIDEO_MODE |
+           static_cast<uint32_t>(flags.can_capture_video_in_image_mode) * CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAN_CAPTURE_VIDEO_IN_IMAGE_MODE |
+           static_cast<uint32_t>(flags.has_image_survey_mode) * CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_IMAGE_SURVEY_MODE |
+           static_cast<uint32_t>(flags.has_basic_zoom) * CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_BASIC_ZOOM |
+           static_cast<uint32_t>(flags.has_basic_focus) * CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_BASIC_FOCUS |
+           static_cast<uint32_t>(flags.has_video_stream) * CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM |
+           static_cast<uint32_t>(flags.has_tracking_point) * CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_TRACKING_POINT |
+           static_cast<uint32_t>(flags.has_tracking_rectangle) * CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE |
+           static_cast<uint32_t>(flags.has_tracking_geo_status) * CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_TRACKING_GEO_STATUS;
+}
+
 std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_information_request(
     const MavlinkCommandReceiver::CommandLong& command)
 {
@@ -814,7 +829,7 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_informatio
     parse_version_string(_information.firmware_version, firmware_version);
 
     // capability flags are determined by subscriptions
-    uint32_t capability_flags = _information.flags;
+    uint32_t capability_flags = camera_cap_flags_to_bitmask(_information.flags);
 
     if (!_take_photo_callbacks.empty()) {
         capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAPTURE_IMAGE;
