@@ -90,14 +90,18 @@ public:
         bool capture_video{}; /**< @brief Camera is able to record video */
         bool capture_image{}; /**< @brief Camera is able to capture images */
         bool has_modes{}; /**< @brief Camera has separate Video and Image/Photo modes */
-        bool can_capture_image_in_video_mode{}; /**< @brief Camera can capture images while in video mode */
-        bool can_capture_video_in_image_mode{}; /**< @brief Camera can capture videos while in Photo/Image mode */
+        bool can_capture_image_in_video_mode{}; /**< @brief Camera can capture images while in video
+                                                   mode */
+        bool can_capture_video_in_image_mode{}; /**< @brief Camera can capture videos while in
+                                                   Photo/Image mode */
         bool has_image_survey_mode{}; /**< @brief Camera has image survey mode */
         bool has_basic_zoom{}; /**< @brief Camera has basic zoom control */
         bool has_basic_focus{}; /**< @brief Camera has basic focus control */
         bool has_video_stream{}; /**< @brief Camera has video streaming capabilities */
-        bool has_tracking_point{}; /**< @brief Camera supports tracking of a point on the camera view */
-        bool has_tracking_rectangle{}; /**< @brief Camera supports tracking of a selection rectangle on the camera view */
+        bool has_tracking_point{}; /**< @brief Camera supports tracking of a point on the camera
+                                      view */
+        bool has_tracking_rectangle{}; /**< @brief Camera supports tracking of a selection rectangle
+                                          on the camera view */
         bool has_tracking_geo_status{}; /**< @brief Camera supports tracking geo status */
     };
 
@@ -106,14 +110,16 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const CameraServer::CameraCapFlags& lhs, const CameraServer::CameraCapFlags& rhs);
+    friend bool
+    operator==(const CameraServer::CameraCapFlags& lhs, const CameraServer::CameraCapFlags& rhs);
 
     /**
      * @brief Stream operator to print information about a `CameraServer::CameraCapFlags`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, CameraServer::CameraCapFlags const& camera_cap_flags);
+    friend std::ostream&
+    operator<<(std::ostream& str, CameraServer::CameraCapFlags const& camera_cap_flags);
 
     /**
      * @brief Type to represent a camera information.
