@@ -208,31 +208,30 @@ CameraServer::respond_reset_settings(CameraFeedback reset_settings_feedback) con
 
 bool operator==(const CameraServer::CameraCapFlags& lhs, const CameraServer::CameraCapFlags& rhs)
 {
-    return
-        (rhs.capture_video == lhs.capture_video) &&
-        (rhs.capture_image == lhs.capture_image) &&
-        (rhs.has_modes == lhs.has_modes) &&
-        (rhs.can_capture_image_in_video_mode == lhs.can_capture_image_in_video_mode) &&
-        (rhs.can_capture_video_in_image_mode == lhs.can_capture_video_in_image_mode) &&
-        (rhs.has_image_survey_mode == lhs.has_image_survey_mode) &&
-        (rhs.has_basic_zoom == lhs.has_basic_zoom) &&
-        (rhs.has_basic_focus == lhs.has_basic_focus) &&
-        (rhs.has_video_stream == lhs.has_video_stream) &&
-        (rhs.has_tracking_point == lhs.has_tracking_point) &&
-        (rhs.has_tracking_rectangle == lhs.has_tracking_rectangle) &&
-        (rhs.has_tracking_geo_status == lhs.has_tracking_geo_status);
+    return (rhs.capture_video == lhs.capture_video) && (rhs.capture_image == lhs.capture_image) &&
+           (rhs.has_modes == lhs.has_modes) &&
+           (rhs.can_capture_image_in_video_mode == lhs.can_capture_image_in_video_mode) &&
+           (rhs.can_capture_video_in_image_mode == lhs.can_capture_video_in_image_mode) &&
+           (rhs.has_image_survey_mode == lhs.has_image_survey_mode) &&
+           (rhs.has_basic_zoom == lhs.has_basic_zoom) &&
+           (rhs.has_basic_focus == lhs.has_basic_focus) &&
+           (rhs.has_video_stream == lhs.has_video_stream) &&
+           (rhs.has_tracking_point == lhs.has_tracking_point) &&
+           (rhs.has_tracking_rectangle == lhs.has_tracking_rectangle) &&
+           (rhs.has_tracking_geo_status == lhs.has_tracking_geo_status);
 }
 
 std::ostream& operator<<(std::ostream& str, CameraServer::CameraCapFlags const& camera_cap_flags)
 {
     str << std::setprecision(15);
-    str << "camera_cap_flags:" << '\n'
-        << "{\n";
+    str << "camera_cap_flags:" << '\n' << "{\n";
     str << "    capture_video: " << camera_cap_flags.capture_video << '\n';
     str << "    capture_image: " << camera_cap_flags.capture_image << '\n';
     str << "    has_modes: " << camera_cap_flags.has_modes << '\n';
-    str << "    can_capture_image_in_video_mode: " << camera_cap_flags.can_capture_image_in_video_mode << '\n';
-    str << "    can_capture_video_in_image_mode: " << camera_cap_flags.can_capture_video_in_image_mode << '\n';
+    str << "    can_capture_image_in_video_mode: "
+        << camera_cap_flags.can_capture_image_in_video_mode << '\n';
+    str << "    can_capture_video_in_image_mode: "
+        << camera_cap_flags.can_capture_video_in_image_mode << '\n';
     str << "    has_image_survey_mode: " << camera_cap_flags.has_image_survey_mode << '\n';
     str << "    has_basic_zoom: " << camera_cap_flags.has_basic_zoom << '\n';
     str << "    has_basic_focus: " << camera_cap_flags.has_basic_focus << '\n';
@@ -257,8 +256,7 @@ bool operator==(const CameraServer::Information& lhs, const CameraServer::Inform
             rhs.vertical_sensor_size_mm == lhs.vertical_sensor_size_mm) &&
            (rhs.horizontal_resolution_px == lhs.horizontal_resolution_px) &&
            (rhs.vertical_resolution_px == lhs.vertical_resolution_px) &&
-           (rhs.lens_id == lhs.lens_id) &&
-           (rhs.flags == lhs.flags) &&
+           (rhs.lens_id == lhs.lens_id) && (rhs.flags == lhs.flags) &&
            (rhs.definition_file_version == lhs.definition_file_version) &&
            (rhs.definition_file_uri == lhs.definition_file_uri);
 }
