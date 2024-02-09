@@ -91,11 +91,11 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=OFF -DENABLE_CPPTRACE=On -Bbuild/release -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=OFF -DENABLE_CPPTRACE=On -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
       - name: build
         run: cmake --build build/release -j2
       - name: install
-        run: sudo cmake --build build/release --target install
+        run: cmake --build build/release --target install
       - name: temporary workaround for Ubuntu 22.04
         if: ${{ matrix.ubuntu_image }} == "ubuntu-22.04"
         run: |
@@ -104,7 +104,7 @@ jobs:
       - name: install examples dependencies
         run: sudo apt-get install libsdl2-dev
       - name: configure examples
-        run: cmake -DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWERROR=OFF -Bexamples/build -Hexamples
+        run: cmake -DCMAKE_PREFIX_PATH="$(pwd)/install;$(pwd)/build/release/third_party/install" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWERROR=OFF -Bexamples/build -Hexamples
       - name: build examples
         run: cmake --build examples/build -j2
       - name: unit tests
