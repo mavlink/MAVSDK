@@ -298,7 +298,7 @@ jobs:
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: Upload as artefact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: mavsdk_server_musl_x86_64
           path: ./install/bin/mavsdk_server
@@ -433,7 +433,7 @@ jobs:
         run: ./build/macos/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: Upload framework as artefact
         if: ${{ matrix.build-framework == 'ON' }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: mavsdk_server_macos.framework
           path: ./build/macos/src/mavsdk_server/src/mavsdk_server.framework
@@ -490,7 +490,7 @@ jobs:
         run: cmake $superbuild $cmake_prefix_path -DENABLE_STRICT_TRY_COMPILE=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DENABLE_BITCODE=Off -DPLATFORM=${{ matrix.platform }} -DDEPLOYMENT_TARGET=14.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=OFF -Bbuild/${{ matrix.name }} -H.
       - name: build
         run: cmake --build build/${{ matrix.name }} -j2
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: mavsdk_server_${{ matrix.name }}.framework
           path: ./build/${{ matrix.name }}/src/mavsdk_server/src/mavsdk_server.framework
@@ -518,7 +518,7 @@ jobs:
           path: ./build/macos/src/mavsdk_server/src/mavsdk_server.framework
       - name: Package
         run: bash ./src/mavsdk_server/tools/package_mavsdk_server_framework.bash
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: mavsdk_server.xcframework
           path: ./build/mavsdk_server.xcframework
