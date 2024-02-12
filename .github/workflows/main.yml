@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: cache
         with:
           path: ./build/third_party/install
@@ -82,7 +82,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: cache
         with:
           path: ./build/release/third_party/install
@@ -134,7 +134,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: cache
         with:
           path: ~/.hunter
@@ -161,7 +161,7 @@ jobs:
           submodules: recursive
       - name: install dependencies
         run: sudo apt-get update && sudo apt-get install -y clang-format-12
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: cache
         with:
           path: ./build/default/third_party/install
@@ -241,7 +241,7 @@ jobs:
           submodules: recursive
       - name: setup dockcross
         run: docker run --rm mavsdk/mavsdk-dockcross-linux-${{ matrix.arch_name }}-custom > ./dockcross-linux-${{ matrix.arch_name }}-custom; chmod +x ./dockcross-linux-${{ matrix.arch_name }}-custom
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: cache
         with:
           path: ./build/linux-${{ matrix.arch_name }}/third_party/install
@@ -279,7 +279,7 @@ jobs:
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global --add safe.directory /github/workspace
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: cache
         with:
           path: ./build/release/third_party/install
@@ -325,7 +325,7 @@ jobs:
           submodules: recursive
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.arch_name }} > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: cache
         with:
           path: ./build/${{ matrix.arch_name }}/third_party/install
@@ -367,7 +367,7 @@ jobs:
           submodules: recursive
       - name: setup dockcross
         run: docker run --rm dockcross/${{ matrix.name }} > ./dockcross-${{ matrix.name }}; chmod +x ./dockcross-${{ matrix.name }}
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install
@@ -411,7 +411,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: cache
         with:
           path: ./build/macos/third_party/install
@@ -470,7 +470,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install
@@ -549,7 +549,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: cache
         with:
           path: ./build/release/third_party/install
