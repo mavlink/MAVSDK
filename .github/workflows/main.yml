@@ -18,7 +18,7 @@ jobs:
     env:
       NODE_OPTIONS: --max_old_space_size=4096
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: actions/cache@v3
@@ -54,7 +54,7 @@ jobs:
     name: ubuntu-20.04 (non-mavsdk_server, non-superbuild)
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: install
@@ -79,7 +79,7 @@ jobs:
       matrix:
         ubuntu_image: [ubuntu-20.04, ubuntu-22.04]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: actions/cache@v3
@@ -131,7 +131,7 @@ jobs:
     name: ubuntu-20.04 (mavsdk, hunter)
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: actions/cache@v3
@@ -156,7 +156,7 @@ jobs:
     name: ubuntu-22.04 (style and proto check)
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: install dependencies
@@ -186,7 +186,7 @@ jobs:
       matrix:
         container_name: [ubuntu-20.04, ubuntu-22.04]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: git permission workaround
@@ -214,7 +214,7 @@ jobs:
     name: Ubuntu/Debian packaging (Ubuntu 20.04)
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
@@ -236,7 +236,7 @@ jobs:
       matrix:
         arch_name: [armv6, armv7, arm64]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: setup dockcross
@@ -272,7 +272,7 @@ jobs:
     steps:
       - name: install tools
         run: apk update && apk add build-base cmake git linux-headers perl tar python3 py3-pip
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: git permission workaround
@@ -320,7 +320,7 @@ jobs:
       matrix:
         arch_name: [linux-armv6-musl, linux-armv7l-musl, linux-arm64-musl]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: setup dockcross
@@ -362,7 +362,7 @@ jobs:
           - name: android-x86_64
             arch: x86_64
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: setup dockcross
@@ -407,7 +407,7 @@ jobs:
         with:
           python-version: '3.11'
           architecture: 'x64'
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
@@ -466,7 +466,7 @@ jobs:
         with:
           python-version: '3.11'
           architecture: 'x64'
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
@@ -501,7 +501,7 @@ jobs:
     needs: [macOS, iOS]
     runs-on: macos-12
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: actions/download-artifact@v3
@@ -546,7 +546,7 @@ jobs:
     name: Windows
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       - uses: actions/cache@v3
