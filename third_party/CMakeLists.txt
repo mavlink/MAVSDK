@@ -14,7 +14,7 @@ if (SUPERBUILD)
 
     if(NOT BUILD_WITHOUT_CURL)
         if(NOT IOS)
-            build_target(zlib)
+            build_target(zlib-ng)
         endif()
         build_target(curl)
     endif()
