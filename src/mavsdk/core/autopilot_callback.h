@@ -1,9 +1,10 @@
 #pragma once
 
+#include "autopilot.h"
 #include <functional>
 
 namespace mavsdk {
 
-using TimeoutSCallback = std::function<double()>;
+using AutopilotCallback = std::function<Autopilot()>;
 
 } // namespace mavsdk

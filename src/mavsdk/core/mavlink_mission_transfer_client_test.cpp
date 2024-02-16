@@ -34,7 +34,12 @@ protected:
     MavlinkMissionTransferClientTest() :
         ::testing::Test(),
         timeout_handler(time),
-        mmt(mock_sender, message_handler, timeout_handler, []() { return timeout_s; })
+        mmt(
+            mock_sender,
+            message_handler,
+            timeout_handler,
+            []() { return timeout_s; },
+            []() { return Autopilot::Px4; })
     {}
 
     void SetUp() override

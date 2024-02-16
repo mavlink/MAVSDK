@@ -15,6 +15,7 @@ MavlinkParameterClient::MavlinkParameterClient(
     MavlinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
     TimeoutSCallback timeout_s_callback,
+    AutopilotCallback autopilot_callback,
     uint8_t target_system_id,
     uint8_t target_component_id,
     bool use_extended) :
@@ -22,6 +23,7 @@ MavlinkParameterClient::MavlinkParameterClient(
     _message_handler(message_handler),
     _timeout_handler(timeout_handler),
     _timeout_s_callback(std::move(timeout_s_callback)),
+    _autopilot_callback(std::move(autopilot_callback)),
     _target_system_id(target_system_id),
     _target_component_id(target_component_id),
     _use_extended(use_extended)
@@ -115,7 +117,7 @@ void MavlinkParameterClient::set_param_int_async(
 
     // PX4 only uses int32_t, so we can be sure and don't need to check the exact type first
     // by getting the param, or checking the cache.
-    if (_sender.autopilot() == Autopilot::Px4) {
+    if (_autopilot_callback() == Autopilot::Px4) {
         ParamValue value_to_set;
         value_to_set.set(static_cast<int32_t>(value));
         set_param_async(name, value_to_set, callback, cookie);
@@ -499,7 +501,7 @@ bool MavlinkParameterClient::send_set_param_message(WorkItemSet& work_item)
             return message;
         });
     } else {
-        const float value_set = (_sender.autopilot() == Autopilot::ArduPilot) ?
+        const float value_set = (_autopilot_callback() == Autopilot::ArduPilot) ?
                                     work_item.param_value.get_4_float_bytes_cast() :
                                     work_item.param_value.get_4_float_bytes_bytewise();
 
@@ -632,8 +634,8 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
     ParamValue received_value;
     const bool set_value_success = received_value.set_from_mavlink_param_value(
         param_value,
-        (_sender.autopilot() == Autopilot::ArduPilot) ? ParamValue::Conversion::Cast :
-                                                        ParamValue::Conversion::Bitwise);
+        (_autopilot_callback() == Autopilot::ArduPilot) ? ParamValue::Conversion::Cast :
+                                                          ParamValue::Conversion::Bitwise);
     if (!set_value_success) {
         LogWarn() << "Got ill-formed param_ext_value message (param_type unknown)";
         return;
