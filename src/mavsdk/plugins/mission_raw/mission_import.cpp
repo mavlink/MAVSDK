@@ -112,12 +112,6 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
         mission_items[0].current = 1;
     }
 
-    // Don't forget sequence number
-    unsigned sequence = 0;
-    for (auto& mission_item : mission_items) {
-        mission_item.seq = sequence++;
-    }
-
     // Add home position at 0 for ArduPilot
     if (autopilot == Autopilot::ArduPilot) {
         const auto home = mission["plannedHomePosition"];
@@ -144,6 +138,12 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
                     home[2].asFloat(),
                     MAV_MISSION_TYPE_MISSION});
         }
+    }
+
+    // Don't forget sequence number
+    unsigned sequence = 0;
+    for (auto& mission_item : mission_items) {
+        mission_item.seq = sequence++;
     }
 
     // Returning an empty vector is ok here if there were really no mission items.
