@@ -1,0 +1,19 @@
+diff --git a/absl/random/internal/platform.h b/absl/random/internal/platform.h
+index d779f481..ea30118f 100644
+--- a/absl/random/internal/platform.h
++++ b/absl/random/internal/platform.h
+@@ -116,10 +116,10 @@
+ 
+ // http://infocenter.arm.com/help/topic/com.arm.doc.ihi0053c/IHI0053C_acle_2_0.pdf
+ // Rely on NEON+CRYPTO extensions for ARM.
+-#if defined(__ARM_NEON) && defined(__ARM_FEATURE_CRYPTO)
+-#undef ABSL_HAVE_ACCELERATED_AES
+-#define ABSL_HAVE_ACCELERATED_AES 1
+-#endif
++//#if defined(__ARM_NEON) && defined(__ARM_FEATURE_CRYPTO)
++//#undef ABSL_HAVE_ACCELERATED_AES
++//#define ABSL_HAVE_ACCELERATED_AES 1
++//#endif
+ 
+ #endif
+ 
