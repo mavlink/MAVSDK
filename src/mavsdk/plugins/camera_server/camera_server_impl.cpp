@@ -154,6 +154,12 @@ void CameraServerImpl::init()
             return process_track_off_command(command);
         },
         this);
+    _server_component_impl->register_mavlink_command_handler(
+        MAV_CMD_SET_MESSAGE_INTERVAL,
+        [this](const MavlinkCommandReceiver::CommandLong& command) {
+            return process_set_message_interval(command);
+        },
+        this);
 }
 
 void CameraServerImpl::deinit()
