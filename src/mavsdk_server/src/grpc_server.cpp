@@ -138,10 +138,6 @@ int GrpcServer::run()
     builder.RegisterService(&_telemetry_server_service);
 #endif
 
-#ifdef TRACKING_SERVER_ENABLED
-    builder.RegisterService(&_tracking_server_service);
-#endif
-
 #ifdef TRANSPONDER_ENABLED
     builder.RegisterService(&_transponder_service);
 #endif
@@ -299,10 +295,6 @@ void GrpcServer::stop()
 
 #ifdef TELEMETRY_SERVER_ENABLED
         _telemetry_server_service.stop();
-#endif
-
-#ifdef TRACKING_SERVER_ENABLED
-        _tracking_server_service.stop();
 #endif
 
 #ifdef TRANSPONDER_ENABLED

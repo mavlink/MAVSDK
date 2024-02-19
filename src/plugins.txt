@@ -27,7 +27,6 @@ server_utility
 shell
 telemetry
 telemetry_server
-tracking_server
 transponder
 tune
 winch

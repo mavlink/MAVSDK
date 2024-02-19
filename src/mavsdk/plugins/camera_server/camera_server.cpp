@@ -10,7 +10,6 @@
 
 namespace mavsdk {
 
-using CameraCapFlags = CameraServer::CameraCapFlags;
 using Information = CameraServer::Information;
 using VideoStreaming = CameraServer::VideoStreaming;
 using Position = CameraServer::Position;
@@ -19,6 +18,8 @@ using CaptureInfo = CameraServer::CaptureInfo;
 
 using StorageInformation = CameraServer::StorageInformation;
 using CaptureStatus = CameraServer::CaptureStatus;
+using TrackPoint = CameraServer::TrackPoint;
+using TrackRectangle = CameraServer::TrackRectangle;
 
 CameraServer::CameraServer(std::shared_ptr<ServerComponent> server_component) :
     ServerPluginBase(),
@@ -206,41 +207,65 @@ CameraServer::respond_reset_settings(CameraFeedback reset_settings_feedback) con
     return _impl->respond_reset_settings(reset_settings_feedback);
 }
 
-bool operator==(const CameraServer::CameraCapFlags& lhs, const CameraServer::CameraCapFlags& rhs)
+void CameraServer::set_tracking_rectangle_status(TrackRectangle tracked_rectangle) const
 {
-    return (rhs.capture_video == lhs.capture_video) && (rhs.capture_image == lhs.capture_image) &&
-           (rhs.has_modes == lhs.has_modes) &&
-           (rhs.can_capture_image_in_video_mode == lhs.can_capture_image_in_video_mode) &&
-           (rhs.can_capture_video_in_image_mode == lhs.can_capture_video_in_image_mode) &&
-           (rhs.has_image_survey_mode == lhs.has_image_survey_mode) &&
-           (rhs.has_basic_zoom == lhs.has_basic_zoom) &&
-           (rhs.has_basic_focus == lhs.has_basic_focus) &&
-           (rhs.has_video_stream == lhs.has_video_stream) &&
-           (rhs.has_tracking_point == lhs.has_tracking_point) &&
-           (rhs.has_tracking_rectangle == lhs.has_tracking_rectangle) &&
-           (rhs.has_tracking_geo_status == lhs.has_tracking_geo_status);
+    _impl->set_tracking_rectangle_status(tracked_rectangle);
 }
 
-std::ostream& operator<<(std::ostream& str, CameraServer::CameraCapFlags const& camera_cap_flags)
+void CameraServer::set_tracking_off_status() const
 {
-    str << std::setprecision(15);
-    str << "camera_cap_flags:" << '\n' << "{\n";
-    str << "    capture_video: " << camera_cap_flags.capture_video << '\n';
-    str << "    capture_image: " << camera_cap_flags.capture_image << '\n';
-    str << "    has_modes: " << camera_cap_flags.has_modes << '\n';
-    str << "    can_capture_image_in_video_mode: "
-        << camera_cap_flags.can_capture_image_in_video_mode << '\n';
-    str << "    can_capture_video_in_image_mode: "
-        << camera_cap_flags.can_capture_video_in_image_mode << '\n';
-    str << "    has_image_survey_mode: " << camera_cap_flags.has_image_survey_mode << '\n';
-    str << "    has_basic_zoom: " << camera_cap_flags.has_basic_zoom << '\n';
-    str << "    has_basic_focus: " << camera_cap_flags.has_basic_focus << '\n';
-    str << "    has_video_stream: " << camera_cap_flags.has_video_stream << '\n';
-    str << "    has_tracking_point: " << camera_cap_flags.has_tracking_point << '\n';
-    str << "    has_tracking_rectangle: " << camera_cap_flags.has_tracking_rectangle << '\n';
-    str << "    has_tracking_geo_status: " << camera_cap_flags.has_tracking_geo_status << '\n';
-    str << '}';
-    return str;
+    _impl->set_tracking_off_status();
+}
+
+CameraServer::TrackingPointCommandHandle
+CameraServer::subscribe_tracking_point_command(const TrackingPointCommandCallback& callback)
+{
+    return _impl->subscribe_tracking_point_command(callback);
+}
+
+void CameraServer::unsubscribe_tracking_point_command(TrackingPointCommandHandle handle)
+{
+    _impl->unsubscribe_tracking_point_command(handle);
+}
+
+CameraServer::TrackingRectangleCommandHandle
+CameraServer::subscribe_tracking_rectangle_command(const TrackingRectangleCommandCallback& callback)
+{
+    return _impl->subscribe_tracking_rectangle_command(callback);
+}
+
+void CameraServer::unsubscribe_tracking_rectangle_command(TrackingRectangleCommandHandle handle)
+{
+    _impl->unsubscribe_tracking_rectangle_command(handle);
+}
+
+CameraServer::TrackingOffCommandHandle
+CameraServer::subscribe_tracking_off_command(const TrackingOffCommandCallback& callback)
+{
+    return _impl->subscribe_tracking_off_command(callback);
+}
+
+void CameraServer::unsubscribe_tracking_off_command(TrackingOffCommandHandle handle)
+{
+    _impl->unsubscribe_tracking_off_command(handle);
+}
+
+CameraServer::Result
+CameraServer::respond_tracking_point_command(CameraFeedback stop_video_feedback) const
+{
+    return _impl->respond_tracking_point_command(stop_video_feedback);
+}
+
+CameraServer::Result
+CameraServer::respond_tracking_rectangle_command(CameraFeedback stop_video_feedback) const
+{
+    return _impl->respond_tracking_rectangle_command(stop_video_feedback);
+}
+
+CameraServer::Result
+CameraServer::respond_tracking_off_command(CameraFeedback stop_video_feedback) const
+{
+    return _impl->respond_tracking_off_command(stop_video_feedback);
 }
 
 bool operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs)
@@ -256,7 +281,7 @@ bool operator==(const CameraServer::Information& lhs, const CameraServer::Inform
             rhs.vertical_sensor_size_mm == lhs.vertical_sensor_size_mm) &&
            (rhs.horizontal_resolution_px == lhs.horizontal_resolution_px) &&
            (rhs.vertical_resolution_px == lhs.vertical_resolution_px) &&
-           (rhs.lens_id == lhs.lens_id) && (rhs.flags == lhs.flags) &&
+           (rhs.lens_id == lhs.lens_id) &&
            (rhs.definition_file_version == lhs.definition_file_version) &&
            (rhs.definition_file_uri == lhs.definition_file_uri);
 }
@@ -274,7 +299,6 @@ std::ostream& operator<<(std::ostream& str, CameraServer::Information const& inf
     str << "    horizontal_resolution_px: " << information.horizontal_resolution_px << '\n';
     str << "    vertical_resolution_px: " << information.vertical_resolution_px << '\n';
     str << "    lens_id: " << information.lens_id << '\n';
-    str << "    flags: " << information.flags << '\n';
     str << "    definition_file_version: " << information.definition_file_version << '\n';
     str << "    definition_file_uri: " << information.definition_file_uri << '\n';
     str << '}';
@@ -509,6 +533,48 @@ std::ostream& operator<<(std::ostream& str, CameraServer::CaptureStatus const& c
     str << "    image_status: " << capture_status.image_status << '\n';
     str << "    video_status: " << capture_status.video_status << '\n';
     str << "    image_count: " << capture_status.image_count << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const CameraServer::TrackPoint& lhs, const CameraServer::TrackPoint& rhs)
+{
+    return ((std::isnan(rhs.point_x) && std::isnan(lhs.point_x)) || rhs.point_x == lhs.point_x) &&
+           ((std::isnan(rhs.point_y) && std::isnan(lhs.point_y)) || rhs.point_y == lhs.point_y) &&
+           ((std::isnan(rhs.radius) && std::isnan(lhs.radius)) || rhs.radius == lhs.radius);
+}
+
+std::ostream& operator<<(std::ostream& str, CameraServer::TrackPoint const& track_point)
+{
+    str << std::setprecision(15);
+    str << "track_point:" << '\n' << "{\n";
+    str << "    point_x: " << track_point.point_x << '\n';
+    str << "    point_y: " << track_point.point_y << '\n';
+    str << "    radius: " << track_point.radius << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const CameraServer::TrackRectangle& lhs, const CameraServer::TrackRectangle& rhs)
+{
+    return ((std::isnan(rhs.top_left_corner_x) && std::isnan(lhs.top_left_corner_x)) ||
+            rhs.top_left_corner_x == lhs.top_left_corner_x) &&
+           ((std::isnan(rhs.top_left_corner_y) && std::isnan(lhs.top_left_corner_y)) ||
+            rhs.top_left_corner_y == lhs.top_left_corner_y) &&
+           ((std::isnan(rhs.bottom_right_corner_x) && std::isnan(lhs.bottom_right_corner_x)) ||
+            rhs.bottom_right_corner_x == lhs.bottom_right_corner_x) &&
+           ((std::isnan(rhs.bottom_right_corner_y) && std::isnan(lhs.bottom_right_corner_y)) ||
+            rhs.bottom_right_corner_y == lhs.bottom_right_corner_y);
+}
+
+std::ostream& operator<<(std::ostream& str, CameraServer::TrackRectangle const& track_rectangle)
+{
+    str << std::setprecision(15);
+    str << "track_rectangle:" << '\n' << "{\n";
+    str << "    top_left_corner_x: " << track_rectangle.top_left_corner_x << '\n';
+    str << "    top_left_corner_y: " << track_rectangle.top_left_corner_y << '\n';
+    str << "    bottom_right_corner_x: " << track_rectangle.bottom_right_corner_x << '\n';
+    str << "    bottom_right_corner_y: " << track_rectangle.bottom_right_corner_y << '\n';
     str << '}';
     return str;
 }

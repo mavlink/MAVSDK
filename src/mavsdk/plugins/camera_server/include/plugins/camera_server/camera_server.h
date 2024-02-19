@@ -23,7 +23,7 @@ class ServerComponent;
 class CameraServerImpl;
 
 /**
- * @brief Provides handling of camera trigger commands.
+ * @brief Provides handling of camera interface
  */
 class CameraServer : public ServerPluginBase {
 public:
@@ -80,48 +80,6 @@ public:
     friend std::ostream& operator<<(std::ostream& str, CameraServer::Mode const& mode);
 
     /**
-     * @brief Camera capability flags as defined in MavLink:
-     * https://mavlink.io/en/messages/common.html#CAMERA_CAP_FLAGS
-     *
-     * Multiple status fields can be set simultaneously. Mavlink does
-     * not specify which states are mutually exclusive.
-     */
-    struct CameraCapFlags {
-        bool capture_video{}; /**< @brief Camera is able to record video */
-        bool capture_image{}; /**< @brief Camera is able to capture images */
-        bool has_modes{}; /**< @brief Camera has separate Video and Image/Photo modes */
-        bool can_capture_image_in_video_mode{}; /**< @brief Camera can capture images while in video
-                                                   mode */
-        bool can_capture_video_in_image_mode{}; /**< @brief Camera can capture videos while in
-                                                   Photo/Image mode */
-        bool has_image_survey_mode{}; /**< @brief Camera has image survey mode */
-        bool has_basic_zoom{}; /**< @brief Camera has basic zoom control */
-        bool has_basic_focus{}; /**< @brief Camera has basic focus control */
-        bool has_video_stream{}; /**< @brief Camera has video streaming capabilities */
-        bool has_tracking_point{}; /**< @brief Camera supports tracking of a point on the camera
-                                      view */
-        bool has_tracking_rectangle{}; /**< @brief Camera supports tracking of a selection rectangle
-                                          on the camera view */
-        bool has_tracking_geo_status{}; /**< @brief Camera supports tracking geo status */
-    };
-
-    /**
-     * @brief Equal operator to compare two `CameraServer::CameraCapFlags` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend bool
-    operator==(const CameraServer::CameraCapFlags& lhs, const CameraServer::CameraCapFlags& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `CameraServer::CameraCapFlags`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream&
-    operator<<(std::ostream& str, CameraServer::CameraCapFlags const& camera_cap_flags);
-
-    /**
      * @brief Type to represent a camera information.
      */
     struct Information {
@@ -135,7 +93,6 @@ public:
         uint32_t horizontal_resolution_px{}; /**< @brief Horizontal image resolution in pixels */
         uint32_t vertical_resolution_px{}; /**< @brief Vertical image resolution in pixels */
         uint32_t lens_id{}; /**< @brief Lens ID */
-        CameraCapFlags flags{}; /**< @brief Camera capability flags */
         uint32_t
             definition_file_version{}; /**< @brief Camera definition file version (iteration) */
         std::string
@@ -421,6 +378,63 @@ public:
      */
     friend std::ostream&
     operator<<(std::ostream& str, CameraServer::CaptureStatus const& capture_status);
+
+    /**
+     * @brief Point description type
+     */
+    struct TrackPoint {
+        float point_x{}; /**< @brief Point to track x value (normalized 0..1, 0 is left, 1 is
+                            right). */
+        float point_y{}; /**< @brief Point to track y value (normalized 0..1, 0 is top, 1 is
+                            bottom). */
+        float radius{}; /**< @brief Point to track y value (normalized 0..1, 0 is top, 1 is bottom).
+                         */
+    };
+
+    /**
+     * @brief Equal operator to compare two `CameraServer::TrackPoint` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const CameraServer::TrackPoint& lhs, const CameraServer::TrackPoint& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `CameraServer::TrackPoint`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, CameraServer::TrackPoint const& track_point);
+
+    /**
+     * @brief Rectangle description type
+     */
+    struct TrackRectangle {
+        float top_left_corner_x{}; /**< @brief Top left corner of rectangle x value (normalized
+                                      0..1, 0 is left, 1 is right). */
+        float top_left_corner_y{}; /**< @brief Top left corner of rectangle y value (normalized
+                                      0..1, 0 is top, 1 is bottom). */
+        float bottom_right_corner_x{}; /**< @brief Bottom right corner of rectangle x value
+                                          (normalized 0..1, 0 is left, 1 is right). */
+        float bottom_right_corner_y{}; /**< @brief Bottom right corner of rectangle y value
+                                          (normalized 0..1, 0 is top, 1 is bottom). */
+    };
+
+    /**
+     * @brief Equal operator to compare two `CameraServer::TrackRectangle` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const CameraServer::TrackRectangle& lhs, const CameraServer::TrackRectangle& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `CameraServer::TrackRectangle`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, CameraServer::TrackRectangle const& track_rectangle);
 
     /**
      * @brief Callback type for asynchronous CameraServer calls.
@@ -761,6 +775,114 @@ public:
      * @return Result of request.
      */
     Result respond_reset_settings(CameraFeedback reset_settings_feedback) const;
+
+    /**
+     * @brief Set/update the current rectangle tracking status.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    void set_tracking_rectangle_status(TrackRectangle tracked_rectangle) const;
+
+    /**
+     * @brief Set the current tracking status to off.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    void set_tracking_off_status() const;
+
+    /**
+     * @brief Callback type for subscribe_tracking_point_command.
+     */
+    using TrackingPointCommandCallback = std::function<void(TrackPoint)>;
+
+    /**
+     * @brief Handle type for subscribe_tracking_point_command.
+     */
+    using TrackingPointCommandHandle = Handle<TrackPoint>;
+
+    /**
+     * @brief Subscribe to incoming tracking point command.
+     */
+    TrackingPointCommandHandle
+    subscribe_tracking_point_command(const TrackingPointCommandCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_tracking_point_command
+     */
+    void unsubscribe_tracking_point_command(TrackingPointCommandHandle handle);
+
+    /**
+     * @brief Callback type for subscribe_tracking_rectangle_command.
+     */
+    using TrackingRectangleCommandCallback = std::function<void(TrackRectangle)>;
+
+    /**
+     * @brief Handle type for subscribe_tracking_rectangle_command.
+     */
+    using TrackingRectangleCommandHandle = Handle<TrackRectangle>;
+
+    /**
+     * @brief Subscribe to incoming tracking rectangle command.
+     */
+    TrackingRectangleCommandHandle
+    subscribe_tracking_rectangle_command(const TrackingRectangleCommandCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_tracking_rectangle_command
+     */
+    void unsubscribe_tracking_rectangle_command(TrackingRectangleCommandHandle handle);
+
+    /**
+     * @brief Callback type for subscribe_tracking_off_command.
+     */
+    using TrackingOffCommandCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_tracking_off_command.
+     */
+    using TrackingOffCommandHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to incoming tracking off command.
+     */
+    TrackingOffCommandHandle
+    subscribe_tracking_off_command(const TrackingOffCommandCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_tracking_off_command
+     */
+    void unsubscribe_tracking_off_command(TrackingOffCommandHandle handle);
+
+    /**
+     * @brief Respond to an incoming tracking point command.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_tracking_point_command(CameraFeedback stop_video_feedback) const;
+
+    /**
+     * @brief Respond to an incoming tracking rectangle command.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_tracking_rectangle_command(CameraFeedback stop_video_feedback) const;
+
+    /**
+     * @brief Respond to an incoming tracking off command.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_tracking_off_command(CameraFeedback stop_video_feedback) const;
 
     /**
      * @brief Copy constructor.
