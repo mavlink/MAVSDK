@@ -20,6 +20,13 @@ MavlinkCommandReceiver::MavlinkCommandReceiver(ServerComponentImpl& server_compo
         MAVLINK_MSG_ID_COMMAND_INT,
         [this](const mavlink_message_t& message) { receive_command_int(message); },
         this);
+
+    if (const char* env_p = std::getenv("MAVSDK_COMMAND_DEBUGGING")) {
+        if (std::string(env_p) == "1") {
+            LogDebug() << "Command debugging is on.";
+            _debugging = true;
+        }
+    }
 }
 
 MavlinkCommandReceiver::~MavlinkCommandReceiver()
@@ -32,10 +39,18 @@ void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& messag
 {
     MavlinkCommandReceiver::CommandInt cmd(message);
 
+    if (_debugging) {
+        LogDebug() << "Received command int " << (int)cmd.command;
+    }
+
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 
     for (auto& handler : _mavlink_command_int_handler_table) {
         if (handler.cmd_id == cmd.command) {
+            if (_debugging) {
+                LogDebug() << "Handling command int " << (int)cmd.command;
+            }
+
             // The client side can pack a COMMAND_ACK as a response to receiving the command.
             auto maybe_command_ack = handler.callback(cmd);
             if (maybe_command_ack) {
@@ -50,6 +65,11 @@ void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& messag
                             &maybe_command_ack.value());
                         return response_message;
                     });
+
+                if (_debugging) {
+                    LogDebug() << "Acked command int " << (int)cmd.command << " with "
+                               << maybe_command_ack.value().result;
+                }
             }
         }
     }
@@ -59,10 +79,18 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
 {
     MavlinkCommandReceiver::CommandLong cmd(message);
 
+    if (_debugging) {
+        LogDebug() << "Received command long " << (int)cmd.command;
+    }
+
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 
     for (auto& handler : _mavlink_command_long_handler_table) {
         if (handler.cmd_id == cmd.command) {
+            if (_debugging) {
+                LogDebug() << "Handling command long " << (int)cmd.command;
+            }
+
             // The client side can pack a COMMAND_ACK as a response to receiving the command.
             auto maybe_command_ack = handler.callback(cmd);
             if (maybe_command_ack) {
@@ -77,6 +105,10 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
                             &maybe_command_ack.value());
                         return response_message;
                     });
+                if (_debugging) {
+                    LogDebug() << "Acked command long " << (int)cmd.command << " with "
+                               << maybe_command_ack.value().result;
+                }
             }
         }
     }
