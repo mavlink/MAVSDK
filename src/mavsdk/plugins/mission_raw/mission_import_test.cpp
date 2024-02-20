@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <atomic>
 #include <cmath>
 #include <fstream> // for `std::ifstream`
@@ -406,6 +407,11 @@ TEST(MissionRaw, ImportSamplePlanWithArduPilot)
 {
     auto reference_items = create_reference_items();
 
+    // We need to adjust the sequence plus one because we're about to add in home
+    // at 0.
+
+    std::for_each(reference_items.begin(), reference_items.end(), [](auto& item) { ++item.seq; });
+
     auto home_item = MissionRaw::MissionItem{
         0,
         MAV_FRAME_GLOBAL_INT,
@@ -422,9 +428,6 @@ TEST(MissionRaw, ImportSamplePlanWithArduPilot)
         MAV_MISSION_TYPE_MISSION};
 
     reference_items.insert(reference_items.begin(), home_item);
-
-    // There is no need to increment the sequence for all items, the sequence
-    // still starts at 0 after home.
 
     std::ifstream file{path_prefix("qgroundcontrol_sample.plan")};
     ASSERT_TRUE(file);

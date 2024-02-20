@@ -9,11 +9,13 @@ MavlinkMissionTransferClient::MavlinkMissionTransferClient(
     Sender& sender,
     MavlinkMessageHandler& message_handler,
     TimeoutHandler& timeout_handler,
-    TimeoutSCallback timeout_s_callback) :
+    TimeoutSCallback timeout_s_callback,
+    AutopilotCallback autopilot_callback) :
     _sender(sender),
     _message_handler(message_handler),
     _timeout_handler(timeout_handler),
-    _timeout_s_callback(std::move(timeout_s_callback))
+    _timeout_s_callback(std::move(timeout_s_callback)),
+    _autopilot_callback(std::move(autopilot_callback))
 {
     if (const char* env_p = std::getenv("MAVSDK_MISSION_TRANSFER_DEBUGGING")) {
         if (std::string(env_p) == "1") {
@@ -49,7 +51,8 @@ MavlinkMissionTransferClient::upload_items_async(
         callback,
         progress_callback,
         _debugging,
-        target_system_id);
+        target_system_id,
+        _autopilot_callback());
 
     _work_queue.push_back(ptr);
 
@@ -181,12 +184,14 @@ MavlinkMissionTransferClient::UploadWorkItem::UploadWorkItem(
     ResultCallback callback,
     ProgressCallback progress_callback,
     bool debugging,
-    uint8_t target_system_id) :
+    uint8_t target_system_id,
+    Autopilot autopilot) :
     WorkItem(sender, message_handler, timeout_handler, type, timeout_s, debugging),
     _items(items),
     _callback(callback),
     _progress_callback(progress_callback),
-    _target_system_id(target_system_id)
+    _target_system_id(target_system_id),
+    _autopilot(autopilot)
 {
     _message_handler.register_one(
         MAVLINK_MSG_ID_MISSION_REQUEST,
@@ -322,7 +327,7 @@ void MavlinkMissionTransferClient::UploadWorkItem::process_mission_request(
     mavlink_mission_request_t request;
     mavlink_msg_mission_request_decode(&request_message, &request);
 
-    if (_sender.autopilot() == Autopilot::ArduPilot) {
+    if (_autopilot == Autopilot::ArduPilot) {
         // ArduCopter 3.6 sends MISSION_REQUEST (not _INT) but actually accepts ITEM_INT in reply
 
         // FIXME: this will mess with the sequence number.
