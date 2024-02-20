@@ -55,7 +55,7 @@ Mission::MissionItem make_mission_item(
 
 int main(int argc, char** argv)
 {
-    // We run the server plugins on a seperate thead so we can use the main
+    // We run the server plugins on a seperate thread so we can use the main
     // thread as a ground station.
     std::thread autopilotThread([]() {
         mavsdk::Mavsdk mavsdkTester{
@@ -87,6 +87,18 @@ int main(int argc, char** argv)
         actionServer.set_allow_takeoff(true);
         actionServer.set_armable(true, true);
 
+        // Create vehicle telemetry info
+        TelemetryServer::Position position{55.953251, -3.188267, 0, 0};
+        TelemetryServer::PositionVelocityNed positionVelocityNed{{0, 0, 0}, {0, 0, 0}};
+        TelemetryServer::VelocityNed velocity{};
+        TelemetryServer::Heading heading{60};
+        TelemetryServer::RawGps rawGps{
+            0, 55.953251, -3.188267, 0, NAN, NAN, 0, NAN, 0, 0, 0, 0, 0, 0};
+        TelemetryServer::GpsInfo gpsInfo{11, TelemetryServer::FixType::Fix3D};
+
+        // Publish home already, so that it is available.
+        telemServer.publish_home(position);
+
         // Create a mission raw server
         // This will allow us to receive missions from a GCS
         auto missionRawServer = mavsdk::MissionRawServer{server_component};
@@ -114,15 +126,6 @@ int main(int argc, char** argv)
         // Set current item to complete to progress the current item state
         missionRawServer.set_current_item_complete();
 
-        // Create vehicle telemetry info
-        TelemetryServer::Position position{55.953251, -3.188267, 0, 0};
-        TelemetryServer::PositionVelocityNed positionVelocityNed{{0, 0, 0}, {0, 0, 0}};
-        TelemetryServer::VelocityNed velocity{};
-        TelemetryServer::Heading heading{60};
-        TelemetryServer::RawGps rawGps{
-            0, 55.953251, -3.188267, 0, NAN, NAN, 0, NAN, 0, 0, 0, 0, 0, 0};
-        TelemetryServer::GpsInfo gpsInfo{11, TelemetryServer::FixType::Fix3D};
-
         // As we're acting as an autopilot, lets just make the vehicle jump to 10m altitude on
         // successful takeoff
         actionServer.subscribe_takeoff([&position](ActionServer::Result result, bool takeoff) {
@@ -136,7 +139,6 @@ int main(int argc, char** argv)
 
             // Publish the telemetry
             telemServer.publish_position(position, velocity, heading);
-            telemServer.publish_home(position);
             telemServer.publish_position_velocity_ned(positionVelocityNed);
             telemServer.publish_raw_gps(rawGps, gpsInfo);
         }

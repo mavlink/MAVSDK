@@ -5,6 +5,7 @@
 
 #include <unordered_map>
 #include <chrono>
+#include <optional>
 
 namespace mavsdk {
 
@@ -76,13 +77,14 @@ public:
         TelemetryServer::VtolState vtol_state, TelemetryServer::LandedState landed_state);
 
 private:
+    bool _send_home();
+
     std::chrono::time_point<std::chrono::steady_clock> _start_time;
 
+    std::mutex _mutex;
     std::vector<RequestMsgInterval> _interval_requests;
-    std::mutex _interval_mutex;
-    std::unordered_map<uint64_t, mavlink_message_t> _msg_cache;
 
-    void add_msg_cache(uint64_t id, mavlink_message_t& msg);
+    std::optional<TelemetryServer::Position> _maybe_home{};
 
     uint64_t get_boot_time_ms()
     {

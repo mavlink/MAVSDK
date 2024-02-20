@@ -137,6 +137,8 @@ private:
     std::mutex _mavlink_command_handler_table_mutex{};
     std::vector<MAVLinkCommandIntHandlerTableEntry> _mavlink_command_int_handler_table{};
     std::vector<MAVLinkCommandLongHandlerTableEntry> _mavlink_command_long_handler_table{};
+
+    bool _debugging{false};
 };
 
 } // namespace mavsdk

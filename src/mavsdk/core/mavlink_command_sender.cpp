@@ -192,6 +192,9 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
             case MAV_RESULT_DENIED:
                 if (_command_debugging) {
                     LogDebug() << "command denied (" << work->identification.command << ").";
+                    if (work->identification.command == 512) {
+                        LogDebug() << "(message " << work->identification.maybe_param1 << ")";
+                    }
                 }
                 _system_impl.unregister_timeout_handler(work->timeout_cookie);
                 temp_result = {Result::Denied, NAN};
