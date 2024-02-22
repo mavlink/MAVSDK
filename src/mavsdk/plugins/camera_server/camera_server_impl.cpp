@@ -1856,7 +1856,7 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_track_rectangle_c
     }
 
     CameraServer::TrackRectangle track_rectangle{
-        command.params.param1, command.params.param2, command.params.param3};
+        command.params.param1, command.params.param2, command.params.param3, command.params.param4};
 
     _last_track_rectangle_command = command;
     _tracking_rectangle_callbacks(track_rectangle);
