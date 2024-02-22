@@ -42,9 +42,14 @@ void FtpImpl::download_async(
         use_burst,
         [callback, this](
             MavlinkFtpClient::ClientResult result, MavlinkFtpClient::ProgressData progress_data) {
-            callback(
-                result_from_mavlink_ftp_result(result),
-                progress_data_from_mavlink_ftp_progress_data(progress_data));
+            if (callback) {
+                _system_impl->call_user_callback(
+                    [temp_callback = callback, result, progress_data, this]() {
+                        temp_callback(
+                            result_from_mavlink_ftp_result(result),
+                            progress_data_from_mavlink_ftp_progress_data(progress_data));
+                    });
+            }
         });
 }
 
@@ -58,9 +63,14 @@ void FtpImpl::upload_async(
         remote_folder,
         [callback, this](
             MavlinkFtpClient::ClientResult result, MavlinkFtpClient::ProgressData progress_data) {
-            callback(
-                result_from_mavlink_ftp_result(result),
-                progress_data_from_mavlink_ftp_progress_data(progress_data));
+            if (callback) {
+                _system_impl->call_user_callback(
+                    [temp_callback = callback, result, progress_data, this]() {
+                        temp_callback(
+                            result_from_mavlink_ftp_result(result),
+                            progress_data_from_mavlink_ftp_progress_data(progress_data));
+                    });
+            }
         });
 }
 
@@ -100,7 +110,11 @@ void FtpImpl::create_directory_async(const std::string& path, Ftp::ResultCallbac
 {
     _system_impl->mavlink_ftp_client().create_directory_async(
         path, [callback, this](MavlinkFtpClient::ClientResult result) {
-            callback(result_from_mavlink_ftp_result(result));
+            if (callback) {
+                _system_impl->call_user_callback([temp_callback = callback, result, this]() {
+                    temp_callback(result_from_mavlink_ftp_result(result));
+                });
+            }
         });
 }
 
@@ -118,7 +132,11 @@ void FtpImpl::remove_directory_async(const std::string& path, Ftp::ResultCallbac
 {
     _system_impl->mavlink_ftp_client().remove_directory_async(
         path, [callback, this](MavlinkFtpClient::ClientResult result) {
-            callback(result_from_mavlink_ftp_result(result));
+            if (callback) {
+                _system_impl->call_user_callback([temp_callback = callback, result, this]() {
+                    temp_callback(result_from_mavlink_ftp_result(result));
+                });
+            }
         });
 }
 
@@ -136,7 +154,11 @@ void FtpImpl::remove_file_async(const std::string& path, Ftp::ResultCallback cal
 {
     _system_impl->mavlink_ftp_client().remove_file_async(
         path, [callback, this](MavlinkFtpClient::ClientResult result) {
-            callback(result_from_mavlink_ftp_result(result));
+            if (callback) {
+                _system_impl->call_user_callback([temp_callback = callback, result, this]() {
+                    temp_callback(result_from_mavlink_ftp_result(result));
+                });
+            }
         });
 }
 
@@ -155,7 +177,11 @@ void FtpImpl::rename_async(
 {
     _system_impl->mavlink_ftp_client().rename_async(
         from_path, to_path, [callback, this](MavlinkFtpClient::ClientResult result) {
-            callback(result_from_mavlink_ftp_result(result));
+            if (callback) {
+                _system_impl->call_user_callback([temp_callback = callback, result, this]() {
+                    temp_callback(result_from_mavlink_ftp_result(result));
+                });
+            }
         });
 }
 
@@ -181,7 +207,12 @@ void FtpImpl::are_files_identical_async(
         local_path,
         remote_path,
         [callback, this](MavlinkFtpClient::ClientResult result, bool identical) {
-            callback(result_from_mavlink_ftp_result(result), identical);
+            if (callback) {
+                _system_impl->call_user_callback(
+                    [temp_callback = callback, result, identical, this]() {
+                        temp_callback(result_from_mavlink_ftp_result(result), identical);
+                    });
+            }
         });
 }
 
