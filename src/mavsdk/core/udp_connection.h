@@ -30,6 +30,9 @@ public:
     UdpConnection(const UdpConnection&) = delete;
     const UdpConnection& operator=(const UdpConnection&) = delete;
 
+    inline const std::string& local_ip() const noexcept { return _local_ip; }
+    inline int local_port() const noexcept { return _local_port_number; }
+
 private:
     ConnectionResult setup_port();
     void start_recv_thread();

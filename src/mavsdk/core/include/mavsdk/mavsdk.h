@@ -144,13 +144,15 @@ public:
      * @brief Sets up instance to send heartbeats to the specified remote interface and port number.
      *
      * @param remote_ip The remote UDP IP address to report to.
-     * @param remote_port The local UDP port to report to.
+     * @param remote_port The remote UDP port to report to.
+     * @param local_port The local UDP port.
      * @param forwarding_option message forwarding option (when multiple interfaces are used).
      * @return The result of operation.
      */
     ConnectionResult setup_udp_remote(
         const std::string& remote_ip,
         int remote_port,
+        int local_port = 0,
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
 
     /**
