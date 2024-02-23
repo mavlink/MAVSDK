@@ -53,6 +53,21 @@ public:
     bool has_autopilot() const;
 
     /**
+     * @brief ENUM contains types of basic autopilots..
+     */
+    enum class Autopilot {
+        Unknown,
+        Px4,
+        ArduPilot,
+    };
+
+    /**
+     * @brief Checks the currently connected autopilot..
+     * @return Returns the currently connected autopilot..
+     */
+    Autopilot autopilot() const;
+
+    /**
      * @brief Checks whether the system is a standalone (non-autopilot).
      * @return `true` if stand alone, `false` otherwise.
      */

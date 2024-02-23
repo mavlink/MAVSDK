@@ -30,6 +30,11 @@ bool System::has_autopilot() const
     return _system_impl->has_autopilot();
 }
 
+System::Autopilot System::autopilot() const
+{
+    return (Autopilot)_system_impl->autopilot();
+}
+
 bool System::has_camera(int camera_id) const
 {
     return _system_impl->has_camera(camera_id);
