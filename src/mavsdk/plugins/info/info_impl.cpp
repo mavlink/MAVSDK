@@ -48,8 +48,8 @@ void InfoImpl::enable()
 {
     // We can't rely on System to request the autopilot_version,
     // so we do it here, anyway.
-    _system_impl->send_autopilot_version_request();
-    _system_impl->send_flight_information_request();
+    // _system_impl->send_autopilot_version_request();
+    // _system_impl->send_flight_information_request();
 
     // We're going to retry until we have the version.
     _system_impl->add_call_every([this]() { request_version_again(); }, 1.0f, &_call_every_cookie);
