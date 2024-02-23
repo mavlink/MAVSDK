@@ -11,7 +11,8 @@
 namespace mavsdk {
 
 using Information = CameraServer::Information;
-using VideoStreaming = CameraServer::VideoStreaming;
+using VideoStreamSettings = CameraServer::VideoStreamSettings;
+using VideoStreamInfo = CameraServer::VideoStreamInfo;
 using Position = CameraServer::Position;
 using Quaternion = CameraServer::Quaternion;
 using CaptureInfo = CameraServer::CaptureInfo;
@@ -31,9 +32,10 @@ CameraServer::Result CameraServer::set_information(Information information) cons
     return _impl->set_information(information);
 }
 
-CameraServer::Result CameraServer::set_video_streaming(VideoStreaming video_streaming) const
+CameraServer::Result
+CameraServer::set_video_stream_info(std::vector<VideoStreamInfo> video_stream_infos) const
 {
-    return _impl->set_video_streaming(video_streaming);
+    return _impl->set_video_stream_info(video_stream_infos);
 }
 
 CameraServer::Result CameraServer::set_in_progress(bool in_progress) const
@@ -242,17 +244,78 @@ std::ostream& operator<<(std::ostream& str, CameraServer::Information const& inf
     return str;
 }
 
-bool operator==(const CameraServer::VideoStreaming& lhs, const CameraServer::VideoStreaming& rhs)
+bool operator==(
+    const CameraServer::VideoStreamSettings& lhs, const CameraServer::VideoStreamSettings& rhs)
 {
-    return (rhs.has_rtsp_server == lhs.has_rtsp_server) && (rhs.rtsp_uri == lhs.rtsp_uri);
+    return ((std::isnan(rhs.frame_rate_hz) && std::isnan(lhs.frame_rate_hz)) ||
+            rhs.frame_rate_hz == lhs.frame_rate_hz) &&
+           (rhs.horizontal_resolution_pix == lhs.horizontal_resolution_pix) &&
+           (rhs.vertical_resolution_pix == lhs.vertical_resolution_pix) &&
+           (rhs.bit_rate_b_s == lhs.bit_rate_b_s) && (rhs.rotation_deg == lhs.rotation_deg) &&
+           (rhs.uri == lhs.uri) &&
+           ((std::isnan(rhs.horizontal_fov_deg) && std::isnan(lhs.horizontal_fov_deg)) ||
+            rhs.horizontal_fov_deg == lhs.horizontal_fov_deg);
 }
 
-std::ostream& operator<<(std::ostream& str, CameraServer::VideoStreaming const& video_streaming)
+std::ostream&
+operator<<(std::ostream& str, CameraServer::VideoStreamSettings const& video_stream_settings)
 {
     str << std::setprecision(15);
-    str << "video_streaming:" << '\n' << "{\n";
-    str << "    has_rtsp_server: " << video_streaming.has_rtsp_server << '\n';
-    str << "    rtsp_uri: " << video_streaming.rtsp_uri << '\n';
+    str << "video_stream_settings:" << '\n' << "{\n";
+    str << "    frame_rate_hz: " << video_stream_settings.frame_rate_hz << '\n';
+    str << "    horizontal_resolution_pix: " << video_stream_settings.horizontal_resolution_pix
+        << '\n';
+    str << "    vertical_resolution_pix: " << video_stream_settings.vertical_resolution_pix << '\n';
+    str << "    bit_rate_b_s: " << video_stream_settings.bit_rate_b_s << '\n';
+    str << "    rotation_deg: " << video_stream_settings.rotation_deg << '\n';
+    str << "    uri: " << video_stream_settings.uri << '\n';
+    str << "    horizontal_fov_deg: " << video_stream_settings.horizontal_fov_deg << '\n';
+    str << '}';
+    return str;
+}
+
+std::ostream& operator<<(
+    std::ostream& str, CameraServer::VideoStreamInfo::VideoStreamStatus const& video_stream_status)
+{
+    switch (video_stream_status) {
+        case CameraServer::VideoStreamInfo::VideoStreamStatus::NotRunning:
+            return str << "Not Running";
+        case CameraServer::VideoStreamInfo::VideoStreamStatus::InProgress:
+            return str << "In Progress";
+        default:
+            return str << "Unknown";
+    }
+}
+
+std::ostream& operator<<(
+    std::ostream& str,
+    CameraServer::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum)
+{
+    switch (video_stream_spectrum) {
+        case CameraServer::VideoStreamInfo::VideoStreamSpectrum::Unknown:
+            return str << "Unknown";
+        case CameraServer::VideoStreamInfo::VideoStreamSpectrum::VisibleLight:
+            return str << "Visible Light";
+        case CameraServer::VideoStreamInfo::VideoStreamSpectrum::Infrared:
+            return str << "Infrared";
+        default:
+            return str << "Unknown";
+    }
+}
+bool operator==(const CameraServer::VideoStreamInfo& lhs, const CameraServer::VideoStreamInfo& rhs)
+{
+    return (rhs.stream_id == lhs.stream_id) && (rhs.settings == lhs.settings) &&
+           (rhs.status == lhs.status) && (rhs.spectrum == lhs.spectrum);
+}
+
+std::ostream& operator<<(std::ostream& str, CameraServer::VideoStreamInfo const& video_stream_info)
+{
+    str << std::setprecision(15);
+    str << "video_stream_info:" << '\n' << "{\n";
+    str << "    stream_id: " << video_stream_info.stream_id << '\n';
+    str << "    settings: " << video_stream_info.settings << '\n';
+    str << "    status: " << video_stream_info.status << '\n';
+    str << "    spectrum: " << video_stream_info.spectrum << '\n';
     str << '}';
     return str;
 }

@@ -506,11 +506,6 @@ Camera::Result CameraImpl::stop_video()
 {
     auto cmd_stop_video = make_command_stop_video();
 
-    {
-        std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
-        _video_stream_info.data.status = Camera::VideoStreamInfo::VideoStreamStatus::NotRunning;
-    }
-
     return camera_result_from_command_result(_system_impl->send_command(cmd_stop_video));
 }
 
@@ -626,9 +621,14 @@ Camera::Result CameraImpl::start_video_streaming(int32_t stream_id)
 {
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
 
-    if (_video_stream_info.available &&
-        _video_stream_info.data.status == Camera::VideoStreamInfo::VideoStreamStatus::InProgress) {
-        return Camera::Result::InProgress;
+    if (_video_stream_info.available) {
+        for (auto& video_stream_info : _video_stream_info.data) {
+            if (video_stream_info.stream_id == stream_id &&
+                video_stream_info.status ==
+                    Camera::VideoStreamInfo::VideoStreamStatus::InProgress) {
+                return Camera::Result::InProgress;
+            }
+        }
     }
 
     // TODO Check whether we're in video mode
@@ -654,7 +654,13 @@ Camera::Result CameraImpl::stop_video_streaming(int32_t stream_id)
     {
         std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
         // TODO: check if we can/should do that.
-        _video_stream_info.data.status = Camera::VideoStreamInfo::VideoStreamStatus::NotRunning;
+        // TODO: the better way is use the video streaming subscribe to get the current
+        // stream status
+        for (auto& video_stream_info : _video_stream_info.data) {
+            if (video_stream_info.stream_id == stream_id) {
+                video_stream_info.status = Camera::VideoStreamInfo::VideoStreamStatus::NotRunning;
+            }
+        }
     }
     return result;
 }
@@ -665,7 +671,7 @@ void CameraImpl::request_video_stream_info()
     _system_impl->send_command_async(make_command_request_video_stream_status(), nullptr);
 }
 
-Camera::VideoStreamInfo CameraImpl::video_stream_info()
+std::vector<Camera::VideoStreamInfo> CameraImpl::video_stream_info()
 {
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
 
@@ -1054,9 +1060,9 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
                 capture_info, [this](const auto& func) { _system_impl->call_user_callback(func); });
 
             if (_capture_info.last_advertised_image_index != -1) {
-                // Save captured indices that have been dropped to request later, however, don't
-                // do it from the very beginning as there might be many photos from a previous
-                // time that we don't want to request.
+                // Save captured indices that have been dropped to request later, however,
+                // don't do it from the very beginning as there might be many photos from a
+                // previous time that we don't want to request.
                 for (int i = _capture_info.last_advertised_image_index + 1; i < capture_info.index;
                      ++i) {
                     if (_capture_info.missing_image_retries.find(i) ==
@@ -1259,24 +1265,41 @@ void CameraImpl::process_video_information(const mavlink_message_t& message)
 
     {
         std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
-        // TODO: use stream_id and count
-        _video_stream_info.data.status =
+        mavsdk::Camera::VideoStreamInfo video_stream_info;
+        video_stream_info.stream_id = received_video_info.stream_id;
+
+        video_stream_info.status =
             (received_video_info.flags & VIDEO_STREAM_STATUS_FLAGS_RUNNING ?
                  Camera::VideoStreamInfo::VideoStreamStatus::InProgress :
                  Camera::VideoStreamInfo::VideoStreamStatus::NotRunning);
-        _video_stream_info.data.spectrum =
+        video_stream_info.spectrum =
             (received_video_info.flags & VIDEO_STREAM_STATUS_FLAGS_THERMAL ?
                  Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared :
                  Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight);
 
-        auto& video_stream_info = _video_stream_info.data.settings;
-        video_stream_info.frame_rate_hz = received_video_info.framerate;
-        video_stream_info.horizontal_resolution_pix = received_video_info.resolution_h;
-        video_stream_info.vertical_resolution_pix = received_video_info.resolution_v;
-        video_stream_info.bit_rate_b_s = received_video_info.bitrate;
-        video_stream_info.rotation_deg = received_video_info.rotation;
-        video_stream_info.horizontal_fov_deg = static_cast<float>(received_video_info.hfov);
-        video_stream_info.uri = received_video_info.uri;
+        video_stream_info.settings.frame_rate_hz = received_video_info.framerate;
+        video_stream_info.settings.horizontal_resolution_pix = received_video_info.resolution_h;
+        video_stream_info.settings.vertical_resolution_pix = received_video_info.resolution_v;
+        video_stream_info.settings.bit_rate_b_s = received_video_info.bitrate;
+        video_stream_info.settings.rotation_deg = received_video_info.rotation;
+        video_stream_info.settings.horizontal_fov_deg =
+            static_cast<float>(received_video_info.hfov);
+        video_stream_info.settings.uri = received_video_info.uri;
+
+        bool found = false;
+        for (auto& it : _video_stream_info.data) {
+            if (it.stream_id == received_video_info.stream_id) { // video stream info already exits
+                // copy video stream info
+                it = video_stream_info;
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            _video_stream_info.data.emplace_back(video_stream_info);
+        }
+
+        LogDebug() << "Found " << _video_stream_info.data.size() << " video stream";
         _video_stream_info.available = true;
     }
 
@@ -1289,27 +1312,32 @@ void CameraImpl::process_video_stream_status(const mavlink_message_t& message)
     mavlink_msg_video_stream_status_decode(&message, &received_video_stream_status);
     {
         std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
-        _video_stream_info.data.status =
-            (received_video_stream_status.flags & VIDEO_STREAM_STATUS_FLAGS_RUNNING ?
-                 Camera::VideoStreamInfo::VideoStreamStatus::InProgress :
-                 Camera::VideoStreamInfo::VideoStreamStatus::NotRunning);
-        _video_stream_info.data.spectrum =
-            (received_video_stream_status.flags & VIDEO_STREAM_STATUS_FLAGS_THERMAL ?
-                 Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared :
-                 Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight);
+        for (auto& video_stream_info : _video_stream_info.data) {
+            if (video_stream_info.stream_id == received_video_stream_status.stream_id) {
+                video_stream_info.status =
+                    (received_video_stream_status.flags & VIDEO_STREAM_STATUS_FLAGS_RUNNING ?
+                         Camera::VideoStreamInfo::VideoStreamStatus::InProgress :
+                         Camera::VideoStreamInfo::VideoStreamStatus::NotRunning);
+                video_stream_info.spectrum =
+                    (received_video_stream_status.flags & VIDEO_STREAM_STATUS_FLAGS_THERMAL ?
+                         Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared :
+                         Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight);
 
-        auto& video_stream_info = _video_stream_info.data.settings;
-        video_stream_info.frame_rate_hz = received_video_stream_status.framerate;
-        video_stream_info.horizontal_resolution_pix = received_video_stream_status.resolution_h;
-        video_stream_info.vertical_resolution_pix = received_video_stream_status.resolution_v;
-        video_stream_info.bit_rate_b_s = received_video_stream_status.bitrate;
-        video_stream_info.rotation_deg = received_video_stream_status.rotation;
-        video_stream_info.horizontal_fov_deg =
-            static_cast<float>(received_video_stream_status.hfov);
-        _video_stream_info.available = true;
+                video_stream_info.settings.frame_rate_hz = received_video_stream_status.framerate;
+                video_stream_info.settings.horizontal_resolution_pix =
+                    received_video_stream_status.resolution_h;
+                video_stream_info.settings.vertical_resolution_pix =
+                    received_video_stream_status.resolution_v;
+                video_stream_info.settings.bit_rate_b_s = received_video_stream_status.bitrate;
+                video_stream_info.settings.rotation_deg = received_video_stream_status.rotation;
+                video_stream_info.settings.horizontal_fov_deg =
+                    static_cast<float>(received_video_stream_status.hfov);
+
+                _video_stream_info.available = true;
+                notify_video_stream_info();
+            }
+        }
     }
-
-    notify_video_stream_info();
 }
 
 void CameraImpl::process_flight_information(const mavlink_message_t& message)
@@ -1602,7 +1630,8 @@ void CameraImpl::set_option_async(
                         [temp_callback]() { temp_callback(Camera::Result::Success); });
                 }
 
-                // FIXME: We are already holding the lock when this lambda is run and need to
+                // FIXME: We are already holding the lock when this lambda is run and need
+                // to
                 //        schedule the refresh_params() for later.
                 //        We (ab)use the thread pool for the user callbacks for this.
                 _system_impl->call_user_callback([this]() { refresh_params(); });
@@ -2064,8 +2093,9 @@ void CameraImpl::list_photos_async(
         std::unique_lock<std::mutex> capture_request_lock(_captured_request_mutex);
 
         for (int i = start_index; i < _status.image_count; i++) {
-            // In case the vehicle sends capture info, but not those we are asking, we do not
-            // want to loop infinitely. The safety_count is here to abort if this happens.
+            // In case the vehicle sends capture info, but not those we are asking, we do
+            // not want to loop infinitely. The safety_count is here to abort if this
+            // happens.
             auto safety_count = 0;
             const auto safety_count_boundary = 10;
 

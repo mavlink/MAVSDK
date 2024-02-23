@@ -434,7 +434,7 @@ TEST_F(CameraServiceImplTest, registersToVideoStreamInfo)
     auto rpc_video_stream_info = createArbitraryRPCVideoStreamInfo();
     const auto expected_video_stream_info =
         CameraServiceImpl::translateFromRpcVideoStreamInfo(*rpc_video_stream_info);
-    mavsdk::CallbackList<mavsdk::Camera::VideoStreamInfo> video_info_callbacks;
+    mavsdk::CallbackList<std::vector<mavsdk::Camera::VideoStreamInfo>> video_info_callbacks;
     EXPECT_CALL(_camera, subscribe_video_stream_info(_))
         .WillOnce(SaveResult(&video_info_callbacks, &_callback_saved_promise));
     std::vector<mavsdk::Camera::VideoStreamInfo> video_info_events;
@@ -443,7 +443,7 @@ TEST_F(CameraServiceImplTest, registersToVideoStreamInfo)
     auto mode_events_future = subscribeVideoStreamInfoAsync(video_info_events, context);
     _callback_saved_future.wait();
     context->TryCancel();
-    video_info_callbacks(expected_video_stream_info);
+    video_info_callbacks({expected_video_stream_info});
     mode_events_future.wait();
 }
 
@@ -457,8 +457,10 @@ std::future<void> CameraServiceImplTest::subscribeVideoStreamInfoAsync(
 
         mavsdk::rpc::camera::VideoStreamInfoResponse response;
         while (response_reader->Read(&response)) {
-            video_info_events.push_back(
-                CameraServiceImpl::translateFromRpcVideoStreamInfo(response.video_stream_info()));
+            for (auto& video_stream_info : response.video_stream_infos()) {
+                video_info_events.push_back(
+                    CameraServiceImpl::translateFromRpcVideoStreamInfo(video_stream_info));
+            }
         }
 
         response_reader->Finish();
@@ -490,7 +492,7 @@ void CameraServiceImplTest::checkSendsVideoStreamInfo(
 {
     std::promise<void> subscription_promise;
     auto subscription_future = subscription_promise.get_future();
-    mavsdk::CallbackList<mavsdk::Camera::VideoStreamInfo> video_info_callbacks;
+    mavsdk::CallbackList<std::vector<mavsdk::Camera::VideoStreamInfo>> video_info_callbacks;
     auto context = std::make_shared<grpc::ClientContext>();
     EXPECT_CALL(_camera, subscribe_video_stream_info(_))
         .WillOnce(SaveResult(&video_info_callbacks, &subscription_promise));
@@ -499,13 +501,12 @@ void CameraServiceImplTest::checkSendsVideoStreamInfo(
     auto video_info_events_future =
         subscribeVideoStreamInfoAsync(received_video_info_events, context);
     subscription_future.wait();
-    for (const auto& video_info_event : video_info_events) {
-        video_info_callbacks(video_info_event);
-    }
+    video_info_callbacks(video_info_events);
+
     context->TryCancel();
     auto arbitrary_video_info_event = createArbitraryRPCVideoStreamInfo();
     video_info_callbacks(
-        CameraServiceImpl::translateFromRpcVideoStreamInfo(*arbitrary_video_info_event));
+        {CameraServiceImpl::translateFromRpcVideoStreamInfo(*arbitrary_video_info_event)});
     video_info_events_future.wait();
 
     ASSERT_EQ(video_info_events.size(), received_video_info_events.size());

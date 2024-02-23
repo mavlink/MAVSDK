@@ -415,6 +415,8 @@ public:
     {
         auto rpc_obj = std::make_unique<rpc::camera::VideoStreamInfo>();
 
+        rpc_obj->set_stream_id(video_stream_info.stream_id);
+
         rpc_obj->set_allocated_settings(
             translateToRpcVideoStreamSettings(video_stream_info.settings).release());
 
@@ -429,6 +431,8 @@ public:
     translateFromRpcVideoStreamInfo(const rpc::camera::VideoStreamInfo& video_stream_info)
     {
         mavsdk::Camera::VideoStreamInfo obj;
+
+        obj.stream_id = video_stream_info.stream_id();
 
         obj.settings = translateFromRpcVideoStreamSettings(video_stream_info.settings());
 
@@ -1074,11 +1078,13 @@ public:
         const mavsdk::Camera::VideoStreamInfoHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_video_stream_info(
                 [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Camera::VideoStreamInfo video_stream_info) {
+                    const std::vector<mavsdk::Camera::VideoStreamInfo> video_stream_info) {
                     rpc::camera::VideoStreamInfoResponse rpc_response;
 
-                    rpc_response.set_allocated_video_stream_info(
-                        translateToRpcVideoStreamInfo(video_stream_info).release());
+                    for (const auto& elem : video_stream_info) {
+                        auto* ptr = rpc_response.add_video_stream_infos();
+                        ptr->CopyFrom(*translateToRpcVideoStreamInfo(elem).release());
+                    }
 
                     std::unique_lock<std::mutex> lock(*subscribe_mutex);
                     if (!*is_finished && !writer->Write(rpc_response)) {

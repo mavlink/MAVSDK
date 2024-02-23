@@ -24,27 +24,32 @@ namespace mavsdk {
 namespace rpc {
 namespace camera_server {
 
-inline constexpr VideoStreaming::Impl_::Impl_(
+inline constexpr VideoStreamSettings::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : rtsp_uri_(
+      : uri_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
-        has_rtsp_server_{false},
+        frame_rate_hz_{0},
+        horizontal_resolution_pix_{0u},
+        vertical_resolution_pix_{0u},
+        bit_rate_b_s_{0u},
+        rotation_deg_{0u},
+        horizontal_fov_deg_{0},
         _cached_size_{0} {}
 
 template <typename>
-PROTOBUF_CONSTEXPR VideoStreaming::VideoStreaming(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR VideoStreamSettings::VideoStreamSettings(::_pbi::ConstantInitialized)
     : _impl_(::_pbi::ConstantInitialized()) {}
-struct VideoStreamingDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR VideoStreamingDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~VideoStreamingDefaultTypeInternal() {}
+struct VideoStreamSettingsDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR VideoStreamSettingsDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~VideoStreamSettingsDefaultTypeInternal() {}
   union {
-    VideoStreaming _instance;
+    VideoStreamSettings _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 VideoStreamingDefaultTypeInternal _VideoStreaming_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 VideoStreamSettingsDefaultTypeInternal _VideoStreamSettings_default_instance_;
 
 inline constexpr TakePhotoResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -661,43 +666,46 @@ struct CameraServerResultDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CameraServerResultDefaultTypeInternal _CameraServerResult_default_instance_;
 
-inline constexpr SetVideoStreamingResponse::Impl_::Impl_(
+inline constexpr VideoStreamInfo::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        settings_{nullptr},
+        stream_id_{0},
+        status_{static_cast< ::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamStatus >(0)},
+        spectrum_{static_cast< ::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamSpectrum >(0)} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR VideoStreamInfo::VideoStreamInfo(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct VideoStreamInfoDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR VideoStreamInfoDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~VideoStreamInfoDefaultTypeInternal() {}
+  union {
+    VideoStreamInfo _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 VideoStreamInfoDefaultTypeInternal _VideoStreamInfo_default_instance_;
+
+inline constexpr SetVideoStreamInfoResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
         camera_server_result_{nullptr} {}
 
 template <typename>
-PROTOBUF_CONSTEXPR SetVideoStreamingResponse::SetVideoStreamingResponse(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR SetVideoStreamInfoResponse::SetVideoStreamInfoResponse(::_pbi::ConstantInitialized)
     : _impl_(::_pbi::ConstantInitialized()) {}
-struct SetVideoStreamingResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetVideoStreamingResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~SetVideoStreamingResponseDefaultTypeInternal() {}
+struct SetVideoStreamInfoResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SetVideoStreamInfoResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetVideoStreamInfoResponseDefaultTypeInternal() {}
   union {
-    SetVideoStreamingResponse _instance;
+    SetVideoStreamInfoResponse _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetVideoStreamingResponseDefaultTypeInternal _SetVideoStreamingResponse_default_instance_;
-
-inline constexpr SetVideoStreamingRequest::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        video_streaming_{nullptr} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR SetVideoStreamingRequest::SetVideoStreamingRequest(::_pbi::ConstantInitialized)
-    : _impl_(::_pbi::ConstantInitialized()) {}
-struct SetVideoStreamingRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetVideoStreamingRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~SetVideoStreamingRequestDefaultTypeInternal() {}
-  union {
-    SetVideoStreamingRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetVideoStreamingRequestDefaultTypeInternal _SetVideoStreamingRequest_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetVideoStreamInfoResponseDefaultTypeInternal _SetVideoStreamInfoResponse_default_instance_;
 
 inline constexpr SetInformationResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -1012,6 +1020,25 @@ struct CaptureInfoDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CaptureInfoDefaultTypeInternal _CaptureInfo_default_instance_;
 
+inline constexpr SetVideoStreamInfoRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : video_stream_infos_{},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR SetVideoStreamInfoRequest::SetVideoStreamInfoRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct SetVideoStreamInfoRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SetVideoStreamInfoRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetVideoStreamInfoRequestDefaultTypeInternal() {}
+  union {
+    SetVideoStreamInfoRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetVideoStreamInfoRequestDefaultTypeInternal _SetVideoStreamInfoRequest_default_instance_;
+
 inline constexpr RespondTakePhotoRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -1034,8 +1061,8 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 }  // namespace camera_server
 }  // namespace rpc
 }  // namespace mavsdk
-static ::_pb::Metadata file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[54];
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[7];
+static ::_pb::Metadata file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[55];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[9];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_camera_5fserver_2fcamera_5fserver_2eproto = nullptr;
 const ::uint32_t TableStruct_camera_5fserver_2fcamera_5fserver_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
@@ -1060,25 +1087,24 @@ const ::uint32_t TableStruct_camera_5fserver_2fcamera_5fserver_2eproto::offsets[
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SetInformationResponse, _impl_.camera_server_result_),
     0,
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SetVideoStreamingRequest, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SetVideoStreamingRequest, _internal_metadata_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SetVideoStreamInfoRequest, _internal_metadata_),
     ~0u,  // no _extensions_
     ~0u,  // no _oneof_case_
     ~0u,  // no _weak_field_map_
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SetVideoStreamingRequest, _impl_.video_streaming_),
-    0,
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SetVideoStreamingResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SetVideoStreamingResponse, _internal_metadata_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SetVideoStreamInfoRequest, _impl_.video_stream_infos_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SetVideoStreamInfoResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SetVideoStreamInfoResponse, _internal_metadata_),
     ~0u,  // no _extensions_
     ~0u,  // no _oneof_case_
     ~0u,  // no _weak_field_map_
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SetVideoStreamingResponse, _impl_.camera_server_result_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SetVideoStreamInfoResponse, _impl_.camera_server_result_),
     0,
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SetInProgressRequest, _internal_metadata_),
@@ -1488,15 +1514,36 @@ const ::uint32_t TableStruct_camera_5fserver_2fcamera_5fserver_2eproto::offsets[
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Information, _impl_.definition_file_version_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Information, _impl_.definition_file_uri_),
     ~0u,  // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::VideoStreaming, _internal_metadata_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::VideoStreamSettings, _internal_metadata_),
     ~0u,  // no _extensions_
     ~0u,  // no _oneof_case_
     ~0u,  // no _weak_field_map_
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::VideoStreaming, _impl_.has_rtsp_server_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::VideoStreaming, _impl_.rtsp_uri_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::VideoStreamSettings, _impl_.frame_rate_hz_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::VideoStreamSettings, _impl_.horizontal_resolution_pix_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::VideoStreamSettings, _impl_.vertical_resolution_pix_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::VideoStreamSettings, _impl_.bit_rate_b_s_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::VideoStreamSettings, _impl_.rotation_deg_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::VideoStreamSettings, _impl_.uri_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::VideoStreamSettings, _impl_.horizontal_fov_deg_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::VideoStreamInfo, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::VideoStreamInfo, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::VideoStreamInfo, _impl_.stream_id_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::VideoStreamInfo, _impl_.settings_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::VideoStreamInfo, _impl_.status_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::VideoStreamInfo, _impl_.spectrum_),
+    ~0u,
+    0,
+    ~0u,
+    ~0u,
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Position, _internal_metadata_),
     ~0u,  // no _extensions_
@@ -1587,65 +1634,66 @@ static const ::_pbi::MigrationSchema
     schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
         {0, 9, -1, sizeof(::mavsdk::rpc::camera_server::SetInformationRequest)},
         {10, 19, -1, sizeof(::mavsdk::rpc::camera_server::SetInformationResponse)},
-        {20, 29, -1, sizeof(::mavsdk::rpc::camera_server::SetVideoStreamingRequest)},
-        {30, 39, -1, sizeof(::mavsdk::rpc::camera_server::SetVideoStreamingResponse)},
-        {40, -1, -1, sizeof(::mavsdk::rpc::camera_server::SetInProgressRequest)},
-        {49, 58, -1, sizeof(::mavsdk::rpc::camera_server::SetInProgressResponse)},
-        {59, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeTakePhotoRequest)},
-        {67, -1, -1, sizeof(::mavsdk::rpc::camera_server::TakePhotoResponse)},
-        {76, 86, -1, sizeof(::mavsdk::rpc::camera_server::RespondTakePhotoRequest)},
-        {88, 97, -1, sizeof(::mavsdk::rpc::camera_server::RespondTakePhotoResponse)},
-        {98, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeStartVideoRequest)},
-        {106, -1, -1, sizeof(::mavsdk::rpc::camera_server::StartVideoResponse)},
-        {115, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondStartVideoRequest)},
-        {124, 133, -1, sizeof(::mavsdk::rpc::camera_server::RespondStartVideoResponse)},
-        {134, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeStopVideoRequest)},
-        {142, -1, -1, sizeof(::mavsdk::rpc::camera_server::StopVideoResponse)},
-        {151, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondStopVideoRequest)},
-        {160, 169, -1, sizeof(::mavsdk::rpc::camera_server::RespondStopVideoResponse)},
-        {170, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeStartVideoStreamingRequest)},
-        {178, -1, -1, sizeof(::mavsdk::rpc::camera_server::StartVideoStreamingResponse)},
-        {187, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondStartVideoStreamingRequest)},
-        {196, 205, -1, sizeof(::mavsdk::rpc::camera_server::RespondStartVideoStreamingResponse)},
-        {206, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeStopVideoStreamingRequest)},
-        {214, -1, -1, sizeof(::mavsdk::rpc::camera_server::StopVideoStreamingResponse)},
-        {223, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondStopVideoStreamingRequest)},
-        {232, 241, -1, sizeof(::mavsdk::rpc::camera_server::RespondStopVideoStreamingResponse)},
-        {242, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeSetModeRequest)},
-        {250, -1, -1, sizeof(::mavsdk::rpc::camera_server::SetModeResponse)},
-        {259, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondSetModeRequest)},
-        {268, 277, -1, sizeof(::mavsdk::rpc::camera_server::RespondSetModeResponse)},
-        {278, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeStorageInformationRequest)},
-        {286, -1, -1, sizeof(::mavsdk::rpc::camera_server::StorageInformationResponse)},
-        {295, 305, -1, sizeof(::mavsdk::rpc::camera_server::RespondStorageInformationRequest)},
-        {307, 316, -1, sizeof(::mavsdk::rpc::camera_server::RespondStorageInformationResponse)},
-        {317, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeCaptureStatusRequest)},
-        {325, -1, -1, sizeof(::mavsdk::rpc::camera_server::CaptureStatusResponse)},
-        {334, 344, -1, sizeof(::mavsdk::rpc::camera_server::RespondCaptureStatusRequest)},
-        {346, 355, -1, sizeof(::mavsdk::rpc::camera_server::RespondCaptureStatusResponse)},
-        {356, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeFormatStorageRequest)},
-        {364, -1, -1, sizeof(::mavsdk::rpc::camera_server::FormatStorageResponse)},
-        {373, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondFormatStorageRequest)},
-        {382, 391, -1, sizeof(::mavsdk::rpc::camera_server::RespondFormatStorageResponse)},
-        {392, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeResetSettingsRequest)},
-        {400, -1, -1, sizeof(::mavsdk::rpc::camera_server::ResetSettingsResponse)},
-        {409, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondResetSettingsRequest)},
-        {418, 427, -1, sizeof(::mavsdk::rpc::camera_server::RespondResetSettingsResponse)},
-        {428, -1, -1, sizeof(::mavsdk::rpc::camera_server::Information)},
-        {447, -1, -1, sizeof(::mavsdk::rpc::camera_server::VideoStreaming)},
-        {457, -1, -1, sizeof(::mavsdk::rpc::camera_server::Position)},
-        {469, -1, -1, sizeof(::mavsdk::rpc::camera_server::Quaternion)},
-        {481, 495, -1, sizeof(::mavsdk::rpc::camera_server::CaptureInfo)},
-        {501, -1, -1, sizeof(::mavsdk::rpc::camera_server::CameraServerResult)},
-        {511, -1, -1, sizeof(::mavsdk::rpc::camera_server::StorageInformation)},
-        {527, -1, -1, sizeof(::mavsdk::rpc::camera_server::CaptureStatus)},
+        {20, -1, -1, sizeof(::mavsdk::rpc::camera_server::SetVideoStreamInfoRequest)},
+        {29, 38, -1, sizeof(::mavsdk::rpc::camera_server::SetVideoStreamInfoResponse)},
+        {39, -1, -1, sizeof(::mavsdk::rpc::camera_server::SetInProgressRequest)},
+        {48, 57, -1, sizeof(::mavsdk::rpc::camera_server::SetInProgressResponse)},
+        {58, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeTakePhotoRequest)},
+        {66, -1, -1, sizeof(::mavsdk::rpc::camera_server::TakePhotoResponse)},
+        {75, 85, -1, sizeof(::mavsdk::rpc::camera_server::RespondTakePhotoRequest)},
+        {87, 96, -1, sizeof(::mavsdk::rpc::camera_server::RespondTakePhotoResponse)},
+        {97, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeStartVideoRequest)},
+        {105, -1, -1, sizeof(::mavsdk::rpc::camera_server::StartVideoResponse)},
+        {114, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondStartVideoRequest)},
+        {123, 132, -1, sizeof(::mavsdk::rpc::camera_server::RespondStartVideoResponse)},
+        {133, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeStopVideoRequest)},
+        {141, -1, -1, sizeof(::mavsdk::rpc::camera_server::StopVideoResponse)},
+        {150, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondStopVideoRequest)},
+        {159, 168, -1, sizeof(::mavsdk::rpc::camera_server::RespondStopVideoResponse)},
+        {169, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeStartVideoStreamingRequest)},
+        {177, -1, -1, sizeof(::mavsdk::rpc::camera_server::StartVideoStreamingResponse)},
+        {186, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondStartVideoStreamingRequest)},
+        {195, 204, -1, sizeof(::mavsdk::rpc::camera_server::RespondStartVideoStreamingResponse)},
+        {205, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeStopVideoStreamingRequest)},
+        {213, -1, -1, sizeof(::mavsdk::rpc::camera_server::StopVideoStreamingResponse)},
+        {222, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondStopVideoStreamingRequest)},
+        {231, 240, -1, sizeof(::mavsdk::rpc::camera_server::RespondStopVideoStreamingResponse)},
+        {241, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeSetModeRequest)},
+        {249, -1, -1, sizeof(::mavsdk::rpc::camera_server::SetModeResponse)},
+        {258, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondSetModeRequest)},
+        {267, 276, -1, sizeof(::mavsdk::rpc::camera_server::RespondSetModeResponse)},
+        {277, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeStorageInformationRequest)},
+        {285, -1, -1, sizeof(::mavsdk::rpc::camera_server::StorageInformationResponse)},
+        {294, 304, -1, sizeof(::mavsdk::rpc::camera_server::RespondStorageInformationRequest)},
+        {306, 315, -1, sizeof(::mavsdk::rpc::camera_server::RespondStorageInformationResponse)},
+        {316, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeCaptureStatusRequest)},
+        {324, -1, -1, sizeof(::mavsdk::rpc::camera_server::CaptureStatusResponse)},
+        {333, 343, -1, sizeof(::mavsdk::rpc::camera_server::RespondCaptureStatusRequest)},
+        {345, 354, -1, sizeof(::mavsdk::rpc::camera_server::RespondCaptureStatusResponse)},
+        {355, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeFormatStorageRequest)},
+        {363, -1, -1, sizeof(::mavsdk::rpc::camera_server::FormatStorageResponse)},
+        {372, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondFormatStorageRequest)},
+        {381, 390, -1, sizeof(::mavsdk::rpc::camera_server::RespondFormatStorageResponse)},
+        {391, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeResetSettingsRequest)},
+        {399, -1, -1, sizeof(::mavsdk::rpc::camera_server::ResetSettingsResponse)},
+        {408, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondResetSettingsRequest)},
+        {417, 426, -1, sizeof(::mavsdk::rpc::camera_server::RespondResetSettingsResponse)},
+        {427, -1, -1, sizeof(::mavsdk::rpc::camera_server::Information)},
+        {446, -1, -1, sizeof(::mavsdk::rpc::camera_server::VideoStreamSettings)},
+        {461, 473, -1, sizeof(::mavsdk::rpc::camera_server::VideoStreamInfo)},
+        {477, -1, -1, sizeof(::mavsdk::rpc::camera_server::Position)},
+        {489, -1, -1, sizeof(::mavsdk::rpc::camera_server::Quaternion)},
+        {501, 515, -1, sizeof(::mavsdk::rpc::camera_server::CaptureInfo)},
+        {521, -1, -1, sizeof(::mavsdk::rpc::camera_server::CameraServerResult)},
+        {531, -1, -1, sizeof(::mavsdk::rpc::camera_server::StorageInformation)},
+        {547, -1, -1, sizeof(::mavsdk::rpc::camera_server::CaptureStatus)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::camera_server::_SetInformationRequest_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_SetInformationResponse_default_instance_._instance,
-    &::mavsdk::rpc::camera_server::_SetVideoStreamingRequest_default_instance_._instance,
-    &::mavsdk::rpc::camera_server::_SetVideoStreamingResponse_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_SetVideoStreamInfoRequest_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_SetVideoStreamInfoResponse_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_SetInProgressRequest_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_SetInProgressResponse_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_SubscribeTakePhotoRequest_default_instance_._instance,
@@ -1689,7 +1737,8 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::camera_server::_RespondResetSettingsRequest_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_RespondResetSettingsResponse_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_Information_default_instance_._instance,
-    &::mavsdk::rpc::camera_server::_VideoStreaming_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_VideoStreamSettings_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_VideoStreamInfo_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_Position_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_Quaternion_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_CaptureInfo_default_instance_._instance,
@@ -1704,236 +1753,252 @@ const char descriptor_table_protodef_camera_5fserver_2fcamera_5fserver_2eproto[]
     "ion\030\001 \001(\0132%.mavsdk.rpc.camera_server.Inf"
     "ormation\"d\n\026SetInformationResponse\022J\n\024ca"
     "mera_server_result\030\001 \001(\0132,.mavsdk.rpc.ca"
-    "mera_server.CameraServerResult\"]\n\030SetVid"
-    "eoStreamingRequest\022A\n\017video_streaming\030\001 "
-    "\001(\0132(.mavsdk.rpc.camera_server.VideoStre"
-    "aming\"g\n\031SetVideoStreamingResponse\022J\n\024ca"
-    "mera_server_result\030\001 \001(\0132,.mavsdk.rpc.ca"
-    "mera_server.CameraServerResult\"+\n\024SetInP"
-    "rogressRequest\022\023\n\013in_progress\030\001 \001(\010\"c\n\025S"
-    "etInProgressResponse\022J\n\024camera_server_re"
-    "sult\030\001 \001(\0132,.mavsdk.rpc.camera_server.Ca"
-    "meraServerResult\"\033\n\031SubscribeTakePhotoRe"
-    "quest\"\"\n\021TakePhotoResponse\022\r\n\005index\030\001 \001("
-    "\005\"\235\001\n\027RespondTakePhotoRequest\022E\n\023take_ph"
-    "oto_feedback\030\001 \001(\0162(.mavsdk.rpc.camera_s"
-    "erver.CameraFeedback\022;\n\014capture_info\030\002 \001"
-    "(\0132%.mavsdk.rpc.camera_server.CaptureInf"
-    "o\"f\n\030RespondTakePhotoResponse\022J\n\024camera_"
-    "server_result\030\001 \001(\0132,.mavsdk.rpc.camera_"
-    "server.CameraServerResult\"\034\n\032SubscribeSt"
-    "artVideoRequest\"\'\n\022StartVideoResponse\022\021\n"
-    "\tstream_id\030\001 \001(\005\"b\n\030RespondStartVideoReq"
-    "uest\022F\n\024start_video_feedback\030\001 \001(\0162(.mav"
-    "sdk.rpc.camera_server.CameraFeedback\"g\n\031"
-    "RespondStartVideoResponse\022J\n\024camera_serv"
-    "er_result\030\001 \001(\0132,.mavsdk.rpc.camera_serv"
-    "er.CameraServerResult\"\033\n\031SubscribeStopVi"
-    "deoRequest\"&\n\021StopVideoResponse\022\021\n\tstrea"
-    "m_id\030\001 \001(\005\"`\n\027RespondStopVideoRequest\022E\n"
-    "\023stop_video_feedback\030\001 \001(\0162(.mavsdk.rpc."
-    "camera_server.CameraFeedback\"f\n\030RespondS"
-    "topVideoResponse\022J\n\024camera_server_result"
-    "\030\001 \001(\0132,.mavsdk.rpc.camera_server.Camera"
-    "ServerResult\"%\n#SubscribeStartVideoStrea"
-    "mingRequest\"0\n\033StartVideoStreamingRespon"
-    "se\022\021\n\tstream_id\030\001 \001(\005\"u\n!RespondStartVid"
-    "eoStreamingRequest\022P\n\036start_video_stream"
-    "ing_feedback\030\001 \001(\0162(.mavsdk.rpc.camera_s"
-    "erver.CameraFeedback\"p\n\"RespondStartVide"
-    "oStreamingResponse\022J\n\024camera_server_resu"
-    "lt\030\001 \001(\0132,.mavsdk.rpc.camera_server.Came"
-    "raServerResult\"$\n\"SubscribeStopVideoStre"
-    "amingRequest\"/\n\032StopVideoStreamingRespon"
-    "se\022\021\n\tstream_id\030\001 \001(\005\"s\n RespondStopVide"
-    "oStreamingRequest\022O\n\035stop_video_streamin"
-    "g_feedback\030\001 \001(\0162(.mavsdk.rpc.camera_ser"
-    "ver.CameraFeedback\"o\n!RespondStopVideoSt"
-    "reamingResponse\022J\n\024camera_server_result\030"
-    "\001 \001(\0132,.mavsdk.rpc.camera_server.CameraS"
-    "erverResult\"\031\n\027SubscribeSetModeRequest\"\?"
-    "\n\017SetModeResponse\022,\n\004mode\030\001 \001(\0162\036.mavsdk"
-    ".rpc.camera_server.Mode\"\\\n\025RespondSetMod"
-    "eRequest\022C\n\021set_mode_feedback\030\001 \001(\0162(.ma"
-    "vsdk.rpc.camera_server.CameraFeedback\"d\n"
-    "\026RespondSetModeResponse\022J\n\024camera_server"
-    "_result\030\001 \001(\0132,.mavsdk.rpc.camera_server"
-    ".CameraServerResult\"$\n\"SubscribeStorageI"
-    "nformationRequest\"0\n\032StorageInformationR"
-    "esponse\022\022\n\nstorage_id\030\001 \001(\005\"\275\001\n RespondS"
-    "torageInformationRequest\022N\n\034storage_info"
-    "rmation_feedback\030\001 \001(\0162(.mavsdk.rpc.came"
-    "ra_server.CameraFeedback\022I\n\023storage_info"
-    "rmation\030\002 \001(\0132,.mavsdk.rpc.camera_server"
-    ".StorageInformation\"o\n!RespondStorageInf"
-    "ormationResponse\022J\n\024camera_server_result"
-    "\030\001 \001(\0132,.mavsdk.rpc.camera_server.Camera"
-    "ServerResult\"\037\n\035SubscribeCaptureStatusRe"
-    "quest\")\n\025CaptureStatusResponse\022\020\n\010reserv"
-    "ed\030\001 \001(\005\"\251\001\n\033RespondCaptureStatusRequest"
-    "\022I\n\027capture_status_feedback\030\001 \001(\0162(.mavs"
-    "dk.rpc.camera_server.CameraFeedback\022\?\n\016c"
-    "apture_status\030\002 \001(\0132\'.mavsdk.rpc.camera_"
-    "server.CaptureStatus\"j\n\034RespondCaptureSt"
-    "atusResponse\022J\n\024camera_server_result\030\001 \001"
-    "(\0132,.mavsdk.rpc.camera_server.CameraServ"
-    "erResult\"\037\n\035SubscribeFormatStorageReques"
-    "t\"+\n\025FormatStorageResponse\022\022\n\nstorage_id"
-    "\030\001 \001(\005\"h\n\033RespondFormatStorageRequest\022I\n"
-    "\027format_storage_feedback\030\001 \001(\0162(.mavsdk."
-    "rpc.camera_server.CameraFeedback\"j\n\034Resp"
-    "ondFormatStorageResponse\022J\n\024camera_serve"
-    "r_result\030\001 \001(\0132,.mavsdk.rpc.camera_serve"
-    "r.CameraServerResult\"\037\n\035SubscribeResetSe"
-    "ttingsRequest\")\n\025ResetSettingsResponse\022\020"
-    "\n\010reserved\030\001 \001(\005\"h\n\033RespondResetSettings"
-    "Request\022I\n\027reset_settings_feedback\030\001 \001(\016"
+    "mera_server.CameraServerResult\"b\n\031SetVid"
+    "eoStreamInfoRequest\022E\n\022video_stream_info"
+    "s\030\001 \003(\0132).mavsdk.rpc.camera_server.Video"
+    "StreamInfo\"h\n\032SetVideoStreamInfoResponse"
+    "\022J\n\024camera_server_result\030\001 \001(\0132,.mavsdk."
+    "rpc.camera_server.CameraServerResult\"+\n\024"
+    "SetInProgressRequest\022\023\n\013in_progress\030\001 \001("
+    "\010\"c\n\025SetInProgressResponse\022J\n\024camera_ser"
+    "ver_result\030\001 \001(\0132,.mavsdk.rpc.camera_ser"
+    "ver.CameraServerResult\"\033\n\031SubscribeTakeP"
+    "hotoRequest\"\"\n\021TakePhotoResponse\022\r\n\005inde"
+    "x\030\001 \001(\005\"\235\001\n\027RespondTakePhotoRequest\022E\n\023t"
+    "ake_photo_feedback\030\001 \001(\0162(.mavsdk.rpc.ca"
+    "mera_server.CameraFeedback\022;\n\014capture_in"
+    "fo\030\002 \001(\0132%.mavsdk.rpc.camera_server.Capt"
+    "ureInfo\"f\n\030RespondTakePhotoResponse\022J\n\024c"
+    "amera_server_result\030\001 \001(\0132,.mavsdk.rpc.c"
+    "amera_server.CameraServerResult\"\034\n\032Subsc"
+    "ribeStartVideoRequest\"\'\n\022StartVideoRespo"
+    "nse\022\021\n\tstream_id\030\001 \001(\005\"b\n\030RespondStartVi"
+    "deoRequest\022F\n\024start_video_feedback\030\001 \001(\016"
     "2(.mavsdk.rpc.camera_server.CameraFeedba"
-    "ck\"j\n\034RespondResetSettingsResponse\022J\n\024ca"
-    "mera_server_result\030\001 \001(\0132,.mavsdk.rpc.ca"
-    "mera_server.CameraServerResult\"\276\002\n\013Infor"
-    "mation\022\023\n\013vendor_name\030\001 \001(\t\022\022\n\nmodel_nam"
-    "e\030\002 \001(\t\022\030\n\020firmware_version\030\003 \001(\t\022\027\n\017foc"
-    "al_length_mm\030\004 \001(\002\022!\n\031horizontal_sensor_"
-    "size_mm\030\005 \001(\002\022\037\n\027vertical_sensor_size_mm"
-    "\030\006 \001(\002\022 \n\030horizontal_resolution_px\030\007 \001(\r"
-    "\022\036\n\026vertical_resolution_px\030\010 \001(\r\022\017\n\007lens"
-    "_id\030\t \001(\r\022\037\n\027definition_file_version\030\n \001"
-    "(\r\022\033\n\023definition_file_uri\030\013 \001(\t\";\n\016Video"
-    "Streaming\022\027\n\017has_rtsp_server\030\001 \001(\010\022\020\n\010rt"
-    "sp_uri\030\002 \001(\t\"q\n\010Position\022\024\n\014latitude_deg"
-    "\030\001 \001(\001\022\025\n\rlongitude_deg\030\002 \001(\001\022\033\n\023absolut"
-    "e_altitude_m\030\003 \001(\002\022\033\n\023relative_altitude_"
-    "m\030\004 \001(\002\"8\n\nQuaternion\022\t\n\001w\030\001 \001(\002\022\t\n\001x\030\002 "
-    "\001(\002\022\t\n\001y\030\003 \001(\002\022\t\n\001z\030\004 \001(\002\"\320\001\n\013CaptureInf"
-    "o\0224\n\010position\030\001 \001(\0132\".mavsdk.rpc.camera_"
-    "server.Position\022A\n\023attitude_quaternion\030\002"
-    " \001(\0132$.mavsdk.rpc.camera_server.Quaterni"
-    "on\022\023\n\013time_utc_us\030\003 \001(\004\022\022\n\nis_success\030\004 "
-    "\001(\010\022\r\n\005index\030\005 \001(\005\022\020\n\010file_url\030\006 \001(\t\"\263\002\n"
-    "\022CameraServerResult\022C\n\006result\030\001 \001(\01623.ma"
-    "vsdk.rpc.camera_server.CameraServerResul"
-    "t.Result\022\022\n\nresult_str\030\002 \001(\t\"\303\001\n\006Result\022"
-    "\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022"
-    "\026\n\022RESULT_IN_PROGRESS\020\002\022\017\n\013RESULT_BUSY\020\003"
-    "\022\021\n\rRESULT_DENIED\020\004\022\020\n\014RESULT_ERROR\020\005\022\022\n"
-    "\016RESULT_TIMEOUT\020\006\022\031\n\025RESULT_WRONG_ARGUME"
-    "NT\020\007\022\024\n\020RESULT_NO_SYSTEM\020\010\"\214\005\n\022StorageIn"
-    "formation\022\030\n\020used_storage_mib\030\001 \001(\002\022\035\n\025a"
-    "vailable_storage_mib\030\002 \001(\002\022\031\n\021total_stor"
-    "age_mib\030\003 \001(\002\022R\n\016storage_status\030\004 \001(\0162:."
-    "mavsdk.rpc.camera_server.StorageInformat"
-    "ion.StorageStatus\022\022\n\nstorage_id\030\005 \001(\r\022N\n"
-    "\014storage_type\030\006 \001(\01628.mavsdk.rpc.camera_"
-    "server.StorageInformation.StorageType\022\030\n"
-    "\020read_speed_mib_s\030\007 \001(\002\022\031\n\021write_speed_m"
-    "ib_s\030\010 \001(\002\"\221\001\n\rStorageStatus\022 \n\034STORAGE_"
-    "STATUS_NOT_AVAILABLE\020\000\022\036\n\032STORAGE_STATUS"
-    "_UNFORMATTED\020\001\022\034\n\030STORAGE_STATUS_FORMATT"
-    "ED\020\002\022 \n\034STORAGE_STATUS_NOT_SUPPORTED\020\003\"\240"
-    "\001\n\013StorageType\022\030\n\024STORAGE_TYPE_UNKNOWN\020\000"
-    "\022\032\n\026STORAGE_TYPE_USB_STICK\020\001\022\023\n\017STORAGE_"
-    "TYPE_SD\020\002\022\030\n\024STORAGE_TYPE_MICROSD\020\003\022\023\n\017S"
-    "TORAGE_TYPE_HD\020\007\022\027\n\022STORAGE_TYPE_OTHER\020\376"
-    "\001\"\356\003\n\rCaptureStatus\022\030\n\020image_interval_s\030"
-    "\001 \001(\002\022\030\n\020recording_time_s\030\002 \001(\002\022\036\n\026avail"
-    "able_capacity_mib\030\003 \001(\002\022I\n\014image_status\030"
-    "\004 \001(\01623.mavsdk.rpc.camera_server.Capture"
-    "Status.ImageStatus\022I\n\014video_status\030\005 \001(\016"
-    "23.mavsdk.rpc.camera_server.CaptureStatu"
-    "s.VideoStatus\022\023\n\013image_count\030\006 \001(\005\"\221\001\n\013I"
-    "mageStatus\022\025\n\021IMAGE_STATUS_IDLE\020\000\022$\n IMA"
-    "GE_STATUS_CAPTURE_IN_PROGRESS\020\001\022\036\n\032IMAGE"
-    "_STATUS_INTERVAL_IDLE\020\002\022%\n!IMAGE_STATUS_"
-    "INTERVAL_IN_PROGRESS\020\003\"J\n\013VideoStatus\022\025\n"
-    "\021VIDEO_STATUS_IDLE\020\000\022$\n VIDEO_STATUS_CAP"
-    "TURE_IN_PROGRESS\020\001*{\n\016CameraFeedback\022\033\n\027"
-    "CAMERA_FEEDBACK_UNKNOWN\020\000\022\026\n\022CAMERA_FEED"
-    "BACK_OK\020\001\022\030\n\024CAMERA_FEEDBACK_BUSY\020\002\022\032\n\026C"
-    "AMERA_FEEDBACK_FAILED\020\003*8\n\004Mode\022\020\n\014MODE_"
-    "UNKNOWN\020\000\022\016\n\nMODE_PHOTO\020\001\022\016\n\nMODE_VIDEO\020"
-    "\0022\217\031\n\023CameraServerService\022y\n\016SetInformat"
-    "ion\022/.mavsdk.rpc.camera_server.SetInform"
-    "ationRequest\0320.mavsdk.rpc.camera_server."
-    "SetInformationResponse\"\004\200\265\030\001\022\202\001\n\021SetVide"
-    "oStreaming\0222.mavsdk.rpc.camera_server.Se"
-    "tVideoStreamingRequest\0323.mavsdk.rpc.came"
-    "ra_server.SetVideoStreamingResponse\"\004\200\265\030"
-    "\001\022v\n\rSetInProgress\022..mavsdk.rpc.camera_s"
-    "erver.SetInProgressRequest\032/.mavsdk.rpc."
-    "camera_server.SetInProgressResponse\"\004\200\265\030"
-    "\001\022~\n\022SubscribeTakePhoto\0223.mavsdk.rpc.cam"
-    "era_server.SubscribeTakePhotoRequest\032+.m"
-    "avsdk.rpc.camera_server.TakePhotoRespons"
-    "e\"\004\200\265\030\0000\001\022\177\n\020RespondTakePhoto\0221.mavsdk.r"
-    "pc.camera_server.RespondTakePhotoRequest"
-    "\0322.mavsdk.rpc.camera_server.RespondTakeP"
-    "hotoResponse\"\004\200\265\030\001\022\201\001\n\023SubscribeStartVid"
-    "eo\0224.mavsdk.rpc.camera_server.SubscribeS"
-    "tartVideoRequest\032,.mavsdk.rpc.camera_ser"
-    "ver.StartVideoResponse\"\004\200\265\030\0000\001\022\202\001\n\021Respo"
-    "ndStartVideo\0222.mavsdk.rpc.camera_server."
-    "RespondStartVideoRequest\0323.mavsdk.rpc.ca"
-    "mera_server.RespondStartVideoResponse\"\004\200"
-    "\265\030\001\022~\n\022SubscribeStopVideo\0223.mavsdk.rpc.c"
-    "amera_server.SubscribeStopVideoRequest\032+"
-    ".mavsdk.rpc.camera_server.StopVideoRespo"
-    "nse\"\004\200\265\030\0000\001\022\177\n\020RespondStopVideo\0221.mavsdk"
-    ".rpc.camera_server.RespondStopVideoReque"
-    "st\0322.mavsdk.rpc.camera_server.RespondSto"
-    "pVideoResponse\"\004\200\265\030\001\022\234\001\n\034SubscribeStartV"
-    "ideoStreaming\022=.mavsdk.rpc.camera_server"
-    ".SubscribeStartVideoStreamingRequest\0325.m"
-    "avsdk.rpc.camera_server.StartVideoStream"
-    "ingResponse\"\004\200\265\030\0000\001\022\235\001\n\032RespondStartVide"
-    "oStreaming\022;.mavsdk.rpc.camera_server.Re"
-    "spondStartVideoStreamingRequest\032<.mavsdk"
-    ".rpc.camera_server.RespondStartVideoStre"
-    "amingResponse\"\004\200\265\030\001\022\231\001\n\033SubscribeStopVid"
-    "eoStreaming\022<.mavsdk.rpc.camera_server.S"
-    "ubscribeStopVideoStreamingRequest\0324.mavs"
-    "dk.rpc.camera_server.StopVideoStreamingR"
-    "esponse\"\004\200\265\030\0000\001\022\232\001\n\031RespondStopVideoStre"
-    "aming\022:.mavsdk.rpc.camera_server.Respond"
-    "StopVideoStreamingRequest\032;.mavsdk.rpc.c"
-    "amera_server.RespondStopVideoStreamingRe"
-    "sponse\"\004\200\265\030\001\022x\n\020SubscribeSetMode\0221.mavsd"
-    "k.rpc.camera_server.SubscribeSetModeRequ"
-    "est\032).mavsdk.rpc.camera_server.SetModeRe"
-    "sponse\"\004\200\265\030\0000\001\022y\n\016RespondSetMode\022/.mavsd"
-    "k.rpc.camera_server.RespondSetModeReques"
-    "t\0320.mavsdk.rpc.camera_server.RespondSetM"
-    "odeResponse\"\004\200\265\030\001\022\231\001\n\033SubscribeStorageIn"
-    "formation\022<.mavsdk.rpc.camera_server.Sub"
-    "scribeStorageInformationRequest\0324.mavsdk"
-    ".rpc.camera_server.StorageInformationRes"
-    "ponse\"\004\200\265\030\0000\001\022\232\001\n\031RespondStorageInformat"
-    "ion\022:.mavsdk.rpc.camera_server.RespondSt"
-    "orageInformationRequest\032;.mavsdk.rpc.cam"
-    "era_server.RespondStorageInformationResp"
-    "onse\"\004\200\265\030\001\022\212\001\n\026SubscribeCaptureStatus\0227."
-    "mavsdk.rpc.camera_server.SubscribeCaptur"
-    "eStatusRequest\032/.mavsdk.rpc.camera_serve"
-    "r.CaptureStatusResponse\"\004\200\265\030\0000\001\022\213\001\n\024Resp"
-    "ondCaptureStatus\0225.mavsdk.rpc.camera_ser"
-    "ver.RespondCaptureStatusRequest\0326.mavsdk"
-    ".rpc.camera_server.RespondCaptureStatusR"
-    "esponse\"\004\200\265\030\001\022\212\001\n\026SubscribeFormatStorage"
-    "\0227.mavsdk.rpc.camera_server.SubscribeFor"
-    "matStorageRequest\032/.mavsdk.rpc.camera_se"
-    "rver.FormatStorageResponse\"\004\200\265\030\0000\001\022\213\001\n\024R"
-    "espondFormatStorage\0225.mavsdk.rpc.camera_"
-    "server.RespondFormatStorageRequest\0326.mav"
-    "sdk.rpc.camera_server.RespondFormatStora"
-    "geResponse\"\004\200\265\030\001\022\212\001\n\026SubscribeResetSetti"
-    "ngs\0227.mavsdk.rpc.camera_server.Subscribe"
-    "ResetSettingsRequest\032/.mavsdk.rpc.camera"
-    "_server.ResetSettingsResponse\"\004\200\265\030\0000\001\022\213\001"
-    "\n\024RespondResetSettings\0225.mavsdk.rpc.came"
-    "ra_server.RespondResetSettingsRequest\0326."
-    "mavsdk.rpc.camera_server.RespondResetSet"
-    "tingsResponse\"\004\200\265\030\001B,\n\027io.mavsdk.camera_"
-    "serverB\021CameraServerProtob\006proto3"
+    "ck\"g\n\031RespondStartVideoResponse\022J\n\024camer"
+    "a_server_result\030\001 \001(\0132,.mavsdk.rpc.camer"
+    "a_server.CameraServerResult\"\033\n\031Subscribe"
+    "StopVideoRequest\"&\n\021StopVideoResponse\022\021\n"
+    "\tstream_id\030\001 \001(\005\"`\n\027RespondStopVideoRequ"
+    "est\022E\n\023stop_video_feedback\030\001 \001(\0162(.mavsd"
+    "k.rpc.camera_server.CameraFeedback\"f\n\030Re"
+    "spondStopVideoResponse\022J\n\024camera_server_"
+    "result\030\001 \001(\0132,.mavsdk.rpc.camera_server."
+    "CameraServerResult\"%\n#SubscribeStartVide"
+    "oStreamingRequest\"0\n\033StartVideoStreaming"
+    "Response\022\021\n\tstream_id\030\001 \001(\005\"u\n!RespondSt"
+    "artVideoStreamingRequest\022P\n\036start_video_"
+    "streaming_feedback\030\001 \001(\0162(.mavsdk.rpc.ca"
+    "mera_server.CameraFeedback\"p\n\"RespondSta"
+    "rtVideoStreamingResponse\022J\n\024camera_serve"
+    "r_result\030\001 \001(\0132,.mavsdk.rpc.camera_serve"
+    "r.CameraServerResult\"$\n\"SubscribeStopVid"
+    "eoStreamingRequest\"/\n\032StopVideoStreaming"
+    "Response\022\021\n\tstream_id\030\001 \001(\005\"s\n RespondSt"
+    "opVideoStreamingRequest\022O\n\035stop_video_st"
+    "reaming_feedback\030\001 \001(\0162(.mavsdk.rpc.came"
+    "ra_server.CameraFeedback\"o\n!RespondStopV"
+    "ideoStreamingResponse\022J\n\024camera_server_r"
+    "esult\030\001 \001(\0132,.mavsdk.rpc.camera_server.C"
+    "ameraServerResult\"\031\n\027SubscribeSetModeReq"
+    "uest\"\?\n\017SetModeResponse\022,\n\004mode\030\001 \001(\0162\036."
+    "mavsdk.rpc.camera_server.Mode\"\\\n\025Respond"
+    "SetModeRequest\022C\n\021set_mode_feedback\030\001 \001("
+    "\0162(.mavsdk.rpc.camera_server.CameraFeedb"
+    "ack\"d\n\026RespondSetModeResponse\022J\n\024camera_"
+    "server_result\030\001 \001(\0132,.mavsdk.rpc.camera_"
+    "server.CameraServerResult\"$\n\"SubscribeSt"
+    "orageInformationRequest\"0\n\032StorageInform"
+    "ationResponse\022\022\n\nstorage_id\030\001 \001(\005\"\275\001\n Re"
+    "spondStorageInformationRequest\022N\n\034storag"
+    "e_information_feedback\030\001 \001(\0162(.mavsdk.rp"
+    "c.camera_server.CameraFeedback\022I\n\023storag"
+    "e_information\030\002 \001(\0132,.mavsdk.rpc.camera_"
+    "server.StorageInformation\"o\n!RespondStor"
+    "ageInformationResponse\022J\n\024camera_server_"
+    "result\030\001 \001(\0132,.mavsdk.rpc.camera_server."
+    "CameraServerResult\"\037\n\035SubscribeCaptureSt"
+    "atusRequest\")\n\025CaptureStatusResponse\022\020\n\010"
+    "reserved\030\001 \001(\005\"\251\001\n\033RespondCaptureStatusR"
+    "equest\022I\n\027capture_status_feedback\030\001 \001(\0162"
+    "(.mavsdk.rpc.camera_server.CameraFeedbac"
+    "k\022\?\n\016capture_status\030\002 \001(\0132\'.mavsdk.rpc.c"
+    "amera_server.CaptureStatus\"j\n\034RespondCap"
+    "tureStatusResponse\022J\n\024camera_server_resu"
+    "lt\030\001 \001(\0132,.mavsdk.rpc.camera_server.Came"
+    "raServerResult\"\037\n\035SubscribeFormatStorage"
+    "Request\"+\n\025FormatStorageResponse\022\022\n\nstor"
+    "age_id\030\001 \001(\005\"h\n\033RespondFormatStorageRequ"
+    "est\022I\n\027format_storage_feedback\030\001 \001(\0162(.m"
+    "avsdk.rpc.camera_server.CameraFeedback\"j"
+    "\n\034RespondFormatStorageResponse\022J\n\024camera"
+    "_server_result\030\001 \001(\0132,.mavsdk.rpc.camera"
+    "_server.CameraServerResult\"\037\n\035SubscribeR"
+    "esetSettingsRequest\")\n\025ResetSettingsResp"
+    "onse\022\020\n\010reserved\030\001 \001(\005\"h\n\033RespondResetSe"
+    "ttingsRequest\022I\n\027reset_settings_feedback"
+    "\030\001 \001(\0162(.mavsdk.rpc.camera_server.Camera"
+    "Feedback\"j\n\034RespondResetSettingsResponse"
+    "\022J\n\024camera_server_result\030\001 \001(\0132,.mavsdk."
+    "rpc.camera_server.CameraServerResult\"\276\002\n"
+    "\013Information\022\023\n\013vendor_name\030\001 \001(\t\022\022\n\nmod"
+    "el_name\030\002 \001(\t\022\030\n\020firmware_version\030\003 \001(\t\022"
+    "\027\n\017focal_length_mm\030\004 \001(\002\022!\n\031horizontal_s"
+    "ensor_size_mm\030\005 \001(\002\022\037\n\027vertical_sensor_s"
+    "ize_mm\030\006 \001(\002\022 \n\030horizontal_resolution_px"
+    "\030\007 \001(\r\022\036\n\026vertical_resolution_px\030\010 \001(\r\022\017"
+    "\n\007lens_id\030\t \001(\r\022\037\n\027definition_file_versi"
+    "on\030\n \001(\r\022\033\n\023definition_file_uri\030\013 \001(\t\"\305\001"
+    "\n\023VideoStreamSettings\022\025\n\rframe_rate_hz\030\001"
+    " \001(\002\022!\n\031horizontal_resolution_pix\030\002 \001(\r\022"
+    "\037\n\027vertical_resolution_pix\030\003 \001(\r\022\024\n\014bit_"
+    "rate_b_s\030\004 \001(\r\022\024\n\014rotation_deg\030\005 \001(\r\022\013\n\003"
+    "uri\030\006 \001(\t\022\032\n\022horizontal_fov_deg\030\007 \001(\002\"\352\003"
+    "\n\017VideoStreamInfo\022\021\n\tstream_id\030\001 \001(\005\022\?\n\010"
+    "settings\030\002 \001(\0132-.mavsdk.rpc.camera_serve"
+    "r.VideoStreamSettings\022K\n\006status\030\003 \001(\0162;."
+    "mavsdk.rpc.camera_server.VideoStreamInfo"
+    ".VideoStreamStatus\022O\n\010spectrum\030\004 \001(\0162=.m"
+    "avsdk.rpc.camera_server.VideoStreamInfo."
+    "VideoStreamSpectrum\"]\n\021VideoStreamStatus"
+    "\022#\n\037VIDEO_STREAM_STATUS_NOT_RUNNING\020\000\022#\n"
+    "\037VIDEO_STREAM_STATUS_IN_PROGRESS\020\001\"\205\001\n\023V"
+    "ideoStreamSpectrum\022!\n\035VIDEO_STREAM_SPECT"
+    "RUM_UNKNOWN\020\000\022\'\n#VIDEO_STREAM_SPECTRUM_V"
+    "ISIBLE_LIGHT\020\001\022\"\n\036VIDEO_STREAM_SPECTRUM_"
+    "INFRARED\020\002\"q\n\010Position\022\024\n\014latitude_deg\030\001"
+    " \001(\001\022\025\n\rlongitude_deg\030\002 \001(\001\022\033\n\023absolute_"
+    "altitude_m\030\003 \001(\002\022\033\n\023relative_altitude_m\030"
+    "\004 \001(\002\"8\n\nQuaternion\022\t\n\001w\030\001 \001(\002\022\t\n\001x\030\002 \001("
+    "\002\022\t\n\001y\030\003 \001(\002\022\t\n\001z\030\004 \001(\002\"\320\001\n\013CaptureInfo\022"
+    "4\n\010position\030\001 \001(\0132\".mavsdk.rpc.camera_se"
+    "rver.Position\022A\n\023attitude_quaternion\030\002 \001"
+    "(\0132$.mavsdk.rpc.camera_server.Quaternion"
+    "\022\023\n\013time_utc_us\030\003 \001(\004\022\022\n\nis_success\030\004 \001("
+    "\010\022\r\n\005index\030\005 \001(\005\022\020\n\010file_url\030\006 \001(\t\"\263\002\n\022C"
+    "ameraServerResult\022C\n\006result\030\001 \001(\01623.mavs"
+    "dk.rpc.camera_server.CameraServerResult."
+    "Result\022\022\n\nresult_str\030\002 \001(\t\"\303\001\n\006Result\022\022\n"
+    "\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\026\n"
+    "\022RESULT_IN_PROGRESS\020\002\022\017\n\013RESULT_BUSY\020\003\022\021"
+    "\n\rRESULT_DENIED\020\004\022\020\n\014RESULT_ERROR\020\005\022\022\n\016R"
+    "ESULT_TIMEOUT\020\006\022\031\n\025RESULT_WRONG_ARGUMENT"
+    "\020\007\022\024\n\020RESULT_NO_SYSTEM\020\010\"\214\005\n\022StorageInfo"
+    "rmation\022\030\n\020used_storage_mib\030\001 \001(\002\022\035\n\025ava"
+    "ilable_storage_mib\030\002 \001(\002\022\031\n\021total_storag"
+    "e_mib\030\003 \001(\002\022R\n\016storage_status\030\004 \001(\0162:.ma"
+    "vsdk.rpc.camera_server.StorageInformatio"
+    "n.StorageStatus\022\022\n\nstorage_id\030\005 \001(\r\022N\n\014s"
+    "torage_type\030\006 \001(\01628.mavsdk.rpc.camera_se"
+    "rver.StorageInformation.StorageType\022\030\n\020r"
+    "ead_speed_mib_s\030\007 \001(\002\022\031\n\021write_speed_mib"
+    "_s\030\010 \001(\002\"\221\001\n\rStorageStatus\022 \n\034STORAGE_ST"
+    "ATUS_NOT_AVAILABLE\020\000\022\036\n\032STORAGE_STATUS_U"
+    "NFORMATTED\020\001\022\034\n\030STORAGE_STATUS_FORMATTED"
+    "\020\002\022 \n\034STORAGE_STATUS_NOT_SUPPORTED\020\003\"\240\001\n"
+    "\013StorageType\022\030\n\024STORAGE_TYPE_UNKNOWN\020\000\022\032"
+    "\n\026STORAGE_TYPE_USB_STICK\020\001\022\023\n\017STORAGE_TY"
+    "PE_SD\020\002\022\030\n\024STORAGE_TYPE_MICROSD\020\003\022\023\n\017STO"
+    "RAGE_TYPE_HD\020\007\022\027\n\022STORAGE_TYPE_OTHER\020\376\001\""
+    "\356\003\n\rCaptureStatus\022\030\n\020image_interval_s\030\001 "
+    "\001(\002\022\030\n\020recording_time_s\030\002 \001(\002\022\036\n\026availab"
+    "le_capacity_mib\030\003 \001(\002\022I\n\014image_status\030\004 "
+    "\001(\01623.mavsdk.rpc.camera_server.CaptureSt"
+    "atus.ImageStatus\022I\n\014video_status\030\005 \001(\01623"
+    ".mavsdk.rpc.camera_server.CaptureStatus."
+    "VideoStatus\022\023\n\013image_count\030\006 \001(\005\"\221\001\n\013Ima"
+    "geStatus\022\025\n\021IMAGE_STATUS_IDLE\020\000\022$\n IMAGE"
+    "_STATUS_CAPTURE_IN_PROGRESS\020\001\022\036\n\032IMAGE_S"
+    "TATUS_INTERVAL_IDLE\020\002\022%\n!IMAGE_STATUS_IN"
+    "TERVAL_IN_PROGRESS\020\003\"J\n\013VideoStatus\022\025\n\021V"
+    "IDEO_STATUS_IDLE\020\000\022$\n VIDEO_STATUS_CAPTU"
+    "RE_IN_PROGRESS\020\001*{\n\016CameraFeedback\022\033\n\027CA"
+    "MERA_FEEDBACK_UNKNOWN\020\000\022\026\n\022CAMERA_FEEDBA"
+    "CK_OK\020\001\022\030\n\024CAMERA_FEEDBACK_BUSY\020\002\022\032\n\026CAM"
+    "ERA_FEEDBACK_FAILED\020\003*8\n\004Mode\022\020\n\014MODE_UN"
+    "KNOWN\020\000\022\016\n\nMODE_PHOTO\020\001\022\016\n\nMODE_VIDEO\020\0022"
+    "\222\031\n\023CameraServerService\022y\n\016SetInformatio"
+    "n\022/.mavsdk.rpc.camera_server.SetInformat"
+    "ionRequest\0320.mavsdk.rpc.camera_server.Se"
+    "tInformationResponse\"\004\200\265\030\001\022\205\001\n\022SetVideoS"
+    "treamInfo\0223.mavsdk.rpc.camera_server.Set"
+    "VideoStreamInfoRequest\0324.mavsdk.rpc.came"
+    "ra_server.SetVideoStreamInfoResponse\"\004\200\265"
+    "\030\001\022v\n\rSetInProgress\022..mavsdk.rpc.camera_"
+    "server.SetInProgressRequest\032/.mavsdk.rpc"
+    ".camera_server.SetInProgressResponse\"\004\200\265"
+    "\030\001\022~\n\022SubscribeTakePhoto\0223.mavsdk.rpc.ca"
+    "mera_server.SubscribeTakePhotoRequest\032+."
+    "mavsdk.rpc.camera_server.TakePhotoRespon"
+    "se\"\004\200\265\030\0000\001\022\177\n\020RespondTakePhoto\0221.mavsdk."
+    "rpc.camera_server.RespondTakePhotoReques"
+    "t\0322.mavsdk.rpc.camera_server.RespondTake"
+    "PhotoResponse\"\004\200\265\030\001\022\201\001\n\023SubscribeStartVi"
+    "deo\0224.mavsdk.rpc.camera_server.Subscribe"
+    "StartVideoRequest\032,.mavsdk.rpc.camera_se"
+    "rver.StartVideoResponse\"\004\200\265\030\0000\001\022\202\001\n\021Resp"
+    "ondStartVideo\0222.mavsdk.rpc.camera_server"
+    ".RespondStartVideoRequest\0323.mavsdk.rpc.c"
+    "amera_server.RespondStartVideoResponse\"\004"
+    "\200\265\030\001\022~\n\022SubscribeStopVideo\0223.mavsdk.rpc."
+    "camera_server.SubscribeStopVideoRequest\032"
+    "+.mavsdk.rpc.camera_server.StopVideoResp"
+    "onse\"\004\200\265\030\0000\001\022\177\n\020RespondStopVideo\0221.mavsd"
+    "k.rpc.camera_server.RespondStopVideoRequ"
+    "est\0322.mavsdk.rpc.camera_server.RespondSt"
+    "opVideoResponse\"\004\200\265\030\001\022\234\001\n\034SubscribeStart"
+    "VideoStreaming\022=.mavsdk.rpc.camera_serve"
+    "r.SubscribeStartVideoStreamingRequest\0325."
+    "mavsdk.rpc.camera_server.StartVideoStrea"
+    "mingResponse\"\004\200\265\030\0000\001\022\235\001\n\032RespondStartVid"
+    "eoStreaming\022;.mavsdk.rpc.camera_server.R"
+    "espondStartVideoStreamingRequest\032<.mavsd"
+    "k.rpc.camera_server.RespondStartVideoStr"
+    "eamingResponse\"\004\200\265\030\001\022\231\001\n\033SubscribeStopVi"
+    "deoStreaming\022<.mavsdk.rpc.camera_server."
+    "SubscribeStopVideoStreamingRequest\0324.mav"
+    "sdk.rpc.camera_server.StopVideoStreaming"
+    "Response\"\004\200\265\030\0000\001\022\232\001\n\031RespondStopVideoStr"
+    "eaming\022:.mavsdk.rpc.camera_server.Respon"
+    "dStopVideoStreamingRequest\032;.mavsdk.rpc."
+    "camera_server.RespondStopVideoStreamingR"
+    "esponse\"\004\200\265\030\001\022x\n\020SubscribeSetMode\0221.mavs"
+    "dk.rpc.camera_server.SubscribeSetModeReq"
+    "uest\032).mavsdk.rpc.camera_server.SetModeR"
+    "esponse\"\004\200\265\030\0000\001\022y\n\016RespondSetMode\022/.mavs"
+    "dk.rpc.camera_server.RespondSetModeReque"
+    "st\0320.mavsdk.rpc.camera_server.RespondSet"
+    "ModeResponse\"\004\200\265\030\001\022\231\001\n\033SubscribeStorageI"
+    "nformation\022<.mavsdk.rpc.camera_server.Su"
+    "bscribeStorageInformationRequest\0324.mavsd"
+    "k.rpc.camera_server.StorageInformationRe"
+    "sponse\"\004\200\265\030\0000\001\022\232\001\n\031RespondStorageInforma"
+    "tion\022:.mavsdk.rpc.camera_server.RespondS"
+    "torageInformationRequest\032;.mavsdk.rpc.ca"
+    "mera_server.RespondStorageInformationRes"
+    "ponse\"\004\200\265\030\001\022\212\001\n\026SubscribeCaptureStatus\0227"
+    ".mavsdk.rpc.camera_server.SubscribeCaptu"
+    "reStatusRequest\032/.mavsdk.rpc.camera_serv"
+    "er.CaptureStatusResponse\"\004\200\265\030\0000\001\022\213\001\n\024Res"
+    "pondCaptureStatus\0225.mavsdk.rpc.camera_se"
+    "rver.RespondCaptureStatusRequest\0326.mavsd"
+    "k.rpc.camera_server.RespondCaptureStatus"
+    "Response\"\004\200\265\030\001\022\212\001\n\026SubscribeFormatStorag"
+    "e\0227.mavsdk.rpc.camera_server.SubscribeFo"
+    "rmatStorageRequest\032/.mavsdk.rpc.camera_s"
+    "erver.FormatStorageResponse\"\004\200\265\030\0000\001\022\213\001\n\024"
+    "RespondFormatStorage\0225.mavsdk.rpc.camera"
+    "_server.RespondFormatStorageRequest\0326.ma"
+    "vsdk.rpc.camera_server.RespondFormatStor"
+    "ageResponse\"\004\200\265\030\001\022\212\001\n\026SubscribeResetSett"
+    "ings\0227.mavsdk.rpc.camera_server.Subscrib"
+    "eResetSettingsRequest\032/.mavsdk.rpc.camer"
+    "a_server.ResetSettingsResponse\"\004\200\265\030\0000\001\022\213"
+    "\001\n\024RespondResetSettings\0225.mavsdk.rpc.cam"
+    "era_server.RespondResetSettingsRequest\0326"
+    ".mavsdk.rpc.camera_server.RespondResetSe"
+    "ttingsResponse\"\004\200\265\030\001B,\n\027io.mavsdk.camera"
+    "_serverB\021CameraServerProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_deps[1] =
     {
@@ -1943,13 +2008,13 @@ static ::absl::once_flag descriptor_table_camera_5fserver_2fcamera_5fserver_2epr
 const ::_pbi::DescriptorTable descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto = {
     false,
     false,
-    9433,
+    10074,
     descriptor_table_protodef_camera_5fserver_2fcamera_5fserver_2eproto,
     "camera_server/camera_server.proto",
     &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
     descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_deps,
     1,
-    54,
+    55,
     schemas,
     file_default_instances,
     TableStruct_camera_5fserver_2fcamera_5fserver_2eproto::offsets,
@@ -1978,9 +2043,50 @@ static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_camera_5fserver_2fcamera_
 namespace mavsdk {
 namespace rpc {
 namespace camera_server {
-const ::google::protobuf::EnumDescriptor* CameraServerResult_Result_descriptor() {
+const ::google::protobuf::EnumDescriptor* VideoStreamInfo_VideoStreamStatus_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto);
   return file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[0];
+}
+PROTOBUF_CONSTINIT const uint32_t VideoStreamInfo_VideoStreamStatus_internal_data_[] = {
+    131072u, 0u, };
+bool VideoStreamInfo_VideoStreamStatus_IsValid(int value) {
+  return 0 <= value && value <= 1;
+}
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+
+constexpr VideoStreamInfo_VideoStreamStatus VideoStreamInfo::VIDEO_STREAM_STATUS_NOT_RUNNING;
+constexpr VideoStreamInfo_VideoStreamStatus VideoStreamInfo::VIDEO_STREAM_STATUS_IN_PROGRESS;
+constexpr VideoStreamInfo_VideoStreamStatus VideoStreamInfo::VideoStreamStatus_MIN;
+constexpr VideoStreamInfo_VideoStreamStatus VideoStreamInfo::VideoStreamStatus_MAX;
+constexpr int VideoStreamInfo::VideoStreamStatus_ARRAYSIZE;
+
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+const ::google::protobuf::EnumDescriptor* VideoStreamInfo_VideoStreamSpectrum_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto);
+  return file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[1];
+}
+PROTOBUF_CONSTINIT const uint32_t VideoStreamInfo_VideoStreamSpectrum_internal_data_[] = {
+    196608u, 0u, };
+bool VideoStreamInfo_VideoStreamSpectrum_IsValid(int value) {
+  return 0 <= value && value <= 2;
+}
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+
+constexpr VideoStreamInfo_VideoStreamSpectrum VideoStreamInfo::VIDEO_STREAM_SPECTRUM_UNKNOWN;
+constexpr VideoStreamInfo_VideoStreamSpectrum VideoStreamInfo::VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT;
+constexpr VideoStreamInfo_VideoStreamSpectrum VideoStreamInfo::VIDEO_STREAM_SPECTRUM_INFRARED;
+constexpr VideoStreamInfo_VideoStreamSpectrum VideoStreamInfo::VideoStreamSpectrum_MIN;
+constexpr VideoStreamInfo_VideoStreamSpectrum VideoStreamInfo::VideoStreamSpectrum_MAX;
+constexpr int VideoStreamInfo::VideoStreamSpectrum_ARRAYSIZE;
+
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+const ::google::protobuf::EnumDescriptor* CameraServerResult_Result_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto);
+  return file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[2];
 }
 PROTOBUF_CONSTINIT const uint32_t CameraServerResult_Result_internal_data_[] = {
     589824u, 0u, };
@@ -2007,7 +2113,7 @@ constexpr int CameraServerResult::Result_ARRAYSIZE;
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 const ::google::protobuf::EnumDescriptor* StorageInformation_StorageStatus_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto);
-  return file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[1];
+  return file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[3];
 }
 PROTOBUF_CONSTINIT const uint32_t StorageInformation_StorageStatus_internal_data_[] = {
     262144u, 0u, };
@@ -2029,7 +2135,7 @@ constexpr int StorageInformation::StorageStatus_ARRAYSIZE;
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 const ::google::protobuf::EnumDescriptor* StorageInformation_StorageType_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto);
-  return file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[2];
+  return file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[4];
 }
 PROTOBUF_CONSTINIT const uint32_t StorageInformation_StorageType_internal_data_[] = {
     262144u, 65568u, 8u, 254u, };
@@ -2053,7 +2159,7 @@ constexpr int StorageInformation::StorageType_ARRAYSIZE;
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 const ::google::protobuf::EnumDescriptor* CaptureStatus_ImageStatus_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto);
-  return file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[3];
+  return file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[5];
 }
 PROTOBUF_CONSTINIT const uint32_t CaptureStatus_ImageStatus_internal_data_[] = {
     262144u, 0u, };
@@ -2075,7 +2181,7 @@ constexpr int CaptureStatus::ImageStatus_ARRAYSIZE;
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 const ::google::protobuf::EnumDescriptor* CaptureStatus_VideoStatus_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto);
-  return file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[4];
+  return file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[6];
 }
 PROTOBUF_CONSTINIT const uint32_t CaptureStatus_VideoStatus_internal_data_[] = {
     131072u, 0u, };
@@ -2095,7 +2201,7 @@ constexpr int CaptureStatus::VideoStatus_ARRAYSIZE;
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 const ::google::protobuf::EnumDescriptor* CameraFeedback_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto);
-  return file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[5];
+  return file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[7];
 }
 PROTOBUF_CONSTINIT const uint32_t CameraFeedback_internal_data_[] = {
     262144u, 0u, };
@@ -2104,7 +2210,7 @@ bool CameraFeedback_IsValid(int value) {
 }
 const ::google::protobuf::EnumDescriptor* Mode_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto);
-  return file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[6];
+  return file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[8];
 }
 PROTOBUF_CONSTINIT const uint32_t Mode_internal_data_[] = {
     196608u, 0u, };
@@ -2527,84 +2633,64 @@ void SetInformationResponse::InternalSwap(SetInformationResponse* PROTOBUF_RESTR
 }
 // ===================================================================
 
-class SetVideoStreamingRequest::_Internal {
+class SetVideoStreamInfoRequest::_Internal {
  public:
-  using HasBits = decltype(std::declval<SetVideoStreamingRequest>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-    8 * PROTOBUF_FIELD_OFFSET(SetVideoStreamingRequest, _impl_._has_bits_);
-  static const ::mavsdk::rpc::camera_server::VideoStreaming& video_streaming(const SetVideoStreamingRequest* msg);
-  static void set_has_video_streaming(HasBits* has_bits) {
-    (*has_bits)[0] |= 1u;
-  }
 };
 
-const ::mavsdk::rpc::camera_server::VideoStreaming& SetVideoStreamingRequest::_Internal::video_streaming(const SetVideoStreamingRequest* msg) {
-  return *msg->_impl_.video_streaming_;
-}
-SetVideoStreamingRequest::SetVideoStreamingRequest(::google::protobuf::Arena* arena)
+SetVideoStreamInfoRequest::SetVideoStreamInfoRequest(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.SetVideoStreamingRequest)
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.SetVideoStreamInfoRequest)
 }
-inline PROTOBUF_NDEBUG_INLINE SetVideoStreamingRequest::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE SetVideoStreamInfoRequest::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from)
-      : _has_bits_{from._has_bits_},
+      : video_stream_infos_{visibility, arena, from.video_stream_infos_},
         _cached_size_{0} {}
 
-SetVideoStreamingRequest::SetVideoStreamingRequest(
+SetVideoStreamInfoRequest::SetVideoStreamInfoRequest(
     ::google::protobuf::Arena* arena,
-    const SetVideoStreamingRequest& from)
+    const SetVideoStreamInfoRequest& from)
     : ::google::protobuf::Message(arena) {
-  SetVideoStreamingRequest* const _this = this;
+  SetVideoStreamInfoRequest* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
-  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.video_streaming_ = (cached_has_bits & 0x00000001u)
-                ? CreateMaybeMessage<::mavsdk::rpc::camera_server::VideoStreaming>(arena, *from._impl_.video_streaming_)
-                : nullptr;
 
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.SetVideoStreamingRequest)
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.SetVideoStreamInfoRequest)
 }
-inline PROTOBUF_NDEBUG_INLINE SetVideoStreamingRequest::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE SetVideoStreamInfoRequest::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : _cached_size_{0} {}
+      : video_stream_infos_{visibility, arena},
+        _cached_size_{0} {}
 
-inline void SetVideoStreamingRequest::SharedCtor(::_pb::Arena* arena) {
+inline void SetVideoStreamInfoRequest::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.video_streaming_ = {};
 }
-SetVideoStreamingRequest::~SetVideoStreamingRequest() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.SetVideoStreamingRequest)
+SetVideoStreamInfoRequest::~SetVideoStreamInfoRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.SetVideoStreamInfoRequest)
   _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-inline void SetVideoStreamingRequest::SharedDtor() {
+inline void SetVideoStreamInfoRequest::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
-  delete _impl_.video_streaming_;
   _impl_.~Impl_();
 }
 
-PROTOBUF_NOINLINE void SetVideoStreamingRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.SetVideoStreamingRequest)
+PROTOBUF_NOINLINE void SetVideoStreamInfoRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.SetVideoStreamInfoRequest)
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(_impl_.video_streaming_ != nullptr);
-    _impl_.video_streaming_->Clear();
-  }
-  _impl_._has_bits_.Clear();
+  _impl_.video_stream_infos_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* SetVideoStreamingRequest::_InternalParse(
+const char* SetVideoStreamInfoRequest::_InternalParse(
     const char* ptr, ::_pbi::ParseContext* ctx) {
   ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
@@ -2612,9 +2698,9 @@ const char* SetVideoStreamingRequest::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetVideoStreamingRequest::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetVideoStreamInfoRequest::_table_ = {
   {
-    PROTOBUF_FIELD_OFFSET(SetVideoStreamingRequest, _impl_._has_bits_),
+    0,  // no _has_bits_
     0, // no _extensions_
     1, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
@@ -2623,37 +2709,37 @@ const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetVideoStreamingRequest::_table_ = {
     1,  // num_field_entries
     1,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
-    &_SetVideoStreamingRequest_default_instance_._instance,
+    &_SetVideoStreamInfoRequest_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
-    // .mavsdk.rpc.camera_server.VideoStreaming video_streaming = 1;
-    {::_pbi::TcParser::FastMtS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetVideoStreamingRequest, _impl_.video_streaming_)}},
+    // repeated .mavsdk.rpc.camera_server.VideoStreamInfo video_stream_infos = 1;
+    {::_pbi::TcParser::FastMtR1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(SetVideoStreamInfoRequest, _impl_.video_stream_infos_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // .mavsdk.rpc.camera_server.VideoStreaming video_streaming = 1;
-    {PROTOBUF_FIELD_OFFSET(SetVideoStreamingRequest, _impl_.video_streaming_), _Internal::kHasBitsOffset + 0, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // repeated .mavsdk.rpc.camera_server.VideoStreamInfo video_stream_infos = 1;
+    {PROTOBUF_FIELD_OFFSET(SetVideoStreamInfoRequest, _impl_.video_stream_infos_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
-    {::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::VideoStreaming>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::VideoStreamInfo>()},
   }}, {{
   }},
 };
 
-::uint8_t* SetVideoStreamingRequest::_InternalSerialize(
+::uint8_t* SetVideoStreamInfoRequest::_InternalSerialize(
     ::uint8_t* target,
     ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.SetVideoStreamingRequest)
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.SetVideoStreamInfoRequest)
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  cached_has_bits = _impl_._has_bits_[0];
-  // .mavsdk.rpc.camera_server.VideoStreaming video_streaming = 1;
-  if (cached_has_bits & 0x00000001u) {
-    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        1, _Internal::video_streaming(this),
-        _Internal::video_streaming(this).GetCachedSize(), target, stream);
+  // repeated .mavsdk.rpc.camera_server.VideoStreamInfo video_stream_infos = 1;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_video_stream_infos_size()); i < n; i++) {
+    const auto& repfield = this->_internal_video_stream_infos().Get(i);
+    target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(1, repfield, repfield.GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2661,109 +2747,105 @@ const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetVideoStreamingRequest::_table_ = {
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
             _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.SetVideoStreamingRequest)
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.SetVideoStreamInfoRequest)
   return target;
 }
 
-::size_t SetVideoStreamingRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.SetVideoStreamingRequest)
+::size_t SetVideoStreamInfoRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.SetVideoStreamInfoRequest)
   ::size_t total_size = 0;
 
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // .mavsdk.rpc.camera_server.VideoStreaming video_streaming = 1;
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
+  // repeated .mavsdk.rpc.camera_server.VideoStreamInfo video_stream_infos = 1;
+  total_size += 1UL * this->_internal_video_stream_infos_size();
+  for (const auto& msg : this->_internal_video_stream_infos()) {
     total_size +=
-        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.video_streaming_);
+      ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
   }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::google::protobuf::Message::ClassData SetVideoStreamingRequest::_class_data_ = {
-    SetVideoStreamingRequest::MergeImpl,
+const ::google::protobuf::Message::ClassData SetVideoStreamInfoRequest::_class_data_ = {
+    SetVideoStreamInfoRequest::MergeImpl,
     nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::google::protobuf::Message::ClassData* SetVideoStreamingRequest::GetClassData() const {
+const ::google::protobuf::Message::ClassData* SetVideoStreamInfoRequest::GetClassData() const {
   return &_class_data_;
 }
 
-void SetVideoStreamingRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
-  auto* const _this = static_cast<SetVideoStreamingRequest*>(&to_msg);
-  auto& from = static_cast<const SetVideoStreamingRequest&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.SetVideoStreamingRequest)
+void SetVideoStreamInfoRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<SetVideoStreamInfoRequest*>(&to_msg);
+  auto& from = static_cast<const SetVideoStreamInfoRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.SetVideoStreamInfoRequest)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_internal_mutable_video_streaming()->::mavsdk::rpc::camera_server::VideoStreaming::MergeFrom(
-        from._internal_video_streaming());
-  }
+  _this->_internal_mutable_video_stream_infos()->MergeFrom(
+      from._internal_video_stream_infos());
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void SetVideoStreamingRequest::CopyFrom(const SetVideoStreamingRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.SetVideoStreamingRequest)
+void SetVideoStreamInfoRequest::CopyFrom(const SetVideoStreamInfoRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.SetVideoStreamInfoRequest)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-PROTOBUF_NOINLINE bool SetVideoStreamingRequest::IsInitialized() const {
+PROTOBUF_NOINLINE bool SetVideoStreamInfoRequest::IsInitialized() const {
   return true;
 }
 
-::_pbi::CachedSize* SetVideoStreamingRequest::AccessCachedSize() const {
+::_pbi::CachedSize* SetVideoStreamInfoRequest::AccessCachedSize() const {
   return &_impl_._cached_size_;
 }
-void SetVideoStreamingRequest::InternalSwap(SetVideoStreamingRequest* PROTOBUF_RESTRICT other) {
+void SetVideoStreamInfoRequest::InternalSwap(SetVideoStreamInfoRequest* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  swap(_impl_.video_streaming_, other->_impl_.video_streaming_);
+  _impl_.video_stream_infos_.InternalSwap(&other->_impl_.video_stream_infos_);
 }
 
-::google::protobuf::Metadata SetVideoStreamingRequest::GetMetadata() const {
+::google::protobuf::Metadata SetVideoStreamInfoRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
       file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[2]);
 }
 // ===================================================================
 
-class SetVideoStreamingResponse::_Internal {
+class SetVideoStreamInfoResponse::_Internal {
  public:
-  using HasBits = decltype(std::declval<SetVideoStreamingResponse>()._impl_._has_bits_);
+  using HasBits = decltype(std::declval<SetVideoStreamInfoResponse>()._impl_._has_bits_);
   static constexpr ::int32_t kHasBitsOffset =
-    8 * PROTOBUF_FIELD_OFFSET(SetVideoStreamingResponse, _impl_._has_bits_);
-  static const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result(const SetVideoStreamingResponse* msg);
+    8 * PROTOBUF_FIELD_OFFSET(SetVideoStreamInfoResponse, _impl_._has_bits_);
+  static const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result(const SetVideoStreamInfoResponse* msg);
   static void set_has_camera_server_result(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
 };
 
-const ::mavsdk::rpc::camera_server::CameraServerResult& SetVideoStreamingResponse::_Internal::camera_server_result(const SetVideoStreamingResponse* msg) {
+const ::mavsdk::rpc::camera_server::CameraServerResult& SetVideoStreamInfoResponse::_Internal::camera_server_result(const SetVideoStreamInfoResponse* msg) {
   return *msg->_impl_.camera_server_result_;
 }
-SetVideoStreamingResponse::SetVideoStreamingResponse(::google::protobuf::Arena* arena)
+SetVideoStreamInfoResponse::SetVideoStreamInfoResponse(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.SetVideoStreamingResponse)
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.SetVideoStreamInfoResponse)
 }
-inline PROTOBUF_NDEBUG_INLINE SetVideoStreamingResponse::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE SetVideoStreamInfoResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from)
       : _has_bits_{from._has_bits_},
         _cached_size_{0} {}
 
-SetVideoStreamingResponse::SetVideoStreamingResponse(
+SetVideoStreamInfoResponse::SetVideoStreamInfoResponse(
     ::google::protobuf::Arena* arena,
-    const SetVideoStreamingResponse& from)
+    const SetVideoStreamInfoResponse& from)
     : ::google::protobuf::Message(arena) {
-  SetVideoStreamingResponse* const _this = this;
+  SetVideoStreamInfoResponse* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
@@ -2773,30 +2855,30 @@ SetVideoStreamingResponse::SetVideoStreamingResponse(
                 ? CreateMaybeMessage<::mavsdk::rpc::camera_server::CameraServerResult>(arena, *from._impl_.camera_server_result_)
                 : nullptr;
 
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.SetVideoStreamingResponse)
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.SetVideoStreamInfoResponse)
 }
-inline PROTOBUF_NDEBUG_INLINE SetVideoStreamingResponse::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE SetVideoStreamInfoResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
       : _cached_size_{0} {}
 
-inline void SetVideoStreamingResponse::SharedCtor(::_pb::Arena* arena) {
+inline void SetVideoStreamInfoResponse::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
   _impl_.camera_server_result_ = {};
 }
-SetVideoStreamingResponse::~SetVideoStreamingResponse() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.SetVideoStreamingResponse)
+SetVideoStreamInfoResponse::~SetVideoStreamInfoResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.SetVideoStreamInfoResponse)
   _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-inline void SetVideoStreamingResponse::SharedDtor() {
+inline void SetVideoStreamInfoResponse::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
   delete _impl_.camera_server_result_;
   _impl_.~Impl_();
 }
 
-PROTOBUF_NOINLINE void SetVideoStreamingResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.SetVideoStreamingResponse)
+PROTOBUF_NOINLINE void SetVideoStreamInfoResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.SetVideoStreamInfoResponse)
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
@@ -2811,7 +2893,7 @@ PROTOBUF_NOINLINE void SetVideoStreamingResponse::Clear() {
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* SetVideoStreamingResponse::_InternalParse(
+const char* SetVideoStreamInfoResponse::_InternalParse(
     const char* ptr, ::_pbi::ParseContext* ctx) {
   ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
@@ -2819,9 +2901,9 @@ const char* SetVideoStreamingResponse::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetVideoStreamingResponse::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetVideoStreamInfoResponse::_table_ = {
   {
-    PROTOBUF_FIELD_OFFSET(SetVideoStreamingResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(SetVideoStreamInfoResponse, _impl_._has_bits_),
     0, // no _extensions_
     1, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
@@ -2830,17 +2912,17 @@ const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetVideoStreamingResponse::_table_ = {
     1,  // num_field_entries
     1,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
-    &_SetVideoStreamingResponse_default_instance_._instance,
+    &_SetVideoStreamInfoResponse_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
     // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
     {::_pbi::TcParser::FastMtS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetVideoStreamingResponse, _impl_.camera_server_result_)}},
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetVideoStreamInfoResponse, _impl_.camera_server_result_)}},
   }}, {{
     65535, 65535
   }}, {{
     // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
-    {PROTOBUF_FIELD_OFFSET(SetVideoStreamingResponse, _impl_.camera_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    {PROTOBUF_FIELD_OFFSET(SetVideoStreamInfoResponse, _impl_.camera_server_result_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
     {::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::CameraServerResult>()},
@@ -2848,10 +2930,10 @@ const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetVideoStreamingResponse::_table_ = {
   }},
 };
 
-::uint8_t* SetVideoStreamingResponse::_InternalSerialize(
+::uint8_t* SetVideoStreamInfoResponse::_InternalSerialize(
     ::uint8_t* target,
     ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.SetVideoStreamingResponse)
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.SetVideoStreamInfoResponse)
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
@@ -2868,12 +2950,12 @@ const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetVideoStreamingResponse::_table_ = {
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
             _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.SetVideoStreamingResponse)
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.SetVideoStreamInfoResponse)
   return target;
 }
 
-::size_t SetVideoStreamingResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.SetVideoStreamingResponse)
+::size_t SetVideoStreamInfoResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.SetVideoStreamInfoResponse)
   ::size_t total_size = 0;
 
   ::uint32_t cached_has_bits = 0;
@@ -2890,18 +2972,18 @@ const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetVideoStreamingResponse::_table_ = {
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::google::protobuf::Message::ClassData SetVideoStreamingResponse::_class_data_ = {
-    SetVideoStreamingResponse::MergeImpl,
+const ::google::protobuf::Message::ClassData SetVideoStreamInfoResponse::_class_data_ = {
+    SetVideoStreamInfoResponse::MergeImpl,
     nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::google::protobuf::Message::ClassData* SetVideoStreamingResponse::GetClassData() const {
+const ::google::protobuf::Message::ClassData* SetVideoStreamInfoResponse::GetClassData() const {
   return &_class_data_;
 }
 
-void SetVideoStreamingResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
-  auto* const _this = static_cast<SetVideoStreamingResponse*>(&to_msg);
-  auto& from = static_cast<const SetVideoStreamingResponse&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.SetVideoStreamingResponse)
+void SetVideoStreamInfoResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<SetVideoStreamInfoResponse*>(&to_msg);
+  auto& from = static_cast<const SetVideoStreamInfoResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.SetVideoStreamInfoResponse)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -2913,28 +2995,28 @@ void SetVideoStreamingResponse::MergeImpl(::google::protobuf::Message& to_msg, c
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void SetVideoStreamingResponse::CopyFrom(const SetVideoStreamingResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.SetVideoStreamingResponse)
+void SetVideoStreamInfoResponse::CopyFrom(const SetVideoStreamInfoResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.SetVideoStreamInfoResponse)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-PROTOBUF_NOINLINE bool SetVideoStreamingResponse::IsInitialized() const {
+PROTOBUF_NOINLINE bool SetVideoStreamInfoResponse::IsInitialized() const {
   return true;
 }
 
-::_pbi::CachedSize* SetVideoStreamingResponse::AccessCachedSize() const {
+::_pbi::CachedSize* SetVideoStreamInfoResponse::AccessCachedSize() const {
   return &_impl_._cached_size_;
 }
-void SetVideoStreamingResponse::InternalSwap(SetVideoStreamingResponse* PROTOBUF_RESTRICT other) {
+void SetVideoStreamInfoResponse::InternalSwap(SetVideoStreamInfoResponse* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   swap(_impl_.camera_server_result_, other->_impl_.camera_server_result_);
 }
 
-::google::protobuf::Metadata SetVideoStreamingResponse::GetMetadata() const {
+::google::protobuf::Metadata SetVideoStreamInfoResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
       file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[3]);
@@ -9850,68 +9932,81 @@ void Information::InternalSwap(Information* PROTOBUF_RESTRICT other) {
 }
 // ===================================================================
 
-class VideoStreaming::_Internal {
+class VideoStreamSettings::_Internal {
  public:
 };
 
-VideoStreaming::VideoStreaming(::google::protobuf::Arena* arena)
+VideoStreamSettings::VideoStreamSettings(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.VideoStreaming)
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.VideoStreamSettings)
 }
-inline PROTOBUF_NDEBUG_INLINE VideoStreaming::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE VideoStreamSettings::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from)
-      : rtsp_uri_(arena, from.rtsp_uri_),
+      : uri_(arena, from.uri_),
         _cached_size_{0} {}
 
-VideoStreaming::VideoStreaming(
+VideoStreamSettings::VideoStreamSettings(
     ::google::protobuf::Arena* arena,
-    const VideoStreaming& from)
+    const VideoStreamSettings& from)
     : ::google::protobuf::Message(arena) {
-  VideoStreaming* const _this = this;
+  VideoStreamSettings* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
-  _impl_.has_rtsp_server_ = from._impl_.has_rtsp_server_;
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, frame_rate_hz_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, frame_rate_hz_),
+           offsetof(Impl_, horizontal_fov_deg_) -
+               offsetof(Impl_, frame_rate_hz_) +
+               sizeof(Impl_::horizontal_fov_deg_));
 
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.VideoStreaming)
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.VideoStreamSettings)
 }
-inline PROTOBUF_NDEBUG_INLINE VideoStreaming::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE VideoStreamSettings::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : rtsp_uri_(arena),
+      : uri_(arena),
         _cached_size_{0} {}
 
-inline void VideoStreaming::SharedCtor(::_pb::Arena* arena) {
+inline void VideoStreamSettings::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.has_rtsp_server_ = {};
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, frame_rate_hz_),
+           0,
+           offsetof(Impl_, horizontal_fov_deg_) -
+               offsetof(Impl_, frame_rate_hz_) +
+               sizeof(Impl_::horizontal_fov_deg_));
 }
-VideoStreaming::~VideoStreaming() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.VideoStreaming)
+VideoStreamSettings::~VideoStreamSettings() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.VideoStreamSettings)
   _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-inline void VideoStreaming::SharedDtor() {
+inline void VideoStreamSettings::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
-  _impl_.rtsp_uri_.Destroy();
+  _impl_.uri_.Destroy();
   _impl_.~Impl_();
 }
 
-PROTOBUF_NOINLINE void VideoStreaming::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.VideoStreaming)
+PROTOBUF_NOINLINE void VideoStreamSettings::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.VideoStreamSettings)
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.rtsp_uri_.ClearToEmpty();
-  _impl_.has_rtsp_server_ = false;
+  _impl_.uri_.ClearToEmpty();
+  ::memset(&_impl_.frame_rate_hz_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.horizontal_fov_deg_) -
+      reinterpret_cast<char*>(&_impl_.frame_rate_hz_)) + sizeof(_impl_.horizontal_fov_deg_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* VideoStreaming::_InternalParse(
+const char* VideoStreamSettings::_InternalParse(
     const char* ptr, ::_pbi::ParseContext* ctx) {
   ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
@@ -9919,64 +10014,140 @@ const char* VideoStreaming::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 56, 2> VideoStreaming::_table_ = {
+const ::_pbi::TcParseTable<3, 7, 0, 56, 2> VideoStreamSettings::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    7, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967168,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    7,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
-    &_VideoStreaming_default_instance_._instance,
+    &_VideoStreamSettings_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
-    // string rtsp_uri = 2;
+    {::_pbi::TcParser::MiniParse, {}},
+    // float frame_rate_hz = 1;
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(VideoStreamSettings, _impl_.frame_rate_hz_)}},
+    // uint32 horizontal_resolution_pix = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(VideoStreamSettings, _impl_.horizontal_resolution_pix_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(VideoStreamSettings, _impl_.horizontal_resolution_pix_)}},
+    // uint32 vertical_resolution_pix = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(VideoStreamSettings, _impl_.vertical_resolution_pix_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(VideoStreamSettings, _impl_.vertical_resolution_pix_)}},
+    // uint32 bit_rate_b_s = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(VideoStreamSettings, _impl_.bit_rate_b_s_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(VideoStreamSettings, _impl_.bit_rate_b_s_)}},
+    // uint32 rotation_deg = 5;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(VideoStreamSettings, _impl_.rotation_deg_), 63>(),
+     {40, 63, 0, PROTOBUF_FIELD_OFFSET(VideoStreamSettings, _impl_.rotation_deg_)}},
+    // string uri = 6;
     {::_pbi::TcParser::FastUS1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(VideoStreaming, _impl_.rtsp_uri_)}},
-    // bool has_rtsp_server = 1;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(VideoStreaming, _impl_.has_rtsp_server_), 63>(),
-     {8, 63, 0, PROTOBUF_FIELD_OFFSET(VideoStreaming, _impl_.has_rtsp_server_)}},
+     {50, 63, 0, PROTOBUF_FIELD_OFFSET(VideoStreamSettings, _impl_.uri_)}},
+    // float horizontal_fov_deg = 7;
+    {::_pbi::TcParser::FastF32S1,
+     {61, 63, 0, PROTOBUF_FIELD_OFFSET(VideoStreamSettings, _impl_.horizontal_fov_deg_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // bool has_rtsp_server = 1;
-    {PROTOBUF_FIELD_OFFSET(VideoStreaming, _impl_.has_rtsp_server_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-    // string rtsp_uri = 2;
-    {PROTOBUF_FIELD_OFFSET(VideoStreaming, _impl_.rtsp_uri_), 0, 0,
+    // float frame_rate_hz = 1;
+    {PROTOBUF_FIELD_OFFSET(VideoStreamSettings, _impl_.frame_rate_hz_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // uint32 horizontal_resolution_pix = 2;
+    {PROTOBUF_FIELD_OFFSET(VideoStreamSettings, _impl_.horizontal_resolution_pix_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // uint32 vertical_resolution_pix = 3;
+    {PROTOBUF_FIELD_OFFSET(VideoStreamSettings, _impl_.vertical_resolution_pix_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // uint32 bit_rate_b_s = 4;
+    {PROTOBUF_FIELD_OFFSET(VideoStreamSettings, _impl_.bit_rate_b_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // uint32 rotation_deg = 5;
+    {PROTOBUF_FIELD_OFFSET(VideoStreamSettings, _impl_.rotation_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // string uri = 6;
+    {PROTOBUF_FIELD_OFFSET(VideoStreamSettings, _impl_.uri_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // float horizontal_fov_deg = 7;
+    {PROTOBUF_FIELD_OFFSET(VideoStreamSettings, _impl_.horizontal_fov_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
   }},
   // no aux_entries
   {{
-    "\47\0\10\0\0\0\0\0"
-    "mavsdk.rpc.camera_server.VideoStreaming"
-    "rtsp_uri"
+    "\54\0\0\0\0\0\3\0"
+    "mavsdk.rpc.camera_server.VideoStreamSettings"
+    "uri"
   }},
 };
 
-::uint8_t* VideoStreaming::_InternalSerialize(
+::uint8_t* VideoStreamSettings::_InternalSerialize(
     ::uint8_t* target,
     ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.VideoStreaming)
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.VideoStreamSettings)
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // bool has_rtsp_server = 1;
-  if (this->_internal_has_rtsp_server() != 0) {
+  // float frame_rate_hz = 1;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_frame_rate_hz = this->_internal_frame_rate_hz();
+  ::uint32_t raw_frame_rate_hz;
+  memcpy(&raw_frame_rate_hz, &tmp_frame_rate_hz, sizeof(tmp_frame_rate_hz));
+  if (raw_frame_rate_hz != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteBoolToArray(
-        1, this->_internal_has_rtsp_server(), target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        1, this->_internal_frame_rate_hz(), target);
   }
 
-  // string rtsp_uri = 2;
-  if (!this->_internal_rtsp_uri().empty()) {
-    const std::string& _s = this->_internal_rtsp_uri();
+  // uint32 horizontal_resolution_pix = 2;
+  if (this->_internal_horizontal_resolution_pix() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        2, this->_internal_horizontal_resolution_pix(), target);
+  }
+
+  // uint32 vertical_resolution_pix = 3;
+  if (this->_internal_vertical_resolution_pix() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        3, this->_internal_vertical_resolution_pix(), target);
+  }
+
+  // uint32 bit_rate_b_s = 4;
+  if (this->_internal_bit_rate_b_s() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        4, this->_internal_bit_rate_b_s(), target);
+  }
+
+  // uint32 rotation_deg = 5;
+  if (this->_internal_rotation_deg() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        5, this->_internal_rotation_deg(), target);
+  }
+
+  // string uri = 6;
+  if (!this->_internal_uri().empty()) {
+    const std::string& _s = this->_internal_uri();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.camera_server.VideoStreaming.rtsp_uri");
-    target = stream->WriteStringMaybeAliased(2, _s, target);
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.camera_server.VideoStreamSettings.uri");
+    target = stream->WriteStringMaybeAliased(6, _s, target);
+  }
+
+  // float horizontal_fov_deg = 7;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_horizontal_fov_deg = this->_internal_horizontal_fov_deg();
+  ::uint32_t raw_horizontal_fov_deg;
+  memcpy(&raw_horizontal_fov_deg, &tmp_horizontal_fov_deg, sizeof(tmp_horizontal_fov_deg));
+  if (raw_horizontal_fov_deg != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        7, this->_internal_horizontal_fov_deg(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -9984,84 +10155,446 @@ const ::_pbi::TcParseTable<1, 2, 0, 56, 2> VideoStreaming::_table_ = {
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
             _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.VideoStreaming)
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.VideoStreamSettings)
   return target;
 }
 
-::size_t VideoStreaming::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.VideoStreaming)
+::size_t VideoStreamSettings::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.VideoStreamSettings)
   ::size_t total_size = 0;
 
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string rtsp_uri = 2;
-  if (!this->_internal_rtsp_uri().empty()) {
+  // string uri = 6;
+  if (!this->_internal_uri().empty()) {
     total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                    this->_internal_rtsp_uri());
+                                    this->_internal_uri());
   }
 
-  // bool has_rtsp_server = 1;
-  if (this->_internal_has_rtsp_server() != 0) {
-    total_size += 2;
+  // float frame_rate_hz = 1;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_frame_rate_hz = this->_internal_frame_rate_hz();
+  ::uint32_t raw_frame_rate_hz;
+  memcpy(&raw_frame_rate_hz, &tmp_frame_rate_hz, sizeof(tmp_frame_rate_hz));
+  if (raw_frame_rate_hz != 0) {
+    total_size += 5;
+  }
+
+  // uint32 horizontal_resolution_pix = 2;
+  if (this->_internal_horizontal_resolution_pix() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_horizontal_resolution_pix());
+  }
+
+  // uint32 vertical_resolution_pix = 3;
+  if (this->_internal_vertical_resolution_pix() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_vertical_resolution_pix());
+  }
+
+  // uint32 bit_rate_b_s = 4;
+  if (this->_internal_bit_rate_b_s() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_bit_rate_b_s());
+  }
+
+  // uint32 rotation_deg = 5;
+  if (this->_internal_rotation_deg() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_rotation_deg());
+  }
+
+  // float horizontal_fov_deg = 7;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_horizontal_fov_deg = this->_internal_horizontal_fov_deg();
+  ::uint32_t raw_horizontal_fov_deg;
+  memcpy(&raw_horizontal_fov_deg, &tmp_horizontal_fov_deg, sizeof(tmp_horizontal_fov_deg));
+  if (raw_horizontal_fov_deg != 0) {
+    total_size += 5;
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::google::protobuf::Message::ClassData VideoStreaming::_class_data_ = {
-    VideoStreaming::MergeImpl,
+const ::google::protobuf::Message::ClassData VideoStreamSettings::_class_data_ = {
+    VideoStreamSettings::MergeImpl,
     nullptr,  // OnDemandRegisterArenaDtor
 };
-const ::google::protobuf::Message::ClassData* VideoStreaming::GetClassData() const {
+const ::google::protobuf::Message::ClassData* VideoStreamSettings::GetClassData() const {
   return &_class_data_;
 }
 
-void VideoStreaming::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
-  auto* const _this = static_cast<VideoStreaming*>(&to_msg);
-  auto& from = static_cast<const VideoStreaming&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.VideoStreaming)
+void VideoStreamSettings::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<VideoStreamSettings*>(&to_msg);
+  auto& from = static_cast<const VideoStreamSettings&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.VideoStreamSettings)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_rtsp_uri().empty()) {
-    _this->_internal_set_rtsp_uri(from._internal_rtsp_uri());
+  if (!from._internal_uri().empty()) {
+    _this->_internal_set_uri(from._internal_uri());
   }
-  if (from._internal_has_rtsp_server() != 0) {
-    _this->_internal_set_has_rtsp_server(from._internal_has_rtsp_server());
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_frame_rate_hz = from._internal_frame_rate_hz();
+  ::uint32_t raw_frame_rate_hz;
+  memcpy(&raw_frame_rate_hz, &tmp_frame_rate_hz, sizeof(tmp_frame_rate_hz));
+  if (raw_frame_rate_hz != 0) {
+    _this->_internal_set_frame_rate_hz(from._internal_frame_rate_hz());
+  }
+  if (from._internal_horizontal_resolution_pix() != 0) {
+    _this->_internal_set_horizontal_resolution_pix(from._internal_horizontal_resolution_pix());
+  }
+  if (from._internal_vertical_resolution_pix() != 0) {
+    _this->_internal_set_vertical_resolution_pix(from._internal_vertical_resolution_pix());
+  }
+  if (from._internal_bit_rate_b_s() != 0) {
+    _this->_internal_set_bit_rate_b_s(from._internal_bit_rate_b_s());
+  }
+  if (from._internal_rotation_deg() != 0) {
+    _this->_internal_set_rotation_deg(from._internal_rotation_deg());
+  }
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_horizontal_fov_deg = from._internal_horizontal_fov_deg();
+  ::uint32_t raw_horizontal_fov_deg;
+  memcpy(&raw_horizontal_fov_deg, &tmp_horizontal_fov_deg, sizeof(tmp_horizontal_fov_deg));
+  if (raw_horizontal_fov_deg != 0) {
+    _this->_internal_set_horizontal_fov_deg(from._internal_horizontal_fov_deg());
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void VideoStreaming::CopyFrom(const VideoStreaming& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.VideoStreaming)
+void VideoStreamSettings::CopyFrom(const VideoStreamSettings& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.VideoStreamSettings)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-PROTOBUF_NOINLINE bool VideoStreaming::IsInitialized() const {
+PROTOBUF_NOINLINE bool VideoStreamSettings::IsInitialized() const {
   return true;
 }
 
-::_pbi::CachedSize* VideoStreaming::AccessCachedSize() const {
+::_pbi::CachedSize* VideoStreamSettings::AccessCachedSize() const {
   return &_impl_._cached_size_;
 }
-void VideoStreaming::InternalSwap(VideoStreaming* PROTOBUF_RESTRICT other) {
+void VideoStreamSettings::InternalSwap(VideoStreamSettings* PROTOBUF_RESTRICT other) {
   using std::swap;
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.rtsp_uri_, &other->_impl_.rtsp_uri_, arena);
-        swap(_impl_.has_rtsp_server_, other->_impl_.has_rtsp_server_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.uri_, &other->_impl_.uri_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(VideoStreamSettings, _impl_.horizontal_fov_deg_)
+      + sizeof(VideoStreamSettings::_impl_.horizontal_fov_deg_)
+      - PROTOBUF_FIELD_OFFSET(VideoStreamSettings, _impl_.frame_rate_hz_)>(
+          reinterpret_cast<char*>(&_impl_.frame_rate_hz_),
+          reinterpret_cast<char*>(&other->_impl_.frame_rate_hz_));
 }
 
-::google::protobuf::Metadata VideoStreaming::GetMetadata() const {
+::google::protobuf::Metadata VideoStreamSettings::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
       file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[47]);
+}
+// ===================================================================
+
+class VideoStreamInfo::_Internal {
+ public:
+  using HasBits = decltype(std::declval<VideoStreamInfo>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(VideoStreamInfo, _impl_._has_bits_);
+  static const ::mavsdk::rpc::camera_server::VideoStreamSettings& settings(const VideoStreamInfo* msg);
+  static void set_has_settings(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+};
+
+const ::mavsdk::rpc::camera_server::VideoStreamSettings& VideoStreamInfo::_Internal::settings(const VideoStreamInfo* msg) {
+  return *msg->_impl_.settings_;
+}
+VideoStreamInfo::VideoStreamInfo(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.VideoStreamInfo)
+}
+inline PROTOBUF_NDEBUG_INLINE VideoStreamInfo::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+VideoStreamInfo::VideoStreamInfo(
+    ::google::protobuf::Arena* arena,
+    const VideoStreamInfo& from)
+    : ::google::protobuf::Message(arena) {
+  VideoStreamInfo* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.settings_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::camera_server::VideoStreamSettings>(arena, *from._impl_.settings_)
+                : nullptr;
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, stream_id_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, stream_id_),
+           offsetof(Impl_, spectrum_) -
+               offsetof(Impl_, stream_id_) +
+               sizeof(Impl_::spectrum_));
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.VideoStreamInfo)
+}
+inline PROTOBUF_NDEBUG_INLINE VideoStreamInfo::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void VideoStreamInfo::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, settings_),
+           0,
+           offsetof(Impl_, spectrum_) -
+               offsetof(Impl_, settings_) +
+               sizeof(Impl_::spectrum_));
+}
+VideoStreamInfo::~VideoStreamInfo() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.VideoStreamInfo)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void VideoStreamInfo::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.settings_;
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void VideoStreamInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.VideoStreamInfo)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.settings_ != nullptr);
+    _impl_.settings_->Clear();
+  }
+  ::memset(&_impl_.stream_id_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.spectrum_) -
+      reinterpret_cast<char*>(&_impl_.stream_id_)) + sizeof(_impl_.spectrum_));
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* VideoStreamInfo::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 4, 1, 0, 2> VideoStreamInfo::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(VideoStreamInfo, _impl_._has_bits_),
+    0, // no _extensions_
+    4, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967280,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    4,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_VideoStreamInfo_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.camera_server.VideoStreamInfo.VideoStreamSpectrum spectrum = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(VideoStreamInfo, _impl_.spectrum_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(VideoStreamInfo, _impl_.spectrum_)}},
+    // int32 stream_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(VideoStreamInfo, _impl_.stream_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(VideoStreamInfo, _impl_.stream_id_)}},
+    // .mavsdk.rpc.camera_server.VideoStreamSettings settings = 2;
+    {::_pbi::TcParser::FastMtS1,
+     {18, 0, 0, PROTOBUF_FIELD_OFFSET(VideoStreamInfo, _impl_.settings_)}},
+    // .mavsdk.rpc.camera_server.VideoStreamInfo.VideoStreamStatus status = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(VideoStreamInfo, _impl_.status_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(VideoStreamInfo, _impl_.status_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 stream_id = 1;
+    {PROTOBUF_FIELD_OFFSET(VideoStreamInfo, _impl_.stream_id_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // .mavsdk.rpc.camera_server.VideoStreamSettings settings = 2;
+    {PROTOBUF_FIELD_OFFSET(VideoStreamInfo, _impl_.settings_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.camera_server.VideoStreamInfo.VideoStreamStatus status = 3;
+    {PROTOBUF_FIELD_OFFSET(VideoStreamInfo, _impl_.status_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // .mavsdk.rpc.camera_server.VideoStreamInfo.VideoStreamSpectrum spectrum = 4;
+    {PROTOBUF_FIELD_OFFSET(VideoStreamInfo, _impl_.spectrum_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::VideoStreamSettings>()},
+  }}, {{
+  }},
+};
+
+::uint8_t* VideoStreamInfo::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.VideoStreamInfo)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // int32 stream_id = 1;
+  if (this->_internal_stream_id() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt32ToArrayWithField<1>(
+            stream, this->_internal_stream_id(), target);
+  }
+
+  cached_has_bits = _impl_._has_bits_[0];
+  // .mavsdk.rpc.camera_server.VideoStreamSettings settings = 2;
+  if (cached_has_bits & 0x00000001u) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        2, _Internal::settings(this),
+        _Internal::settings(this).GetCachedSize(), target, stream);
+  }
+
+  // .mavsdk.rpc.camera_server.VideoStreamInfo.VideoStreamStatus status = 3;
+  if (this->_internal_status() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+        3, this->_internal_status(), target);
+  }
+
+  // .mavsdk.rpc.camera_server.VideoStreamInfo.VideoStreamSpectrum spectrum = 4;
+  if (this->_internal_spectrum() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+        4, this->_internal_spectrum(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.VideoStreamInfo)
+  return target;
+}
+
+::size_t VideoStreamInfo::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.VideoStreamInfo)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.camera_server.VideoStreamSettings settings = 2;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.settings_);
+  }
+
+  // int32 stream_id = 1;
+  if (this->_internal_stream_id() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_stream_id());
+  }
+
+  // .mavsdk.rpc.camera_server.VideoStreamInfo.VideoStreamStatus status = 3;
+  if (this->_internal_status() != 0) {
+    total_size += 1 +
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_status());
+  }
+
+  // .mavsdk.rpc.camera_server.VideoStreamInfo.VideoStreamSpectrum spectrum = 4;
+  if (this->_internal_spectrum() != 0) {
+    total_size += 1 +
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_spectrum());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData VideoStreamInfo::_class_data_ = {
+    VideoStreamInfo::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* VideoStreamInfo::GetClassData() const {
+  return &_class_data_;
+}
+
+void VideoStreamInfo::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<VideoStreamInfo*>(&to_msg);
+  auto& from = static_cast<const VideoStreamInfo&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.VideoStreamInfo)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_settings()->::mavsdk::rpc::camera_server::VideoStreamSettings::MergeFrom(
+        from._internal_settings());
+  }
+  if (from._internal_stream_id() != 0) {
+    _this->_internal_set_stream_id(from._internal_stream_id());
+  }
+  if (from._internal_status() != 0) {
+    _this->_internal_set_status(from._internal_status());
+  }
+  if (from._internal_spectrum() != 0) {
+    _this->_internal_set_spectrum(from._internal_spectrum());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void VideoStreamInfo::CopyFrom(const VideoStreamInfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.VideoStreamInfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool VideoStreamInfo::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* VideoStreamInfo::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void VideoStreamInfo::InternalSwap(VideoStreamInfo* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(VideoStreamInfo, _impl_.spectrum_)
+      + sizeof(VideoStreamInfo::_impl_.spectrum_)
+      - PROTOBUF_FIELD_OFFSET(VideoStreamInfo, _impl_.settings_)>(
+          reinterpret_cast<char*>(&_impl_.settings_),
+          reinterpret_cast<char*>(&other->_impl_.settings_));
+}
+
+::google::protobuf::Metadata VideoStreamInfo::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[48]);
 }
 // ===================================================================
 
@@ -10365,7 +10898,7 @@ void Position::InternalSwap(Position* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata Position::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
-      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[48]);
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[49]);
 }
 // ===================================================================
 
@@ -10669,7 +11202,7 @@ void Quaternion::InternalSwap(Quaternion* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata Quaternion::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
-      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[49]);
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[50]);
 }
 // ===================================================================
 
@@ -11042,7 +11575,7 @@ void CaptureInfo::InternalSwap(CaptureInfo* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata CaptureInfo::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
-      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[50]);
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[51]);
 }
 // ===================================================================
 
@@ -11258,7 +11791,7 @@ void CameraServerResult::InternalSwap(CameraServerResult* PROTOBUF_RESTRICT othe
 ::google::protobuf::Metadata CameraServerResult::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
-      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[51]);
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[52]);
 }
 // ===================================================================
 
@@ -11664,7 +12197,7 @@ void StorageInformation::InternalSwap(StorageInformation* PROTOBUF_RESTRICT othe
 ::google::protobuf::Metadata StorageInformation::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
-      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[52]);
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[53]);
 }
 // ===================================================================
 
@@ -12000,7 +12533,7 @@ void CaptureStatus::InternalSwap(CaptureStatus* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata CaptureStatus::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
-      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[53]);
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[54]);
 }
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace camera_server

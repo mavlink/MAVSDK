@@ -298,6 +298,7 @@ public:
             std::ostream& str,
             Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum);
 
+        int32_t stream_id{}; /**< @brief stream unique id */
         VideoStreamSettings settings{}; /**< @brief Video stream settings */
         VideoStreamStatus status{}; /**< @brief Current status of video streaming */
         VideoStreamSpectrum spectrum{}; /**< @brief Light-spectrum of the video stream */
@@ -704,12 +705,12 @@ public:
     /**
      * @brief Callback type for subscribe_video_stream_info.
      */
-    using VideoStreamInfoCallback = std::function<void(VideoStreamInfo)>;
+    using VideoStreamInfoCallback = std::function<void(std::vector<VideoStreamInfo>)>;
 
     /**
      * @brief Handle type for subscribe_video_stream_info.
      */
-    using VideoStreamInfoHandle = Handle<VideoStreamInfo>;
+    using VideoStreamInfoHandle = Handle<std::vector<VideoStreamInfo>>;
 
     /**
      * @brief Subscribe to video stream info updates.
@@ -722,11 +723,11 @@ public:
     void unsubscribe_video_stream_info(VideoStreamInfoHandle handle);
 
     /**
-     * @brief Poll for 'VideoStreamInfo' (blocking).
+     * @brief Poll for 'std::vector<VideoStreamInfo>' (blocking).
      *
-     * @return One VideoStreamInfo update.
+     * @return One std::vector<VideoStreamInfo> update.
      */
-    VideoStreamInfo video_stream_info() const;
+    std::vector<VideoStreamInfo> video_stream_info() const;
 
     /**
      * @brief Callback type for subscribe_capture_info.

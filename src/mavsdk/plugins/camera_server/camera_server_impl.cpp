@@ -186,13 +186,13 @@ CameraServer::Result CameraServerImpl::set_information(CameraServer::Information
     return CameraServer::Result::Success;
 }
 
-CameraServer::Result
-CameraServerImpl::set_video_streaming(CameraServer::VideoStreaming video_streaming)
+CameraServer::Result CameraServerImpl::set_video_stream_info(
+    std::vector<CameraServer::VideoStreamInfo> video_stream_infos)
 {
-    // TODO: validate uri length
+    // TODO: validate video stream infos
 
-    _is_video_streaming_set = true;
-    _video_streaming = video_streaming;
+    _is_video_stream_info_set = true;
+    _video_stream_infos = video_stream_infos;
 
     return CameraServer::Result::Success;
 }
@@ -835,7 +835,7 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_informatio
         capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_MODES;
     }
 
-    if (_is_video_streaming_set) {
+    if (_is_video_stream_info_set) {
         capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM;
     }
 
@@ -1326,43 +1326,51 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_info
 
     UNUSED(stream_id);
 
-    if (_is_video_streaming_set) {
-        auto command_ack = _server_component_impl->make_command_ack_message(
-            command, MAV_RESULT::MAV_RESULT_ACCEPTED);
-        _server_component_impl->send_command_ack(command_ack);
-        LogDebug() << "sent video streaming ack";
+    if (!_is_video_stream_info_set) {
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    }
 
-        const char name[32] = "";
+    auto command_ack =
+        _server_component_impl->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+    _server_component_impl->send_command_ack(command_ack);
+    LogDebug() << "sent video stream information ack";
 
-        _video_streaming.rtsp_uri.resize(sizeof(mavlink_video_stream_information_t::uri));
+    // loop send video stream info
+    for (auto& video_stream_info : _video_stream_infos) {
+        uint16_t flags = 0;
+        if (video_stream_info.status ==
+            CameraServer::VideoStreamInfo::VideoStreamStatus::InProgress) {
+            flags |= VIDEO_STREAM_STATUS_FLAGS_RUNNING;
+        }
+        if (video_stream_info.spectrum ==
+            CameraServer::VideoStreamInfo::VideoStreamSpectrum::Infrared) {
+            flags |= VIDEO_STREAM_STATUS_FLAGS_THERMAL;
+        }
 
         mavlink_message_t msg{};
         mavlink_msg_video_stream_information_pack(
             _server_component_impl->get_own_system_id(),
             _server_component_impl->get_own_component_id(),
             &msg,
-            0, // Stream id
-            0, // Count
-            VIDEO_STREAM_TYPE_RTSP,
-            VIDEO_STREAM_STATUS_FLAGS_RUNNING,
-            0, // famerate
-            0, // resolution horizontal
-            0, // resolution vertical
-            0, // bitrate
-            0, // rotation
-            0, // horizontal field of view
-            name,
-            _video_streaming.rtsp_uri.c_str());
+            video_stream_info.stream_id,
+            1,
+            0,
+            flags,
+            video_stream_info.settings.frame_rate_hz,
+            video_stream_info.settings.horizontal_resolution_pix,
+            video_stream_info.settings.vertical_resolution_pix,
+            video_stream_info.settings.bit_rate_b_s,
+            video_stream_info.settings.rotation_deg,
+            video_stream_info.settings.horizontal_fov_deg,
+            "",
+            video_stream_info.settings.uri.c_str());
 
         _server_component_impl->send_message(msg);
-
-        // Ack already sent.
-        return std::nullopt;
-
-    } else {
-        return _server_component_impl->make_command_ack_message(
-            command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
+
+    // Ack already sent.
+    return std::nullopt;
 }
 
 std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_status_request(
@@ -1372,7 +1380,7 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_stat
 
     UNUSED(stream_id);
 
-    if (!_is_video_streaming_set) {
+    if (!_is_video_stream_info_set) {
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
@@ -1380,23 +1388,40 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_stat
     auto command_ack =
         _server_component_impl->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
     _server_component_impl->send_command_ack(command_ack);
-    LogDebug() << "sent video streaming ack";
+    LogDebug() << "sent video stream status ack";
 
-    mavlink_message_t msg{};
-    mavlink_msg_video_stream_status_pack(
-        _server_component_impl->get_own_system_id(),
-        _server_component_impl->get_own_component_id(),
-        &msg,
-        0, // Stream id
-        VIDEO_STREAM_STATUS_FLAGS_RUNNING,
-        0, // framerate
-        0, // resolution horizontal
-        0, // resolution vertical
-        0, // bitrate
-        0, // rotation
-        0 // horizontal field of view
-    );
-    _server_component_impl->send_message(msg);
+    // loop send video stream info
+    for (auto& video_stream_info : _video_stream_infos) {
+        uint16_t flags = 0;
+        if (video_stream_info.status ==
+            CameraServer::VideoStreamInfo::VideoStreamStatus::InProgress) {
+            flags |= VIDEO_STREAM_STATUS_FLAGS_RUNNING;
+        }
+        if (video_stream_info.spectrum ==
+            CameraServer::VideoStreamInfo::VideoStreamSpectrum::Infrared) {
+            flags |= VIDEO_STREAM_STATUS_FLAGS_THERMAL;
+        }
+
+        mavlink_message_t msg{};
+        mavlink_msg_video_stream_information_pack(
+            _server_component_impl->get_own_system_id(),
+            _server_component_impl->get_own_component_id(),
+            &msg,
+            video_stream_info.stream_id,
+            1,
+            0,
+            flags,
+            video_stream_info.settings.frame_rate_hz,
+            video_stream_info.settings.horizontal_resolution_pix,
+            video_stream_info.settings.vertical_resolution_pix,
+            video_stream_info.settings.bit_rate_b_s,
+            video_stream_info.settings.rotation_deg,
+            video_stream_info.settings.horizontal_fov_deg,
+            "",
+            video_stream_info.settings.uri.c_str());
+
+        _server_component_impl->send_message(msg);
+    }
 
     // ack was already sent
     return std::nullopt;

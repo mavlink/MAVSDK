@@ -163,12 +163,12 @@ extern SetInformationResponseDefaultTypeInternal _SetInformationResponse_default
 class SetModeResponse;
 struct SetModeResponseDefaultTypeInternal;
 extern SetModeResponseDefaultTypeInternal _SetModeResponse_default_instance_;
-class SetVideoStreamingRequest;
-struct SetVideoStreamingRequestDefaultTypeInternal;
-extern SetVideoStreamingRequestDefaultTypeInternal _SetVideoStreamingRequest_default_instance_;
-class SetVideoStreamingResponse;
-struct SetVideoStreamingResponseDefaultTypeInternal;
-extern SetVideoStreamingResponseDefaultTypeInternal _SetVideoStreamingResponse_default_instance_;
+class SetVideoStreamInfoRequest;
+struct SetVideoStreamInfoRequestDefaultTypeInternal;
+extern SetVideoStreamInfoRequestDefaultTypeInternal _SetVideoStreamInfoRequest_default_instance_;
+class SetVideoStreamInfoResponse;
+struct SetVideoStreamInfoResponseDefaultTypeInternal;
+extern SetVideoStreamInfoResponseDefaultTypeInternal _SetVideoStreamInfoResponse_default_instance_;
 class StartVideoResponse;
 struct StartVideoResponseDefaultTypeInternal;
 extern StartVideoResponseDefaultTypeInternal _StartVideoResponse_default_instance_;
@@ -220,9 +220,12 @@ extern SubscribeTakePhotoRequestDefaultTypeInternal _SubscribeTakePhotoRequest_d
 class TakePhotoResponse;
 struct TakePhotoResponseDefaultTypeInternal;
 extern TakePhotoResponseDefaultTypeInternal _TakePhotoResponse_default_instance_;
-class VideoStreaming;
-struct VideoStreamingDefaultTypeInternal;
-extern VideoStreamingDefaultTypeInternal _VideoStreaming_default_instance_;
+class VideoStreamInfo;
+struct VideoStreamInfoDefaultTypeInternal;
+extern VideoStreamInfoDefaultTypeInternal _VideoStreamInfo_default_instance_;
+class VideoStreamSettings;
+struct VideoStreamSettingsDefaultTypeInternal;
+extern VideoStreamSettingsDefaultTypeInternal _VideoStreamSettings_default_instance_;
 }  // namespace camera_server
 }  // namespace rpc
 }  // namespace mavsdk
@@ -234,6 +237,73 @@ namespace protobuf {
 namespace mavsdk {
 namespace rpc {
 namespace camera_server {
+enum VideoStreamInfo_VideoStreamStatus : int {
+  VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING = 0,
+  VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_IN_PROGRESS = 1,
+  VideoStreamInfo_VideoStreamStatus_VideoStreamInfo_VideoStreamStatus_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  VideoStreamInfo_VideoStreamStatus_VideoStreamInfo_VideoStreamStatus_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool VideoStreamInfo_VideoStreamStatus_IsValid(int value);
+extern const uint32_t VideoStreamInfo_VideoStreamStatus_internal_data_[];
+constexpr VideoStreamInfo_VideoStreamStatus VideoStreamInfo_VideoStreamStatus_VideoStreamStatus_MIN = static_cast<VideoStreamInfo_VideoStreamStatus>(0);
+constexpr VideoStreamInfo_VideoStreamStatus VideoStreamInfo_VideoStreamStatus_VideoStreamStatus_MAX = static_cast<VideoStreamInfo_VideoStreamStatus>(1);
+constexpr int VideoStreamInfo_VideoStreamStatus_VideoStreamStatus_ARRAYSIZE = 1 + 1;
+const ::google::protobuf::EnumDescriptor*
+VideoStreamInfo_VideoStreamStatus_descriptor();
+template <typename T>
+const std::string& VideoStreamInfo_VideoStreamStatus_Name(T value) {
+  static_assert(std::is_same<T, VideoStreamInfo_VideoStreamStatus>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to VideoStreamStatus_Name().");
+  return VideoStreamInfo_VideoStreamStatus_Name(static_cast<VideoStreamInfo_VideoStreamStatus>(value));
+}
+template <>
+inline const std::string& VideoStreamInfo_VideoStreamStatus_Name(VideoStreamInfo_VideoStreamStatus value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<VideoStreamInfo_VideoStreamStatus_descriptor,
+                                                 0, 1>(
+      static_cast<int>(value));
+}
+inline bool VideoStreamInfo_VideoStreamStatus_Parse(absl::string_view name, VideoStreamInfo_VideoStreamStatus* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<VideoStreamInfo_VideoStreamStatus>(
+      VideoStreamInfo_VideoStreamStatus_descriptor(), name, value);
+}
+enum VideoStreamInfo_VideoStreamSpectrum : int {
+  VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_UNKNOWN = 0,
+  VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT = 1,
+  VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_INFRARED = 2,
+  VideoStreamInfo_VideoStreamSpectrum_VideoStreamInfo_VideoStreamSpectrum_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  VideoStreamInfo_VideoStreamSpectrum_VideoStreamInfo_VideoStreamSpectrum_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool VideoStreamInfo_VideoStreamSpectrum_IsValid(int value);
+extern const uint32_t VideoStreamInfo_VideoStreamSpectrum_internal_data_[];
+constexpr VideoStreamInfo_VideoStreamSpectrum VideoStreamInfo_VideoStreamSpectrum_VideoStreamSpectrum_MIN = static_cast<VideoStreamInfo_VideoStreamSpectrum>(0);
+constexpr VideoStreamInfo_VideoStreamSpectrum VideoStreamInfo_VideoStreamSpectrum_VideoStreamSpectrum_MAX = static_cast<VideoStreamInfo_VideoStreamSpectrum>(2);
+constexpr int VideoStreamInfo_VideoStreamSpectrum_VideoStreamSpectrum_ARRAYSIZE = 2 + 1;
+const ::google::protobuf::EnumDescriptor*
+VideoStreamInfo_VideoStreamSpectrum_descriptor();
+template <typename T>
+const std::string& VideoStreamInfo_VideoStreamSpectrum_Name(T value) {
+  static_assert(std::is_same<T, VideoStreamInfo_VideoStreamSpectrum>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to VideoStreamSpectrum_Name().");
+  return VideoStreamInfo_VideoStreamSpectrum_Name(static_cast<VideoStreamInfo_VideoStreamSpectrum>(value));
+}
+template <>
+inline const std::string& VideoStreamInfo_VideoStreamSpectrum_Name(VideoStreamInfo_VideoStreamSpectrum value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<VideoStreamInfo_VideoStreamSpectrum_descriptor,
+                                                 0, 2>(
+      static_cast<int>(value));
+}
+inline bool VideoStreamInfo_VideoStreamSpectrum_Parse(absl::string_view name, VideoStreamInfo_VideoStreamSpectrum* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<VideoStreamInfo_VideoStreamSpectrum>(
+      VideoStreamInfo_VideoStreamSpectrum_descriptor(), name, value);
+}
 enum CameraServerResult_Result : int {
   CameraServerResult_Result_RESULT_UNKNOWN = 0,
   CameraServerResult_Result_RESULT_SUCCESS = 1,
@@ -483,26 +553,26 @@ inline bool Mode_Parse(absl::string_view name, Mode* value) {
 
 // -------------------------------------------------------------------
 
-class VideoStreaming final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.VideoStreaming) */ {
+class VideoStreamSettings final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.VideoStreamSettings) */ {
  public:
-  inline VideoStreaming() : VideoStreaming(nullptr) {}
-  ~VideoStreaming() override;
+  inline VideoStreamSettings() : VideoStreamSettings(nullptr) {}
+  ~VideoStreamSettings() override;
   template<typename = void>
-  explicit PROTOBUF_CONSTEXPR VideoStreaming(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR VideoStreamSettings(::google::protobuf::internal::ConstantInitialized);
 
-  inline VideoStreaming(const VideoStreaming& from)
-      : VideoStreaming(nullptr, from) {}
-  VideoStreaming(VideoStreaming&& from) noexcept
-    : VideoStreaming() {
+  inline VideoStreamSettings(const VideoStreamSettings& from)
+      : VideoStreamSettings(nullptr, from) {}
+  VideoStreamSettings(VideoStreamSettings&& from) noexcept
+    : VideoStreamSettings() {
     *this = ::std::move(from);
   }
 
-  inline VideoStreaming& operator=(const VideoStreaming& from) {
+  inline VideoStreamSettings& operator=(const VideoStreamSettings& from) {
     CopyFrom(from);
     return *this;
   }
-  inline VideoStreaming& operator=(VideoStreaming&& from) noexcept {
+  inline VideoStreamSettings& operator=(VideoStreamSettings&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -534,20 +604,20 @@ class VideoStreaming final :
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const VideoStreaming& default_instance() {
+  static const VideoStreamSettings& default_instance() {
     return *internal_default_instance();
   }
-  static inline const VideoStreaming* internal_default_instance() {
-    return reinterpret_cast<const VideoStreaming*>(
-               &_VideoStreaming_default_instance_);
+  static inline const VideoStreamSettings* internal_default_instance() {
+    return reinterpret_cast<const VideoStreamSettings*>(
+               &_VideoStreamSettings_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     47;
 
-  friend void swap(VideoStreaming& a, VideoStreaming& b) {
+  friend void swap(VideoStreamSettings& a, VideoStreamSettings& b) {
     a.Swap(&b);
   }
-  inline void Swap(VideoStreaming* other) {
+  inline void Swap(VideoStreamSettings* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr &&
@@ -560,7 +630,7 @@ class VideoStreaming final :
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(VideoStreaming* other) {
+  void UnsafeArenaSwap(VideoStreamSettings* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -568,14 +638,14 @@ class VideoStreaming final :
 
   // implements Message ----------------------------------------------
 
-  VideoStreaming* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<VideoStreaming>(arena);
+  VideoStreamSettings* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<VideoStreamSettings>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const VideoStreaming& from);
+  void CopyFrom(const VideoStreamSettings& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const VideoStreaming& from) {
-    VideoStreaming::MergeImpl(*this, from);
+  void MergeFrom( const VideoStreamSettings& from) {
+    VideoStreamSettings::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
@@ -593,16 +663,16 @@ class VideoStreaming final :
   ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
   void SharedCtor(::google::protobuf::Arena* arena);
   void SharedDtor();
-  void InternalSwap(VideoStreaming* other);
+  void InternalSwap(VideoStreamSettings* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.camera_server.VideoStreaming";
+    return "mavsdk.rpc.camera_server.VideoStreamSettings";
   }
   protected:
-  explicit VideoStreaming(::google::protobuf::Arena* arena);
-  VideoStreaming(::google::protobuf::Arena* arena, const VideoStreaming& from);
+  explicit VideoStreamSettings(::google::protobuf::Arena* arena);
+  VideoStreamSettings(::google::protobuf::Arena* arena, const VideoStreamSettings& from);
   public:
 
   static const ClassData _class_data_;
@@ -615,42 +685,97 @@ class VideoStreaming final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kRtspUriFieldNumber = 2,
-    kHasRtspServerFieldNumber = 1,
+    kUriFieldNumber = 6,
+    kFrameRateHzFieldNumber = 1,
+    kHorizontalResolutionPixFieldNumber = 2,
+    kVerticalResolutionPixFieldNumber = 3,
+    kBitRateBSFieldNumber = 4,
+    kRotationDegFieldNumber = 5,
+    kHorizontalFovDegFieldNumber = 7,
   };
-  // string rtsp_uri = 2;
-  void clear_rtsp_uri() ;
-  const std::string& rtsp_uri() const;
+  // string uri = 6;
+  void clear_uri() ;
+  const std::string& uri() const;
   template <typename Arg_ = const std::string&, typename... Args_>
-  void set_rtsp_uri(Arg_&& arg, Args_... args);
-  std::string* mutable_rtsp_uri();
-  PROTOBUF_NODISCARD std::string* release_rtsp_uri();
-  void set_allocated_rtsp_uri(std::string* value);
+  void set_uri(Arg_&& arg, Args_... args);
+  std::string* mutable_uri();
+  PROTOBUF_NODISCARD std::string* release_uri();
+  void set_allocated_uri(std::string* value);
 
   private:
-  const std::string& _internal_rtsp_uri() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_rtsp_uri(
+  const std::string& _internal_uri() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_uri(
       const std::string& value);
-  std::string* _internal_mutable_rtsp_uri();
+  std::string* _internal_mutable_uri();
 
   public:
-  // bool has_rtsp_server = 1;
-  void clear_has_rtsp_server() ;
-  bool has_rtsp_server() const;
-  void set_has_rtsp_server(bool value);
+  // float frame_rate_hz = 1;
+  void clear_frame_rate_hz() ;
+  float frame_rate_hz() const;
+  void set_frame_rate_hz(float value);
 
   private:
-  bool _internal_has_rtsp_server() const;
-  void _internal_set_has_rtsp_server(bool value);
+  float _internal_frame_rate_hz() const;
+  void _internal_set_frame_rate_hz(float value);
 
   public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.VideoStreaming)
+  // uint32 horizontal_resolution_pix = 2;
+  void clear_horizontal_resolution_pix() ;
+  ::uint32_t horizontal_resolution_pix() const;
+  void set_horizontal_resolution_pix(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_horizontal_resolution_pix() const;
+  void _internal_set_horizontal_resolution_pix(::uint32_t value);
+
+  public:
+  // uint32 vertical_resolution_pix = 3;
+  void clear_vertical_resolution_pix() ;
+  ::uint32_t vertical_resolution_pix() const;
+  void set_vertical_resolution_pix(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_vertical_resolution_pix() const;
+  void _internal_set_vertical_resolution_pix(::uint32_t value);
+
+  public:
+  // uint32 bit_rate_b_s = 4;
+  void clear_bit_rate_b_s() ;
+  ::uint32_t bit_rate_b_s() const;
+  void set_bit_rate_b_s(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_bit_rate_b_s() const;
+  void _internal_set_bit_rate_b_s(::uint32_t value);
+
+  public:
+  // uint32 rotation_deg = 5;
+  void clear_rotation_deg() ;
+  ::uint32_t rotation_deg() const;
+  void set_rotation_deg(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_rotation_deg() const;
+  void _internal_set_rotation_deg(::uint32_t value);
+
+  public:
+  // float horizontal_fov_deg = 7;
+  void clear_horizontal_fov_deg() ;
+  float horizontal_fov_deg() const;
+  void set_horizontal_fov_deg(float value);
+
+  private:
+  float _internal_horizontal_fov_deg() const;
+  void _internal_set_horizontal_fov_deg(float value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.VideoStreamSettings)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 0,
+      3, 7, 0,
       56, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -667,8 +792,13 @@ class VideoStreaming final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
-    ::google::protobuf::internal::ArenaStringPtr rtsp_uri_;
-    bool has_rtsp_server_;
+    ::google::protobuf::internal::ArenaStringPtr uri_;
+    float frame_rate_hz_;
+    ::uint32_t horizontal_resolution_pix_;
+    ::uint32_t vertical_resolution_pix_;
+    ::uint32_t bit_rate_b_s_;
+    ::uint32_t rotation_deg_;
+    float horizontal_fov_deg_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -2445,7 +2575,7 @@ class StorageInformation final :
                &_StorageInformation_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    52;
+    53;
 
   friend void swap(StorageInformation& a, StorageInformation& b) {
     a.Swap(&b);
@@ -5200,7 +5330,7 @@ class Quaternion final :
                &_Quaternion_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    49;
+    50;
 
   friend void swap(Quaternion& a, Quaternion& b) {
     a.Swap(&b);
@@ -5411,7 +5541,7 @@ class Position final :
                &_Position_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    48;
+    49;
 
   friend void swap(Position& a, Position& b) {
     a.Swap(&b);
@@ -6291,7 +6421,7 @@ class CaptureStatus final :
                &_CaptureStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    53;
+    54;
 
   friend void swap(CaptureStatus& a, CaptureStatus& b) {
     a.Swap(&b);
@@ -6568,7 +6698,7 @@ class CameraServerResult final :
                &_CameraServerResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    51;
+    52;
 
   friend void swap(CameraServerResult& a, CameraServerResult& b) {
     a.Swap(&b);
@@ -6729,26 +6859,26 @@ class CameraServerResult final :
   friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
 };// -------------------------------------------------------------------
 
-class SetVideoStreamingResponse final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.SetVideoStreamingResponse) */ {
+class VideoStreamInfo final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.VideoStreamInfo) */ {
  public:
-  inline SetVideoStreamingResponse() : SetVideoStreamingResponse(nullptr) {}
-  ~SetVideoStreamingResponse() override;
+  inline VideoStreamInfo() : VideoStreamInfo(nullptr) {}
+  ~VideoStreamInfo() override;
   template<typename = void>
-  explicit PROTOBUF_CONSTEXPR SetVideoStreamingResponse(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR VideoStreamInfo(::google::protobuf::internal::ConstantInitialized);
 
-  inline SetVideoStreamingResponse(const SetVideoStreamingResponse& from)
-      : SetVideoStreamingResponse(nullptr, from) {}
-  SetVideoStreamingResponse(SetVideoStreamingResponse&& from) noexcept
-    : SetVideoStreamingResponse() {
+  inline VideoStreamInfo(const VideoStreamInfo& from)
+      : VideoStreamInfo(nullptr, from) {}
+  VideoStreamInfo(VideoStreamInfo&& from) noexcept
+    : VideoStreamInfo() {
     *this = ::std::move(from);
   }
 
-  inline SetVideoStreamingResponse& operator=(const SetVideoStreamingResponse& from) {
+  inline VideoStreamInfo& operator=(const VideoStreamInfo& from) {
     CopyFrom(from);
     return *this;
   }
-  inline SetVideoStreamingResponse& operator=(SetVideoStreamingResponse&& from) noexcept {
+  inline VideoStreamInfo& operator=(VideoStreamInfo&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -6780,20 +6910,20 @@ class SetVideoStreamingResponse final :
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const SetVideoStreamingResponse& default_instance() {
+  static const VideoStreamInfo& default_instance() {
     return *internal_default_instance();
   }
-  static inline const SetVideoStreamingResponse* internal_default_instance() {
-    return reinterpret_cast<const SetVideoStreamingResponse*>(
-               &_SetVideoStreamingResponse_default_instance_);
+  static inline const VideoStreamInfo* internal_default_instance() {
+    return reinterpret_cast<const VideoStreamInfo*>(
+               &_VideoStreamInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    48;
 
-  friend void swap(SetVideoStreamingResponse& a, SetVideoStreamingResponse& b) {
+  friend void swap(VideoStreamInfo& a, VideoStreamInfo& b) {
     a.Swap(&b);
   }
-  inline void Swap(SetVideoStreamingResponse* other) {
+  inline void Swap(VideoStreamInfo* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr &&
@@ -6806,7 +6936,7 @@ class SetVideoStreamingResponse final :
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(SetVideoStreamingResponse* other) {
+  void UnsafeArenaSwap(VideoStreamInfo* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -6814,14 +6944,14 @@ class SetVideoStreamingResponse final :
 
   // implements Message ----------------------------------------------
 
-  SetVideoStreamingResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<SetVideoStreamingResponse>(arena);
+  VideoStreamInfo* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<VideoStreamInfo>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const SetVideoStreamingResponse& from);
+  void CopyFrom(const VideoStreamInfo& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const SetVideoStreamingResponse& from) {
-    SetVideoStreamingResponse::MergeImpl(*this, from);
+  void MergeFrom( const VideoStreamInfo& from) {
+    VideoStreamInfo::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
@@ -6839,16 +6969,274 @@ class SetVideoStreamingResponse final :
   ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
   void SharedCtor(::google::protobuf::Arena* arena);
   void SharedDtor();
-  void InternalSwap(SetVideoStreamingResponse* other);
+  void InternalSwap(VideoStreamInfo* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.camera_server.SetVideoStreamingResponse";
+    return "mavsdk.rpc.camera_server.VideoStreamInfo";
   }
   protected:
-  explicit SetVideoStreamingResponse(::google::protobuf::Arena* arena);
-  SetVideoStreamingResponse(::google::protobuf::Arena* arena, const SetVideoStreamingResponse& from);
+  explicit VideoStreamInfo(::google::protobuf::Arena* arena);
+  VideoStreamInfo(::google::protobuf::Arena* arena, const VideoStreamInfo& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  using VideoStreamStatus = VideoStreamInfo_VideoStreamStatus;
+  static constexpr VideoStreamStatus VIDEO_STREAM_STATUS_NOT_RUNNING = VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING;
+  static constexpr VideoStreamStatus VIDEO_STREAM_STATUS_IN_PROGRESS = VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_IN_PROGRESS;
+  static inline bool VideoStreamStatus_IsValid(int value) {
+    return VideoStreamInfo_VideoStreamStatus_IsValid(value);
+  }
+  static constexpr VideoStreamStatus VideoStreamStatus_MIN = VideoStreamInfo_VideoStreamStatus_VideoStreamStatus_MIN;
+  static constexpr VideoStreamStatus VideoStreamStatus_MAX = VideoStreamInfo_VideoStreamStatus_VideoStreamStatus_MAX;
+  static constexpr int VideoStreamStatus_ARRAYSIZE = VideoStreamInfo_VideoStreamStatus_VideoStreamStatus_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor* VideoStreamStatus_descriptor() {
+    return VideoStreamInfo_VideoStreamStatus_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& VideoStreamStatus_Name(T value) {
+    return VideoStreamInfo_VideoStreamStatus_Name(value);
+  }
+  static inline bool VideoStreamStatus_Parse(absl::string_view name, VideoStreamStatus* value) {
+    return VideoStreamInfo_VideoStreamStatus_Parse(name, value);
+  }
+
+  using VideoStreamSpectrum = VideoStreamInfo_VideoStreamSpectrum;
+  static constexpr VideoStreamSpectrum VIDEO_STREAM_SPECTRUM_UNKNOWN = VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_UNKNOWN;
+  static constexpr VideoStreamSpectrum VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT = VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT;
+  static constexpr VideoStreamSpectrum VIDEO_STREAM_SPECTRUM_INFRARED = VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_INFRARED;
+  static inline bool VideoStreamSpectrum_IsValid(int value) {
+    return VideoStreamInfo_VideoStreamSpectrum_IsValid(value);
+  }
+  static constexpr VideoStreamSpectrum VideoStreamSpectrum_MIN = VideoStreamInfo_VideoStreamSpectrum_VideoStreamSpectrum_MIN;
+  static constexpr VideoStreamSpectrum VideoStreamSpectrum_MAX = VideoStreamInfo_VideoStreamSpectrum_VideoStreamSpectrum_MAX;
+  static constexpr int VideoStreamSpectrum_ARRAYSIZE = VideoStreamInfo_VideoStreamSpectrum_VideoStreamSpectrum_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor* VideoStreamSpectrum_descriptor() {
+    return VideoStreamInfo_VideoStreamSpectrum_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& VideoStreamSpectrum_Name(T value) {
+    return VideoStreamInfo_VideoStreamSpectrum_Name(value);
+  }
+  static inline bool VideoStreamSpectrum_Parse(absl::string_view name, VideoStreamSpectrum* value) {
+    return VideoStreamInfo_VideoStreamSpectrum_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kSettingsFieldNumber = 2,
+    kStreamIdFieldNumber = 1,
+    kStatusFieldNumber = 3,
+    kSpectrumFieldNumber = 4,
+  };
+  // .mavsdk.rpc.camera_server.VideoStreamSettings settings = 2;
+  bool has_settings() const;
+  void clear_settings() ;
+  const ::mavsdk::rpc::camera_server::VideoStreamSettings& settings() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera_server::VideoStreamSettings* release_settings();
+  ::mavsdk::rpc::camera_server::VideoStreamSettings* mutable_settings();
+  void set_allocated_settings(::mavsdk::rpc::camera_server::VideoStreamSettings* value);
+  void unsafe_arena_set_allocated_settings(::mavsdk::rpc::camera_server::VideoStreamSettings* value);
+  ::mavsdk::rpc::camera_server::VideoStreamSettings* unsafe_arena_release_settings();
+
+  private:
+  const ::mavsdk::rpc::camera_server::VideoStreamSettings& _internal_settings() const;
+  ::mavsdk::rpc::camera_server::VideoStreamSettings* _internal_mutable_settings();
+
+  public:
+  // int32 stream_id = 1;
+  void clear_stream_id() ;
+  ::int32_t stream_id() const;
+  void set_stream_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_stream_id() const;
+  void _internal_set_stream_id(::int32_t value);
+
+  public:
+  // .mavsdk.rpc.camera_server.VideoStreamInfo.VideoStreamStatus status = 3;
+  void clear_status() ;
+  ::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamStatus status() const;
+  void set_status(::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamStatus value);
+
+  private:
+  ::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamStatus _internal_status() const;
+  void _internal_set_status(::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamStatus value);
+
+  public:
+  // .mavsdk.rpc.camera_server.VideoStreamInfo.VideoStreamSpectrum spectrum = 4;
+  void clear_spectrum() ;
+  ::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamSpectrum spectrum() const;
+  void set_spectrum(::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamSpectrum value);
+
+  private:
+  ::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamSpectrum _internal_spectrum() const;
+  void _internal_set_spectrum(::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamSpectrum value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.VideoStreamInfo)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      2, 4, 1,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera_server::VideoStreamSettings* settings_;
+    ::int32_t stream_id_;
+    int status_;
+    int spectrum_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};// -------------------------------------------------------------------
+
+class SetVideoStreamInfoResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.SetVideoStreamInfoResponse) */ {
+ public:
+  inline SetVideoStreamInfoResponse() : SetVideoStreamInfoResponse(nullptr) {}
+  ~SetVideoStreamInfoResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR SetVideoStreamInfoResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline SetVideoStreamInfoResponse(const SetVideoStreamInfoResponse& from)
+      : SetVideoStreamInfoResponse(nullptr, from) {}
+  SetVideoStreamInfoResponse(SetVideoStreamInfoResponse&& from) noexcept
+    : SetVideoStreamInfoResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline SetVideoStreamInfoResponse& operator=(const SetVideoStreamInfoResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetVideoStreamInfoResponse& operator=(SetVideoStreamInfoResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetVideoStreamInfoResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetVideoStreamInfoResponse* internal_default_instance() {
+    return reinterpret_cast<const SetVideoStreamInfoResponse*>(
+               &_SetVideoStreamInfoResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  friend void swap(SetVideoStreamInfoResponse& a, SetVideoStreamInfoResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SetVideoStreamInfoResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetVideoStreamInfoResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SetVideoStreamInfoResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<SetVideoStreamInfoResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SetVideoStreamInfoResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const SetVideoStreamInfoResponse& from) {
+    SetVideoStreamInfoResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(SetVideoStreamInfoResponse* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera_server.SetVideoStreamInfoResponse";
+  }
+  protected:
+  explicit SetVideoStreamInfoResponse(::google::protobuf::Arena* arena);
+  SetVideoStreamInfoResponse(::google::protobuf::Arena* arena, const SetVideoStreamInfoResponse& from);
   public:
 
   static const ClassData _class_data_;
@@ -6878,7 +7266,7 @@ class SetVideoStreamingResponse final :
   ::mavsdk::rpc::camera_server::CameraServerResult* _internal_mutable_camera_server_result();
 
   public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.SetVideoStreamingResponse)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.SetVideoStreamInfoResponse)
  private:
   class _Internal;
 
@@ -6904,187 +7292,6 @@ class SetVideoStreamingResponse final :
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     ::mavsdk::rpc::camera_server::CameraServerResult* camera_server_result_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
-};// -------------------------------------------------------------------
-
-class SetVideoStreamingRequest final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.SetVideoStreamingRequest) */ {
- public:
-  inline SetVideoStreamingRequest() : SetVideoStreamingRequest(nullptr) {}
-  ~SetVideoStreamingRequest() override;
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR SetVideoStreamingRequest(::google::protobuf::internal::ConstantInitialized);
-
-  inline SetVideoStreamingRequest(const SetVideoStreamingRequest& from)
-      : SetVideoStreamingRequest(nullptr, from) {}
-  SetVideoStreamingRequest(SetVideoStreamingRequest&& from) noexcept
-    : SetVideoStreamingRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline SetVideoStreamingRequest& operator=(const SetVideoStreamingRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline SetVideoStreamingRequest& operator=(SetVideoStreamingRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetArena() == from.GetArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const SetVideoStreamingRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const SetVideoStreamingRequest* internal_default_instance() {
-    return reinterpret_cast<const SetVideoStreamingRequest*>(
-               &_SetVideoStreamingRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    2;
-
-  friend void swap(SetVideoStreamingRequest& a, SetVideoStreamingRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(SetVideoStreamingRequest* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() != nullptr &&
-        GetArena() == other->GetArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() == other->GetArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(SetVideoStreamingRequest* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  SetVideoStreamingRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<SetVideoStreamingRequest>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const SetVideoStreamingRequest& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const SetVideoStreamingRequest& from) {
-    SetVideoStreamingRequest::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  ::size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
-  void SharedCtor(::google::protobuf::Arena* arena);
-  void SharedDtor();
-  void InternalSwap(SetVideoStreamingRequest* other);
-
-  private:
-  friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.camera_server.SetVideoStreamingRequest";
-  }
-  protected:
-  explicit SetVideoStreamingRequest(::google::protobuf::Arena* arena);
-  SetVideoStreamingRequest(::google::protobuf::Arena* arena, const SetVideoStreamingRequest& from);
-  public:
-
-  static const ClassData _class_data_;
-  const ::google::protobuf::Message::ClassData*GetClassData() const final;
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kVideoStreamingFieldNumber = 1,
-  };
-  // .mavsdk.rpc.camera_server.VideoStreaming video_streaming = 1;
-  bool has_video_streaming() const;
-  void clear_video_streaming() ;
-  const ::mavsdk::rpc::camera_server::VideoStreaming& video_streaming() const;
-  PROTOBUF_NODISCARD ::mavsdk::rpc::camera_server::VideoStreaming* release_video_streaming();
-  ::mavsdk::rpc::camera_server::VideoStreaming* mutable_video_streaming();
-  void set_allocated_video_streaming(::mavsdk::rpc::camera_server::VideoStreaming* value);
-  void unsafe_arena_set_allocated_video_streaming(::mavsdk::rpc::camera_server::VideoStreaming* value);
-  ::mavsdk::rpc::camera_server::VideoStreaming* unsafe_arena_release_video_streaming();
-
-  private:
-  const ::mavsdk::rpc::camera_server::VideoStreaming& _internal_video_streaming() const;
-  ::mavsdk::rpc::camera_server::VideoStreaming* _internal_mutable_video_streaming();
-
-  public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.SetVideoStreamingRequest)
- private:
-  class _Internal;
-
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 1,
-      0, 2>
-      _table_;
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-
-        inline explicit constexpr Impl_(
-            ::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena);
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena, const Impl_& from);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    ::mavsdk::rpc::camera_server::VideoStreaming* video_streaming_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -9889,7 +10096,7 @@ class CaptureInfo final :
                &_CaptureInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    50;
+    51;
 
   friend void swap(CaptureInfo& a, CaptureInfo& b) {
     a.Swap(&b);
@@ -10076,6 +10283,189 @@ class CaptureInfo final :
     ::uint64_t time_utc_us_;
     bool is_success_;
     ::int32_t index_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_5fserver_2fcamera_5fserver_2eproto;
+};// -------------------------------------------------------------------
+
+class SetVideoStreamInfoRequest final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera_server.SetVideoStreamInfoRequest) */ {
+ public:
+  inline SetVideoStreamInfoRequest() : SetVideoStreamInfoRequest(nullptr) {}
+  ~SetVideoStreamInfoRequest() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR SetVideoStreamInfoRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline SetVideoStreamInfoRequest(const SetVideoStreamInfoRequest& from)
+      : SetVideoStreamInfoRequest(nullptr, from) {}
+  SetVideoStreamInfoRequest(SetVideoStreamInfoRequest&& from) noexcept
+    : SetVideoStreamInfoRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SetVideoStreamInfoRequest& operator=(const SetVideoStreamInfoRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetVideoStreamInfoRequest& operator=(SetVideoStreamInfoRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetVideoStreamInfoRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetVideoStreamInfoRequest* internal_default_instance() {
+    return reinterpret_cast<const SetVideoStreamInfoRequest*>(
+               &_SetVideoStreamInfoRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  friend void swap(SetVideoStreamInfoRequest& a, SetVideoStreamInfoRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SetVideoStreamInfoRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetVideoStreamInfoRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SetVideoStreamInfoRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<SetVideoStreamInfoRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SetVideoStreamInfoRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const SetVideoStreamInfoRequest& from) {
+    SetVideoStreamInfoRequest::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(SetVideoStreamInfoRequest* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera_server.SetVideoStreamInfoRequest";
+  }
+  protected:
+  explicit SetVideoStreamInfoRequest(::google::protobuf::Arena* arena);
+  SetVideoStreamInfoRequest(::google::protobuf::Arena* arena, const SetVideoStreamInfoRequest& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kVideoStreamInfosFieldNumber = 1,
+  };
+  // repeated .mavsdk.rpc.camera_server.VideoStreamInfo video_stream_infos = 1;
+  int video_stream_infos_size() const;
+  private:
+  int _internal_video_stream_infos_size() const;
+
+  public:
+  void clear_video_stream_infos() ;
+  ::mavsdk::rpc::camera_server::VideoStreamInfo* mutable_video_stream_infos(int index);
+  ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera_server::VideoStreamInfo >*
+      mutable_video_stream_infos();
+  private:
+  const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera_server::VideoStreamInfo>& _internal_video_stream_infos() const;
+  ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera_server::VideoStreamInfo>* _internal_mutable_video_stream_infos();
+  public:
+  const ::mavsdk::rpc::camera_server::VideoStreamInfo& video_stream_infos(int index) const;
+  ::mavsdk::rpc::camera_server::VideoStreamInfo* add_video_stream_infos();
+  const ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera_server::VideoStreamInfo >&
+      video_stream_infos() const;
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.SetVideoStreamInfoRequest)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera_server::VideoStreamInfo > video_stream_infos_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -10489,129 +10879,82 @@ inline void SetInformationResponse::set_allocated_camera_server_result(::mavsdk:
 
 // -------------------------------------------------------------------
 
-// SetVideoStreamingRequest
+// SetVideoStreamInfoRequest
 
-// .mavsdk.rpc.camera_server.VideoStreaming video_streaming = 1;
-inline bool SetVideoStreamingRequest::has_video_streaming() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.video_streaming_ != nullptr);
-  return value;
+// repeated .mavsdk.rpc.camera_server.VideoStreamInfo video_stream_infos = 1;
+inline int SetVideoStreamInfoRequest::_internal_video_stream_infos_size() const {
+  return _internal_video_stream_infos().size();
 }
-inline void SetVideoStreamingRequest::clear_video_streaming() {
+inline int SetVideoStreamInfoRequest::video_stream_infos_size() const {
+  return _internal_video_stream_infos_size();
+}
+inline void SetVideoStreamInfoRequest::clear_video_stream_infos() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (_impl_.video_streaming_ != nullptr) _impl_.video_streaming_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_.video_stream_infos_.Clear();
 }
-inline const ::mavsdk::rpc::camera_server::VideoStreaming& SetVideoStreamingRequest::_internal_video_streaming() const {
+inline ::mavsdk::rpc::camera_server::VideoStreamInfo* SetVideoStreamInfoRequest::mutable_video_stream_infos(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.SetVideoStreamInfoRequest.video_stream_infos)
+  return _internal_mutable_video_stream_infos()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera_server::VideoStreamInfo>* SetVideoStreamInfoRequest::mutable_video_stream_infos()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.camera_server.SetVideoStreamInfoRequest.video_stream_infos)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  return _internal_mutable_video_stream_infos();
+}
+inline const ::mavsdk::rpc::camera_server::VideoStreamInfo& SetVideoStreamInfoRequest::video_stream_infos(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.SetVideoStreamInfoRequest.video_stream_infos)
+  return _internal_video_stream_infos().Get(index);
+}
+inline ::mavsdk::rpc::camera_server::VideoStreamInfo* SetVideoStreamInfoRequest::add_video_stream_infos() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::mavsdk::rpc::camera_server::VideoStreamInfo* _add = _internal_mutable_video_stream_infos()->Add();
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.camera_server.SetVideoStreamInfoRequest.video_stream_infos)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera_server::VideoStreamInfo>& SetVideoStreamInfoRequest::video_stream_infos() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.camera_server.SetVideoStreamInfoRequest.video_stream_infos)
+  return _internal_video_stream_infos();
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera_server::VideoStreamInfo>&
+SetVideoStreamInfoRequest::_internal_video_stream_infos() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  const ::mavsdk::rpc::camera_server::VideoStreaming* p = _impl_.video_streaming_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::VideoStreaming&>(::mavsdk::rpc::camera_server::_VideoStreaming_default_instance_);
+  return _impl_.video_stream_infos_;
 }
-inline const ::mavsdk::rpc::camera_server::VideoStreaming& SetVideoStreamingRequest::video_streaming() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.SetVideoStreamingRequest.video_streaming)
-  return _internal_video_streaming();
-}
-inline void SetVideoStreamingRequest::unsafe_arena_set_allocated_video_streaming(::mavsdk::rpc::camera_server::VideoStreaming* value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.video_streaming_);
-  }
-  _impl_.video_streaming_ = reinterpret_cast<::mavsdk::rpc::camera_server::VideoStreaming*>(value);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.SetVideoStreamingRequest.video_streaming)
-}
-inline ::mavsdk::rpc::camera_server::VideoStreaming* SetVideoStreamingRequest::release_video_streaming() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::camera_server::VideoStreaming* released = _impl_.video_streaming_;
-  _impl_.video_streaming_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-  if (GetArena() == nullptr) {
-    delete old;
-  }
-#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArena() != nullptr) {
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return released;
-}
-inline ::mavsdk::rpc::camera_server::VideoStreaming* SetVideoStreamingRequest::unsafe_arena_release_video_streaming() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.SetVideoStreamingRequest.video_streaming)
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::camera_server::VideoStreaming* temp = _impl_.video_streaming_;
-  _impl_.video_streaming_ = nullptr;
-  return temp;
-}
-inline ::mavsdk::rpc::camera_server::VideoStreaming* SetVideoStreamingRequest::_internal_mutable_video_streaming() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_._has_bits_[0] |= 0x00000001u;
-  if (_impl_.video_streaming_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera_server::VideoStreaming>(GetArena());
-    _impl_.video_streaming_ = reinterpret_cast<::mavsdk::rpc::camera_server::VideoStreaming*>(p);
-  }
-  return _impl_.video_streaming_;
-}
-inline ::mavsdk::rpc::camera_server::VideoStreaming* SetVideoStreamingRequest::mutable_video_streaming() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::mavsdk::rpc::camera_server::VideoStreaming* _msg = _internal_mutable_video_streaming();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.SetVideoStreamingRequest.video_streaming)
-  return _msg;
-}
-inline void SetVideoStreamingRequest::set_allocated_video_streaming(::mavsdk::rpc::camera_server::VideoStreaming* value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (message_arena == nullptr) {
-    delete reinterpret_cast<::mavsdk::rpc::camera_server::VideoStreaming*>(_impl_.video_streaming_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera_server::VideoStreaming*>(value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-
-  _impl_.video_streaming_ = reinterpret_cast<::mavsdk::rpc::camera_server::VideoStreaming*>(value);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.SetVideoStreamingRequest.video_streaming)
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera_server::VideoStreamInfo>*
+SetVideoStreamInfoRequest::_internal_mutable_video_stream_infos() {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return &_impl_.video_stream_infos_;
 }
 
 // -------------------------------------------------------------------
 
-// SetVideoStreamingResponse
+// SetVideoStreamInfoResponse
 
 // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
-inline bool SetVideoStreamingResponse::has_camera_server_result() const {
+inline bool SetVideoStreamInfoResponse::has_camera_server_result() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.camera_server_result_ != nullptr);
   return value;
 }
-inline void SetVideoStreamingResponse::clear_camera_server_result() {
+inline void SetVideoStreamInfoResponse::clear_camera_server_result() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   if (_impl_.camera_server_result_ != nullptr) _impl_.camera_server_result_->Clear();
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::camera_server::CameraServerResult& SetVideoStreamingResponse::_internal_camera_server_result() const {
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& SetVideoStreamInfoResponse::_internal_camera_server_result() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
   const ::mavsdk::rpc::camera_server::CameraServerResult* p = _impl_.camera_server_result_;
   return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::CameraServerResult&>(::mavsdk::rpc::camera_server::_CameraServerResult_default_instance_);
 }
-inline const ::mavsdk::rpc::camera_server::CameraServerResult& SetVideoStreamingResponse::camera_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.SetVideoStreamingResponse.camera_server_result)
+inline const ::mavsdk::rpc::camera_server::CameraServerResult& SetVideoStreamInfoResponse::camera_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.SetVideoStreamInfoResponse.camera_server_result)
   return _internal_camera_server_result();
 }
-inline void SetVideoStreamingResponse::unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+inline void SetVideoStreamInfoResponse::unsafe_arena_set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   if (GetArena() == nullptr) {
     delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_server_result_);
@@ -10622,9 +10965,9 @@ inline void SetVideoStreamingResponse::unsafe_arena_set_allocated_camera_server_
   } else {
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.SetVideoStreamingResponse.camera_server_result)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.SetVideoStreamInfoResponse.camera_server_result)
 }
-inline ::mavsdk::rpc::camera_server::CameraServerResult* SetVideoStreamingResponse::release_camera_server_result() {
+inline ::mavsdk::rpc::camera_server::CameraServerResult* SetVideoStreamInfoResponse::release_camera_server_result() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
 
   _impl_._has_bits_[0] &= ~0x00000001u;
@@ -10643,16 +10986,16 @@ inline ::mavsdk::rpc::camera_server::CameraServerResult* SetVideoStreamingRespon
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return released;
 }
-inline ::mavsdk::rpc::camera_server::CameraServerResult* SetVideoStreamingResponse::unsafe_arena_release_camera_server_result() {
+inline ::mavsdk::rpc::camera_server::CameraServerResult* SetVideoStreamInfoResponse::unsafe_arena_release_camera_server_result() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.SetVideoStreamingResponse.camera_server_result)
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.SetVideoStreamInfoResponse.camera_server_result)
 
   _impl_._has_bits_[0] &= ~0x00000001u;
   ::mavsdk::rpc::camera_server::CameraServerResult* temp = _impl_.camera_server_result_;
   _impl_.camera_server_result_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::camera_server::CameraServerResult* SetVideoStreamingResponse::_internal_mutable_camera_server_result() {
+inline ::mavsdk::rpc::camera_server::CameraServerResult* SetVideoStreamInfoResponse::_internal_mutable_camera_server_result() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_._has_bits_[0] |= 0x00000001u;
   if (_impl_.camera_server_result_ == nullptr) {
@@ -10661,12 +11004,12 @@ inline ::mavsdk::rpc::camera_server::CameraServerResult* SetVideoStreamingRespon
   }
   return _impl_.camera_server_result_;
 }
-inline ::mavsdk::rpc::camera_server::CameraServerResult* SetVideoStreamingResponse::mutable_camera_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::mavsdk::rpc::camera_server::CameraServerResult* SetVideoStreamInfoResponse::mutable_camera_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::mavsdk::rpc::camera_server::CameraServerResult* _msg = _internal_mutable_camera_server_result();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.SetVideoStreamingResponse.camera_server_result)
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.SetVideoStreamInfoResponse.camera_server_result)
   return _msg;
 }
-inline void SetVideoStreamingResponse::set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
+inline void SetVideoStreamInfoResponse::set_allocated_camera_server_result(::mavsdk::rpc::camera_server::CameraServerResult* value) {
   ::google::protobuf::Arena* message_arena = GetArena();
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   if (message_arena == nullptr) {
@@ -10684,7 +11027,7 @@ inline void SetVideoStreamingResponse::set_allocated_camera_server_result(::mavs
   }
 
   _impl_.camera_server_result_ = reinterpret_cast<::mavsdk::rpc::camera_server::CameraServerResult*>(value);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.SetVideoStreamingResponse.camera_server_result)
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.SetVideoStreamInfoResponse.camera_server_result)
 }
 
 // -------------------------------------------------------------------
@@ -13061,82 +13404,366 @@ inline void Information::set_allocated_definition_file_uri(std::string* value) {
 
 // -------------------------------------------------------------------
 
-// VideoStreaming
+// VideoStreamSettings
 
-// bool has_rtsp_server = 1;
-inline void VideoStreaming::clear_has_rtsp_server() {
+// float frame_rate_hz = 1;
+inline void VideoStreamSettings::clear_frame_rate_hz() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.has_rtsp_server_ = false;
+  _impl_.frame_rate_hz_ = 0;
 }
-inline bool VideoStreaming::has_rtsp_server() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.VideoStreaming.has_rtsp_server)
-  return _internal_has_rtsp_server();
+inline float VideoStreamSettings::frame_rate_hz() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.VideoStreamSettings.frame_rate_hz)
+  return _internal_frame_rate_hz();
 }
-inline void VideoStreaming::set_has_rtsp_server(bool value) {
-  _internal_set_has_rtsp_server(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.VideoStreaming.has_rtsp_server)
+inline void VideoStreamSettings::set_frame_rate_hz(float value) {
+  _internal_set_frame_rate_hz(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.VideoStreamSettings.frame_rate_hz)
 }
-inline bool VideoStreaming::_internal_has_rtsp_server() const {
+inline float VideoStreamSettings::_internal_frame_rate_hz() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.has_rtsp_server_;
+  return _impl_.frame_rate_hz_;
 }
-inline void VideoStreaming::_internal_set_has_rtsp_server(bool value) {
+inline void VideoStreamSettings::_internal_set_frame_rate_hz(float value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
-  _impl_.has_rtsp_server_ = value;
+  _impl_.frame_rate_hz_ = value;
 }
 
-// string rtsp_uri = 2;
-inline void VideoStreaming::clear_rtsp_uri() {
+// uint32 horizontal_resolution_pix = 2;
+inline void VideoStreamSettings::clear_horizontal_resolution_pix() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.rtsp_uri_.ClearToEmpty();
+  _impl_.horizontal_resolution_pix_ = 0u;
 }
-inline const std::string& VideoStreaming::rtsp_uri() const
+inline ::uint32_t VideoStreamSettings::horizontal_resolution_pix() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.VideoStreamSettings.horizontal_resolution_pix)
+  return _internal_horizontal_resolution_pix();
+}
+inline void VideoStreamSettings::set_horizontal_resolution_pix(::uint32_t value) {
+  _internal_set_horizontal_resolution_pix(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.VideoStreamSettings.horizontal_resolution_pix)
+}
+inline ::uint32_t VideoStreamSettings::_internal_horizontal_resolution_pix() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.horizontal_resolution_pix_;
+}
+inline void VideoStreamSettings::_internal_set_horizontal_resolution_pix(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.horizontal_resolution_pix_ = value;
+}
+
+// uint32 vertical_resolution_pix = 3;
+inline void VideoStreamSettings::clear_vertical_resolution_pix() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.vertical_resolution_pix_ = 0u;
+}
+inline ::uint32_t VideoStreamSettings::vertical_resolution_pix() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.VideoStreamSettings.vertical_resolution_pix)
+  return _internal_vertical_resolution_pix();
+}
+inline void VideoStreamSettings::set_vertical_resolution_pix(::uint32_t value) {
+  _internal_set_vertical_resolution_pix(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.VideoStreamSettings.vertical_resolution_pix)
+}
+inline ::uint32_t VideoStreamSettings::_internal_vertical_resolution_pix() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.vertical_resolution_pix_;
+}
+inline void VideoStreamSettings::_internal_set_vertical_resolution_pix(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.vertical_resolution_pix_ = value;
+}
+
+// uint32 bit_rate_b_s = 4;
+inline void VideoStreamSettings::clear_bit_rate_b_s() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.bit_rate_b_s_ = 0u;
+}
+inline ::uint32_t VideoStreamSettings::bit_rate_b_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.VideoStreamSettings.bit_rate_b_s)
+  return _internal_bit_rate_b_s();
+}
+inline void VideoStreamSettings::set_bit_rate_b_s(::uint32_t value) {
+  _internal_set_bit_rate_b_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.VideoStreamSettings.bit_rate_b_s)
+}
+inline ::uint32_t VideoStreamSettings::_internal_bit_rate_b_s() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.bit_rate_b_s_;
+}
+inline void VideoStreamSettings::_internal_set_bit_rate_b_s(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.bit_rate_b_s_ = value;
+}
+
+// uint32 rotation_deg = 5;
+inline void VideoStreamSettings::clear_rotation_deg() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.rotation_deg_ = 0u;
+}
+inline ::uint32_t VideoStreamSettings::rotation_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.VideoStreamSettings.rotation_deg)
+  return _internal_rotation_deg();
+}
+inline void VideoStreamSettings::set_rotation_deg(::uint32_t value) {
+  _internal_set_rotation_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.VideoStreamSettings.rotation_deg)
+}
+inline ::uint32_t VideoStreamSettings::_internal_rotation_deg() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.rotation_deg_;
+}
+inline void VideoStreamSettings::_internal_set_rotation_deg(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.rotation_deg_ = value;
+}
+
+// string uri = 6;
+inline void VideoStreamSettings::clear_uri() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.uri_.ClearToEmpty();
+}
+inline const std::string& VideoStreamSettings::uri() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.VideoStreaming.rtsp_uri)
-  return _internal_rtsp_uri();
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.VideoStreamSettings.uri)
+  return _internal_uri();
 }
 template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void VideoStreaming::set_rtsp_uri(Arg_&& arg,
+inline PROTOBUF_ALWAYS_INLINE void VideoStreamSettings::set_uri(Arg_&& arg,
                                                      Args_... args) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
-  _impl_.rtsp_uri_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.VideoStreaming.rtsp_uri)
+  _impl_.uri_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.VideoStreamSettings.uri)
 }
-inline std::string* VideoStreaming::mutable_rtsp_uri() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_rtsp_uri();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.VideoStreaming.rtsp_uri)
+inline std::string* VideoStreamSettings::mutable_uri() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_uri();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.VideoStreamSettings.uri)
   return _s;
 }
-inline const std::string& VideoStreaming::_internal_rtsp_uri() const {
+inline const std::string& VideoStreamSettings::_internal_uri() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.rtsp_uri_.Get();
+  return _impl_.uri_.Get();
 }
-inline void VideoStreaming::_internal_set_rtsp_uri(const std::string& value) {
+inline void VideoStreamSettings::_internal_set_uri(const std::string& value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
-  _impl_.rtsp_uri_.Set(value, GetArena());
+  _impl_.uri_.Set(value, GetArena());
 }
-inline std::string* VideoStreaming::_internal_mutable_rtsp_uri() {
+inline std::string* VideoStreamSettings::_internal_mutable_uri() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
-  return _impl_.rtsp_uri_.Mutable( GetArena());
+  return _impl_.uri_.Mutable( GetArena());
 }
-inline std::string* VideoStreaming::release_rtsp_uri() {
+inline std::string* VideoStreamSettings::release_uri() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.VideoStreaming.rtsp_uri)
-  return _impl_.rtsp_uri_.Release();
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.VideoStreamSettings.uri)
+  return _impl_.uri_.Release();
 }
-inline void VideoStreaming::set_allocated_rtsp_uri(std::string* value) {
+inline void VideoStreamSettings::set_allocated_uri(std::string* value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.rtsp_uri_.SetAllocated(value, GetArena());
+  _impl_.uri_.SetAllocated(value, GetArena());
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        if (_impl_.rtsp_uri_.IsDefault()) {
-          _impl_.rtsp_uri_.Set("", GetArena());
+        if (_impl_.uri_.IsDefault()) {
+          _impl_.uri_.Set("", GetArena());
         }
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.VideoStreaming.rtsp_uri)
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.VideoStreamSettings.uri)
+}
+
+// float horizontal_fov_deg = 7;
+inline void VideoStreamSettings::clear_horizontal_fov_deg() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.horizontal_fov_deg_ = 0;
+}
+inline float VideoStreamSettings::horizontal_fov_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.VideoStreamSettings.horizontal_fov_deg)
+  return _internal_horizontal_fov_deg();
+}
+inline void VideoStreamSettings::set_horizontal_fov_deg(float value) {
+  _internal_set_horizontal_fov_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.VideoStreamSettings.horizontal_fov_deg)
+}
+inline float VideoStreamSettings::_internal_horizontal_fov_deg() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.horizontal_fov_deg_;
+}
+inline void VideoStreamSettings::_internal_set_horizontal_fov_deg(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.horizontal_fov_deg_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// VideoStreamInfo
+
+// int32 stream_id = 1;
+inline void VideoStreamInfo::clear_stream_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.stream_id_ = 0;
+}
+inline ::int32_t VideoStreamInfo::stream_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.VideoStreamInfo.stream_id)
+  return _internal_stream_id();
+}
+inline void VideoStreamInfo::set_stream_id(::int32_t value) {
+  _internal_set_stream_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.VideoStreamInfo.stream_id)
+}
+inline ::int32_t VideoStreamInfo::_internal_stream_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.stream_id_;
+}
+inline void VideoStreamInfo::_internal_set_stream_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.stream_id_ = value;
+}
+
+// .mavsdk.rpc.camera_server.VideoStreamSettings settings = 2;
+inline bool VideoStreamInfo::has_settings() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.settings_ != nullptr);
+  return value;
+}
+inline void VideoStreamInfo::clear_settings() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.settings_ != nullptr) _impl_.settings_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera_server::VideoStreamSettings& VideoStreamInfo::_internal_settings() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::camera_server::VideoStreamSettings* p = _impl_.settings_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera_server::VideoStreamSettings&>(::mavsdk::rpc::camera_server::_VideoStreamSettings_default_instance_);
+}
+inline const ::mavsdk::rpc::camera_server::VideoStreamSettings& VideoStreamInfo::settings() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.VideoStreamInfo.settings)
+  return _internal_settings();
+}
+inline void VideoStreamInfo::unsafe_arena_set_allocated_settings(::mavsdk::rpc::camera_server::VideoStreamSettings* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.settings_);
+  }
+  _impl_.settings_ = reinterpret_cast<::mavsdk::rpc::camera_server::VideoStreamSettings*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera_server.VideoStreamInfo.settings)
+}
+inline ::mavsdk::rpc::camera_server::VideoStreamSettings* VideoStreamInfo::release_settings() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::VideoStreamSettings* released = _impl_.settings_;
+  _impl_.settings_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::camera_server::VideoStreamSettings* VideoStreamInfo::unsafe_arena_release_settings() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera_server.VideoStreamInfo.settings)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera_server::VideoStreamSettings* temp = _impl_.settings_;
+  _impl_.settings_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera_server::VideoStreamSettings* VideoStreamInfo::_internal_mutable_settings() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.settings_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera_server::VideoStreamSettings>(GetArena());
+    _impl_.settings_ = reinterpret_cast<::mavsdk::rpc::camera_server::VideoStreamSettings*>(p);
+  }
+  return _impl_.settings_;
+}
+inline ::mavsdk::rpc::camera_server::VideoStreamSettings* VideoStreamInfo::mutable_settings() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::camera_server::VideoStreamSettings* _msg = _internal_mutable_settings();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera_server.VideoStreamInfo.settings)
+  return _msg;
+}
+inline void VideoStreamInfo::set_allocated_settings(::mavsdk::rpc::camera_server::VideoStreamSettings* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::camera_server::VideoStreamSettings*>(_impl_.settings_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera_server::VideoStreamSettings*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.settings_ = reinterpret_cast<::mavsdk::rpc::camera_server::VideoStreamSettings*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.VideoStreamInfo.settings)
+}
+
+// .mavsdk.rpc.camera_server.VideoStreamInfo.VideoStreamStatus status = 3;
+inline void VideoStreamInfo::clear_status() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.status_ = 0;
+}
+inline ::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamStatus VideoStreamInfo::status() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.VideoStreamInfo.status)
+  return _internal_status();
+}
+inline void VideoStreamInfo::set_status(::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamStatus value) {
+  _internal_set_status(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.VideoStreamInfo.status)
+}
+inline ::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamStatus VideoStreamInfo::_internal_status() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return static_cast<::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamStatus>(_impl_.status_);
+}
+inline void VideoStreamInfo::_internal_set_status(::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamStatus value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.status_ = value;
+}
+
+// .mavsdk.rpc.camera_server.VideoStreamInfo.VideoStreamSpectrum spectrum = 4;
+inline void VideoStreamInfo::clear_spectrum() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.spectrum_ = 0;
+}
+inline ::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamSpectrum VideoStreamInfo::spectrum() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.VideoStreamInfo.spectrum)
+  return _internal_spectrum();
+}
+inline void VideoStreamInfo::set_spectrum(::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamSpectrum value) {
+  _internal_set_spectrum(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.VideoStreamInfo.spectrum)
+}
+inline ::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamSpectrum VideoStreamInfo::_internal_spectrum() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return static_cast<::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamSpectrum>(_impl_.spectrum_);
+}
+inline void VideoStreamInfo::_internal_set_spectrum(::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamSpectrum value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.spectrum_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -14072,6 +14699,18 @@ inline void CaptureStatus::_internal_set_image_count(::int32_t value) {
 namespace google {
 namespace protobuf {
 
+template <>
+struct is_proto_enum<::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamStatus> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamStatus>() {
+  return ::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamStatus_descriptor();
+}
+template <>
+struct is_proto_enum<::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamSpectrum> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamSpectrum>() {
+  return ::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamSpectrum_descriptor();
+}
 template <>
 struct is_proto_enum<::mavsdk::rpc::camera_server::CameraServerResult_Result> : std::true_type {};
 template <>

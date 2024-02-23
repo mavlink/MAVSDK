@@ -50,6 +50,14 @@ int main(int argc, const char* argv[])
         std::cout << info << std::endl;
     });
 
+    camera.subscribe_video_stream_info(
+        [](std::vector<mavsdk::Camera::VideoStreamInfo> video_stream_infos) {
+            std::cout << "Camera Video stream information:" << std::endl;
+            for (auto& stream_info : video_stream_infos) {
+                std::cout << stream_info << std::endl;
+            }
+        });
+
     camera.subscribe_status([](mavsdk::Camera::Status status) {
         std::cout << "Camera status:" << std::endl;
         std::cout << status << std::endl;
