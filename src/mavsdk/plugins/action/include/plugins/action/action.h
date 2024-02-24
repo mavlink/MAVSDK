@@ -333,6 +333,20 @@ public:
         const ResultCallback callback);
 
     /**
+     * @brief Send custom long command to the drone.
+     * @return Result of request.
+     */
+    Result execute_custom_command_long(
+        MAV_CMD mavCommand,
+        float param1,
+        float param2,
+        float param3,
+        float param4,
+        float param5,
+        float param6,
+        float param7);
+
+    /**
      * @brief Send command to move the vehicle to a specific global position.
      *
      * The latitude and longitude are given in degrees (WGS84 frame) and the altitude

@@ -159,6 +159,33 @@ Action::Result ActionImpl::goto_location(
     return fut.get();
 }
 
+Action::Result ActionImpl::execute_custom_command_long(
+    MAV_CMD mavCommand,
+    float param1,
+    float param2,
+    float param3,
+    float param4,
+    float param5,
+    float param6,
+    float param7)
+{
+    auto prom = std::promise<Action::Result>();
+    auto fut = prom.get_future();
+
+    execute_custom_command_long_async(
+        mavCommand,
+        param1,
+        param2,
+        param3,
+        param4,
+        param5,
+        param6,
+        param7,
+        [&prom](Action::Result result) { prom.set_value(result); });
+
+    return fut.get();
+}
+
 Action::Result ActionImpl::do_orbit(
     const float radius_m,
     const float velocity_ms,
@@ -484,6 +511,35 @@ void ActionImpl::goto_location_async(
     }
 
     send_do_reposition();
+}
+
+void ActionImpl::execute_custom_command_long_async(
+    MAV_CMD mavCommand,
+    const float param1,
+    const float param2,
+    const float param3,
+    const float param4,
+    const float param5,
+    const float param6,
+    const float param7,
+    const Action::ResultCallback& callback)
+{
+    MavlinkCommandSender::CommandLong command{};
+
+    command.command = mavCommand;
+    command.target_component_id = _system_impl->get_autopilot_id();
+    command.params.maybe_param1 = static_cast<float>(param1);
+    command.params.maybe_param2 = static_cast<float>(param2);
+    command.params.maybe_param3 = static_cast<float>(param3);
+    command.params.maybe_param4 = static_cast<float>(param4);
+    command.params.maybe_param5 = static_cast<float>(param5);
+    command.params.maybe_param6 = static_cast<float>(param6);
+    command.params.maybe_param7 = static_cast<float>(param7);
+
+    _system_impl->send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
 }
 
 void ActionImpl::do_orbit_async(

@@ -118,6 +118,20 @@ void Action::goto_location_async(
     _impl->goto_location_async(latitude_deg, longitude_deg, absolute_altitude_m, yaw_deg, callback);
 }
 
+Action::Result Action::execute_custom_command_long(
+    MAV_CMD mavCommand,
+    float param1,
+    float param2,
+    float param3,
+    float param4,
+    float param5,
+    float param6,
+    float param7)
+{
+    return _impl->execute_custom_command_long(
+        mavCommand, param1, param2, param3, param4, param5, param6, param7);
+}
+
 Action::Result Action::goto_location(
     double latitude_deg, double longitude_deg, float absolute_altitude_m, float yaw_deg) const
 {

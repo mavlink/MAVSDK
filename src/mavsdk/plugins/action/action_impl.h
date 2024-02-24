@@ -34,6 +34,15 @@ public:
         const double longitude_deg,
         const float altitude_amsl_m,
         const float yaw_deg);
+    Action::Result execute_custom_command_long(
+        MAV_CMD mavCommand,
+        float param1,
+        float param2,
+        float param3,
+        float param4,
+        float param5,
+        float param6,
+        float param7);
     Action::Result do_orbit(
         const float radius_m,
         const float velocity_ms,
@@ -60,6 +69,16 @@ public:
         const double longitude_deg,
         const float altitude_amsl_m,
         const float yaw_deg,
+        const Action::ResultCallback& callback);
+    void execute_custom_command_long_async(
+        MAV_CMD mavCommand,
+        const float param1,
+        const float param2,
+        const float param3,
+        const float param4,
+        const float param5,
+        const float param6,
+        const float param7,
         const Action::ResultCallback& callback);
     void do_orbit_async(
         const float radius_m,
