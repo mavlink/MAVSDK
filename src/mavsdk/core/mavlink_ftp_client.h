@@ -3,6 +3,7 @@
 #include <cinttypes>
 #include <functional>
 #include <fstream>
+#include <deque>
 #include <unordered_map>
 #include <mutex>
 #include <optional>
@@ -151,12 +152,13 @@ private:
         std::string local_folder{};
         DownloadCallback callback{};
         std::ofstream ofstream{};
-        enum class Transferred {
-            No,
-            Yes,
+        uint32_t file_size{0};
+        struct MissingData {
+            size_t offset;
+            size_t size;
         };
-        std::vector<Transferred> transferred{};
-        int last_progress_percentage{-1};
+        std::deque<MissingData> missing_data{};
+        size_t next_offset{0};
     };
 
     struct UploadItem {
@@ -268,6 +270,7 @@ private:
 
     bool download_burst_start(Work& work, DownloadBurstItem& item);
     bool download_burst_continue(Work& work, DownloadBurstItem& item, PayloadHeader* payload);
+    void download_burst_end(Work& work);
     void request_burst(Work& work, DownloadBurstItem& item);
     void request_next_rest(Work& work, DownloadBurstItem& item);
     size_t burst_bytes_transferred(DownloadBurstItem& item);
