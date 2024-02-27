@@ -34,15 +34,22 @@ int main(int argc, char** argv)
     auto ret = camera_server.set_information({
         .vendor_name = "MAVSDK",
         .model_name = "Example Camera Server",
-        .firmware_version = "1.0.0",
+        .firmware_version = "0.1.0.12",
         .focal_length_mm = 3.0,
         .horizontal_sensor_size_mm = 3.68,
         .vertical_sensor_size_mm = 2.76,
         .horizontal_resolution_px = 3280,
         .vertical_resolution_px = 2464,
         .lens_id = 0,
-        .definition_file_version = 0, // TODO: add this
-        .definition_file_uri = "", // TODO: implement this using MAVLink FTP
+        .definition_file_version = 1,
+        .definition_file_uri = "http://192.168.0.1/demo.xml",
+        .camera_cap_flags =
+            {
+                mavsdk::CameraServer::Information::CameraCapFlags::CaptureImage,
+                mavsdk::CameraServer::Information::CameraCapFlags::CaptureVideo,
+                mavsdk::CameraServer::Information::CameraCapFlags::HasModes,
+                mavsdk::CameraServer::Information::CameraCapFlags::HasVideoStream,
+            },
     });
 
     // set video stream info

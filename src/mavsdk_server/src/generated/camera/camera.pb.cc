@@ -440,10 +440,18 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr Information::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : vendor_name_(
+      : camera_cap_flags_{},
+        _camera_cap_flags_cached_byte_size_{0},
+        vendor_name_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         model_name_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        firmware_version_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        definition_file_uri_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         focal_length_mm_{0},
@@ -451,6 +459,8 @@ inline constexpr Information::Impl_::Impl_(
         vertical_sensor_size_mm_{0},
         horizontal_resolution_px_{0u},
         vertical_resolution_px_{0u},
+        lens_id_{0u},
+        definition_file_version_{0u},
         _cached_size_{0} {}
 
 template <typename>
@@ -1072,7 +1082,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 }  // namespace rpc
 }  // namespace mavsdk
 static ::_pb::Metadata file_level_metadata_camera_2fcamera_2eproto[56];
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_camera_2fcamera_2eproto[7];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_camera_2fcamera_2eproto[8];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_camera_2fcamera_2eproto = nullptr;
 const ::uint32_t TableStruct_camera_2fcamera_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
@@ -1648,11 +1658,16 @@ const ::uint32_t TableStruct_camera_2fcamera_2eproto::offsets[] PROTOBUF_SECTION
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, _impl_.vendor_name_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, _impl_.model_name_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, _impl_.firmware_version_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, _impl_.focal_length_mm_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, _impl_.horizontal_sensor_size_mm_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, _impl_.vertical_sensor_size_mm_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, _impl_.horizontal_resolution_px_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, _impl_.vertical_resolution_px_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, _impl_.lens_id_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, _impl_.definition_file_version_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, _impl_.definition_file_uri_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera::Information, _impl_.camera_cap_flags_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -1904,76 +1919,93 @@ const char descriptor_table_protodef_camera_2fcamera_2eproto[] PROTOBUF_SECTION_
     "\010\"\177\n\016SettingOptions\022\022\n\nsetting_id\030\001 \001(\t\022"
     "\033\n\023setting_description\030\002 \001(\t\022*\n\007options\030"
     "\003 \003(\0132\031.mavsdk.rpc.camera.Option\022\020\n\010is_r"
-    "ange\030\004 \001(\010\"\325\001\n\013Information\022\023\n\013vendor_nam"
-    "e\030\001 \001(\t\022\022\n\nmodel_name\030\002 \001(\t\022\027\n\017focal_len"
-    "gth_mm\030\003 \001(\002\022!\n\031horizontal_sensor_size_m"
-    "m\030\004 \001(\002\022\037\n\027vertical_sensor_size_mm\030\005 \001(\002"
-    "\022 \n\030horizontal_resolution_px\030\006 \001(\r\022\036\n\026ve"
-    "rtical_resolution_px\030\007 \001(\r*8\n\004Mode\022\020\n\014MO"
-    "DE_UNKNOWN\020\000\022\016\n\nMODE_PHOTO\020\001\022\016\n\nMODE_VID"
-    "EO\020\002*F\n\013PhotosRange\022\024\n\020PHOTOS_RANGE_ALL\020"
-    "\000\022!\n\035PHOTOS_RANGE_SINCE_CONNECTION\020\0012\271\022\n"
-    "\rCameraService\022R\n\007Prepare\022!.mavsdk.rpc.c"
-    "amera.PrepareRequest\032\".mavsdk.rpc.camera"
-    ".PrepareResponse\"\000\022X\n\tTakePhoto\022#.mavsdk"
-    ".rpc.camera.TakePhotoRequest\032$.mavsdk.rp"
-    "c.camera.TakePhotoResponse\"\000\022s\n\022StartPho"
-    "toInterval\022,.mavsdk.rpc.camera.StartPhot"
-    "oIntervalRequest\032-.mavsdk.rpc.camera.Sta"
-    "rtPhotoIntervalResponse\"\000\022p\n\021StopPhotoIn"
-    "terval\022+.mavsdk.rpc.camera.StopPhotoInte"
-    "rvalRequest\032,.mavsdk.rpc.camera.StopPhot"
-    "oIntervalResponse\"\000\022[\n\nStartVideo\022$.mavs"
-    "dk.rpc.camera.StartVideoRequest\032%.mavsdk"
-    ".rpc.camera.StartVideoResponse\"\000\022X\n\tStop"
-    "Video\022#.mavsdk.rpc.camera.StopVideoReque"
-    "st\032$.mavsdk.rpc.camera.StopVideoResponse"
-    "\"\000\022z\n\023StartVideoStreaming\022-.mavsdk.rpc.c"
-    "amera.StartVideoStreamingRequest\032..mavsd"
-    "k.rpc.camera.StartVideoStreamingResponse"
-    "\"\004\200\265\030\001\022w\n\022StopVideoStreaming\022,.mavsdk.rp"
-    "c.camera.StopVideoStreamingRequest\032-.mav"
-    "sdk.rpc.camera.StopVideoStreamingRespons"
-    "e\"\004\200\265\030\001\022R\n\007SetMode\022!.mavsdk.rpc.camera.S"
-    "etModeRequest\032\".mavsdk.rpc.camera.SetMod"
-    "eResponse\"\000\022[\n\nListPhotos\022$.mavsdk.rpc.c"
-    "amera.ListPhotosRequest\032%.mavsdk.rpc.cam"
-    "era.ListPhotosResponse\"\000\022]\n\rSubscribeMod"
-    "e\022\'.mavsdk.rpc.camera.SubscribeModeReque"
-    "st\032\037.mavsdk.rpc.camera.ModeResponse\"\0000\001\022"
-    "r\n\024SubscribeInformation\022..mavsdk.rpc.cam"
-    "era.SubscribeInformationRequest\032&.mavsdk"
-    ".rpc.camera.InformationResponse\"\0000\001\022~\n\030S"
-    "ubscribeVideoStreamInfo\0222.mavsdk.rpc.cam"
-    "era.SubscribeVideoStreamInfoRequest\032*.ma"
-    "vsdk.rpc.camera.VideoStreamInfoResponse\""
-    "\0000\001\022v\n\024SubscribeCaptureInfo\022..mavsdk.rpc"
-    ".camera.SubscribeCaptureInfoRequest\032&.ma"
-    "vsdk.rpc.camera.CaptureInfoResponse\"\004\200\265\030"
-    "\0000\001\022c\n\017SubscribeStatus\022).mavsdk.rpc.came"
-    "ra.SubscribeStatusRequest\032!.mavsdk.rpc.c"
-    "amera.StatusResponse\"\0000\001\022\202\001\n\030SubscribeCu"
-    "rrentSettings\0222.mavsdk.rpc.camera.Subscr"
-    "ibeCurrentSettingsRequest\032*.mavsdk.rpc.c"
-    "amera.CurrentSettingsResponse\"\004\200\265\030\0000\001\022\223\001"
-    "\n\037SubscribePossibleSettingOptions\0229.mavs"
-    "dk.rpc.camera.SubscribePossibleSettingOp"
-    "tionsRequest\0321.mavsdk.rpc.camera.Possibl"
-    "eSettingOptionsResponse\"\0000\001\022[\n\nSetSettin"
-    "g\022$.mavsdk.rpc.camera.SetSettingRequest\032"
-    "%.mavsdk.rpc.camera.SetSettingResponse\"\000"
-    "\022[\n\nGetSetting\022$.mavsdk.rpc.camera.GetSe"
-    "ttingRequest\032%.mavsdk.rpc.camera.GetSett"
-    "ingResponse\"\000\022d\n\rFormatStorage\022\'.mavsdk."
-    "rpc.camera.FormatStorageRequest\032(.mavsdk"
-    ".rpc.camera.FormatStorageResponse\"\000\022e\n\014S"
-    "electCamera\022&.mavsdk.rpc.camera.SelectCa"
-    "meraRequest\032\'.mavsdk.rpc.camera.SelectCa"
-    "meraResponse\"\004\200\265\030\001\022d\n\rResetSettings\022\'.ma"
-    "vsdk.rpc.camera.ResetSettingsRequest\032(.m"
-    "avsdk.rpc.camera.ResetSettingsResponse\"\000"
-    "B\037\n\020io.mavsdk.cameraB\013CameraProtob\006proto"
-    "3"
+    "ange\030\004 \001(\010\"\220\007\n\013Information\022\023\n\013vendor_nam"
+    "e\030\001 \001(\t\022\022\n\nmodel_name\030\002 \001(\t\022\030\n\020firmware_"
+    "version\030\003 \001(\t\022\027\n\017focal_length_mm\030\004 \001(\002\022!"
+    "\n\031horizontal_sensor_size_mm\030\005 \001(\002\022\037\n\027ver"
+    "tical_sensor_size_mm\030\006 \001(\002\022 \n\030horizontal"
+    "_resolution_px\030\007 \001(\r\022\036\n\026vertical_resolut"
+    "ion_px\030\010 \001(\r\022\017\n\007lens_id\030\t \001(\r\022\037\n\027definit"
+    "ion_file_version\030\n \001(\r\022\033\n\023definition_fil"
+    "e_uri\030\013 \001(\t\022G\n\020camera_cap_flags\030\014 \003(\0162-."
+    "mavsdk.rpc.camera.Information.CameraCapF"
+    "lags\"\206\004\n\016CameraCapFlags\022\"\n\036CAMERA_CAP_FL"
+    "AGS_CAPTURE_VIDEO\020\000\022\"\n\036CAMERA_CAP_FLAGS_"
+    "CAPTURE_IMAGE\020\001\022\036\n\032CAMERA_CAP_FLAGS_HAS_"
+    "MODES\020\002\0224\n0CAMERA_CAP_FLAGS_CAN_CAPTURE_"
+    "IMAGE_IN_VIDEO_MODE\020\003\0224\n0CAMERA_CAP_FLAG"
+    "S_CAN_CAPTURE_VIDEO_IN_IMAGE_MODE\020\004\022*\n&C"
+    "AMERA_CAP_FLAGS_HAS_IMAGE_SURVEY_MODE\020\005\022"
+    "#\n\037CAMERA_CAP_FLAGS_HAS_BASIC_ZOOM\020\006\022$\n "
+    "CAMERA_CAP_FLAGS_HAS_BASIC_FOCUS\020\007\022%\n!CA"
+    "MERA_CAP_FLAGS_HAS_VIDEO_STREAM\020\010\022\'\n#CAM"
+    "ERA_CAP_FLAGS_HAS_TRACKING_POINT\020\t\022+\n\'CA"
+    "MERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE\020\n\022"
+    ",\n(CAMERA_CAP_FLAGS_HAS_TRACKING_GEO_STA"
+    "TUS\020\013*8\n\004Mode\022\020\n\014MODE_UNKNOWN\020\000\022\016\n\nMODE_"
+    "PHOTO\020\001\022\016\n\nMODE_VIDEO\020\002*F\n\013PhotosRange\022\024"
+    "\n\020PHOTOS_RANGE_ALL\020\000\022!\n\035PHOTOS_RANGE_SIN"
+    "CE_CONNECTION\020\0012\271\022\n\rCameraService\022R\n\007Pre"
+    "pare\022!.mavsdk.rpc.camera.PrepareRequest\032"
+    "\".mavsdk.rpc.camera.PrepareResponse\"\000\022X\n"
+    "\tTakePhoto\022#.mavsdk.rpc.camera.TakePhoto"
+    "Request\032$.mavsdk.rpc.camera.TakePhotoRes"
+    "ponse\"\000\022s\n\022StartPhotoInterval\022,.mavsdk.r"
+    "pc.camera.StartPhotoIntervalRequest\032-.ma"
+    "vsdk.rpc.camera.StartPhotoIntervalRespon"
+    "se\"\000\022p\n\021StopPhotoInterval\022+.mavsdk.rpc.c"
+    "amera.StopPhotoIntervalRequest\032,.mavsdk."
+    "rpc.camera.StopPhotoIntervalResponse\"\000\022["
+    "\n\nStartVideo\022$.mavsdk.rpc.camera.StartVi"
+    "deoRequest\032%.mavsdk.rpc.camera.StartVide"
+    "oResponse\"\000\022X\n\tStopVideo\022#.mavsdk.rpc.ca"
+    "mera.StopVideoRequest\032$.mavsdk.rpc.camer"
+    "a.StopVideoResponse\"\000\022z\n\023StartVideoStrea"
+    "ming\022-.mavsdk.rpc.camera.StartVideoStrea"
+    "mingRequest\032..mavsdk.rpc.camera.StartVid"
+    "eoStreamingResponse\"\004\200\265\030\001\022w\n\022StopVideoSt"
+    "reaming\022,.mavsdk.rpc.camera.StopVideoStr"
+    "eamingRequest\032-.mavsdk.rpc.camera.StopVi"
+    "deoStreamingResponse\"\004\200\265\030\001\022R\n\007SetMode\022!."
+    "mavsdk.rpc.camera.SetModeRequest\032\".mavsd"
+    "k.rpc.camera.SetModeResponse\"\000\022[\n\nListPh"
+    "otos\022$.mavsdk.rpc.camera.ListPhotosReque"
+    "st\032%.mavsdk.rpc.camera.ListPhotosRespons"
+    "e\"\000\022]\n\rSubscribeMode\022\'.mavsdk.rpc.camera"
+    ".SubscribeModeRequest\032\037.mavsdk.rpc.camer"
+    "a.ModeResponse\"\0000\001\022r\n\024SubscribeInformati"
+    "on\022..mavsdk.rpc.camera.SubscribeInformat"
+    "ionRequest\032&.mavsdk.rpc.camera.Informati"
+    "onResponse\"\0000\001\022~\n\030SubscribeVideoStreamIn"
+    "fo\0222.mavsdk.rpc.camera.SubscribeVideoStr"
+    "eamInfoRequest\032*.mavsdk.rpc.camera.Video"
+    "StreamInfoResponse\"\0000\001\022v\n\024SubscribeCaptu"
+    "reInfo\022..mavsdk.rpc.camera.SubscribeCapt"
+    "ureInfoRequest\032&.mavsdk.rpc.camera.Captu"
+    "reInfoResponse\"\004\200\265\030\0000\001\022c\n\017SubscribeStatu"
+    "s\022).mavsdk.rpc.camera.SubscribeStatusReq"
+    "uest\032!.mavsdk.rpc.camera.StatusResponse\""
+    "\0000\001\022\202\001\n\030SubscribeCurrentSettings\0222.mavsd"
+    "k.rpc.camera.SubscribeCurrentSettingsReq"
+    "uest\032*.mavsdk.rpc.camera.CurrentSettings"
+    "Response\"\004\200\265\030\0000\001\022\223\001\n\037SubscribePossibleSe"
+    "ttingOptions\0229.mavsdk.rpc.camera.Subscri"
+    "bePossibleSettingOptionsRequest\0321.mavsdk"
+    ".rpc.camera.PossibleSettingOptionsRespon"
+    "se\"\0000\001\022[\n\nSetSetting\022$.mavsdk.rpc.camera"
+    ".SetSettingRequest\032%.mavsdk.rpc.camera.S"
+    "etSettingResponse\"\000\022[\n\nGetSetting\022$.mavs"
+    "dk.rpc.camera.GetSettingRequest\032%.mavsdk"
+    ".rpc.camera.GetSettingResponse\"\000\022d\n\rForm"
+    "atStorage\022\'.mavsdk.rpc.camera.FormatStor"
+    "ageRequest\032(.mavsdk.rpc.camera.FormatSto"
+    "rageResponse\"\000\022e\n\014SelectCamera\022&.mavsdk."
+    "rpc.camera.SelectCameraRequest\032\'.mavsdk."
+    "rpc.camera.SelectCameraResponse\"\004\200\265\030\001\022d\n"
+    "\rResetSettings\022\'.mavsdk.rpc.camera.Reset"
+    "SettingsRequest\032(.mavsdk.rpc.camera.Rese"
+    "tSettingsResponse\"\000B\037\n\020io.mavsdk.cameraB"
+    "\013CameraProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_camera_2fcamera_2eproto_deps[1] =
     {
@@ -1983,7 +2015,7 @@ static ::absl::once_flag descriptor_table_camera_2fcamera_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_camera_2fcamera_2eproto = {
     false,
     false,
-    7961,
+    8660,
     descriptor_table_protodef_camera_2fcamera_2eproto,
     "camera/camera.proto",
     &descriptor_table_camera_2fcamera_2eproto_once,
@@ -2133,9 +2165,39 @@ constexpr int Status::StorageType_ARRAYSIZE;
 
 #endif  // (__cplusplus < 201703) &&
         // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
-const ::google::protobuf::EnumDescriptor* Mode_descriptor() {
+const ::google::protobuf::EnumDescriptor* Information_CameraCapFlags_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_camera_2fcamera_2eproto);
   return file_level_enum_descriptors_camera_2fcamera_2eproto[5];
+}
+PROTOBUF_CONSTINIT const uint32_t Information_CameraCapFlags_internal_data_[] = {
+    786432u, 0u, };
+bool Information_CameraCapFlags_IsValid(int value) {
+  return 0 <= value && value <= 11;
+}
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+
+constexpr Information_CameraCapFlags Information::CAMERA_CAP_FLAGS_CAPTURE_VIDEO;
+constexpr Information_CameraCapFlags Information::CAMERA_CAP_FLAGS_CAPTURE_IMAGE;
+constexpr Information_CameraCapFlags Information::CAMERA_CAP_FLAGS_HAS_MODES;
+constexpr Information_CameraCapFlags Information::CAMERA_CAP_FLAGS_CAN_CAPTURE_IMAGE_IN_VIDEO_MODE;
+constexpr Information_CameraCapFlags Information::CAMERA_CAP_FLAGS_CAN_CAPTURE_VIDEO_IN_IMAGE_MODE;
+constexpr Information_CameraCapFlags Information::CAMERA_CAP_FLAGS_HAS_IMAGE_SURVEY_MODE;
+constexpr Information_CameraCapFlags Information::CAMERA_CAP_FLAGS_HAS_BASIC_ZOOM;
+constexpr Information_CameraCapFlags Information::CAMERA_CAP_FLAGS_HAS_BASIC_FOCUS;
+constexpr Information_CameraCapFlags Information::CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM;
+constexpr Information_CameraCapFlags Information::CAMERA_CAP_FLAGS_HAS_TRACKING_POINT;
+constexpr Information_CameraCapFlags Information::CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE;
+constexpr Information_CameraCapFlags Information::CAMERA_CAP_FLAGS_HAS_TRACKING_GEO_STATUS;
+constexpr Information_CameraCapFlags Information::CameraCapFlags_MIN;
+constexpr Information_CameraCapFlags Information::CameraCapFlags_MAX;
+constexpr int Information::CameraCapFlags_ARRAYSIZE;
+
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+const ::google::protobuf::EnumDescriptor* Mode_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_camera_2fcamera_2eproto);
+  return file_level_enum_descriptors_camera_2fcamera_2eproto[6];
 }
 PROTOBUF_CONSTINIT const uint32_t Mode_internal_data_[] = {
     196608u, 0u, };
@@ -2144,7 +2206,7 @@ bool Mode_IsValid(int value) {
 }
 const ::google::protobuf::EnumDescriptor* PhotosRange_descriptor() {
   ::google::protobuf::internal::AssignDescriptors(&descriptor_table_camera_2fcamera_2eproto);
-  return file_level_enum_descriptors_camera_2fcamera_2eproto[6];
+  return file_level_enum_descriptors_camera_2fcamera_2eproto[7];
 }
 PROTOBUF_CONSTINIT const uint32_t PhotosRange_internal_data_[] = {
     131072u, 0u, };
@@ -12197,8 +12259,12 @@ Information::Information(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE Information::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from)
-      : vendor_name_(arena, from.vendor_name_),
+      : camera_cap_flags_{visibility, arena, from.camera_cap_flags_},
+        _camera_cap_flags_cached_byte_size_{0},
+        vendor_name_(arena, from.vendor_name_),
         model_name_(arena, from.model_name_),
+        firmware_version_(arena, from.firmware_version_),
+        definition_file_uri_(arena, from.definition_file_uri_),
         _cached_size_{0} {}
 
 Information::Information(
@@ -12214,17 +12280,21 @@ Information::Information(
                offsetof(Impl_, focal_length_mm_),
            reinterpret_cast<const char *>(&from._impl_) +
                offsetof(Impl_, focal_length_mm_),
-           offsetof(Impl_, vertical_resolution_px_) -
+           offsetof(Impl_, definition_file_version_) -
                offsetof(Impl_, focal_length_mm_) +
-               sizeof(Impl_::vertical_resolution_px_));
+               sizeof(Impl_::definition_file_version_));
 
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera.Information)
 }
 inline PROTOBUF_NDEBUG_INLINE Information::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : vendor_name_(arena),
+      : camera_cap_flags_{visibility, arena},
+        _camera_cap_flags_cached_byte_size_{0},
+        vendor_name_(arena),
         model_name_(arena),
+        firmware_version_(arena),
+        definition_file_uri_(arena),
         _cached_size_{0} {}
 
 inline void Information::SharedCtor(::_pb::Arena* arena) {
@@ -12232,9 +12302,9 @@ inline void Information::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, focal_length_mm_),
            0,
-           offsetof(Impl_, vertical_resolution_px_) -
+           offsetof(Impl_, definition_file_version_) -
                offsetof(Impl_, focal_length_mm_) +
-               sizeof(Impl_::vertical_resolution_px_));
+               sizeof(Impl_::definition_file_version_));
 }
 Information::~Information() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.camera.Information)
@@ -12245,6 +12315,8 @@ inline void Information::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
   _impl_.vendor_name_.Destroy();
   _impl_.model_name_.Destroy();
+  _impl_.firmware_version_.Destroy();
+  _impl_.definition_file_uri_.Destroy();
   _impl_.~Impl_();
 }
 
@@ -12255,11 +12327,14 @@ PROTOBUF_NOINLINE void Information::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  _impl_.camera_cap_flags_.Clear();
   _impl_.vendor_name_.ClearToEmpty();
   _impl_.model_name_.ClearToEmpty();
+  _impl_.firmware_version_.ClearToEmpty();
+  _impl_.definition_file_uri_.ClearToEmpty();
   ::memset(&_impl_.focal_length_mm_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.vertical_resolution_px_) -
-      reinterpret_cast<char*>(&_impl_.focal_length_mm_)) + sizeof(_impl_.vertical_resolution_px_));
+      reinterpret_cast<char*>(&_impl_.definition_file_version_) -
+      reinterpret_cast<char*>(&_impl_.focal_length_mm_)) + sizeof(_impl_.definition_file_version_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -12271,15 +12346,15 @@ const char* Information::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<3, 7, 0, 59, 2> Information::_table_ = {
+const ::_pbi::TcParseTable<4, 12, 0, 102, 2> Information::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    7, 56,  // max_field_number, fast_idx_mask
+    12, 120,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967168,  // skipmap
+    4294963200,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    7,  // num_field_entries
+    12,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     &_Information_default_instance_._instance,
@@ -12292,21 +12367,39 @@ const ::_pbi::TcParseTable<3, 7, 0, 59, 2> Information::_table_ = {
     // string model_name = 2;
     {::_pbi::TcParser::FastUS1,
      {18, 63, 0, PROTOBUF_FIELD_OFFSET(Information, _impl_.model_name_)}},
-    // float focal_length_mm = 3;
+    // string firmware_version = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(Information, _impl_.firmware_version_)}},
+    // float focal_length_mm = 4;
     {::_pbi::TcParser::FastF32S1,
-     {29, 63, 0, PROTOBUF_FIELD_OFFSET(Information, _impl_.focal_length_mm_)}},
-    // float horizontal_sensor_size_mm = 4;
+     {37, 63, 0, PROTOBUF_FIELD_OFFSET(Information, _impl_.focal_length_mm_)}},
+    // float horizontal_sensor_size_mm = 5;
     {::_pbi::TcParser::FastF32S1,
-     {37, 63, 0, PROTOBUF_FIELD_OFFSET(Information, _impl_.horizontal_sensor_size_mm_)}},
-    // float vertical_sensor_size_mm = 5;
+     {45, 63, 0, PROTOBUF_FIELD_OFFSET(Information, _impl_.horizontal_sensor_size_mm_)}},
+    // float vertical_sensor_size_mm = 6;
     {::_pbi::TcParser::FastF32S1,
-     {45, 63, 0, PROTOBUF_FIELD_OFFSET(Information, _impl_.vertical_sensor_size_mm_)}},
-    // uint32 horizontal_resolution_px = 6;
+     {53, 63, 0, PROTOBUF_FIELD_OFFSET(Information, _impl_.vertical_sensor_size_mm_)}},
+    // uint32 horizontal_resolution_px = 7;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Information, _impl_.horizontal_resolution_px_), 63>(),
-     {48, 63, 0, PROTOBUF_FIELD_OFFSET(Information, _impl_.horizontal_resolution_px_)}},
-    // uint32 vertical_resolution_px = 7;
+     {56, 63, 0, PROTOBUF_FIELD_OFFSET(Information, _impl_.horizontal_resolution_px_)}},
+    // uint32 vertical_resolution_px = 8;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Information, _impl_.vertical_resolution_px_), 63>(),
-     {56, 63, 0, PROTOBUF_FIELD_OFFSET(Information, _impl_.vertical_resolution_px_)}},
+     {64, 63, 0, PROTOBUF_FIELD_OFFSET(Information, _impl_.vertical_resolution_px_)}},
+    // uint32 lens_id = 9;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Information, _impl_.lens_id_), 63>(),
+     {72, 63, 0, PROTOBUF_FIELD_OFFSET(Information, _impl_.lens_id_)}},
+    // uint32 definition_file_version = 10;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Information, _impl_.definition_file_version_), 63>(),
+     {80, 63, 0, PROTOBUF_FIELD_OFFSET(Information, _impl_.definition_file_version_)}},
+    // string definition_file_uri = 11;
+    {::_pbi::TcParser::FastUS1,
+     {90, 63, 0, PROTOBUF_FIELD_OFFSET(Information, _impl_.definition_file_uri_)}},
+    // repeated .mavsdk.rpc.camera.Information.CameraCapFlags camera_cap_flags = 12;
+    {::_pbi::TcParser::FastV32P1,
+     {98, 63, 0, PROTOBUF_FIELD_OFFSET(Information, _impl_.camera_cap_flags_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
@@ -12316,28 +12409,45 @@ const ::_pbi::TcParseTable<3, 7, 0, 59, 2> Information::_table_ = {
     // string model_name = 2;
     {PROTOBUF_FIELD_OFFSET(Information, _impl_.model_name_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // float focal_length_mm = 3;
+    // string firmware_version = 3;
+    {PROTOBUF_FIELD_OFFSET(Information, _impl_.firmware_version_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // float focal_length_mm = 4;
     {PROTOBUF_FIELD_OFFSET(Information, _impl_.focal_length_mm_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float horizontal_sensor_size_mm = 4;
+    // float horizontal_sensor_size_mm = 5;
     {PROTOBUF_FIELD_OFFSET(Information, _impl_.horizontal_sensor_size_mm_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float vertical_sensor_size_mm = 5;
+    // float vertical_sensor_size_mm = 6;
     {PROTOBUF_FIELD_OFFSET(Information, _impl_.vertical_sensor_size_mm_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // uint32 horizontal_resolution_px = 6;
+    // uint32 horizontal_resolution_px = 7;
     {PROTOBUF_FIELD_OFFSET(Information, _impl_.horizontal_resolution_px_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
-    // uint32 vertical_resolution_px = 7;
+    // uint32 vertical_resolution_px = 8;
     {PROTOBUF_FIELD_OFFSET(Information, _impl_.vertical_resolution_px_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // uint32 lens_id = 9;
+    {PROTOBUF_FIELD_OFFSET(Information, _impl_.lens_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // uint32 definition_file_version = 10;
+    {PROTOBUF_FIELD_OFFSET(Information, _impl_.definition_file_version_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // string definition_file_uri = 11;
+    {PROTOBUF_FIELD_OFFSET(Information, _impl_.definition_file_uri_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // repeated .mavsdk.rpc.camera.Information.CameraCapFlags camera_cap_flags = 12;
+    {PROTOBUF_FIELD_OFFSET(Information, _impl_.camera_cap_flags_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kPackedOpenEnum)},
   }},
   // no aux_entries
   {{
-    "\35\13\12\0\0\0\0\0"
+    "\35\13\12\20\0\0\0\0\0\0\0\23\0\0\0\0"
     "mavsdk.rpc.camera.Information"
     "vendor_name"
     "model_name"
+    "firmware_version"
+    "definition_file_uri"
   }},
 };
 
@@ -12364,7 +12474,15 @@ const ::_pbi::TcParseTable<3, 7, 0, 59, 2> Information::_table_ = {
     target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
-  // float focal_length_mm = 3;
+  // string firmware_version = 3;
+  if (!this->_internal_firmware_version().empty()) {
+    const std::string& _s = this->_internal_firmware_version();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.camera.Information.firmware_version");
+    target = stream->WriteStringMaybeAliased(3, _s, target);
+  }
+
+  // float focal_length_mm = 4;
   static_assert(sizeof(::uint32_t) == sizeof(float),
                 "Code assumes ::uint32_t and float are the same size.");
   float tmp_focal_length_mm = this->_internal_focal_length_mm();
@@ -12373,10 +12491,10 @@ const ::_pbi::TcParseTable<3, 7, 0, 59, 2> Information::_table_ = {
   if (raw_focal_length_mm != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        3, this->_internal_focal_length_mm(), target);
+        4, this->_internal_focal_length_mm(), target);
   }
 
-  // float horizontal_sensor_size_mm = 4;
+  // float horizontal_sensor_size_mm = 5;
   static_assert(sizeof(::uint32_t) == sizeof(float),
                 "Code assumes ::uint32_t and float are the same size.");
   float tmp_horizontal_sensor_size_mm = this->_internal_horizontal_sensor_size_mm();
@@ -12385,10 +12503,10 @@ const ::_pbi::TcParseTable<3, 7, 0, 59, 2> Information::_table_ = {
   if (raw_horizontal_sensor_size_mm != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        4, this->_internal_horizontal_sensor_size_mm(), target);
+        5, this->_internal_horizontal_sensor_size_mm(), target);
   }
 
-  // float vertical_sensor_size_mm = 5;
+  // float vertical_sensor_size_mm = 6;
   static_assert(sizeof(::uint32_t) == sizeof(float),
                 "Code assumes ::uint32_t and float are the same size.");
   float tmp_vertical_sensor_size_mm = this->_internal_vertical_sensor_size_mm();
@@ -12397,21 +12515,52 @@ const ::_pbi::TcParseTable<3, 7, 0, 59, 2> Information::_table_ = {
   if (raw_vertical_sensor_size_mm != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        5, this->_internal_vertical_sensor_size_mm(), target);
+        6, this->_internal_vertical_sensor_size_mm(), target);
   }
 
-  // uint32 horizontal_resolution_px = 6;
+  // uint32 horizontal_resolution_px = 7;
   if (this->_internal_horizontal_resolution_px() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
-        6, this->_internal_horizontal_resolution_px(), target);
+        7, this->_internal_horizontal_resolution_px(), target);
   }
 
-  // uint32 vertical_resolution_px = 7;
+  // uint32 vertical_resolution_px = 8;
   if (this->_internal_vertical_resolution_px() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
-        7, this->_internal_vertical_resolution_px(), target);
+        8, this->_internal_vertical_resolution_px(), target);
+  }
+
+  // uint32 lens_id = 9;
+  if (this->_internal_lens_id() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        9, this->_internal_lens_id(), target);
+  }
+
+  // uint32 definition_file_version = 10;
+  if (this->_internal_definition_file_version() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        10, this->_internal_definition_file_version(), target);
+  }
+
+  // string definition_file_uri = 11;
+  if (!this->_internal_definition_file_uri().empty()) {
+    const std::string& _s = this->_internal_definition_file_uri();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.camera.Information.definition_file_uri");
+    target = stream->WriteStringMaybeAliased(11, _s, target);
+  }
+
+  // repeated .mavsdk.rpc.camera.Information.CameraCapFlags camera_cap_flags = 12;
+  {
+    std::size_t byte_size = _impl_._camera_cap_flags_cached_byte_size_.Get();
+    if (byte_size > 0) {
+      target = stream->WriteEnumPacked(12, _internal_camera_cap_flags(),
+                                       byte_size, target);
+    }
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -12431,6 +12580,23 @@ const ::_pbi::TcParseTable<3, 7, 0, 59, 2> Information::_table_ = {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  // repeated .mavsdk.rpc.camera.Information.CameraCapFlags camera_cap_flags = 12;
+  {
+    std::size_t data_size = 0;
+    auto count = static_cast<std::size_t>(this->_internal_camera_cap_flags_size());
+
+    for (std::size_t i = 0; i < count; ++i) {
+      data_size += ::_pbi::WireFormatLite::EnumSize(
+          this->_internal_camera_cap_flags().Get(static_cast<int>(i)));
+    }
+    total_size += data_size;
+    if (data_size > 0) {
+      total_size += 1;
+      total_size += ::_pbi::WireFormatLite::Int32Size(
+          static_cast<int32_t>(data_size));
+    }
+    _impl_._camera_cap_flags_cached_byte_size_.Set(::_pbi::ToCachedSize(data_size));
+  }
   // string vendor_name = 1;
   if (!this->_internal_vendor_name().empty()) {
     total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -12443,7 +12609,19 @@ const ::_pbi::TcParseTable<3, 7, 0, 59, 2> Information::_table_ = {
                                     this->_internal_model_name());
   }
 
-  // float focal_length_mm = 3;
+  // string firmware_version = 3;
+  if (!this->_internal_firmware_version().empty()) {
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_firmware_version());
+  }
+
+  // string definition_file_uri = 11;
+  if (!this->_internal_definition_file_uri().empty()) {
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_definition_file_uri());
+  }
+
+  // float focal_length_mm = 4;
   static_assert(sizeof(::uint32_t) == sizeof(float),
                 "Code assumes ::uint32_t and float are the same size.");
   float tmp_focal_length_mm = this->_internal_focal_length_mm();
@@ -12453,7 +12631,7 @@ const ::_pbi::TcParseTable<3, 7, 0, 59, 2> Information::_table_ = {
     total_size += 5;
   }
 
-  // float horizontal_sensor_size_mm = 4;
+  // float horizontal_sensor_size_mm = 5;
   static_assert(sizeof(::uint32_t) == sizeof(float),
                 "Code assumes ::uint32_t and float are the same size.");
   float tmp_horizontal_sensor_size_mm = this->_internal_horizontal_sensor_size_mm();
@@ -12463,7 +12641,7 @@ const ::_pbi::TcParseTable<3, 7, 0, 59, 2> Information::_table_ = {
     total_size += 5;
   }
 
-  // float vertical_sensor_size_mm = 5;
+  // float vertical_sensor_size_mm = 6;
   static_assert(sizeof(::uint32_t) == sizeof(float),
                 "Code assumes ::uint32_t and float are the same size.");
   float tmp_vertical_sensor_size_mm = this->_internal_vertical_sensor_size_mm();
@@ -12473,16 +12651,28 @@ const ::_pbi::TcParseTable<3, 7, 0, 59, 2> Information::_table_ = {
     total_size += 5;
   }
 
-  // uint32 horizontal_resolution_px = 6;
+  // uint32 horizontal_resolution_px = 7;
   if (this->_internal_horizontal_resolution_px() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
         this->_internal_horizontal_resolution_px());
   }
 
-  // uint32 vertical_resolution_px = 7;
+  // uint32 vertical_resolution_px = 8;
   if (this->_internal_vertical_resolution_px() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
         this->_internal_vertical_resolution_px());
+  }
+
+  // uint32 lens_id = 9;
+  if (this->_internal_lens_id() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_lens_id());
+  }
+
+  // uint32 definition_file_version = 10;
+  if (this->_internal_definition_file_version() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_definition_file_version());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -12504,11 +12694,18 @@ void Information::MergeImpl(::google::protobuf::Message& to_msg, const ::google:
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  _this->_internal_mutable_camera_cap_flags()->MergeFrom(from._internal_camera_cap_flags());
   if (!from._internal_vendor_name().empty()) {
     _this->_internal_set_vendor_name(from._internal_vendor_name());
   }
   if (!from._internal_model_name().empty()) {
     _this->_internal_set_model_name(from._internal_model_name());
+  }
+  if (!from._internal_firmware_version().empty()) {
+    _this->_internal_set_firmware_version(from._internal_firmware_version());
+  }
+  if (!from._internal_definition_file_uri().empty()) {
+    _this->_internal_set_definition_file_uri(from._internal_definition_file_uri());
   }
   static_assert(sizeof(::uint32_t) == sizeof(float),
                 "Code assumes ::uint32_t and float are the same size.");
@@ -12540,6 +12737,12 @@ void Information::MergeImpl(::google::protobuf::Message& to_msg, const ::google:
   if (from._internal_vertical_resolution_px() != 0) {
     _this->_internal_set_vertical_resolution_px(from._internal_vertical_resolution_px());
   }
+  if (from._internal_lens_id() != 0) {
+    _this->_internal_set_lens_id(from._internal_lens_id());
+  }
+  if (from._internal_definition_file_version() != 0) {
+    _this->_internal_set_definition_file_version(from._internal_definition_file_version());
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -12562,11 +12765,14 @@ void Information::InternalSwap(Information* PROTOBUF_RESTRICT other) {
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.camera_cap_flags_.InternalSwap(&other->_impl_.camera_cap_flags_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.vendor_name_, &other->_impl_.vendor_name_, arena);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.model_name_, &other->_impl_.model_name_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.firmware_version_, &other->_impl_.firmware_version_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.definition_file_uri_, &other->_impl_.definition_file_uri_, arena);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Information, _impl_.vertical_resolution_px_)
-      + sizeof(Information::_impl_.vertical_resolution_px_)
+      PROTOBUF_FIELD_OFFSET(Information, _impl_.definition_file_version_)
+      + sizeof(Information::_impl_.definition_file_version_)
       - PROTOBUF_FIELD_OFFSET(Information, _impl_.focal_length_mm_)>(
           reinterpret_cast<char*>(&_impl_.focal_length_mm_),
           reinterpret_cast<char*>(&other->_impl_.focal_length_mm_));

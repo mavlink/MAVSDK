@@ -579,9 +579,42 @@ std::ostream& operator<<(std::ostream& str, Camera::SettingOptions const& settin
     return str;
 }
 
+std::ostream&
+operator<<(std::ostream& str, Camera::Information::CameraCapFlags const& camera_cap_flags)
+{
+    switch (camera_cap_flags) {
+        case Camera::Information::CameraCapFlags::CaptureVideo:
+            return str << "Capture Video";
+        case Camera::Information::CameraCapFlags::CaptureImage:
+            return str << "Capture Image";
+        case Camera::Information::CameraCapFlags::HasModes:
+            return str << "Has Modes";
+        case Camera::Information::CameraCapFlags::CanCaptureImageInVideoMode:
+            return str << "Can Capture Image In Video Mode";
+        case Camera::Information::CameraCapFlags::CanCaptureVideoInImageMode:
+            return str << "Can Capture Video In Image Mode";
+        case Camera::Information::CameraCapFlags::HasImageSurveyMode:
+            return str << "Has Image Survey Mode";
+        case Camera::Information::CameraCapFlags::HasBasicZoom:
+            return str << "Has Basic Zoom";
+        case Camera::Information::CameraCapFlags::HasBasicFocus:
+            return str << "Has Basic Focus";
+        case Camera::Information::CameraCapFlags::HasVideoStream:
+            return str << "Has Video Stream";
+        case Camera::Information::CameraCapFlags::HasTrackingPoint:
+            return str << "Has Tracking Point";
+        case Camera::Information::CameraCapFlags::HasTrackingRectangle:
+            return str << "Has Tracking Rectangle";
+        case Camera::Information::CameraCapFlags::HasTrackingGeoStatus:
+            return str << "Has Tracking Geo Status";
+        default:
+            return str << "Unknown";
+    }
+}
 bool operator==(const Camera::Information& lhs, const Camera::Information& rhs)
 {
     return (rhs.vendor_name == lhs.vendor_name) && (rhs.model_name == lhs.model_name) &&
+           (rhs.firmware_version == lhs.firmware_version) &&
            ((std::isnan(rhs.focal_length_mm) && std::isnan(lhs.focal_length_mm)) ||
             rhs.focal_length_mm == lhs.focal_length_mm) &&
            ((std::isnan(rhs.horizontal_sensor_size_mm) &&
@@ -590,7 +623,11 @@ bool operator==(const Camera::Information& lhs, const Camera::Information& rhs)
            ((std::isnan(rhs.vertical_sensor_size_mm) && std::isnan(lhs.vertical_sensor_size_mm)) ||
             rhs.vertical_sensor_size_mm == lhs.vertical_sensor_size_mm) &&
            (rhs.horizontal_resolution_px == lhs.horizontal_resolution_px) &&
-           (rhs.vertical_resolution_px == lhs.vertical_resolution_px);
+           (rhs.vertical_resolution_px == lhs.vertical_resolution_px) &&
+           (rhs.lens_id == lhs.lens_id) &&
+           (rhs.definition_file_version == lhs.definition_file_version) &&
+           (rhs.definition_file_uri == lhs.definition_file_uri) &&
+           (rhs.camera_cap_flags == lhs.camera_cap_flags);
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::Information const& information)
@@ -599,11 +636,21 @@ std::ostream& operator<<(std::ostream& str, Camera::Information const& informati
     str << "information:" << '\n' << "{\n";
     str << "    vendor_name: " << information.vendor_name << '\n';
     str << "    model_name: " << information.model_name << '\n';
+    str << "    firmware_version: " << information.firmware_version << '\n';
     str << "    focal_length_mm: " << information.focal_length_mm << '\n';
     str << "    horizontal_sensor_size_mm: " << information.horizontal_sensor_size_mm << '\n';
     str << "    vertical_sensor_size_mm: " << information.vertical_sensor_size_mm << '\n';
     str << "    horizontal_resolution_px: " << information.horizontal_resolution_px << '\n';
     str << "    vertical_resolution_px: " << information.vertical_resolution_px << '\n';
+    str << "    lens_id: " << information.lens_id << '\n';
+    str << "    definition_file_version: " << information.definition_file_version << '\n';
+    str << "    definition_file_uri: " << information.definition_file_uri << '\n';
+    str << "    camera_cap_flags: [";
+    for (auto it = information.camera_cap_flags.begin(); it != information.camera_cap_flags.end();
+         ++it) {
+        str << *it;
+        str << (it + 1 != information.camera_cap_flags.end() ? ", " : "]\n");
+    }
     str << '}';
     return str;
 }

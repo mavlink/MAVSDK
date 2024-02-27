@@ -207,6 +207,38 @@ CameraServer::respond_reset_settings(CameraFeedback reset_settings_feedback) con
     return _impl->respond_reset_settings(reset_settings_feedback);
 }
 
+std::ostream&
+operator<<(std::ostream& str, CameraServer::Information::CameraCapFlags const& camera_cap_flags)
+{
+    switch (camera_cap_flags) {
+        case CameraServer::Information::CameraCapFlags::CaptureVideo:
+            return str << "Capture Video";
+        case CameraServer::Information::CameraCapFlags::CaptureImage:
+            return str << "Capture Image";
+        case CameraServer::Information::CameraCapFlags::HasModes:
+            return str << "Has Modes";
+        case CameraServer::Information::CameraCapFlags::CanCaptureImageInVideoMode:
+            return str << "Can Capture Image In Video Mode";
+        case CameraServer::Information::CameraCapFlags::CanCaptureVideoInImageMode:
+            return str << "Can Capture Video In Image Mode";
+        case CameraServer::Information::CameraCapFlags::HasImageSurveyMode:
+            return str << "Has Image Survey Mode";
+        case CameraServer::Information::CameraCapFlags::HasBasicZoom:
+            return str << "Has Basic Zoom";
+        case CameraServer::Information::CameraCapFlags::HasBasicFocus:
+            return str << "Has Basic Focus";
+        case CameraServer::Information::CameraCapFlags::HasVideoStream:
+            return str << "Has Video Stream";
+        case CameraServer::Information::CameraCapFlags::HasTrackingPoint:
+            return str << "Has Tracking Point";
+        case CameraServer::Information::CameraCapFlags::HasTrackingRectangle:
+            return str << "Has Tracking Rectangle";
+        case CameraServer::Information::CameraCapFlags::HasTrackingGeoStatus:
+            return str << "Has Tracking Geo Status";
+        default:
+            return str << "Unknown";
+    }
+}
 bool operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs)
 {
     return (rhs.vendor_name == lhs.vendor_name) && (rhs.model_name == lhs.model_name) &&
@@ -222,7 +254,8 @@ bool operator==(const CameraServer::Information& lhs, const CameraServer::Inform
            (rhs.vertical_resolution_px == lhs.vertical_resolution_px) &&
            (rhs.lens_id == lhs.lens_id) &&
            (rhs.definition_file_version == lhs.definition_file_version) &&
-           (rhs.definition_file_uri == lhs.definition_file_uri);
+           (rhs.definition_file_uri == lhs.definition_file_uri) &&
+           (rhs.camera_cap_flags == lhs.camera_cap_flags);
 }
 
 std::ostream& operator<<(std::ostream& str, CameraServer::Information const& information)
@@ -240,6 +273,12 @@ std::ostream& operator<<(std::ostream& str, CameraServer::Information const& inf
     str << "    lens_id: " << information.lens_id << '\n';
     str << "    definition_file_version: " << information.definition_file_version << '\n';
     str << "    definition_file_uri: " << information.definition_file_uri << '\n';
+    str << "    camera_cap_flags: [";
+    for (auto it = information.camera_cap_flags.begin(); it != information.camera_cap_flags.end();
+         ++it) {
+        str << *it;
+        str << (it + 1 != information.camera_cap_flags.end() ? ", " : "]\n");
+    }
     str << '}';
     return str;
 }

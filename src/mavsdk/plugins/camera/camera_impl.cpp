@@ -1166,11 +1166,69 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
 
     _information.data.vendor_name = (char*)(camera_information.vendor_name);
     _information.data.model_name = (char*)(camera_information.model_name);
+    parse_version_int(_information.data.firmware_version, camera_information.firmware_version);
     _information.data.focal_length_mm = camera_information.focal_length;
     _information.data.horizontal_sensor_size_mm = camera_information.sensor_size_h;
     _information.data.vertical_sensor_size_mm = camera_information.sensor_size_v;
     _information.data.horizontal_resolution_px = camera_information.resolution_h;
     _information.data.vertical_resolution_px = camera_information.resolution_v;
+    _information.data.lens_id = camera_information.lens_id;
+    _information.data.definition_file_version = camera_information.cam_definition_version;
+    _information.data.definition_file_uri = camera_information.cam_definition_uri;
+
+    // TODO : may need optimize code
+    if ((camera_information.flags & CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAPTURE_VIDEO) != 0) {
+        _information.data.camera_cap_flags.push_back(
+            Camera::Information::CameraCapFlags::CaptureVideo);
+    }
+    if ((camera_information.flags & CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAPTURE_IMAGE) != 0) {
+        _information.data.camera_cap_flags.push_back(
+            Camera::Information::CameraCapFlags::CaptureImage);
+    }
+    if ((camera_information.flags & CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_MODES) != 0) {
+        _information.data.camera_cap_flags.push_back(Camera::Information::CameraCapFlags::HasModes);
+    }
+    if ((camera_information.flags &
+         CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAN_CAPTURE_IMAGE_IN_VIDEO_MODE) != 0) {
+        _information.data.camera_cap_flags.push_back(
+            Camera::Information::CameraCapFlags::CanCaptureImageInVideoMode);
+    }
+    if ((camera_information.flags &
+         CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAN_CAPTURE_VIDEO_IN_IMAGE_MODE) != 0) {
+        _information.data.camera_cap_flags.push_back(
+            Camera::Information::CameraCapFlags::CanCaptureVideoInImageMode);
+    }
+    if ((camera_information.flags & CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_IMAGE_SURVEY_MODE) !=
+        0) {
+        _information.data.camera_cap_flags.push_back(
+            Camera::Information::CameraCapFlags::HasImageSurveyMode);
+    }
+    if ((camera_information.flags & CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_BASIC_ZOOM) != 0) {
+        _information.data.camera_cap_flags.push_back(
+            Camera::Information::CameraCapFlags::HasBasicZoom);
+    }
+    if ((camera_information.flags & CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_BASIC_FOCUS) != 0) {
+        _information.data.camera_cap_flags.push_back(
+            Camera::Information::CameraCapFlags::HasBasicFocus);
+    }
+    if ((camera_information.flags & CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM) != 0) {
+        _information.data.camera_cap_flags.push_back(
+            Camera::Information::CameraCapFlags::HasVideoStream);
+    }
+    if ((camera_information.flags & CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_TRACKING_POINT) != 0) {
+        _information.data.camera_cap_flags.push_back(
+            Camera::Information::CameraCapFlags::HasTrackingPoint);
+    }
+    if ((camera_information.flags & CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE) !=
+        0) {
+        _information.data.camera_cap_flags.push_back(
+            Camera::Information::CameraCapFlags::HasTrackingRectangle);
+    }
+    if ((camera_information.flags & CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_TRACKING_GEO_STATUS) !=
+        0) {
+        _information.data.camera_cap_flags.push_back(
+            Camera::Information::CameraCapFlags::HasTrackingGeoStatus);
+    }
 
     _information.subscription_callbacks.queue(
         _information.data, [this](const auto& func) { _system_impl->call_user_callback(func); });
@@ -2154,6 +2212,16 @@ void CameraImpl::list_photos_async(
             });
         }
     }).detach();
+}
+
+bool CameraImpl::parse_version_int(std::string& version_str, uint32_t version_int)
+{
+    //(Dev & 0xff) << 24 | (Patch & 0xff) << 16 | (Minor & 0xff) << 8 | (Major & 0xff)
+    std::stringstream ss;
+    ss << (version_int & 0xff) << "." << (version_int >> 8 & 0xff) << "."
+       << (version_int >> 16 & 0xff) << "." << (version_int >> 24 & 0xff);
+    version_str = ss.str();
+    return true;
 }
 
 } // namespace mavsdk

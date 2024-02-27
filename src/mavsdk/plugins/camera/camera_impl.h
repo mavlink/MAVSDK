@@ -207,6 +207,8 @@ private:
 
     void request_missing_capture_info();
 
+    bool parse_version_int(std::string& version_str, uint32_t version_int);
+
     std::unique_ptr<CameraDefinition> _camera_definition{};
     bool _is_fetching_camera_definition{false};
     bool _has_camera_definition_timed_out{false};

@@ -237,6 +237,49 @@ namespace protobuf {
 namespace mavsdk {
 namespace rpc {
 namespace camera_server {
+enum Information_CameraCapFlags : int {
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAPTURE_VIDEO = 0,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAPTURE_IMAGE = 1,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_MODES = 2,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAN_CAPTURE_IMAGE_IN_VIDEO_MODE = 3,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAN_CAPTURE_VIDEO_IN_IMAGE_MODE = 4,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_IMAGE_SURVEY_MODE = 5,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_BASIC_ZOOM = 6,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_BASIC_FOCUS = 7,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM = 8,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_POINT = 9,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE = 10,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_GEO_STATUS = 11,
+  Information_CameraCapFlags_Information_CameraCapFlags_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  Information_CameraCapFlags_Information_CameraCapFlags_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool Information_CameraCapFlags_IsValid(int value);
+extern const uint32_t Information_CameraCapFlags_internal_data_[];
+constexpr Information_CameraCapFlags Information_CameraCapFlags_CameraCapFlags_MIN = static_cast<Information_CameraCapFlags>(0);
+constexpr Information_CameraCapFlags Information_CameraCapFlags_CameraCapFlags_MAX = static_cast<Information_CameraCapFlags>(11);
+constexpr int Information_CameraCapFlags_CameraCapFlags_ARRAYSIZE = 11 + 1;
+const ::google::protobuf::EnumDescriptor*
+Information_CameraCapFlags_descriptor();
+template <typename T>
+const std::string& Information_CameraCapFlags_Name(T value) {
+  static_assert(std::is_same<T, Information_CameraCapFlags>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to CameraCapFlags_Name().");
+  return Information_CameraCapFlags_Name(static_cast<Information_CameraCapFlags>(value));
+}
+template <>
+inline const std::string& Information_CameraCapFlags_Name(Information_CameraCapFlags value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<Information_CameraCapFlags_descriptor,
+                                                 0, 11>(
+      static_cast<int>(value));
+}
+inline bool Information_CameraCapFlags_Parse(absl::string_view name, Information_CameraCapFlags* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<Information_CameraCapFlags>(
+      Information_CameraCapFlags_descriptor(), name, value);
+}
 enum VideoStreamInfo_VideoStreamStatus : int {
   VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING = 0,
   VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_IN_PROGRESS = 1,
@@ -5822,9 +5865,40 @@ class Information final :
 
   // nested types ----------------------------------------------------
 
+  using CameraCapFlags = Information_CameraCapFlags;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_CAPTURE_VIDEO = Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAPTURE_VIDEO;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_CAPTURE_IMAGE = Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAPTURE_IMAGE;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_HAS_MODES = Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_MODES;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_CAN_CAPTURE_IMAGE_IN_VIDEO_MODE = Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAN_CAPTURE_IMAGE_IN_VIDEO_MODE;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_CAN_CAPTURE_VIDEO_IN_IMAGE_MODE = Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAN_CAPTURE_VIDEO_IN_IMAGE_MODE;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_HAS_IMAGE_SURVEY_MODE = Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_IMAGE_SURVEY_MODE;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_HAS_BASIC_ZOOM = Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_BASIC_ZOOM;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_HAS_BASIC_FOCUS = Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_BASIC_FOCUS;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM = Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_HAS_TRACKING_POINT = Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_POINT;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE = Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_HAS_TRACKING_GEO_STATUS = Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_GEO_STATUS;
+  static inline bool CameraCapFlags_IsValid(int value) {
+    return Information_CameraCapFlags_IsValid(value);
+  }
+  static constexpr CameraCapFlags CameraCapFlags_MIN = Information_CameraCapFlags_CameraCapFlags_MIN;
+  static constexpr CameraCapFlags CameraCapFlags_MAX = Information_CameraCapFlags_CameraCapFlags_MAX;
+  static constexpr int CameraCapFlags_ARRAYSIZE = Information_CameraCapFlags_CameraCapFlags_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor* CameraCapFlags_descriptor() {
+    return Information_CameraCapFlags_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& CameraCapFlags_Name(T value) {
+    return Information_CameraCapFlags_Name(value);
+  }
+  static inline bool CameraCapFlags_Parse(absl::string_view name, CameraCapFlags* value) {
+    return Information_CameraCapFlags_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
   enum : int {
+    kCameraCapFlagsFieldNumber = 12,
     kVendorNameFieldNumber = 1,
     kModelNameFieldNumber = 2,
     kFirmwareVersionFieldNumber = 3,
@@ -5837,6 +5911,25 @@ class Information final :
     kLensIdFieldNumber = 9,
     kDefinitionFileVersionFieldNumber = 10,
   };
+  // repeated .mavsdk.rpc.camera_server.Information.CameraCapFlags camera_cap_flags = 12;
+  int camera_cap_flags_size() const;
+  private:
+  int _internal_camera_cap_flags_size() const;
+
+  public:
+  void clear_camera_cap_flags() ;
+  public:
+  ::mavsdk::rpc::camera_server::Information_CameraCapFlags camera_cap_flags(int index) const;
+  void set_camera_cap_flags(int index, ::mavsdk::rpc::camera_server::Information_CameraCapFlags value);
+  void add_camera_cap_flags(::mavsdk::rpc::camera_server::Information_CameraCapFlags value);
+  const ::google::protobuf::RepeatedField<int>& camera_cap_flags() const;
+  ::google::protobuf::RepeatedField<int>* mutable_camera_cap_flags();
+
+  private:
+  const ::google::protobuf::RepeatedField<int>& _internal_camera_cap_flags() const;
+  ::google::protobuf::RepeatedField<int>* _internal_mutable_camera_cap_flags();
+
+  public:
   // string vendor_name = 1;
   void clear_vendor_name() ;
   const std::string& vendor_name() const;
@@ -5977,7 +6070,7 @@ class Information final :
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      4, 11, 0,
+      4, 12, 0,
       109, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -5994,6 +6087,8 @@ class Information final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::RepeatedField<int> camera_cap_flags_;
+    mutable ::google::protobuf::internal::CachedSize _camera_cap_flags_cached_byte_size_;
     ::google::protobuf::internal::ArenaStringPtr vendor_name_;
     ::google::protobuf::internal::ArenaStringPtr model_name_;
     ::google::protobuf::internal::ArenaStringPtr firmware_version_;
@@ -13402,6 +13497,50 @@ inline void Information::set_allocated_definition_file_uri(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.Information.definition_file_uri)
 }
 
+// repeated .mavsdk.rpc.camera_server.Information.CameraCapFlags camera_cap_flags = 12;
+inline int Information::_internal_camera_cap_flags_size() const {
+  return _internal_camera_cap_flags().size();
+}
+inline int Information::camera_cap_flags_size() const {
+  return _internal_camera_cap_flags_size();
+}
+inline void Information::clear_camera_cap_flags() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.camera_cap_flags_.Clear();
+}
+inline ::mavsdk::rpc::camera_server::Information_CameraCapFlags Information::camera_cap_flags(int index) const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.Information.camera_cap_flags)
+  return static_cast<::mavsdk::rpc::camera_server::Information_CameraCapFlags>(_internal_camera_cap_flags().Get(index));
+}
+inline void Information::set_camera_cap_flags(int index, ::mavsdk::rpc::camera_server::Information_CameraCapFlags value) {
+  _internal_mutable_camera_cap_flags()->Set(index, value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.Information.camera_cap_flags)
+}
+inline void Information::add_camera_cap_flags(::mavsdk::rpc::camera_server::Information_CameraCapFlags value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _internal_mutable_camera_cap_flags()->Add(value);
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.camera_server.Information.camera_cap_flags)
+}
+inline const ::google::protobuf::RepeatedField<int>& Information::camera_cap_flags() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.camera_server.Information.camera_cap_flags)
+  return _internal_camera_cap_flags();
+}
+inline ::google::protobuf::RepeatedField<int>* Information::mutable_camera_cap_flags()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.camera_server.Information.camera_cap_flags)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  return _internal_mutable_camera_cap_flags();
+}
+inline const ::google::protobuf::RepeatedField<int>& Information::_internal_camera_cap_flags() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.camera_cap_flags_;
+}
+inline ::google::protobuf::RepeatedField<int>* Information::_internal_mutable_camera_cap_flags() {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return &_impl_.camera_cap_flags_;
+}
+
 // -------------------------------------------------------------------
 
 // VideoStreamSettings
@@ -14699,6 +14838,12 @@ inline void CaptureStatus::_internal_set_image_count(::int32_t value) {
 namespace google {
 namespace protobuf {
 
+template <>
+struct is_proto_enum<::mavsdk::rpc::camera_server::Information_CameraCapFlags> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera_server::Information_CameraCapFlags>() {
+  return ::mavsdk::rpc::camera_server::Information_CameraCapFlags_descriptor();
+}
 template <>
 struct is_proto_enum<::mavsdk::rpc::camera_server::VideoStreamInfo_VideoStreamStatus> : std::true_type {};
 template <>

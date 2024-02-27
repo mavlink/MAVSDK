@@ -414,6 +414,49 @@ inline bool Status_StorageType_Parse(absl::string_view name, Status_StorageType*
   return ::google::protobuf::internal::ParseNamedEnum<Status_StorageType>(
       Status_StorageType_descriptor(), name, value);
 }
+enum Information_CameraCapFlags : int {
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAPTURE_VIDEO = 0,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAPTURE_IMAGE = 1,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_MODES = 2,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAN_CAPTURE_IMAGE_IN_VIDEO_MODE = 3,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAN_CAPTURE_VIDEO_IN_IMAGE_MODE = 4,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_IMAGE_SURVEY_MODE = 5,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_BASIC_ZOOM = 6,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_BASIC_FOCUS = 7,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM = 8,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_POINT = 9,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE = 10,
+  Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_GEO_STATUS = 11,
+  Information_CameraCapFlags_Information_CameraCapFlags_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  Information_CameraCapFlags_Information_CameraCapFlags_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool Information_CameraCapFlags_IsValid(int value);
+extern const uint32_t Information_CameraCapFlags_internal_data_[];
+constexpr Information_CameraCapFlags Information_CameraCapFlags_CameraCapFlags_MIN = static_cast<Information_CameraCapFlags>(0);
+constexpr Information_CameraCapFlags Information_CameraCapFlags_CameraCapFlags_MAX = static_cast<Information_CameraCapFlags>(11);
+constexpr int Information_CameraCapFlags_CameraCapFlags_ARRAYSIZE = 11 + 1;
+const ::google::protobuf::EnumDescriptor*
+Information_CameraCapFlags_descriptor();
+template <typename T>
+const std::string& Information_CameraCapFlags_Name(T value) {
+  static_assert(std::is_same<T, Information_CameraCapFlags>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to CameraCapFlags_Name().");
+  return Information_CameraCapFlags_Name(static_cast<Information_CameraCapFlags>(value));
+}
+template <>
+inline const std::string& Information_CameraCapFlags_Name(Information_CameraCapFlags value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<Information_CameraCapFlags_descriptor,
+                                                 0, 11>(
+      static_cast<int>(value));
+}
+inline bool Information_CameraCapFlags_Parse(absl::string_view name, Information_CameraCapFlags* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<Information_CameraCapFlags>(
+      Information_CameraCapFlags_descriptor(), name, value);
+}
 enum Mode : int {
   MODE_UNKNOWN = 0,
   MODE_PHOTO = 1,
@@ -4818,17 +4861,71 @@ class Information final :
 
   // nested types ----------------------------------------------------
 
+  using CameraCapFlags = Information_CameraCapFlags;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_CAPTURE_VIDEO = Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAPTURE_VIDEO;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_CAPTURE_IMAGE = Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAPTURE_IMAGE;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_HAS_MODES = Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_MODES;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_CAN_CAPTURE_IMAGE_IN_VIDEO_MODE = Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAN_CAPTURE_IMAGE_IN_VIDEO_MODE;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_CAN_CAPTURE_VIDEO_IN_IMAGE_MODE = Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAN_CAPTURE_VIDEO_IN_IMAGE_MODE;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_HAS_IMAGE_SURVEY_MODE = Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_IMAGE_SURVEY_MODE;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_HAS_BASIC_ZOOM = Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_BASIC_ZOOM;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_HAS_BASIC_FOCUS = Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_BASIC_FOCUS;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM = Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_HAS_TRACKING_POINT = Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_POINT;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE = Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE;
+  static constexpr CameraCapFlags CAMERA_CAP_FLAGS_HAS_TRACKING_GEO_STATUS = Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_GEO_STATUS;
+  static inline bool CameraCapFlags_IsValid(int value) {
+    return Information_CameraCapFlags_IsValid(value);
+  }
+  static constexpr CameraCapFlags CameraCapFlags_MIN = Information_CameraCapFlags_CameraCapFlags_MIN;
+  static constexpr CameraCapFlags CameraCapFlags_MAX = Information_CameraCapFlags_CameraCapFlags_MAX;
+  static constexpr int CameraCapFlags_ARRAYSIZE = Information_CameraCapFlags_CameraCapFlags_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor* CameraCapFlags_descriptor() {
+    return Information_CameraCapFlags_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& CameraCapFlags_Name(T value) {
+    return Information_CameraCapFlags_Name(value);
+  }
+  static inline bool CameraCapFlags_Parse(absl::string_view name, CameraCapFlags* value) {
+    return Information_CameraCapFlags_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
   enum : int {
+    kCameraCapFlagsFieldNumber = 12,
     kVendorNameFieldNumber = 1,
     kModelNameFieldNumber = 2,
-    kFocalLengthMmFieldNumber = 3,
-    kHorizontalSensorSizeMmFieldNumber = 4,
-    kVerticalSensorSizeMmFieldNumber = 5,
-    kHorizontalResolutionPxFieldNumber = 6,
-    kVerticalResolutionPxFieldNumber = 7,
+    kFirmwareVersionFieldNumber = 3,
+    kDefinitionFileUriFieldNumber = 11,
+    kFocalLengthMmFieldNumber = 4,
+    kHorizontalSensorSizeMmFieldNumber = 5,
+    kVerticalSensorSizeMmFieldNumber = 6,
+    kHorizontalResolutionPxFieldNumber = 7,
+    kVerticalResolutionPxFieldNumber = 8,
+    kLensIdFieldNumber = 9,
+    kDefinitionFileVersionFieldNumber = 10,
   };
+  // repeated .mavsdk.rpc.camera.Information.CameraCapFlags camera_cap_flags = 12;
+  int camera_cap_flags_size() const;
+  private:
+  int _internal_camera_cap_flags_size() const;
+
+  public:
+  void clear_camera_cap_flags() ;
+  public:
+  ::mavsdk::rpc::camera::Information_CameraCapFlags camera_cap_flags(int index) const;
+  void set_camera_cap_flags(int index, ::mavsdk::rpc::camera::Information_CameraCapFlags value);
+  void add_camera_cap_flags(::mavsdk::rpc::camera::Information_CameraCapFlags value);
+  const ::google::protobuf::RepeatedField<int>& camera_cap_flags() const;
+  ::google::protobuf::RepeatedField<int>* mutable_camera_cap_flags();
+
+  private:
+  const ::google::protobuf::RepeatedField<int>& _internal_camera_cap_flags() const;
+  ::google::protobuf::RepeatedField<int>* _internal_mutable_camera_cap_flags();
+
+  public:
   // string vendor_name = 1;
   void clear_vendor_name() ;
   const std::string& vendor_name() const;
@@ -4861,7 +4958,39 @@ class Information final :
   std::string* _internal_mutable_model_name();
 
   public:
-  // float focal_length_mm = 3;
+  // string firmware_version = 3;
+  void clear_firmware_version() ;
+  const std::string& firmware_version() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_firmware_version(Arg_&& arg, Args_... args);
+  std::string* mutable_firmware_version();
+  PROTOBUF_NODISCARD std::string* release_firmware_version();
+  void set_allocated_firmware_version(std::string* value);
+
+  private:
+  const std::string& _internal_firmware_version() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_firmware_version(
+      const std::string& value);
+  std::string* _internal_mutable_firmware_version();
+
+  public:
+  // string definition_file_uri = 11;
+  void clear_definition_file_uri() ;
+  const std::string& definition_file_uri() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_definition_file_uri(Arg_&& arg, Args_... args);
+  std::string* mutable_definition_file_uri();
+  PROTOBUF_NODISCARD std::string* release_definition_file_uri();
+  void set_allocated_definition_file_uri(std::string* value);
+
+  private:
+  const std::string& _internal_definition_file_uri() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_definition_file_uri(
+      const std::string& value);
+  std::string* _internal_mutable_definition_file_uri();
+
+  public:
+  // float focal_length_mm = 4;
   void clear_focal_length_mm() ;
   float focal_length_mm() const;
   void set_focal_length_mm(float value);
@@ -4871,7 +5000,7 @@ class Information final :
   void _internal_set_focal_length_mm(float value);
 
   public:
-  // float horizontal_sensor_size_mm = 4;
+  // float horizontal_sensor_size_mm = 5;
   void clear_horizontal_sensor_size_mm() ;
   float horizontal_sensor_size_mm() const;
   void set_horizontal_sensor_size_mm(float value);
@@ -4881,7 +5010,7 @@ class Information final :
   void _internal_set_horizontal_sensor_size_mm(float value);
 
   public:
-  // float vertical_sensor_size_mm = 5;
+  // float vertical_sensor_size_mm = 6;
   void clear_vertical_sensor_size_mm() ;
   float vertical_sensor_size_mm() const;
   void set_vertical_sensor_size_mm(float value);
@@ -4891,7 +5020,7 @@ class Information final :
   void _internal_set_vertical_sensor_size_mm(float value);
 
   public:
-  // uint32 horizontal_resolution_px = 6;
+  // uint32 horizontal_resolution_px = 7;
   void clear_horizontal_resolution_px() ;
   ::uint32_t horizontal_resolution_px() const;
   void set_horizontal_resolution_px(::uint32_t value);
@@ -4901,7 +5030,7 @@ class Information final :
   void _internal_set_horizontal_resolution_px(::uint32_t value);
 
   public:
-  // uint32 vertical_resolution_px = 7;
+  // uint32 vertical_resolution_px = 8;
   void clear_vertical_resolution_px() ;
   ::uint32_t vertical_resolution_px() const;
   void set_vertical_resolution_px(::uint32_t value);
@@ -4911,14 +5040,34 @@ class Information final :
   void _internal_set_vertical_resolution_px(::uint32_t value);
 
   public:
+  // uint32 lens_id = 9;
+  void clear_lens_id() ;
+  ::uint32_t lens_id() const;
+  void set_lens_id(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_lens_id() const;
+  void _internal_set_lens_id(::uint32_t value);
+
+  public:
+  // uint32 definition_file_version = 10;
+  void clear_definition_file_version() ;
+  ::uint32_t definition_file_version() const;
+  void set_definition_file_version(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_definition_file_version() const;
+  void _internal_set_definition_file_version(::uint32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.Information)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      3, 7, 0,
-      59, 2>
+      4, 12, 0,
+      102, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
@@ -4934,13 +5083,19 @@ class Information final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::RepeatedField<int> camera_cap_flags_;
+    mutable ::google::protobuf::internal::CachedSize _camera_cap_flags_cached_byte_size_;
     ::google::protobuf::internal::ArenaStringPtr vendor_name_;
     ::google::protobuf::internal::ArenaStringPtr model_name_;
+    ::google::protobuf::internal::ArenaStringPtr firmware_version_;
+    ::google::protobuf::internal::ArenaStringPtr definition_file_uri_;
     float focal_length_mm_;
     float horizontal_sensor_size_mm_;
     float vertical_sensor_size_mm_;
     ::uint32_t horizontal_resolution_px_;
     ::uint32_t vertical_resolution_px_;
+    ::uint32_t lens_id_;
+    ::uint32_t definition_file_version_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -15338,7 +15493,60 @@ inline void Information::set_allocated_model_name(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Information.model_name)
 }
 
-// float focal_length_mm = 3;
+// string firmware_version = 3;
+inline void Information::clear_firmware_version() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.firmware_version_.ClearToEmpty();
+}
+inline const std::string& Information::firmware_version() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Information.firmware_version)
+  return _internal_firmware_version();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void Information::set_firmware_version(Arg_&& arg,
+                                                     Args_... args) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.firmware_version_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Information.firmware_version)
+}
+inline std::string* Information::mutable_firmware_version() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_firmware_version();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.Information.firmware_version)
+  return _s;
+}
+inline const std::string& Information::_internal_firmware_version() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.firmware_version_.Get();
+}
+inline void Information::_internal_set_firmware_version(const std::string& value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.firmware_version_.Set(value, GetArena());
+}
+inline std::string* Information::_internal_mutable_firmware_version() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  return _impl_.firmware_version_.Mutable( GetArena());
+}
+inline std::string* Information::release_firmware_version() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.Information.firmware_version)
+  return _impl_.firmware_version_.Release();
+}
+inline void Information::set_allocated_firmware_version(std::string* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.firmware_version_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.firmware_version_.IsDefault()) {
+          _impl_.firmware_version_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Information.firmware_version)
+}
+
+// float focal_length_mm = 4;
 inline void Information::clear_focal_length_mm() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.focal_length_mm_ = 0;
@@ -15361,7 +15569,7 @@ inline void Information::_internal_set_focal_length_mm(float value) {
   _impl_.focal_length_mm_ = value;
 }
 
-// float horizontal_sensor_size_mm = 4;
+// float horizontal_sensor_size_mm = 5;
 inline void Information::clear_horizontal_sensor_size_mm() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.horizontal_sensor_size_mm_ = 0;
@@ -15384,7 +15592,7 @@ inline void Information::_internal_set_horizontal_sensor_size_mm(float value) {
   _impl_.horizontal_sensor_size_mm_ = value;
 }
 
-// float vertical_sensor_size_mm = 5;
+// float vertical_sensor_size_mm = 6;
 inline void Information::clear_vertical_sensor_size_mm() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.vertical_sensor_size_mm_ = 0;
@@ -15407,7 +15615,7 @@ inline void Information::_internal_set_vertical_sensor_size_mm(float value) {
   _impl_.vertical_sensor_size_mm_ = value;
 }
 
-// uint32 horizontal_resolution_px = 6;
+// uint32 horizontal_resolution_px = 7;
 inline void Information::clear_horizontal_resolution_px() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.horizontal_resolution_px_ = 0u;
@@ -15430,7 +15638,7 @@ inline void Information::_internal_set_horizontal_resolution_px(::uint32_t value
   _impl_.horizontal_resolution_px_ = value;
 }
 
-// uint32 vertical_resolution_px = 7;
+// uint32 vertical_resolution_px = 8;
 inline void Information::clear_vertical_resolution_px() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.vertical_resolution_px_ = 0u;
@@ -15451,6 +15659,149 @@ inline void Information::_internal_set_vertical_resolution_px(::uint32_t value) 
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
   _impl_.vertical_resolution_px_ = value;
+}
+
+// uint32 lens_id = 9;
+inline void Information::clear_lens_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.lens_id_ = 0u;
+}
+inline ::uint32_t Information::lens_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Information.lens_id)
+  return _internal_lens_id();
+}
+inline void Information::set_lens_id(::uint32_t value) {
+  _internal_set_lens_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Information.lens_id)
+}
+inline ::uint32_t Information::_internal_lens_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.lens_id_;
+}
+inline void Information::_internal_set_lens_id(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.lens_id_ = value;
+}
+
+// uint32 definition_file_version = 10;
+inline void Information::clear_definition_file_version() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.definition_file_version_ = 0u;
+}
+inline ::uint32_t Information::definition_file_version() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Information.definition_file_version)
+  return _internal_definition_file_version();
+}
+inline void Information::set_definition_file_version(::uint32_t value) {
+  _internal_set_definition_file_version(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Information.definition_file_version)
+}
+inline ::uint32_t Information::_internal_definition_file_version() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.definition_file_version_;
+}
+inline void Information::_internal_set_definition_file_version(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.definition_file_version_ = value;
+}
+
+// string definition_file_uri = 11;
+inline void Information::clear_definition_file_uri() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.definition_file_uri_.ClearToEmpty();
+}
+inline const std::string& Information::definition_file_uri() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Information.definition_file_uri)
+  return _internal_definition_file_uri();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void Information::set_definition_file_uri(Arg_&& arg,
+                                                     Args_... args) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.definition_file_uri_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Information.definition_file_uri)
+}
+inline std::string* Information::mutable_definition_file_uri() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_definition_file_uri();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.Information.definition_file_uri)
+  return _s;
+}
+inline const std::string& Information::_internal_definition_file_uri() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.definition_file_uri_.Get();
+}
+inline void Information::_internal_set_definition_file_uri(const std::string& value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.definition_file_uri_.Set(value, GetArena());
+}
+inline std::string* Information::_internal_mutable_definition_file_uri() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  return _impl_.definition_file_uri_.Mutable( GetArena());
+}
+inline std::string* Information::release_definition_file_uri() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.Information.definition_file_uri)
+  return _impl_.definition_file_uri_.Release();
+}
+inline void Information::set_allocated_definition_file_uri(std::string* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.definition_file_uri_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.definition_file_uri_.IsDefault()) {
+          _impl_.definition_file_uri_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Information.definition_file_uri)
+}
+
+// repeated .mavsdk.rpc.camera.Information.CameraCapFlags camera_cap_flags = 12;
+inline int Information::_internal_camera_cap_flags_size() const {
+  return _internal_camera_cap_flags().size();
+}
+inline int Information::camera_cap_flags_size() const {
+  return _internal_camera_cap_flags_size();
+}
+inline void Information::clear_camera_cap_flags() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.camera_cap_flags_.Clear();
+}
+inline ::mavsdk::rpc::camera::Information_CameraCapFlags Information::camera_cap_flags(int index) const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Information.camera_cap_flags)
+  return static_cast<::mavsdk::rpc::camera::Information_CameraCapFlags>(_internal_camera_cap_flags().Get(index));
+}
+inline void Information::set_camera_cap_flags(int index, ::mavsdk::rpc::camera::Information_CameraCapFlags value) {
+  _internal_mutable_camera_cap_flags()->Set(index, value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Information.camera_cap_flags)
+}
+inline void Information::add_camera_cap_flags(::mavsdk::rpc::camera::Information_CameraCapFlags value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _internal_mutable_camera_cap_flags()->Add(value);
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.camera.Information.camera_cap_flags)
+}
+inline const ::google::protobuf::RepeatedField<int>& Information::camera_cap_flags() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.camera.Information.camera_cap_flags)
+  return _internal_camera_cap_flags();
+}
+inline ::google::protobuf::RepeatedField<int>* Information::mutable_camera_cap_flags()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.camera.Information.camera_cap_flags)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  return _internal_mutable_camera_cap_flags();
+}
+inline const ::google::protobuf::RepeatedField<int>& Information::_internal_camera_cap_flags() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.camera_cap_flags_;
+}
+inline ::google::protobuf::RepeatedField<int>* Information::_internal_mutable_camera_cap_flags() {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return &_impl_.camera_cap_flags_;
 }
 
 #ifdef __GNUC__
@@ -15495,6 +15846,12 @@ struct is_proto_enum<::mavsdk::rpc::camera::Status_StorageType> : std::true_type
 template <>
 inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera::Status_StorageType>() {
   return ::mavsdk::rpc::camera::Status_StorageType_descriptor();
+}
+template <>
+struct is_proto_enum<::mavsdk::rpc::camera::Information_CameraCapFlags> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera::Information_CameraCapFlags>() {
+  return ::mavsdk::rpc::camera::Information_CameraCapFlags_descriptor();
 }
 template <>
 struct is_proto_enum<::mavsdk::rpc::camera::Mode> : std::true_type {};
