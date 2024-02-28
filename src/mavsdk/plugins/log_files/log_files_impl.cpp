@@ -109,8 +109,11 @@ std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> LogFilesImpl::get_entr
     auto future_result = prom->get_future();
 
     get_entries_async([prom](LogFiles::Result result, std::vector<LogFiles::Entry> entries) {
-        prom->set_value(std::make_pair<>(result, entries));
+        if (result == LogFiles::Result::Success) {
+            prom->set_value(std::make_pair<>(result, entries));
+        }
     });
+
     return future_result.get();
 }
 
@@ -120,7 +123,6 @@ void LogFilesImpl::get_entries_async(LogFiles::GetEntriesCallback callback)
     _log_entries.clear();
     _entries_user_callback = callback;
     _total_entries = 0;
-    _entries_request_attempts = 0;
 
     _system_impl->register_timeout_handler(
         [this]() { entries_timeout(); }, _system_impl->timeout_s() * 5.0, &_entries_timeout_cookie);
@@ -209,32 +211,12 @@ void LogFilesImpl::entries_timeout()
         return;
     }
 
-    bool no_entries = _log_entries.size() == 0;
-    bool incomplete_list = _log_entries.size() != _total_entries;
-    bool attempts_exceeded = _entries_request_attempts > 3;
-
-    if (attempts_exceeded) {
-        const auto cb = _entries_user_callback;
-        if (cb) {
-            _system_impl->call_user_callback([cb]() {
-                LogDebug() << "Request entries timeout! Max attempts exceeded";
-                cb(LogFiles::Result::Timeout, std::vector<LogFiles::Entry>());
-            });
-        }
-        return;
-    }
-
-    if (no_entries || incomplete_list) {
-        LogDebug() << "None or incomplete entries, re-requesting";
-
-        // TODO: request entries in bursts of 50 like QGC does
-        _entries_request_attempts++;
-        request_log_list(0, 0xFFFF); // request all entries
-
-        _system_impl->register_timeout_handler(
-            [this]() { entries_timeout(); },
-            _system_impl->timeout_s() * 5.0,
-            &_entries_timeout_cookie);
+    const auto cb = _entries_user_callback;
+    if (cb) {
+        _system_impl->call_user_callback([cb]() {
+            LogDebug() << "Request entries timeout! Max attempts exceeded";
+            cb(LogFiles::Result::Timeout, std::vector<LogFiles::Entry>());
+        });
     }
 }
 

@@ -81,7 +81,6 @@ private:
     uint32_t _total_entries;
     void* _entries_timeout_cookie{};
     LogFiles::GetEntriesCallback _entries_user_callback{};
-    uint32_t _entries_request_attempts{};
 
     // The current log download data structure
     std::mutex _download_data_mutex;
