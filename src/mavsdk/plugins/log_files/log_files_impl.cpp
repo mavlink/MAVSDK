@@ -160,8 +160,8 @@ void LogFilesImpl::process_log_entry(const mavlink_message_t& message)
 
         _system_impl->unregister_timeout_handler(_entries_timeout_cookie);
 
-        if (_entries_user_callback) {
-            const auto cb = _entries_user_callback;
+        const auto cb = _entries_user_callback;
+        if (cb) {
             _system_impl->call_user_callback(
                 [cb]() { cb(LogFiles::Result::NoLogfiles, std::vector<LogFiles::Entry>()); });
         }
@@ -215,10 +215,12 @@ void LogFilesImpl::entries_timeout()
 
     if (attempts_exceeded) {
         const auto cb = _entries_user_callback;
-        _system_impl->call_user_callback([cb]() {
-            LogDebug() << "Request entries timeout! Max attempts exceeded";
-            cb(LogFiles::Result::Timeout, std::vector<LogFiles::Entry>());
-        });
+        if (cb) {
+            _system_impl->call_user_callback([cb]() {
+                LogDebug() << "Request entries timeout! Max attempts exceeded";
+                cb(LogFiles::Result::Timeout, std::vector<LogFiles::Entry>());
+            });
+        }
         return;
     }
 
