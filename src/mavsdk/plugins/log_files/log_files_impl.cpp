@@ -109,7 +109,7 @@ std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> LogFilesImpl::get_entr
     auto future_result = prom->get_future();
 
     get_entries_async([prom](LogFiles::Result result, std::vector<LogFiles::Entry> entries) {
-            prom->set_value(std::make_pair<>(result, entries));
+        prom->set_value(std::make_pair<>(result, entries));
     });
 
     return future_result.get();
