@@ -204,11 +204,6 @@ void LogFilesImpl::entries_timeout()
 {
     std::lock_guard<std::mutex> lock(_entries_mutex);
 
-    if (_log_entries.size() == _total_entries) {
-        LogDebug() << "Request entries timeout! Received all entries";
-        return;
-    }
-
     const auto cb = _entries_user_callback;
     if (cb) {
         _system_impl->call_user_callback([cb]() {
