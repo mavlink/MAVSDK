@@ -123,7 +123,7 @@ void LogFilesImpl::get_entries_async(LogFiles::GetEntriesCallback callback)
     _total_entries = 0;
 
     _system_impl->register_timeout_handler(
-        [this]() { entries_timeout(); }, _system_impl->timeout_s() * 5.0, &_entries_timeout_cookie);
+        [this]() { entries_timeout(); }, _system_impl->timeout_s() * 10.0, &_entries_timeout_cookie);
 
     request_log_list(0, 0xFFFF);
 }
