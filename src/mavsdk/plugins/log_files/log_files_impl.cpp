@@ -214,7 +214,7 @@ void LogFilesImpl::entries_timeout()
     const auto cb = _entries_user_callback;
     if (cb) {
         _system_impl->call_user_callback([cb]() {
-            LogDebug() << "Request entries timeout! Max attempts exceeded";
+            LogDebug() << "Request entries timeout!";
             cb(LogFiles::Result::Timeout, std::vector<LogFiles::Entry>());
         });
     }
