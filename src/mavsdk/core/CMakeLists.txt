@@ -148,6 +148,7 @@ install(TARGETS mavsdk
     )
 
 install(FILES
+    include/mavsdk/autopilot.h
     include/mavsdk/connection_result.h
     include/mavsdk/deprecated.h
     include/mavsdk/handle.h

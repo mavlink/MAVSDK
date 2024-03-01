@@ -5,6 +5,7 @@
 #include <functional>
 #include <vector>
 
+#include "autopilot.h"
 #include "deprecated.h"
 #include "handle.h"
 
@@ -180,6 +181,13 @@ public:
      * @brief Enable time synchronization using the TIMESYNC messages.
      */
     void enable_timesync();
+
+    /**
+     * @brief Get autopilot type.
+     *
+     * @return autopilot type discovered.
+     */
+    Autopilot autopilot_type() const;
 
     /**
      * @brief Copy constructor (object is not copyable).

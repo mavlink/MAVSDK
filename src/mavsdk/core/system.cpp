@@ -92,4 +92,9 @@ void System::enable_timesync()
     _system_impl->enable_timesync();
 }
 
+Autopilot System::autopilot_type() const
+{
+    return _system_impl->autopilot();
+}
+
 } // namespace mavsdk
