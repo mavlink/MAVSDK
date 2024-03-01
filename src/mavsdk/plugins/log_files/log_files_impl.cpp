@@ -1,12 +1,10 @@
 #include "log_files_impl.h"
 #include "mavlink_address.h"
 #include "mavsdk_impl.h"
-#include "unused.h"
 
 #include <algorithm>
 #include <cmath>
 #include <ctime>
-#include <cstring>
 #include <filesystem>
 
 namespace mavsdk {
@@ -30,28 +28,28 @@ bool LogData::file_is_open()
     return !(file.rdstate() & std::ofstream::failbit); // Ensure file is writable
 }
 
-uint32_t LogData::total_chunks()
+uint32_t LogData::total_chunks() const
 {
-    uint32_t partial_chunk = entry.size_bytes % kChunkSize;
+    uint32_t partial_chunk = entry.size_bytes % CHUNK_SIZE;
     uint32_t add_one_chunk = partial_chunk ? 1 : 0;
-    return entry.size_bytes / kChunkSize + add_one_chunk;
+    return entry.size_bytes / CHUNK_SIZE + add_one_chunk;
 }
 
-uint32_t LogData::bins_in_chunk()
+uint32_t LogData::bins_in_chunk() const
 {
     uint32_t size = current_chunk_size();
     uint32_t add_one_bin = size % MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN ? 1 : 0;
     return size / MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN + add_one_bin;
 }
 
-uint32_t LogData::current_chunk_size()
+uint32_t LogData::current_chunk_size() const
 {
-    uint32_t chunk_size = kChunkSize;
-    uint32_t chunk_remainder = entry.size_bytes % kChunkSize;
-    bool is_last_chunk = current_chunk == total_chunks() - 1;
-    // Last chunk might be less than kChunkSize
+    uint32_t chunk_size = CHUNK_SIZE;
+    uint32_t chunk_remainder = entry.size_bytes % CHUNK_SIZE;
+    bool is_last_chunk = (current_chunk == total_chunks() - 1);
+    // Last chunk might be less than CHUNK_SIZE
     if (is_last_chunk && chunk_remainder) {
-        chunk_size = entry.size_bytes % kChunkSize;
+        chunk_size = entry.size_bytes % CHUNK_SIZE;
     }
 
     return chunk_size;
@@ -158,7 +156,7 @@ void LogFilesImpl::process_log_entry(const mavlink_message_t& message)
 
     // Bad data handling
     if (msg.num_logs == 0 || msg.id >= msg.num_logs) {
-        LogDebug() << "No logs available";
+        LogWarn() << "No logs available";
 
         _system_impl->unregister_timeout_handler(_entries_timeout_cookie);
 
@@ -304,7 +302,7 @@ void LogFilesImpl::process_log_data(const mavlink_message_t& message)
     }
 
     // Calculate current chunk
-    const uint32_t chunk = msg.ofs / kChunkSize;
+    const uint32_t chunk = msg.ofs / CHUNK_SIZE;
 
     if (chunk != _download_data.current_chunk) {
         // Quietly ignore packets for out of order chunks
@@ -314,7 +312,7 @@ void LogFilesImpl::process_log_data(const mavlink_message_t& message)
     }
 
     // Calculate current bin within the chunk
-    const uint16_t bin = (msg.ofs - chunk * kChunkSize) / MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN;
+    const uint16_t bin = (msg.ofs - chunk * CHUNK_SIZE) / MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN;
 
     if (bin >= _download_data.chunk_bin_table.size()) {
         LogErr() << "Out of range bin received: bin/size: " << bin << "/"
@@ -358,7 +356,7 @@ void LogFilesImpl::process_log_data(const mavlink_message_t& message)
             // Request the next chunk
             request_log_data(
                 _download_data.entry.id,
-                _download_data.current_chunk * kChunkSize,
+                _download_data.current_chunk * CHUNK_SIZE,
                 _download_data.current_chunk_size());
         }
 
@@ -389,7 +387,7 @@ void LogFilesImpl::data_timeout()
 
     request_log_data(
         _download_data.entry.id,
-        _download_data.current_chunk * kChunkSize,
+        _download_data.current_chunk * CHUNK_SIZE,
         _download_data.current_chunk_size());
 
     _system_impl->register_timeout_handler(

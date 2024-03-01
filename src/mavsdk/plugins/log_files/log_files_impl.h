@@ -8,8 +8,8 @@
 
 namespace mavsdk {
 
-static constexpr uint32_t kTableBins = 512;
-static constexpr uint32_t kChunkSize = (kTableBins * MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN);
+static constexpr uint32_t TABLE_BINS = 512;
+static constexpr uint32_t CHUNK_SIZE = (TABLE_BINS * MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN);
 
 struct LogData {
     LogData() = default;
@@ -19,9 +19,9 @@ struct LogData {
         LogFiles::DownloadLogFileCallback cb);
 
     bool file_is_open();
-    uint32_t current_chunk_size();
-    uint32_t total_chunks();
-    uint32_t bins_in_chunk();
+    uint32_t current_chunk_size() const;
+    uint32_t total_chunks() const;
+    uint32_t bins_in_chunk() const;
 
     LogFiles::Entry entry{};
 
@@ -78,7 +78,7 @@ private:
 
     std::mutex _entries_mutex;
     std::unordered_map<uint16_t, LogFiles::Entry> _log_entries;
-    uint32_t _total_entries;
+    uint32_t _total_entries{0};
     void* _entries_timeout_cookie{};
     LogFiles::GetEntriesCallback _entries_user_callback{};
 
