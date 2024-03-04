@@ -513,6 +513,11 @@ bool MavlinkFtpClient::download_burst_continue(
         }
 
         if (payload->offset != item.next_offset) {
+            if (payload->offset < item.next_offset) {
+                // Not sure why this would happen but we don't know how to deal with it and ignore
+                // it.
+                return false;
+            }
             // we missed a part
             item.missing_data.emplace_back(DownloadBurstItem::MissingData{
                 item.next_offset, payload->offset - item.next_offset});
