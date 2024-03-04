@@ -125,9 +125,19 @@ public:
     using CalibrateGyroCallback = std::function<void(Result, ProgressData)>;
 
     /**
+     * @brief Callback type for calibrate_barometer_async.
+     */
+    using CalibrateBarometerCallback = std::function<void(Result, ProgressData)>;
+
+    /**
      * @brief Perform gyro calibration.
      */
     void calibrate_gyro_async(const CalibrateGyroCallback& callback);
+
+    /**
+     * @brief Perform barometer calibration.
+     */
+    void calibrate_barometer_async(const CalibrateBarometerCallback& callback);
 
     /**
      * @brief Callback type for calibrate_accelerometer_async.

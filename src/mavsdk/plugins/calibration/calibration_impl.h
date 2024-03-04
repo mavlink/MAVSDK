@@ -23,6 +23,7 @@ public:
     Calibration::Result cancel();
 
     void calibrate_gyro_async(const Calibration::CalibrateGyroCallback& callback);
+    void calibrate_barometer_async(const Calibration::CalibrateGyroCallback& callback);
     void calibrate_accelerometer_async(const Calibration::CalibrateAccelerometerCallback& callback);
     void calibrate_magnetometer_async(const Calibration::CalibrateMagnetometerCallback& callback);
     void calibrate_level_horizon_async(const Calibration::CalibrateAccelerometerCallback& callback);

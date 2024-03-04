@@ -28,6 +28,11 @@ void Calibration::calibrate_gyro_async(const CalibrateGyroCallback& callback)
     _impl->calibrate_gyro_async(callback);
 }
 
+void Calibration::calibrate_barometer_async(const CalibrateBarometerCallback &callback)
+{
+    _impl->calibrate_barometer_async(callback);
+}
+
 void Calibration::calibrate_accelerometer_async(const CalibrateAccelerometerCallback& callback)
 {
     _impl->calibrate_accelerometer_async(callback);

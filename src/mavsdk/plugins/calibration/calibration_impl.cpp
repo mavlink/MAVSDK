@@ -74,6 +74,39 @@ void CalibrationImpl::calibrate_gyro_async(const CalibrationCallback& callback)
         });
 }
 
+void CalibrationImpl::calibrate_barometer_async(const CalibrationCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_calibration_mutex);
+
+    if (_system_impl->is_armed()) {
+        Calibration::ProgressData progress_data;
+        call_callback(callback, Calibration::Result::FailedArmed, progress_data);
+        return;
+    }
+
+    if (_state != State::None) {
+        Calibration::ProgressData progress_data;
+        call_callback(callback, Calibration::Result::Busy, progress_data);
+        return;
+    }
+
+    _state = State::GyroCalibration;
+    _calibration_callback = callback;
+
+    MavlinkCommandSender::CommandLong command{};
+    command.command = MAV_CMD_PREFLIGHT_CALIBRATION;
+    command.params.maybe_param1 = 0.0f;
+    command.params.maybe_param2 = 0.0f;
+    command.params.maybe_param3 = 1.0f; // Gyro
+    command.params.maybe_param4 = 0.0f;
+    command.params.maybe_param5 = 0.0f;
+    command.target_component_id = MAV_COMP_ID_AUTOPILOT1;
+    _system_impl->send_command_async(
+        command, [this](MavlinkCommandSender::Result command_result, float progress) {
+            command_result_callback(command_result, progress);
+        });
+}
+
 void CalibrationImpl::call_callback(
     const CalibrationCallback& callback,
     const Calibration::Result& result,
