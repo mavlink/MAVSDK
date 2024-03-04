@@ -98,16 +98,3 @@ target_link_libraries(integration_tests_runner
 add_test(integration_tests
     integration_tests_runner
 )
-
-add_custom_command(TARGET integration_tests_runner
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../tools/start_sitl.sh
-        ${CMAKE_CURRENT_BINARY_DIR}
-)
-add_custom_command(TARGET integration_tests_runner
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../tools/stop_sitl.sh
-        ${CMAKE_CURRENT_BINARY_DIR}
-)
