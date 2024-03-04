@@ -22,7 +22,7 @@ static Mission::MissionItem add_waypoint(
     float gimbal_yaw_deg,
     bool take_photo);
 
-TEST_F(SitlTest, PX4MissionUploadCancellation)
+TEST(SitlTest, PX4MissionUploadCancellation)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
@@ -78,7 +78,7 @@ TEST_F(SitlTest, PX4MissionUploadCancellation)
     std::this_thread::sleep_for(std::chrono::seconds(5));
 }
 
-TEST_F(SitlTest, PX4MissionDownloadCancellation)
+TEST(SitlTest, PX4MissionDownloadCancellation)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 

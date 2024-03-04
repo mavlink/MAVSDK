@@ -12,7 +12,7 @@ static bool _discovered_system = false;
 static bool _timeouted_system = false;
 static uint8_t _sysid = 0;
 
-TEST_F(SitlTest, SystemConnectionAsync)
+TEST(SitlTest, SystemConnectionAsync)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 

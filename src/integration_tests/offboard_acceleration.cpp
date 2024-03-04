@@ -9,7 +9,7 @@
 
 using namespace mavsdk;
 
-TEST_F(SitlTest, PX4OffboardAccelerationNED)
+TEST(SitlTest, PX4OffboardAccelerationNED)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
