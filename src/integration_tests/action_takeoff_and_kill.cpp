@@ -1,4 +1,5 @@
 #include <iostream>
+#include <future>
 #include "integration_test_helper.h"
 #include "mavsdk.h"
 #include "plugins/action/action.h"
@@ -6,7 +7,7 @@
 
 using namespace mavsdk;
 
-TEST_F(SitlTest, ActionTakeoffAndKill)
+TEST(SitlTest, ActionTakeoffAndKill)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
     ASSERT_EQ(mavsdk.add_udp_connection(), ConnectionResult::Success);

@@ -7,7 +7,7 @@
 
 using namespace mavsdk;
 
-TEST_F(SitlTest, PX4ActionTransitionSync_standard_vtol)
+TEST(SitlTest, PX4ActionTransitionSync_standard_vtol)
 {
     // Init & connect
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};

@@ -8,7 +8,7 @@ using namespace mavsdk;
 void print_health(Telemetry::Health health);
 void print_rc_status(Telemetry::RcStatus rc_status);
 
-TEST_F(SitlTest, TelemetryHealth)
+TEST(SitlTest, TelemetryHealth)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 

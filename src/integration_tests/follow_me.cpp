@@ -29,7 +29,7 @@ void send_location_updates(
 const size_t N_LOCATIONS = 100ul;
 
 /* Test FollowMe with a stationary target at one location */
-TEST_F(SitlTest, PX4FollowMeOneLocation)
+TEST(SitlTest, PX4FollowMeOneLocation)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
@@ -112,7 +112,7 @@ TEST_F(SitlTest, PX4FollowMeOneLocation)
 }
 
 /* Test FollowMe with a dynamically moving target */
-TEST_F(SitlTest, PX4FollowMeMultiLocationWithConfig)
+TEST(SitlTest, PX4FollowMeMultiLocationWithConfig)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
