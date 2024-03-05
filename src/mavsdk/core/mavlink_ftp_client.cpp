@@ -489,6 +489,7 @@ bool MavlinkFtpClient::download_burst_start(Work& work, DownloadBurstItem& item)
     work.payload.size = item.remote_path.length() + 1;
 
     start_timer();
+    item.status = DownloadBurstItem::Status::OPEN_FILE;
     send_mavlink_ftp_message(work.payload);
 
     return true;
@@ -527,7 +528,7 @@ bool MavlinkFtpClient::download_burst_continue(
             if (!item.ofstream) {
                 LogWarn() << "Write failed";
                 item.callback(ClientResult::FileIoError, {});
-                download_burst_end(work);
+                download_burst_end(work, item);
                 return false;
             }
         }
@@ -537,7 +538,7 @@ bool MavlinkFtpClient::download_burst_continue(
         if (!item.ofstream) {
             LogWarn() << "Write failed";
             item.callback(ClientResult::FileIoError, {});
-            download_burst_end(work);
+            download_burst_end(work, item);
             return false;
         }
 
@@ -558,7 +559,7 @@ bool MavlinkFtpClient::download_burst_continue(
                 // No missing data, we're done.
 
                 // Final step
-                download_burst_end(work);
+                download_burst_end(work, item);
             } else {
                 // The burst is supposedly complete but we still need data because
                 // we missed some, so request next without burst.
@@ -577,6 +578,7 @@ bool MavlinkFtpClient::download_burst_continue(
                 request_burst(work, item);
             } else {
                 // There might be more coming, just wait for now.
+                item.status = DownloadBurstItem::Status::BURST_IN_PROGRESS;
                 start_timer();
             }
         }
@@ -590,14 +592,14 @@ bool MavlinkFtpClient::download_burst_continue(
         if (item.ofstream.fail()) {
             LogWarn() << "Seek failed";
             item.callback(ClientResult::FileIoError, {});
-            download_burst_end(work);
+            download_burst_end(work, item);
             return false;
         }
 
         item.ofstream.write(reinterpret_cast<const char*>(payload->data), payload->size);
         if (!item.ofstream) {
             item.callback(ClientResult::FileIoError, {});
-            download_burst_end(work);
+            download_burst_end(work, item);
             return false;
         }
 
@@ -605,7 +607,7 @@ bool MavlinkFtpClient::download_burst_continue(
         if (missing.offset != payload->offset) {
             LogErr() << "Offset mismatch";
             item.callback(ClientResult::ProtocolError, {});
-            download_burst_end(work);
+            download_burst_end(work, item);
             return false;
         }
 
@@ -618,12 +620,13 @@ bool MavlinkFtpClient::download_burst_continue(
         }
 
         const size_t bytes_transferred = burst_bytes_transferred(item);
-
-        LogDebug() << "Written " << bytes_transferred << " of " << item.file_size << " bytes";
+        if (_debugging) {
+            LogDebug() << "Written " << bytes_transferred << " of " << item.file_size << " bytes";
+        }
 
         if (item.missing_data.empty()) {
             // Final step
-            download_burst_end(work);
+            download_burst_end(work, item);
         } else {
             item.callback(
                 ClientResult::Next,
@@ -636,14 +639,14 @@ bool MavlinkFtpClient::download_burst_continue(
 
     } else {
         LogErr() << "Unexpected req_opcode";
-        download_burst_end(work);
+        download_burst_end(work, item);
         return false;
     }
 
     return true;
 }
 
-void MavlinkFtpClient::download_burst_end(Work& work)
+void MavlinkFtpClient::download_burst_end(Work& work, DownloadBurstItem& item)
 {
     work.last_opcode = CMD_TERMINATE_SESSION;
 
@@ -655,6 +658,7 @@ void MavlinkFtpClient::download_burst_end(Work& work)
     work.payload.offset = 0;
     work.payload.size = 0;
 
+    item.status = DownloadBurstItem::Status::TERMINATE_REQUEST;
     start_timer();
     send_mavlink_ftp_message(work.payload);
 }
@@ -673,6 +677,7 @@ void MavlinkFtpClient::request_burst(Work& work, DownloadBurstItem& item)
     // Fill up the whole packet.
     work.payload.size = max_data_length;
 
+    item.status = DownloadBurstItem::Status::BURST_REQUEST;
     start_timer();
     send_mavlink_ftp_message(work.payload);
 }
@@ -695,6 +700,7 @@ void MavlinkFtpClient::request_next_rest(Work& work, DownloadBurstItem& item)
 
     work.payload.size = size;
 
+    item.status = DownloadBurstItem::Status::READ_REQUEST;
     start_timer();
     send_mavlink_ftp_message(work.payload);
 }
@@ -1200,18 +1206,30 @@ void MavlinkFtpClient::timeout()
                 send_mavlink_ftp_message(work->payload);
             },
             [&](DownloadBurstItem& item) {
-                if (--work->retries == 0) {
-                    item.callback(ClientResult::Timeout, {});
-                    work_queue_guard.pop_front();
-                    return;
-                }
-                if (_debugging) {
-                    LogDebug() << "Retries left: " << work->retries;
-                }
+                switch (item.status) {
+                    case DownloadBurstItem::Status::NOT_STARTED:
+                    case DownloadBurstItem::Status::OPEN_FILE:
+                    case DownloadBurstItem::Status::BURST_REQUEST:
+                    case DownloadBurstItem::Status::TERMINATE_REQUEST:
+                    case DownloadBurstItem::Status::READ_REQUEST:
+                        if (--work->retries == 0) {
+                            item.callback(ClientResult::Timeout, {});
+                            work_queue_guard.pop_front();
+                            return;
+                        }
+                        if (_debugging) {
+                            LogDebug() << "Retries left: " << work->retries;
+                        }
 
-                {
-                    start_timer();
-                    send_mavlink_ftp_message(work->payload);
+                        {
+                            start_timer();
+                            send_mavlink_ftp_message(work->payload);
+                        }
+                        break;
+                    case DownloadBurstItem::Status::BURST_IN_PROGRESS:
+                        // we missed end of burst
+                        request_burst(*work, item);
+                        break;
                 }
             },
             [&](UploadItem& item) {
