@@ -158,7 +158,7 @@ private:
             size_t size;
         };
         std::deque<MissingData> missing_data{};
-        size_t next_offset{0};
+        size_t current_offset{0};
     };
 
     struct UploadItem {

@@ -512,17 +512,20 @@ bool MavlinkFtpClient::download_burst_continue(
                        << " write: " << std::to_string(payload->size);
         }
 
-        if (payload->offset != item.next_offset) {
-            if (payload->offset < item.next_offset) {
+        if (payload->offset != item.current_offset) {
+            if (payload->offset < item.current_offset) {
                 // Not sure why this would happen but we don't know how to deal with it and ignore
                 // it.
+                LogWarn() << "Got payload offset: " << payload->offset
+                          << ", next offset: " << item.current_offset;
                 return false;
             }
+
             // we missed a part
             item.missing_data.emplace_back(DownloadBurstItem::MissingData{
-                item.next_offset, payload->offset - item.next_offset});
+                item.current_offset, payload->offset - item.current_offset});
             // write some 0 instead
-            std::vector<char> empty(payload->offset - item.next_offset);
+            std::vector<char> empty(payload->offset - item.current_offset);
             item.ofstream.write(empty.data(), empty.size());
             if (!item.ofstream) {
                 LogWarn() << "Write failed";
@@ -542,7 +545,7 @@ bool MavlinkFtpClient::download_burst_continue(
         }
 
         // Keep track of what was written.
-        item.next_offset = payload->offset + payload->size;
+        item.current_offset = payload->offset + payload->size;
 
         if (_debugging) {
             LogDebug() << "Received " << payload->offset << " to "
@@ -617,11 +620,18 @@ bool MavlinkFtpClient::download_burst_continue(
             missing.size -= payload->size;
         }
 
+        // Check if this was the last one
+        if (item.file_size == payload->offset + payload->size) {
+            item.current_offset = item.file_size;
+        }
+
         const size_t bytes_transferred = burst_bytes_transferred(item);
 
-        LogDebug() << "Written " << bytes_transferred << " of " << item.file_size << " bytes";
+        if (_debugging) {
+            LogDebug() << "Written " << bytes_transferred << " of " << item.file_size << " bytes";
+        }
 
-        if (item.missing_data.empty()) {
+        if (item.missing_data.empty() && bytes_transferred == item.file_size) {
             // Final step
             download_burst_end(work);
         } else {
@@ -668,7 +678,7 @@ void MavlinkFtpClient::request_burst(Work& work, DownloadBurstItem& item)
     work.payload.seq_number = work.last_sent_seq_number++;
     work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
-    work.payload.offset = item.next_offset;
+    work.payload.offset = item.current_offset;
 
     // Fill up the whole packet.
     work.payload.size = max_data_length;
@@ -701,13 +711,13 @@ void MavlinkFtpClient::request_next_rest(Work& work, DownloadBurstItem& item)
 
 size_t MavlinkFtpClient::burst_bytes_transferred(DownloadBurstItem& item)
 {
-    return item.next_offset - std::accumulate(
-                                  item.missing_data.begin(),
-                                  item.missing_data.end(),
-                                  size_t(0),
-                                  [](size_t acc, const DownloadBurstItem::MissingData& missing) {
-                                      return acc + missing.size;
-                                  });
+    return item.current_offset - std::accumulate(
+                                     item.missing_data.begin(),
+                                     item.missing_data.end(),
+                                     size_t(0),
+                                     [](size_t acc, const DownloadBurstItem::MissingData& missing) {
+                                         return acc + missing.size;
+                                     });
 }
 
 bool MavlinkFtpClient::upload_start(Work& work, UploadItem& item)
@@ -1210,8 +1220,35 @@ void MavlinkFtpClient::timeout()
                 }
 
                 {
-                    start_timer();
-                    send_mavlink_ftp_message(work->payload);
+                    // This happens when we missed the last ack containing burst complete.
+                    // We have already a file size, so we don't need to start at the
+                    // beginning any more.
+                    if (item.file_size != 0 && item.current_offset != 0) {
+                        // In that case start requesting what we missed.
+                        if (item.current_offset == item.file_size && item.missing_data.empty()) {
+                            // We are done anyway.
+                            item.callback(ClientResult::Success, {});
+                            download_burst_end(*work);
+                            work_queue_guard.pop_front();
+                        } else {
+                            // The burst is supposedly complete but we still need data because
+                            // we missed some, so request next without burst.
+                            // We presumably missed the very last chunk.
+                            if (item.current_offset < item.file_size) {
+                                item.missing_data.emplace_back(DownloadBurstItem::MissingData{
+                                    item.current_offset, item.file_size - item.current_offset});
+                                if (_debugging) {
+                                    LogDebug() << "Adding " << item.current_offset << " with size "
+                                               << item.file_size - item.current_offset;
+                                }
+                            }
+                            request_next_rest(*work, item);
+                        }
+                    } else {
+                        // Otherwise, start burst again.
+                        start_timer();
+                        send_mavlink_ftp_message(work->payload);
+                    }
                 }
             },
             [&](UploadItem& item) {
