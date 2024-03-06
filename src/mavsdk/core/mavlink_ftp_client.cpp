@@ -1237,6 +1237,7 @@ void MavlinkFtpClient::timeout()
                             if (item.current_offset < item.file_size) {
                                 item.missing_data.emplace_back(DownloadBurstItem::MissingData{
                                     item.current_offset, item.file_size - item.current_offset});
+                                item.current_offset = item.file_size;
                                 if (_debugging) {
                                     LogDebug() << "Adding " << item.current_offset << " with size "
                                                << item.file_size - item.current_offset;
