@@ -159,15 +159,6 @@ private:
         };
         std::deque<MissingData> missing_data{};
         size_t next_offset{0};
-        enum Status {
-            NOT_STARTED,
-            OPEN_FILE,
-            BURST_REQUEST,
-            TERMINATE_REQUEST,
-            READ_REQUEST,
-            BURST_IN_PROGRESS,
-        };
-        Status status{Status::NOT_STARTED};
     };
 
     struct UploadItem {
@@ -279,7 +270,7 @@ private:
 
     bool download_burst_start(Work& work, DownloadBurstItem& item);
     bool download_burst_continue(Work& work, DownloadBurstItem& item, PayloadHeader* payload);
-    void download_burst_end(Work& work, DownloadBurstItem& item);
+    void download_burst_end(Work& work);
     void request_burst(Work& work, DownloadBurstItem& item);
     void request_next_rest(Work& work, DownloadBurstItem& item);
     size_t burst_bytes_transferred(DownloadBurstItem& item);
