@@ -240,12 +240,12 @@ jobs:
         with:
           submodules: recursive
       - name: setup dockcross
-        run: docker run --rm mavsdk/mavsdk-dockcross-linux-${{ matrix.arch_name }}-custom > ./dockcross-linux-${{ matrix.arch_name }}-custom; chmod +x ./dockcross-linux-${{ matrix.arch_name }}-custom
+        run: docker run --rm docker.io/mavsdk/mavsdk-dockcross-linux-${{ matrix.arch_name }}-custom > ./dockcross-linux-${{ matrix.arch_name }}-custom; chmod +x ./dockcross-linux-${{ matrix.arch_name }}-custom
       - uses: actions/cache@v4
         id: cache
         with:
           path: ./build/linux-${{ matrix.arch_name }}/third_party/install
-          key: ${{ github.job }}-linux-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}-5
+          key: ${{ github.job }}-linux-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}-6
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/linux-${{ matrix.arch_name }}/third_party/install" >> $GITHUB_ENV
