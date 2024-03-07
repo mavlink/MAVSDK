@@ -871,8 +871,7 @@ void MavlinkFtpServer::_work_write(const PayloadHeader& payload)
     }
 
     response.opcode = Opcode::RSP_ACK;
-    response.size = sizeof(uint32_t);
-    std::memcpy(response.data, &payload.size, response.size);
+    response.size = 0;
 
     _send_mavlink_ftp_message(response);
 }
