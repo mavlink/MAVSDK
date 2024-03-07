@@ -12,7 +12,8 @@ uint8_t ServerComponent::component_id() const
     return _impl->get_own_component_id();
 }
 
-void ServerComponent::set_system_status(uint8_t system_status) {
+void ServerComponent::set_system_status(uint8_t system_status)
+{
     _impl->set_system_status(system_status);
 }
 
