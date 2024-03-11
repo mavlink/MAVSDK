@@ -599,6 +599,66 @@ public:
         return obj;
     }
 
+    static std::unique_ptr<rpc::camera_server::TrackPoint>
+    translateToRpcTrackPoint(const mavsdk::CameraServer::TrackPoint& track_point)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera_server::TrackPoint>();
+
+        rpc_obj->set_point_x(track_point.point_x);
+
+        rpc_obj->set_point_y(track_point.point_y);
+
+        rpc_obj->set_radius(track_point.radius);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::CameraServer::TrackPoint
+    translateFromRpcTrackPoint(const rpc::camera_server::TrackPoint& track_point)
+    {
+        mavsdk::CameraServer::TrackPoint obj;
+
+        obj.point_x = track_point.point_x();
+
+        obj.point_y = track_point.point_y();
+
+        obj.radius = track_point.radius();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::camera_server::TrackRectangle>
+    translateToRpcTrackRectangle(const mavsdk::CameraServer::TrackRectangle& track_rectangle)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera_server::TrackRectangle>();
+
+        rpc_obj->set_top_left_corner_x(track_rectangle.top_left_corner_x);
+
+        rpc_obj->set_top_left_corner_y(track_rectangle.top_left_corner_y);
+
+        rpc_obj->set_bottom_right_corner_x(track_rectangle.bottom_right_corner_x);
+
+        rpc_obj->set_bottom_right_corner_y(track_rectangle.bottom_right_corner_y);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::CameraServer::TrackRectangle
+    translateFromRpcTrackRectangle(const rpc::camera_server::TrackRectangle& track_rectangle)
+    {
+        mavsdk::CameraServer::TrackRectangle obj;
+
+        obj.top_left_corner_x = track_rectangle.top_left_corner_x();
+
+        obj.top_left_corner_y = track_rectangle.top_left_corner_y();
+
+        obj.bottom_right_corner_x = track_rectangle.bottom_right_corner_x();
+
+        obj.bottom_right_corner_y = track_rectangle.bottom_right_corner_y();
+
+        return obj;
+    }
+
     grpc::Status SetInformation(
         grpc::ServerContext* /* context */,
         const rpc::camera_server::SetInformationRequest* request,
@@ -1406,6 +1466,258 @@ public:
 
         auto result = _lazy_plugin.maybe_plugin()->respond_reset_settings(
             translateFromRpcCameraFeedback(request->reset_settings_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetTrackingRectangleStatus(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::SetTrackingRectangleStatusRequest* request,
+        rpc::camera_server::SetTrackingRectangleStatusResponse* /* response */) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetTrackingRectangleStatus sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        _lazy_plugin.maybe_plugin()->set_tracking_rectangle_status(
+            translateFromRpcTrackRectangle(request->tracked_rectangle()));
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetTrackingOffStatus(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::SetTrackingOffStatusRequest* /* request */,
+        rpc::camera_server::SetTrackingOffStatusResponse* /* response */) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        _lazy_plugin.maybe_plugin()->set_tracking_off_status();
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeTrackingPointCommand(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::TrackingPointCommandResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::TrackingPointCommandHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_tracking_point_command(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const mavsdk::CameraServer::TrackPoint tracking_point_command) {
+                    rpc::camera_server::TrackingPointCommandResponse rpc_response;
+
+                    rpc_response.set_allocated_track_point(
+                        translateToRpcTrackPoint(tracking_point_command).release());
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_tracking_point_command(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeTrackingRectangleCommand(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::TrackingRectangleCommandResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::TrackingRectangleCommandHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_tracking_rectangle_command(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const mavsdk::CameraServer::TrackRectangle tracking_rectangle_command) {
+                    rpc::camera_server::TrackingRectangleCommandResponse rpc_response;
+
+                    rpc_response.set_allocated_track_rectangle(
+                        translateToRpcTrackRectangle(tracking_rectangle_command).release());
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_tracking_rectangle_command(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeTrackingOffCommand(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest* /* request */,
+        grpc::ServerWriter<rpc::camera_server::TrackingOffCommandResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::CameraServer::TrackingOffCommandHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_tracking_off_command(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const int32_t tracking_off_command) {
+                    rpc::camera_server::TrackingOffCommandResponse rpc_response;
+
+                    rpc_response.set_dummy(tracking_off_command);
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_tracking_off_command(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondTrackingPointCommand(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondTrackingPointCommandRequest* request,
+        rpc::camera_server::RespondTrackingPointCommandResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondTrackingPointCommand sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_tracking_point_command(
+            translateFromRpcCameraFeedback(request->stop_video_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondTrackingRectangleCommand(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondTrackingRectangleCommandRequest* request,
+        rpc::camera_server::RespondTrackingRectangleCommandResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondTrackingRectangleCommand sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_tracking_rectangle_command(
+            translateFromRpcCameraFeedback(request->stop_video_feedback()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status RespondTrackingOffCommand(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::RespondTrackingOffCommandRequest* request,
+        rpc::camera_server::RespondTrackingOffCommandResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "RespondTrackingOffCommand sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->respond_tracking_off_command(
+            translateFromRpcCameraFeedback(request->stop_video_feedback()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

@@ -47,6 +47,14 @@ static const char* CameraServerService_method_names[] = {
   "/mavsdk.rpc.camera_server.CameraServerService/RespondFormatStorage",
   "/mavsdk.rpc.camera_server.CameraServerService/SubscribeResetSettings",
   "/mavsdk.rpc.camera_server.CameraServerService/RespondResetSettings",
+  "/mavsdk.rpc.camera_server.CameraServerService/SetTrackingRectangleStatus",
+  "/mavsdk.rpc.camera_server.CameraServerService/SetTrackingOffStatus",
+  "/mavsdk.rpc.camera_server.CameraServerService/SubscribeTrackingPointCommand",
+  "/mavsdk.rpc.camera_server.CameraServerService/SubscribeTrackingRectangleCommand",
+  "/mavsdk.rpc.camera_server.CameraServerService/SubscribeTrackingOffCommand",
+  "/mavsdk.rpc.camera_server.CameraServerService/RespondTrackingPointCommand",
+  "/mavsdk.rpc.camera_server.CameraServerService/RespondTrackingRectangleCommand",
+  "/mavsdk.rpc.camera_server.CameraServerService/RespondTrackingOffCommand",
 };
 
 std::unique_ptr< CameraServerService::Stub> CameraServerService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -79,6 +87,14 @@ CameraServerService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>
   , rpcmethod_RespondFormatStorage_(CameraServerService_method_names[20], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SubscribeResetSettings_(CameraServerService_method_names[21], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   , rpcmethod_RespondResetSettings_(CameraServerService_method_names[22], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetTrackingRectangleStatus_(CameraServerService_method_names[23], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetTrackingOffStatus_(CameraServerService_method_names[24], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeTrackingPointCommand_(CameraServerService_method_names[25], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeTrackingRectangleCommand_(CameraServerService_method_names[26], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeTrackingOffCommand_(CameraServerService_method_names[27], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_RespondTrackingPointCommand_(CameraServerService_method_names[28], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_RespondTrackingRectangleCommand_(CameraServerService_method_names[29], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_RespondTrackingOffCommand_(CameraServerService_method_names[30], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status CameraServerService::Stub::SetInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInformationRequest& request, ::mavsdk::rpc::camera_server::SetInformationResponse* response) {
@@ -540,6 +556,169 @@ void CameraServerService::Stub::async::RespondResetSettings(::grpc::ClientContex
   return result;
 }
 
+::grpc::Status CameraServerService::Stub::SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest& request, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetTrackingRectangleStatus_, context, request, response);
+}
+
+void CameraServerService::Stub::async::SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetTrackingRectangleStatus_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetTrackingRectangleStatus_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>* CameraServerService::Stub::PrepareAsyncSetTrackingRectangleStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetTrackingRectangleStatus_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>* CameraServerService::Stub::AsyncSetTrackingRectangleStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSetTrackingRectangleStatusRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status CameraServerService::Stub::SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest& request, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetTrackingOffStatus_, context, request, response);
+}
+
+void CameraServerService::Stub::async::SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetTrackingOffStatus_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetTrackingOffStatus_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>* CameraServerService::Stub::PrepareAsyncSetTrackingOffStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse, ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetTrackingOffStatus_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>* CameraServerService::Stub::AsyncSetTrackingOffStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSetTrackingOffStatusRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::ClientReader< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* CameraServerService::Stub::SubscribeTrackingPointCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>::Create(channel_.get(), rpcmethod_SubscribeTrackingPointCommand_, context, request);
+}
+
+void CameraServerService::Stub::async::SubscribeTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeTrackingPointCommand_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* CameraServerService::Stub::AsyncSubscribeTrackingPointCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeTrackingPointCommand_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* CameraServerService::Stub::PrepareAsyncSubscribeTrackingPointCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeTrackingPointCommand_, context, request, false, nullptr);
+}
+
+::grpc::ClientReader< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* CameraServerService::Stub::SubscribeTrackingRectangleCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>::Create(channel_.get(), rpcmethod_SubscribeTrackingRectangleCommand_, context, request);
+}
+
+void CameraServerService::Stub::async::SubscribeTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeTrackingRectangleCommand_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* CameraServerService::Stub::AsyncSubscribeTrackingRectangleCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeTrackingRectangleCommand_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* CameraServerService::Stub::PrepareAsyncSubscribeTrackingRectangleCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeTrackingRectangleCommand_, context, request, false, nullptr);
+}
+
+::grpc::ClientReader< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* CameraServerService::Stub::SubscribeTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>::Create(channel_.get(), rpcmethod_SubscribeTrackingOffCommand_, context, request);
+}
+
+void CameraServerService::Stub::async::SubscribeTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeTrackingOffCommand_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* CameraServerService::Stub::AsyncSubscribeTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeTrackingOffCommand_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* CameraServerService::Stub::PrepareAsyncSubscribeTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeTrackingOffCommand_, context, request, false, nullptr);
+}
+
+::grpc::Status CameraServerService::Stub::RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest& request, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RespondTrackingPointCommand_, context, request, response);
+}
+
+void CameraServerService::Stub::async::RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondTrackingPointCommand_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondTrackingPointCommand_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>* CameraServerService::Stub::PrepareAsyncRespondTrackingPointCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_RespondTrackingPointCommand_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>* CameraServerService::Stub::AsyncRespondTrackingPointCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncRespondTrackingPointCommandRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status CameraServerService::Stub::RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest& request, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RespondTrackingRectangleCommand_, context, request, response);
+}
+
+void CameraServerService::Stub::async::RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondTrackingRectangleCommand_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondTrackingRectangleCommand_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>* CameraServerService::Stub::PrepareAsyncRespondTrackingRectangleCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_RespondTrackingRectangleCommand_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>* CameraServerService::Stub::AsyncRespondTrackingRectangleCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncRespondTrackingRectangleCommandRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status CameraServerService::Stub::RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_RespondTrackingOffCommand_, context, request, response);
+}
+
+void CameraServerService::Stub::async::RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondTrackingOffCommand_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_RespondTrackingOffCommand_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>* CameraServerService::Stub::PrepareAsyncRespondTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_RespondTrackingOffCommand_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>* CameraServerService::Stub::AsyncRespondTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncRespondTrackingOffCommandRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 CameraServerService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       CameraServerService_method_names[0],
@@ -771,6 +950,86 @@ CameraServerService::Service::Service() {
              ::mavsdk::rpc::camera_server::RespondResetSettingsResponse* resp) {
                return service->RespondResetSettings(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[23],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* req,
+             ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* resp) {
+               return service->SetTrackingRectangleStatus(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[24],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* req,
+             ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* resp) {
+               return service->SetTrackingOffStatus(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[25],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest, ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* writer) {
+               return service->SubscribeTrackingPointCommand(ctx, req, writer);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[26],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest, ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* writer) {
+               return service->SubscribeTrackingRectangleCommand(ctx, req, writer);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[27],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest, ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* writer) {
+               return service->SubscribeTrackingOffCommand(ctx, req, writer);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[28],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* req,
+             ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* resp) {
+               return service->RespondTrackingPointCommand(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[29],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* req,
+             ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* resp) {
+               return service->RespondTrackingRectangleCommand(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[30],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* req,
+             ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* resp) {
+               return service->RespondTrackingOffCommand(ctx, req, resp);
+             }, this)));
 }
 
 CameraServerService::Service::~Service() {
@@ -931,6 +1190,62 @@ CameraServerService::Service::~Service() {
 }
 
 ::grpc::Status CameraServerService::Service::RespondResetSettings(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondResetSettingsRequest* request, ::mavsdk::rpc::camera_server::RespondResetSettingsResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SetTrackingRectangleStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SetTrackingOffStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SubscribeTrackingPointCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SubscribeTrackingRectangleCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SubscribeTrackingOffCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::RespondTrackingPointCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::RespondTrackingRectangleCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::RespondTrackingOffCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response) {
   (void) context;
   (void) request;
   (void) response;
