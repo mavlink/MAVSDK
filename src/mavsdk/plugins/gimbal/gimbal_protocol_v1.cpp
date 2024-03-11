@@ -226,4 +226,25 @@ void GimbalProtocolV1::control_async(Gimbal::ControlCallback callback)
     }
 }
 
+Gimbal::Attitude GimbalProtocolV1::attitude()
+{
+    return _current_attitude;
+}
+
+void GimbalProtocolV1::attitude_async(Gimbal::AttitudeCallback callback)
+{
+    if (_attitude_callback == nullptr && callback != nullptr) {
+        _attitude_callback = callback;
+        _system_impl.add_call_every(
+            [this]() { _attitude_callback(_current_attitude); }, 1.0, &_attitude_cookie);
+
+    } else if (_attitude_callback != nullptr && callback == nullptr) {
+        _attitude_callback = callback;
+        _system_impl.remove_call_every(_attitude_cookie);
+
+    } else {
+        _attitude_callback = callback;
+    }
+}
+
 } // namespace mavsdk

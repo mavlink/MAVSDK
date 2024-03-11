@@ -54,6 +54,18 @@ struct SubscribeControlRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeControlRequestDefaultTypeInternal _SubscribeControlRequest_default_instance_;
+      template <typename>
+PROTOBUF_CONSTEXPR SubscribeAttitudeRequest::SubscribeAttitudeRequest(::_pbi::ConstantInitialized) {}
+struct SubscribeAttitudeRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SubscribeAttitudeRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SubscribeAttitudeRequestDefaultTypeInternal() {}
+  union {
+    SubscribeAttitudeRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeAttitudeRequestDefaultTypeInternal _SubscribeAttitudeRequest_default_instance_;
 
 inline constexpr SetRoiLocationRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -168,6 +180,28 @@ struct ReleaseControlRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ReleaseControlRequestDefaultTypeInternal _ReleaseControlRequest_default_instance_;
 
+inline constexpr Quaternion::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : w_{0},
+        x_{0},
+        y_{0},
+        z_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR Quaternion::Quaternion(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct QuaternionDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR QuaternionDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~QuaternionDefaultTypeInternal() {}
+  union {
+    Quaternion _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 QuaternionDefaultTypeInternal _Quaternion_default_instance_;
+
 inline constexpr GimbalResult::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : result_str_(
@@ -189,6 +223,27 @@ struct GimbalResultDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GimbalResultDefaultTypeInternal _GimbalResult_default_instance_;
+
+inline constexpr EulerAngle::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : roll_deg_{0},
+        pitch_deg_{0},
+        yaw_deg_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR EulerAngle::EulerAngle(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct EulerAngleDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR EulerAngleDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~EulerAngleDefaultTypeInternal() {}
+  union {
+    EulerAngle _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 EulerAngleDefaultTypeInternal _EulerAngle_default_instance_;
 
 inline constexpr ControlStatus::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -212,6 +267,27 @@ struct ControlStatusDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ControlStatusDefaultTypeInternal _ControlStatus_default_instance_;
+
+inline constexpr AngularVelocityBody::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : roll_rad_s_{0},
+        pitch_rad_s_{0},
+        yaw_rad_s_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR AngularVelocityBody::AngularVelocityBody(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct AngularVelocityBodyDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR AngularVelocityBodyDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~AngularVelocityBodyDefaultTypeInternal() {}
+  union {
+    AngularVelocityBody _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AngularVelocityBodyDefaultTypeInternal _AngularVelocityBody_default_instance_;
 
 inline constexpr TakeControlResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -364,10 +440,53 @@ struct ControlResponseDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ControlResponseDefaultTypeInternal _ControlResponse_default_instance_;
+
+inline constexpr Attitude::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        euler_angle_forward_{nullptr},
+        quaternion_forward_{nullptr},
+        euler_angle_north_{nullptr},
+        quaternion_north_{nullptr},
+        angular_velocity_{nullptr},
+        timestamp_us_{::uint64_t{0u}} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR Attitude::Attitude(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct AttitudeDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR AttitudeDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~AttitudeDefaultTypeInternal() {}
+  union {
+    Attitude _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AttitudeDefaultTypeInternal _Attitude_default_instance_;
+
+inline constexpr AttitudeResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        attitude_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR AttitudeResponse::AttitudeResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct AttitudeResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR AttitudeResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~AttitudeResponseDefaultTypeInternal() {}
+  union {
+    AttitudeResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AttitudeResponseDefaultTypeInternal _AttitudeResponse_default_instance_;
 }  // namespace gimbal
 }  // namespace rpc
 }  // namespace mavsdk
-static ::_pb::Metadata file_level_metadata_gimbal_2fgimbal_2eproto[18];
+static ::_pb::Metadata file_level_metadata_gimbal_2fgimbal_2eproto[24];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_gimbal_2fgimbal_2eproto[3];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_gimbal_2fgimbal_2eproto = nullptr;
@@ -530,6 +649,78 @@ const ::uint32_t TableStruct_gimbal_2fgimbal_2eproto::offsets[] PROTOBUF_SECTION
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlResponse, _impl_.control_status_),
     0,
     ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Quaternion, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Quaternion, _impl_.w_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Quaternion, _impl_.x_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Quaternion, _impl_.y_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Quaternion, _impl_.z_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::EulerAngle, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::EulerAngle, _impl_.roll_deg_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::EulerAngle, _impl_.pitch_deg_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::EulerAngle, _impl_.yaw_deg_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AngularVelocityBody, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AngularVelocityBody, _impl_.roll_rad_s_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AngularVelocityBody, _impl_.pitch_rad_s_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AngularVelocityBody, _impl_.yaw_rad_s_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.euler_angle_forward_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.quaternion_forward_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.euler_angle_north_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.quaternion_north_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.angular_velocity_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.timestamp_us_),
+    0,
+    1,
+    2,
+    3,
+    4,
+    ~0u,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SubscribeAttitudeRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AttitudeResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AttitudeResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AttitudeResponse, _impl_.attitude_),
+    0,
+    ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _internal_metadata_),
     ~0u,  // no _extensions_
     ~0u,  // no _oneof_case_
@@ -572,8 +763,14 @@ static const ::_pbi::MigrationSchema
         {128, 137, -1, sizeof(::mavsdk::rpc::gimbal::ReleaseControlResponse)},
         {138, -1, -1, sizeof(::mavsdk::rpc::gimbal::SubscribeControlRequest)},
         {146, 155, -1, sizeof(::mavsdk::rpc::gimbal::ControlResponse)},
-        {156, -1, -1, sizeof(::mavsdk::rpc::gimbal::ControlStatus)},
-        {169, -1, -1, sizeof(::mavsdk::rpc::gimbal::GimbalResult)},
+        {156, -1, -1, sizeof(::mavsdk::rpc::gimbal::Quaternion)},
+        {168, -1, -1, sizeof(::mavsdk::rpc::gimbal::EulerAngle)},
+        {179, -1, -1, sizeof(::mavsdk::rpc::gimbal::AngularVelocityBody)},
+        {190, 204, -1, sizeof(::mavsdk::rpc::gimbal::Attitude)},
+        {210, -1, -1, sizeof(::mavsdk::rpc::gimbal::SubscribeAttitudeRequest)},
+        {218, 227, -1, sizeof(::mavsdk::rpc::gimbal::AttitudeResponse)},
+        {228, -1, -1, sizeof(::mavsdk::rpc::gimbal::ControlStatus)},
+        {241, -1, -1, sizeof(::mavsdk::rpc::gimbal::GimbalResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -593,89 +790,120 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::gimbal::_ReleaseControlResponse_default_instance_._instance,
     &::mavsdk::rpc::gimbal::_SubscribeControlRequest_default_instance_._instance,
     &::mavsdk::rpc::gimbal::_ControlResponse_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_Quaternion_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_EulerAngle_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_AngularVelocityBody_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_Attitude_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_SubscribeAttitudeRequest_default_instance_._instance,
+    &::mavsdk::rpc::gimbal::_AttitudeResponse_default_instance_._instance,
     &::mavsdk::rpc::gimbal::_ControlStatus_default_instance_._instance,
     &::mavsdk::rpc::gimbal::_GimbalResult_default_instance_._instance,
 };
 const char descriptor_table_protodef_gimbal_2fgimbal_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
     "\n\023gimbal/gimbal.proto\022\021mavsdk.rpc.gimbal"
-    "\"H\n\020SetAnglesRequest\022\020\n\010roll_deg\030\001 \001(\002\022\021"
-    "\n\tpitch_deg\030\002 \001(\002\022\017\n\007yaw_deg\030\003 \001(\002\"K\n\021Se"
-    "tAnglesResponse\0226\n\rgimbal_result\030\001 \001(\0132\037"
-    ".mavsdk.rpc.gimbal.GimbalResult\";\n\025SetPi"
-    "tchAndYawRequest\022\021\n\tpitch_deg\030\001 \001(\002\022\017\n\007y"
-    "aw_deg\030\002 \001(\002\"P\n\026SetPitchAndYawResponse\0226"
-    "\n\rgimbal_result\030\001 \001(\0132\037.mavsdk.rpc.gimba"
-    "l.GimbalResult\"Q\n\035SetPitchRateAndYawRate"
-    "Request\022\030\n\020pitch_rate_deg_s\030\001 \001(\002\022\026\n\016yaw"
-    "_rate_deg_s\030\002 \001(\002\"X\n\036SetPitchRateAndYawR"
-    "ateResponse\0226\n\rgimbal_result\030\001 \001(\0132\037.mav"
-    "sdk.rpc.gimbal.GimbalResult\"D\n\016SetModeRe"
-    "quest\0222\n\013gimbal_mode\030\001 \001(\0162\035.mavsdk.rpc."
-    "gimbal.GimbalMode\"I\n\017SetModeResponse\0226\n\r"
-    "gimbal_result\030\001 \001(\0132\037.mavsdk.rpc.gimbal."
-    "GimbalResult\"X\n\025SetRoiLocationRequest\022\024\n"
-    "\014latitude_deg\030\001 \001(\001\022\025\n\rlongitude_deg\030\002 \001"
-    "(\001\022\022\n\naltitude_m\030\003 \001(\002\"P\n\026SetRoiLocation"
-    "Response\0226\n\rgimbal_result\030\001 \001(\0132\037.mavsdk"
-    ".rpc.gimbal.GimbalResult\"J\n\022TakeControlR"
-    "equest\0224\n\014control_mode\030\001 \001(\0162\036.mavsdk.rp"
-    "c.gimbal.ControlMode\"M\n\023TakeControlRespo"
-    "nse\0226\n\rgimbal_result\030\001 \001(\0132\037.mavsdk.rpc."
-    "gimbal.GimbalResult\"\027\n\025ReleaseControlReq"
-    "uest\"P\n\026ReleaseControlResponse\0226\n\rgimbal"
+    "\032\024mavsdk_options.proto\"H\n\020SetAnglesReque"
+    "st\022\020\n\010roll_deg\030\001 \001(\002\022\021\n\tpitch_deg\030\002 \001(\002\022"
+    "\017\n\007yaw_deg\030\003 \001(\002\"K\n\021SetAnglesResponse\0226\n"
+    "\rgimbal_result\030\001 \001(\0132\037.mavsdk.rpc.gimbal"
+    ".GimbalResult\";\n\025SetPitchAndYawRequest\022\021"
+    "\n\tpitch_deg\030\001 \001(\002\022\017\n\007yaw_deg\030\002 \001(\002\"P\n\026Se"
+    "tPitchAndYawResponse\0226\n\rgimbal_result\030\001 "
+    "\001(\0132\037.mavsdk.rpc.gimbal.GimbalResult\"Q\n\035"
+    "SetPitchRateAndYawRateRequest\022\030\n\020pitch_r"
+    "ate_deg_s\030\001 \001(\002\022\026\n\016yaw_rate_deg_s\030\002 \001(\002\""
+    "X\n\036SetPitchRateAndYawRateResponse\0226\n\rgim"
+    "bal_result\030\001 \001(\0132\037.mavsdk.rpc.gimbal.Gim"
+    "balResult\"D\n\016SetModeRequest\0222\n\013gimbal_mo"
+    "de\030\001 \001(\0162\035.mavsdk.rpc.gimbal.GimbalMode\""
+    "I\n\017SetModeResponse\0226\n\rgimbal_result\030\001 \001("
+    "\0132\037.mavsdk.rpc.gimbal.GimbalResult\"X\n\025Se"
+    "tRoiLocationRequest\022\024\n\014latitude_deg\030\001 \001("
+    "\001\022\025\n\rlongitude_deg\030\002 \001(\001\022\022\n\naltitude_m\030\003"
+    " \001(\002\"P\n\026SetRoiLocationResponse\0226\n\rgimbal"
     "_result\030\001 \001(\0132\037.mavsdk.rpc.gimbal.Gimbal"
-    "Result\"\031\n\027SubscribeControlRequest\"K\n\017Con"
-    "trolResponse\0228\n\016control_status\030\001 \001(\0132 .m"
-    "avsdk.rpc.gimbal.ControlStatus\"\307\001\n\rContr"
-    "olStatus\0224\n\014control_mode\030\001 \001(\0162\036.mavsdk."
-    "rpc.gimbal.ControlMode\022\035\n\025sysid_primary_"
-    "control\030\002 \001(\005\022\036\n\026compid_primary_control\030"
-    "\003 \001(\005\022\037\n\027sysid_secondary_control\030\004 \001(\005\022 "
-    "\n\030compid_secondary_control\030\005 \001(\005\"\341\001\n\014Gim"
-    "balResult\0226\n\006result\030\001 \001(\0162&.mavsdk.rpc.g"
-    "imbal.GimbalResult.Result\022\022\n\nresult_str\030"
-    "\002 \001(\t\"\204\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016"
-    "RESULT_SUCCESS\020\001\022\020\n\014RESULT_ERROR\020\002\022\022\n\016RE"
-    "SULT_TIMEOUT\020\003\022\026\n\022RESULT_UNSUPPORTED\020\004\022\024"
-    "\n\020RESULT_NO_SYSTEM\020\005*B\n\nGimbalMode\022\032\n\026GI"
-    "MBAL_MODE_YAW_FOLLOW\020\000\022\030\n\024GIMBAL_MODE_YA"
-    "W_LOCK\020\001*Z\n\013ControlMode\022\025\n\021CONTROL_MODE_"
-    "NONE\020\000\022\030\n\024CONTROL_MODE_PRIMARY\020\001\022\032\n\026CONT"
-    "ROL_MODE_SECONDARY\020\0022\301\006\n\rGimbalService\022X"
-    "\n\tSetAngles\022#.mavsdk.rpc.gimbal.SetAngle"
-    "sRequest\032$.mavsdk.rpc.gimbal.SetAnglesRe"
-    "sponse\"\000\022g\n\016SetPitchAndYaw\022(.mavsdk.rpc."
-    "gimbal.SetPitchAndYawRequest\032).mavsdk.rp"
-    "c.gimbal.SetPitchAndYawResponse\"\000\022\177\n\026Set"
-    "PitchRateAndYawRate\0220.mavsdk.rpc.gimbal."
-    "SetPitchRateAndYawRateRequest\0321.mavsdk.r"
-    "pc.gimbal.SetPitchRateAndYawRateResponse"
-    "\"\000\022R\n\007SetMode\022!.mavsdk.rpc.gimbal.SetMod"
-    "eRequest\032\".mavsdk.rpc.gimbal.SetModeResp"
-    "onse\"\000\022g\n\016SetRoiLocation\022(.mavsdk.rpc.gi"
-    "mbal.SetRoiLocationRequest\032).mavsdk.rpc."
-    "gimbal.SetRoiLocationResponse\"\000\022^\n\013TakeC"
-    "ontrol\022%.mavsdk.rpc.gimbal.TakeControlRe"
-    "quest\032&.mavsdk.rpc.gimbal.TakeControlRes"
-    "ponse\"\000\022g\n\016ReleaseControl\022(.mavsdk.rpc.g"
-    "imbal.ReleaseControlRequest\032).mavsdk.rpc"
-    ".gimbal.ReleaseControlResponse\"\000\022f\n\020Subs"
-    "cribeControl\022*.mavsdk.rpc.gimbal.Subscri"
-    "beControlRequest\032\".mavsdk.rpc.gimbal.Con"
-    "trolResponse\"\0000\001B\037\n\020io.mavsdk.gimbalB\013Gi"
-    "mbalProtob\006proto3"
+    "Result\"J\n\022TakeControlRequest\0224\n\014control_"
+    "mode\030\001 \001(\0162\036.mavsdk.rpc.gimbal.ControlMo"
+    "de\"M\n\023TakeControlResponse\0226\n\rgimbal_resu"
+    "lt\030\001 \001(\0132\037.mavsdk.rpc.gimbal.GimbalResul"
+    "t\"\027\n\025ReleaseControlRequest\"P\n\026ReleaseCon"
+    "trolResponse\0226\n\rgimbal_result\030\001 \001(\0132\037.ma"
+    "vsdk.rpc.gimbal.GimbalResult\"\031\n\027Subscrib"
+    "eControlRequest\"K\n\017ControlResponse\0228\n\016co"
+    "ntrol_status\030\001 \001(\0132 .mavsdk.rpc.gimbal.C"
+    "ontrolStatus\"\\\n\nQuaternion\022\022\n\001w\030\001 \001(\002B\007\202"
+    "\265\030\003NaN\022\022\n\001x\030\002 \001(\002B\007\202\265\030\003NaN\022\022\n\001y\030\003 \001(\002B\007\202"
+    "\265\030\003NaN\022\022\n\001z\030\004 \001(\002B\007\202\265\030\003NaN\"]\n\nEulerAngle"
+    "\022\031\n\010roll_deg\030\001 \001(\002B\007\202\265\030\003NaN\022\032\n\tpitch_deg"
+    "\030\002 \001(\002B\007\202\265\030\003NaN\022\030\n\007yaw_deg\030\003 \001(\002B\007\202\265\030\003Na"
+    "N\"l\n\023AngularVelocityBody\022\033\n\nroll_rad_s\030\001"
+    " \001(\002B\007\202\265\030\003NaN\022\034\n\013pitch_rad_s\030\002 \001(\002B\007\202\265\030\003"
+    "NaN\022\032\n\tyaw_rad_s\030\003 \001(\002B\007\202\265\030\003NaN\"\314\002\n\010Atti"
+    "tude\022:\n\023euler_angle_forward\030\001 \001(\0132\035.mavs"
+    "dk.rpc.gimbal.EulerAngle\0229\n\022quaternion_f"
+    "orward\030\002 \001(\0132\035.mavsdk.rpc.gimbal.Quatern"
+    "ion\0228\n\021euler_angle_north\030\003 \001(\0132\035.mavsdk."
+    "rpc.gimbal.EulerAngle\0227\n\020quaternion_nort"
+    "h\030\004 \001(\0132\035.mavsdk.rpc.gimbal.Quaternion\022@"
+    "\n\020angular_velocity\030\005 \001(\0132&.mavsdk.rpc.gi"
+    "mbal.AngularVelocityBody\022\024\n\014timestamp_us"
+    "\030\006 \001(\004\"\032\n\030SubscribeAttitudeRequest\"A\n\020At"
+    "titudeResponse\022-\n\010attitude\030\001 \001(\0132\033.mavsd"
+    "k.rpc.gimbal.Attitude\"\307\001\n\rControlStatus\022"
+    "4\n\014control_mode\030\001 \001(\0162\036.mavsdk.rpc.gimba"
+    "l.ControlMode\022\035\n\025sysid_primary_control\030\002"
+    " \001(\005\022\036\n\026compid_primary_control\030\003 \001(\005\022\037\n\027"
+    "sysid_secondary_control\030\004 \001(\005\022 \n\030compid_"
+    "secondary_control\030\005 \001(\005\"\341\001\n\014GimbalResult"
+    "\0226\n\006result\030\001 \001(\0162&.mavsdk.rpc.gimbal.Gim"
+    "balResult.Result\022\022\n\nresult_str\030\002 \001(\t\"\204\001\n"
+    "\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SU"
+    "CCESS\020\001\022\020\n\014RESULT_ERROR\020\002\022\022\n\016RESULT_TIME"
+    "OUT\020\003\022\026\n\022RESULT_UNSUPPORTED\020\004\022\024\n\020RESULT_"
+    "NO_SYSTEM\020\005*B\n\nGimbalMode\022\032\n\026GIMBAL_MODE"
+    "_YAW_FOLLOW\020\000\022\030\n\024GIMBAL_MODE_YAW_LOCK\020\001*"
+    "Z\n\013ControlMode\022\025\n\021CONTROL_MODE_NONE\020\000\022\030\n"
+    "\024CONTROL_MODE_PRIMARY\020\001\022\032\n\026CONTROL_MODE_"
+    "SECONDARY\020\0022\254\007\n\rGimbalService\022X\n\tSetAngl"
+    "es\022#.mavsdk.rpc.gimbal.SetAnglesRequest\032"
+    "$.mavsdk.rpc.gimbal.SetAnglesResponse\"\000\022"
+    "g\n\016SetPitchAndYaw\022(.mavsdk.rpc.gimbal.Se"
+    "tPitchAndYawRequest\032).mavsdk.rpc.gimbal."
+    "SetPitchAndYawResponse\"\000\022\177\n\026SetPitchRate"
+    "AndYawRate\0220.mavsdk.rpc.gimbal.SetPitchR"
+    "ateAndYawRateRequest\0321.mavsdk.rpc.gimbal"
+    ".SetPitchRateAndYawRateResponse\"\000\022R\n\007Set"
+    "Mode\022!.mavsdk.rpc.gimbal.SetModeRequest\032"
+    "\".mavsdk.rpc.gimbal.SetModeResponse\"\000\022g\n"
+    "\016SetRoiLocation\022(.mavsdk.rpc.gimbal.SetR"
+    "oiLocationRequest\032).mavsdk.rpc.gimbal.Se"
+    "tRoiLocationResponse\"\000\022^\n\013TakeControl\022%."
+    "mavsdk.rpc.gimbal.TakeControlRequest\032&.m"
+    "avsdk.rpc.gimbal.TakeControlResponse\"\000\022g"
+    "\n\016ReleaseControl\022(.mavsdk.rpc.gimbal.Rel"
+    "easeControlRequest\032).mavsdk.rpc.gimbal.R"
+    "eleaseControlResponse\"\000\022f\n\020SubscribeCont"
+    "rol\022*.mavsdk.rpc.gimbal.SubscribeControl"
+    "Request\032\".mavsdk.rpc.gimbal.ControlRespo"
+    "nse\"\0000\001\022i\n\021SubscribeAttitude\022+.mavsdk.rp"
+    "c.gimbal.SubscribeAttitudeRequest\032#.mavs"
+    "dk.rpc.gimbal.AttitudeResponse\"\0000\001B\037\n\020io"
+    ".mavsdk.gimbalB\013GimbalProtob\006proto3"
+};
+static const ::_pbi::DescriptorTable* const descriptor_table_gimbal_2fgimbal_2eproto_deps[1] =
+    {
+        &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::absl::once_flag descriptor_table_gimbal_2fgimbal_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_gimbal_2fgimbal_2eproto = {
     false,
     false,
-    2657,
+    3515,
     descriptor_table_protodef_gimbal_2fgimbal_2eproto,
     "gimbal/gimbal.proto",
     &descriptor_table_gimbal_2fgimbal_2eproto_once,
-    nullptr,
-    0,
-    18,
+    descriptor_table_gimbal_2fgimbal_2eproto_deps,
+    1,
+    24,
     schemas,
     file_default_instances,
     TableStruct_gimbal_2fgimbal_2eproto::offsets,
@@ -3816,6 +4044,1496 @@ void ControlResponse::InternalSwap(ControlResponse* PROTOBUF_RESTRICT other) {
 }
 // ===================================================================
 
+class Quaternion::_Internal {
+ public:
+};
+
+Quaternion::Quaternion(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.Quaternion)
+}
+Quaternion::Quaternion(
+    ::google::protobuf::Arena* arena, const Quaternion& from)
+    : Quaternion(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE Quaternion::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void Quaternion::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, w_),
+           0,
+           offsetof(Impl_, z_) -
+               offsetof(Impl_, w_) +
+               sizeof(Impl_::z_));
+}
+Quaternion::~Quaternion() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.Quaternion)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void Quaternion::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void Quaternion::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.Quaternion)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.w_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.z_) -
+      reinterpret_cast<char*>(&_impl_.w_)) + sizeof(_impl_.z_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* Quaternion::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 4, 0, 0, 2> Quaternion::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    4, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967280,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    4,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_Quaternion_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {37, 63, 0, PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.z_)}},
+    // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.w_)}},
+    // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.x_)}},
+    // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.y_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.w_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.x_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.y_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.z_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+::uint8_t* Quaternion::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.Quaternion)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_w = this->_internal_w();
+  ::uint32_t raw_w;
+  memcpy(&raw_w, &tmp_w, sizeof(tmp_w));
+  if (raw_w != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        1, this->_internal_w(), target);
+  }
+
+  // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_x = this->_internal_x();
+  ::uint32_t raw_x;
+  memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
+  if (raw_x != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        2, this->_internal_x(), target);
+  }
+
+  // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_y = this->_internal_y();
+  ::uint32_t raw_y;
+  memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
+  if (raw_y != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        3, this->_internal_y(), target);
+  }
+
+  // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_z = this->_internal_z();
+  ::uint32_t raw_z;
+  memcpy(&raw_z, &tmp_z, sizeof(tmp_z));
+  if (raw_z != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        4, this->_internal_z(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.Quaternion)
+  return target;
+}
+
+::size_t Quaternion::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.Quaternion)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_w = this->_internal_w();
+  ::uint32_t raw_w;
+  memcpy(&raw_w, &tmp_w, sizeof(tmp_w));
+  if (raw_w != 0) {
+    total_size += 5;
+  }
+
+  // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_x = this->_internal_x();
+  ::uint32_t raw_x;
+  memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
+  if (raw_x != 0) {
+    total_size += 5;
+  }
+
+  // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_y = this->_internal_y();
+  ::uint32_t raw_y;
+  memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
+  if (raw_y != 0) {
+    total_size += 5;
+  }
+
+  // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_z = this->_internal_z();
+  ::uint32_t raw_z;
+  memcpy(&raw_z, &tmp_z, sizeof(tmp_z));
+  if (raw_z != 0) {
+    total_size += 5;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData Quaternion::_class_data_ = {
+    Quaternion::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* Quaternion::GetClassData() const {
+  return &_class_data_;
+}
+
+void Quaternion::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<Quaternion*>(&to_msg);
+  auto& from = static_cast<const Quaternion&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.Quaternion)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_w = from._internal_w();
+  ::uint32_t raw_w;
+  memcpy(&raw_w, &tmp_w, sizeof(tmp_w));
+  if (raw_w != 0) {
+    _this->_internal_set_w(from._internal_w());
+  }
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_x = from._internal_x();
+  ::uint32_t raw_x;
+  memcpy(&raw_x, &tmp_x, sizeof(tmp_x));
+  if (raw_x != 0) {
+    _this->_internal_set_x(from._internal_x());
+  }
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_y = from._internal_y();
+  ::uint32_t raw_y;
+  memcpy(&raw_y, &tmp_y, sizeof(tmp_y));
+  if (raw_y != 0) {
+    _this->_internal_set_y(from._internal_y());
+  }
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_z = from._internal_z();
+  ::uint32_t raw_z;
+  memcpy(&raw_z, &tmp_z, sizeof(tmp_z));
+  if (raw_z != 0) {
+    _this->_internal_set_z(from._internal_z());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void Quaternion::CopyFrom(const Quaternion& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.Quaternion)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool Quaternion::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* Quaternion::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void Quaternion::InternalSwap(Quaternion* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.z_)
+      + sizeof(Quaternion::_impl_.z_)
+      - PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.w_)>(
+          reinterpret_cast<char*>(&_impl_.w_),
+          reinterpret_cast<char*>(&other->_impl_.w_));
+}
+
+::google::protobuf::Metadata Quaternion::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
+      file_level_metadata_gimbal_2fgimbal_2eproto[16]);
+}
+// ===================================================================
+
+class EulerAngle::_Internal {
+ public:
+};
+
+EulerAngle::EulerAngle(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.EulerAngle)
+}
+EulerAngle::EulerAngle(
+    ::google::protobuf::Arena* arena, const EulerAngle& from)
+    : EulerAngle(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE EulerAngle::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void EulerAngle::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, roll_deg_),
+           0,
+           offsetof(Impl_, yaw_deg_) -
+               offsetof(Impl_, roll_deg_) +
+               sizeof(Impl_::yaw_deg_));
+}
+EulerAngle::~EulerAngle() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.EulerAngle)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void EulerAngle::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void EulerAngle::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.EulerAngle)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.roll_deg_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.yaw_deg_) -
+      reinterpret_cast<char*>(&_impl_.roll_deg_)) + sizeof(_impl_.yaw_deg_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* EulerAngle::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> EulerAngle::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_EulerAngle_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.roll_deg_)}},
+    // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.pitch_deg_)}},
+    // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.yaw_deg_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.roll_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.pitch_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.yaw_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+::uint8_t* EulerAngle::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.EulerAngle)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_roll_deg = this->_internal_roll_deg();
+  ::uint32_t raw_roll_deg;
+  memcpy(&raw_roll_deg, &tmp_roll_deg, sizeof(tmp_roll_deg));
+  if (raw_roll_deg != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        1, this->_internal_roll_deg(), target);
+  }
+
+  // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_pitch_deg = this->_internal_pitch_deg();
+  ::uint32_t raw_pitch_deg;
+  memcpy(&raw_pitch_deg, &tmp_pitch_deg, sizeof(tmp_pitch_deg));
+  if (raw_pitch_deg != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        2, this->_internal_pitch_deg(), target);
+  }
+
+  // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_yaw_deg = this->_internal_yaw_deg();
+  ::uint32_t raw_yaw_deg;
+  memcpy(&raw_yaw_deg, &tmp_yaw_deg, sizeof(tmp_yaw_deg));
+  if (raw_yaw_deg != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        3, this->_internal_yaw_deg(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.EulerAngle)
+  return target;
+}
+
+::size_t EulerAngle::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.EulerAngle)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_roll_deg = this->_internal_roll_deg();
+  ::uint32_t raw_roll_deg;
+  memcpy(&raw_roll_deg, &tmp_roll_deg, sizeof(tmp_roll_deg));
+  if (raw_roll_deg != 0) {
+    total_size += 5;
+  }
+
+  // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_pitch_deg = this->_internal_pitch_deg();
+  ::uint32_t raw_pitch_deg;
+  memcpy(&raw_pitch_deg, &tmp_pitch_deg, sizeof(tmp_pitch_deg));
+  if (raw_pitch_deg != 0) {
+    total_size += 5;
+  }
+
+  // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_yaw_deg = this->_internal_yaw_deg();
+  ::uint32_t raw_yaw_deg;
+  memcpy(&raw_yaw_deg, &tmp_yaw_deg, sizeof(tmp_yaw_deg));
+  if (raw_yaw_deg != 0) {
+    total_size += 5;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData EulerAngle::_class_data_ = {
+    EulerAngle::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* EulerAngle::GetClassData() const {
+  return &_class_data_;
+}
+
+void EulerAngle::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<EulerAngle*>(&to_msg);
+  auto& from = static_cast<const EulerAngle&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.EulerAngle)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_roll_deg = from._internal_roll_deg();
+  ::uint32_t raw_roll_deg;
+  memcpy(&raw_roll_deg, &tmp_roll_deg, sizeof(tmp_roll_deg));
+  if (raw_roll_deg != 0) {
+    _this->_internal_set_roll_deg(from._internal_roll_deg());
+  }
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_pitch_deg = from._internal_pitch_deg();
+  ::uint32_t raw_pitch_deg;
+  memcpy(&raw_pitch_deg, &tmp_pitch_deg, sizeof(tmp_pitch_deg));
+  if (raw_pitch_deg != 0) {
+    _this->_internal_set_pitch_deg(from._internal_pitch_deg());
+  }
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_yaw_deg = from._internal_yaw_deg();
+  ::uint32_t raw_yaw_deg;
+  memcpy(&raw_yaw_deg, &tmp_yaw_deg, sizeof(tmp_yaw_deg));
+  if (raw_yaw_deg != 0) {
+    _this->_internal_set_yaw_deg(from._internal_yaw_deg());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void EulerAngle::CopyFrom(const EulerAngle& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.EulerAngle)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool EulerAngle::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* EulerAngle::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void EulerAngle::InternalSwap(EulerAngle* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.yaw_deg_)
+      + sizeof(EulerAngle::_impl_.yaw_deg_)
+      - PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.roll_deg_)>(
+          reinterpret_cast<char*>(&_impl_.roll_deg_),
+          reinterpret_cast<char*>(&other->_impl_.roll_deg_));
+}
+
+::google::protobuf::Metadata EulerAngle::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
+      file_level_metadata_gimbal_2fgimbal_2eproto[17]);
+}
+// ===================================================================
+
+class AngularVelocityBody::_Internal {
+ public:
+};
+
+AngularVelocityBody::AngularVelocityBody(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.AngularVelocityBody)
+}
+AngularVelocityBody::AngularVelocityBody(
+    ::google::protobuf::Arena* arena, const AngularVelocityBody& from)
+    : AngularVelocityBody(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE AngularVelocityBody::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void AngularVelocityBody::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, roll_rad_s_),
+           0,
+           offsetof(Impl_, yaw_rad_s_) -
+               offsetof(Impl_, roll_rad_s_) +
+               sizeof(Impl_::yaw_rad_s_));
+}
+AngularVelocityBody::~AngularVelocityBody() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.AngularVelocityBody)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void AngularVelocityBody::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void AngularVelocityBody::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.AngularVelocityBody)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.roll_rad_s_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.yaw_rad_s_) -
+      reinterpret_cast<char*>(&_impl_.roll_rad_s_)) + sizeof(_impl_.yaw_rad_s_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* AngularVelocityBody::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> AngularVelocityBody::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_AngularVelocityBody_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.roll_rad_s_)}},
+    // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.pitch_rad_s_)}},
+    // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.yaw_rad_s_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.roll_rad_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.pitch_rad_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.yaw_rad_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+::uint8_t* AngularVelocityBody::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.AngularVelocityBody)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_roll_rad_s = this->_internal_roll_rad_s();
+  ::uint32_t raw_roll_rad_s;
+  memcpy(&raw_roll_rad_s, &tmp_roll_rad_s, sizeof(tmp_roll_rad_s));
+  if (raw_roll_rad_s != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        1, this->_internal_roll_rad_s(), target);
+  }
+
+  // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_pitch_rad_s = this->_internal_pitch_rad_s();
+  ::uint32_t raw_pitch_rad_s;
+  memcpy(&raw_pitch_rad_s, &tmp_pitch_rad_s, sizeof(tmp_pitch_rad_s));
+  if (raw_pitch_rad_s != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        2, this->_internal_pitch_rad_s(), target);
+  }
+
+  // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_yaw_rad_s = this->_internal_yaw_rad_s();
+  ::uint32_t raw_yaw_rad_s;
+  memcpy(&raw_yaw_rad_s, &tmp_yaw_rad_s, sizeof(tmp_yaw_rad_s));
+  if (raw_yaw_rad_s != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        3, this->_internal_yaw_rad_s(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.AngularVelocityBody)
+  return target;
+}
+
+::size_t AngularVelocityBody::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.AngularVelocityBody)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_roll_rad_s = this->_internal_roll_rad_s();
+  ::uint32_t raw_roll_rad_s;
+  memcpy(&raw_roll_rad_s, &tmp_roll_rad_s, sizeof(tmp_roll_rad_s));
+  if (raw_roll_rad_s != 0) {
+    total_size += 5;
+  }
+
+  // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_pitch_rad_s = this->_internal_pitch_rad_s();
+  ::uint32_t raw_pitch_rad_s;
+  memcpy(&raw_pitch_rad_s, &tmp_pitch_rad_s, sizeof(tmp_pitch_rad_s));
+  if (raw_pitch_rad_s != 0) {
+    total_size += 5;
+  }
+
+  // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_yaw_rad_s = this->_internal_yaw_rad_s();
+  ::uint32_t raw_yaw_rad_s;
+  memcpy(&raw_yaw_rad_s, &tmp_yaw_rad_s, sizeof(tmp_yaw_rad_s));
+  if (raw_yaw_rad_s != 0) {
+    total_size += 5;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData AngularVelocityBody::_class_data_ = {
+    AngularVelocityBody::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* AngularVelocityBody::GetClassData() const {
+  return &_class_data_;
+}
+
+void AngularVelocityBody::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<AngularVelocityBody*>(&to_msg);
+  auto& from = static_cast<const AngularVelocityBody&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.AngularVelocityBody)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_roll_rad_s = from._internal_roll_rad_s();
+  ::uint32_t raw_roll_rad_s;
+  memcpy(&raw_roll_rad_s, &tmp_roll_rad_s, sizeof(tmp_roll_rad_s));
+  if (raw_roll_rad_s != 0) {
+    _this->_internal_set_roll_rad_s(from._internal_roll_rad_s());
+  }
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_pitch_rad_s = from._internal_pitch_rad_s();
+  ::uint32_t raw_pitch_rad_s;
+  memcpy(&raw_pitch_rad_s, &tmp_pitch_rad_s, sizeof(tmp_pitch_rad_s));
+  if (raw_pitch_rad_s != 0) {
+    _this->_internal_set_pitch_rad_s(from._internal_pitch_rad_s());
+  }
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_yaw_rad_s = from._internal_yaw_rad_s();
+  ::uint32_t raw_yaw_rad_s;
+  memcpy(&raw_yaw_rad_s, &tmp_yaw_rad_s, sizeof(tmp_yaw_rad_s));
+  if (raw_yaw_rad_s != 0) {
+    _this->_internal_set_yaw_rad_s(from._internal_yaw_rad_s());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void AngularVelocityBody::CopyFrom(const AngularVelocityBody& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.AngularVelocityBody)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool AngularVelocityBody::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* AngularVelocityBody::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void AngularVelocityBody::InternalSwap(AngularVelocityBody* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.yaw_rad_s_)
+      + sizeof(AngularVelocityBody::_impl_.yaw_rad_s_)
+      - PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.roll_rad_s_)>(
+          reinterpret_cast<char*>(&_impl_.roll_rad_s_),
+          reinterpret_cast<char*>(&other->_impl_.roll_rad_s_));
+}
+
+::google::protobuf::Metadata AngularVelocityBody::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
+      file_level_metadata_gimbal_2fgimbal_2eproto[18]);
+}
+// ===================================================================
+
+class Attitude::_Internal {
+ public:
+  using HasBits = decltype(std::declval<Attitude>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(Attitude, _impl_._has_bits_);
+  static const ::mavsdk::rpc::gimbal::EulerAngle& euler_angle_forward(const Attitude* msg);
+  static void set_has_euler_angle_forward(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+  static const ::mavsdk::rpc::gimbal::Quaternion& quaternion_forward(const Attitude* msg);
+  static void set_has_quaternion_forward(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
+  static const ::mavsdk::rpc::gimbal::EulerAngle& euler_angle_north(const Attitude* msg);
+  static void set_has_euler_angle_north(HasBits* has_bits) {
+    (*has_bits)[0] |= 4u;
+  }
+  static const ::mavsdk::rpc::gimbal::Quaternion& quaternion_north(const Attitude* msg);
+  static void set_has_quaternion_north(HasBits* has_bits) {
+    (*has_bits)[0] |= 8u;
+  }
+  static const ::mavsdk::rpc::gimbal::AngularVelocityBody& angular_velocity(const Attitude* msg);
+  static void set_has_angular_velocity(HasBits* has_bits) {
+    (*has_bits)[0] |= 16u;
+  }
+};
+
+const ::mavsdk::rpc::gimbal::EulerAngle& Attitude::_Internal::euler_angle_forward(const Attitude* msg) {
+  return *msg->_impl_.euler_angle_forward_;
+}
+const ::mavsdk::rpc::gimbal::Quaternion& Attitude::_Internal::quaternion_forward(const Attitude* msg) {
+  return *msg->_impl_.quaternion_forward_;
+}
+const ::mavsdk::rpc::gimbal::EulerAngle& Attitude::_Internal::euler_angle_north(const Attitude* msg) {
+  return *msg->_impl_.euler_angle_north_;
+}
+const ::mavsdk::rpc::gimbal::Quaternion& Attitude::_Internal::quaternion_north(const Attitude* msg) {
+  return *msg->_impl_.quaternion_north_;
+}
+const ::mavsdk::rpc::gimbal::AngularVelocityBody& Attitude::_Internal::angular_velocity(const Attitude* msg) {
+  return *msg->_impl_.angular_velocity_;
+}
+Attitude::Attitude(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.Attitude)
+}
+inline PROTOBUF_NDEBUG_INLINE Attitude::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+Attitude::Attitude(
+    ::google::protobuf::Arena* arena,
+    const Attitude& from)
+    : ::google::protobuf::Message(arena) {
+  Attitude* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.euler_angle_forward_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::gimbal::EulerAngle>(arena, *from._impl_.euler_angle_forward_)
+                : nullptr;
+  _impl_.quaternion_forward_ = (cached_has_bits & 0x00000002u)
+                ? CreateMaybeMessage<::mavsdk::rpc::gimbal::Quaternion>(arena, *from._impl_.quaternion_forward_)
+                : nullptr;
+  _impl_.euler_angle_north_ = (cached_has_bits & 0x00000004u)
+                ? CreateMaybeMessage<::mavsdk::rpc::gimbal::EulerAngle>(arena, *from._impl_.euler_angle_north_)
+                : nullptr;
+  _impl_.quaternion_north_ = (cached_has_bits & 0x00000008u)
+                ? CreateMaybeMessage<::mavsdk::rpc::gimbal::Quaternion>(arena, *from._impl_.quaternion_north_)
+                : nullptr;
+  _impl_.angular_velocity_ = (cached_has_bits & 0x00000010u)
+                ? CreateMaybeMessage<::mavsdk::rpc::gimbal::AngularVelocityBody>(arena, *from._impl_.angular_velocity_)
+                : nullptr;
+  _impl_.timestamp_us_ = from._impl_.timestamp_us_;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.Attitude)
+}
+inline PROTOBUF_NDEBUG_INLINE Attitude::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void Attitude::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, euler_angle_forward_),
+           0,
+           offsetof(Impl_, timestamp_us_) -
+               offsetof(Impl_, euler_angle_forward_) +
+               sizeof(Impl_::timestamp_us_));
+}
+Attitude::~Attitude() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.Attitude)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void Attitude::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.euler_angle_forward_;
+  delete _impl_.quaternion_forward_;
+  delete _impl_.euler_angle_north_;
+  delete _impl_.quaternion_north_;
+  delete _impl_.angular_velocity_;
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void Attitude::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.Attitude)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x0000001fu) {
+    if (cached_has_bits & 0x00000001u) {
+      ABSL_DCHECK(_impl_.euler_angle_forward_ != nullptr);
+      _impl_.euler_angle_forward_->Clear();
+    }
+    if (cached_has_bits & 0x00000002u) {
+      ABSL_DCHECK(_impl_.quaternion_forward_ != nullptr);
+      _impl_.quaternion_forward_->Clear();
+    }
+    if (cached_has_bits & 0x00000004u) {
+      ABSL_DCHECK(_impl_.euler_angle_north_ != nullptr);
+      _impl_.euler_angle_north_->Clear();
+    }
+    if (cached_has_bits & 0x00000008u) {
+      ABSL_DCHECK(_impl_.quaternion_north_ != nullptr);
+      _impl_.quaternion_north_->Clear();
+    }
+    if (cached_has_bits & 0x00000010u) {
+      ABSL_DCHECK(_impl_.angular_velocity_ != nullptr);
+      _impl_.angular_velocity_->Clear();
+    }
+  }
+  _impl_.timestamp_us_ = ::uint64_t{0u};
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* Attitude::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 6, 5, 0, 2> Attitude::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(Attitude, _impl_._has_bits_),
+    0, // no _extensions_
+    6, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967232,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    6,  // num_field_entries
+    5,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_Attitude_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // .mavsdk.rpc.gimbal.EulerAngle euler_angle_forward = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.euler_angle_forward_)}},
+    // .mavsdk.rpc.gimbal.Quaternion quaternion_forward = 2;
+    {::_pbi::TcParser::FastMtS1,
+     {18, 1, 1, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.quaternion_forward_)}},
+    // .mavsdk.rpc.gimbal.EulerAngle euler_angle_north = 3;
+    {::_pbi::TcParser::FastMtS1,
+     {26, 2, 2, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.euler_angle_north_)}},
+    // .mavsdk.rpc.gimbal.Quaternion quaternion_north = 4;
+    {::_pbi::TcParser::FastMtS1,
+     {34, 3, 3, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.quaternion_north_)}},
+    // .mavsdk.rpc.gimbal.AngularVelocityBody angular_velocity = 5;
+    {::_pbi::TcParser::FastMtS1,
+     {42, 4, 4, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.angular_velocity_)}},
+    // uint64 timestamp_us = 6;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(Attitude, _impl_.timestamp_us_), 63>(),
+     {48, 63, 0, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.timestamp_us_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gimbal.EulerAngle euler_angle_forward = 1;
+    {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.euler_angle_forward_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.gimbal.Quaternion quaternion_forward = 2;
+    {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.quaternion_forward_), _Internal::kHasBitsOffset + 1, 1,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.gimbal.EulerAngle euler_angle_north = 3;
+    {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.euler_angle_north_), _Internal::kHasBitsOffset + 2, 2,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.gimbal.Quaternion quaternion_north = 4;
+    {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.quaternion_north_), _Internal::kHasBitsOffset + 3, 3,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.gimbal.AngularVelocityBody angular_velocity = 5;
+    {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.angular_velocity_), _Internal::kHasBitsOffset + 4, 4,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // uint64 timestamp_us = 6;
+    {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.timestamp_us_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::EulerAngle>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::Quaternion>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::EulerAngle>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::Quaternion>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::AngularVelocityBody>()},
+  }}, {{
+  }},
+};
+
+::uint8_t* Attitude::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.Attitude)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  // .mavsdk.rpc.gimbal.EulerAngle euler_angle_forward = 1;
+  if (cached_has_bits & 0x00000001u) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::euler_angle_forward(this),
+        _Internal::euler_angle_forward(this).GetCachedSize(), target, stream);
+  }
+
+  // .mavsdk.rpc.gimbal.Quaternion quaternion_forward = 2;
+  if (cached_has_bits & 0x00000002u) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        2, _Internal::quaternion_forward(this),
+        _Internal::quaternion_forward(this).GetCachedSize(), target, stream);
+  }
+
+  // .mavsdk.rpc.gimbal.EulerAngle euler_angle_north = 3;
+  if (cached_has_bits & 0x00000004u) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        3, _Internal::euler_angle_north(this),
+        _Internal::euler_angle_north(this).GetCachedSize(), target, stream);
+  }
+
+  // .mavsdk.rpc.gimbal.Quaternion quaternion_north = 4;
+  if (cached_has_bits & 0x00000008u) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        4, _Internal::quaternion_north(this),
+        _Internal::quaternion_north(this).GetCachedSize(), target, stream);
+  }
+
+  // .mavsdk.rpc.gimbal.AngularVelocityBody angular_velocity = 5;
+  if (cached_has_bits & 0x00000010u) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        5, _Internal::angular_velocity(this),
+        _Internal::angular_velocity(this).GetCachedSize(), target, stream);
+  }
+
+  // uint64 timestamp_us = 6;
+  if (this->_internal_timestamp_us() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+        6, this->_internal_timestamp_us(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.Attitude)
+  return target;
+}
+
+::size_t Attitude::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.Attitude)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x0000001fu) {
+    // .mavsdk.rpc.gimbal.EulerAngle euler_angle_forward = 1;
+    if (cached_has_bits & 0x00000001u) {
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.euler_angle_forward_);
+    }
+
+    // .mavsdk.rpc.gimbal.Quaternion quaternion_forward = 2;
+    if (cached_has_bits & 0x00000002u) {
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.quaternion_forward_);
+    }
+
+    // .mavsdk.rpc.gimbal.EulerAngle euler_angle_north = 3;
+    if (cached_has_bits & 0x00000004u) {
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.euler_angle_north_);
+    }
+
+    // .mavsdk.rpc.gimbal.Quaternion quaternion_north = 4;
+    if (cached_has_bits & 0x00000008u) {
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.quaternion_north_);
+    }
+
+    // .mavsdk.rpc.gimbal.AngularVelocityBody angular_velocity = 5;
+    if (cached_has_bits & 0x00000010u) {
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.angular_velocity_);
+    }
+
+  }
+  // uint64 timestamp_us = 6;
+  if (this->_internal_timestamp_us() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+        this->_internal_timestamp_us());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData Attitude::_class_data_ = {
+    Attitude::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* Attitude::GetClassData() const {
+  return &_class_data_;
+}
+
+void Attitude::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<Attitude*>(&to_msg);
+  auto& from = static_cast<const Attitude&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.Attitude)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x0000001fu) {
+    if (cached_has_bits & 0x00000001u) {
+      _this->_internal_mutable_euler_angle_forward()->::mavsdk::rpc::gimbal::EulerAngle::MergeFrom(
+          from._internal_euler_angle_forward());
+    }
+    if (cached_has_bits & 0x00000002u) {
+      _this->_internal_mutable_quaternion_forward()->::mavsdk::rpc::gimbal::Quaternion::MergeFrom(
+          from._internal_quaternion_forward());
+    }
+    if (cached_has_bits & 0x00000004u) {
+      _this->_internal_mutable_euler_angle_north()->::mavsdk::rpc::gimbal::EulerAngle::MergeFrom(
+          from._internal_euler_angle_north());
+    }
+    if (cached_has_bits & 0x00000008u) {
+      _this->_internal_mutable_quaternion_north()->::mavsdk::rpc::gimbal::Quaternion::MergeFrom(
+          from._internal_quaternion_north());
+    }
+    if (cached_has_bits & 0x00000010u) {
+      _this->_internal_mutable_angular_velocity()->::mavsdk::rpc::gimbal::AngularVelocityBody::MergeFrom(
+          from._internal_angular_velocity());
+    }
+  }
+  if (from._internal_timestamp_us() != 0) {
+    _this->_internal_set_timestamp_us(from._internal_timestamp_us());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void Attitude::CopyFrom(const Attitude& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.Attitude)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool Attitude::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* Attitude::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void Attitude::InternalSwap(Attitude* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(Attitude, _impl_.timestamp_us_)
+      + sizeof(Attitude::_impl_.timestamp_us_)
+      - PROTOBUF_FIELD_OFFSET(Attitude, _impl_.euler_angle_forward_)>(
+          reinterpret_cast<char*>(&_impl_.euler_angle_forward_),
+          reinterpret_cast<char*>(&other->_impl_.euler_angle_forward_));
+}
+
+::google::protobuf::Metadata Attitude::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
+      file_level_metadata_gimbal_2fgimbal_2eproto[19]);
+}
+// ===================================================================
+
+class SubscribeAttitudeRequest::_Internal {
+ public:
+};
+
+SubscribeAttitudeRequest::SubscribeAttitudeRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SubscribeAttitudeRequest)
+}
+SubscribeAttitudeRequest::SubscribeAttitudeRequest(
+    ::google::protobuf::Arena* arena,
+    const SubscribeAttitudeRequest& from)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+  SubscribeAttitudeRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SubscribeAttitudeRequest)
+}
+
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata SubscribeAttitudeRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
+      file_level_metadata_gimbal_2fgimbal_2eproto[20]);
+}
+// ===================================================================
+
+class AttitudeResponse::_Internal {
+ public:
+  using HasBits = decltype(std::declval<AttitudeResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(AttitudeResponse, _impl_._has_bits_);
+  static const ::mavsdk::rpc::gimbal::Attitude& attitude(const AttitudeResponse* msg);
+  static void set_has_attitude(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+};
+
+const ::mavsdk::rpc::gimbal::Attitude& AttitudeResponse::_Internal::attitude(const AttitudeResponse* msg) {
+  return *msg->_impl_.attitude_;
+}
+AttitudeResponse::AttitudeResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.AttitudeResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE AttitudeResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+AttitudeResponse::AttitudeResponse(
+    ::google::protobuf::Arena* arena,
+    const AttitudeResponse& from)
+    : ::google::protobuf::Message(arena) {
+  AttitudeResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.attitude_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::gimbal::Attitude>(arena, *from._impl_.attitude_)
+                : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.AttitudeResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE AttitudeResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void AttitudeResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.attitude_ = {};
+}
+AttitudeResponse::~AttitudeResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.AttitudeResponse)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void AttitudeResponse::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.attitude_;
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void AttitudeResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.AttitudeResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.attitude_ != nullptr);
+    _impl_.attitude_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* AttitudeResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> AttitudeResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(AttitudeResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_AttitudeResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.gimbal.Attitude attitude = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(AttitudeResponse, _impl_.attitude_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gimbal.Attitude attitude = 1;
+    {PROTOBUF_FIELD_OFFSET(AttitudeResponse, _impl_.attitude_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::Attitude>()},
+  }}, {{
+  }},
+};
+
+::uint8_t* AttitudeResponse::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.AttitudeResponse)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  // .mavsdk.rpc.gimbal.Attitude attitude = 1;
+  if (cached_has_bits & 0x00000001u) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::attitude(this),
+        _Internal::attitude(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.AttitudeResponse)
+  return target;
+}
+
+::size_t AttitudeResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.AttitudeResponse)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.gimbal.Attitude attitude = 1;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.attitude_);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData AttitudeResponse::_class_data_ = {
+    AttitudeResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* AttitudeResponse::GetClassData() const {
+  return &_class_data_;
+}
+
+void AttitudeResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<AttitudeResponse*>(&to_msg);
+  auto& from = static_cast<const AttitudeResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.AttitudeResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_attitude()->::mavsdk::rpc::gimbal::Attitude::MergeFrom(
+        from._internal_attitude());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void AttitudeResponse::CopyFrom(const AttitudeResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.AttitudeResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool AttitudeResponse::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* AttitudeResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void AttitudeResponse::InternalSwap(AttitudeResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.attitude_, other->_impl_.attitude_);
+}
+
+::google::protobuf::Metadata AttitudeResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
+      file_level_metadata_gimbal_2fgimbal_2eproto[21]);
+}
+// ===================================================================
+
 class ControlStatus::_Internal {
  public:
 };
@@ -4085,7 +5803,7 @@ void ControlStatus::InternalSwap(ControlStatus* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata ControlStatus::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
-      file_level_metadata_gimbal_2fgimbal_2eproto[16]);
+      file_level_metadata_gimbal_2fgimbal_2eproto[22]);
 }
 // ===================================================================
 
@@ -4301,7 +6019,7 @@ void GimbalResult::InternalSwap(GimbalResult* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata GimbalResult::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_gimbal_2fgimbal_2eproto_getter, &descriptor_table_gimbal_2fgimbal_2eproto_once,
-      file_level_metadata_gimbal_2fgimbal_2eproto[17]);
+      file_level_metadata_gimbal_2fgimbal_2eproto[23]);
 }
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace gimbal
