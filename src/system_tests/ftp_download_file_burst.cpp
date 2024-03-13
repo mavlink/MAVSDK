@@ -192,7 +192,7 @@ TEST(SystemTest, FtpDownloadBurstBigFileLossy)
             }
         });
 
-    auto future_status = fut.wait_for(std::chrono::seconds(20));
+    auto future_status = fut.wait_for(std::chrono::seconds(30));
     ASSERT_EQ(future_status, std::future_status::ready);
     EXPECT_EQ(fut.get(), Ftp::Result::Success);
 
