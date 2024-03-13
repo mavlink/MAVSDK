@@ -101,6 +101,138 @@ public:
         }
     }
 
+    static std::unique_ptr<rpc::gimbal::Quaternion>
+    translateToRpcQuaternion(const mavsdk::Gimbal::Quaternion& quaternion)
+    {
+        auto rpc_obj = std::make_unique<rpc::gimbal::Quaternion>();
+
+        rpc_obj->set_w(quaternion.w);
+
+        rpc_obj->set_x(quaternion.x);
+
+        rpc_obj->set_y(quaternion.y);
+
+        rpc_obj->set_z(quaternion.z);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Gimbal::Quaternion
+    translateFromRpcQuaternion(const rpc::gimbal::Quaternion& quaternion)
+    {
+        mavsdk::Gimbal::Quaternion obj;
+
+        obj.w = quaternion.w();
+
+        obj.x = quaternion.x();
+
+        obj.y = quaternion.y();
+
+        obj.z = quaternion.z();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::gimbal::EulerAngle>
+    translateToRpcEulerAngle(const mavsdk::Gimbal::EulerAngle& euler_angle)
+    {
+        auto rpc_obj = std::make_unique<rpc::gimbal::EulerAngle>();
+
+        rpc_obj->set_roll_deg(euler_angle.roll_deg);
+
+        rpc_obj->set_pitch_deg(euler_angle.pitch_deg);
+
+        rpc_obj->set_yaw_deg(euler_angle.yaw_deg);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Gimbal::EulerAngle
+    translateFromRpcEulerAngle(const rpc::gimbal::EulerAngle& euler_angle)
+    {
+        mavsdk::Gimbal::EulerAngle obj;
+
+        obj.roll_deg = euler_angle.roll_deg();
+
+        obj.pitch_deg = euler_angle.pitch_deg();
+
+        obj.yaw_deg = euler_angle.yaw_deg();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::gimbal::AngularVelocityBody> translateToRpcAngularVelocityBody(
+        const mavsdk::Gimbal::AngularVelocityBody& angular_velocity_body)
+    {
+        auto rpc_obj = std::make_unique<rpc::gimbal::AngularVelocityBody>();
+
+        rpc_obj->set_roll_rad_s(angular_velocity_body.roll_rad_s);
+
+        rpc_obj->set_pitch_rad_s(angular_velocity_body.pitch_rad_s);
+
+        rpc_obj->set_yaw_rad_s(angular_velocity_body.yaw_rad_s);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Gimbal::AngularVelocityBody translateFromRpcAngularVelocityBody(
+        const rpc::gimbal::AngularVelocityBody& angular_velocity_body)
+    {
+        mavsdk::Gimbal::AngularVelocityBody obj;
+
+        obj.roll_rad_s = angular_velocity_body.roll_rad_s();
+
+        obj.pitch_rad_s = angular_velocity_body.pitch_rad_s();
+
+        obj.yaw_rad_s = angular_velocity_body.yaw_rad_s();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::gimbal::Attitude>
+    translateToRpcAttitude(const mavsdk::Gimbal::Attitude& attitude)
+    {
+        auto rpc_obj = std::make_unique<rpc::gimbal::Attitude>();
+
+        rpc_obj->set_allocated_euler_angle_forward(
+            translateToRpcEulerAngle(attitude.euler_angle_forward).release());
+
+        rpc_obj->set_allocated_quaternion_forward(
+            translateToRpcQuaternion(attitude.quaternion_forward).release());
+
+        rpc_obj->set_allocated_euler_angle_north(
+            translateToRpcEulerAngle(attitude.euler_angle_north).release());
+
+        rpc_obj->set_allocated_quaternion_north(
+            translateToRpcQuaternion(attitude.quaternion_north).release());
+
+        rpc_obj->set_allocated_angular_velocity(
+            translateToRpcAngularVelocityBody(attitude.angular_velocity).release());
+
+        rpc_obj->set_timestamp_us(attitude.timestamp_us);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Gimbal::Attitude translateFromRpcAttitude(const rpc::gimbal::Attitude& attitude)
+    {
+        mavsdk::Gimbal::Attitude obj;
+
+        obj.euler_angle_forward = translateFromRpcEulerAngle(attitude.euler_angle_forward());
+
+        obj.quaternion_forward = translateFromRpcQuaternion(attitude.quaternion_forward());
+
+        obj.euler_angle_north = translateFromRpcEulerAngle(attitude.euler_angle_north());
+
+        obj.quaternion_north = translateFromRpcQuaternion(attitude.quaternion_north());
+
+        obj.angular_velocity = translateFromRpcAngularVelocityBody(attitude.angular_velocity());
+
+        obj.timestamp_us = attitude.timestamp_us();
+
+        return obj;
+    }
+
     static std::unique_ptr<rpc::gimbal::ControlStatus>
     translateToRpcControlStatus(const mavsdk::Gimbal::ControlStatus& control_status)
     {
@@ -411,6 +543,47 @@ public:
                     stream_closed_promise->set_value();
                 }
             });
+
+        stream_closed_future.wait();
+        std::unique_lock<std::mutex> lock(*subscribe_mutex);
+        *is_finished = true;
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SubscribeAttitude(
+        grpc::ServerContext* /* context */,
+        const mavsdk::rpc::gimbal::SubscribeAttitudeRequest* /* request */,
+        grpc::ServerWriter<rpc::gimbal::AttitudeResponse>* writer) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            return grpc::Status::OK;
+        }
+
+        auto stream_closed_promise = std::make_shared<std::promise<void>>();
+        auto stream_closed_future = stream_closed_promise->get_future();
+        register_stream_stop_promise(stream_closed_promise);
+
+        auto is_finished = std::make_shared<bool>(false);
+        auto subscribe_mutex = std::make_shared<std::mutex>();
+
+        const mavsdk::Gimbal::AttitudeHandle handle =
+            _lazy_plugin.maybe_plugin()->subscribe_attitude(
+                [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
+                    const mavsdk::Gimbal::Attitude attitude) {
+                    rpc::gimbal::AttitudeResponse rpc_response;
+
+                    rpc_response.set_allocated_attitude(translateToRpcAttitude(attitude).release());
+
+                    std::unique_lock<std::mutex> lock(*subscribe_mutex);
+                    if (!*is_finished && !writer->Write(rpc_response)) {
+                        _lazy_plugin.maybe_plugin()->unsubscribe_attitude(handle);
+
+                        *is_finished = true;
+                        unregister_stream_stop_promise(stream_closed_promise);
+                        stream_closed_promise->set_value();
+                    }
+                });
 
         stream_closed_future.wait();
         std::unique_lock<std::mutex> lock(*subscribe_mutex);

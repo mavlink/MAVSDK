@@ -9,6 +9,10 @@
 
 namespace mavsdk {
 
+using Quaternion = Gimbal::Quaternion;
+using EulerAngle = Gimbal::EulerAngle;
+using AngularVelocityBody = Gimbal::AngularVelocityBody;
+using Attitude = Gimbal::Attitude;
 using ControlStatus = Gimbal::ControlStatus;
 
 Gimbal::Gimbal(System& system) : PluginBase(), _impl{std::make_unique<GimbalImpl>(system)} {}
@@ -108,6 +112,106 @@ void Gimbal::unsubscribe_control(ControlHandle handle)
 Gimbal::ControlStatus Gimbal::control() const
 {
     return _impl->control();
+}
+
+Gimbal::AttitudeHandle Gimbal::subscribe_attitude(const AttitudeCallback& callback)
+{
+    return _impl->subscribe_attitude(callback);
+}
+
+void Gimbal::unsubscribe_attitude(AttitudeHandle handle)
+{
+    _impl->unsubscribe_attitude(handle);
+}
+
+Gimbal::Attitude Gimbal::attitude() const
+{
+    return _impl->attitude();
+}
+
+bool operator==(const Gimbal::Quaternion& lhs, const Gimbal::Quaternion& rhs)
+{
+    return ((std::isnan(rhs.w) && std::isnan(lhs.w)) || rhs.w == lhs.w) &&
+           ((std::isnan(rhs.x) && std::isnan(lhs.x)) || rhs.x == lhs.x) &&
+           ((std::isnan(rhs.y) && std::isnan(lhs.y)) || rhs.y == lhs.y) &&
+           ((std::isnan(rhs.z) && std::isnan(lhs.z)) || rhs.z == lhs.z);
+}
+
+std::ostream& operator<<(std::ostream& str, Gimbal::Quaternion const& quaternion)
+{
+    str << std::setprecision(15);
+    str << "quaternion:" << '\n' << "{\n";
+    str << "    w: " << quaternion.w << '\n';
+    str << "    x: " << quaternion.x << '\n';
+    str << "    y: " << quaternion.y << '\n';
+    str << "    z: " << quaternion.z << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Gimbal::EulerAngle& lhs, const Gimbal::EulerAngle& rhs)
+{
+    return ((std::isnan(rhs.roll_deg) && std::isnan(lhs.roll_deg)) ||
+            rhs.roll_deg == lhs.roll_deg) &&
+           ((std::isnan(rhs.pitch_deg) && std::isnan(lhs.pitch_deg)) ||
+            rhs.pitch_deg == lhs.pitch_deg) &&
+           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
+}
+
+std::ostream& operator<<(std::ostream& str, Gimbal::EulerAngle const& euler_angle)
+{
+    str << std::setprecision(15);
+    str << "euler_angle:" << '\n' << "{\n";
+    str << "    roll_deg: " << euler_angle.roll_deg << '\n';
+    str << "    pitch_deg: " << euler_angle.pitch_deg << '\n';
+    str << "    yaw_deg: " << euler_angle.yaw_deg << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Gimbal::AngularVelocityBody& lhs, const Gimbal::AngularVelocityBody& rhs)
+{
+    return ((std::isnan(rhs.roll_rad_s) && std::isnan(lhs.roll_rad_s)) ||
+            rhs.roll_rad_s == lhs.roll_rad_s) &&
+           ((std::isnan(rhs.pitch_rad_s) && std::isnan(lhs.pitch_rad_s)) ||
+            rhs.pitch_rad_s == lhs.pitch_rad_s) &&
+           ((std::isnan(rhs.yaw_rad_s) && std::isnan(lhs.yaw_rad_s)) ||
+            rhs.yaw_rad_s == lhs.yaw_rad_s);
+}
+
+std::ostream&
+operator<<(std::ostream& str, Gimbal::AngularVelocityBody const& angular_velocity_body)
+{
+    str << std::setprecision(15);
+    str << "angular_velocity_body:" << '\n' << "{\n";
+    str << "    roll_rad_s: " << angular_velocity_body.roll_rad_s << '\n';
+    str << "    pitch_rad_s: " << angular_velocity_body.pitch_rad_s << '\n';
+    str << "    yaw_rad_s: " << angular_velocity_body.yaw_rad_s << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Gimbal::Attitude& lhs, const Gimbal::Attitude& rhs)
+{
+    return (rhs.euler_angle_forward == lhs.euler_angle_forward) &&
+           (rhs.quaternion_forward == lhs.quaternion_forward) &&
+           (rhs.euler_angle_north == lhs.euler_angle_north) &&
+           (rhs.quaternion_north == lhs.quaternion_north) &&
+           (rhs.angular_velocity == lhs.angular_velocity) && (rhs.timestamp_us == lhs.timestamp_us);
+}
+
+std::ostream& operator<<(std::ostream& str, Gimbal::Attitude const& attitude)
+{
+    str << std::setprecision(15);
+    str << "attitude:" << '\n' << "{\n";
+    str << "    euler_angle_forward: " << attitude.euler_angle_forward << '\n';
+    str << "    quaternion_forward: " << attitude.quaternion_forward << '\n';
+    str << "    euler_angle_north: " << attitude.euler_angle_north << '\n';
+    str << "    quaternion_north: " << attitude.quaternion_north << '\n';
+    str << "    angular_velocity: " << attitude.angular_velocity << '\n';
+    str << "    timestamp_us: " << attitude.timestamp_us << '\n';
+    str << '}';
+    return str;
 }
 
 bool operator==(const Gimbal::ControlStatus& lhs, const Gimbal::ControlStatus& rhs)

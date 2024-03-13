@@ -52,6 +52,10 @@ public:
     Gimbal::ControlHandle subscribe_control(const Gimbal::ControlCallback& callback);
     void unsubscribe_control(Gimbal::ControlHandle handle);
 
+    Gimbal::AttitudeHandle subscribe_attitude(const Gimbal::AttitudeCallback& callback);
+    void unsubscribe_attitude(Gimbal::AttitudeHandle handle);
+    Gimbal::Attitude attitude();
+
     static Gimbal::Result
     gimbal_result_from_command_result(MavlinkCommandSender::Result command_result);
 
@@ -74,6 +78,7 @@ private:
 
     std::mutex _mutex{};
     CallbackList<Gimbal::ControlStatus> _control_subscriptions{};
+    CallbackList<Gimbal::Attitude> _attitude_subscriptions{};
 };
 
 } // namespace mavsdk

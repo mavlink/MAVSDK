@@ -1,9 +1,11 @@
 #include "gimbal_protocol_v2.h"
 #include "gimbal_impl.h"
+#include "math_conversions.h"
 #include "mavlink_address.h"
 #include "mavsdk_math.h"
 #include <functional>
 #include <cmath>
+#include <mavlink/common/mavlink_msg_attitude.h>
 
 namespace mavsdk {
 
@@ -16,49 +18,181 @@ GimbalProtocolV2::GimbalProtocolV2(
     _gimbal_device_id(information.gimbal_device_id),
     _gimbal_manager_sysid(gimbal_manager_sysid),
     _gimbal_manager_compid(gimbal_manager_compid)
-{}
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    _system_impl.register_mavlink_message_handler(
+        MAVLINK_MSG_ID_GIMBAL_MANAGER_STATUS,
+        [this](const mavlink_message_t& message) { process_gimbal_manager_status(message); },
+        this);
+
+    _system_impl.register_mavlink_message_handler(
+        MAVLINK_MSG_ID_GIMBAL_DEVICE_ATTITUDE_STATUS,
+        [this](const mavlink_message_t& message) {
+            process_gimbal_device_attitude_status(message);
+        },
+        this);
+
+    _system_impl.register_mavlink_message_handler(
+        MAVLINK_MSG_ID_ATTITUDE,
+        [this](const mavlink_message_t& message) { process_attitude(message); },
+        this);
+
+    LogErr() << "Registered!";
+}
 
 GimbalProtocolV2::~GimbalProtocolV2()
 {
-    if (_is_mavlink_manager_status_registered) {
-        _is_mavlink_manager_status_registered = false;
+    std::lock_guard<std::mutex> lock(_mutex);
 
-        _system_impl.unregister_mavlink_message_handler(MAVLINK_MSG_ID_GIMBAL_MANAGER_STATUS, this);
-    }
+    _system_impl.unregister_all_mavlink_message_handlers(this);
+
+    LogErr() << "Unregistered!";
 }
 
 void GimbalProtocolV2::process_gimbal_manager_status(const mavlink_message_t& message)
 {
-    Gimbal::ControlMode new_control_mode;
-    mavlink_gimbal_manager_status_t gimbal_manager_status;
-    mavlink_msg_gimbal_manager_status_decode(&message, &gimbal_manager_status);
+    mavlink_gimbal_manager_status_t status;
+    mavlink_msg_gimbal_manager_status_decode(&message, &status);
 
-    const int primary_control_sysid = gimbal_manager_status.primary_control_sysid;
-    const int primary_control_compid = gimbal_manager_status.primary_control_compid;
-    const int secondary_control_sysid = gimbal_manager_status.secondary_control_sysid;
-    const int secondary_control_compid = gimbal_manager_status.secondary_control_compid;
+    std::lock_guard<std::mutex> lock(_mutex);
 
-    if (primary_control_sysid == static_cast<int>(_system_impl.get_own_system_id()) &&
-        primary_control_compid == static_cast<int>(_system_impl.get_own_component_id())) {
-        new_control_mode = Gimbal::ControlMode::Primary;
+    if (status.primary_control_sysid == static_cast<int>(_system_impl.get_own_system_id()) &&
+        status.primary_control_compid == static_cast<int>(_system_impl.get_own_component_id())) {
+        _current_control_status.control_mode = Gimbal::ControlMode::Primary;
     } else if (
-        secondary_control_sysid == static_cast<int>(_system_impl.get_own_system_id()) &&
-        secondary_control_compid == static_cast<int>(_system_impl.get_own_component_id())) {
-        new_control_mode = Gimbal::ControlMode::Secondary;
+        status.secondary_control_sysid == static_cast<int>(_system_impl.get_own_system_id()) &&
+        status.secondary_control_compid == static_cast<int>(_system_impl.get_own_component_id())) {
+        _current_control_status.control_mode = Gimbal::ControlMode::Secondary;
     } else {
-        new_control_mode = Gimbal::ControlMode::None;
+        _current_control_status.control_mode = Gimbal::ControlMode::None;
     }
 
-    _current_control_status.control_mode = new_control_mode;
-    _current_control_status.sysid_primary_control = primary_control_sysid;
-    _current_control_status.compid_primary_control = primary_control_compid;
-    _current_control_status.sysid_secondary_control = secondary_control_sysid;
-    _current_control_status.compid_secondary_control = secondary_control_compid;
+    _current_control_status.sysid_primary_control = status.primary_control_sysid;
+    _current_control_status.compid_primary_control = status.primary_control_compid;
+    _current_control_status.sysid_secondary_control = status.secondary_control_sysid;
+    _current_control_status.compid_secondary_control = status.secondary_control_compid;
 
     if (_control_callback) {
         // The queue is called outside of this class.
         _control_callback(_current_control_status);
     }
+}
+
+void GimbalProtocolV2::process_gimbal_device_attitude_status(const mavlink_message_t& message)
+{
+    mavlink_gimbal_device_attitude_status_t attitude_status;
+    mavlink_msg_gimbal_device_attitude_status_decode(&message, &attitude_status);
+
+    // By default, we assume it's in vehicle/forward frame.
+    bool is_in_forward_frame = true;
+
+    if (attitude_status.flags & GIMBAL_DEVICE_FLAGS_YAW_IN_VEHICLE_FRAME ||
+        attitude_status.flags & GIMBAL_DEVICE_FLAGS_YAW_IN_EARTH_FRAME) {
+        // Flags are set correctly according to newer spec, so we can use it.
+        if (attitude_status.flags & GIMBAL_DEVICE_FLAGS_YAW_IN_EARTH_FRAME) {
+            is_in_forward_frame = false;
+        }
+    } else {
+        // Neither of the flags indicating the frame are set, we fallback to previous way
+        // which depends on lock flag.
+        if (attitude_status.flags & GIMBAL_DEVICE_FLAGS_YAW_LOCK) {
+            is_in_forward_frame = false;
+        }
+    }
+
+    // Reset to defaults (e.g. NaN) first.
+    _current_attitude = {};
+
+    if (is_in_forward_frame) {
+        _current_attitude.quaternion_forward.w = attitude_status.q[0];
+        _current_attitude.quaternion_forward.x = attitude_status.q[1];
+        _current_attitude.quaternion_forward.y = attitude_status.q[2];
+        _current_attitude.quaternion_forward.z = attitude_status.q[3];
+
+        auto quaternion_forward = Quaternion{};
+        quaternion_forward.w = attitude_status.q[0];
+        quaternion_forward.x = attitude_status.q[1];
+        quaternion_forward.y = attitude_status.q[2];
+        quaternion_forward.z = attitude_status.q[3];
+        const auto euler_angle_forward = to_euler_angle_from_quaternion(quaternion_forward);
+
+        _current_attitude.euler_angle_forward.roll_deg = euler_angle_forward.roll_deg;
+        _current_attitude.euler_angle_forward.pitch_deg = euler_angle_forward.pitch_deg;
+        _current_attitude.euler_angle_forward.yaw_deg = euler_angle_forward.yaw_deg;
+
+        _current_attitude.timestamp_us = attitude_status.time_boot_ms * 1000;
+
+        // Calculate angle relative to North as well
+        if (!std::isnan(_vehicle_yaw_rad)) {
+            auto rotation =
+                to_quaternion_from_euler_angle(EulerAngle{0, 0, to_deg_from_rad(_vehicle_yaw_rad)});
+            auto quaternion_north = rotation * quaternion_forward;
+
+            _current_attitude.quaternion_north.w = quaternion_north.w;
+            _current_attitude.quaternion_north.x = quaternion_north.x;
+            _current_attitude.quaternion_north.y = quaternion_north.y;
+            _current_attitude.quaternion_north.z = quaternion_north.z;
+
+            const auto euler_angle_north = to_euler_angle_from_quaternion(quaternion_north);
+            _current_attitude.euler_angle_north.roll_deg = euler_angle_north.roll_deg;
+            _current_attitude.euler_angle_north.pitch_deg = euler_angle_north.pitch_deg;
+            _current_attitude.euler_angle_north.yaw_deg = euler_angle_north.yaw_deg;
+        }
+
+    } else {
+        _current_attitude.quaternion_north.w = attitude_status.q[0];
+        _current_attitude.quaternion_north.x = attitude_status.q[1];
+        _current_attitude.quaternion_north.y = attitude_status.q[2];
+        _current_attitude.quaternion_north.z = attitude_status.q[3];
+
+        auto quaternion_north = Quaternion{};
+        quaternion_north.w = attitude_status.q[0];
+        quaternion_north.x = attitude_status.q[1];
+        quaternion_north.y = attitude_status.q[2];
+        quaternion_north.z = attitude_status.q[3];
+        const auto euler_angle_north = to_euler_angle_from_quaternion(quaternion_north);
+
+        _current_attitude.euler_angle_north.roll_deg = euler_angle_north.roll_deg;
+        _current_attitude.euler_angle_north.pitch_deg = euler_angle_north.pitch_deg;
+        _current_attitude.euler_angle_north.yaw_deg = euler_angle_north.yaw_deg;
+
+        // Calculate angle relative to forward as well
+        if (!std::isnan(_vehicle_yaw_rad)) {
+            auto rotation = to_quaternion_from_euler_angle(
+                EulerAngle{0, 0, -to_deg_from_rad(_vehicle_yaw_rad)});
+            auto quaternion_forward = rotation * quaternion_north;
+
+            _current_attitude.quaternion_forward.w = quaternion_forward.w;
+            _current_attitude.quaternion_forward.x = quaternion_forward.x;
+            _current_attitude.quaternion_forward.y = quaternion_forward.y;
+            _current_attitude.quaternion_forward.z = quaternion_forward.z;
+
+            const auto euler_angle_forward = to_euler_angle_from_quaternion(quaternion_forward);
+            _current_attitude.euler_angle_forward.roll_deg = euler_angle_forward.roll_deg;
+            _current_attitude.euler_angle_forward.pitch_deg = euler_angle_forward.pitch_deg;
+            _current_attitude.euler_angle_forward.yaw_deg = euler_angle_forward.yaw_deg;
+        }
+    }
+
+    _current_attitude.angular_velocity.roll_rad_s = attitude_status.angular_velocity_x;
+    _current_attitude.angular_velocity.pitch_rad_s = attitude_status.angular_velocity_y;
+    _current_attitude.angular_velocity.yaw_rad_s = attitude_status.angular_velocity_z;
+
+    if (_attitude_callback) {
+        // The queue is called outside of this class.
+        _attitude_callback(_current_attitude);
+    }
+}
+
+void GimbalProtocolV2::process_attitude(const mavlink_message_t& message)
+{
+    mavlink_attitude_t attitude;
+    mavlink_msg_attitude_decode(&message, &attitude);
+
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    _vehicle_yaw_rad = attitude.yaw;
 }
 
 Gimbal::Result GimbalProtocolV2::set_angles(float roll_deg, float pitch_deg, float yaw_deg)
@@ -69,6 +203,8 @@ Gimbal::Result GimbalProtocolV2::set_angles(float roll_deg, float pitch_deg, flo
 
     float quaternion[4];
     mavlink_euler_to_quaternion(roll_rad, pitch_rad, yaw_rad, quaternion);
+
+    std::lock_guard<std::mutex> lock(_mutex);
 
     const uint32_t flags =
         GIMBAL_MANAGER_FLAGS_ROLL_LOCK | GIMBAL_MANAGER_FLAGS_PITCH_LOCK |
@@ -101,6 +237,8 @@ void GimbalProtocolV2::set_angles_async(
     // Sending the message should be quick and we can just do that straighaway.
     Gimbal::Result result = set_angles(roll_deg, pitch_deg, yaw_deg);
 
+    std::lock_guard<std::mutex> lock(_mutex);
+
     if (callback) {
         _system_impl.call_user_callback([callback, result]() { callback(result); });
     }
@@ -125,6 +263,8 @@ void GimbalProtocolV2::set_pitch_and_yaw_async(
 Gimbal::Result
 GimbalProtocolV2::set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_rate_deg_s)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     const uint32_t flags =
         GIMBAL_MANAGER_FLAGS_ROLL_LOCK | GIMBAL_MANAGER_FLAGS_PITCH_LOCK |
         ((_gimbal_mode == Gimbal::GimbalMode::YawLock) ? GIMBAL_MANAGER_FLAGS_YAW_LOCK : 0);
@@ -158,6 +298,8 @@ void GimbalProtocolV2::set_pitch_rate_and_yaw_rate_async(
     // Sending the message should be quick and we can just do that straighaway.
     Gimbal::Result result = set_pitch_rate_and_yaw_rate(pitch_rate_deg_s, yaw_rate_deg_s);
 
+    std::lock_guard<std::mutex> lock(_mutex);
+
     if (callback) {
         auto temp_callback = callback;
         _system_impl.call_user_callback([temp_callback, result]() { temp_callback(result); });
@@ -166,6 +308,8 @@ void GimbalProtocolV2::set_pitch_rate_and_yaw_rate_async(
 
 Gimbal::Result GimbalProtocolV2::set_mode(const Gimbal::GimbalMode gimbal_mode)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     _gimbal_mode = gimbal_mode;
     return Gimbal::Result::Success;
 }
@@ -173,6 +317,8 @@ Gimbal::Result GimbalProtocolV2::set_mode(const Gimbal::GimbalMode gimbal_mode)
 void GimbalProtocolV2::set_mode_async(
     const Gimbal::GimbalMode gimbal_mode, Gimbal::ResultCallback callback)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     _gimbal_mode = gimbal_mode;
 
     if (callback) {
@@ -198,6 +344,8 @@ GimbalProtocolV2::set_roi_location(double latitude_deg, double longitude_deg, fl
 void GimbalProtocolV2::set_roi_location_async(
     double latitude_deg, double longitude_deg, float altitude_m, Gimbal::ResultCallback callback)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     MavlinkCommandSender::CommandInt command{};
 
     command.command = MAV_CMD_DO_SET_ROI_LOCATION;
@@ -208,7 +356,7 @@ void GimbalProtocolV2::set_roi_location_async(
     command.target_component_id = _gimbal_manager_compid;
 
     _system_impl.send_command_async(
-        command, [this, callback](MavlinkCommandSender::Result result, float) {
+        command, [callback](MavlinkCommandSender::Result result, float) {
             GimbalImpl::receive_command_result(result, callback);
         });
 }
@@ -226,6 +374,8 @@ Gimbal::Result GimbalProtocolV2::take_control(Gimbal::ControlMode control_mode)
 void GimbalProtocolV2::take_control_async(
     Gimbal::ControlMode control_mode, Gimbal::ResultCallback callback)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     if (control_mode == Gimbal::ControlMode::None) {
         release_control_async(callback);
         return;
@@ -256,7 +406,7 @@ void GimbalProtocolV2::take_control_async(
     command.target_component_id = _gimbal_manager_compid;
 
     _system_impl.send_command_async(
-        command, [this, callback](MavlinkCommandSender::Result result, float) {
+        command, [callback](MavlinkCommandSender::Result result, float) {
             GimbalImpl::receive_command_result(result, callback);
         });
 }
@@ -273,6 +423,8 @@ Gimbal::Result GimbalProtocolV2::release_control()
 
 void GimbalProtocolV2::release_control_async(Gimbal::ResultCallback callback)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     MavlinkCommandSender::CommandLong command{};
 
     command.command = MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE;
@@ -285,49 +437,37 @@ void GimbalProtocolV2::release_control_async(Gimbal::ResultCallback callback)
     command.target_component_id = _gimbal_manager_compid;
 
     _system_impl.send_command_async(
-        command, [this, callback](MavlinkCommandSender::Result result, float) {
+        command, [callback](MavlinkCommandSender::Result result, float) {
             GimbalImpl::receive_command_result(result, callback);
         });
 }
 
 Gimbal::ControlStatus GimbalProtocolV2::control()
 {
-    auto prom = std::promise<Gimbal::ControlStatus>();
-    auto fut = prom.get_future();
+    std::lock_guard<std::mutex> lock(_mutex);
 
-    control_async(
-        [&prom](Gimbal::ControlStatus control_status) { prom.set_value(control_status); });
-
-    return fut.get();
+    return _current_control_status;
 }
 
 void GimbalProtocolV2::control_async(Gimbal::ControlCallback callback)
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     _control_callback = callback;
+}
 
-    if (_control_callback != nullptr) {
-        if (!_is_mavlink_manager_status_registered) {
-            _is_mavlink_manager_status_registered = true;
+Gimbal::Attitude GimbalProtocolV2::attitude()
+{
+    std::lock_guard<std::mutex> lock(_mutex);
 
-            _system_impl.register_mavlink_message_handler(
-                MAVLINK_MSG_ID_GIMBAL_MANAGER_STATUS,
-                [this](const mavlink_message_t& message) {
-                    process_gimbal_manager_status(message);
-                },
-                this);
-        }
+    return _current_attitude;
+}
 
-        // We don't need to use the queue here. This is done outside of this class.
-        _control_callback(_current_control_status);
+void GimbalProtocolV2::attitude_async(Gimbal::AttitudeCallback callback)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
 
-    } else {
-        if (_is_mavlink_manager_status_registered) {
-            _is_mavlink_manager_status_registered = false;
-
-            _system_impl.unregister_mavlink_message_handler(
-                MAVLINK_MSG_ID_GIMBAL_MANAGER_STATUS, this);
-        }
-    }
+    _attitude_callback = callback;
 }
 
 } // namespace mavsdk

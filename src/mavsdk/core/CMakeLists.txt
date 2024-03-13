@@ -21,6 +21,7 @@ target_sources(mavsdk
     system.cpp
     system_impl.cpp
     flight_mode.cpp
+    math_conversions.cpp
     mavsdk.cpp
     mavsdk_impl.cpp
     mavlink_channels.cpp
@@ -174,6 +175,7 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/cli_arg_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/locked_queue_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/geometry_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/math_conversions_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_math_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_time_test.cpp
