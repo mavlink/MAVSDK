@@ -978,6 +978,12 @@ bool MavlinkFtpClient::list_dir_continue(Work& work, ListDirItem& item, PayloadH
         return false;
     }
 
+    if (payload->size == 0) {
+        std::sort(item.dirs.begin(), item.dirs.end());
+        item.callback(ClientResult::Success, item.dirs);
+        return false;
+    }
+
     // Make sure there is a zero termination.
     payload->data[payload->size - 1] = '\0';
 
