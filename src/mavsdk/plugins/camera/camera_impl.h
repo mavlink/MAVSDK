@@ -47,7 +47,7 @@ public:
 
     std::pair<Camera::Result, Camera::VideoStreamInfo> get_video_stream_info();
 
-    Camera::VideoStreamInfo video_stream_info();
+    std::vector<Camera::VideoStreamInfo> video_stream_info();
     Camera::VideoStreamInfoHandle
     subscribe_video_stream_info(const Camera::VideoStreamInfoCallback& callback);
     void unsubscribe_video_stream_info(Camera::VideoStreamInfoHandle handle);
@@ -207,6 +207,8 @@ private:
 
     void request_missing_capture_info();
 
+    bool parse_version_int(std::string& version_str, uint32_t version_int);
+
     std::unique_ptr<CameraDefinition> _camera_definition{};
     bool _is_fetching_camera_definition{false};
     bool _has_camera_definition_timed_out{false};
@@ -254,10 +256,10 @@ private:
 
     struct {
         std::mutex mutex{};
-        Camera::VideoStreamInfo data{};
+        std::vector<Camera::VideoStreamInfo> data{};
         bool available{false};
         void* call_every_cookie{nullptr};
-        CallbackList<Camera::VideoStreamInfo> subscription_callbacks{};
+        CallbackList<std::vector<Camera::VideoStreamInfo>> subscription_callbacks{};
     } _video_stream_info{};
 
     struct {

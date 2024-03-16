@@ -415,6 +415,8 @@ public:
     {
         auto rpc_obj = std::make_unique<rpc::camera::VideoStreamInfo>();
 
+        rpc_obj->set_stream_id(video_stream_info.stream_id);
+
         rpc_obj->set_allocated_settings(
             translateToRpcVideoStreamSettings(video_stream_info.settings).release());
 
@@ -429,6 +431,8 @@ public:
     translateFromRpcVideoStreamInfo(const rpc::camera::VideoStreamInfo& video_stream_info)
     {
         mavsdk::Camera::VideoStreamInfo obj;
+
+        obj.stream_id = video_stream_info.stream_id();
 
         obj.settings = translateFromRpcVideoStreamSettings(video_stream_info.settings());
 
@@ -668,6 +672,83 @@ public:
         return obj;
     }
 
+    static rpc::camera::Information::CameraCapFlags translateToRpcCameraCapFlags(
+        const mavsdk::Camera::Information::CameraCapFlags& camera_cap_flags)
+    {
+        switch (camera_cap_flags) {
+            default:
+                LogErr() << "Unknown camera_cap_flags enum value: "
+                         << static_cast<int>(camera_cap_flags);
+            // FALLTHROUGH
+            case mavsdk::Camera::Information::CameraCapFlags::CaptureVideo:
+                return rpc::camera::Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAPTURE_VIDEO;
+            case mavsdk::Camera::Information::CameraCapFlags::CaptureImage:
+                return rpc::camera::Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAPTURE_IMAGE;
+            case mavsdk::Camera::Information::CameraCapFlags::HasModes:
+                return rpc::camera::Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_MODES;
+            case mavsdk::Camera::Information::CameraCapFlags::CanCaptureImageInVideoMode:
+                return rpc::camera::
+                    Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAN_CAPTURE_IMAGE_IN_VIDEO_MODE;
+            case mavsdk::Camera::Information::CameraCapFlags::CanCaptureVideoInImageMode:
+                return rpc::camera::
+                    Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAN_CAPTURE_VIDEO_IN_IMAGE_MODE;
+            case mavsdk::Camera::Information::CameraCapFlags::HasImageSurveyMode:
+                return rpc::camera::
+                    Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_IMAGE_SURVEY_MODE;
+            case mavsdk::Camera::Information::CameraCapFlags::HasBasicZoom:
+                return rpc::camera::Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_BASIC_ZOOM;
+            case mavsdk::Camera::Information::CameraCapFlags::HasBasicFocus:
+                return rpc::camera::Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_BASIC_FOCUS;
+            case mavsdk::Camera::Information::CameraCapFlags::HasVideoStream:
+                return rpc::camera::Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM;
+            case mavsdk::Camera::Information::CameraCapFlags::HasTrackingPoint:
+                return rpc::camera::Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_POINT;
+            case mavsdk::Camera::Information::CameraCapFlags::HasTrackingRectangle:
+                return rpc::camera::
+                    Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE;
+            case mavsdk::Camera::Information::CameraCapFlags::HasTrackingGeoStatus:
+                return rpc::camera::
+                    Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_GEO_STATUS;
+        }
+    }
+
+    static mavsdk::Camera::Information::CameraCapFlags
+    translateFromRpcCameraCapFlags(const rpc::camera::Information::CameraCapFlags camera_cap_flags)
+    {
+        switch (camera_cap_flags) {
+            default:
+                LogErr() << "Unknown camera_cap_flags enum value: "
+                         << static_cast<int>(camera_cap_flags);
+            // FALLTHROUGH
+            case rpc::camera::Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAPTURE_VIDEO:
+                return mavsdk::Camera::Information::CameraCapFlags::CaptureVideo;
+            case rpc::camera::Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAPTURE_IMAGE:
+                return mavsdk::Camera::Information::CameraCapFlags::CaptureImage;
+            case rpc::camera::Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_MODES:
+                return mavsdk::Camera::Information::CameraCapFlags::HasModes;
+            case rpc::camera::
+                Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAN_CAPTURE_IMAGE_IN_VIDEO_MODE:
+                return mavsdk::Camera::Information::CameraCapFlags::CanCaptureImageInVideoMode;
+            case rpc::camera::
+                Information_CameraCapFlags_CAMERA_CAP_FLAGS_CAN_CAPTURE_VIDEO_IN_IMAGE_MODE:
+                return mavsdk::Camera::Information::CameraCapFlags::CanCaptureVideoInImageMode;
+            case rpc::camera::Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_IMAGE_SURVEY_MODE:
+                return mavsdk::Camera::Information::CameraCapFlags::HasImageSurveyMode;
+            case rpc::camera::Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_BASIC_ZOOM:
+                return mavsdk::Camera::Information::CameraCapFlags::HasBasicZoom;
+            case rpc::camera::Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_BASIC_FOCUS:
+                return mavsdk::Camera::Information::CameraCapFlags::HasBasicFocus;
+            case rpc::camera::Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM:
+                return mavsdk::Camera::Information::CameraCapFlags::HasVideoStream;
+            case rpc::camera::Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_POINT:
+                return mavsdk::Camera::Information::CameraCapFlags::HasTrackingPoint;
+            case rpc::camera::Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE:
+                return mavsdk::Camera::Information::CameraCapFlags::HasTrackingRectangle;
+            case rpc::camera::Information_CameraCapFlags_CAMERA_CAP_FLAGS_HAS_TRACKING_GEO_STATUS:
+                return mavsdk::Camera::Information::CameraCapFlags::HasTrackingGeoStatus;
+        }
+    }
+
     static std::unique_ptr<rpc::camera::Information>
     translateToRpcInformation(const mavsdk::Camera::Information& information)
     {
@@ -676,6 +757,8 @@ public:
         rpc_obj->set_vendor_name(information.vendor_name);
 
         rpc_obj->set_model_name(information.model_name);
+
+        rpc_obj->set_firmware_version(information.firmware_version);
 
         rpc_obj->set_focal_length_mm(information.focal_length_mm);
 
@@ -686,6 +769,16 @@ public:
         rpc_obj->set_horizontal_resolution_px(information.horizontal_resolution_px);
 
         rpc_obj->set_vertical_resolution_px(information.vertical_resolution_px);
+
+        rpc_obj->set_lens_id(information.lens_id);
+
+        rpc_obj->set_definition_file_version(information.definition_file_version);
+
+        rpc_obj->set_definition_file_uri(information.definition_file_uri);
+
+        for (const auto& elem : information.camera_cap_flags) {
+            rpc_obj->add_camera_cap_flags(translateToRpcCameraCapFlags(elem));
+        }
 
         return rpc_obj;
     }
@@ -699,6 +792,8 @@ public:
 
         obj.model_name = information.model_name();
 
+        obj.firmware_version = information.firmware_version();
+
         obj.focal_length_mm = information.focal_length_mm();
 
         obj.horizontal_sensor_size_mm = information.horizontal_sensor_size_mm();
@@ -708,6 +803,17 @@ public:
         obj.horizontal_resolution_px = information.horizontal_resolution_px();
 
         obj.vertical_resolution_px = information.vertical_resolution_px();
+
+        obj.lens_id = information.lens_id();
+
+        obj.definition_file_version = information.definition_file_version();
+
+        obj.definition_file_uri = information.definition_file_uri();
+
+        for (const auto& elem : information.camera_cap_flags()) {
+            obj.camera_cap_flags.push_back(translateFromRpcCameraCapFlags(
+                static_cast<mavsdk::rpc::camera::Information::CameraCapFlags>(elem)));
+        }
 
         return obj;
     }
@@ -1074,11 +1180,13 @@ public:
         const mavsdk::Camera::VideoStreamInfoHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_video_stream_info(
                 [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Camera::VideoStreamInfo video_stream_info) {
+                    const std::vector<mavsdk::Camera::VideoStreamInfo> video_stream_info) {
                     rpc::camera::VideoStreamInfoResponse rpc_response;
 
-                    rpc_response.set_allocated_video_stream_info(
-                        translateToRpcVideoStreamInfo(video_stream_info).release());
+                    for (const auto& elem : video_stream_info) {
+                        auto* ptr = rpc_response.add_video_stream_infos();
+                        ptr->CopyFrom(*translateToRpcVideoStreamInfo(elem).release());
+                    }
 
                     std::unique_lock<std::mutex> lock(*subscribe_mutex);
                     if (!*is_finished && !writer->Write(rpc_response)) {
