@@ -32,6 +32,7 @@ static const char* GimbalService_method_names[] = {
   "/mavsdk.rpc.gimbal.GimbalService/TakeControl",
   "/mavsdk.rpc.gimbal.GimbalService/ReleaseControl",
   "/mavsdk.rpc.gimbal.GimbalService/SubscribeControl",
+  "/mavsdk.rpc.gimbal.GimbalService/SubscribeAttitude",
 };
 
 std::unique_ptr< GimbalService::Stub> GimbalService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -49,6 +50,7 @@ GimbalService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chan
   , rpcmethod_TakeControl_(GimbalService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_ReleaseControl_(GimbalService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SubscribeControl_(GimbalService_method_names[7], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_SubscribeAttitude_(GimbalService_method_names[8], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   {}
 
 ::grpc::Status GimbalService::Stub::SetAngles(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SetAnglesRequest& request, ::mavsdk::rpc::gimbal::SetAnglesResponse* response) {
@@ -228,6 +230,22 @@ void GimbalService::Stub::async::SubscribeControl(::grpc::ClientContext* context
   return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::gimbal::ControlResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeControl_, context, request, false, nullptr);
 }
 
+::grpc::ClientReader< ::mavsdk::rpc::gimbal::AttitudeResponse>* GimbalService::Stub::SubscribeAttitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeAttitudeRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::gimbal::AttitudeResponse>::Create(channel_.get(), rpcmethod_SubscribeAttitude_, context, request);
+}
+
+void GimbalService::Stub::async::SubscribeAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeAttitudeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::gimbal::AttitudeResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::gimbal::AttitudeResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeAttitude_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::gimbal::AttitudeResponse>* GimbalService::Stub::AsyncSubscribeAttitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeAttitudeRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::gimbal::AttitudeResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeAttitude_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::gimbal::AttitudeResponse>* GimbalService::Stub::PrepareAsyncSubscribeAttitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::gimbal::SubscribeAttitudeRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::gimbal::AttitudeResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeAttitude_, context, request, false, nullptr);
+}
+
 GimbalService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       GimbalService_method_names[0],
@@ -309,6 +327,16 @@ GimbalService::Service::Service() {
              ::grpc::ServerWriter<::mavsdk::rpc::gimbal::ControlResponse>* writer) {
                return service->SubscribeControl(ctx, req, writer);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      GimbalService_method_names[8],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< GimbalService::Service, ::mavsdk::rpc::gimbal::SubscribeAttitudeRequest, ::mavsdk::rpc::gimbal::AttitudeResponse>(
+          [](GimbalService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::gimbal::SubscribeAttitudeRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::gimbal::AttitudeResponse>* writer) {
+               return service->SubscribeAttitude(ctx, req, writer);
+             }, this)));
 }
 
 GimbalService::Service::~Service() {
@@ -364,6 +392,13 @@ GimbalService::Service::~Service() {
 }
 
 ::grpc::Status GimbalService::Service::SubscribeControl(::grpc::ServerContext* context, const ::mavsdk::rpc::gimbal::SubscribeControlRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::gimbal::ControlResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status GimbalService::Service::SubscribeAttitude(::grpc::ServerContext* context, const ::mavsdk::rpc::gimbal::SubscribeAttitudeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::gimbal::AttitudeResponse>* writer) {
   (void) context;
   (void) request;
   (void) writer;

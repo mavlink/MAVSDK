@@ -58,7 +58,7 @@ static bool _received_actuator_control_target = false;
 static bool _received_actuator_output_status = false;
 static bool _received_altitude = false;
 
-TEST_F(SitlTest, PX4TelemetryAsync)
+TEST(SitlTest, PX4TelemetryAsync)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 

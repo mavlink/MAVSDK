@@ -2,6 +2,7 @@
 
 #include "plugins/gimbal/gimbal.h"
 #include "gimbal_protocol_base.h"
+#include <mutex>
 
 namespace mavsdk {
 
@@ -50,20 +51,26 @@ public:
     Gimbal::ControlStatus control() override;
     void control_async(Gimbal::ControlCallback callback) override;
 
+    Gimbal::Attitude attitude() override;
+    void attitude_async(Gimbal::AttitudeCallback callback) override;
+
 private:
     void set_gimbal_information(const mavlink_gimbal_manager_information_t& information);
     void process_gimbal_manager_status(const mavlink_message_t& message);
+    void process_gimbal_device_attitude_status(const mavlink_message_t& message);
+    void process_attitude(const mavlink_message_t& message);
 
     uint8_t _gimbal_device_id;
     uint8_t _gimbal_manager_sysid;
     uint8_t _gimbal_manager_compid;
 
+    std::mutex _mutex;
     Gimbal::GimbalMode _gimbal_mode{Gimbal::GimbalMode::YawFollow};
-
     Gimbal::ControlStatus _current_control_status{Gimbal::ControlMode::None, 0, 0, 0, 0};
     Gimbal::ControlCallback _control_callback;
-
-    bool _is_mavlink_manager_status_registered = false;
+    Gimbal::Attitude _current_attitude{};
+    Gimbal::AttitudeCallback _attitude_callback;
+    float _vehicle_yaw_rad{NAN};
 };
 
 } // namespace mavsdk
