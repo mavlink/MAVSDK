@@ -4,7 +4,7 @@
 #include <mutex>
 
 #if defined(WINDOWS)
-#include "windows_include.h"
+#include <windows.h>
 #define WIN_COLOR_RED 4
 #define WIN_COLOR_GREEN 10
 #define WIN_COLOR_YELLOW 14
