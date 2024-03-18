@@ -1,4 +1,5 @@
 #include "system.h"
+#include "autopilot.h"
 #include "mavsdk_impl.h"
 #include "system_impl.h"
 #include "plugin_impl_base.h"
@@ -30,10 +31,10 @@ bool System::has_autopilot() const
     return _system_impl->has_autopilot();
 }
 
-System::Autopilot System::autopilot() const
-{
-    return (Autopilot)_system_impl->autopilot();
-}
+// System::Autopilot System::autopilot() const
+// {
+//     return (Autopilot)_system_impl->autopilot();
+// }
 
 bool System::has_camera(int camera_id) const
 {
