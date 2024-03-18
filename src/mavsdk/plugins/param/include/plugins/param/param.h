@@ -194,6 +194,18 @@ public:
     using ResultCallback = std::function<void(Result)>;
 
     /**
+     * @brief Get an any parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    template <typename T>
+    std::pair<Result, T> get_param_any(const std::string &name) const;
+
+    /**
      * @brief Get an int parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.

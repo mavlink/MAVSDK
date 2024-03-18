@@ -199,6 +199,11 @@ public:
     using GetParamCustomCallback =
         std::function<void(MavlinkParameterClient::Result result, const std::string& value)>;
 
+    template <class T>
+    std::pair<MavlinkParameterClient::Result, T> get_param_any(
+        const std::string& name,
+        std::optional<uint8_t> maybe_component_id = {},
+        bool extended = false);
     std::pair<MavlinkParameterClient::Result, float> get_param_float(
         const std::string& name,
         std::optional<uint8_t> maybe_component_id = {},

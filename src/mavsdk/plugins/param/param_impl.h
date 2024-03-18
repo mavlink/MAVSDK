@@ -20,6 +20,9 @@ public:
     void enable() override;
     void disable() override;
 
+    template <class T>
+    std::pair<Param::Result, T> get_param_any(const std::string& name);
+
     std::pair<Param::Result, int32_t> get_param_int(const std::string& name);
 
     Param::Result set_param_int(const std::string& name, int32_t value);

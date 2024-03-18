@@ -275,13 +275,18 @@ void MavlinkParameterClient::get_param_async(
     get_param_async(name, callback_future_result, cookie);
 }
 
-template<class T>
+#include <iostream>
+#define LOGI(str) std::cout << "Ciber -> " << str << std::endl;
+#define LOGT std::cout << __FILE__ << __func__ << __LINE__ << endl;
+
+template<typename T>
 void MavlinkParameterClient::get_param_async_typesafe(
     const std::string& name, const GetParamTypesafeCallback<T> callback, const void* cookie)
 {
     // We need to delay the type checking until we get a response from the server.
     GetParamAnyCallback callback_future_result = [callback](Result result, ParamValue value) {
         if (result == Result::Success) {
+            LOGI(value._value.index());
             if (value.is<T>()) {
                 callback(Result::Success, value.get<T>());
             } else {
@@ -293,6 +298,35 @@ void MavlinkParameterClient::get_param_async_typesafe(
     };
     get_param_async(name, callback_future_result, cookie);
 }
+template void MavlinkParameterClient::get_param_async_typesafe<uint8_t>(const std::string&, const GetParamAnyCallback2<uint8_t>, const void*);
+template void MavlinkParameterClient::get_param_async_typesafe<int8_t>(const std::string&, const GetParamAnyCallback2<int8_t>, const void*);
+template void MavlinkParameterClient::get_param_async_typesafe<uint16_t>(const std::string&, const GetParamAnyCallback2<uint16_t>, const void*);
+template void MavlinkParameterClient::get_param_async_typesafe<int16_t>(const std::string&, const GetParamAnyCallback2<int16_t>, const void*);
+template void MavlinkParameterClient::get_param_async_typesafe<uint32_t>(const std::string&, const GetParamAnyCallback2<uint32_t>, const void*);
+template void MavlinkParameterClient::get_param_async_typesafe<int32_t>(const std::string&, const GetParamAnyCallback2<int32_t>, const void*);
+template void MavlinkParameterClient::get_param_async_typesafe<uint64_t>(const std::string&, const GetParamAnyCallback2<uint64_t>, const void*);
+template void MavlinkParameterClient::get_param_async_typesafe<int64_t>(const std::string&, const GetParamAnyCallback2<int64_t>, const void*);
+template void MavlinkParameterClient::get_param_async_typesafe<float>(const std::string&, const GetParamAnyCallback2<float>, const void*);
+template void MavlinkParameterClient::get_param_async_typesafe<double>(const std::string&, const GetParamAnyCallback2<double>, const void*);
+template void MavlinkParameterClient::get_param_async_typesafe<std::string>(const std::string&, const GetParamAnyCallback2<std::string>, const void*);
+
+template <class T>
+void MavlinkParameterClient::get_param_any_async(
+    const std::string& name, const GetParamAnyCallback2<T>& callback, const void* cookie)
+{
+    get_param_async_typesafe<T>(name, callback, cookie);
+}
+template void MavlinkParameterClient::get_param_any_async<uint8_t>(const std::string&, const GetParamAnyCallback2<uint8_t>&, const void*);
+template void MavlinkParameterClient::get_param_any_async<int8_t>(const std::string&, const GetParamAnyCallback2<int8_t>&, const void*);
+template void MavlinkParameterClient::get_param_any_async<uint16_t>(const std::string&, const GetParamAnyCallback2<uint16_t>&, const void*);
+template void MavlinkParameterClient::get_param_any_async<int16_t>(const std::string&, const GetParamAnyCallback2<int16_t>&, const void*);
+template void MavlinkParameterClient::get_param_any_async<uint32_t>(const std::string&, const GetParamAnyCallback2<uint32_t>&, const void*);
+template void MavlinkParameterClient::get_param_any_async<int32_t>(const std::string&, const GetParamAnyCallback2<int32_t>&, const void*);
+template void MavlinkParameterClient::get_param_any_async<uint64_t>(const std::string&, const GetParamAnyCallback2<uint64_t>&, const void*);
+template void MavlinkParameterClient::get_param_any_async<int64_t>(const std::string&, const GetParamAnyCallback2<int64_t>&, const void*);
+template void MavlinkParameterClient::get_param_any_async<float>(const std::string&, const GetParamAnyCallback2<float>&, const void*);
+template void MavlinkParameterClient::get_param_any_async<double>(const std::string&, const GetParamAnyCallback2<double>&, const void*);
+template void MavlinkParameterClient::get_param_any_async<std::string>(const std::string&, const GetParamAnyCallback2<std::string>&, const void*);
 
 void MavlinkParameterClient::get_param_float_async(
     const std::string& name, const GetParamFloatCallback& callback, const void* cookie)
@@ -312,19 +346,31 @@ void MavlinkParameterClient::get_param_custom_async(
     get_param_async_typesafe<std::string>(name, callback, cookie);
 }
 
-std::pair<MavlinkParameterClient::Result, ParamValue>
-MavlinkParameterClient::get_param(const std::string& name)
+template <class T>
+std::pair<MavlinkParameterClient::Result, T>
+MavlinkParameterClient::get_param_any(const std::string& name)
 {
-    auto prom = std::promise<std::pair<Result, ParamValue>>();
+    auto prom = std::promise<std::pair<Result, T>>();
     auto res = prom.get_future();
-    get_param_async(
+    get_param_any_async<T>(
         name,
-        [&prom](Result result, ParamValue new_value) {
-            prom.set_value(std::make_pair<>(result, std::move(new_value)));
+        [&prom](Result result, T new_value) {
+            prom.set_value(std::pair<Result, T>(result, new_value));
         },
         this);
     return res.get();
 }
+template std::pair<MavlinkParameterClient::Result, uint8_t> MavlinkParameterClient::get_param_any<uint8_t>(const std::string&);
+template std::pair<MavlinkParameterClient::Result, int8_t> MavlinkParameterClient::get_param_any<int8_t>(const std::string&);
+template std::pair<MavlinkParameterClient::Result, uint16_t> MavlinkParameterClient::get_param_any<uint16_t>(const std::string&);
+template std::pair<MavlinkParameterClient::Result, int16_t> MavlinkParameterClient::get_param_any<int16_t>(const std::string&);
+template std::pair<MavlinkParameterClient::Result, uint32_t> MavlinkParameterClient::get_param_any<uint32_t>(const std::string&);
+template std::pair<MavlinkParameterClient::Result, int32_t> MavlinkParameterClient::get_param_any<int32_t>(const std::string&);
+template std::pair<MavlinkParameterClient::Result, uint64_t> MavlinkParameterClient::get_param_any<uint64_t>(const std::string&);
+template std::pair<MavlinkParameterClient::Result, int64_t> MavlinkParameterClient::get_param_any<int64_t>(const std::string&);
+template std::pair<MavlinkParameterClient::Result, float> MavlinkParameterClient::get_param_any<float>(const std::string&);
+template std::pair<MavlinkParameterClient::Result, double> MavlinkParameterClient::get_param_any<double>(const std::string&);
+template std::pair<MavlinkParameterClient::Result, std::string> MavlinkParameterClient::get_param_any<std::string>(const std::string&);
 
 std::pair<MavlinkParameterClient::Result, int32_t>
 MavlinkParameterClient::get_param_int(const std::string& name)

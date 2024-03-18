@@ -525,6 +525,16 @@ void ParamValue::set_custom(const std::string& new_value)
     }
 }
 
+[[nodiscard]] std::optional<decltype(ParamValue::_value)> ParamValue::get_any() const
+{
+    if (std::get_if<std::string>(&_value)) {
+        return std::get<std::string>(_value);
+    } else {
+        LogErr() << "Not custom type";
+        return {};
+    }
+}
+
 std::array<char, 128> ParamValue::get_128_bytes() const
 {
     std::array<char, 128> bytes{};
