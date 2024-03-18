@@ -209,7 +209,7 @@ TEST(SystemTest, FtpDownloadBurstBigFileLossy)
 
 TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
 {
-    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 1000));
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 5000));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
 
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
@@ -219,8 +219,8 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     // Once we received half, we want to stop all traffic.
-    bool got_half = false;
-    auto drop_at_some_point = [&got_half](mavlink_message_t&) { return !got_half; };
+    bool got_enough = false;
+    auto drop_at_some_point = [&got_enough](mavlink_message_t&) { return !got_enough; };
 
     mavsdk_groundstation.intercept_incoming_messages_async(drop_at_some_point);
     mavsdk_groundstation.intercept_outgoing_messages_async(drop_at_some_point);
@@ -247,9 +247,9 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
         ("" / temp_file).string(),
         temp_dir_downloaded.string(),
         true,
-        [&prom, &got_half](Ftp::Result result, Ftp::ProgressData progress_data) {
+        [&prom, &got_enough](Ftp::Result result, Ftp::ProgressData progress_data) {
             if (progress_data.bytes_transferred > 500) {
-                got_half = true;
+                got_enough = true;
             }
             if (result != Ftp::Result::Next) {
                 prom.set_value(result);
