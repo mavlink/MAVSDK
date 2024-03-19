@@ -5,6 +5,7 @@
 #include <functional>
 #include <utility>
 #include "px4_custom_mode.h"
+#include "autopilot.h"
 
 // Set to 1 to log incoming/outgoing mavlink messages.
 #define MESSAGE_DEBUGGING 0
@@ -28,11 +29,6 @@ bool System::is_standalone() const
 bool System::has_autopilot() const
 {
     return _system_impl->has_autopilot();
-}
-
-System::Autopilot System::autopilot() const
-{
-    return (Autopilot)_system_impl->autopilot();
 }
 
 bool System::has_camera(int camera_id) const

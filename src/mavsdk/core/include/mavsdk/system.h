@@ -5,7 +5,7 @@
 #include <functional>
 #include <vector>
 
-#include "autopilot.h"
+#include "../../autopilot.h"
 #include "deprecated.h"
 #include "handle.h"
 
@@ -52,21 +52,6 @@ public:
      * @return `true` if it has an autopilot, `false` otherwise.
      */
     bool has_autopilot() const;
-
-    /**
-     * @brief ENUM contains types of basic autopilots..
-     */
-    enum class Autopilot {
-        Unknown,
-        Px4,
-        ArduPilot,
-    };
-
-    /**
-     * @brief Checks the currently connected autopilot..
-     * @return Returns the currently connected autopilot..
-     */
-    Autopilot autopilot() const;
 
     /**
      * @brief Checks whether the system is a standalone (non-autopilot).
