@@ -10,34 +10,34 @@ using namespace mavsdk;
 static void takeoff_and_hover_at_altitude(float altitude_m);
 void takeoff_and_hover_at_altitude_apm(float altitude_m);
 
-TEST_F(SitlTest, PX4ActionHoverSyncDefault)
+TEST(SitlTest, PX4ActionHoverSyncDefault)
 {
     takeoff_and_hover_at_altitude(2.5);
 }
 
-TEST_F(SitlTest, PX4ActionHoverSyncHigher)
+TEST(SitlTest, PX4ActionHoverSyncHigher)
 {
     takeoff_and_hover_at_altitude(5.0f);
 }
 
-TEST_F(SitlTest, PX4ActionHoverSyncLower)
+TEST(SitlTest, PX4ActionHoverSyncLower)
 {
     // TODO: less than 1.0 is currently failing due to a Firmware bug.
     // https://github.com/PX4/Firmware/issues/12471
     takeoff_and_hover_at_altitude(1.5f);
 }
 
-TEST_F(SitlTest, APMActionHoverSyncDefault)
+TEST(SitlTest, APMActionHoverSyncDefault)
 {
     takeoff_and_hover_at_altitude_apm(2.5);
 }
 
-TEST_F(SitlTest, APMActionHoverSyncHigher)
+TEST(SitlTest, APMActionHoverSyncHigher)
 {
     takeoff_and_hover_at_altitude_apm(5.0f);
 }
 
-TEST_F(SitlTest, APMActionHoverSyncLower)
+TEST(SitlTest, APMActionHoverSyncLower)
 {
     // TODO: less than 1.0 is currently failing due to a Firmware bug.
     // https://github.com/PX4/Firmware/issues/12471

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-dockerimage=docker.io/mavsdk/mavsdk-ubuntu-22.04-px4-sitl-v1.13
+dockerimage=docker.io/mavsdk/mavsdk-dev
 
 if type podman > /dev/null 2> /dev/null
 then

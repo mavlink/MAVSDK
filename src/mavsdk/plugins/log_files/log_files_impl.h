@@ -8,6 +8,37 @@
 
 namespace mavsdk {
 
+static constexpr uint32_t TABLE_BINS = 512;
+static constexpr uint32_t CHUNK_SIZE = (TABLE_BINS * MAVLINK_MSG_LOG_DATA_FIELD_DATA_LEN);
+
+struct LogData {
+    LogData() = default;
+    LogData(
+        const LogFiles::Entry& e,
+        const std::string& filepath,
+        LogFiles::DownloadLogFileCallback cb);
+
+    bool file_is_open();
+    uint32_t current_chunk_size() const;
+    uint32_t total_chunks() const;
+    uint32_t bins_in_chunk() const;
+
+    LogFiles::Entry entry{};
+
+    std::string file_path{};
+    std::ofstream file{};
+
+    uint32_t current_chunk{};
+    std::vector<bool> chunk_bin_table{};
+
+    uint32_t chunk_bytes_written{};
+    uint32_t total_bytes_written{};
+
+    void* timeout_cookie{};
+
+    LogFiles::DownloadLogFileCallback user_callback{};
+};
+
 class LogFilesImpl : public PluginImplBase {
 public:
     explicit LogFilesImpl(System& system);
@@ -17,8 +48,8 @@ public:
     void init() override;
     void deinit() override;
 
-    void enable() override;
-    void disable() override;
+    void enable() override{};
+    void disable() override{};
 
     std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> get_entries();
     void get_entries_async(LogFiles::GetEntriesCallback callback);
@@ -34,64 +65,26 @@ public:
     LogFiles::Result erase_all_log_files();
 
 private:
-    void request_end();
-
     void process_log_entry(const mavlink_message_t& message);
+    void entries_timeout();
+
     void process_log_data(const mavlink_message_t& message);
-    void list_timeout();
-
-    void request_list_entry(int entry_id);
-
-    void check_part();
-    void request_log_data(unsigned id, unsigned start, unsigned count);
     void data_timeout();
 
-    bool is_directory(const std::string& path) const;
-    bool file_exists(const std::string& path) const;
-    bool start_logfile(const std::string& path);
-    void write_part_to_disk();
-    void finish_logfile();
-    void report_progress(unsigned transferred, unsigned total);
+    void request_log_list(uint16_t index_min, uint16_t index_max);
+    void request_log_data(unsigned id, unsigned start, unsigned count);
 
-    std::size_t determine_part_end();
-    void reset_data();
+    void request_end();
 
-    Time _time{};
+    std::mutex _entries_mutex;
+    std::unordered_map<uint16_t, LogFiles::Entry> _log_entries;
+    uint32_t _total_entries{0};
+    void* _entries_timeout_cookie{};
+    LogFiles::GetEntriesCallback _entries_user_callback{};
 
-    struct {
-        std::mutex mutex{};
-        std::unordered_map<unsigned, LogFiles::Entry> entry_map{};
-        LogFiles::GetEntriesCallback callback{nullptr};
-        unsigned max_list_id{0};
-        unsigned retries{0};
-        void* cookie{nullptr};
-    } _entries{};
-
-    // We download data in parts of 512 * 90 bytes.
-    // If we request the whole file at once we get too much data at once and
-    // can't keep up (at least for PX4 SITL). Also, we need to keep track of
-    // way too many parts which makes the progress and re-transmission
-    // calculation too expensive.
-    //
-    // This is very much inspired from how QGroundControl does it.
-    static constexpr unsigned PART_SIZE = 512;
-    // A part refers to the
-
-    struct {
-        std::mutex mutex{};
-        void* cookie{nullptr};
-        unsigned id{0};
-        unsigned bytes_to_get{0};
-        std::vector<uint8_t> bytes{};
-        std::vector<bool> chunks_received{};
-        std::size_t part_start{0};
-        unsigned retries{0};
-        bool rerequesting{false};
-        int last_ofs_rerequested{-1};
-        SteadyTimePoint time_started{};
-        std::ofstream file{};
-        LogFiles::DownloadLogFileCallback callback{nullptr};
-    } _data{};
+    // The current log download data structure
+    std::mutex _download_data_mutex;
+    LogData _download_data;
 };
 
 } // namespace mavsdk

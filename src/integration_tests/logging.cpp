@@ -5,7 +5,7 @@
 
 using namespace mavsdk;
 
-TEST_F(SitlTest, PX4Logging)
+TEST(SitlTest, PX4Logging)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 

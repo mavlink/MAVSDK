@@ -36,6 +36,7 @@
 #include "google/protobuf/extension_set.h"  // IWYU pragma: export
 #include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
+#include "mavsdk_options.pb.h"
 // @@protoc_insertion_point(includes)
 
 // Must be included last.
@@ -60,15 +61,30 @@ extern const ::google::protobuf::internal::DescriptorTable
 namespace mavsdk {
 namespace rpc {
 namespace gimbal {
+class AngularVelocityBody;
+struct AngularVelocityBodyDefaultTypeInternal;
+extern AngularVelocityBodyDefaultTypeInternal _AngularVelocityBody_default_instance_;
+class Attitude;
+struct AttitudeDefaultTypeInternal;
+extern AttitudeDefaultTypeInternal _Attitude_default_instance_;
+class AttitudeResponse;
+struct AttitudeResponseDefaultTypeInternal;
+extern AttitudeResponseDefaultTypeInternal _AttitudeResponse_default_instance_;
 class ControlResponse;
 struct ControlResponseDefaultTypeInternal;
 extern ControlResponseDefaultTypeInternal _ControlResponse_default_instance_;
 class ControlStatus;
 struct ControlStatusDefaultTypeInternal;
 extern ControlStatusDefaultTypeInternal _ControlStatus_default_instance_;
+class EulerAngle;
+struct EulerAngleDefaultTypeInternal;
+extern EulerAngleDefaultTypeInternal _EulerAngle_default_instance_;
 class GimbalResult;
 struct GimbalResultDefaultTypeInternal;
 extern GimbalResultDefaultTypeInternal _GimbalResult_default_instance_;
+class Quaternion;
+struct QuaternionDefaultTypeInternal;
+extern QuaternionDefaultTypeInternal _Quaternion_default_instance_;
 class ReleaseControlRequest;
 struct ReleaseControlRequestDefaultTypeInternal;
 extern ReleaseControlRequestDefaultTypeInternal _ReleaseControlRequest_default_instance_;
@@ -105,6 +121,9 @@ extern SetRoiLocationRequestDefaultTypeInternal _SetRoiLocationRequest_default_i
 class SetRoiLocationResponse;
 struct SetRoiLocationResponseDefaultTypeInternal;
 extern SetRoiLocationResponseDefaultTypeInternal _SetRoiLocationResponse_default_instance_;
+class SubscribeAttitudeRequest;
+struct SubscribeAttitudeRequestDefaultTypeInternal;
+extern SubscribeAttitudeRequestDefaultTypeInternal _SubscribeAttitudeRequest_default_instance_;
 class SubscribeControlRequest;
 struct SubscribeControlRequestDefaultTypeInternal;
 extern SubscribeControlRequestDefaultTypeInternal _SubscribeControlRequest_default_instance_;
@@ -524,6 +543,142 @@ class SubscribeControlRequest final :
   // accessors -------------------------------------------------------
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.SubscribeControlRequest)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};// -------------------------------------------------------------------
+
+class SubscribeAttitudeRequest final :
+    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.SubscribeAttitudeRequest) */ {
+ public:
+  inline SubscribeAttitudeRequest() : SubscribeAttitudeRequest(nullptr) {}
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeAttitudeRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline SubscribeAttitudeRequest(const SubscribeAttitudeRequest& from)
+      : SubscribeAttitudeRequest(nullptr, from) {}
+  SubscribeAttitudeRequest(SubscribeAttitudeRequest&& from) noexcept
+    : SubscribeAttitudeRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SubscribeAttitudeRequest& operator=(const SubscribeAttitudeRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeAttitudeRequest& operator=(SubscribeAttitudeRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeAttitudeRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeAttitudeRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeAttitudeRequest*>(
+               &_SubscribeAttitudeRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    20;
+
+  friend void swap(SubscribeAttitudeRequest& a, SubscribeAttitudeRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SubscribeAttitudeRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeAttitudeRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubscribeAttitudeRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<SubscribeAttitudeRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeAttitudeRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeAttitudeRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+  public:
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.gimbal.SubscribeAttitudeRequest";
+  }
+  protected:
+  explicit SubscribeAttitudeRequest(::google::protobuf::Arena* arena);
+  SubscribeAttitudeRequest(::google::protobuf::Arena* arena, const SubscribeAttitudeRequest& from);
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.SubscribeAttitudeRequest)
  private:
   class _Internal;
 
@@ -1629,6 +1784,217 @@ class ReleaseControlRequest final :
   friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
 };// -------------------------------------------------------------------
 
+class Quaternion final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.Quaternion) */ {
+ public:
+  inline Quaternion() : Quaternion(nullptr) {}
+  ~Quaternion() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR Quaternion(::google::protobuf::internal::ConstantInitialized);
+
+  inline Quaternion(const Quaternion& from)
+      : Quaternion(nullptr, from) {}
+  Quaternion(Quaternion&& from) noexcept
+    : Quaternion() {
+    *this = ::std::move(from);
+  }
+
+  inline Quaternion& operator=(const Quaternion& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Quaternion& operator=(Quaternion&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const Quaternion& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const Quaternion* internal_default_instance() {
+    return reinterpret_cast<const Quaternion*>(
+               &_Quaternion_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    16;
+
+  friend void swap(Quaternion& a, Quaternion& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(Quaternion* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Quaternion* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  Quaternion* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<Quaternion>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const Quaternion& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const Quaternion& from) {
+    Quaternion::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(Quaternion* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.gimbal.Quaternion";
+  }
+  protected:
+  explicit Quaternion(::google::protobuf::Arena* arena);
+  Quaternion(::google::protobuf::Arena* arena, const Quaternion& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kWFieldNumber = 1,
+    kXFieldNumber = 2,
+    kYFieldNumber = 3,
+    kZFieldNumber = 4,
+  };
+  // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_w() ;
+  float w() const;
+  void set_w(float value);
+
+  private:
+  float _internal_w() const;
+  void _internal_set_w(float value);
+
+  public:
+  // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_x() ;
+  float x() const;
+  void set_x(float value);
+
+  private:
+  float _internal_x() const;
+  void _internal_set_x(float value);
+
+  public:
+  // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_y() ;
+  float y() const;
+  void set_y(float value);
+
+  private:
+  float _internal_y() const;
+  void _internal_set_y(float value);
+
+  public:
+  // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_z() ;
+  float z() const;
+  void set_z(float value);
+
+  private:
+  float _internal_z() const;
+  void _internal_set_z(float value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.Quaternion)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      2, 4, 0,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    float w_;
+    float x_;
+    float y_;
+    float z_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};// -------------------------------------------------------------------
+
 class GimbalResult final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.GimbalResult) */ {
  public:
@@ -1688,7 +2054,7 @@ class GimbalResult final :
                &_GimbalResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    23;
 
   friend void swap(GimbalResult& a, GimbalResult& b) {
     a.Swap(&b);
@@ -1846,6 +2212,205 @@ class GimbalResult final :
   friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
 };// -------------------------------------------------------------------
 
+class EulerAngle final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.EulerAngle) */ {
+ public:
+  inline EulerAngle() : EulerAngle(nullptr) {}
+  ~EulerAngle() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR EulerAngle(::google::protobuf::internal::ConstantInitialized);
+
+  inline EulerAngle(const EulerAngle& from)
+      : EulerAngle(nullptr, from) {}
+  EulerAngle(EulerAngle&& from) noexcept
+    : EulerAngle() {
+    *this = ::std::move(from);
+  }
+
+  inline EulerAngle& operator=(const EulerAngle& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline EulerAngle& operator=(EulerAngle&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const EulerAngle& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const EulerAngle* internal_default_instance() {
+    return reinterpret_cast<const EulerAngle*>(
+               &_EulerAngle_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    17;
+
+  friend void swap(EulerAngle& a, EulerAngle& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(EulerAngle* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(EulerAngle* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  EulerAngle* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<EulerAngle>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const EulerAngle& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const EulerAngle& from) {
+    EulerAngle::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(EulerAngle* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.gimbal.EulerAngle";
+  }
+  protected:
+  explicit EulerAngle(::google::protobuf::Arena* arena);
+  EulerAngle(::google::protobuf::Arena* arena, const EulerAngle& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kRollDegFieldNumber = 1,
+    kPitchDegFieldNumber = 2,
+    kYawDegFieldNumber = 3,
+  };
+  // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_roll_deg() ;
+  float roll_deg() const;
+  void set_roll_deg(float value);
+
+  private:
+  float _internal_roll_deg() const;
+  void _internal_set_roll_deg(float value);
+
+  public:
+  // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_pitch_deg() ;
+  float pitch_deg() const;
+  void set_pitch_deg(float value);
+
+  private:
+  float _internal_pitch_deg() const;
+  void _internal_set_pitch_deg(float value);
+
+  public:
+  // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_yaw_deg() ;
+  float yaw_deg() const;
+  void set_yaw_deg(float value);
+
+  private:
+  float _internal_yaw_deg() const;
+  void _internal_set_yaw_deg(float value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.EulerAngle)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      2, 3, 0,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    float roll_deg_;
+    float pitch_deg_;
+    float yaw_deg_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};// -------------------------------------------------------------------
+
 class ControlStatus final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.ControlStatus) */ {
  public:
@@ -1905,7 +2470,7 @@ class ControlStatus final :
                &_ControlStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    22;
 
   friend void swap(ControlStatus& a, ControlStatus& b) {
     a.Swap(&b);
@@ -2062,6 +2627,205 @@ class ControlStatus final :
     ::int32_t compid_primary_control_;
     ::int32_t sysid_secondary_control_;
     ::int32_t compid_secondary_control_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};// -------------------------------------------------------------------
+
+class AngularVelocityBody final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.AngularVelocityBody) */ {
+ public:
+  inline AngularVelocityBody() : AngularVelocityBody(nullptr) {}
+  ~AngularVelocityBody() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR AngularVelocityBody(::google::protobuf::internal::ConstantInitialized);
+
+  inline AngularVelocityBody(const AngularVelocityBody& from)
+      : AngularVelocityBody(nullptr, from) {}
+  AngularVelocityBody(AngularVelocityBody&& from) noexcept
+    : AngularVelocityBody() {
+    *this = ::std::move(from);
+  }
+
+  inline AngularVelocityBody& operator=(const AngularVelocityBody& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AngularVelocityBody& operator=(AngularVelocityBody&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const AngularVelocityBody& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const AngularVelocityBody* internal_default_instance() {
+    return reinterpret_cast<const AngularVelocityBody*>(
+               &_AngularVelocityBody_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    18;
+
+  friend void swap(AngularVelocityBody& a, AngularVelocityBody& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(AngularVelocityBody* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(AngularVelocityBody* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  AngularVelocityBody* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<AngularVelocityBody>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const AngularVelocityBody& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const AngularVelocityBody& from) {
+    AngularVelocityBody::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(AngularVelocityBody* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.gimbal.AngularVelocityBody";
+  }
+  protected:
+  explicit AngularVelocityBody(::google::protobuf::Arena* arena);
+  AngularVelocityBody(::google::protobuf::Arena* arena, const AngularVelocityBody& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kRollRadSFieldNumber = 1,
+    kPitchRadSFieldNumber = 2,
+    kYawRadSFieldNumber = 3,
+  };
+  // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_roll_rad_s() ;
+  float roll_rad_s() const;
+  void set_roll_rad_s(float value);
+
+  private:
+  float _internal_roll_rad_s() const;
+  void _internal_set_roll_rad_s(float value);
+
+  public:
+  // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_pitch_rad_s() ;
+  float pitch_rad_s() const;
+  void set_pitch_rad_s(float value);
+
+  private:
+  float _internal_pitch_rad_s() const;
+  void _internal_set_pitch_rad_s(float value);
+
+  public:
+  // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_yaw_rad_s() ;
+  float yaw_rad_s() const;
+  void set_yaw_rad_s(float value);
+
+  private:
+  float _internal_yaw_rad_s() const;
+  void _internal_set_yaw_rad_s(float value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.AngularVelocityBody)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      2, 3, 0,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    float roll_rad_s_;
+    float pitch_rad_s_;
+    float yaw_rad_s_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -3515,6 +4279,448 @@ class ControlResponse final :
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};// -------------------------------------------------------------------
+
+class Attitude final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.Attitude) */ {
+ public:
+  inline Attitude() : Attitude(nullptr) {}
+  ~Attitude() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR Attitude(::google::protobuf::internal::ConstantInitialized);
+
+  inline Attitude(const Attitude& from)
+      : Attitude(nullptr, from) {}
+  Attitude(Attitude&& from) noexcept
+    : Attitude() {
+    *this = ::std::move(from);
+  }
+
+  inline Attitude& operator=(const Attitude& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Attitude& operator=(Attitude&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const Attitude& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const Attitude* internal_default_instance() {
+    return reinterpret_cast<const Attitude*>(
+               &_Attitude_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    19;
+
+  friend void swap(Attitude& a, Attitude& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(Attitude* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Attitude* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  Attitude* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<Attitude>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const Attitude& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const Attitude& from) {
+    Attitude::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(Attitude* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.gimbal.Attitude";
+  }
+  protected:
+  explicit Attitude(::google::protobuf::Arena* arena);
+  Attitude(::google::protobuf::Arena* arena, const Attitude& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kEulerAngleForwardFieldNumber = 1,
+    kQuaternionForwardFieldNumber = 2,
+    kEulerAngleNorthFieldNumber = 3,
+    kQuaternionNorthFieldNumber = 4,
+    kAngularVelocityFieldNumber = 5,
+    kTimestampUsFieldNumber = 6,
+  };
+  // .mavsdk.rpc.gimbal.EulerAngle euler_angle_forward = 1;
+  bool has_euler_angle_forward() const;
+  void clear_euler_angle_forward() ;
+  const ::mavsdk::rpc::gimbal::EulerAngle& euler_angle_forward() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::gimbal::EulerAngle* release_euler_angle_forward();
+  ::mavsdk::rpc::gimbal::EulerAngle* mutable_euler_angle_forward();
+  void set_allocated_euler_angle_forward(::mavsdk::rpc::gimbal::EulerAngle* value);
+  void unsafe_arena_set_allocated_euler_angle_forward(::mavsdk::rpc::gimbal::EulerAngle* value);
+  ::mavsdk::rpc::gimbal::EulerAngle* unsafe_arena_release_euler_angle_forward();
+
+  private:
+  const ::mavsdk::rpc::gimbal::EulerAngle& _internal_euler_angle_forward() const;
+  ::mavsdk::rpc::gimbal::EulerAngle* _internal_mutable_euler_angle_forward();
+
+  public:
+  // .mavsdk.rpc.gimbal.Quaternion quaternion_forward = 2;
+  bool has_quaternion_forward() const;
+  void clear_quaternion_forward() ;
+  const ::mavsdk::rpc::gimbal::Quaternion& quaternion_forward() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::gimbal::Quaternion* release_quaternion_forward();
+  ::mavsdk::rpc::gimbal::Quaternion* mutable_quaternion_forward();
+  void set_allocated_quaternion_forward(::mavsdk::rpc::gimbal::Quaternion* value);
+  void unsafe_arena_set_allocated_quaternion_forward(::mavsdk::rpc::gimbal::Quaternion* value);
+  ::mavsdk::rpc::gimbal::Quaternion* unsafe_arena_release_quaternion_forward();
+
+  private:
+  const ::mavsdk::rpc::gimbal::Quaternion& _internal_quaternion_forward() const;
+  ::mavsdk::rpc::gimbal::Quaternion* _internal_mutable_quaternion_forward();
+
+  public:
+  // .mavsdk.rpc.gimbal.EulerAngle euler_angle_north = 3;
+  bool has_euler_angle_north() const;
+  void clear_euler_angle_north() ;
+  const ::mavsdk::rpc::gimbal::EulerAngle& euler_angle_north() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::gimbal::EulerAngle* release_euler_angle_north();
+  ::mavsdk::rpc::gimbal::EulerAngle* mutable_euler_angle_north();
+  void set_allocated_euler_angle_north(::mavsdk::rpc::gimbal::EulerAngle* value);
+  void unsafe_arena_set_allocated_euler_angle_north(::mavsdk::rpc::gimbal::EulerAngle* value);
+  ::mavsdk::rpc::gimbal::EulerAngle* unsafe_arena_release_euler_angle_north();
+
+  private:
+  const ::mavsdk::rpc::gimbal::EulerAngle& _internal_euler_angle_north() const;
+  ::mavsdk::rpc::gimbal::EulerAngle* _internal_mutable_euler_angle_north();
+
+  public:
+  // .mavsdk.rpc.gimbal.Quaternion quaternion_north = 4;
+  bool has_quaternion_north() const;
+  void clear_quaternion_north() ;
+  const ::mavsdk::rpc::gimbal::Quaternion& quaternion_north() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::gimbal::Quaternion* release_quaternion_north();
+  ::mavsdk::rpc::gimbal::Quaternion* mutable_quaternion_north();
+  void set_allocated_quaternion_north(::mavsdk::rpc::gimbal::Quaternion* value);
+  void unsafe_arena_set_allocated_quaternion_north(::mavsdk::rpc::gimbal::Quaternion* value);
+  ::mavsdk::rpc::gimbal::Quaternion* unsafe_arena_release_quaternion_north();
+
+  private:
+  const ::mavsdk::rpc::gimbal::Quaternion& _internal_quaternion_north() const;
+  ::mavsdk::rpc::gimbal::Quaternion* _internal_mutable_quaternion_north();
+
+  public:
+  // .mavsdk.rpc.gimbal.AngularVelocityBody angular_velocity = 5;
+  bool has_angular_velocity() const;
+  void clear_angular_velocity() ;
+  const ::mavsdk::rpc::gimbal::AngularVelocityBody& angular_velocity() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::gimbal::AngularVelocityBody* release_angular_velocity();
+  ::mavsdk::rpc::gimbal::AngularVelocityBody* mutable_angular_velocity();
+  void set_allocated_angular_velocity(::mavsdk::rpc::gimbal::AngularVelocityBody* value);
+  void unsafe_arena_set_allocated_angular_velocity(::mavsdk::rpc::gimbal::AngularVelocityBody* value);
+  ::mavsdk::rpc::gimbal::AngularVelocityBody* unsafe_arena_release_angular_velocity();
+
+  private:
+  const ::mavsdk::rpc::gimbal::AngularVelocityBody& _internal_angular_velocity() const;
+  ::mavsdk::rpc::gimbal::AngularVelocityBody* _internal_mutable_angular_velocity();
+
+  public:
+  // uint64 timestamp_us = 6;
+  void clear_timestamp_us() ;
+  ::uint64_t timestamp_us() const;
+  void set_timestamp_us(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_timestamp_us() const;
+  void _internal_set_timestamp_us(::uint64_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.Attitude)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      3, 6, 5,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::gimbal::EulerAngle* euler_angle_forward_;
+    ::mavsdk::rpc::gimbal::Quaternion* quaternion_forward_;
+    ::mavsdk::rpc::gimbal::EulerAngle* euler_angle_north_;
+    ::mavsdk::rpc::gimbal::Quaternion* quaternion_north_;
+    ::mavsdk::rpc::gimbal::AngularVelocityBody* angular_velocity_;
+    ::uint64_t timestamp_us_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
+};// -------------------------------------------------------------------
+
+class AttitudeResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.gimbal.AttitudeResponse) */ {
+ public:
+  inline AttitudeResponse() : AttitudeResponse(nullptr) {}
+  ~AttitudeResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR AttitudeResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline AttitudeResponse(const AttitudeResponse& from)
+      : AttitudeResponse(nullptr, from) {}
+  AttitudeResponse(AttitudeResponse&& from) noexcept
+    : AttitudeResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline AttitudeResponse& operator=(const AttitudeResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AttitudeResponse& operator=(AttitudeResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const AttitudeResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const AttitudeResponse* internal_default_instance() {
+    return reinterpret_cast<const AttitudeResponse*>(
+               &_AttitudeResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    21;
+
+  friend void swap(AttitudeResponse& a, AttitudeResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(AttitudeResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(AttitudeResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  AttitudeResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<AttitudeResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const AttitudeResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const AttitudeResponse& from) {
+    AttitudeResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(AttitudeResponse* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.gimbal.AttitudeResponse";
+  }
+  protected:
+  explicit AttitudeResponse(::google::protobuf::Arena* arena);
+  AttitudeResponse(::google::protobuf::Arena* arena, const AttitudeResponse& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kAttitudeFieldNumber = 1,
+  };
+  // .mavsdk.rpc.gimbal.Attitude attitude = 1;
+  bool has_attitude() const;
+  void clear_attitude() ;
+  const ::mavsdk::rpc::gimbal::Attitude& attitude() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::gimbal::Attitude* release_attitude();
+  ::mavsdk::rpc::gimbal::Attitude* mutable_attitude();
+  void set_allocated_attitude(::mavsdk::rpc::gimbal::Attitude* value);
+  void unsafe_arena_set_allocated_attitude(::mavsdk::rpc::gimbal::Attitude* value);
+  ::mavsdk::rpc::gimbal::Attitude* unsafe_arena_release_attitude();
+
+  private:
+  const ::mavsdk::rpc::gimbal::Attitude& _internal_attitude() const;
+  ::mavsdk::rpc::gimbal::Attitude* _internal_mutable_attitude();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.gimbal.AttitudeResponse)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::gimbal::Attitude* attitude_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_gimbal_2fgimbal_2eproto;
 };
 
 // ===================================================================
@@ -4635,6 +5841,859 @@ inline void ControlResponse::set_allocated_control_status(::mavsdk::rpc::gimbal:
 
   _impl_.control_status_ = reinterpret_cast<::mavsdk::rpc::gimbal::ControlStatus*>(value);
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.gimbal.ControlResponse.control_status)
+}
+
+// -------------------------------------------------------------------
+
+// Quaternion
+
+// float w = 1 [(.mavsdk.options.default_value) = "NaN"];
+inline void Quaternion::clear_w() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.w_ = 0;
+}
+inline float Quaternion::w() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.Quaternion.w)
+  return _internal_w();
+}
+inline void Quaternion::set_w(float value) {
+  _internal_set_w(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.Quaternion.w)
+}
+inline float Quaternion::_internal_w() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.w_;
+}
+inline void Quaternion::_internal_set_w(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.w_ = value;
+}
+
+// float x = 2 [(.mavsdk.options.default_value) = "NaN"];
+inline void Quaternion::clear_x() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.x_ = 0;
+}
+inline float Quaternion::x() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.Quaternion.x)
+  return _internal_x();
+}
+inline void Quaternion::set_x(float value) {
+  _internal_set_x(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.Quaternion.x)
+}
+inline float Quaternion::_internal_x() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.x_;
+}
+inline void Quaternion::_internal_set_x(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.x_ = value;
+}
+
+// float y = 3 [(.mavsdk.options.default_value) = "NaN"];
+inline void Quaternion::clear_y() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.y_ = 0;
+}
+inline float Quaternion::y() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.Quaternion.y)
+  return _internal_y();
+}
+inline void Quaternion::set_y(float value) {
+  _internal_set_y(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.Quaternion.y)
+}
+inline float Quaternion::_internal_y() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.y_;
+}
+inline void Quaternion::_internal_set_y(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.y_ = value;
+}
+
+// float z = 4 [(.mavsdk.options.default_value) = "NaN"];
+inline void Quaternion::clear_z() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.z_ = 0;
+}
+inline float Quaternion::z() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.Quaternion.z)
+  return _internal_z();
+}
+inline void Quaternion::set_z(float value) {
+  _internal_set_z(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.Quaternion.z)
+}
+inline float Quaternion::_internal_z() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.z_;
+}
+inline void Quaternion::_internal_set_z(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.z_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// EulerAngle
+
+// float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+inline void EulerAngle::clear_roll_deg() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.roll_deg_ = 0;
+}
+inline float EulerAngle::roll_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.EulerAngle.roll_deg)
+  return _internal_roll_deg();
+}
+inline void EulerAngle::set_roll_deg(float value) {
+  _internal_set_roll_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.EulerAngle.roll_deg)
+}
+inline float EulerAngle::_internal_roll_deg() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.roll_deg_;
+}
+inline void EulerAngle::_internal_set_roll_deg(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.roll_deg_ = value;
+}
+
+// float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+inline void EulerAngle::clear_pitch_deg() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.pitch_deg_ = 0;
+}
+inline float EulerAngle::pitch_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.EulerAngle.pitch_deg)
+  return _internal_pitch_deg();
+}
+inline void EulerAngle::set_pitch_deg(float value) {
+  _internal_set_pitch_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.EulerAngle.pitch_deg)
+}
+inline float EulerAngle::_internal_pitch_deg() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.pitch_deg_;
+}
+inline void EulerAngle::_internal_set_pitch_deg(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.pitch_deg_ = value;
+}
+
+// float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+inline void EulerAngle::clear_yaw_deg() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.yaw_deg_ = 0;
+}
+inline float EulerAngle::yaw_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.EulerAngle.yaw_deg)
+  return _internal_yaw_deg();
+}
+inline void EulerAngle::set_yaw_deg(float value) {
+  _internal_set_yaw_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.EulerAngle.yaw_deg)
+}
+inline float EulerAngle::_internal_yaw_deg() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.yaw_deg_;
+}
+inline void EulerAngle::_internal_set_yaw_deg(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.yaw_deg_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// AngularVelocityBody
+
+// float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
+inline void AngularVelocityBody::clear_roll_rad_s() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.roll_rad_s_ = 0;
+}
+inline float AngularVelocityBody::roll_rad_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.AngularVelocityBody.roll_rad_s)
+  return _internal_roll_rad_s();
+}
+inline void AngularVelocityBody::set_roll_rad_s(float value) {
+  _internal_set_roll_rad_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.AngularVelocityBody.roll_rad_s)
+}
+inline float AngularVelocityBody::_internal_roll_rad_s() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.roll_rad_s_;
+}
+inline void AngularVelocityBody::_internal_set_roll_rad_s(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.roll_rad_s_ = value;
+}
+
+// float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+inline void AngularVelocityBody::clear_pitch_rad_s() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.pitch_rad_s_ = 0;
+}
+inline float AngularVelocityBody::pitch_rad_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.AngularVelocityBody.pitch_rad_s)
+  return _internal_pitch_rad_s();
+}
+inline void AngularVelocityBody::set_pitch_rad_s(float value) {
+  _internal_set_pitch_rad_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.AngularVelocityBody.pitch_rad_s)
+}
+inline float AngularVelocityBody::_internal_pitch_rad_s() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.pitch_rad_s_;
+}
+inline void AngularVelocityBody::_internal_set_pitch_rad_s(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.pitch_rad_s_ = value;
+}
+
+// float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+inline void AngularVelocityBody::clear_yaw_rad_s() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.yaw_rad_s_ = 0;
+}
+inline float AngularVelocityBody::yaw_rad_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.AngularVelocityBody.yaw_rad_s)
+  return _internal_yaw_rad_s();
+}
+inline void AngularVelocityBody::set_yaw_rad_s(float value) {
+  _internal_set_yaw_rad_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.AngularVelocityBody.yaw_rad_s)
+}
+inline float AngularVelocityBody::_internal_yaw_rad_s() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.yaw_rad_s_;
+}
+inline void AngularVelocityBody::_internal_set_yaw_rad_s(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.yaw_rad_s_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// Attitude
+
+// .mavsdk.rpc.gimbal.EulerAngle euler_angle_forward = 1;
+inline bool Attitude::has_euler_angle_forward() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.euler_angle_forward_ != nullptr);
+  return value;
+}
+inline void Attitude::clear_euler_angle_forward() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.euler_angle_forward_ != nullptr) _impl_.euler_angle_forward_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::gimbal::EulerAngle& Attitude::_internal_euler_angle_forward() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::gimbal::EulerAngle* p = _impl_.euler_angle_forward_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::gimbal::EulerAngle&>(::mavsdk::rpc::gimbal::_EulerAngle_default_instance_);
+}
+inline const ::mavsdk::rpc::gimbal::EulerAngle& Attitude::euler_angle_forward() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.Attitude.euler_angle_forward)
+  return _internal_euler_angle_forward();
+}
+inline void Attitude::unsafe_arena_set_allocated_euler_angle_forward(::mavsdk::rpc::gimbal::EulerAngle* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.euler_angle_forward_);
+  }
+  _impl_.euler_angle_forward_ = reinterpret_cast<::mavsdk::rpc::gimbal::EulerAngle*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.gimbal.Attitude.euler_angle_forward)
+}
+inline ::mavsdk::rpc::gimbal::EulerAngle* Attitude::release_euler_angle_forward() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::gimbal::EulerAngle* released = _impl_.euler_angle_forward_;
+  _impl_.euler_angle_forward_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::gimbal::EulerAngle* Attitude::unsafe_arena_release_euler_angle_forward() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.gimbal.Attitude.euler_angle_forward)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::gimbal::EulerAngle* temp = _impl_.euler_angle_forward_;
+  _impl_.euler_angle_forward_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::gimbal::EulerAngle* Attitude::_internal_mutable_euler_angle_forward() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.euler_angle_forward_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::gimbal::EulerAngle>(GetArena());
+    _impl_.euler_angle_forward_ = reinterpret_cast<::mavsdk::rpc::gimbal::EulerAngle*>(p);
+  }
+  return _impl_.euler_angle_forward_;
+}
+inline ::mavsdk::rpc::gimbal::EulerAngle* Attitude::mutable_euler_angle_forward() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::gimbal::EulerAngle* _msg = _internal_mutable_euler_angle_forward();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.gimbal.Attitude.euler_angle_forward)
+  return _msg;
+}
+inline void Attitude::set_allocated_euler_angle_forward(::mavsdk::rpc::gimbal::EulerAngle* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::gimbal::EulerAngle*>(_impl_.euler_angle_forward_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::gimbal::EulerAngle*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.euler_angle_forward_ = reinterpret_cast<::mavsdk::rpc::gimbal::EulerAngle*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.gimbal.Attitude.euler_angle_forward)
+}
+
+// .mavsdk.rpc.gimbal.Quaternion quaternion_forward = 2;
+inline bool Attitude::has_quaternion_forward() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.quaternion_forward_ != nullptr);
+  return value;
+}
+inline void Attitude::clear_quaternion_forward() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.quaternion_forward_ != nullptr) _impl_.quaternion_forward_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline const ::mavsdk::rpc::gimbal::Quaternion& Attitude::_internal_quaternion_forward() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::gimbal::Quaternion* p = _impl_.quaternion_forward_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::gimbal::Quaternion&>(::mavsdk::rpc::gimbal::_Quaternion_default_instance_);
+}
+inline const ::mavsdk::rpc::gimbal::Quaternion& Attitude::quaternion_forward() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.Attitude.quaternion_forward)
+  return _internal_quaternion_forward();
+}
+inline void Attitude::unsafe_arena_set_allocated_quaternion_forward(::mavsdk::rpc::gimbal::Quaternion* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.quaternion_forward_);
+  }
+  _impl_.quaternion_forward_ = reinterpret_cast<::mavsdk::rpc::gimbal::Quaternion*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.gimbal.Attitude.quaternion_forward)
+}
+inline ::mavsdk::rpc::gimbal::Quaternion* Attitude::release_quaternion_forward() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::gimbal::Quaternion* released = _impl_.quaternion_forward_;
+  _impl_.quaternion_forward_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::gimbal::Quaternion* Attitude::unsafe_arena_release_quaternion_forward() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.gimbal.Attitude.quaternion_forward)
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::gimbal::Quaternion* temp = _impl_.quaternion_forward_;
+  _impl_.quaternion_forward_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::gimbal::Quaternion* Attitude::_internal_mutable_quaternion_forward() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000002u;
+  if (_impl_.quaternion_forward_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::gimbal::Quaternion>(GetArena());
+    _impl_.quaternion_forward_ = reinterpret_cast<::mavsdk::rpc::gimbal::Quaternion*>(p);
+  }
+  return _impl_.quaternion_forward_;
+}
+inline ::mavsdk::rpc::gimbal::Quaternion* Attitude::mutable_quaternion_forward() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::gimbal::Quaternion* _msg = _internal_mutable_quaternion_forward();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.gimbal.Attitude.quaternion_forward)
+  return _msg;
+}
+inline void Attitude::set_allocated_quaternion_forward(::mavsdk::rpc::gimbal::Quaternion* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::gimbal::Quaternion*>(_impl_.quaternion_forward_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::gimbal::Quaternion*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+
+  _impl_.quaternion_forward_ = reinterpret_cast<::mavsdk::rpc::gimbal::Quaternion*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.gimbal.Attitude.quaternion_forward)
+}
+
+// .mavsdk.rpc.gimbal.EulerAngle euler_angle_north = 3;
+inline bool Attitude::has_euler_angle_north() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.euler_angle_north_ != nullptr);
+  return value;
+}
+inline void Attitude::clear_euler_angle_north() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.euler_angle_north_ != nullptr) _impl_.euler_angle_north_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000004u;
+}
+inline const ::mavsdk::rpc::gimbal::EulerAngle& Attitude::_internal_euler_angle_north() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::gimbal::EulerAngle* p = _impl_.euler_angle_north_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::gimbal::EulerAngle&>(::mavsdk::rpc::gimbal::_EulerAngle_default_instance_);
+}
+inline const ::mavsdk::rpc::gimbal::EulerAngle& Attitude::euler_angle_north() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.Attitude.euler_angle_north)
+  return _internal_euler_angle_north();
+}
+inline void Attitude::unsafe_arena_set_allocated_euler_angle_north(::mavsdk::rpc::gimbal::EulerAngle* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.euler_angle_north_);
+  }
+  _impl_.euler_angle_north_ = reinterpret_cast<::mavsdk::rpc::gimbal::EulerAngle*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000004u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000004u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.gimbal.Attitude.euler_angle_north)
+}
+inline ::mavsdk::rpc::gimbal::EulerAngle* Attitude::release_euler_angle_north() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000004u;
+  ::mavsdk::rpc::gimbal::EulerAngle* released = _impl_.euler_angle_north_;
+  _impl_.euler_angle_north_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::gimbal::EulerAngle* Attitude::unsafe_arena_release_euler_angle_north() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.gimbal.Attitude.euler_angle_north)
+
+  _impl_._has_bits_[0] &= ~0x00000004u;
+  ::mavsdk::rpc::gimbal::EulerAngle* temp = _impl_.euler_angle_north_;
+  _impl_.euler_angle_north_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::gimbal::EulerAngle* Attitude::_internal_mutable_euler_angle_north() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000004u;
+  if (_impl_.euler_angle_north_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::gimbal::EulerAngle>(GetArena());
+    _impl_.euler_angle_north_ = reinterpret_cast<::mavsdk::rpc::gimbal::EulerAngle*>(p);
+  }
+  return _impl_.euler_angle_north_;
+}
+inline ::mavsdk::rpc::gimbal::EulerAngle* Attitude::mutable_euler_angle_north() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::gimbal::EulerAngle* _msg = _internal_mutable_euler_angle_north();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.gimbal.Attitude.euler_angle_north)
+  return _msg;
+}
+inline void Attitude::set_allocated_euler_angle_north(::mavsdk::rpc::gimbal::EulerAngle* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::gimbal::EulerAngle*>(_impl_.euler_angle_north_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::gimbal::EulerAngle*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000004u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000004u;
+  }
+
+  _impl_.euler_angle_north_ = reinterpret_cast<::mavsdk::rpc::gimbal::EulerAngle*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.gimbal.Attitude.euler_angle_north)
+}
+
+// .mavsdk.rpc.gimbal.Quaternion quaternion_north = 4;
+inline bool Attitude::has_quaternion_north() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000008u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.quaternion_north_ != nullptr);
+  return value;
+}
+inline void Attitude::clear_quaternion_north() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.quaternion_north_ != nullptr) _impl_.quaternion_north_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000008u;
+}
+inline const ::mavsdk::rpc::gimbal::Quaternion& Attitude::_internal_quaternion_north() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::gimbal::Quaternion* p = _impl_.quaternion_north_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::gimbal::Quaternion&>(::mavsdk::rpc::gimbal::_Quaternion_default_instance_);
+}
+inline const ::mavsdk::rpc::gimbal::Quaternion& Attitude::quaternion_north() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.Attitude.quaternion_north)
+  return _internal_quaternion_north();
+}
+inline void Attitude::unsafe_arena_set_allocated_quaternion_north(::mavsdk::rpc::gimbal::Quaternion* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.quaternion_north_);
+  }
+  _impl_.quaternion_north_ = reinterpret_cast<::mavsdk::rpc::gimbal::Quaternion*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000008u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000008u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.gimbal.Attitude.quaternion_north)
+}
+inline ::mavsdk::rpc::gimbal::Quaternion* Attitude::release_quaternion_north() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000008u;
+  ::mavsdk::rpc::gimbal::Quaternion* released = _impl_.quaternion_north_;
+  _impl_.quaternion_north_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::gimbal::Quaternion* Attitude::unsafe_arena_release_quaternion_north() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.gimbal.Attitude.quaternion_north)
+
+  _impl_._has_bits_[0] &= ~0x00000008u;
+  ::mavsdk::rpc::gimbal::Quaternion* temp = _impl_.quaternion_north_;
+  _impl_.quaternion_north_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::gimbal::Quaternion* Attitude::_internal_mutable_quaternion_north() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000008u;
+  if (_impl_.quaternion_north_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::gimbal::Quaternion>(GetArena());
+    _impl_.quaternion_north_ = reinterpret_cast<::mavsdk::rpc::gimbal::Quaternion*>(p);
+  }
+  return _impl_.quaternion_north_;
+}
+inline ::mavsdk::rpc::gimbal::Quaternion* Attitude::mutable_quaternion_north() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::gimbal::Quaternion* _msg = _internal_mutable_quaternion_north();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.gimbal.Attitude.quaternion_north)
+  return _msg;
+}
+inline void Attitude::set_allocated_quaternion_north(::mavsdk::rpc::gimbal::Quaternion* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::gimbal::Quaternion*>(_impl_.quaternion_north_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::gimbal::Quaternion*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000008u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000008u;
+  }
+
+  _impl_.quaternion_north_ = reinterpret_cast<::mavsdk::rpc::gimbal::Quaternion*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.gimbal.Attitude.quaternion_north)
+}
+
+// .mavsdk.rpc.gimbal.AngularVelocityBody angular_velocity = 5;
+inline bool Attitude::has_angular_velocity() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000010u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.angular_velocity_ != nullptr);
+  return value;
+}
+inline void Attitude::clear_angular_velocity() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.angular_velocity_ != nullptr) _impl_.angular_velocity_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000010u;
+}
+inline const ::mavsdk::rpc::gimbal::AngularVelocityBody& Attitude::_internal_angular_velocity() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::gimbal::AngularVelocityBody* p = _impl_.angular_velocity_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::gimbal::AngularVelocityBody&>(::mavsdk::rpc::gimbal::_AngularVelocityBody_default_instance_);
+}
+inline const ::mavsdk::rpc::gimbal::AngularVelocityBody& Attitude::angular_velocity() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.Attitude.angular_velocity)
+  return _internal_angular_velocity();
+}
+inline void Attitude::unsafe_arena_set_allocated_angular_velocity(::mavsdk::rpc::gimbal::AngularVelocityBody* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.angular_velocity_);
+  }
+  _impl_.angular_velocity_ = reinterpret_cast<::mavsdk::rpc::gimbal::AngularVelocityBody*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000010u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000010u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.gimbal.Attitude.angular_velocity)
+}
+inline ::mavsdk::rpc::gimbal::AngularVelocityBody* Attitude::release_angular_velocity() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000010u;
+  ::mavsdk::rpc::gimbal::AngularVelocityBody* released = _impl_.angular_velocity_;
+  _impl_.angular_velocity_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::gimbal::AngularVelocityBody* Attitude::unsafe_arena_release_angular_velocity() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.gimbal.Attitude.angular_velocity)
+
+  _impl_._has_bits_[0] &= ~0x00000010u;
+  ::mavsdk::rpc::gimbal::AngularVelocityBody* temp = _impl_.angular_velocity_;
+  _impl_.angular_velocity_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::gimbal::AngularVelocityBody* Attitude::_internal_mutable_angular_velocity() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000010u;
+  if (_impl_.angular_velocity_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::gimbal::AngularVelocityBody>(GetArena());
+    _impl_.angular_velocity_ = reinterpret_cast<::mavsdk::rpc::gimbal::AngularVelocityBody*>(p);
+  }
+  return _impl_.angular_velocity_;
+}
+inline ::mavsdk::rpc::gimbal::AngularVelocityBody* Attitude::mutable_angular_velocity() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::gimbal::AngularVelocityBody* _msg = _internal_mutable_angular_velocity();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.gimbal.Attitude.angular_velocity)
+  return _msg;
+}
+inline void Attitude::set_allocated_angular_velocity(::mavsdk::rpc::gimbal::AngularVelocityBody* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::gimbal::AngularVelocityBody*>(_impl_.angular_velocity_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::gimbal::AngularVelocityBody*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000010u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000010u;
+  }
+
+  _impl_.angular_velocity_ = reinterpret_cast<::mavsdk::rpc::gimbal::AngularVelocityBody*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.gimbal.Attitude.angular_velocity)
+}
+
+// uint64 timestamp_us = 6;
+inline void Attitude::clear_timestamp_us() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.timestamp_us_ = ::uint64_t{0u};
+}
+inline ::uint64_t Attitude::timestamp_us() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.Attitude.timestamp_us)
+  return _internal_timestamp_us();
+}
+inline void Attitude::set_timestamp_us(::uint64_t value) {
+  _internal_set_timestamp_us(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.gimbal.Attitude.timestamp_us)
+}
+inline ::uint64_t Attitude::_internal_timestamp_us() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.timestamp_us_;
+}
+inline void Attitude::_internal_set_timestamp_us(::uint64_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.timestamp_us_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeAttitudeRequest
+
+// -------------------------------------------------------------------
+
+// AttitudeResponse
+
+// .mavsdk.rpc.gimbal.Attitude attitude = 1;
+inline bool AttitudeResponse::has_attitude() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.attitude_ != nullptr);
+  return value;
+}
+inline void AttitudeResponse::clear_attitude() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.attitude_ != nullptr) _impl_.attitude_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::gimbal::Attitude& AttitudeResponse::_internal_attitude() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::gimbal::Attitude* p = _impl_.attitude_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::gimbal::Attitude&>(::mavsdk::rpc::gimbal::_Attitude_default_instance_);
+}
+inline const ::mavsdk::rpc::gimbal::Attitude& AttitudeResponse::attitude() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.gimbal.AttitudeResponse.attitude)
+  return _internal_attitude();
+}
+inline void AttitudeResponse::unsafe_arena_set_allocated_attitude(::mavsdk::rpc::gimbal::Attitude* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.attitude_);
+  }
+  _impl_.attitude_ = reinterpret_cast<::mavsdk::rpc::gimbal::Attitude*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.gimbal.AttitudeResponse.attitude)
+}
+inline ::mavsdk::rpc::gimbal::Attitude* AttitudeResponse::release_attitude() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::gimbal::Attitude* released = _impl_.attitude_;
+  _impl_.attitude_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::gimbal::Attitude* AttitudeResponse::unsafe_arena_release_attitude() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.gimbal.AttitudeResponse.attitude)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::gimbal::Attitude* temp = _impl_.attitude_;
+  _impl_.attitude_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::gimbal::Attitude* AttitudeResponse::_internal_mutable_attitude() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.attitude_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::gimbal::Attitude>(GetArena());
+    _impl_.attitude_ = reinterpret_cast<::mavsdk::rpc::gimbal::Attitude*>(p);
+  }
+  return _impl_.attitude_;
+}
+inline ::mavsdk::rpc::gimbal::Attitude* AttitudeResponse::mutable_attitude() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::gimbal::Attitude* _msg = _internal_mutable_attitude();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.gimbal.AttitudeResponse.attitude)
+  return _msg;
+}
+inline void AttitudeResponse::set_allocated_attitude(::mavsdk::rpc::gimbal::Attitude* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::gimbal::Attitude*>(_impl_.attitude_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::gimbal::Attitude*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.attitude_ = reinterpret_cast<::mavsdk::rpc::gimbal::Attitude*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.gimbal.AttitudeResponse.attitude)
 }
 
 // -------------------------------------------------------------------

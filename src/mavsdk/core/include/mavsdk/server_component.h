@@ -31,6 +31,15 @@ public:
      */
     uint8_t component_id() const;
 
+    /**
+     * @brief Set system status of this MAVLink entity.
+     *
+     * The default system status is MAV_STATE_UNINIT.
+     *
+     * @param system_status system status.
+     */
+    void set_system_status(uint8_t system_status);
+
 private:
     std::shared_ptr<ServerComponentImpl> _impl;
 

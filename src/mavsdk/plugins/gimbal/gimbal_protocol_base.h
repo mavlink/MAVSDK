@@ -47,6 +47,9 @@ public:
     virtual Gimbal::ControlStatus control() = 0;
     virtual void control_async(Gimbal::ControlCallback callback) = 0;
 
+    virtual Gimbal::Attitude attitude() = 0;
+    virtual void attitude_async(Gimbal::AttitudeCallback callback) = 0;
+
 protected:
     SystemImpl& _system_impl;
 };

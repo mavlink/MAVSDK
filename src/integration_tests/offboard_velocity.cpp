@@ -10,7 +10,7 @@
 
 using namespace mavsdk;
 
-TEST_F(SitlTest, OffboardVelocityNED)
+TEST(SitlTest, OffboardVelocityNED)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
@@ -132,7 +132,7 @@ TEST_F(SitlTest, OffboardVelocityNED)
     }
 }
 
-TEST_F(SitlTest, OffboardVelocityBody)
+TEST(SitlTest, OffboardVelocityBody)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 

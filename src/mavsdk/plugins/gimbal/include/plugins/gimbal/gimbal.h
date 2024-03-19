@@ -90,6 +90,120 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Gimbal::ControlMode const& control_mode);
 
     /**
+     * @brief Quaternion type.
+     *
+     * All rotations and axis systems follow the right-hand rule.
+     * The Hamilton quaternion product definition is used.
+     * A zero-rotation quaternion is represented by (1,0,0,0).
+     * The quaternion could also be written as w + xi + yj + zk.
+     *
+     * For more info see: https://en.wikipedia.org/wiki/Quaternion
+     */
+    struct Quaternion {
+        float w{float(NAN)}; /**< @brief Quaternion entry 0, also denoted as a */
+        float x{float(NAN)}; /**< @brief Quaternion entry 1, also denoted as b */
+        float y{float(NAN)}; /**< @brief Quaternion entry 2, also denoted as c */
+        float z{float(NAN)}; /**< @brief Quaternion entry 3, also denoted as d */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Gimbal::Quaternion` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Gimbal::Quaternion& lhs, const Gimbal::Quaternion& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Gimbal::Quaternion`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Gimbal::Quaternion const& quaternion);
+
+    /**
+     * @brief Euler angle type.
+     *
+     * All rotations and axis systems follow the right-hand rule.
+     * The Euler angles are converted using the 3-1-2 sequence instead of standard 3-2-1 in order
+     * to avoid the gimbal lock at 90 degrees down.
+     *
+     * For more info see https://en.wikipedia.org/wiki/Euler_angles
+     */
+    struct EulerAngle {
+        float roll_deg{
+            float(NAN)}; /**< @brief Roll angle in degrees, positive is banking to the right */
+        float pitch_deg{
+            float(NAN)}; /**< @brief Pitch angle in degrees, positive is pitching nose up */
+        float yaw_deg{
+            float(NAN)}; /**< @brief Yaw angle in degrees, positive is clock-wise seen from above */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Gimbal::EulerAngle` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Gimbal::EulerAngle& lhs, const Gimbal::EulerAngle& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Gimbal::EulerAngle`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Gimbal::EulerAngle const& euler_angle);
+
+    /**
+     * @brief Gimbal angular rate type
+     */
+    struct AngularVelocityBody {
+        float roll_rad_s{float(NAN)}; /**< @brief Roll angular velocity */
+        float pitch_rad_s{float(NAN)}; /**< @brief Pitch angular velocity */
+        float yaw_rad_s{float(NAN)}; /**< @brief Yaw angular velocity */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Gimbal::AngularVelocityBody` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const Gimbal::AngularVelocityBody& lhs, const Gimbal::AngularVelocityBody& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Gimbal::AngularVelocityBody`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Gimbal::AngularVelocityBody const& angular_velocity_body);
+
+    /**
+     * @brief Gimbal attitude type
+     */
+    struct Attitude {
+        EulerAngle euler_angle_forward{}; /**< @brief Euler angle relative to forward */
+        Quaternion quaternion_forward{}; /**< @brief Quaternion relative to forward */
+        EulerAngle euler_angle_north{}; /**< @brief Euler angle relative to North */
+        Quaternion quaternion_north{}; /**< @brief Quaternion relative to North */
+        AngularVelocityBody angular_velocity{}; /**< @brief The angular rate */
+        uint64_t timestamp_us{}; /**< @brief Timestamp in microseconds */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Gimbal::Attitude` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Gimbal::Attitude& lhs, const Gimbal::Attitude& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Gimbal::Attitude`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Gimbal::Attitude const& attitude);
+
+    /**
      * @brief Control status
      */
     struct ControlStatus {
@@ -354,6 +468,35 @@ public:
      * @return One ControlStatus update.
      */
     ControlStatus control() const;
+
+    /**
+     * @brief Callback type for subscribe_attitude.
+     */
+    using AttitudeCallback = std::function<void(Attitude)>;
+
+    /**
+     * @brief Handle type for subscribe_attitude.
+     */
+    using AttitudeHandle = Handle<Attitude>;
+
+    /**
+     * @brief Subscribe to attitude updates.
+     *
+     * This gets you the gimbal's attitude and angular rate.
+     */
+    AttitudeHandle subscribe_attitude(const AttitudeCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_attitude
+     */
+    void unsubscribe_attitude(AttitudeHandle handle);
+
+    /**
+     * @brief Poll for 'Attitude' (blocking).
+     *
+     * @return One Attitude update.
+     */
+    Attitude attitude() const;
 
     /**
      * @brief Copy constructor.
