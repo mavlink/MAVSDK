@@ -53,6 +53,11 @@ Param::Result Param::set_param_custom(std::string name, std::string value) const
     return _impl->set_param_custom(name, value);
 }
 
+std::pair<Param::Result, std::string> Param::get_param_any(const std::string &name) const
+{
+    return _impl->get_param_any(name);
+}
+
 Param::AllParams Param::get_all_params() const
 {
     return _impl->get_all_params();

@@ -260,6 +260,17 @@ public:
     Result set_param_custom(std::string name, std::string value) const;
 
     /**
+     * @brief Get an any parameter.
+     *
+     * If the type is wrong, the result will be `WRONG_TYPE`.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, std::string> get_param_any(const std::string &name) const;
+
+    /**
      * @brief Get all parameters.
      *
      * This function is blocking.

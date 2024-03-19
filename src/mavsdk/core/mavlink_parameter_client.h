@@ -131,9 +131,14 @@ public:
 
     std::pair<Result, std::string> get_param_custom(const std::string& name);
 
+    std::pair<Result, std::string> get_param_any(const std::string& name);
+
     using GetParamCustomCallback = std::function<void(Result, const std::string& value)>;
 
     void get_param_custom_async(
+        const std::string& name, const GetParamCustomCallback& callback, const void* cookie);
+
+    void get_param_any_async(
         const std::string& name, const GetParamCustomCallback& callback, const void* cookie);
 
     using GetAllParamsCallback =

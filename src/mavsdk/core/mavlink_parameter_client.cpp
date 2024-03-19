@@ -8,6 +8,12 @@
 #include <future>
 #include <utility>
 
+namespace std {
+const string &to_string(const string &val) {
+    return val;
+}
+}
+
 namespace mavsdk {
 
 MavlinkParameterClient::MavlinkParameterClient(
@@ -312,6 +318,23 @@ void MavlinkParameterClient::get_param_custom_async(
     get_param_async_typesafe<std::string>(name, callback, cookie);
 }
 
+void MavlinkParameterClient::get_param_any_async(
+    const std::string& name, const GetParamCustomCallback& callback, const void* cookie)
+{
+    GetParamAnyCallback callback_future_result = [callback](Result result, ParamValue value) {
+        if (result == Result::Success) {
+            std::string str{};
+            std::visit([&str](const auto& val) {
+                str = std::to_string(val);
+            }, value.get_Base());
+            callback(Result::Success, str);
+        } else {
+            callback(result, {});
+        }
+    };
+    get_param_async(name, callback_future_result, cookie);
+}
+
 std::pair<MavlinkParameterClient::Result, ParamValue>
 MavlinkParameterClient::get_param(const std::string& name)
 {
@@ -355,7 +378,21 @@ MavlinkParameterClient::get_param_custom(const std::string& name)
 {
     auto prom = std::promise<std::pair<Result, std::string>>();
     auto res = prom.get_future();
-    get_param_custom_async(
+    get_param_any_async(
+        name,
+        [&prom](Result result, const std::string& value) {
+            prom.set_value(std::make_pair<>(result, value));
+        },
+        this);
+    return res.get();
+}
+
+std::pair<MavlinkParameterClient::Result, std::string>
+MavlinkParameterClient::get_param_any(const std::string& name)
+{
+    auto prom = std::promise<std::pair<Result, std::string>>();
+    auto res = prom.get_future();
+    get_param_any_async(
         name,
         [&prom](Result result, const std::string& value) {
             prom.set_value(std::make_pair<>(result, value));

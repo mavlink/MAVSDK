@@ -32,6 +32,8 @@ public:
 
     Param::Result set_param_custom(const std::string& name, const std::string& value);
 
+    std::pair<Param::Result, std::string> get_param_any(const std::string& name);
+
     Param::AllParams get_all_params();
 
     Param::Result select_component(int32_t component_id, Param::ProtocolVersion protocol_version);

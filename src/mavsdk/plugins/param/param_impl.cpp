@@ -71,6 +71,13 @@ Param::Result ParamImpl::set_param_custom(const std::string& name, const std::st
     return result_from_mavlink_parameter_client_result(result);
 }
 
+std::pair<Param::Result, std::string> ParamImpl::get_param_any(const std::string& name)
+{
+    auto result = _system_impl->get_param_any(name, _component_id);
+    return std::make_pair<>(
+        result_from_mavlink_parameter_client_result(result.first), result.second);
+}
+
 Param::AllParams ParamImpl::get_all_params()
 {
     auto tmp = _system_impl->get_all_params(

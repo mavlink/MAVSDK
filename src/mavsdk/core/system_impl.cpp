@@ -764,6 +764,13 @@ SystemImpl::get_param_custom(const std::string& name, std::optional<uint8_t> may
         ->get_param_custom(name);
 }
 
+std::pair<MavlinkParameterClient::Result, std::string>
+SystemImpl::get_param_any(const std::string& name, std::optional<uint8_t> maybe_component_id)
+{
+    return param_sender(maybe_component_id ? maybe_component_id.value() : 1, false)
+        ->get_param_any(name);
+}
+
 void SystemImpl::get_param_async(
     const std::string& name,
     ParamValue value,
