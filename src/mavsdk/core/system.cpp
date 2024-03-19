@@ -1,4 +1,5 @@
 #include "system.h"
+#include "autopilot.h"
 #include "mavsdk_impl.h"
 #include "system_impl.h"
 #include "plugin_impl_base.h"
