@@ -245,7 +245,10 @@ uint8_t get_target_component_id(const mavlink_message_t& message)
 
 TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
 {
-    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 1000));
+    constexpr int file_size = 1000;
+    constexpr int msg_count = file_size / 255 + 6; // 6 messages for transfer initialization
+
+    ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, file_size));
     ASSERT_TRUE(reset_directories(temp_dir_downloaded));
 
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
@@ -255,25 +258,26 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     // Once we received half, we want to stop all traffic.
-    bool got_half = false;
-    auto drop_at_some_point = [&got_half](mavlink_message_t& message) {
-        LogDebug() << "Drop message out ? " << message.msgid << " from "
-                   << static_cast<int>(message.sysid) << "/" << static_cast<int>(message.compid)
-                   << " to " << static_cast<int>(get_target_system_id(message)) << "/"
-                   << static_cast<int>(get_target_component_id(message));
-        return !got_half;
+    int received = 0;
+    auto drop_at_some_point_in = [&received](mavlink_message_t& message) {
+        if (message.msgid == MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL) {
+            received++;
+        }
+        if (received >= msg_count / 2) {
+            return false;
+        }
+        return true;
     };
 
-    auto drop_at_some_point2 = [&got_half](mavlink_message_t& message) {
-        LogDebug() << "Drop message in ? " << message.msgid << " from "
-                   << static_cast<int>(message.sysid) << "/" << static_cast<int>(message.compid)
-                   << " to " << static_cast<int>(get_target_system_id(message)) << "/"
-                   << static_cast<int>(get_target_component_id(message));
-        return !got_half;
+    auto drop_at_some_point_out = [&received](mavlink_message_t& message) {
+        if (received >= msg_count / 2) {
+            return false;
+        }
+        return true;
     };
 
-    mavsdk_groundstation.intercept_incoming_messages_async(drop_at_some_point2);
-    mavsdk_groundstation.intercept_outgoing_messages_async(drop_at_some_point);
+    mavsdk_groundstation.intercept_incoming_messages_async(drop_at_some_point_in);
+    mavsdk_groundstation.intercept_outgoing_messages_async(drop_at_some_point_out);
 
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(
@@ -297,10 +301,7 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
         ("" / temp_file).string(),
         temp_dir_downloaded.string(),
         true,
-        [&prom, &got_half](Ftp::Result result, Ftp::ProgressData progress_data) {
-            if (progress_data.bytes_transferred > 500) {
-                got_half = true;
-            }
+        [&prom](Ftp::Result result, Ftp::ProgressData progress_data) {
             if (result != Ftp::Result::Next) {
                 prom.set_value(result);
             } else {
