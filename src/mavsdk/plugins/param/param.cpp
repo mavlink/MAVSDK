@@ -23,27 +23,14 @@ Param::Param(std::shared_ptr<System> system) :
 
 Param::~Param() {}
 
-//GETTERs
-template <class T>
-std::pair<Param::Result, T> Param::get_param_any(const std::string &name) const
-{
-    return _impl->get_param_any<T>(name);
-}
-template std::pair<Param::Result, uint8_t> Param::get_param_any<uint8_t>(const std::string &name) const;
-template std::pair<Param::Result, int8_t> Param::get_param_any<int8_t>(const std::string &name) const;
-template std::pair<Param::Result, uint16_t> Param::get_param_any<uint16_t>(const std::string &name) const;
-template std::pair<Param::Result, int16_t> Param::get_param_any<int16_t>(const std::string &name) const;
-template std::pair<Param::Result, uint32_t> Param::get_param_any<uint32_t>(const std::string &name) const;
-template std::pair<Param::Result, int32_t> Param::get_param_any<int32_t>(const std::string &name) const;
-template std::pair<Param::Result, uint64_t> Param::get_param_any<uint64_t>(const std::string &name) const;
-template std::pair<Param::Result, int64_t> Param::get_param_any<int64_t>(const std::string &name) const;
-template std::pair<Param::Result, float> Param::get_param_any<float>(const std::string &name) const;
-template std::pair<Param::Result, double> Param::get_param_any<double>(const std::string &name) const;
-template std::pair<Param::Result, std::string> Param::get_param_any<std::string>(const std::string &name) const;
-
 std::pair<Param::Result, int32_t> Param::get_param_int(std::string name) const
 {
     return _impl->get_param_int(name);
+}
+
+Param::Result Param::set_param_int(std::string name, int32_t value) const
+{
+    return _impl->set_param_int(name, value);
 }
 
 std::pair<Param::Result, float> Param::get_param_float(std::string name) const
@@ -51,30 +38,29 @@ std::pair<Param::Result, float> Param::get_param_float(std::string name) const
     return _impl->get_param_float(name);
 }
 
-std::pair<Param::Result, std::string> Param::get_param_custom(std::string name) const
-{
-    return _impl->get_param_custom(name);
-}
-
-Param::AllParams Param::get_all_params() const
-{
-    return _impl->get_all_params();
-}
-
-//SETTERs
-Param::Result Param::set_param_int(std::string name, int32_t value) const
-{
-    return _impl->set_param_int(name, value);
-}
-
 Param::Result Param::set_param_float(std::string name, float value) const
 {
     return _impl->set_param_float(name, value);
 }
 
+std::pair<Param::Result, std::string> Param::get_param_custom(std::string name) const
+{
+    return _impl->get_param_custom(name);
+}
+
 Param::Result Param::set_param_custom(std::string name, std::string value) const
 {
     return _impl->set_param_custom(name, value);
+}
+
+std::pair<Param::Result, std::string> Param::get_param_any(const std::string &name) const
+{
+    return _impl->get_param_any(name);
+}
+
+Param::AllParams Param::get_all_params() const
+{
+    return _impl->get_all_params();
 }
 
 Param::Result Param::select_component(int32_t component_id, ProtocolVersion protocol_version) const

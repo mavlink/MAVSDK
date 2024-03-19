@@ -119,18 +119,8 @@ public:
 
     using GetParamFloatCallback = std::function<void(Result, float)>;
 
-    template <typename T>
-    using GetParamAnyCallback2 = std::function<void(Result, T)>;
-
-    template <class T>
-    void get_param_any_async(
-        const std::string& name, const GetParamAnyCallback2<T>& callback, const void* cookie);
-
     void get_param_float_async(
         const std::string& name, const GetParamFloatCallback& callback, const void* cookie);
-
-    template <class T>
-    std::pair<Result, T> get_param_any(const std::string& name);
 
     std::pair<Result, int32_t> get_param_int(const std::string& name);
 
@@ -141,9 +131,14 @@ public:
 
     std::pair<Result, std::string> get_param_custom(const std::string& name);
 
+    std::pair<Result, std::string> get_param_any(const std::string& name);
+
     using GetParamCustomCallback = std::function<void(Result, const std::string& value)>;
 
     void get_param_custom_async(
+        const std::string& name, const GetParamCustomCallback& callback, const void* cookie);
+
+    void get_param_any_async(
         const std::string& name, const GetParamCustomCallback& callback, const void* cookie);
 
     using GetAllParamsCallback =

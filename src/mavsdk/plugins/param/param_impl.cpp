@@ -28,33 +28,19 @@ void ParamImpl::enable() {}
 
 void ParamImpl::disable() {}
 
-//GETTERs
-template <typename T>
-std::pair<Param::Result, T> ParamImpl::get_param_any(const std::string& name)
-{
-    std::pair<MavlinkParameterClient::Result, T> result = _system_impl->get_param_any<T>(
-        name, _component_id, _protocol_version == Param::ProtocolVersion::Ext);
-    return std::pair<Param::Result, T>(
-        result_from_mavlink_parameter_client_result(result.first), result.second);
-}
-template std::pair<Param::Result, uint8_t> ParamImpl::get_param_any<uint8_t>(const std::string &name);
-template std::pair<Param::Result, int8_t> ParamImpl::get_param_any<int8_t>(const std::string &name);
-template std::pair<Param::Result, uint16_t> ParamImpl::get_param_any<uint16_t>(const std::string &name);
-template std::pair<Param::Result, int16_t> ParamImpl::get_param_any<int16_t>(const std::string &name);
-template std::pair<Param::Result, uint32_t> ParamImpl::get_param_any<uint32_t>(const std::string &name);
-template std::pair<Param::Result, int32_t> ParamImpl::get_param_any<int32_t>(const std::string &name);
-template std::pair<Param::Result, uint64_t> ParamImpl::get_param_any<uint64_t>(const std::string &name);
-template std::pair<Param::Result, int64_t> ParamImpl::get_param_any<int64_t>(const std::string &name);
-template std::pair<Param::Result, float> ParamImpl::get_param_any<float>(const std::string &name);
-template std::pair<Param::Result, double> ParamImpl::get_param_any<double>(const std::string &name);
-template std::pair<Param::Result, std::string> ParamImpl::get_param_any<std::string>(const std::string &name);
-
 std::pair<Param::Result, int32_t> ParamImpl::get_param_int(const std::string& name)
 {
     std::pair<MavlinkParameterClient::Result, int32_t> result = _system_impl->get_param_int(
         name, _component_id, _protocol_version == Param::ProtocolVersion::Ext);
     return std::make_pair<>(
         result_from_mavlink_parameter_client_result(result.first), result.second);
+}
+
+Param::Result ParamImpl::set_param_int(const std::string& name, int32_t value)
+{
+    MavlinkParameterClient::Result result = _system_impl->set_param_int(
+        name, value, _component_id, _protocol_version == Param::ProtocolVersion::Ext);
+    return result_from_mavlink_parameter_client_result(result);
 }
 
 std::pair<Param::Result, float> ParamImpl::get_param_float(const std::string& name)
@@ -65,9 +51,29 @@ std::pair<Param::Result, float> ParamImpl::get_param_float(const std::string& na
         result_from_mavlink_parameter_client_result(result.first), result.second);
 }
 
+Param::Result ParamImpl::set_param_float(const std::string& name, float value)
+{
+    MavlinkParameterClient::Result result = _system_impl->set_param_float(
+        name, value, _component_id, _protocol_version == Param::ProtocolVersion::Ext);
+    return result_from_mavlink_parameter_client_result(result);
+}
+
 std::pair<Param::Result, std::string> ParamImpl::get_param_custom(const std::string& name)
 {
     auto result = _system_impl->get_param_custom(name, _component_id);
+    return std::make_pair<>(
+        result_from_mavlink_parameter_client_result(result.first), result.second);
+}
+
+Param::Result ParamImpl::set_param_custom(const std::string& name, const std::string& value)
+{
+    auto result = _system_impl->set_param_custom(name, value, _component_id);
+    return result_from_mavlink_parameter_client_result(result);
+}
+
+std::pair<Param::Result, std::string> ParamImpl::get_param_any(const std::string& name)
+{
+    auto result = _system_impl->get_param_any(name, _component_id);
     return std::make_pair<>(
         result_from_mavlink_parameter_client_result(result.first), result.second);
 }
@@ -112,27 +118,6 @@ Param::AllParams ParamImpl::get_all_params()
     }
 
     return res;
-}
-
-//SETTERs
-Param::Result ParamImpl::set_param_int(const std::string& name, int32_t value)
-{
-    MavlinkParameterClient::Result result = _system_impl->set_param_int(
-        name, value, _component_id, _protocol_version == Param::ProtocolVersion::Ext);
-    return result_from_mavlink_parameter_client_result(result);
-}
-
-Param::Result ParamImpl::set_param_float(const std::string& name, float value)
-{
-    MavlinkParameterClient::Result result = _system_impl->set_param_float(
-        name, value, _component_id, _protocol_version == Param::ProtocolVersion::Ext);
-    return result_from_mavlink_parameter_client_result(result);
-}
-
-Param::Result ParamImpl::set_param_custom(const std::string& name, const std::string& value)
-{
-    auto result = _system_impl->set_param_custom(name, value, _component_id);
-    return result_from_mavlink_parameter_client_result(result);
 }
 
 Param::Result

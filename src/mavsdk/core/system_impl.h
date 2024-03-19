@@ -199,11 +199,6 @@ public:
     using GetParamCustomCallback =
         std::function<void(MavlinkParameterClient::Result result, const std::string& value)>;
 
-    template <class T>
-    std::pair<MavlinkParameterClient::Result, T> get_param_any(
-        const std::string& name,
-        std::optional<uint8_t> maybe_component_id = {},
-        bool extended = false);
     std::pair<MavlinkParameterClient::Result, float> get_param_float(
         const std::string& name,
         std::optional<uint8_t> maybe_component_id = {},
@@ -214,6 +209,8 @@ public:
         bool extended = false);
     std::pair<MavlinkParameterClient::Result, std::string>
     get_param_custom(const std::string& name, std::optional<uint8_t> maybe_component_id = {});
+    std::pair<MavlinkParameterClient::Result, std::string>
+    get_param_any(const std::string& name, std::optional<uint8_t> maybe_component_id = {});
 
     // These methods can be used to cache a parameter when a system connects. For that
     // the callback can just be set to nullptr.

@@ -16,7 +16,7 @@ namespace mavsdk {
  * This is a c++ helper for a mavlink extended or non-extended param value.
  */
 class ParamValue {
-public:
+private:
     std::variant<
         uint8_t,
         int8_t,
@@ -30,9 +30,7 @@ public:
         double,
         std::string>
         _value{};
-
 public:
-
     bool set_from_mavlink_param_value_bytewise(const mavlink_param_value_t& mavlink_value);
     bool set_from_mavlink_param_value_cast(const mavlink_param_value_t& mavlink_value);
     bool set_from_mavlink_param_set_bytewise(const mavlink_param_set_t& mavlink_set);
@@ -55,7 +53,6 @@ public:
     [[nodiscard]] std::optional<int> get_int() const;
     [[nodiscard]] std::optional<float> get_float() const;
     [[nodiscard]] std::optional<std::string> get_custom() const;
-    [[nodiscard]] std::optional<decltype(_value)> get_any() const;
 
     bool set_int(int new_value);
     void set_float(float new_value);
@@ -129,6 +126,10 @@ public:
         // which is the case when its value is represented by a string or bigger than 4 bytes.
         return is<std::string>() || is<uint64_t>() || is<int64_t>() || is<double>();
     }
+
+    decltype(_value) &get_Base() {
+        return _value;
+    };
 };
 
 std::ostream& operator<<(std::ostream& str, const ParamValue& obj);
