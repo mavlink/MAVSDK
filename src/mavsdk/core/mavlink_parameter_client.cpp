@@ -8,6 +8,10 @@
 #include <future>
 #include <utility>
 
+#include <iostream>
+#define LOGI(str) std::cout << "Ciber -> " << str << std::endl;
+#define LOGT qDebug() << __FILE__ << __func__ << __LINE__;
+
 namespace mavsdk {
 
 MavlinkParameterClient::MavlinkParameterClient(
@@ -118,10 +122,12 @@ void MavlinkParameterClient::set_param_int_async(
     // PX4 only uses int32_t, so we can be sure and don't need to check the exact type first
     // by getting the param, or checking the cache.
     if (_autopilot_callback() == Autopilot::Px4) {
+        LOGI("Autopilot::Px4");
         ParamValue value_to_set;
         value_to_set.set(static_cast<int32_t>(value));
         set_param_async(name, value_to_set, callback, cookie);
     } else {
+        LOGI("No Autopilot::Px4");
         // We don't know which exact int type the server wants, so we have to get the param
         // first to see the type before setting it.
         auto param_opt = _param_cache.param_by_id(name, false);
@@ -277,7 +283,6 @@ void MavlinkParameterClient::get_param_async(
 
 #include <iostream>
 #define LOGI(str) std::cout << "Ciber -> " << str << std::endl;
-#define LOGT std::cout << __FILE__ << __func__ << __LINE__ << endl;
 
 template<typename T>
 void MavlinkParameterClient::get_param_async_typesafe(
