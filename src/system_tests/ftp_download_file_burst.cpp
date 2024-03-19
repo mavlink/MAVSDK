@@ -207,42 +207,6 @@ TEST(SystemTest, FtpDownloadBurstBigFileLossy)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
-uint8_t get_target_system_id(const mavlink_message_t& message)
-{
-    // Checks whether connection knows target system ID by extracting target system if set.
-    const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
-
-    if (meta == nullptr || !(meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_SYSTEM)) {
-        return 0;
-    }
-
-    // Don't look at the target system offset if it is outside the payload length.
-    // This can happen if the fields are trimmed.
-    if (meta->target_system_ofs >= message.len) {
-        return 0;
-    }
-
-    return (_MAV_PAYLOAD(&message))[meta->target_system_ofs];
-}
-
-uint8_t get_target_component_id(const mavlink_message_t& message)
-{
-    // Checks whether connection knows target system ID by extracting target system if set.
-    const mavlink_msg_entry_t* meta = mavlink_get_msg_entry(message.msgid);
-
-    if (meta == nullptr || !(meta->flags & MAV_MSG_ENTRY_FLAG_HAVE_TARGET_COMPONENT)) {
-        return 0;
-    }
-
-    // Don't look at the target component offset if it is outside the payload length.
-    // This can happen if the fields are trimmed.
-    if (meta->target_component_ofs >= message.len) {
-        return 0;
-    }
-
-    return (_MAV_PAYLOAD(&message))[meta->target_component_ofs];
-}
-
 TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
 {
     constexpr int file_size = 1000;
