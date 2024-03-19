@@ -259,7 +259,7 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
 
     // Once we received half, we want to stop all traffic.
     int received = 0;
-    auto drop_at_some_point_in = [&received](mavlink_message_t& message) {
+    auto drop_at_some_point_in = [&received, msg_count](mavlink_message_t& message) {
         if (message.msgid == MAVLINK_MSG_ID_FILE_TRANSFER_PROTOCOL) {
             received++;
         }
@@ -269,7 +269,7 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
         return true;
     };
 
-    auto drop_at_some_point_out = [&received](mavlink_message_t& message) {
+    auto drop_at_some_point_out = [&received, msg_count](mavlink_message_t& message) {
         if (received >= msg_count / 2) {
             return false;
         }
