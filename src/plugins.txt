@@ -31,3 +31,4 @@ tracking_server
 transponder
 tune
 winch
+winch_reel
