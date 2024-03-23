@@ -490,6 +490,12 @@ bool ParamValue::set_int(int new_value)
     } else if (std::get_if<int32_t>(&_value)) {
         _value = static_cast<int32_t>(new_value);
         return true;
+    } else if (std::get_if<float>(&_value)) {
+        _value = static_cast<float>(new_value);
+        return true;
+    } else if (std::get_if<short>(&_value)) {
+        _value = static_cast<short>(new_value);
+        return true;
     } else {
         return false;
     }
