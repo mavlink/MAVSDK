@@ -110,7 +110,11 @@ std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> LogFilesImpl::get_entr
         prom->set_value(std::make_pair<>(result, entries));
     });
 
-    return future_result.get();
+    auto result = future_result.get();
+
+    _entries_user_callback = nullptr;
+
+    return result;
 }
 
 void LogFilesImpl::get_entries_async(LogFiles::GetEntriesCallback callback)
