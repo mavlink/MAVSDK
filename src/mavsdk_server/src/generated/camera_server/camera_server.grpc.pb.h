@@ -242,6 +242,78 @@ class CameraServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondResetSettingsResponse>> PrepareAsyncRespondResetSettings(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondResetSettingsRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondResetSettingsResponse>>(PrepareAsyncRespondResetSettingsRaw(context, request, cq));
     }
+    // Subscribe to zoom in start command
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::ZoomInStartResponse>> SubscribeZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::ZoomInStartResponse>>(SubscribeZoomInStartRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomInStartResponse>> AsyncSubscribeZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomInStartResponse>>(AsyncSubscribeZoomInStartRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomInStartResponse>> PrepareAsyncSubscribeZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomInStartResponse>>(PrepareAsyncSubscribeZoomInStartRaw(context, request, cq));
+    }
+    // Respond to zoom in start.
+    virtual ::grpc::Status RespondZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest& request, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>> AsyncRespondZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>>(AsyncRespondZoomInStartRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>> PrepareAsyncRespondZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>>(PrepareAsyncRespondZoomInStartRaw(context, request, cq));
+    }
+    // Subscribe to zoom out start command
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>> SubscribeZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>>(SubscribeZoomOutStartRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>> AsyncSubscribeZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>>(AsyncSubscribeZoomOutStartRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>> PrepareAsyncSubscribeZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>>(PrepareAsyncSubscribeZoomOutStartRaw(context, request, cq));
+    }
+    // Respond to zoom out start.
+    virtual ::grpc::Status RespondZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest& request, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>> AsyncRespondZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>>(AsyncRespondZoomOutStartRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>> PrepareAsyncRespondZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>>(PrepareAsyncRespondZoomOutStartRaw(context, request, cq));
+    }
+    // Subscribe to zoom stop command
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::ZoomStopResponse>> SubscribeZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::ZoomStopResponse>>(SubscribeZoomStopRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomStopResponse>> AsyncSubscribeZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomStopResponse>>(AsyncSubscribeZoomStopRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomStopResponse>> PrepareAsyncSubscribeZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomStopResponse>>(PrepareAsyncSubscribeZoomStopRaw(context, request, cq));
+    }
+    // Respond to zoom stop.
+    virtual ::grpc::Status RespondZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest& request, ::mavsdk::rpc::camera_server::RespondZoomStopResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomStopResponse>> AsyncRespondZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomStopResponse>>(AsyncRespondZoomStopRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomStopResponse>> PrepareAsyncRespondZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomStopResponse>>(PrepareAsyncRespondZoomStopRaw(context, request, cq));
+    }
+    // Subscribe to zoom range command
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::ZoomRangeResponse>> SubscribeZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::ZoomRangeResponse>>(SubscribeZoomRangeRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomRangeResponse>> AsyncSubscribeZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomRangeResponse>>(AsyncSubscribeZoomRangeRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomRangeResponse>> PrepareAsyncSubscribeZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomRangeResponse>>(PrepareAsyncSubscribeZoomRangeRaw(context, request, cq));
+    }
+    // Respond to zoom range.
+    virtual ::grpc::Status RespondZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest& request, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>> AsyncRespondZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>>(AsyncRespondZoomRangeRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>> PrepareAsyncRespondZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>>(PrepareAsyncRespondZoomRangeRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -304,6 +376,26 @@ class CameraServerService final {
       // Respond to reset settings from SubscribeResetSettings.
       virtual void RespondResetSettings(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondResetSettingsRequest* request, ::mavsdk::rpc::camera_server::RespondResetSettingsResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void RespondResetSettings(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondResetSettingsRequest* request, ::mavsdk::rpc::camera_server::RespondResetSettingsResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Subscribe to zoom in start command
+      virtual void SubscribeZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::ZoomInStartResponse>* reactor) = 0;
+      // Respond to zoom in start.
+      virtual void RespondZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest* request, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void RespondZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest* request, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Subscribe to zoom out start command
+      virtual void SubscribeZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* reactor) = 0;
+      // Respond to zoom out start.
+      virtual void RespondZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest* request, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void RespondZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest* request, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Subscribe to zoom stop command
+      virtual void SubscribeZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::ZoomStopResponse>* reactor) = 0;
+      // Respond to zoom stop.
+      virtual void RespondZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest* request, ::mavsdk::rpc::camera_server::RespondZoomStopResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void RespondZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest* request, ::mavsdk::rpc::camera_server::RespondZoomStopResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Subscribe to zoom range command
+      virtual void SubscribeZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* reactor) = 0;
+      // Respond to zoom range.
+      virtual void RespondZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* request, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void RespondZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* request, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -365,6 +457,26 @@ class CameraServerService final {
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ResetSettingsResponse>* PrepareAsyncSubscribeResetSettingsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeResetSettingsRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondResetSettingsResponse>* AsyncRespondResetSettingsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondResetSettingsRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondResetSettingsResponse>* PrepareAsyncRespondResetSettingsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondResetSettingsRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::ZoomInStartResponse>* SubscribeZoomInStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomInStartResponse>* AsyncSubscribeZoomInStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomInStartResponse>* PrepareAsyncSubscribeZoomInStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>* AsyncRespondZoomInStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>* PrepareAsyncRespondZoomInStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* SubscribeZoomOutStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* AsyncSubscribeZoomOutStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* PrepareAsyncSubscribeZoomOutStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>* AsyncRespondZoomOutStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>* PrepareAsyncRespondZoomOutStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::ZoomStopResponse>* SubscribeZoomStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomStopResponse>* AsyncSubscribeZoomStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomStopResponse>* PrepareAsyncSubscribeZoomStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomStopResponse>* AsyncRespondZoomStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomStopResponse>* PrepareAsyncRespondZoomStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* SubscribeZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* AsyncSubscribeZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* PrepareAsyncSubscribeZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>* AsyncRespondZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>* PrepareAsyncRespondZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -550,6 +662,70 @@ class CameraServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondResetSettingsResponse>> PrepareAsyncRespondResetSettings(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondResetSettingsRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondResetSettingsResponse>>(PrepareAsyncRespondResetSettingsRaw(context, request, cq));
     }
+    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::camera_server::ZoomInStartResponse>> SubscribeZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::camera_server::ZoomInStartResponse>>(SubscribeZoomInStartRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomInStartResponse>> AsyncSubscribeZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomInStartResponse>>(AsyncSubscribeZoomInStartRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomInStartResponse>> PrepareAsyncSubscribeZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomInStartResponse>>(PrepareAsyncSubscribeZoomInStartRaw(context, request, cq));
+    }
+    ::grpc::Status RespondZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest& request, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>> AsyncRespondZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>>(AsyncRespondZoomInStartRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>> PrepareAsyncRespondZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>>(PrepareAsyncRespondZoomInStartRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>> SubscribeZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>>(SubscribeZoomOutStartRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>> AsyncSubscribeZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>>(AsyncSubscribeZoomOutStartRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>> PrepareAsyncSubscribeZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>>(PrepareAsyncSubscribeZoomOutStartRaw(context, request, cq));
+    }
+    ::grpc::Status RespondZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest& request, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>> AsyncRespondZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>>(AsyncRespondZoomOutStartRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>> PrepareAsyncRespondZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>>(PrepareAsyncRespondZoomOutStartRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::camera_server::ZoomStopResponse>> SubscribeZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::camera_server::ZoomStopResponse>>(SubscribeZoomStopRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomStopResponse>> AsyncSubscribeZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomStopResponse>>(AsyncSubscribeZoomStopRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomStopResponse>> PrepareAsyncSubscribeZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomStopResponse>>(PrepareAsyncSubscribeZoomStopRaw(context, request, cq));
+    }
+    ::grpc::Status RespondZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest& request, ::mavsdk::rpc::camera_server::RespondZoomStopResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomStopResponse>> AsyncRespondZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomStopResponse>>(AsyncRespondZoomStopRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomStopResponse>> PrepareAsyncRespondZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomStopResponse>>(PrepareAsyncRespondZoomStopRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::camera_server::ZoomRangeResponse>> SubscribeZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::camera_server::ZoomRangeResponse>>(SubscribeZoomRangeRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomRangeResponse>> AsyncSubscribeZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomRangeResponse>>(AsyncSubscribeZoomRangeRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomRangeResponse>> PrepareAsyncSubscribeZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomRangeResponse>>(PrepareAsyncSubscribeZoomRangeRaw(context, request, cq));
+    }
+    ::grpc::Status RespondZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest& request, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>> AsyncRespondZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>>(AsyncRespondZoomRangeRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>> PrepareAsyncRespondZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>>(PrepareAsyncRespondZoomRangeRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
@@ -589,6 +765,18 @@ class CameraServerService final {
       void SubscribeResetSettings(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeResetSettingsRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::ResetSettingsResponse>* reactor) override;
       void RespondResetSettings(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondResetSettingsRequest* request, ::mavsdk::rpc::camera_server::RespondResetSettingsResponse* response, std::function<void(::grpc::Status)>) override;
       void RespondResetSettings(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondResetSettingsRequest* request, ::mavsdk::rpc::camera_server::RespondResetSettingsResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SubscribeZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::ZoomInStartResponse>* reactor) override;
+      void RespondZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest* request, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse* response, std::function<void(::grpc::Status)>) override;
+      void RespondZoomInStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest* request, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SubscribeZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* reactor) override;
+      void RespondZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest* request, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse* response, std::function<void(::grpc::Status)>) override;
+      void RespondZoomOutStart(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest* request, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SubscribeZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::ZoomStopResponse>* reactor) override;
+      void RespondZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest* request, ::mavsdk::rpc::camera_server::RespondZoomStopResponse* response, std::function<void(::grpc::Status)>) override;
+      void RespondZoomStop(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest* request, ::mavsdk::rpc::camera_server::RespondZoomStopResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SubscribeZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* reactor) override;
+      void RespondZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* request, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* response, std::function<void(::grpc::Status)>) override;
+      void RespondZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* request, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -656,6 +844,26 @@ class CameraServerService final {
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ResetSettingsResponse>* PrepareAsyncSubscribeResetSettingsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeResetSettingsRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondResetSettingsResponse>* AsyncRespondResetSettingsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondResetSettingsRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondResetSettingsResponse>* PrepareAsyncRespondResetSettingsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondResetSettingsRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::mavsdk::rpc::camera_server::ZoomInStartResponse>* SubscribeZoomInStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest& request) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomInStartResponse>* AsyncSubscribeZoomInStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomInStartResponse>* PrepareAsyncSubscribeZoomInStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>* AsyncRespondZoomInStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>* PrepareAsyncRespondZoomInStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* SubscribeZoomOutStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest& request) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* AsyncSubscribeZoomOutStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* PrepareAsyncSubscribeZoomOutStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>* AsyncRespondZoomOutStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>* PrepareAsyncRespondZoomOutStartRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::mavsdk::rpc::camera_server::ZoomStopResponse>* SubscribeZoomStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest& request) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomStopResponse>* AsyncSubscribeZoomStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomStopResponse>* PrepareAsyncSubscribeZoomStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomStopResponse>* AsyncRespondZoomStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomStopResponse>* PrepareAsyncRespondZoomStopRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* SubscribeZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest& request) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* AsyncSubscribeZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* PrepareAsyncSubscribeZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>* AsyncRespondZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>* PrepareAsyncRespondZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SetInformation_;
     const ::grpc::internal::RpcMethod rpcmethod_SetVideoStreaming_;
     const ::grpc::internal::RpcMethod rpcmethod_SetInProgress_;
@@ -679,6 +887,14 @@ class CameraServerService final {
     const ::grpc::internal::RpcMethod rpcmethod_RespondFormatStorage_;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeResetSettings_;
     const ::grpc::internal::RpcMethod rpcmethod_RespondResetSettings_;
+    const ::grpc::internal::RpcMethod rpcmethod_SubscribeZoomInStart_;
+    const ::grpc::internal::RpcMethod rpcmethod_RespondZoomInStart_;
+    const ::grpc::internal::RpcMethod rpcmethod_SubscribeZoomOutStart_;
+    const ::grpc::internal::RpcMethod rpcmethod_RespondZoomOutStart_;
+    const ::grpc::internal::RpcMethod rpcmethod_SubscribeZoomStop_;
+    const ::grpc::internal::RpcMethod rpcmethod_RespondZoomStop_;
+    const ::grpc::internal::RpcMethod rpcmethod_SubscribeZoomRange_;
+    const ::grpc::internal::RpcMethod rpcmethod_RespondZoomRange_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -732,6 +948,22 @@ class CameraServerService final {
     virtual ::grpc::Status SubscribeResetSettings(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeResetSettingsRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ResetSettingsResponse>* writer);
     // Respond to reset settings from SubscribeResetSettings.
     virtual ::grpc::Status RespondResetSettings(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondResetSettingsRequest* request, ::mavsdk::rpc::camera_server::RespondResetSettingsResponse* response);
+    // Subscribe to zoom in start command
+    virtual ::grpc::Status SubscribeZoomInStart(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomInStartResponse>* writer);
+    // Respond to zoom in start.
+    virtual ::grpc::Status RespondZoomInStart(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest* request, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse* response);
+    // Subscribe to zoom out start command
+    virtual ::grpc::Status SubscribeZoomOutStart(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* writer);
+    // Respond to zoom out start.
+    virtual ::grpc::Status RespondZoomOutStart(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest* request, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse* response);
+    // Subscribe to zoom stop command
+    virtual ::grpc::Status SubscribeZoomStop(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomStopResponse>* writer);
+    // Respond to zoom stop.
+    virtual ::grpc::Status RespondZoomStop(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest* request, ::mavsdk::rpc::camera_server::RespondZoomStopResponse* response);
+    // Subscribe to zoom range command
+    virtual ::grpc::Status SubscribeZoomRange(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* writer);
+    // Respond to zoom range.
+    virtual ::grpc::Status RespondZoomRange(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* request, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_SetInformation : public BaseClass {
@@ -1193,7 +1425,167 @@ class CameraServerService final {
       ::grpc::Service::RequestAsyncUnary(22, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SetInformation<WithAsyncMethod_SetVideoStreaming<WithAsyncMethod_SetInProgress<WithAsyncMethod_SubscribeTakePhoto<WithAsyncMethod_RespondTakePhoto<WithAsyncMethod_SubscribeStartVideo<WithAsyncMethod_RespondStartVideo<WithAsyncMethod_SubscribeStopVideo<WithAsyncMethod_RespondStopVideo<WithAsyncMethod_SubscribeStartVideoStreaming<WithAsyncMethod_RespondStartVideoStreaming<WithAsyncMethod_SubscribeStopVideoStreaming<WithAsyncMethod_RespondStopVideoStreaming<WithAsyncMethod_SubscribeSetMode<WithAsyncMethod_RespondSetMode<WithAsyncMethod_SubscribeStorageInformation<WithAsyncMethod_RespondStorageInformation<WithAsyncMethod_SubscribeCaptureStatus<WithAsyncMethod_RespondCaptureStatus<WithAsyncMethod_SubscribeFormatStorage<WithAsyncMethod_RespondFormatStorage<WithAsyncMethod_SubscribeResetSettings<WithAsyncMethod_RespondResetSettings<Service > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_SubscribeZoomInStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SubscribeZoomInStart() {
+      ::grpc::Service::MarkMethodAsync(23);
+    }
+    ~WithAsyncMethod_SubscribeZoomInStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomInStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomInStartResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeZoomInStart(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::camera_server::ZoomInStartResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(23, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_RespondZoomInStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_RespondZoomInStart() {
+      ::grpc::Service::MarkMethodAsync(24);
+    }
+    ~WithAsyncMethod_RespondZoomInStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomInStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestRespondZoomInStart(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::RespondZoomInStartRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(24, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_SubscribeZoomOutStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SubscribeZoomOutStart() {
+      ::grpc::Service::MarkMethodAsync(25);
+    }
+    ~WithAsyncMethod_SubscribeZoomOutStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomOutStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeZoomOutStart(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(25, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_RespondZoomOutStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_RespondZoomOutStart() {
+      ::grpc::Service::MarkMethodAsync(26);
+    }
+    ~WithAsyncMethod_RespondZoomOutStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomOutStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestRespondZoomOutStart(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(26, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_SubscribeZoomStop : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SubscribeZoomStop() {
+      ::grpc::Service::MarkMethodAsync(27);
+    }
+    ~WithAsyncMethod_SubscribeZoomStop() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomStop(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomStopResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeZoomStop(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::camera_server::ZoomStopResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(27, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_RespondZoomStop : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_RespondZoomStop() {
+      ::grpc::Service::MarkMethodAsync(28);
+    }
+    ~WithAsyncMethod_RespondZoomStop() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomStop(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomStopResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestRespondZoomStop(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::RespondZoomStopRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::camera_server::RespondZoomStopResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(28, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_SubscribeZoomRange : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SubscribeZoomRange() {
+      ::grpc::Service::MarkMethodAsync(29);
+    }
+    ~WithAsyncMethod_SubscribeZoomRange() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomRange(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeZoomRange(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(29, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_RespondZoomRange : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_RespondZoomRange() {
+      ::grpc::Service::MarkMethodAsync(30);
+    }
+    ~WithAsyncMethod_RespondZoomRange() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomRange(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestRespondZoomRange(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(30, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_SetInformation<WithAsyncMethod_SetVideoStreaming<WithAsyncMethod_SetInProgress<WithAsyncMethod_SubscribeTakePhoto<WithAsyncMethod_RespondTakePhoto<WithAsyncMethod_SubscribeStartVideo<WithAsyncMethod_RespondStartVideo<WithAsyncMethod_SubscribeStopVideo<WithAsyncMethod_RespondStopVideo<WithAsyncMethod_SubscribeStartVideoStreaming<WithAsyncMethod_RespondStartVideoStreaming<WithAsyncMethod_SubscribeStopVideoStreaming<WithAsyncMethod_RespondStopVideoStreaming<WithAsyncMethod_SubscribeSetMode<WithAsyncMethod_RespondSetMode<WithAsyncMethod_SubscribeStorageInformation<WithAsyncMethod_RespondStorageInformation<WithAsyncMethod_SubscribeCaptureStatus<WithAsyncMethod_RespondCaptureStatus<WithAsyncMethod_SubscribeFormatStorage<WithAsyncMethod_RespondFormatStorage<WithAsyncMethod_SubscribeResetSettings<WithAsyncMethod_RespondResetSettings<WithAsyncMethod_SubscribeZoomInStart<WithAsyncMethod_RespondZoomInStart<WithAsyncMethod_SubscribeZoomOutStart<WithAsyncMethod_RespondZoomOutStart<WithAsyncMethod_SubscribeZoomStop<WithAsyncMethod_RespondZoomStop<WithAsyncMethod_SubscribeZoomRange<WithAsyncMethod_RespondZoomRange<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_SetInformation : public BaseClass {
    private:
@@ -1765,7 +2157,203 @@ class CameraServerService final {
     virtual ::grpc::ServerUnaryReactor* RespondResetSettings(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondResetSettingsRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondResetSettingsResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_SetInformation<WithCallbackMethod_SetVideoStreaming<WithCallbackMethod_SetInProgress<WithCallbackMethod_SubscribeTakePhoto<WithCallbackMethod_RespondTakePhoto<WithCallbackMethod_SubscribeStartVideo<WithCallbackMethod_RespondStartVideo<WithCallbackMethod_SubscribeStopVideo<WithCallbackMethod_RespondStopVideo<WithCallbackMethod_SubscribeStartVideoStreaming<WithCallbackMethod_RespondStartVideoStreaming<WithCallbackMethod_SubscribeStopVideoStreaming<WithCallbackMethod_RespondStopVideoStreaming<WithCallbackMethod_SubscribeSetMode<WithCallbackMethod_RespondSetMode<WithCallbackMethod_SubscribeStorageInformation<WithCallbackMethod_RespondStorageInformation<WithCallbackMethod_SubscribeCaptureStatus<WithCallbackMethod_RespondCaptureStatus<WithCallbackMethod_SubscribeFormatStorage<WithCallbackMethod_RespondFormatStorage<WithCallbackMethod_SubscribeResetSettings<WithCallbackMethod_RespondResetSettings<Service > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_SubscribeZoomInStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SubscribeZoomInStart() {
+      ::grpc::Service::MarkMethodCallback(23,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest, ::mavsdk::rpc::camera_server::ZoomInStartResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest* request) { return this->SubscribeZoomInStart(context, request); }));
+    }
+    ~WithCallbackMethod_SubscribeZoomInStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomInStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomInStartResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::camera_server::ZoomInStartResponse>* SubscribeZoomInStart(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_RespondZoomInStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_RespondZoomInStart() {
+      ::grpc::Service::MarkMethodCallback(24,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::RespondZoomInStartRequest, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest* request, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse* response) { return this->RespondZoomInStart(context, request, response); }));}
+    void SetMessageAllocatorFor_RespondZoomInStart(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::camera_server::RespondZoomInStartRequest, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(24);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::RespondZoomInStartRequest, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_RespondZoomInStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomInStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* RespondZoomInStart(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_SubscribeZoomOutStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SubscribeZoomOutStart() {
+      ::grpc::Service::MarkMethodCallback(25,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest, ::mavsdk::rpc::camera_server::ZoomOutStartResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest* request) { return this->SubscribeZoomOutStart(context, request); }));
+    }
+    ~WithCallbackMethod_SubscribeZoomOutStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomOutStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* SubscribeZoomOutStart(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_RespondZoomOutStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_RespondZoomOutStart() {
+      ::grpc::Service::MarkMethodCallback(26,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest* request, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse* response) { return this->RespondZoomOutStart(context, request, response); }));}
+    void SetMessageAllocatorFor_RespondZoomOutStart(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(26);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_RespondZoomOutStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomOutStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* RespondZoomOutStart(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_SubscribeZoomStop : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SubscribeZoomStop() {
+      ::grpc::Service::MarkMethodCallback(27,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest, ::mavsdk::rpc::camera_server::ZoomStopResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest* request) { return this->SubscribeZoomStop(context, request); }));
+    }
+    ~WithCallbackMethod_SubscribeZoomStop() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomStop(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomStopResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::camera_server::ZoomStopResponse>* SubscribeZoomStop(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_RespondZoomStop : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_RespondZoomStop() {
+      ::grpc::Service::MarkMethodCallback(28,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::RespondZoomStopRequest, ::mavsdk::rpc::camera_server::RespondZoomStopResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest* request, ::mavsdk::rpc::camera_server::RespondZoomStopResponse* response) { return this->RespondZoomStop(context, request, response); }));}
+    void SetMessageAllocatorFor_RespondZoomStop(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::camera_server::RespondZoomStopRequest, ::mavsdk::rpc::camera_server::RespondZoomStopResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(28);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::RespondZoomStopRequest, ::mavsdk::rpc::camera_server::RespondZoomStopResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_RespondZoomStop() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomStop(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomStopResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* RespondZoomStop(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomStopResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_SubscribeZoomRange : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SubscribeZoomRange() {
+      ::grpc::Service::MarkMethodCallback(29,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest, ::mavsdk::rpc::camera_server::ZoomRangeResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest* request) { return this->SubscribeZoomRange(context, request); }));
+    }
+    ~WithCallbackMethod_SubscribeZoomRange() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomRange(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* SubscribeZoomRange(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_RespondZoomRange : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_RespondZoomRange() {
+      ::grpc::Service::MarkMethodCallback(30,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::RespondZoomRangeRequest, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* request, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* response) { return this->RespondZoomRange(context, request, response); }));}
+    void SetMessageAllocatorFor_RespondZoomRange(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::camera_server::RespondZoomRangeRequest, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(30);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::RespondZoomRangeRequest, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_RespondZoomRange() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomRange(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* RespondZoomRange(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_SetInformation<WithCallbackMethod_SetVideoStreaming<WithCallbackMethod_SetInProgress<WithCallbackMethod_SubscribeTakePhoto<WithCallbackMethod_RespondTakePhoto<WithCallbackMethod_SubscribeStartVideo<WithCallbackMethod_RespondStartVideo<WithCallbackMethod_SubscribeStopVideo<WithCallbackMethod_RespondStopVideo<WithCallbackMethod_SubscribeStartVideoStreaming<WithCallbackMethod_RespondStartVideoStreaming<WithCallbackMethod_SubscribeStopVideoStreaming<WithCallbackMethod_RespondStopVideoStreaming<WithCallbackMethod_SubscribeSetMode<WithCallbackMethod_RespondSetMode<WithCallbackMethod_SubscribeStorageInformation<WithCallbackMethod_RespondStorageInformation<WithCallbackMethod_SubscribeCaptureStatus<WithCallbackMethod_RespondCaptureStatus<WithCallbackMethod_SubscribeFormatStorage<WithCallbackMethod_RespondFormatStorage<WithCallbackMethod_SubscribeResetSettings<WithCallbackMethod_RespondResetSettings<WithCallbackMethod_SubscribeZoomInStart<WithCallbackMethod_RespondZoomInStart<WithCallbackMethod_SubscribeZoomOutStart<WithCallbackMethod_RespondZoomOutStart<WithCallbackMethod_SubscribeZoomStop<WithCallbackMethod_RespondZoomStop<WithCallbackMethod_SubscribeZoomRange<WithCallbackMethod_RespondZoomRange<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SetInformation : public BaseClass {
@@ -2154,6 +2742,142 @@ class CameraServerService final {
     }
     // disable synchronous version of this method
     ::grpc::Status RespondResetSettings(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondResetSettingsRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondResetSettingsResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SubscribeZoomInStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SubscribeZoomInStart() {
+      ::grpc::Service::MarkMethodGeneric(23);
+    }
+    ~WithGenericMethod_SubscribeZoomInStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomInStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomInStartResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_RespondZoomInStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_RespondZoomInStart() {
+      ::grpc::Service::MarkMethodGeneric(24);
+    }
+    ~WithGenericMethod_RespondZoomInStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomInStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SubscribeZoomOutStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SubscribeZoomOutStart() {
+      ::grpc::Service::MarkMethodGeneric(25);
+    }
+    ~WithGenericMethod_SubscribeZoomOutStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomOutStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_RespondZoomOutStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_RespondZoomOutStart() {
+      ::grpc::Service::MarkMethodGeneric(26);
+    }
+    ~WithGenericMethod_RespondZoomOutStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomOutStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SubscribeZoomStop : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SubscribeZoomStop() {
+      ::grpc::Service::MarkMethodGeneric(27);
+    }
+    ~WithGenericMethod_SubscribeZoomStop() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomStop(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomStopResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_RespondZoomStop : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_RespondZoomStop() {
+      ::grpc::Service::MarkMethodGeneric(28);
+    }
+    ~WithGenericMethod_RespondZoomStop() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomStop(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomStopResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SubscribeZoomRange : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SubscribeZoomRange() {
+      ::grpc::Service::MarkMethodGeneric(29);
+    }
+    ~WithGenericMethod_SubscribeZoomRange() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomRange(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_RespondZoomRange : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_RespondZoomRange() {
+      ::grpc::Service::MarkMethodGeneric(30);
+    }
+    ~WithGenericMethod_RespondZoomRange() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomRange(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -2616,6 +3340,166 @@ class CameraServerService final {
     }
     void RequestRespondResetSettings(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(22, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SubscribeZoomInStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SubscribeZoomInStart() {
+      ::grpc::Service::MarkMethodRaw(23);
+    }
+    ~WithRawMethod_SubscribeZoomInStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomInStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomInStartResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeZoomInStart(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(23, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_RespondZoomInStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_RespondZoomInStart() {
+      ::grpc::Service::MarkMethodRaw(24);
+    }
+    ~WithRawMethod_RespondZoomInStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomInStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestRespondZoomInStart(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(24, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SubscribeZoomOutStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SubscribeZoomOutStart() {
+      ::grpc::Service::MarkMethodRaw(25);
+    }
+    ~WithRawMethod_SubscribeZoomOutStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomOutStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeZoomOutStart(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(25, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_RespondZoomOutStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_RespondZoomOutStart() {
+      ::grpc::Service::MarkMethodRaw(26);
+    }
+    ~WithRawMethod_RespondZoomOutStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomOutStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestRespondZoomOutStart(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(26, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SubscribeZoomStop : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SubscribeZoomStop() {
+      ::grpc::Service::MarkMethodRaw(27);
+    }
+    ~WithRawMethod_SubscribeZoomStop() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomStop(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomStopResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeZoomStop(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(27, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_RespondZoomStop : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_RespondZoomStop() {
+      ::grpc::Service::MarkMethodRaw(28);
+    }
+    ~WithRawMethod_RespondZoomStop() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomStop(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomStopResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestRespondZoomStop(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(28, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SubscribeZoomRange : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SubscribeZoomRange() {
+      ::grpc::Service::MarkMethodRaw(29);
+    }
+    ~WithRawMethod_SubscribeZoomRange() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomRange(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeZoomRange(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(29, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_RespondZoomRange : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_RespondZoomRange() {
+      ::grpc::Service::MarkMethodRaw(30);
+    }
+    ~WithRawMethod_RespondZoomRange() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomRange(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestRespondZoomRange(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(30, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -3125,6 +4009,182 @@ class CameraServerService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithRawCallbackMethod_SubscribeZoomInStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SubscribeZoomInStart() {
+      ::grpc::Service::MarkMethodRawCallback(23,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeZoomInStart(context, request); }));
+    }
+    ~WithRawCallbackMethod_SubscribeZoomInStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomInStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomInStartResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeZoomInStart(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_RespondZoomInStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_RespondZoomInStart() {
+      ::grpc::Service::MarkMethodRawCallback(24,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RespondZoomInStart(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_RespondZoomInStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomInStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* RespondZoomInStart(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_SubscribeZoomOutStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SubscribeZoomOutStart() {
+      ::grpc::Service::MarkMethodRawCallback(25,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeZoomOutStart(context, request); }));
+    }
+    ~WithRawCallbackMethod_SubscribeZoomOutStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomOutStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeZoomOutStart(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_RespondZoomOutStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_RespondZoomOutStart() {
+      ::grpc::Service::MarkMethodRawCallback(26,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RespondZoomOutStart(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_RespondZoomOutStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomOutStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* RespondZoomOutStart(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_SubscribeZoomStop : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SubscribeZoomStop() {
+      ::grpc::Service::MarkMethodRawCallback(27,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeZoomStop(context, request); }));
+    }
+    ~WithRawCallbackMethod_SubscribeZoomStop() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomStop(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomStopResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeZoomStop(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_RespondZoomStop : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_RespondZoomStop() {
+      ::grpc::Service::MarkMethodRawCallback(28,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RespondZoomStop(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_RespondZoomStop() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomStop(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomStopResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* RespondZoomStop(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_SubscribeZoomRange : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SubscribeZoomRange() {
+      ::grpc::Service::MarkMethodRawCallback(29,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeZoomRange(context, request); }));
+    }
+    ~WithRawCallbackMethod_SubscribeZoomRange() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeZoomRange(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeZoomRange(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_RespondZoomRange : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_RespondZoomRange() {
+      ::grpc::Service::MarkMethodRawCallback(30,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RespondZoomRange(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_RespondZoomRange() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondZoomRange(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* RespondZoomRange(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_SetInformation : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -3475,7 +4535,115 @@ class CameraServerService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedRespondResetSettings(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::camera_server::RespondResetSettingsRequest,::mavsdk::rpc::camera_server::RespondResetSettingsResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_SetInformation<WithStreamedUnaryMethod_SetVideoStreaming<WithStreamedUnaryMethod_SetInProgress<WithStreamedUnaryMethod_RespondTakePhoto<WithStreamedUnaryMethod_RespondStartVideo<WithStreamedUnaryMethod_RespondStopVideo<WithStreamedUnaryMethod_RespondStartVideoStreaming<WithStreamedUnaryMethod_RespondStopVideoStreaming<WithStreamedUnaryMethod_RespondSetMode<WithStreamedUnaryMethod_RespondStorageInformation<WithStreamedUnaryMethod_RespondCaptureStatus<WithStreamedUnaryMethod_RespondFormatStorage<WithStreamedUnaryMethod_RespondResetSettings<Service > > > > > > > > > > > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_RespondZoomInStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_RespondZoomInStart() {
+      ::grpc::Service::MarkMethodStreamed(24,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::camera_server::RespondZoomInStartRequest, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::camera_server::RespondZoomInStartRequest, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse>* streamer) {
+                       return this->StreamedRespondZoomInStart(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_RespondZoomInStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status RespondZoomInStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomInStartRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomInStartResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedRespondZoomInStart(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::camera_server::RespondZoomInStartRequest,::mavsdk::rpc::camera_server::RespondZoomInStartResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_RespondZoomOutStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_RespondZoomOutStart() {
+      ::grpc::Service::MarkMethodStreamed(26,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>* streamer) {
+                       return this->StreamedRespondZoomOutStart(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_RespondZoomOutStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status RespondZoomOutStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomOutStartResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedRespondZoomOutStart(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::camera_server::RespondZoomOutStartRequest,::mavsdk::rpc::camera_server::RespondZoomOutStartResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_RespondZoomStop : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_RespondZoomStop() {
+      ::grpc::Service::MarkMethodStreamed(28,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::camera_server::RespondZoomStopRequest, ::mavsdk::rpc::camera_server::RespondZoomStopResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::camera_server::RespondZoomStopRequest, ::mavsdk::rpc::camera_server::RespondZoomStopResponse>* streamer) {
+                       return this->StreamedRespondZoomStop(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_RespondZoomStop() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status RespondZoomStop(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomStopRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomStopResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedRespondZoomStop(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::camera_server::RespondZoomStopRequest,::mavsdk::rpc::camera_server::RespondZoomStopResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_RespondZoomRange : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_RespondZoomRange() {
+      ::grpc::Service::MarkMethodStreamed(30,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::camera_server::RespondZoomRangeRequest, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::camera_server::RespondZoomRangeRequest, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>* streamer) {
+                       return this->StreamedRespondZoomRange(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_RespondZoomRange() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status RespondZoomRange(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedRespondZoomRange(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::camera_server::RespondZoomRangeRequest,::mavsdk::rpc::camera_server::RespondZoomRangeResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_SetInformation<WithStreamedUnaryMethod_SetVideoStreaming<WithStreamedUnaryMethod_SetInProgress<WithStreamedUnaryMethod_RespondTakePhoto<WithStreamedUnaryMethod_RespondStartVideo<WithStreamedUnaryMethod_RespondStopVideo<WithStreamedUnaryMethod_RespondStartVideoStreaming<WithStreamedUnaryMethod_RespondStopVideoStreaming<WithStreamedUnaryMethod_RespondSetMode<WithStreamedUnaryMethod_RespondStorageInformation<WithStreamedUnaryMethod_RespondCaptureStatus<WithStreamedUnaryMethod_RespondFormatStorage<WithStreamedUnaryMethod_RespondResetSettings<WithStreamedUnaryMethod_RespondZoomInStart<WithStreamedUnaryMethod_RespondZoomOutStart<WithStreamedUnaryMethod_RespondZoomStop<WithStreamedUnaryMethod_RespondZoomRange<Service > > > > > > > > > > > > > > > > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeTakePhoto : public BaseClass {
    private:
@@ -3746,8 +4914,116 @@ class CameraServerService final {
     // replace default version of method with split streamed
     virtual ::grpc::Status StreamedSubscribeResetSettings(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::camera_server::SubscribeResetSettingsRequest,::mavsdk::rpc::camera_server::ResetSettingsResponse>* server_split_streamer) = 0;
   };
-  typedef WithSplitStreamingMethod_SubscribeTakePhoto<WithSplitStreamingMethod_SubscribeStartVideo<WithSplitStreamingMethod_SubscribeStopVideo<WithSplitStreamingMethod_SubscribeStartVideoStreaming<WithSplitStreamingMethod_SubscribeStopVideoStreaming<WithSplitStreamingMethod_SubscribeSetMode<WithSplitStreamingMethod_SubscribeStorageInformation<WithSplitStreamingMethod_SubscribeCaptureStatus<WithSplitStreamingMethod_SubscribeFormatStorage<WithSplitStreamingMethod_SubscribeResetSettings<Service > > > > > > > > > > SplitStreamedService;
-  typedef WithStreamedUnaryMethod_SetInformation<WithStreamedUnaryMethod_SetVideoStreaming<WithStreamedUnaryMethod_SetInProgress<WithSplitStreamingMethod_SubscribeTakePhoto<WithStreamedUnaryMethod_RespondTakePhoto<WithSplitStreamingMethod_SubscribeStartVideo<WithStreamedUnaryMethod_RespondStartVideo<WithSplitStreamingMethod_SubscribeStopVideo<WithStreamedUnaryMethod_RespondStopVideo<WithSplitStreamingMethod_SubscribeStartVideoStreaming<WithStreamedUnaryMethod_RespondStartVideoStreaming<WithSplitStreamingMethod_SubscribeStopVideoStreaming<WithStreamedUnaryMethod_RespondStopVideoStreaming<WithSplitStreamingMethod_SubscribeSetMode<WithStreamedUnaryMethod_RespondSetMode<WithSplitStreamingMethod_SubscribeStorageInformation<WithStreamedUnaryMethod_RespondStorageInformation<WithSplitStreamingMethod_SubscribeCaptureStatus<WithStreamedUnaryMethod_RespondCaptureStatus<WithSplitStreamingMethod_SubscribeFormatStorage<WithStreamedUnaryMethod_RespondFormatStorage<WithSplitStreamingMethod_SubscribeResetSettings<WithStreamedUnaryMethod_RespondResetSettings<Service > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
+  template <class BaseClass>
+  class WithSplitStreamingMethod_SubscribeZoomInStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_SubscribeZoomInStart() {
+      ::grpc::Service::MarkMethodStreamed(23,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest, ::mavsdk::rpc::camera_server::ZoomInStartResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest, ::mavsdk::rpc::camera_server::ZoomInStartResponse>* streamer) {
+                       return this->StreamedSubscribeZoomInStart(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_SubscribeZoomInStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SubscribeZoomInStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomInStartResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedSubscribeZoomInStart(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest,::mavsdk::rpc::camera_server::ZoomInStartResponse>* server_split_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithSplitStreamingMethod_SubscribeZoomOutStart : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_SubscribeZoomOutStart() {
+      ::grpc::Service::MarkMethodStreamed(25,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest, ::mavsdk::rpc::camera_server::ZoomOutStartResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest, ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* streamer) {
+                       return this->StreamedSubscribeZoomOutStart(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_SubscribeZoomOutStart() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SubscribeZoomOutStart(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomOutStartResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedSubscribeZoomOutStart(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest,::mavsdk::rpc::camera_server::ZoomOutStartResponse>* server_split_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithSplitStreamingMethod_SubscribeZoomStop : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_SubscribeZoomStop() {
+      ::grpc::Service::MarkMethodStreamed(27,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest, ::mavsdk::rpc::camera_server::ZoomStopResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest, ::mavsdk::rpc::camera_server::ZoomStopResponse>* streamer) {
+                       return this->StreamedSubscribeZoomStop(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_SubscribeZoomStop() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SubscribeZoomStop(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomStopResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedSubscribeZoomStop(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::camera_server::SubscribeZoomStopRequest,::mavsdk::rpc::camera_server::ZoomStopResponse>* server_split_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithSplitStreamingMethod_SubscribeZoomRange : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_SubscribeZoomRange() {
+      ::grpc::Service::MarkMethodStreamed(29,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest, ::mavsdk::rpc::camera_server::ZoomRangeResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest, ::mavsdk::rpc::camera_server::ZoomRangeResponse>* streamer) {
+                       return this->StreamedSubscribeZoomRange(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_SubscribeZoomRange() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SubscribeZoomRange(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedSubscribeZoomRange(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest,::mavsdk::rpc::camera_server::ZoomRangeResponse>* server_split_streamer) = 0;
+  };
+  typedef WithSplitStreamingMethod_SubscribeTakePhoto<WithSplitStreamingMethod_SubscribeStartVideo<WithSplitStreamingMethod_SubscribeStopVideo<WithSplitStreamingMethod_SubscribeStartVideoStreaming<WithSplitStreamingMethod_SubscribeStopVideoStreaming<WithSplitStreamingMethod_SubscribeSetMode<WithSplitStreamingMethod_SubscribeStorageInformation<WithSplitStreamingMethod_SubscribeCaptureStatus<WithSplitStreamingMethod_SubscribeFormatStorage<WithSplitStreamingMethod_SubscribeResetSettings<WithSplitStreamingMethod_SubscribeZoomInStart<WithSplitStreamingMethod_SubscribeZoomOutStart<WithSplitStreamingMethod_SubscribeZoomStop<WithSplitStreamingMethod_SubscribeZoomRange<Service > > > > > > > > > > > > > > SplitStreamedService;
+  typedef WithStreamedUnaryMethod_SetInformation<WithStreamedUnaryMethod_SetVideoStreaming<WithStreamedUnaryMethod_SetInProgress<WithSplitStreamingMethod_SubscribeTakePhoto<WithStreamedUnaryMethod_RespondTakePhoto<WithSplitStreamingMethod_SubscribeStartVideo<WithStreamedUnaryMethod_RespondStartVideo<WithSplitStreamingMethod_SubscribeStopVideo<WithStreamedUnaryMethod_RespondStopVideo<WithSplitStreamingMethod_SubscribeStartVideoStreaming<WithStreamedUnaryMethod_RespondStartVideoStreaming<WithSplitStreamingMethod_SubscribeStopVideoStreaming<WithStreamedUnaryMethod_RespondStopVideoStreaming<WithSplitStreamingMethod_SubscribeSetMode<WithStreamedUnaryMethod_RespondSetMode<WithSplitStreamingMethod_SubscribeStorageInformation<WithStreamedUnaryMethod_RespondStorageInformation<WithSplitStreamingMethod_SubscribeCaptureStatus<WithStreamedUnaryMethod_RespondCaptureStatus<WithSplitStreamingMethod_SubscribeFormatStorage<WithStreamedUnaryMethod_RespondFormatStorage<WithSplitStreamingMethod_SubscribeResetSettings<WithStreamedUnaryMethod_RespondResetSettings<WithSplitStreamingMethod_SubscribeZoomInStart<WithStreamedUnaryMethod_RespondZoomInStart<WithSplitStreamingMethod_SubscribeZoomOutStart<WithStreamedUnaryMethod_RespondZoomOutStart<WithSplitStreamingMethod_SubscribeZoomStop<WithStreamedUnaryMethod_RespondZoomStop<WithSplitStreamingMethod_SubscribeZoomRange<WithStreamedUnaryMethod_RespondZoomRange<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace camera_server

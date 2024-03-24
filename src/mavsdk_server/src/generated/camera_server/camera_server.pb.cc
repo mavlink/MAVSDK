@@ -24,6 +24,82 @@ namespace mavsdk {
 namespace rpc {
 namespace camera_server {
 
+inline constexpr ZoomStopResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : reserved_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ZoomStopResponse::ZoomStopResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct ZoomStopResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ZoomStopResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ZoomStopResponseDefaultTypeInternal() {}
+  union {
+    ZoomStopResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ZoomStopResponseDefaultTypeInternal _ZoomStopResponse_default_instance_;
+
+inline constexpr ZoomRangeResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : factor_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ZoomRangeResponse::ZoomRangeResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct ZoomRangeResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ZoomRangeResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ZoomRangeResponseDefaultTypeInternal() {}
+  union {
+    ZoomRangeResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ZoomRangeResponseDefaultTypeInternal _ZoomRangeResponse_default_instance_;
+
+inline constexpr ZoomOutStartResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : reserved_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ZoomOutStartResponse::ZoomOutStartResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct ZoomOutStartResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ZoomOutStartResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ZoomOutStartResponseDefaultTypeInternal() {}
+  union {
+    ZoomOutStartResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ZoomOutStartResponseDefaultTypeInternal _ZoomOutStartResponse_default_instance_;
+
+inline constexpr ZoomInStartResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : reserved_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ZoomInStartResponse::ZoomInStartResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct ZoomInStartResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ZoomInStartResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ZoomInStartResponseDefaultTypeInternal() {}
+  union {
+    ZoomInStartResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ZoomInStartResponseDefaultTypeInternal _ZoomInStartResponse_default_instance_;
+
 inline constexpr VideoStreaming::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : rtsp_uri_(
@@ -64,6 +140,54 @@ struct TakePhotoResponseDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TakePhotoResponseDefaultTypeInternal _TakePhotoResponse_default_instance_;
+      template <typename>
+PROTOBUF_CONSTEXPR SubscribeZoomStopRequest::SubscribeZoomStopRequest(::_pbi::ConstantInitialized) {}
+struct SubscribeZoomStopRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SubscribeZoomStopRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SubscribeZoomStopRequestDefaultTypeInternal() {}
+  union {
+    SubscribeZoomStopRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeZoomStopRequestDefaultTypeInternal _SubscribeZoomStopRequest_default_instance_;
+      template <typename>
+PROTOBUF_CONSTEXPR SubscribeZoomRangeRequest::SubscribeZoomRangeRequest(::_pbi::ConstantInitialized) {}
+struct SubscribeZoomRangeRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SubscribeZoomRangeRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SubscribeZoomRangeRequestDefaultTypeInternal() {}
+  union {
+    SubscribeZoomRangeRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeZoomRangeRequestDefaultTypeInternal _SubscribeZoomRangeRequest_default_instance_;
+      template <typename>
+PROTOBUF_CONSTEXPR SubscribeZoomOutStartRequest::SubscribeZoomOutStartRequest(::_pbi::ConstantInitialized) {}
+struct SubscribeZoomOutStartRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SubscribeZoomOutStartRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SubscribeZoomOutStartRequestDefaultTypeInternal() {}
+  union {
+    SubscribeZoomOutStartRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeZoomOutStartRequestDefaultTypeInternal _SubscribeZoomOutStartRequest_default_instance_;
+      template <typename>
+PROTOBUF_CONSTEXPR SubscribeZoomInStartRequest::SubscribeZoomInStartRequest(::_pbi::ConstantInitialized) {}
+struct SubscribeZoomInStartRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SubscribeZoomInStartRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SubscribeZoomInStartRequestDefaultTypeInternal() {}
+  union {
+    SubscribeZoomInStartRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeZoomInStartRequestDefaultTypeInternal _SubscribeZoomInStartRequest_default_instance_;
       template <typename>
 PROTOBUF_CONSTEXPR SubscribeTakePhotoRequest::SubscribeTakePhotoRequest(::_pbi::ConstantInitialized) {}
 struct SubscribeTakePhotoRequestDefaultTypeInternal {
@@ -343,6 +467,82 @@ struct SetInProgressRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetInProgressRequestDefaultTypeInternal _SetInProgressRequest_default_instance_;
+
+inline constexpr RespondZoomStopRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : zoom_stop_feedback_{static_cast< ::mavsdk::rpc::camera_server::CameraFeedback >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondZoomStopRequest::RespondZoomStopRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct RespondZoomStopRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondZoomStopRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondZoomStopRequestDefaultTypeInternal() {}
+  union {
+    RespondZoomStopRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondZoomStopRequestDefaultTypeInternal _RespondZoomStopRequest_default_instance_;
+
+inline constexpr RespondZoomRangeRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : zoom_range_feedback_{static_cast< ::mavsdk::rpc::camera_server::CameraFeedback >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondZoomRangeRequest::RespondZoomRangeRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct RespondZoomRangeRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondZoomRangeRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondZoomRangeRequestDefaultTypeInternal() {}
+  union {
+    RespondZoomRangeRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondZoomRangeRequestDefaultTypeInternal _RespondZoomRangeRequest_default_instance_;
+
+inline constexpr RespondZoomOutStartRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : zoom_out_start_feedback_{static_cast< ::mavsdk::rpc::camera_server::CameraFeedback >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondZoomOutStartRequest::RespondZoomOutStartRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct RespondZoomOutStartRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondZoomOutStartRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondZoomOutStartRequestDefaultTypeInternal() {}
+  union {
+    RespondZoomOutStartRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondZoomOutStartRequestDefaultTypeInternal _RespondZoomOutStartRequest_default_instance_;
+
+inline constexpr RespondZoomInStartRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : zoom_in_start_feedback_{static_cast< ::mavsdk::rpc::camera_server::CameraFeedback >(0)},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondZoomInStartRequest::RespondZoomInStartRequest(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct RespondZoomInStartRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondZoomInStartRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondZoomInStartRequestDefaultTypeInternal() {}
+  union {
+    RespondZoomInStartRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondZoomInStartRequestDefaultTypeInternal _RespondZoomInStartRequest_default_instance_;
 
 inline constexpr RespondStopVideoStreamingRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -756,6 +956,82 @@ struct SetInProgressResponseDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetInProgressResponseDefaultTypeInternal _SetInProgressResponse_default_instance_;
 
+inline constexpr RespondZoomStopResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        camera_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondZoomStopResponse::RespondZoomStopResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct RespondZoomStopResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondZoomStopResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondZoomStopResponseDefaultTypeInternal() {}
+  union {
+    RespondZoomStopResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondZoomStopResponseDefaultTypeInternal _RespondZoomStopResponse_default_instance_;
+
+inline constexpr RespondZoomRangeResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        camera_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondZoomRangeResponse::RespondZoomRangeResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct RespondZoomRangeResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondZoomRangeResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondZoomRangeResponseDefaultTypeInternal() {}
+  union {
+    RespondZoomRangeResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondZoomRangeResponseDefaultTypeInternal _RespondZoomRangeResponse_default_instance_;
+
+inline constexpr RespondZoomOutStartResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        camera_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondZoomOutStartResponse::RespondZoomOutStartResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct RespondZoomOutStartResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondZoomOutStartResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondZoomOutStartResponseDefaultTypeInternal() {}
+  union {
+    RespondZoomOutStartResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondZoomOutStartResponseDefaultTypeInternal _RespondZoomOutStartResponse_default_instance_;
+
+inline constexpr RespondZoomInStartResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        camera_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR RespondZoomInStartResponse::RespondZoomInStartResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct RespondZoomInStartResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR RespondZoomInStartResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RespondZoomInStartResponseDefaultTypeInternal() {}
+  union {
+    RespondZoomInStartResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RespondZoomInStartResponseDefaultTypeInternal _RespondZoomInStartResponse_default_instance_;
+
 inline constexpr RespondTakePhotoResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -1034,7 +1310,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 }  // namespace camera_server
 }  // namespace rpc
 }  // namespace mavsdk
-static ::_pb::Metadata file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[54];
+static ::_pb::Metadata file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[70];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_camera_5fserver_2fcamera_5fserver_2eproto[7];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_camera_5fserver_2fcamera_5fserver_2eproto = nullptr;
@@ -1469,6 +1745,150 @@ const ::uint32_t TableStruct_camera_5fserver_2fcamera_5fserver_2eproto::offsets[
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondResetSettingsResponse, _impl_.camera_server_result_),
     0,
     ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::ZoomInStartResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::ZoomInStartResponse, _impl_.reserved_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomInStartRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomInStartRequest, _impl_.zoom_in_start_feedback_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomInStartResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomInStartResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomInStartResponse, _impl_.camera_server_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::ZoomOutStartResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::ZoomOutStartResponse, _impl_.reserved_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomOutStartRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomOutStartRequest, _impl_.zoom_out_start_feedback_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomOutStartResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomOutStartResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomOutStartResponse, _impl_.camera_server_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SubscribeZoomStopRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::ZoomStopResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::ZoomStopResponse, _impl_.reserved_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomStopRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomStopRequest, _impl_.zoom_stop_feedback_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomStopResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomStopResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomStopResponse, _impl_.camera_server_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::ZoomRangeResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::ZoomRangeResponse, _impl_.factor_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomRangeRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomRangeRequest, _impl_.zoom_range_feedback_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomRangeResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomRangeResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::RespondZoomRangeResponse, _impl_.camera_server_result_),
+    0,
+    ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::camera_server::Information, _internal_metadata_),
     ~0u,  // no _extensions_
     ~0u,  // no _oneof_case_
@@ -1631,14 +2051,30 @@ static const ::_pbi::MigrationSchema
         {400, -1, -1, sizeof(::mavsdk::rpc::camera_server::ResetSettingsResponse)},
         {409, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondResetSettingsRequest)},
         {418, 427, -1, sizeof(::mavsdk::rpc::camera_server::RespondResetSettingsResponse)},
-        {428, -1, -1, sizeof(::mavsdk::rpc::camera_server::Information)},
-        {447, -1, -1, sizeof(::mavsdk::rpc::camera_server::VideoStreaming)},
-        {457, -1, -1, sizeof(::mavsdk::rpc::camera_server::Position)},
-        {469, -1, -1, sizeof(::mavsdk::rpc::camera_server::Quaternion)},
-        {481, 495, -1, sizeof(::mavsdk::rpc::camera_server::CaptureInfo)},
-        {501, -1, -1, sizeof(::mavsdk::rpc::camera_server::CameraServerResult)},
-        {511, -1, -1, sizeof(::mavsdk::rpc::camera_server::StorageInformation)},
-        {527, -1, -1, sizeof(::mavsdk::rpc::camera_server::CaptureStatus)},
+        {428, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeZoomInStartRequest)},
+        {436, -1, -1, sizeof(::mavsdk::rpc::camera_server::ZoomInStartResponse)},
+        {445, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondZoomInStartRequest)},
+        {454, 463, -1, sizeof(::mavsdk::rpc::camera_server::RespondZoomInStartResponse)},
+        {464, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeZoomOutStartRequest)},
+        {472, -1, -1, sizeof(::mavsdk::rpc::camera_server::ZoomOutStartResponse)},
+        {481, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondZoomOutStartRequest)},
+        {490, 499, -1, sizeof(::mavsdk::rpc::camera_server::RespondZoomOutStartResponse)},
+        {500, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeZoomStopRequest)},
+        {508, -1, -1, sizeof(::mavsdk::rpc::camera_server::ZoomStopResponse)},
+        {517, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondZoomStopRequest)},
+        {526, 535, -1, sizeof(::mavsdk::rpc::camera_server::RespondZoomStopResponse)},
+        {536, -1, -1, sizeof(::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest)},
+        {544, -1, -1, sizeof(::mavsdk::rpc::camera_server::ZoomRangeResponse)},
+        {553, -1, -1, sizeof(::mavsdk::rpc::camera_server::RespondZoomRangeRequest)},
+        {562, 571, -1, sizeof(::mavsdk::rpc::camera_server::RespondZoomRangeResponse)},
+        {572, -1, -1, sizeof(::mavsdk::rpc::camera_server::Information)},
+        {591, -1, -1, sizeof(::mavsdk::rpc::camera_server::VideoStreaming)},
+        {601, -1, -1, sizeof(::mavsdk::rpc::camera_server::Position)},
+        {613, -1, -1, sizeof(::mavsdk::rpc::camera_server::Quaternion)},
+        {625, 639, -1, sizeof(::mavsdk::rpc::camera_server::CaptureInfo)},
+        {645, -1, -1, sizeof(::mavsdk::rpc::camera_server::CameraServerResult)},
+        {655, -1, -1, sizeof(::mavsdk::rpc::camera_server::StorageInformation)},
+        {671, -1, -1, sizeof(::mavsdk::rpc::camera_server::CaptureStatus)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -1688,6 +2124,22 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::camera_server::_ResetSettingsResponse_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_RespondResetSettingsRequest_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_RespondResetSettingsResponse_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_SubscribeZoomInStartRequest_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_ZoomInStartResponse_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_RespondZoomInStartRequest_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_RespondZoomInStartResponse_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_SubscribeZoomOutStartRequest_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_ZoomOutStartResponse_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_RespondZoomOutStartRequest_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_RespondZoomOutStartResponse_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_SubscribeZoomStopRequest_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_ZoomStopResponse_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_RespondZoomStopRequest_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_RespondZoomStopResponse_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_SubscribeZoomRangeRequest_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_ZoomRangeResponse_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_RespondZoomRangeRequest_default_instance_._instance,
+    &::mavsdk::rpc::camera_server::_RespondZoomRangeResponse_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_Information_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_VideoStreaming_default_instance_._instance,
     &::mavsdk::rpc::camera_server::_Position_default_instance_._instance,
@@ -1791,149 +2243,203 @@ const char descriptor_table_protodef_camera_5fserver_2fcamera_5fserver_2eproto[]
     "2(.mavsdk.rpc.camera_server.CameraFeedba"
     "ck\"j\n\034RespondResetSettingsResponse\022J\n\024ca"
     "mera_server_result\030\001 \001(\0132,.mavsdk.rpc.ca"
-    "mera_server.CameraServerResult\"\276\002\n\013Infor"
-    "mation\022\023\n\013vendor_name\030\001 \001(\t\022\022\n\nmodel_nam"
-    "e\030\002 \001(\t\022\030\n\020firmware_version\030\003 \001(\t\022\027\n\017foc"
-    "al_length_mm\030\004 \001(\002\022!\n\031horizontal_sensor_"
-    "size_mm\030\005 \001(\002\022\037\n\027vertical_sensor_size_mm"
-    "\030\006 \001(\002\022 \n\030horizontal_resolution_px\030\007 \001(\r"
-    "\022\036\n\026vertical_resolution_px\030\010 \001(\r\022\017\n\007lens"
-    "_id\030\t \001(\r\022\037\n\027definition_file_version\030\n \001"
-    "(\r\022\033\n\023definition_file_uri\030\013 \001(\t\";\n\016Video"
-    "Streaming\022\027\n\017has_rtsp_server\030\001 \001(\010\022\020\n\010rt"
-    "sp_uri\030\002 \001(\t\"q\n\010Position\022\024\n\014latitude_deg"
-    "\030\001 \001(\001\022\025\n\rlongitude_deg\030\002 \001(\001\022\033\n\023absolut"
-    "e_altitude_m\030\003 \001(\002\022\033\n\023relative_altitude_"
-    "m\030\004 \001(\002\"8\n\nQuaternion\022\t\n\001w\030\001 \001(\002\022\t\n\001x\030\002 "
-    "\001(\002\022\t\n\001y\030\003 \001(\002\022\t\n\001z\030\004 \001(\002\"\320\001\n\013CaptureInf"
-    "o\0224\n\010position\030\001 \001(\0132\".mavsdk.rpc.camera_"
-    "server.Position\022A\n\023attitude_quaternion\030\002"
-    " \001(\0132$.mavsdk.rpc.camera_server.Quaterni"
-    "on\022\023\n\013time_utc_us\030\003 \001(\004\022\022\n\nis_success\030\004 "
-    "\001(\010\022\r\n\005index\030\005 \001(\005\022\020\n\010file_url\030\006 \001(\t\"\263\002\n"
-    "\022CameraServerResult\022C\n\006result\030\001 \001(\01623.ma"
-    "vsdk.rpc.camera_server.CameraServerResul"
-    "t.Result\022\022\n\nresult_str\030\002 \001(\t\"\303\001\n\006Result\022"
-    "\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022"
-    "\026\n\022RESULT_IN_PROGRESS\020\002\022\017\n\013RESULT_BUSY\020\003"
-    "\022\021\n\rRESULT_DENIED\020\004\022\020\n\014RESULT_ERROR\020\005\022\022\n"
-    "\016RESULT_TIMEOUT\020\006\022\031\n\025RESULT_WRONG_ARGUME"
-    "NT\020\007\022\024\n\020RESULT_NO_SYSTEM\020\010\"\214\005\n\022StorageIn"
-    "formation\022\030\n\020used_storage_mib\030\001 \001(\002\022\035\n\025a"
-    "vailable_storage_mib\030\002 \001(\002\022\031\n\021total_stor"
-    "age_mib\030\003 \001(\002\022R\n\016storage_status\030\004 \001(\0162:."
-    "mavsdk.rpc.camera_server.StorageInformat"
-    "ion.StorageStatus\022\022\n\nstorage_id\030\005 \001(\r\022N\n"
-    "\014storage_type\030\006 \001(\01628.mavsdk.rpc.camera_"
-    "server.StorageInformation.StorageType\022\030\n"
-    "\020read_speed_mib_s\030\007 \001(\002\022\031\n\021write_speed_m"
-    "ib_s\030\010 \001(\002\"\221\001\n\rStorageStatus\022 \n\034STORAGE_"
-    "STATUS_NOT_AVAILABLE\020\000\022\036\n\032STORAGE_STATUS"
-    "_UNFORMATTED\020\001\022\034\n\030STORAGE_STATUS_FORMATT"
-    "ED\020\002\022 \n\034STORAGE_STATUS_NOT_SUPPORTED\020\003\"\240"
-    "\001\n\013StorageType\022\030\n\024STORAGE_TYPE_UNKNOWN\020\000"
-    "\022\032\n\026STORAGE_TYPE_USB_STICK\020\001\022\023\n\017STORAGE_"
-    "TYPE_SD\020\002\022\030\n\024STORAGE_TYPE_MICROSD\020\003\022\023\n\017S"
-    "TORAGE_TYPE_HD\020\007\022\027\n\022STORAGE_TYPE_OTHER\020\376"
-    "\001\"\356\003\n\rCaptureStatus\022\030\n\020image_interval_s\030"
-    "\001 \001(\002\022\030\n\020recording_time_s\030\002 \001(\002\022\036\n\026avail"
-    "able_capacity_mib\030\003 \001(\002\022I\n\014image_status\030"
-    "\004 \001(\01623.mavsdk.rpc.camera_server.Capture"
-    "Status.ImageStatus\022I\n\014video_status\030\005 \001(\016"
-    "23.mavsdk.rpc.camera_server.CaptureStatu"
-    "s.VideoStatus\022\023\n\013image_count\030\006 \001(\005\"\221\001\n\013I"
-    "mageStatus\022\025\n\021IMAGE_STATUS_IDLE\020\000\022$\n IMA"
-    "GE_STATUS_CAPTURE_IN_PROGRESS\020\001\022\036\n\032IMAGE"
-    "_STATUS_INTERVAL_IDLE\020\002\022%\n!IMAGE_STATUS_"
-    "INTERVAL_IN_PROGRESS\020\003\"J\n\013VideoStatus\022\025\n"
-    "\021VIDEO_STATUS_IDLE\020\000\022$\n VIDEO_STATUS_CAP"
-    "TURE_IN_PROGRESS\020\001*{\n\016CameraFeedback\022\033\n\027"
-    "CAMERA_FEEDBACK_UNKNOWN\020\000\022\026\n\022CAMERA_FEED"
-    "BACK_OK\020\001\022\030\n\024CAMERA_FEEDBACK_BUSY\020\002\022\032\n\026C"
-    "AMERA_FEEDBACK_FAILED\020\003*8\n\004Mode\022\020\n\014MODE_"
-    "UNKNOWN\020\000\022\016\n\nMODE_PHOTO\020\001\022\016\n\nMODE_VIDEO\020"
-    "\0022\217\031\n\023CameraServerService\022y\n\016SetInformat"
-    "ion\022/.mavsdk.rpc.camera_server.SetInform"
-    "ationRequest\0320.mavsdk.rpc.camera_server."
-    "SetInformationResponse\"\004\200\265\030\001\022\202\001\n\021SetVide"
-    "oStreaming\0222.mavsdk.rpc.camera_server.Se"
-    "tVideoStreamingRequest\0323.mavsdk.rpc.came"
-    "ra_server.SetVideoStreamingResponse\"\004\200\265\030"
-    "\001\022v\n\rSetInProgress\022..mavsdk.rpc.camera_s"
-    "erver.SetInProgressRequest\032/.mavsdk.rpc."
-    "camera_server.SetInProgressResponse\"\004\200\265\030"
-    "\001\022~\n\022SubscribeTakePhoto\0223.mavsdk.rpc.cam"
-    "era_server.SubscribeTakePhotoRequest\032+.m"
-    "avsdk.rpc.camera_server.TakePhotoRespons"
-    "e\"\004\200\265\030\0000\001\022\177\n\020RespondTakePhoto\0221.mavsdk.r"
-    "pc.camera_server.RespondTakePhotoRequest"
-    "\0322.mavsdk.rpc.camera_server.RespondTakeP"
-    "hotoResponse\"\004\200\265\030\001\022\201\001\n\023SubscribeStartVid"
-    "eo\0224.mavsdk.rpc.camera_server.SubscribeS"
-    "tartVideoRequest\032,.mavsdk.rpc.camera_ser"
-    "ver.StartVideoResponse\"\004\200\265\030\0000\001\022\202\001\n\021Respo"
-    "ndStartVideo\0222.mavsdk.rpc.camera_server."
-    "RespondStartVideoRequest\0323.mavsdk.rpc.ca"
-    "mera_server.RespondStartVideoResponse\"\004\200"
-    "\265\030\001\022~\n\022SubscribeStopVideo\0223.mavsdk.rpc.c"
-    "amera_server.SubscribeStopVideoRequest\032+"
-    ".mavsdk.rpc.camera_server.StopVideoRespo"
-    "nse\"\004\200\265\030\0000\001\022\177\n\020RespondStopVideo\0221.mavsdk"
-    ".rpc.camera_server.RespondStopVideoReque"
-    "st\0322.mavsdk.rpc.camera_server.RespondSto"
-    "pVideoResponse\"\004\200\265\030\001\022\234\001\n\034SubscribeStartV"
-    "ideoStreaming\022=.mavsdk.rpc.camera_server"
-    ".SubscribeStartVideoStreamingRequest\0325.m"
-    "avsdk.rpc.camera_server.StartVideoStream"
-    "ingResponse\"\004\200\265\030\0000\001\022\235\001\n\032RespondStartVide"
-    "oStreaming\022;.mavsdk.rpc.camera_server.Re"
-    "spondStartVideoStreamingRequest\032<.mavsdk"
-    ".rpc.camera_server.RespondStartVideoStre"
-    "amingResponse\"\004\200\265\030\001\022\231\001\n\033SubscribeStopVid"
-    "eoStreaming\022<.mavsdk.rpc.camera_server.S"
-    "ubscribeStopVideoStreamingRequest\0324.mavs"
-    "dk.rpc.camera_server.StopVideoStreamingR"
-    "esponse\"\004\200\265\030\0000\001\022\232\001\n\031RespondStopVideoStre"
-    "aming\022:.mavsdk.rpc.camera_server.Respond"
-    "StopVideoStreamingRequest\032;.mavsdk.rpc.c"
+    "mera_server.CameraServerResult\"\035\n\033Subscr"
+    "ibeZoomInStartRequest\"\'\n\023ZoomInStartResp"
+    "onse\022\020\n\010reserved\030\001 \001(\005\"e\n\031RespondZoomInS"
+    "tartRequest\022H\n\026zoom_in_start_feedback\030\001 "
+    "\001(\0162(.mavsdk.rpc.camera_server.CameraFee"
+    "dback\"h\n\032RespondZoomInStartResponse\022J\n\024c"
+    "amera_server_result\030\001 \001(\0132,.mavsdk.rpc.c"
+    "amera_server.CameraServerResult\"\036\n\034Subsc"
+    "ribeZoomOutStartRequest\"(\n\024ZoomOutStartR"
+    "esponse\022\020\n\010reserved\030\001 \001(\005\"g\n\032RespondZoom"
+    "OutStartRequest\022I\n\027zoom_out_start_feedba"
+    "ck\030\001 \001(\0162(.mavsdk.rpc.camera_server.Came"
+    "raFeedback\"i\n\033RespondZoomOutStartRespons"
+    "e\022J\n\024camera_server_result\030\001 \001(\0132,.mavsdk"
+    ".rpc.camera_server.CameraServerResult\"\032\n"
+    "\030SubscribeZoomStopRequest\"$\n\020ZoomStopRes"
+    "ponse\022\020\n\010reserved\030\001 \001(\005\"^\n\026RespondZoomSt"
+    "opRequest\022D\n\022zoom_stop_feedback\030\001 \001(\0162(."
+    "mavsdk.rpc.camera_server.CameraFeedback\""
+    "e\n\027RespondZoomStopResponse\022J\n\024camera_ser"
+    "ver_result\030\001 \001(\0132,.mavsdk.rpc.camera_ser"
+    "ver.CameraServerResult\"\033\n\031SubscribeZoomR"
+    "angeRequest\"#\n\021ZoomRangeResponse\022\016\n\006fact"
+    "or\030\001 \001(\002\"`\n\027RespondZoomRangeRequest\022E\n\023z"
+    "oom_range_feedback\030\001 \001(\0162(.mavsdk.rpc.ca"
+    "mera_server.CameraFeedback\"f\n\030RespondZoo"
+    "mRangeResponse\022J\n\024camera_server_result\030\001"
+    " \001(\0132,.mavsdk.rpc.camera_server.CameraSe"
+    "rverResult\"\276\002\n\013Information\022\023\n\013vendor_nam"
+    "e\030\001 \001(\t\022\022\n\nmodel_name\030\002 \001(\t\022\030\n\020firmware_"
+    "version\030\003 \001(\t\022\027\n\017focal_length_mm\030\004 \001(\002\022!"
+    "\n\031horizontal_sensor_size_mm\030\005 \001(\002\022\037\n\027ver"
+    "tical_sensor_size_mm\030\006 \001(\002\022 \n\030horizontal"
+    "_resolution_px\030\007 \001(\r\022\036\n\026vertical_resolut"
+    "ion_px\030\010 \001(\r\022\017\n\007lens_id\030\t \001(\r\022\037\n\027definit"
+    "ion_file_version\030\n \001(\r\022\033\n\023definition_fil"
+    "e_uri\030\013 \001(\t\";\n\016VideoStreaming\022\027\n\017has_rts"
+    "p_server\030\001 \001(\010\022\020\n\010rtsp_uri\030\002 \001(\t\"q\n\010Posi"
+    "tion\022\024\n\014latitude_deg\030\001 \001(\001\022\025\n\rlongitude_"
+    "deg\030\002 \001(\001\022\033\n\023absolute_altitude_m\030\003 \001(\002\022\033"
+    "\n\023relative_altitude_m\030\004 \001(\002\"8\n\nQuaternio"
+    "n\022\t\n\001w\030\001 \001(\002\022\t\n\001x\030\002 \001(\002\022\t\n\001y\030\003 \001(\002\022\t\n\001z\030"
+    "\004 \001(\002\"\320\001\n\013CaptureInfo\0224\n\010position\030\001 \001(\0132"
+    "\".mavsdk.rpc.camera_server.Position\022A\n\023a"
+    "ttitude_quaternion\030\002 \001(\0132$.mavsdk.rpc.ca"
+    "mera_server.Quaternion\022\023\n\013time_utc_us\030\003 "
+    "\001(\004\022\022\n\nis_success\030\004 \001(\010\022\r\n\005index\030\005 \001(\005\022\020"
+    "\n\010file_url\030\006 \001(\t\"\263\002\n\022CameraServerResult\022"
+    "C\n\006result\030\001 \001(\01623.mavsdk.rpc.camera_serv"
+    "er.CameraServerResult.Result\022\022\n\nresult_s"
+    "tr\030\002 \001(\t\"\303\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022"
+    "\022\n\016RESULT_SUCCESS\020\001\022\026\n\022RESULT_IN_PROGRES"
+    "S\020\002\022\017\n\013RESULT_BUSY\020\003\022\021\n\rRESULT_DENIED\020\004\022"
+    "\020\n\014RESULT_ERROR\020\005\022\022\n\016RESULT_TIMEOUT\020\006\022\031\n"
+    "\025RESULT_WRONG_ARGUMENT\020\007\022\024\n\020RESULT_NO_SY"
+    "STEM\020\010\"\214\005\n\022StorageInformation\022\030\n\020used_st"
+    "orage_mib\030\001 \001(\002\022\035\n\025available_storage_mib"
+    "\030\002 \001(\002\022\031\n\021total_storage_mib\030\003 \001(\002\022R\n\016sto"
+    "rage_status\030\004 \001(\0162:.mavsdk.rpc.camera_se"
+    "rver.StorageInformation.StorageStatus\022\022\n"
+    "\nstorage_id\030\005 \001(\r\022N\n\014storage_type\030\006 \001(\0162"
+    "8.mavsdk.rpc.camera_server.StorageInform"
+    "ation.StorageType\022\030\n\020read_speed_mib_s\030\007 "
+    "\001(\002\022\031\n\021write_speed_mib_s\030\010 \001(\002\"\221\001\n\rStora"
+    "geStatus\022 \n\034STORAGE_STATUS_NOT_AVAILABLE"
+    "\020\000\022\036\n\032STORAGE_STATUS_UNFORMATTED\020\001\022\034\n\030ST"
+    "ORAGE_STATUS_FORMATTED\020\002\022 \n\034STORAGE_STAT"
+    "US_NOT_SUPPORTED\020\003\"\240\001\n\013StorageType\022\030\n\024ST"
+    "ORAGE_TYPE_UNKNOWN\020\000\022\032\n\026STORAGE_TYPE_USB"
+    "_STICK\020\001\022\023\n\017STORAGE_TYPE_SD\020\002\022\030\n\024STORAGE"
+    "_TYPE_MICROSD\020\003\022\023\n\017STORAGE_TYPE_HD\020\007\022\027\n\022"
+    "STORAGE_TYPE_OTHER\020\376\001\"\356\003\n\rCaptureStatus\022"
+    "\030\n\020image_interval_s\030\001 \001(\002\022\030\n\020recording_t"
+    "ime_s\030\002 \001(\002\022\036\n\026available_capacity_mib\030\003 "
+    "\001(\002\022I\n\014image_status\030\004 \001(\01623.mavsdk.rpc.c"
+    "amera_server.CaptureStatus.ImageStatus\022I"
+    "\n\014video_status\030\005 \001(\01623.mavsdk.rpc.camera"
+    "_server.CaptureStatus.VideoStatus\022\023\n\013ima"
+    "ge_count\030\006 \001(\005\"\221\001\n\013ImageStatus\022\025\n\021IMAGE_"
+    "STATUS_IDLE\020\000\022$\n IMAGE_STATUS_CAPTURE_IN"
+    "_PROGRESS\020\001\022\036\n\032IMAGE_STATUS_INTERVAL_IDL"
+    "E\020\002\022%\n!IMAGE_STATUS_INTERVAL_IN_PROGRESS"
+    "\020\003\"J\n\013VideoStatus\022\025\n\021VIDEO_STATUS_IDLE\020\000"
+    "\022$\n VIDEO_STATUS_CAPTURE_IN_PROGRESS\020\001*{"
+    "\n\016CameraFeedback\022\033\n\027CAMERA_FEEDBACK_UNKN"
+    "OWN\020\000\022\026\n\022CAMERA_FEEDBACK_OK\020\001\022\030\n\024CAMERA_"
+    "FEEDBACK_BUSY\020\002\022\032\n\026CAMERA_FEEDBACK_FAILE"
+    "D\020\003*8\n\004Mode\022\020\n\014MODE_UNKNOWN\020\000\022\016\n\nMODE_PH"
+    "OTO\020\001\022\016\n\nMODE_VIDEO\020\0022\257!\n\023CameraServerSe"
+    "rvice\022y\n\016SetInformation\022/.mavsdk.rpc.cam"
+    "era_server.SetInformationRequest\0320.mavsd"
+    "k.rpc.camera_server.SetInformationRespon"
+    "se\"\004\200\265\030\001\022\202\001\n\021SetVideoStreaming\0222.mavsdk."
+    "rpc.camera_server.SetVideoStreamingReque"
+    "st\0323.mavsdk.rpc.camera_server.SetVideoSt"
+    "reamingResponse\"\004\200\265\030\001\022v\n\rSetInProgress\022."
+    ".mavsdk.rpc.camera_server.SetInProgressR"
+    "equest\032/.mavsdk.rpc.camera_server.SetInP"
+    "rogressResponse\"\004\200\265\030\001\022~\n\022SubscribeTakePh"
+    "oto\0223.mavsdk.rpc.camera_server.Subscribe"
+    "TakePhotoRequest\032+.mavsdk.rpc.camera_ser"
+    "ver.TakePhotoResponse\"\004\200\265\030\0000\001\022\177\n\020Respond"
+    "TakePhoto\0221.mavsdk.rpc.camera_server.Res"
+    "pondTakePhotoRequest\0322.mavsdk.rpc.camera"
+    "_server.RespondTakePhotoResponse\"\004\200\265\030\001\022\201"
+    "\001\n\023SubscribeStartVideo\0224.mavsdk.rpc.came"
+    "ra_server.SubscribeStartVideoRequest\032,.m"
+    "avsdk.rpc.camera_server.StartVideoRespon"
+    "se\"\004\200\265\030\0000\001\022\202\001\n\021RespondStartVideo\0222.mavsd"
+    "k.rpc.camera_server.RespondStartVideoReq"
+    "uest\0323.mavsdk.rpc.camera_server.RespondS"
+    "tartVideoResponse\"\004\200\265\030\001\022~\n\022SubscribeStop"
+    "Video\0223.mavsdk.rpc.camera_server.Subscri"
+    "beStopVideoRequest\032+.mavsdk.rpc.camera_s"
+    "erver.StopVideoResponse\"\004\200\265\030\0000\001\022\177\n\020Respo"
+    "ndStopVideo\0221.mavsdk.rpc.camera_server.R"
+    "espondStopVideoRequest\0322.mavsdk.rpc.came"
+    "ra_server.RespondStopVideoResponse\"\004\200\265\030\001"
+    "\022\234\001\n\034SubscribeStartVideoStreaming\022=.mavs"
+    "dk.rpc.camera_server.SubscribeStartVideo"
+    "StreamingRequest\0325.mavsdk.rpc.camera_ser"
+    "ver.StartVideoStreamingResponse\"\004\200\265\030\0000\001\022"
+    "\235\001\n\032RespondStartVideoStreaming\022;.mavsdk."
+    "rpc.camera_server.RespondStartVideoStrea"
+    "mingRequest\032<.mavsdk.rpc.camera_server.R"
+    "espondStartVideoStreamingResponse\"\004\200\265\030\001\022"
+    "\231\001\n\033SubscribeStopVideoStreaming\022<.mavsdk"
+    ".rpc.camera_server.SubscribeStopVideoStr"
+    "eamingRequest\0324.mavsdk.rpc.camera_server"
+    ".StopVideoStreamingResponse\"\004\200\265\030\0000\001\022\232\001\n\031"
+    "RespondStopVideoStreaming\022:.mavsdk.rpc.c"
     "amera_server.RespondStopVideoStreamingRe"
-    "sponse\"\004\200\265\030\001\022x\n\020SubscribeSetMode\0221.mavsd"
-    "k.rpc.camera_server.SubscribeSetModeRequ"
-    "est\032).mavsdk.rpc.camera_server.SetModeRe"
-    "sponse\"\004\200\265\030\0000\001\022y\n\016RespondSetMode\022/.mavsd"
-    "k.rpc.camera_server.RespondSetModeReques"
-    "t\0320.mavsdk.rpc.camera_server.RespondSetM"
-    "odeResponse\"\004\200\265\030\001\022\231\001\n\033SubscribeStorageIn"
-    "formation\022<.mavsdk.rpc.camera_server.Sub"
-    "scribeStorageInformationRequest\0324.mavsdk"
-    ".rpc.camera_server.StorageInformationRes"
-    "ponse\"\004\200\265\030\0000\001\022\232\001\n\031RespondStorageInformat"
-    "ion\022:.mavsdk.rpc.camera_server.RespondSt"
-    "orageInformationRequest\032;.mavsdk.rpc.cam"
-    "era_server.RespondStorageInformationResp"
-    "onse\"\004\200\265\030\001\022\212\001\n\026SubscribeCaptureStatus\0227."
-    "mavsdk.rpc.camera_server.SubscribeCaptur"
-    "eStatusRequest\032/.mavsdk.rpc.camera_serve"
-    "r.CaptureStatusResponse\"\004\200\265\030\0000\001\022\213\001\n\024Resp"
-    "ondCaptureStatus\0225.mavsdk.rpc.camera_ser"
-    "ver.RespondCaptureStatusRequest\0326.mavsdk"
-    ".rpc.camera_server.RespondCaptureStatusR"
-    "esponse\"\004\200\265\030\001\022\212\001\n\026SubscribeFormatStorage"
-    "\0227.mavsdk.rpc.camera_server.SubscribeFor"
-    "matStorageRequest\032/.mavsdk.rpc.camera_se"
-    "rver.FormatStorageResponse\"\004\200\265\030\0000\001\022\213\001\n\024R"
-    "espondFormatStorage\0225.mavsdk.rpc.camera_"
-    "server.RespondFormatStorageRequest\0326.mav"
-    "sdk.rpc.camera_server.RespondFormatStora"
-    "geResponse\"\004\200\265\030\001\022\212\001\n\026SubscribeResetSetti"
-    "ngs\0227.mavsdk.rpc.camera_server.Subscribe"
-    "ResetSettingsRequest\032/.mavsdk.rpc.camera"
-    "_server.ResetSettingsResponse\"\004\200\265\030\0000\001\022\213\001"
-    "\n\024RespondResetSettings\0225.mavsdk.rpc.came"
-    "ra_server.RespondResetSettingsRequest\0326."
-    "mavsdk.rpc.camera_server.RespondResetSet"
-    "tingsResponse\"\004\200\265\030\001B,\n\027io.mavsdk.camera_"
-    "serverB\021CameraServerProtob\006proto3"
+    "quest\032;.mavsdk.rpc.camera_server.Respond"
+    "StopVideoStreamingResponse\"\004\200\265\030\001\022x\n\020Subs"
+    "cribeSetMode\0221.mavsdk.rpc.camera_server."
+    "SubscribeSetModeRequest\032).mavsdk.rpc.cam"
+    "era_server.SetModeResponse\"\004\200\265\030\0000\001\022y\n\016Re"
+    "spondSetMode\022/.mavsdk.rpc.camera_server."
+    "RespondSetModeRequest\0320.mavsdk.rpc.camer"
+    "a_server.RespondSetModeResponse\"\004\200\265\030\001\022\231\001"
+    "\n\033SubscribeStorageInformation\022<.mavsdk.r"
+    "pc.camera_server.SubscribeStorageInforma"
+    "tionRequest\0324.mavsdk.rpc.camera_server.S"
+    "torageInformationResponse\"\004\200\265\030\0000\001\022\232\001\n\031Re"
+    "spondStorageInformation\022:.mavsdk.rpc.cam"
+    "era_server.RespondStorageInformationRequ"
+    "est\032;.mavsdk.rpc.camera_server.RespondSt"
+    "orageInformationResponse\"\004\200\265\030\001\022\212\001\n\026Subsc"
+    "ribeCaptureStatus\0227.mavsdk.rpc.camera_se"
+    "rver.SubscribeCaptureStatusRequest\032/.mav"
+    "sdk.rpc.camera_server.CaptureStatusRespo"
+    "nse\"\004\200\265\030\0000\001\022\213\001\n\024RespondCaptureStatus\0225.m"
+    "avsdk.rpc.camera_server.RespondCaptureSt"
+    "atusRequest\0326.mavsdk.rpc.camera_server.R"
+    "espondCaptureStatusResponse\"\004\200\265\030\001\022\212\001\n\026Su"
+    "bscribeFormatStorage\0227.mavsdk.rpc.camera"
+    "_server.SubscribeFormatStorageRequest\032/."
+    "mavsdk.rpc.camera_server.FormatStorageRe"
+    "sponse\"\004\200\265\030\0000\001\022\213\001\n\024RespondFormatStorage\022"
+    "5.mavsdk.rpc.camera_server.RespondFormat"
+    "StorageRequest\0326.mavsdk.rpc.camera_serve"
+    "r.RespondFormatStorageResponse\"\004\200\265\030\001\022\212\001\n"
+    "\026SubscribeResetSettings\0227.mavsdk.rpc.cam"
+    "era_server.SubscribeResetSettingsRequest"
+    "\032/.mavsdk.rpc.camera_server.ResetSetting"
+    "sResponse\"\004\200\265\030\0000\001\022\213\001\n\024RespondResetSettin"
+    "gs\0225.mavsdk.rpc.camera_server.RespondRes"
+    "etSettingsRequest\0326.mavsdk.rpc.camera_se"
+    "rver.RespondResetSettingsResponse\"\004\200\265\030\001\022"
+    "\204\001\n\024SubscribeZoomInStart\0225.mavsdk.rpc.ca"
+    "mera_server.SubscribeZoomInStartRequest\032"
+    "-.mavsdk.rpc.camera_server.ZoomInStartRe"
+    "sponse\"\004\200\265\030\0000\001\022\205\001\n\022RespondZoomInStart\0223."
+    "mavsdk.rpc.camera_server.RespondZoomInSt"
+    "artRequest\0324.mavsdk.rpc.camera_server.Re"
+    "spondZoomInStartResponse\"\004\200\265\030\001\022\207\001\n\025Subsc"
+    "ribeZoomOutStart\0226.mavsdk.rpc.camera_ser"
+    "ver.SubscribeZoomOutStartRequest\032..mavsd"
+    "k.rpc.camera_server.ZoomOutStartResponse"
+    "\"\004\200\265\030\0000\001\022\210\001\n\023RespondZoomOutStart\0224.mavsd"
+    "k.rpc.camera_server.RespondZoomOutStartR"
+    "equest\0325.mavsdk.rpc.camera_server.Respon"
+    "dZoomOutStartResponse\"\004\200\265\030\001\022{\n\021Subscribe"
+    "ZoomStop\0222.mavsdk.rpc.camera_server.Subs"
+    "cribeZoomStopRequest\032*.mavsdk.rpc.camera"
+    "_server.ZoomStopResponse\"\004\200\265\030\0000\001\022|\n\017Resp"
+    "ondZoomStop\0220.mavsdk.rpc.camera_server.R"
+    "espondZoomStopRequest\0321.mavsdk.rpc.camer"
+    "a_server.RespondZoomStopResponse\"\004\200\265\030\001\022~"
+    "\n\022SubscribeZoomRange\0223.mavsdk.rpc.camera"
+    "_server.SubscribeZoomRangeRequest\032+.mavs"
+    "dk.rpc.camera_server.ZoomRangeResponse\"\004"
+    "\200\265\030\0000\001\022\177\n\020RespondZoomRange\0221.mavsdk.rpc."
+    "camera_server.RespondZoomRangeRequest\0322."
+    "mavsdk.rpc.camera_server.RespondZoomRang"
+    "eResponse\"\004\200\265\030\001B,\n\027io.mavsdk.camera_serv"
+    "erB\021CameraServerProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_deps[1] =
     {
@@ -1943,13 +2449,13 @@ static ::absl::once_flag descriptor_table_camera_5fserver_2fcamera_5fserver_2epr
 const ::_pbi::DescriptorTable descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto = {
     false,
     false,
-    9433,
+    11589,
     descriptor_table_protodef_camera_5fserver_2fcamera_5fserver_2eproto,
     "camera_server/camera_server.proto",
     &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
     descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_deps,
     1,
-    54,
+    70,
     schemas,
     file_default_instances,
     TableStruct_camera_5fserver_2fcamera_5fserver_2eproto::offsets,
@@ -9350,6 +9856,2348 @@ void RespondResetSettingsResponse::InternalSwap(RespondResetSettingsResponse* PR
 }
 // ===================================================================
 
+class SubscribeZoomInStartRequest::_Internal {
+ public:
+};
+
+SubscribeZoomInStartRequest::SubscribeZoomInStartRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.SubscribeZoomInStartRequest)
+}
+SubscribeZoomInStartRequest::SubscribeZoomInStartRequest(
+    ::google::protobuf::Arena* arena,
+    const SubscribeZoomInStartRequest& from)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+  SubscribeZoomInStartRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.SubscribeZoomInStartRequest)
+}
+
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata SubscribeZoomInStartRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[46]);
+}
+// ===================================================================
+
+class ZoomInStartResponse::_Internal {
+ public:
+};
+
+ZoomInStartResponse::ZoomInStartResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.ZoomInStartResponse)
+}
+ZoomInStartResponse::ZoomInStartResponse(
+    ::google::protobuf::Arena* arena, const ZoomInStartResponse& from)
+    : ZoomInStartResponse(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE ZoomInStartResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void ZoomInStartResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.reserved_ = {};
+}
+ZoomInStartResponse::~ZoomInStartResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.ZoomInStartResponse)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void ZoomInStartResponse::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void ZoomInStartResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.ZoomInStartResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.reserved_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* ZoomInStartResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> ZoomInStartResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_ZoomInStartResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // int32 reserved = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ZoomInStartResponse, _impl_.reserved_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(ZoomInStartResponse, _impl_.reserved_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 reserved = 1;
+    {PROTOBUF_FIELD_OFFSET(ZoomInStartResponse, _impl_.reserved_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+::uint8_t* ZoomInStartResponse::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.ZoomInStartResponse)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // int32 reserved = 1;
+  if (this->_internal_reserved() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt32ToArrayWithField<1>(
+            stream, this->_internal_reserved(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.ZoomInStartResponse)
+  return target;
+}
+
+::size_t ZoomInStartResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.ZoomInStartResponse)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // int32 reserved = 1;
+  if (this->_internal_reserved() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_reserved());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData ZoomInStartResponse::_class_data_ = {
+    ZoomInStartResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* ZoomInStartResponse::GetClassData() const {
+  return &_class_data_;
+}
+
+void ZoomInStartResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<ZoomInStartResponse*>(&to_msg);
+  auto& from = static_cast<const ZoomInStartResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.ZoomInStartResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_reserved() != 0) {
+    _this->_internal_set_reserved(from._internal_reserved());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ZoomInStartResponse::CopyFrom(const ZoomInStartResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.ZoomInStartResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool ZoomInStartResponse::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* ZoomInStartResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void ZoomInStartResponse::InternalSwap(ZoomInStartResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.reserved_, other->_impl_.reserved_);
+}
+
+::google::protobuf::Metadata ZoomInStartResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[47]);
+}
+// ===================================================================
+
+class RespondZoomInStartRequest::_Internal {
+ public:
+};
+
+RespondZoomInStartRequest::RespondZoomInStartRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondZoomInStartRequest)
+}
+RespondZoomInStartRequest::RespondZoomInStartRequest(
+    ::google::protobuf::Arena* arena, const RespondZoomInStartRequest& from)
+    : RespondZoomInStartRequest(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE RespondZoomInStartRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondZoomInStartRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.zoom_in_start_feedback_ = {};
+}
+RespondZoomInStartRequest::~RespondZoomInStartRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondZoomInStartRequest)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void RespondZoomInStartRequest::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void RespondZoomInStartRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondZoomInStartRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.zoom_in_start_feedback_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* RespondZoomInStartRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> RespondZoomInStartRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_RespondZoomInStartRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.camera_server.CameraFeedback zoom_in_start_feedback = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(RespondZoomInStartRequest, _impl_.zoom_in_start_feedback_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(RespondZoomInStartRequest, _impl_.zoom_in_start_feedback_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.camera_server.CameraFeedback zoom_in_start_feedback = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondZoomInStartRequest, _impl_.zoom_in_start_feedback_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+::uint8_t* RespondZoomInStartRequest::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondZoomInStartRequest)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // .mavsdk.rpc.camera_server.CameraFeedback zoom_in_start_feedback = 1;
+  if (this->_internal_zoom_in_start_feedback() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+        1, this->_internal_zoom_in_start_feedback(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondZoomInStartRequest)
+  return target;
+}
+
+::size_t RespondZoomInStartRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondZoomInStartRequest)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.camera_server.CameraFeedback zoom_in_start_feedback = 1;
+  if (this->_internal_zoom_in_start_feedback() != 0) {
+    total_size += 1 +
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_zoom_in_start_feedback());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData RespondZoomInStartRequest::_class_data_ = {
+    RespondZoomInStartRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* RespondZoomInStartRequest::GetClassData() const {
+  return &_class_data_;
+}
+
+void RespondZoomInStartRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<RespondZoomInStartRequest*>(&to_msg);
+  auto& from = static_cast<const RespondZoomInStartRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondZoomInStartRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_zoom_in_start_feedback() != 0) {
+    _this->_internal_set_zoom_in_start_feedback(from._internal_zoom_in_start_feedback());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondZoomInStartRequest::CopyFrom(const RespondZoomInStartRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondZoomInStartRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool RespondZoomInStartRequest::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* RespondZoomInStartRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void RespondZoomInStartRequest::InternalSwap(RespondZoomInStartRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_.zoom_in_start_feedback_, other->_impl_.zoom_in_start_feedback_);
+}
+
+::google::protobuf::Metadata RespondZoomInStartRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[48]);
+}
+// ===================================================================
+
+class RespondZoomInStartResponse::_Internal {
+ public:
+  using HasBits = decltype(std::declval<RespondZoomInStartResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(RespondZoomInStartResponse, _impl_._has_bits_);
+  static const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result(const RespondZoomInStartResponse* msg);
+  static void set_has_camera_server_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+};
+
+const ::mavsdk::rpc::camera_server::CameraServerResult& RespondZoomInStartResponse::_Internal::camera_server_result(const RespondZoomInStartResponse* msg) {
+  return *msg->_impl_.camera_server_result_;
+}
+RespondZoomInStartResponse::RespondZoomInStartResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondZoomInStartResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondZoomInStartResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+RespondZoomInStartResponse::RespondZoomInStartResponse(
+    ::google::protobuf::Arena* arena,
+    const RespondZoomInStartResponse& from)
+    : ::google::protobuf::Message(arena) {
+  RespondZoomInStartResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.camera_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::camera_server::CameraServerResult>(arena, *from._impl_.camera_server_result_)
+                : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.RespondZoomInStartResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondZoomInStartResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondZoomInStartResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.camera_server_result_ = {};
+}
+RespondZoomInStartResponse::~RespondZoomInStartResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondZoomInStartResponse)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void RespondZoomInStartResponse::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.camera_server_result_;
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void RespondZoomInStartResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondZoomInStartResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.camera_server_result_ != nullptr);
+    _impl_.camera_server_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* RespondZoomInStartResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> RespondZoomInStartResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(RespondZoomInStartResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_RespondZoomInStartResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(RespondZoomInStartResponse, _impl_.camera_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondZoomInStartResponse, _impl_.camera_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::CameraServerResult>()},
+  }}, {{
+  }},
+};
+
+::uint8_t* RespondZoomInStartResponse::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondZoomInStartResponse)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  if (cached_has_bits & 0x00000001u) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::camera_server_result(this),
+        _Internal::camera_server_result(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondZoomInStartResponse)
+  return target;
+}
+
+::size_t RespondZoomInStartResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondZoomInStartResponse)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.camera_server_result_);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData RespondZoomInStartResponse::_class_data_ = {
+    RespondZoomInStartResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* RespondZoomInStartResponse::GetClassData() const {
+  return &_class_data_;
+}
+
+void RespondZoomInStartResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<RespondZoomInStartResponse*>(&to_msg);
+  auto& from = static_cast<const RespondZoomInStartResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondZoomInStartResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_camera_server_result()->::mavsdk::rpc::camera_server::CameraServerResult::MergeFrom(
+        from._internal_camera_server_result());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondZoomInStartResponse::CopyFrom(const RespondZoomInStartResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondZoomInStartResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool RespondZoomInStartResponse::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* RespondZoomInStartResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void RespondZoomInStartResponse::InternalSwap(RespondZoomInStartResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.camera_server_result_, other->_impl_.camera_server_result_);
+}
+
+::google::protobuf::Metadata RespondZoomInStartResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[49]);
+}
+// ===================================================================
+
+class SubscribeZoomOutStartRequest::_Internal {
+ public:
+};
+
+SubscribeZoomOutStartRequest::SubscribeZoomOutStartRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.SubscribeZoomOutStartRequest)
+}
+SubscribeZoomOutStartRequest::SubscribeZoomOutStartRequest(
+    ::google::protobuf::Arena* arena,
+    const SubscribeZoomOutStartRequest& from)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+  SubscribeZoomOutStartRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.SubscribeZoomOutStartRequest)
+}
+
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata SubscribeZoomOutStartRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[50]);
+}
+// ===================================================================
+
+class ZoomOutStartResponse::_Internal {
+ public:
+};
+
+ZoomOutStartResponse::ZoomOutStartResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.ZoomOutStartResponse)
+}
+ZoomOutStartResponse::ZoomOutStartResponse(
+    ::google::protobuf::Arena* arena, const ZoomOutStartResponse& from)
+    : ZoomOutStartResponse(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE ZoomOutStartResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void ZoomOutStartResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.reserved_ = {};
+}
+ZoomOutStartResponse::~ZoomOutStartResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.ZoomOutStartResponse)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void ZoomOutStartResponse::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void ZoomOutStartResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.ZoomOutStartResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.reserved_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* ZoomOutStartResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> ZoomOutStartResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_ZoomOutStartResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // int32 reserved = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ZoomOutStartResponse, _impl_.reserved_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(ZoomOutStartResponse, _impl_.reserved_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 reserved = 1;
+    {PROTOBUF_FIELD_OFFSET(ZoomOutStartResponse, _impl_.reserved_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+::uint8_t* ZoomOutStartResponse::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.ZoomOutStartResponse)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // int32 reserved = 1;
+  if (this->_internal_reserved() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt32ToArrayWithField<1>(
+            stream, this->_internal_reserved(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.ZoomOutStartResponse)
+  return target;
+}
+
+::size_t ZoomOutStartResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.ZoomOutStartResponse)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // int32 reserved = 1;
+  if (this->_internal_reserved() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_reserved());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData ZoomOutStartResponse::_class_data_ = {
+    ZoomOutStartResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* ZoomOutStartResponse::GetClassData() const {
+  return &_class_data_;
+}
+
+void ZoomOutStartResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<ZoomOutStartResponse*>(&to_msg);
+  auto& from = static_cast<const ZoomOutStartResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.ZoomOutStartResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_reserved() != 0) {
+    _this->_internal_set_reserved(from._internal_reserved());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ZoomOutStartResponse::CopyFrom(const ZoomOutStartResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.ZoomOutStartResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool ZoomOutStartResponse::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* ZoomOutStartResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void ZoomOutStartResponse::InternalSwap(ZoomOutStartResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.reserved_, other->_impl_.reserved_);
+}
+
+::google::protobuf::Metadata ZoomOutStartResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[51]);
+}
+// ===================================================================
+
+class RespondZoomOutStartRequest::_Internal {
+ public:
+};
+
+RespondZoomOutStartRequest::RespondZoomOutStartRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondZoomOutStartRequest)
+}
+RespondZoomOutStartRequest::RespondZoomOutStartRequest(
+    ::google::protobuf::Arena* arena, const RespondZoomOutStartRequest& from)
+    : RespondZoomOutStartRequest(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE RespondZoomOutStartRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondZoomOutStartRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.zoom_out_start_feedback_ = {};
+}
+RespondZoomOutStartRequest::~RespondZoomOutStartRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondZoomOutStartRequest)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void RespondZoomOutStartRequest::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void RespondZoomOutStartRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondZoomOutStartRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.zoom_out_start_feedback_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* RespondZoomOutStartRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> RespondZoomOutStartRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_RespondZoomOutStartRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.camera_server.CameraFeedback zoom_out_start_feedback = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(RespondZoomOutStartRequest, _impl_.zoom_out_start_feedback_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(RespondZoomOutStartRequest, _impl_.zoom_out_start_feedback_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.camera_server.CameraFeedback zoom_out_start_feedback = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondZoomOutStartRequest, _impl_.zoom_out_start_feedback_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+::uint8_t* RespondZoomOutStartRequest::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondZoomOutStartRequest)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // .mavsdk.rpc.camera_server.CameraFeedback zoom_out_start_feedback = 1;
+  if (this->_internal_zoom_out_start_feedback() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+        1, this->_internal_zoom_out_start_feedback(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondZoomOutStartRequest)
+  return target;
+}
+
+::size_t RespondZoomOutStartRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondZoomOutStartRequest)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.camera_server.CameraFeedback zoom_out_start_feedback = 1;
+  if (this->_internal_zoom_out_start_feedback() != 0) {
+    total_size += 1 +
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_zoom_out_start_feedback());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData RespondZoomOutStartRequest::_class_data_ = {
+    RespondZoomOutStartRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* RespondZoomOutStartRequest::GetClassData() const {
+  return &_class_data_;
+}
+
+void RespondZoomOutStartRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<RespondZoomOutStartRequest*>(&to_msg);
+  auto& from = static_cast<const RespondZoomOutStartRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondZoomOutStartRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_zoom_out_start_feedback() != 0) {
+    _this->_internal_set_zoom_out_start_feedback(from._internal_zoom_out_start_feedback());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondZoomOutStartRequest::CopyFrom(const RespondZoomOutStartRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondZoomOutStartRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool RespondZoomOutStartRequest::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* RespondZoomOutStartRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void RespondZoomOutStartRequest::InternalSwap(RespondZoomOutStartRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_.zoom_out_start_feedback_, other->_impl_.zoom_out_start_feedback_);
+}
+
+::google::protobuf::Metadata RespondZoomOutStartRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[52]);
+}
+// ===================================================================
+
+class RespondZoomOutStartResponse::_Internal {
+ public:
+  using HasBits = decltype(std::declval<RespondZoomOutStartResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(RespondZoomOutStartResponse, _impl_._has_bits_);
+  static const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result(const RespondZoomOutStartResponse* msg);
+  static void set_has_camera_server_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+};
+
+const ::mavsdk::rpc::camera_server::CameraServerResult& RespondZoomOutStartResponse::_Internal::camera_server_result(const RespondZoomOutStartResponse* msg) {
+  return *msg->_impl_.camera_server_result_;
+}
+RespondZoomOutStartResponse::RespondZoomOutStartResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondZoomOutStartResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondZoomOutStartResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+RespondZoomOutStartResponse::RespondZoomOutStartResponse(
+    ::google::protobuf::Arena* arena,
+    const RespondZoomOutStartResponse& from)
+    : ::google::protobuf::Message(arena) {
+  RespondZoomOutStartResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.camera_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::camera_server::CameraServerResult>(arena, *from._impl_.camera_server_result_)
+                : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.RespondZoomOutStartResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondZoomOutStartResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondZoomOutStartResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.camera_server_result_ = {};
+}
+RespondZoomOutStartResponse::~RespondZoomOutStartResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondZoomOutStartResponse)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void RespondZoomOutStartResponse::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.camera_server_result_;
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void RespondZoomOutStartResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondZoomOutStartResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.camera_server_result_ != nullptr);
+    _impl_.camera_server_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* RespondZoomOutStartResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> RespondZoomOutStartResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(RespondZoomOutStartResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_RespondZoomOutStartResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(RespondZoomOutStartResponse, _impl_.camera_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondZoomOutStartResponse, _impl_.camera_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::CameraServerResult>()},
+  }}, {{
+  }},
+};
+
+::uint8_t* RespondZoomOutStartResponse::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondZoomOutStartResponse)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  if (cached_has_bits & 0x00000001u) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::camera_server_result(this),
+        _Internal::camera_server_result(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondZoomOutStartResponse)
+  return target;
+}
+
+::size_t RespondZoomOutStartResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondZoomOutStartResponse)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.camera_server_result_);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData RespondZoomOutStartResponse::_class_data_ = {
+    RespondZoomOutStartResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* RespondZoomOutStartResponse::GetClassData() const {
+  return &_class_data_;
+}
+
+void RespondZoomOutStartResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<RespondZoomOutStartResponse*>(&to_msg);
+  auto& from = static_cast<const RespondZoomOutStartResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondZoomOutStartResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_camera_server_result()->::mavsdk::rpc::camera_server::CameraServerResult::MergeFrom(
+        from._internal_camera_server_result());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondZoomOutStartResponse::CopyFrom(const RespondZoomOutStartResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondZoomOutStartResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool RespondZoomOutStartResponse::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* RespondZoomOutStartResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void RespondZoomOutStartResponse::InternalSwap(RespondZoomOutStartResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.camera_server_result_, other->_impl_.camera_server_result_);
+}
+
+::google::protobuf::Metadata RespondZoomOutStartResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[53]);
+}
+// ===================================================================
+
+class SubscribeZoomStopRequest::_Internal {
+ public:
+};
+
+SubscribeZoomStopRequest::SubscribeZoomStopRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.SubscribeZoomStopRequest)
+}
+SubscribeZoomStopRequest::SubscribeZoomStopRequest(
+    ::google::protobuf::Arena* arena,
+    const SubscribeZoomStopRequest& from)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+  SubscribeZoomStopRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.SubscribeZoomStopRequest)
+}
+
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata SubscribeZoomStopRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[54]);
+}
+// ===================================================================
+
+class ZoomStopResponse::_Internal {
+ public:
+};
+
+ZoomStopResponse::ZoomStopResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.ZoomStopResponse)
+}
+ZoomStopResponse::ZoomStopResponse(
+    ::google::protobuf::Arena* arena, const ZoomStopResponse& from)
+    : ZoomStopResponse(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE ZoomStopResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void ZoomStopResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.reserved_ = {};
+}
+ZoomStopResponse::~ZoomStopResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.ZoomStopResponse)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void ZoomStopResponse::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void ZoomStopResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.ZoomStopResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.reserved_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* ZoomStopResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> ZoomStopResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_ZoomStopResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // int32 reserved = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ZoomStopResponse, _impl_.reserved_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(ZoomStopResponse, _impl_.reserved_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 reserved = 1;
+    {PROTOBUF_FIELD_OFFSET(ZoomStopResponse, _impl_.reserved_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+::uint8_t* ZoomStopResponse::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.ZoomStopResponse)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // int32 reserved = 1;
+  if (this->_internal_reserved() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt32ToArrayWithField<1>(
+            stream, this->_internal_reserved(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.ZoomStopResponse)
+  return target;
+}
+
+::size_t ZoomStopResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.ZoomStopResponse)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // int32 reserved = 1;
+  if (this->_internal_reserved() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_reserved());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData ZoomStopResponse::_class_data_ = {
+    ZoomStopResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* ZoomStopResponse::GetClassData() const {
+  return &_class_data_;
+}
+
+void ZoomStopResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<ZoomStopResponse*>(&to_msg);
+  auto& from = static_cast<const ZoomStopResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.ZoomStopResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_reserved() != 0) {
+    _this->_internal_set_reserved(from._internal_reserved());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ZoomStopResponse::CopyFrom(const ZoomStopResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.ZoomStopResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool ZoomStopResponse::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* ZoomStopResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void ZoomStopResponse::InternalSwap(ZoomStopResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.reserved_, other->_impl_.reserved_);
+}
+
+::google::protobuf::Metadata ZoomStopResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[55]);
+}
+// ===================================================================
+
+class RespondZoomStopRequest::_Internal {
+ public:
+};
+
+RespondZoomStopRequest::RespondZoomStopRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondZoomStopRequest)
+}
+RespondZoomStopRequest::RespondZoomStopRequest(
+    ::google::protobuf::Arena* arena, const RespondZoomStopRequest& from)
+    : RespondZoomStopRequest(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE RespondZoomStopRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondZoomStopRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.zoom_stop_feedback_ = {};
+}
+RespondZoomStopRequest::~RespondZoomStopRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondZoomStopRequest)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void RespondZoomStopRequest::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void RespondZoomStopRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondZoomStopRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.zoom_stop_feedback_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* RespondZoomStopRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> RespondZoomStopRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_RespondZoomStopRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.camera_server.CameraFeedback zoom_stop_feedback = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(RespondZoomStopRequest, _impl_.zoom_stop_feedback_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(RespondZoomStopRequest, _impl_.zoom_stop_feedback_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.camera_server.CameraFeedback zoom_stop_feedback = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondZoomStopRequest, _impl_.zoom_stop_feedback_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+::uint8_t* RespondZoomStopRequest::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondZoomStopRequest)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // .mavsdk.rpc.camera_server.CameraFeedback zoom_stop_feedback = 1;
+  if (this->_internal_zoom_stop_feedback() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+        1, this->_internal_zoom_stop_feedback(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondZoomStopRequest)
+  return target;
+}
+
+::size_t RespondZoomStopRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondZoomStopRequest)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.camera_server.CameraFeedback zoom_stop_feedback = 1;
+  if (this->_internal_zoom_stop_feedback() != 0) {
+    total_size += 1 +
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_zoom_stop_feedback());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData RespondZoomStopRequest::_class_data_ = {
+    RespondZoomStopRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* RespondZoomStopRequest::GetClassData() const {
+  return &_class_data_;
+}
+
+void RespondZoomStopRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<RespondZoomStopRequest*>(&to_msg);
+  auto& from = static_cast<const RespondZoomStopRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondZoomStopRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_zoom_stop_feedback() != 0) {
+    _this->_internal_set_zoom_stop_feedback(from._internal_zoom_stop_feedback());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondZoomStopRequest::CopyFrom(const RespondZoomStopRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondZoomStopRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool RespondZoomStopRequest::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* RespondZoomStopRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void RespondZoomStopRequest::InternalSwap(RespondZoomStopRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_.zoom_stop_feedback_, other->_impl_.zoom_stop_feedback_);
+}
+
+::google::protobuf::Metadata RespondZoomStopRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[56]);
+}
+// ===================================================================
+
+class RespondZoomStopResponse::_Internal {
+ public:
+  using HasBits = decltype(std::declval<RespondZoomStopResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(RespondZoomStopResponse, _impl_._has_bits_);
+  static const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result(const RespondZoomStopResponse* msg);
+  static void set_has_camera_server_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+};
+
+const ::mavsdk::rpc::camera_server::CameraServerResult& RespondZoomStopResponse::_Internal::camera_server_result(const RespondZoomStopResponse* msg) {
+  return *msg->_impl_.camera_server_result_;
+}
+RespondZoomStopResponse::RespondZoomStopResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondZoomStopResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondZoomStopResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+RespondZoomStopResponse::RespondZoomStopResponse(
+    ::google::protobuf::Arena* arena,
+    const RespondZoomStopResponse& from)
+    : ::google::protobuf::Message(arena) {
+  RespondZoomStopResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.camera_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::camera_server::CameraServerResult>(arena, *from._impl_.camera_server_result_)
+                : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.RespondZoomStopResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondZoomStopResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondZoomStopResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.camera_server_result_ = {};
+}
+RespondZoomStopResponse::~RespondZoomStopResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondZoomStopResponse)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void RespondZoomStopResponse::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.camera_server_result_;
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void RespondZoomStopResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondZoomStopResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.camera_server_result_ != nullptr);
+    _impl_.camera_server_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* RespondZoomStopResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> RespondZoomStopResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(RespondZoomStopResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_RespondZoomStopResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(RespondZoomStopResponse, _impl_.camera_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondZoomStopResponse, _impl_.camera_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::CameraServerResult>()},
+  }}, {{
+  }},
+};
+
+::uint8_t* RespondZoomStopResponse::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondZoomStopResponse)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  if (cached_has_bits & 0x00000001u) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::camera_server_result(this),
+        _Internal::camera_server_result(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondZoomStopResponse)
+  return target;
+}
+
+::size_t RespondZoomStopResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondZoomStopResponse)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.camera_server_result_);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData RespondZoomStopResponse::_class_data_ = {
+    RespondZoomStopResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* RespondZoomStopResponse::GetClassData() const {
+  return &_class_data_;
+}
+
+void RespondZoomStopResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<RespondZoomStopResponse*>(&to_msg);
+  auto& from = static_cast<const RespondZoomStopResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondZoomStopResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_camera_server_result()->::mavsdk::rpc::camera_server::CameraServerResult::MergeFrom(
+        from._internal_camera_server_result());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondZoomStopResponse::CopyFrom(const RespondZoomStopResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondZoomStopResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool RespondZoomStopResponse::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* RespondZoomStopResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void RespondZoomStopResponse::InternalSwap(RespondZoomStopResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.camera_server_result_, other->_impl_.camera_server_result_);
+}
+
+::google::protobuf::Metadata RespondZoomStopResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[57]);
+}
+// ===================================================================
+
+class SubscribeZoomRangeRequest::_Internal {
+ public:
+};
+
+SubscribeZoomRangeRequest::SubscribeZoomRangeRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.SubscribeZoomRangeRequest)
+}
+SubscribeZoomRangeRequest::SubscribeZoomRangeRequest(
+    ::google::protobuf::Arena* arena,
+    const SubscribeZoomRangeRequest& from)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+  SubscribeZoomRangeRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.SubscribeZoomRangeRequest)
+}
+
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata SubscribeZoomRangeRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[58]);
+}
+// ===================================================================
+
+class ZoomRangeResponse::_Internal {
+ public:
+};
+
+ZoomRangeResponse::ZoomRangeResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.ZoomRangeResponse)
+}
+ZoomRangeResponse::ZoomRangeResponse(
+    ::google::protobuf::Arena* arena, const ZoomRangeResponse& from)
+    : ZoomRangeResponse(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE ZoomRangeResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void ZoomRangeResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.factor_ = {};
+}
+ZoomRangeResponse::~ZoomRangeResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.ZoomRangeResponse)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void ZoomRangeResponse::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void ZoomRangeResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.ZoomRangeResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.factor_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* ZoomRangeResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> ZoomRangeResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_ZoomRangeResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // float factor = 1;
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(ZoomRangeResponse, _impl_.factor_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float factor = 1;
+    {PROTOBUF_FIELD_OFFSET(ZoomRangeResponse, _impl_.factor_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+::uint8_t* ZoomRangeResponse::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.ZoomRangeResponse)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // float factor = 1;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_factor = this->_internal_factor();
+  ::uint32_t raw_factor;
+  memcpy(&raw_factor, &tmp_factor, sizeof(tmp_factor));
+  if (raw_factor != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteFloatToArray(
+        1, this->_internal_factor(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.ZoomRangeResponse)
+  return target;
+}
+
+::size_t ZoomRangeResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.ZoomRangeResponse)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // float factor = 1;
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_factor = this->_internal_factor();
+  ::uint32_t raw_factor;
+  memcpy(&raw_factor, &tmp_factor, sizeof(tmp_factor));
+  if (raw_factor != 0) {
+    total_size += 5;
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData ZoomRangeResponse::_class_data_ = {
+    ZoomRangeResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* ZoomRangeResponse::GetClassData() const {
+  return &_class_data_;
+}
+
+void ZoomRangeResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<ZoomRangeResponse*>(&to_msg);
+  auto& from = static_cast<const ZoomRangeResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.ZoomRangeResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  static_assert(sizeof(::uint32_t) == sizeof(float),
+                "Code assumes ::uint32_t and float are the same size.");
+  float tmp_factor = from._internal_factor();
+  ::uint32_t raw_factor;
+  memcpy(&raw_factor, &tmp_factor, sizeof(tmp_factor));
+  if (raw_factor != 0) {
+    _this->_internal_set_factor(from._internal_factor());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ZoomRangeResponse::CopyFrom(const ZoomRangeResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.ZoomRangeResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool ZoomRangeResponse::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* ZoomRangeResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void ZoomRangeResponse::InternalSwap(ZoomRangeResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.factor_, other->_impl_.factor_);
+}
+
+::google::protobuf::Metadata ZoomRangeResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[59]);
+}
+// ===================================================================
+
+class RespondZoomRangeRequest::_Internal {
+ public:
+};
+
+RespondZoomRangeRequest::RespondZoomRangeRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondZoomRangeRequest)
+}
+RespondZoomRangeRequest::RespondZoomRangeRequest(
+    ::google::protobuf::Arena* arena, const RespondZoomRangeRequest& from)
+    : RespondZoomRangeRequest(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE RespondZoomRangeRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondZoomRangeRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.zoom_range_feedback_ = {};
+}
+RespondZoomRangeRequest::~RespondZoomRangeRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondZoomRangeRequest)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void RespondZoomRangeRequest::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void RespondZoomRangeRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondZoomRangeRequest)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.zoom_range_feedback_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* RespondZoomRangeRequest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> RespondZoomRangeRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_RespondZoomRangeRequest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.camera_server.CameraFeedback zoom_range_feedback = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(RespondZoomRangeRequest, _impl_.zoom_range_feedback_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(RespondZoomRangeRequest, _impl_.zoom_range_feedback_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.camera_server.CameraFeedback zoom_range_feedback = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondZoomRangeRequest, _impl_.zoom_range_feedback_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+::uint8_t* RespondZoomRangeRequest::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondZoomRangeRequest)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // .mavsdk.rpc.camera_server.CameraFeedback zoom_range_feedback = 1;
+  if (this->_internal_zoom_range_feedback() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+        1, this->_internal_zoom_range_feedback(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondZoomRangeRequest)
+  return target;
+}
+
+::size_t RespondZoomRangeRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondZoomRangeRequest)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.camera_server.CameraFeedback zoom_range_feedback = 1;
+  if (this->_internal_zoom_range_feedback() != 0) {
+    total_size += 1 +
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_zoom_range_feedback());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData RespondZoomRangeRequest::_class_data_ = {
+    RespondZoomRangeRequest::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* RespondZoomRangeRequest::GetClassData() const {
+  return &_class_data_;
+}
+
+void RespondZoomRangeRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<RespondZoomRangeRequest*>(&to_msg);
+  auto& from = static_cast<const RespondZoomRangeRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondZoomRangeRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_zoom_range_feedback() != 0) {
+    _this->_internal_set_zoom_range_feedback(from._internal_zoom_range_feedback());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondZoomRangeRequest::CopyFrom(const RespondZoomRangeRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondZoomRangeRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool RespondZoomRangeRequest::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* RespondZoomRangeRequest::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void RespondZoomRangeRequest::InternalSwap(RespondZoomRangeRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_.zoom_range_feedback_, other->_impl_.zoom_range_feedback_);
+}
+
+::google::protobuf::Metadata RespondZoomRangeRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[60]);
+}
+// ===================================================================
+
+class RespondZoomRangeResponse::_Internal {
+ public:
+  using HasBits = decltype(std::declval<RespondZoomRangeResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(RespondZoomRangeResponse, _impl_._has_bits_);
+  static const ::mavsdk::rpc::camera_server::CameraServerResult& camera_server_result(const RespondZoomRangeResponse* msg);
+  static void set_has_camera_server_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+};
+
+const ::mavsdk::rpc::camera_server::CameraServerResult& RespondZoomRangeResponse::_Internal::camera_server_result(const RespondZoomRangeResponse* msg) {
+  return *msg->_impl_.camera_server_result_;
+}
+RespondZoomRangeResponse::RespondZoomRangeResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.camera_server.RespondZoomRangeResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondZoomRangeResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+RespondZoomRangeResponse::RespondZoomRangeResponse(
+    ::google::protobuf::Arena* arena,
+    const RespondZoomRangeResponse& from)
+    : ::google::protobuf::Message(arena) {
+  RespondZoomRangeResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.camera_server_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::camera_server::CameraServerResult>(arena, *from._impl_.camera_server_result_)
+                : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.camera_server.RespondZoomRangeResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RespondZoomRangeResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void RespondZoomRangeResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.camera_server_result_ = {};
+}
+RespondZoomRangeResponse::~RespondZoomRangeResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.camera_server.RespondZoomRangeResponse)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void RespondZoomRangeResponse::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.camera_server_result_;
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void RespondZoomRangeResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.camera_server.RespondZoomRangeResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.camera_server_result_ != nullptr);
+    _impl_.camera_server_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* RespondZoomRangeResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> RespondZoomRangeResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(RespondZoomRangeResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_RespondZoomRangeResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(RespondZoomRangeResponse, _impl_.camera_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(RespondZoomRangeResponse, _impl_.camera_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::camera_server::CameraServerResult>()},
+  }}, {{
+  }},
+};
+
+::uint8_t* RespondZoomRangeResponse::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.camera_server.RespondZoomRangeResponse)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  if (cached_has_bits & 0x00000001u) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::camera_server_result(this),
+        _Internal::camera_server_result(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.camera_server.RespondZoomRangeResponse)
+  return target;
+}
+
+::size_t RespondZoomRangeResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.camera_server.RespondZoomRangeResponse)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.camera_server.CameraServerResult camera_server_result = 1;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.camera_server_result_);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData RespondZoomRangeResponse::_class_data_ = {
+    RespondZoomRangeResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* RespondZoomRangeResponse::GetClassData() const {
+  return &_class_data_;
+}
+
+void RespondZoomRangeResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<RespondZoomRangeResponse*>(&to_msg);
+  auto& from = static_cast<const RespondZoomRangeResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.camera_server.RespondZoomRangeResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_camera_server_result()->::mavsdk::rpc::camera_server::CameraServerResult::MergeFrom(
+        from._internal_camera_server_result());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void RespondZoomRangeResponse::CopyFrom(const RespondZoomRangeResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.camera_server.RespondZoomRangeResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool RespondZoomRangeResponse::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* RespondZoomRangeResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void RespondZoomRangeResponse::InternalSwap(RespondZoomRangeResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.camera_server_result_, other->_impl_.camera_server_result_);
+}
+
+::google::protobuf::Metadata RespondZoomRangeResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[61]);
+}
+// ===================================================================
+
 class Information::_Internal {
  public:
 };
@@ -9846,7 +12694,7 @@ void Information::InternalSwap(Information* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata Information::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
-      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[46]);
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[62]);
 }
 // ===================================================================
 
@@ -10061,7 +12909,7 @@ void VideoStreaming::InternalSwap(VideoStreaming* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata VideoStreaming::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
-      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[47]);
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[63]);
 }
 // ===================================================================
 
@@ -10365,7 +13213,7 @@ void Position::InternalSwap(Position* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata Position::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
-      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[48]);
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[64]);
 }
 // ===================================================================
 
@@ -10669,7 +13517,7 @@ void Quaternion::InternalSwap(Quaternion* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata Quaternion::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
-      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[49]);
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[65]);
 }
 // ===================================================================
 
@@ -11042,7 +13890,7 @@ void CaptureInfo::InternalSwap(CaptureInfo* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata CaptureInfo::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
-      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[50]);
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[66]);
 }
 // ===================================================================
 
@@ -11258,7 +14106,7 @@ void CameraServerResult::InternalSwap(CameraServerResult* PROTOBUF_RESTRICT othe
 ::google::protobuf::Metadata CameraServerResult::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
-      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[51]);
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[67]);
 }
 // ===================================================================
 
@@ -11664,7 +14512,7 @@ void StorageInformation::InternalSwap(StorageInformation* PROTOBUF_RESTRICT othe
 ::google::protobuf::Metadata StorageInformation::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
-      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[52]);
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[68]);
 }
 // ===================================================================
 
@@ -12000,7 +14848,7 @@ void CaptureStatus::InternalSwap(CaptureStatus* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata CaptureStatus::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_getter, &descriptor_table_camera_5fserver_2fcamera_5fserver_2eproto_once,
-      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[53]);
+      file_level_metadata_camera_5fserver_2fcamera_5fserver_2eproto[69]);
 }
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace camera_server

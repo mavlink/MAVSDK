@@ -1071,6 +1071,8 @@ CameraImpl::camera_result_from_command_result(const MavlinkCommandSender::Result
             // FALLTHROUGH
         case MavlinkCommandSender::Result::Busy:
             return Camera::Result::Error;
+        case MavlinkCommandSender::Result::Failed:
+            return Camera::Result::Error;
         case MavlinkCommandSender::Result::Denied:
             // FALLTHROUGH
         case MavlinkCommandSender::Result::TemporarilyRejected:
