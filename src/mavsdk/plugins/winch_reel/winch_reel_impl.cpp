@@ -6,6 +6,10 @@ namespace mavsdk {
 
 template class CallbackList<WinchReel::Status>;
 
+// Note: The Watts Reel winch uses component ID 69, instead of the standard 169
+// This is because the Reel was developed before the mavlink standard.
+uint8_t winch_comp_id = 69;
+
 WinchReelImpl::WinchReelImpl(System& system) : PluginImplBase(system)
 {
     _system_impl->register_plugin(this);
@@ -91,7 +95,7 @@ void WinchReelImpl::relax_async(uint32_t instance, const WinchReel::ResultCallba
     command.params.maybe_param1 = static_cast<float>(instance);
     command.params.maybe_param2 = static_cast<float>(WinchReel::WinchAction::Relaxed);
 
-    command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
+    command.target_component_id = winch_comp_id;
 
     _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
@@ -117,7 +121,7 @@ void WinchReelImpl::lock_async(uint32_t instance, const WinchReel::ResultCallbac
     command.params.maybe_param1 = static_cast<float>(instance);
     command.params.maybe_param2 = static_cast<float>(WinchReel::WinchAction::Lock);
 
-    command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
+    command.target_component_id = winch_comp_id;
 
     _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
@@ -143,7 +147,7 @@ void WinchReelImpl::deliver_async(uint32_t instance, const WinchReel::ResultCall
     command.params.maybe_param1 = static_cast<float>(instance);
     command.params.maybe_param2 = static_cast<float>(WinchReel::WinchAction::Deliver);
 
-    command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
+    command.target_component_id = winch_comp_id;
 
     _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
@@ -169,7 +173,7 @@ void WinchReelImpl::hold_async(uint32_t instance, const WinchReel::ResultCallbac
     command.params.maybe_param1 = static_cast<float>(instance);
     command.params.maybe_param2 = static_cast<float>(WinchReel::WinchAction::Hold);
 
-    command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
+    command.target_component_id = winch_comp_id;
 
     _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
@@ -195,7 +199,7 @@ void WinchReelImpl::retract_async(uint32_t instance, const WinchReel::ResultCall
     command.params.maybe_param1 = static_cast<float>(instance);
     command.params.maybe_param2 = static_cast<float>(WinchReel::WinchAction::Retract);
 
-    command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
+    command.target_component_id = winch_comp_id;
 
     _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
@@ -221,7 +225,7 @@ void WinchReelImpl::load_line_async(uint32_t instance, const WinchReel::ResultCa
     command.params.maybe_param1 = static_cast<float>(instance);
     command.params.maybe_param2 = static_cast<float>(WinchReel::WinchAction::LoadLine);
 
-    command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
+    command.target_component_id = winch_comp_id;
 
     _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
@@ -247,7 +251,7 @@ void WinchReelImpl::load_payload_async(uint32_t instance, const WinchReel::Resul
     command.params.maybe_param1 = static_cast<float>(instance);
     command.params.maybe_param2 = static_cast<float>(WinchReel::WinchAction::LoadPayload);
 
-    command.target_component_id = MAV_COMPONENT::MAV_COMP_ID_WINCH;
+    command.target_component_id = winch_comp_id;
 
     _system_impl->send_command_async(
         command, [this, callback](MavlinkCommandSender::Result result, float) {
