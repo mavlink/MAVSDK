@@ -58,16 +58,16 @@ public:
     /**
      * @brief WinchReel Action type.
      */
-    enum class WinchAction {
-        Relaxed, /**< @brief Allow motor to freewheel. */
-        Lock, /**< @brief Perform the locking sequence to relieve motor while in the fully retracted
+    enum WinchAction {
+        Relaxed = 0, /**< @brief Allow motor to freewheel. */
+        Lock = 3, /**< @brief Perform the locking sequence to relieve motor while in the fully retracted
                  position. */
-        Deliver, /**< @brief Sequence of drop, slow down, touch down, reel up, lock. */
-        Hold, /**< @brief Engage motor and hold current position. */
-        Retract, /**< @brief Return the reel to the fully retracted position. */
-        LoadLine, /**< @brief Load the reel with line. The winch will calculate the total loaded
+        Deliver = 4, /**< @brief Sequence of drop, slow down, touch down, reel up, lock. */
+        Hold = 5, /**< @brief Engage motor and hold current position. */
+        Retract = 6, /**< @brief Return the reel to the fully retracted position. */
+        LoadLine = 7, /**< @brief Load the reel with line. The winch will calculate the total loaded
                      length and stop when the tension exceeds a threshold. */
-        LoadPayload, /**< @brief Spools out just enough to present the hook to the user to load the
+        LoadPayload = 9, /**< @brief Spools out just enough to present the hook to the user to load the
                         payload. */
     };
 
