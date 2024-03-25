@@ -58,7 +58,7 @@ public:
     /**
      * @brief WinchReel Action type.
      */
-    enum WinchAction {
+    enum class WinchAction {
         Relaxed = 0, /**< @brief Allow motor to freewheel. */
         Lock = 3, /**< @brief Perform the locking sequence to relieve motor while in the fully retracted
                  position. */
@@ -84,7 +84,7 @@ public:
      * Enum values define the (mutually exclusive) state of the winch
      *
      */
-    enum StatusEnum {
+    enum class StatusEnum {
         Undefined = 0,
         Bootup = 1, /**< @brief Winch is booting up */
         Locked = 2, /**< @brief Winch is locked by locking mechanism */
