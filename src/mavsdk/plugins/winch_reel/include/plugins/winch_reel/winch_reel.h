@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "plugin_base.h"
+#include "plugins/winch/winch.h"
 
 #include "handle.h"
 
@@ -145,22 +146,7 @@ public:
     /**
      * @brief Possible results returned for winch action requests.
      */
-    enum class Result {
-        Unknown, /**< @brief Unknown result. */
-        Success, /**< @brief Request was successful. */
-        NoSystem, /**< @brief No system is connected. */
-        Busy, /**< @brief Temporarily rejected. */
-        Timeout, /**< @brief Request timed out. */
-        Unsupported, /**< @brief Action not supported. */
-        Failed, /**< @brief Action failed. */
-    };
-
-    /**
-     * @brief Stream operator to print information about a `WinchReel::Result`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(std::ostream& str, WinchReel::Result const& result);
+    using Result = Winch::Result;
 
     /**
      * @brief Callback type for asynchronous Winch calls.

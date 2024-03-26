@@ -175,28 +175,6 @@ std::ostream& operator<<(std::ostream& str, WinchReel::Status const& status)
     return str;
 }
 
-std::ostream& operator<<(std::ostream& str, WinchReel::Result const& result)
-{
-    switch (result) {
-        case WinchReel::Result::Unknown:
-            return str << "Unknown";
-        case WinchReel::Result::Success:
-            return str << "Success";
-        case WinchReel::Result::NoSystem:
-            return str << "No System";
-        case WinchReel::Result::Busy:
-            return str << "Busy";
-        case WinchReel::Result::Timeout:
-            return str << "Timeout";
-        case WinchReel::Result::Unsupported:
-            return str << "Unsupported";
-        case WinchReel::Result::Failed:
-            return str << "Failed";
-        default:
-            return str << "Unknown";
-    }
-}
-
 std::ostream& operator<<(std::ostream& str, WinchReel::WinchAction const& winch_action)
 {
     switch (winch_action) {
