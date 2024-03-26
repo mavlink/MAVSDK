@@ -36,24 +36,29 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
-    ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
+    Mavsdk mavsdk = Mavsdk();
+    auto mav_config = Mavsdk::Configuration(Mavsdk::Configuration::UsageType::GroundStation);
+    mavsdk.set_configuration(mav_config);
 
+    ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
     if (connection_result != ConnectionResult::Success) {
         std::cerr << "Connection failed: " << connection_result << '\n';
         return 1;
     }
 
-    auto system = mavsdk.first_autopilot(3.0);
-    if (!system) {
-        std::cerr << "Timed out waiting for system\n";
-        return 1;
+    std::cout << "Waiting to discover system...\n";
+    while (mavsdk.systems().size() == 0) {
+        std::cerr << "No system found, waiting...\n";
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
+    
+    // Instantiate first found system and plugins.
+    auto system = mavsdk.systems().at(0);
+    auto telemetry = Telemetry{system};
+    auto mavlink_passthrough = MavlinkPassthrough{system};
 
-    // Instantiate plugins.
-    auto telemetry = Telemetry{system.value()};
-    auto mavlink_passthrough = MavlinkPassthrough{system.value()};
-
+    //Subscribe to armed status messages.
+    //You can test this on SITL using MAVProxy by typing "arm throttle" and "disarm throttle".
     subscribe_armed(telemetry);
 
     while (true) {
@@ -86,27 +91,25 @@ void send_battery_status(MavlinkPassthrough& mavlink_passthrough)
 
     const uint16_t voltages_ext[4]{0, 0, 0, 0};
 
-    mavlink_passthrough.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
-        mavlink_message_t message;
-        mavlink_msg_battery_status_pack_chan(
-            mavlink_address.system_id,
-            mavlink_address.component_id,
-            channel,
-            &message,
-            0, // id
-            MAV_BATTERY_FUNCTION_ALL, // battery_function
-            MAV_BATTERY_TYPE_LION, // type
-            2500, // 100*temperature C
-            &voltages[0],
-            4000, // 100*current_battery A
-            1000, // current_consumed, mAh
-            -1, // energy consumed hJ
-            80, // battery_remaining %
-            3600, // time_remaining
-            MAV_BATTERY_CHARGE_STATE_OK,
-            voltages_ext,
-            MAV_BATTERY_MODE_UNKNOWN, // mode
-            0); // fault_bitmask
-        return message;
-    });
+    mavlink_message_t message;
+    mavlink_msg_battery_status_pack(
+        mavlink_passthrough.get_our_sysid(),
+        mavlink_passthrough.get_our_compid(),
+        &message,
+        0, // id
+        MAV_BATTERY_FUNCTION_ALL, // battery_function
+        MAV_BATTERY_TYPE_LION, // type
+        2500, // 100*temperature C
+        &voltages[0],
+        4000, // 100*current_battery A
+        1000, // current_consumed, mAh
+        -1, // energy consumed hJ
+        80, // battery_remaining %
+        3600, // time_remaining
+        MAV_BATTERY_CHARGE_STATE_OK,
+        voltages_ext,
+        MAV_BATTERY_MODE_UNKNOWN, // mode
+        0); // fault_bitmask
+
+    mavlink_passthrough.send_message(message);
 }
