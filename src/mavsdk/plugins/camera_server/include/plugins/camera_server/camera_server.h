@@ -720,6 +720,122 @@ public:
     Result respond_reset_settings(CameraFeedback reset_settings_feedback) const;
 
     /**
+     * @brief Callback type for subscribe_zoom_in_start.
+     */
+    using ZoomInStartCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_zoom_in_start.
+     */
+    using ZoomInStartHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to zoom in start command
+     */
+    ZoomInStartHandle subscribe_zoom_in_start(const ZoomInStartCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_zoom_in_start
+     */
+    void unsubscribe_zoom_in_start(ZoomInStartHandle handle);
+
+    /**
+     * @brief Respond to zoom in start.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_zoom_in_start(CameraFeedback zoom_in_start_feedback) const;
+
+    /**
+     * @brief Callback type for subscribe_zoom_out_start.
+     */
+    using ZoomOutStartCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_zoom_out_start.
+     */
+    using ZoomOutStartHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to zoom out start command
+     */
+    ZoomOutStartHandle subscribe_zoom_out_start(const ZoomOutStartCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_zoom_out_start
+     */
+    void unsubscribe_zoom_out_start(ZoomOutStartHandle handle);
+
+    /**
+     * @brief Respond to zoom out start.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_zoom_out_start(CameraFeedback zoom_out_start_feedback) const;
+
+    /**
+     * @brief Callback type for subscribe_zoom_stop.
+     */
+    using ZoomStopCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_zoom_stop.
+     */
+    using ZoomStopHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to zoom stop command
+     */
+    ZoomStopHandle subscribe_zoom_stop(const ZoomStopCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_zoom_stop
+     */
+    void unsubscribe_zoom_stop(ZoomStopHandle handle);
+
+    /**
+     * @brief Respond to zoom stop.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_zoom_stop(CameraFeedback zoom_stop_feedback) const;
+
+    /**
+     * @brief Callback type for subscribe_zoom_range.
+     */
+    using ZoomRangeCallback = std::function<void(float)>;
+
+    /**
+     * @brief Handle type for subscribe_zoom_range.
+     */
+    using ZoomRangeHandle = Handle<float>;
+
+    /**
+     * @brief Subscribe to zoom range command
+     */
+    ZoomRangeHandle subscribe_zoom_range(const ZoomRangeCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_zoom_range
+     */
+    void unsubscribe_zoom_range(ZoomRangeHandle handle);
+
+    /**
+     * @brief Respond to zoom range.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_zoom_range(CameraFeedback zoom_range_feedback) const;
+
+    /**
      * @brief Copy constructor.
      */
     CameraServer(const CameraServer& other);

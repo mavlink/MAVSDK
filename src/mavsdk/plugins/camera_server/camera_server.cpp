@@ -205,6 +205,70 @@ CameraServer::respond_reset_settings(CameraFeedback reset_settings_feedback) con
     return _impl->respond_reset_settings(reset_settings_feedback);
 }
 
+CameraServer::ZoomInStartHandle
+CameraServer::subscribe_zoom_in_start(const ZoomInStartCallback& callback)
+{
+    return _impl->subscribe_zoom_in_start(callback);
+}
+
+void CameraServer::unsubscribe_zoom_in_start(ZoomInStartHandle handle)
+{
+    _impl->unsubscribe_zoom_in_start(handle);
+}
+
+CameraServer::Result
+CameraServer::respond_zoom_in_start(CameraFeedback zoom_in_start_feedback) const
+{
+    return _impl->respond_zoom_in_start(zoom_in_start_feedback);
+}
+
+CameraServer::ZoomOutStartHandle
+CameraServer::subscribe_zoom_out_start(const ZoomOutStartCallback& callback)
+{
+    return _impl->subscribe_zoom_out_start(callback);
+}
+
+void CameraServer::unsubscribe_zoom_out_start(ZoomOutStartHandle handle)
+{
+    _impl->unsubscribe_zoom_out_start(handle);
+}
+
+CameraServer::Result
+CameraServer::respond_zoom_out_start(CameraFeedback zoom_out_start_feedback) const
+{
+    return _impl->respond_zoom_out_start(zoom_out_start_feedback);
+}
+
+CameraServer::ZoomStopHandle CameraServer::subscribe_zoom_stop(const ZoomStopCallback& callback)
+{
+    return _impl->subscribe_zoom_stop(callback);
+}
+
+void CameraServer::unsubscribe_zoom_stop(ZoomStopHandle handle)
+{
+    _impl->unsubscribe_zoom_stop(handle);
+}
+
+CameraServer::Result CameraServer::respond_zoom_stop(CameraFeedback zoom_stop_feedback) const
+{
+    return _impl->respond_zoom_stop(zoom_stop_feedback);
+}
+
+CameraServer::ZoomRangeHandle CameraServer::subscribe_zoom_range(const ZoomRangeCallback& callback)
+{
+    return _impl->subscribe_zoom_range(callback);
+}
+
+void CameraServer::unsubscribe_zoom_range(ZoomRangeHandle handle)
+{
+    _impl->unsubscribe_zoom_range(handle);
+}
+
+CameraServer::Result CameraServer::respond_zoom_range(CameraFeedback zoom_range_feedback) const
+{
+    return _impl->respond_zoom_range(zoom_range_feedback);
+}
+
 bool operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs)
 {
     return (rhs.vendor_name == lhs.vendor_name) && (rhs.model_name == lhs.model_name) &&

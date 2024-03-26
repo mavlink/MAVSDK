@@ -76,6 +76,24 @@ public:
     CameraServer::Result
     respond_reset_settings(CameraServer::CameraFeedback reset_settings_feedback);
 
+    CameraServer::ZoomInStartHandle
+    subscribe_zoom_in_start(const CameraServer::ZoomInStartCallback& callback);
+    void unsubscribe_zoom_in_start(CameraServer::ZoomInStartHandle handle);
+    CameraServer::Result respond_zoom_in_start(CameraServer::CameraFeedback zoom_in_start_feedback);
+    CameraServer::ZoomOutStartHandle
+    subscribe_zoom_out_start(const CameraServer::ZoomOutStartCallback& callback);
+    void unsubscribe_zoom_out_start(CameraServer::ZoomOutStartHandle handle);
+    CameraServer::Result
+    respond_zoom_out_start(CameraServer::CameraFeedback zoom_out_start_feedback);
+    CameraServer::ZoomStopHandle
+    subscribe_zoom_stop(const CameraServer::ZoomStopCallback& callback);
+    void unsubscribe_zoom_stop(CameraServer::ZoomStopHandle handle);
+    CameraServer::Result respond_zoom_stop(CameraServer::CameraFeedback zoom_stop_feedback);
+    CameraServer::ZoomRangeHandle
+    subscribe_zoom_range(const CameraServer::ZoomRangeCallback& callback);
+    void unsubscribe_zoom_range(CameraServer::ZoomRangeHandle handle);
+    CameraServer::Result respond_zoom_range(CameraServer::CameraFeedback zoom_range_feedback);
+
 private:
     enum StatusFlags {
         IN_PROGRESS = 1 << 0,
@@ -87,45 +105,6 @@ private:
         DISABLE = 0,
         ENABLE = 1,
     };
-
-    bool _is_information_set{};
-    CameraServer::Information _information{};
-    bool _is_video_streaming_set{};
-    CameraServer::VideoStreaming _video_streaming{};
-
-    CameraServer::CaptureStatus _capture_status{};
-
-    // CAMERA_CAPTURE_STATUS fields
-    // TODO: how do we keep this info in sync between plugin instances?
-    bool _is_image_capture_in_progress{};
-    bool _is_image_capture_interval_set{};
-    float _image_capture_timer_interval_s{};
-    void* _image_capture_timer_cookie{};
-    int32_t _image_capture_count{};
-
-    CallbackList<int32_t> _take_photo_callbacks{};
-    CallbackList<int32_t> _start_video_callbacks{};
-    CallbackList<int32_t> _stop_video_callbacks{};
-    CallbackList<int32_t> _start_video_streaming_callbacks{};
-    CallbackList<int32_t> _stop_video_streaming_callbacks{};
-    CallbackList<CameraServer::Mode> _set_mode_callbacks{};
-    CallbackList<int32_t> _storage_information_callbacks{};
-    CallbackList<int32_t> _capture_status_callbacks{};
-    CallbackList<int32_t> _format_storage_callbacks{};
-    CallbackList<int32_t> _reset_settings_callbacks{};
-
-    MavlinkCommandReceiver::CommandLong _last_take_photo_command;
-    MavlinkCommandReceiver::CommandLong _last_start_video_command;
-    MavlinkCommandReceiver::CommandLong _last_stop_video_command;
-    MavlinkCommandReceiver::CommandLong _last_start_video_streaming_command;
-    MavlinkCommandReceiver::CommandLong _last_stop_video_streaming_command;
-    MavlinkCommandReceiver::CommandLong _last_set_mode_command;
-    MavlinkCommandReceiver::CommandLong _last_storage_information_command;
-    MavlinkCommandReceiver::CommandLong _last_capture_status_command;
-    MavlinkCommandReceiver::CommandLong _last_format_storage_command;
-    MavlinkCommandReceiver::CommandLong _last_reset_settings_command;
-
-    uint8_t _last_storage_id;
 
     bool parse_version_string(const std::string& version_str);
     bool parse_version_string(const std::string& version_str, uint32_t& version);
@@ -172,6 +151,55 @@ private:
     process_video_stream_status_request(const MavlinkCommandReceiver::CommandLong& command);
 
     void send_capture_status();
+
+    bool _is_information_set{};
+    CameraServer::Information _information{};
+    bool _is_video_streaming_set{};
+    CameraServer::VideoStreaming _video_streaming{};
+
+    CameraServer::CaptureStatus _capture_status{};
+
+    // CAMERA_CAPTURE_STATUS fields
+    // TODO: how do we keep this info in sync between plugin instances?
+    bool _is_image_capture_in_progress{};
+    bool _is_image_capture_interval_set{};
+    float _image_capture_timer_interval_s{};
+    void* _image_capture_timer_cookie{};
+    int32_t _image_capture_count{};
+
+    CallbackList<int32_t> _take_photo_callbacks{};
+    CallbackList<int32_t> _start_video_callbacks{};
+    CallbackList<int32_t> _stop_video_callbacks{};
+    CallbackList<int32_t> _start_video_streaming_callbacks{};
+    CallbackList<int32_t> _stop_video_streaming_callbacks{};
+    CallbackList<CameraServer::Mode> _set_mode_callbacks{};
+    CallbackList<int32_t> _storage_information_callbacks{};
+    CallbackList<int32_t> _capture_status_callbacks{};
+    CallbackList<int32_t> _format_storage_callbacks{};
+    CallbackList<int32_t> _reset_settings_callbacks{};
+
+    CallbackList<int32_t> _zoom_in_start_callbacks{};
+    CallbackList<int32_t> _zoom_out_start_callbacks{};
+    CallbackList<int32_t> _zoom_stop_callbacks{};
+    CallbackList<float> _zoom_range_callbacks{};
+
+    MavlinkCommandReceiver::CommandLong _last_take_photo_command;
+    MavlinkCommandReceiver::CommandLong _last_start_video_command;
+    MavlinkCommandReceiver::CommandLong _last_stop_video_command;
+    MavlinkCommandReceiver::CommandLong _last_start_video_streaming_command;
+    MavlinkCommandReceiver::CommandLong _last_stop_video_streaming_command;
+    MavlinkCommandReceiver::CommandLong _last_set_mode_command;
+    MavlinkCommandReceiver::CommandLong _last_storage_information_command;
+    MavlinkCommandReceiver::CommandLong _last_capture_status_command;
+    MavlinkCommandReceiver::CommandLong _last_format_storage_command;
+    MavlinkCommandReceiver::CommandLong _last_reset_settings_command;
+
+    MavlinkCommandReceiver::CommandLong _last_zoom_in_start_command;
+    MavlinkCommandReceiver::CommandLong _last_zoom_out_start_command;
+    MavlinkCommandReceiver::CommandLong _last_zoom_stop_command;
+    MavlinkCommandReceiver::CommandLong _last_zoom_range_command;
+
+    uint8_t _last_storage_id;
 };
 
 } // namespace mavsdk
