@@ -57,7 +57,7 @@ int main(int argc, char** argv)
     auto telemetry = Telemetry{system};
     auto mavlink_passthrough = MavlinkPassthrough{system};
 
-    //Subscribe to armed status messages.
+    // Subscribe to armed status messages.
     //You can test this on SITL using MAVProxy by typing "arm throttle" and "disarm throttle".
     subscribe_armed(telemetry);
 
