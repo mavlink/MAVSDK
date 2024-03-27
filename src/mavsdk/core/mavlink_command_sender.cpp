@@ -131,7 +131,16 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
     mavlink_command_ack_t command_ack;
     mavlink_msg_command_ack_decode(&message, &command_ack);
 
-    if ((command_ack.target_system &&
+    // Accept all broadcast command ack's
+    if(command_ack.target_component == MAV_COMP_ID_ALL)
+    {
+        if (_command_debugging) {
+            LogDebug() << "Accepting broadbcast command ack for command "
+                       << static_cast<int>(command_ack.command) << " from "
+                       << static_cast<int>(message.sysid) << '/' << static_cast<int>(message.compid);
+        }
+    }
+    else if ((command_ack.target_system &&
          command_ack.target_system != _system_impl.get_own_system_id()) ||
         (command_ack.target_component &&
          command_ack.target_component != _system_impl.get_own_component_id())) {
@@ -140,7 +149,9 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
                        << static_cast<int>(command_ack.command) << " from "
                        << static_cast<int>(message.sysid) << '/' << static_cast<int>(message.compid)
                        << " to " << static_cast<int>(command_ack.target_system) << '/'
-                       << static_cast<int>(command_ack.target_component);
+                       << static_cast<int>(command_ack.target_component) << ", does not match own "
+                       << static_cast<int>(_system_impl.get_own_system_id()) << '/' 
+                       << static_cast<int>(_system_impl.get_own_component_id());
         }
         return;
     }
@@ -158,6 +169,7 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
         // Currently, the gripper/winch sends the ack with source sysid/compid 1/1 instead of 1/169.
         // Until that's fixed, we ignore the component ID for any commands going to the winch.
         const bool compid_exception =
+            (work->identification.target_component_id == MAV_COMP_ID_ALL) ||
             (work->identification.target_component_id == MAV_COMP_ID_WINCH) ||
             (work->identification.target_component_id == 69);
 
