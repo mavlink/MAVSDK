@@ -155,16 +155,11 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
             return;
         }
 
-        // Currently, the gripper/winch sends the ack with source sysid/compid 1/1 instead of 1/169.
-        // Until that's fixed, we ignore the component ID for any commands going to the winch.
-        const bool compid_exception =
-            (work->identification.target_component_id == MAV_COMP_ID_WINCH);
-
         if (work->identification.command != command_ack.command ||
             (work->identification.target_system_id != 0 &&
              work->identification.target_system_id != message.sysid) ||
             (work->identification.target_component_id != 0 &&
-             work->identification.target_component_id != message.compid && !compid_exception)) {
+             work->identification.target_component_id != message.compid)) {
             if (_command_debugging) {
                 LogDebug() << "Command ack for " << command_ack.command
                            << " (from: " << std::to_string(message.sysid) << "/"
