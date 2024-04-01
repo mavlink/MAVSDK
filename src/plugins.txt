@@ -1,5 +1,6 @@
 action
 action_server
+arm_authorizer_server
 calibration
 camera
 camera_server
