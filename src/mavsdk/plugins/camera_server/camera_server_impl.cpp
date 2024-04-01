@@ -1655,7 +1655,6 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_stat
     return std::nullopt;
 }
 
-<<<<<<< HEAD
 CameraServer::ZoomInStartHandle
 CameraServerImpl::subscribe_zoom_in_start(const CameraServer::ZoomInStartCallback& callback)
 {
@@ -1813,7 +1812,9 @@ CameraServerImpl::respond_zoom_range(CameraServer::CameraFeedback zoom_range_fee
             // Fallthrough
         default:
             return CameraServer::Result::Error;
-=======
+    }
+}
+
 std::optional<mavlink_command_ack_t>
 CameraServerImpl::process_track_point_command(const MavlinkCommandReceiver::CommandLong& command)
 {
@@ -2010,7 +2011,6 @@ void CameraServerImpl::stop_sending_tracking_status()
     // If the thread was active, wait for it to finish
     if (_tracking_status_sending_thread.joinable()) {
         _tracking_status_sending_thread.join();
->>>>>>> 50d1d132 (Merged tracking_server plugin into camera_server)
     }
 }
 
