@@ -18,6 +18,8 @@ using CaptureInfo = CameraServer::CaptureInfo;
 
 using StorageInformation = CameraServer::StorageInformation;
 using CaptureStatus = CameraServer::CaptureStatus;
+using TrackPoint = CameraServer::TrackPoint;
+using TrackRectangle = CameraServer::TrackRectangle;
 
 CameraServer::CameraServer(std::shared_ptr<ServerComponent> server_component) :
     ServerPluginBase(),
@@ -267,6 +269,67 @@ void CameraServer::unsubscribe_zoom_range(ZoomRangeHandle handle)
 CameraServer::Result CameraServer::respond_zoom_range(CameraFeedback zoom_range_feedback) const
 {
     return _impl->respond_zoom_range(zoom_range_feedback);
+}
+
+void CameraServer::set_tracking_rectangle_status(TrackRectangle tracked_rectangle) const
+{
+    _impl->set_tracking_rectangle_status(tracked_rectangle);
+}
+
+void CameraServer::set_tracking_off_status() const
+{
+    _impl->set_tracking_off_status();
+}
+
+CameraServer::TrackingPointCommandHandle
+CameraServer::subscribe_tracking_point_command(const TrackingPointCommandCallback& callback)
+{
+    return _impl->subscribe_tracking_point_command(callback);
+}
+
+void CameraServer::unsubscribe_tracking_point_command(TrackingPointCommandHandle handle)
+{
+    _impl->unsubscribe_tracking_point_command(handle);
+}
+
+CameraServer::TrackingRectangleCommandHandle
+CameraServer::subscribe_tracking_rectangle_command(const TrackingRectangleCommandCallback& callback)
+{
+    return _impl->subscribe_tracking_rectangle_command(callback);
+}
+
+void CameraServer::unsubscribe_tracking_rectangle_command(TrackingRectangleCommandHandle handle)
+{
+    _impl->unsubscribe_tracking_rectangle_command(handle);
+}
+
+CameraServer::TrackingOffCommandHandle
+CameraServer::subscribe_tracking_off_command(const TrackingOffCommandCallback& callback)
+{
+    return _impl->subscribe_tracking_off_command(callback);
+}
+
+void CameraServer::unsubscribe_tracking_off_command(TrackingOffCommandHandle handle)
+{
+    _impl->unsubscribe_tracking_off_command(handle);
+}
+
+CameraServer::Result
+CameraServer::respond_tracking_point_command(CameraFeedback stop_video_feedback) const
+{
+    return _impl->respond_tracking_point_command(stop_video_feedback);
+}
+
+CameraServer::Result
+CameraServer::respond_tracking_rectangle_command(CameraFeedback stop_video_feedback) const
+{
+    return _impl->respond_tracking_rectangle_command(stop_video_feedback);
+}
+
+CameraServer::Result
+CameraServer::respond_tracking_off_command(CameraFeedback stop_video_feedback) const
+{
+    return _impl->respond_tracking_off_command(stop_video_feedback);
 }
 
 bool operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs)
@@ -534,6 +597,48 @@ std::ostream& operator<<(std::ostream& str, CameraServer::CaptureStatus const& c
     str << "    image_status: " << capture_status.image_status << '\n';
     str << "    video_status: " << capture_status.video_status << '\n';
     str << "    image_count: " << capture_status.image_count << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const CameraServer::TrackPoint& lhs, const CameraServer::TrackPoint& rhs)
+{
+    return ((std::isnan(rhs.point_x) && std::isnan(lhs.point_x)) || rhs.point_x == lhs.point_x) &&
+           ((std::isnan(rhs.point_y) && std::isnan(lhs.point_y)) || rhs.point_y == lhs.point_y) &&
+           ((std::isnan(rhs.radius) && std::isnan(lhs.radius)) || rhs.radius == lhs.radius);
+}
+
+std::ostream& operator<<(std::ostream& str, CameraServer::TrackPoint const& track_point)
+{
+    str << std::setprecision(15);
+    str << "track_point:" << '\n' << "{\n";
+    str << "    point_x: " << track_point.point_x << '\n';
+    str << "    point_y: " << track_point.point_y << '\n';
+    str << "    radius: " << track_point.radius << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const CameraServer::TrackRectangle& lhs, const CameraServer::TrackRectangle& rhs)
+{
+    return ((std::isnan(rhs.top_left_corner_x) && std::isnan(lhs.top_left_corner_x)) ||
+            rhs.top_left_corner_x == lhs.top_left_corner_x) &&
+           ((std::isnan(rhs.top_left_corner_y) && std::isnan(lhs.top_left_corner_y)) ||
+            rhs.top_left_corner_y == lhs.top_left_corner_y) &&
+           ((std::isnan(rhs.bottom_right_corner_x) && std::isnan(lhs.bottom_right_corner_x)) ||
+            rhs.bottom_right_corner_x == lhs.bottom_right_corner_x) &&
+           ((std::isnan(rhs.bottom_right_corner_y) && std::isnan(lhs.bottom_right_corner_y)) ||
+            rhs.bottom_right_corner_y == lhs.bottom_right_corner_y);
+}
+
+std::ostream& operator<<(std::ostream& str, CameraServer::TrackRectangle const& track_rectangle)
+{
+    str << std::setprecision(15);
+    str << "track_rectangle:" << '\n' << "{\n";
+    str << "    top_left_corner_x: " << track_rectangle.top_left_corner_x << '\n';
+    str << "    top_left_corner_y: " << track_rectangle.top_left_corner_y << '\n';
+    str << "    bottom_right_corner_x: " << track_rectangle.bottom_right_corner_x << '\n';
+    str << "    bottom_right_corner_y: " << track_rectangle.bottom_right_corner_y << '\n';
     str << '}';
     return str;
 }

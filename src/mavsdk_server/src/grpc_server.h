@@ -159,11 +159,6 @@
 #include "telemetry_server/telemetry_server_service_impl.h"
 #endif
 
-#ifdef TRACKING_SERVER_ENABLED
-#include "plugins/tracking_server/tracking_server.h"
-#include "tracking_server/tracking_server_service_impl.h"
-#endif
-
 #ifdef TRANSPONDER_ENABLED
 #include "plugins/transponder/transponder.h"
 #include "transponder/transponder_service_impl.h"
@@ -330,11 +325,6 @@ public:
 #ifdef TELEMETRY_SERVER_ENABLED
         _telemetry_server_lazy_plugin(mavsdk),
         _telemetry_server_service(_telemetry_server_lazy_plugin),
-#endif
-
-#ifdef TRACKING_SERVER_ENABLED
-        _tracking_server_lazy_plugin(mavsdk),
-        _tracking_server_service(_tracking_server_lazy_plugin),
 #endif
 
 #ifdef TRANSPONDER_ENABLED
@@ -565,13 +555,6 @@ private:
     LazyServerPlugin<TelemetryServer> _telemetry_server_lazy_plugin;
 
     TelemetryServerServiceImpl<> _telemetry_server_service;
-#endif
-
-#ifdef TRACKING_SERVER_ENABLED
-
-    LazyServerPlugin<TrackingServer> _tracking_server_lazy_plugin;
-
-    TrackingServerServiceImpl<> _tracking_server_service;
 #endif
 
 #ifdef TRANSPONDER_ENABLED

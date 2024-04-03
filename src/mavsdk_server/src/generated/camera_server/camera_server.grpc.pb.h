@@ -29,7 +29,7 @@ namespace mavsdk {
 namespace rpc {
 namespace camera_server {
 
-// Provides handling of camera trigger commands.
+// Provides handling of camera interface
 class CameraServerService final {
  public:
   static constexpr char const* service_full_name() {
@@ -314,6 +314,76 @@ class CameraServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>> PrepareAsyncRespondZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>>(PrepareAsyncRespondZoomRangeRaw(context, request, cq));
     }
+    // Set/update the current rectangle tracking status.
+    virtual ::grpc::Status SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest& request, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>> AsyncSetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>>(AsyncSetTrackingRectangleStatusRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>> PrepareAsyncSetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>>(PrepareAsyncSetTrackingRectangleStatusRaw(context, request, cq));
+    }
+    // Set the current tracking status to off.
+    virtual ::grpc::Status SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest& request, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>> AsyncSetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>>(AsyncSetTrackingOffStatusRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>> PrepareAsyncSetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>>(PrepareAsyncSetTrackingOffStatusRaw(context, request, cq));
+    }
+    // Subscribe to incoming tracking point command.
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>> SubscribeTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>>(SubscribeTrackingPointCommandRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>> AsyncSubscribeTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>>(AsyncSubscribeTrackingPointCommandRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>> PrepareAsyncSubscribeTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>>(PrepareAsyncSubscribeTrackingPointCommandRaw(context, request, cq));
+    }
+    // Subscribe to incoming tracking rectangle command.
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>> SubscribeTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>>(SubscribeTrackingRectangleCommandRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>> AsyncSubscribeTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>>(AsyncSubscribeTrackingRectangleCommandRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>> PrepareAsyncSubscribeTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>>(PrepareAsyncSubscribeTrackingRectangleCommandRaw(context, request, cq));
+    }
+    // Subscribe to incoming tracking off command.
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>> SubscribeTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>>(SubscribeTrackingOffCommandRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>> AsyncSubscribeTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>>(AsyncSubscribeTrackingOffCommandRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>> PrepareAsyncSubscribeTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>>(PrepareAsyncSubscribeTrackingOffCommandRaw(context, request, cq));
+    }
+    // Respond to an incoming tracking point command.
+    virtual ::grpc::Status RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest& request, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>> AsyncRespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>>(AsyncRespondTrackingPointCommandRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>> PrepareAsyncRespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>>(PrepareAsyncRespondTrackingPointCommandRaw(context, request, cq));
+    }
+    // Respond to an incoming tracking rectangle command.
+    virtual ::grpc::Status RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest& request, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>> AsyncRespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>>(AsyncRespondTrackingRectangleCommandRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>> PrepareAsyncRespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>>(PrepareAsyncRespondTrackingRectangleCommandRaw(context, request, cq));
+    }
+    // Respond to an incoming tracking off command.
+    virtual ::grpc::Status RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>> AsyncRespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>>(AsyncRespondTrackingOffCommandRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>> PrepareAsyncRespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>>(PrepareAsyncRespondTrackingOffCommandRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -396,6 +466,27 @@ class CameraServerService final {
       // Respond to zoom range.
       virtual void RespondZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* request, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void RespondZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* request, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Set/update the current rectangle tracking status.
+      virtual void SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Set the current tracking status to off.
+      virtual void SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Subscribe to incoming tracking point command.
+      virtual void SubscribeTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* reactor) = 0;
+      // Subscribe to incoming tracking rectangle command.
+      virtual void SubscribeTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* reactor) = 0;
+      // Subscribe to incoming tracking off command.
+      virtual void SubscribeTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* reactor) = 0;
+      // Respond to an incoming tracking point command.
+      virtual void RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Respond to an incoming tracking rectangle command.
+      virtual void RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Respond to an incoming tracking off command.
+      virtual void RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -477,6 +568,25 @@ class CameraServerService final {
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* PrepareAsyncSubscribeZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>* AsyncRespondZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>* PrepareAsyncRespondZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>* AsyncSetTrackingRectangleStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>* PrepareAsyncSetTrackingRectangleStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>* AsyncSetTrackingOffStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>* PrepareAsyncSetTrackingOffStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* SubscribeTrackingPointCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* AsyncSubscribeTrackingPointCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* PrepareAsyncSubscribeTrackingPointCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* SubscribeTrackingRectangleCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* AsyncSubscribeTrackingRectangleCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* PrepareAsyncSubscribeTrackingRectangleCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* SubscribeTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* AsyncSubscribeTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* PrepareAsyncSubscribeTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>* AsyncRespondTrackingPointCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>* PrepareAsyncRespondTrackingPointCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>* AsyncRespondTrackingRectangleCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>* PrepareAsyncRespondTrackingRectangleCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>* AsyncRespondTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>* PrepareAsyncRespondTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -726,6 +836,68 @@ class CameraServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>> PrepareAsyncRespondZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>>(PrepareAsyncRespondZoomRangeRaw(context, request, cq));
     }
+    ::grpc::Status SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest& request, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>> AsyncSetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>>(AsyncSetTrackingRectangleStatusRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>> PrepareAsyncSetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>>(PrepareAsyncSetTrackingRectangleStatusRaw(context, request, cq));
+    }
+    ::grpc::Status SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest& request, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>> AsyncSetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>>(AsyncSetTrackingOffStatusRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>> PrepareAsyncSetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>>(PrepareAsyncSetTrackingOffStatusRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>> SubscribeTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>>(SubscribeTrackingPointCommandRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>> AsyncSubscribeTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>>(AsyncSubscribeTrackingPointCommandRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>> PrepareAsyncSubscribeTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>>(PrepareAsyncSubscribeTrackingPointCommandRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>> SubscribeTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>>(SubscribeTrackingRectangleCommandRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>> AsyncSubscribeTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>>(AsyncSubscribeTrackingRectangleCommandRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>> PrepareAsyncSubscribeTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>>(PrepareAsyncSubscribeTrackingRectangleCommandRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>> SubscribeTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>>(SubscribeTrackingOffCommandRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>> AsyncSubscribeTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>>(AsyncSubscribeTrackingOffCommandRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>> PrepareAsyncSubscribeTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>>(PrepareAsyncSubscribeTrackingOffCommandRaw(context, request, cq));
+    }
+    ::grpc::Status RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest& request, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>> AsyncRespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>>(AsyncRespondTrackingPointCommandRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>> PrepareAsyncRespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>>(PrepareAsyncRespondTrackingPointCommandRaw(context, request, cq));
+    }
+    ::grpc::Status RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest& request, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>> AsyncRespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>>(AsyncRespondTrackingRectangleCommandRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>> PrepareAsyncRespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>>(PrepareAsyncRespondTrackingRectangleCommandRaw(context, request, cq));
+    }
+    ::grpc::Status RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>> AsyncRespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>>(AsyncRespondTrackingOffCommandRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>> PrepareAsyncRespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>>(PrepareAsyncRespondTrackingOffCommandRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
@@ -777,6 +949,19 @@ class CameraServerService final {
       void SubscribeZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* reactor) override;
       void RespondZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* request, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* response, std::function<void(::grpc::Status)>) override;
       void RespondZoomRange(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* request, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* response, std::function<void(::grpc::Status)>) override;
+      void SetTrackingRectangleStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* response, std::function<void(::grpc::Status)>) override;
+      void SetTrackingOffStatus(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SubscribeTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* reactor) override;
+      void SubscribeTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* reactor) override;
+      void SubscribeTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* reactor) override;
+      void RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* response, std::function<void(::grpc::Status)>) override;
+      void RespondTrackingPointCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* response, std::function<void(::grpc::Status)>) override;
+      void RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response, std::function<void(::grpc::Status)>) override;
+      void RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -864,6 +1049,25 @@ class CameraServerService final {
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* PrepareAsyncSubscribeZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>* AsyncRespondZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondZoomRangeResponse>* PrepareAsyncRespondZoomRangeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>* AsyncSetTrackingRectangleStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>* PrepareAsyncSetTrackingRectangleStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>* AsyncSetTrackingOffStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>* PrepareAsyncSetTrackingOffStatusRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* SubscribeTrackingPointCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest& request) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* AsyncSubscribeTrackingPointCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* PrepareAsyncSubscribeTrackingPointCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* SubscribeTrackingRectangleCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest& request) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* AsyncSubscribeTrackingRectangleCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* PrepareAsyncSubscribeTrackingRectangleCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* SubscribeTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest& request) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* AsyncSubscribeTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* PrepareAsyncSubscribeTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>* AsyncRespondTrackingPointCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>* PrepareAsyncRespondTrackingPointCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>* AsyncRespondTrackingRectangleCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>* PrepareAsyncRespondTrackingRectangleCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>* AsyncRespondTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>* PrepareAsyncRespondTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SetInformation_;
     const ::grpc::internal::RpcMethod rpcmethod_SetVideoStreaming_;
     const ::grpc::internal::RpcMethod rpcmethod_SetInProgress_;
@@ -895,6 +1099,14 @@ class CameraServerService final {
     const ::grpc::internal::RpcMethod rpcmethod_RespondZoomStop_;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeZoomRange_;
     const ::grpc::internal::RpcMethod rpcmethod_RespondZoomRange_;
+    const ::grpc::internal::RpcMethod rpcmethod_SetTrackingRectangleStatus_;
+    const ::grpc::internal::RpcMethod rpcmethod_SetTrackingOffStatus_;
+    const ::grpc::internal::RpcMethod rpcmethod_SubscribeTrackingPointCommand_;
+    const ::grpc::internal::RpcMethod rpcmethod_SubscribeTrackingRectangleCommand_;
+    const ::grpc::internal::RpcMethod rpcmethod_SubscribeTrackingOffCommand_;
+    const ::grpc::internal::RpcMethod rpcmethod_RespondTrackingPointCommand_;
+    const ::grpc::internal::RpcMethod rpcmethod_RespondTrackingRectangleCommand_;
+    const ::grpc::internal::RpcMethod rpcmethod_RespondTrackingOffCommand_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -964,6 +1176,22 @@ class CameraServerService final {
     virtual ::grpc::Status SubscribeZoomRange(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::ZoomRangeResponse>* writer);
     // Respond to zoom range.
     virtual ::grpc::Status RespondZoomRange(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* request, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* response);
+    // Set/update the current rectangle tracking status.
+    virtual ::grpc::Status SetTrackingRectangleStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* response);
+    // Set the current tracking status to off.
+    virtual ::grpc::Status SetTrackingOffStatus(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* response);
+    // Subscribe to incoming tracking point command.
+    virtual ::grpc::Status SubscribeTrackingPointCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* writer);
+    // Subscribe to incoming tracking rectangle command.
+    virtual ::grpc::Status SubscribeTrackingRectangleCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* writer);
+    // Subscribe to incoming tracking off command.
+    virtual ::grpc::Status SubscribeTrackingOffCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* writer);
+    // Respond to an incoming tracking point command.
+    virtual ::grpc::Status RespondTrackingPointCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* response);
+    // Respond to an incoming tracking rectangle command.
+    virtual ::grpc::Status RespondTrackingRectangleCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* response);
+    // Respond to an incoming tracking off command.
+    virtual ::grpc::Status RespondTrackingOffCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_SetInformation : public BaseClass {
@@ -1585,7 +1813,167 @@ class CameraServerService final {
       ::grpc::Service::RequestAsyncUnary(30, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SetInformation<WithAsyncMethod_SetVideoStreaming<WithAsyncMethod_SetInProgress<WithAsyncMethod_SubscribeTakePhoto<WithAsyncMethod_RespondTakePhoto<WithAsyncMethod_SubscribeStartVideo<WithAsyncMethod_RespondStartVideo<WithAsyncMethod_SubscribeStopVideo<WithAsyncMethod_RespondStopVideo<WithAsyncMethod_SubscribeStartVideoStreaming<WithAsyncMethod_RespondStartVideoStreaming<WithAsyncMethod_SubscribeStopVideoStreaming<WithAsyncMethod_RespondStopVideoStreaming<WithAsyncMethod_SubscribeSetMode<WithAsyncMethod_RespondSetMode<WithAsyncMethod_SubscribeStorageInformation<WithAsyncMethod_RespondStorageInformation<WithAsyncMethod_SubscribeCaptureStatus<WithAsyncMethod_RespondCaptureStatus<WithAsyncMethod_SubscribeFormatStorage<WithAsyncMethod_RespondFormatStorage<WithAsyncMethod_SubscribeResetSettings<WithAsyncMethod_RespondResetSettings<WithAsyncMethod_SubscribeZoomInStart<WithAsyncMethod_RespondZoomInStart<WithAsyncMethod_SubscribeZoomOutStart<WithAsyncMethod_RespondZoomOutStart<WithAsyncMethod_SubscribeZoomStop<WithAsyncMethod_RespondZoomStop<WithAsyncMethod_SubscribeZoomRange<WithAsyncMethod_RespondZoomRange<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_SetTrackingRectangleStatus : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SetTrackingRectangleStatus() {
+      ::grpc::Service::MarkMethodAsync(31);
+    }
+    ~WithAsyncMethod_SetTrackingRectangleStatus() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetTrackingRectangleStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* /*request*/, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetTrackingRectangleStatus(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(31, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_SetTrackingOffStatus : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SetTrackingOffStatus() {
+      ::grpc::Service::MarkMethodAsync(32);
+    }
+    ~WithAsyncMethod_SetTrackingOffStatus() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetTrackingOffStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* /*request*/, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetTrackingOffStatus(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(32, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_SubscribeTrackingPointCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SubscribeTrackingPointCommand() {
+      ::grpc::Service::MarkMethodAsync(33);
+    }
+    ~WithAsyncMethod_SubscribeTrackingPointCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeTrackingPointCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeTrackingPointCommand(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(33, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_SubscribeTrackingRectangleCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SubscribeTrackingRectangleCommand() {
+      ::grpc::Service::MarkMethodAsync(34);
+    }
+    ~WithAsyncMethod_SubscribeTrackingRectangleCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeTrackingRectangleCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeTrackingRectangleCommand(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(34, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_SubscribeTrackingOffCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SubscribeTrackingOffCommand() {
+      ::grpc::Service::MarkMethodAsync(35);
+    }
+    ~WithAsyncMethod_SubscribeTrackingOffCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeTrackingOffCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeTrackingOffCommand(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(35, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_RespondTrackingPointCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_RespondTrackingPointCommand() {
+      ::grpc::Service::MarkMethodAsync(36);
+    }
+    ~WithAsyncMethod_RespondTrackingPointCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondTrackingPointCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestRespondTrackingPointCommand(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(36, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_RespondTrackingRectangleCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_RespondTrackingRectangleCommand() {
+      ::grpc::Service::MarkMethodAsync(37);
+    }
+    ~WithAsyncMethod_RespondTrackingRectangleCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondTrackingRectangleCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestRespondTrackingRectangleCommand(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(37, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_RespondTrackingOffCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_RespondTrackingOffCommand() {
+      ::grpc::Service::MarkMethodAsync(38);
+    }
+    ~WithAsyncMethod_RespondTrackingOffCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondTrackingOffCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestRespondTrackingOffCommand(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(38, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_SetInformation<WithAsyncMethod_SetVideoStreaming<WithAsyncMethod_SetInProgress<WithAsyncMethod_SubscribeTakePhoto<WithAsyncMethod_RespondTakePhoto<WithAsyncMethod_SubscribeStartVideo<WithAsyncMethod_RespondStartVideo<WithAsyncMethod_SubscribeStopVideo<WithAsyncMethod_RespondStopVideo<WithAsyncMethod_SubscribeStartVideoStreaming<WithAsyncMethod_RespondStartVideoStreaming<WithAsyncMethod_SubscribeStopVideoStreaming<WithAsyncMethod_RespondStopVideoStreaming<WithAsyncMethod_SubscribeSetMode<WithAsyncMethod_RespondSetMode<WithAsyncMethod_SubscribeStorageInformation<WithAsyncMethod_RespondStorageInformation<WithAsyncMethod_SubscribeCaptureStatus<WithAsyncMethod_RespondCaptureStatus<WithAsyncMethod_SubscribeFormatStorage<WithAsyncMethod_RespondFormatStorage<WithAsyncMethod_SubscribeResetSettings<WithAsyncMethod_RespondResetSettings<WithAsyncMethod_SubscribeZoomInStart<WithAsyncMethod_RespondZoomInStart<WithAsyncMethod_SubscribeZoomOutStart<WithAsyncMethod_RespondZoomOutStart<WithAsyncMethod_SubscribeZoomStop<WithAsyncMethod_RespondZoomStop<WithAsyncMethod_SubscribeZoomRange<WithAsyncMethod_RespondZoomRange<WithAsyncMethod_SetTrackingRectangleStatus<WithAsyncMethod_SetTrackingOffStatus<WithAsyncMethod_SubscribeTrackingPointCommand<WithAsyncMethod_SubscribeTrackingRectangleCommand<WithAsyncMethod_SubscribeTrackingOffCommand<WithAsyncMethod_RespondTrackingPointCommand<WithAsyncMethod_RespondTrackingRectangleCommand<WithAsyncMethod_RespondTrackingOffCommand<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_SetInformation : public BaseClass {
    private:
@@ -2353,7 +2741,208 @@ class CameraServerService final {
     virtual ::grpc::ServerUnaryReactor* RespondZoomRange(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_SetInformation<WithCallbackMethod_SetVideoStreaming<WithCallbackMethod_SetInProgress<WithCallbackMethod_SubscribeTakePhoto<WithCallbackMethod_RespondTakePhoto<WithCallbackMethod_SubscribeStartVideo<WithCallbackMethod_RespondStartVideo<WithCallbackMethod_SubscribeStopVideo<WithCallbackMethod_RespondStopVideo<WithCallbackMethod_SubscribeStartVideoStreaming<WithCallbackMethod_RespondStartVideoStreaming<WithCallbackMethod_SubscribeStopVideoStreaming<WithCallbackMethod_RespondStopVideoStreaming<WithCallbackMethod_SubscribeSetMode<WithCallbackMethod_RespondSetMode<WithCallbackMethod_SubscribeStorageInformation<WithCallbackMethod_RespondStorageInformation<WithCallbackMethod_SubscribeCaptureStatus<WithCallbackMethod_RespondCaptureStatus<WithCallbackMethod_SubscribeFormatStorage<WithCallbackMethod_RespondFormatStorage<WithCallbackMethod_SubscribeResetSettings<WithCallbackMethod_RespondResetSettings<WithCallbackMethod_SubscribeZoomInStart<WithCallbackMethod_RespondZoomInStart<WithCallbackMethod_SubscribeZoomOutStart<WithCallbackMethod_RespondZoomOutStart<WithCallbackMethod_SubscribeZoomStop<WithCallbackMethod_RespondZoomStop<WithCallbackMethod_SubscribeZoomRange<WithCallbackMethod_RespondZoomRange<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_SetTrackingRectangleStatus : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SetTrackingRectangleStatus() {
+      ::grpc::Service::MarkMethodCallback(31,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* response) { return this->SetTrackingRectangleStatus(context, request, response); }));}
+    void SetMessageAllocatorFor_SetTrackingRectangleStatus(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(31);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_SetTrackingRectangleStatus() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetTrackingRectangleStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* /*request*/, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetTrackingRectangleStatus(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* /*request*/, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_SetTrackingOffStatus : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SetTrackingOffStatus() {
+      ::grpc::Service::MarkMethodCallback(32,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* request, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* response) { return this->SetTrackingOffStatus(context, request, response); }));}
+    void SetMessageAllocatorFor_SetTrackingOffStatus(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(32);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_SetTrackingOffStatus() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetTrackingOffStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* /*request*/, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetTrackingOffStatus(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* /*request*/, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_SubscribeTrackingPointCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SubscribeTrackingPointCommand() {
+      ::grpc::Service::MarkMethodCallback(33,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest, ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest* request) { return this->SubscribeTrackingPointCommand(context, request); }));
+    }
+    ~WithCallbackMethod_SubscribeTrackingPointCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeTrackingPointCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* SubscribeTrackingPointCommand(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_SubscribeTrackingRectangleCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SubscribeTrackingRectangleCommand() {
+      ::grpc::Service::MarkMethodCallback(34,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest, ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest* request) { return this->SubscribeTrackingRectangleCommand(context, request); }));
+    }
+    ~WithCallbackMethod_SubscribeTrackingRectangleCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeTrackingRectangleCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* SubscribeTrackingRectangleCommand(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_SubscribeTrackingOffCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SubscribeTrackingOffCommand() {
+      ::grpc::Service::MarkMethodCallback(35,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest, ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest* request) { return this->SubscribeTrackingOffCommand(context, request); }));
+    }
+    ~WithCallbackMethod_SubscribeTrackingOffCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeTrackingOffCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* SubscribeTrackingOffCommand(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_RespondTrackingPointCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_RespondTrackingPointCommand() {
+      ::grpc::Service::MarkMethodCallback(36,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* response) { return this->RespondTrackingPointCommand(context, request, response); }));}
+    void SetMessageAllocatorFor_RespondTrackingPointCommand(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(36);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_RespondTrackingPointCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondTrackingPointCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* RespondTrackingPointCommand(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_RespondTrackingRectangleCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_RespondTrackingRectangleCommand() {
+      ::grpc::Service::MarkMethodCallback(37,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* response) { return this->RespondTrackingRectangleCommand(context, request, response); }));}
+    void SetMessageAllocatorFor_RespondTrackingRectangleCommand(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(37);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_RespondTrackingRectangleCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondTrackingRectangleCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* RespondTrackingRectangleCommand(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_RespondTrackingOffCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_RespondTrackingOffCommand() {
+      ::grpc::Service::MarkMethodCallback(38,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response) { return this->RespondTrackingOffCommand(context, request, response); }));}
+    void SetMessageAllocatorFor_RespondTrackingOffCommand(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(38);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_RespondTrackingOffCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondTrackingOffCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* RespondTrackingOffCommand(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_SetInformation<WithCallbackMethod_SetVideoStreaming<WithCallbackMethod_SetInProgress<WithCallbackMethod_SubscribeTakePhoto<WithCallbackMethod_RespondTakePhoto<WithCallbackMethod_SubscribeStartVideo<WithCallbackMethod_RespondStartVideo<WithCallbackMethod_SubscribeStopVideo<WithCallbackMethod_RespondStopVideo<WithCallbackMethod_SubscribeStartVideoStreaming<WithCallbackMethod_RespondStartVideoStreaming<WithCallbackMethod_SubscribeStopVideoStreaming<WithCallbackMethod_RespondStopVideoStreaming<WithCallbackMethod_SubscribeSetMode<WithCallbackMethod_RespondSetMode<WithCallbackMethod_SubscribeStorageInformation<WithCallbackMethod_RespondStorageInformation<WithCallbackMethod_SubscribeCaptureStatus<WithCallbackMethod_RespondCaptureStatus<WithCallbackMethod_SubscribeFormatStorage<WithCallbackMethod_RespondFormatStorage<WithCallbackMethod_SubscribeResetSettings<WithCallbackMethod_RespondResetSettings<WithCallbackMethod_SubscribeZoomInStart<WithCallbackMethod_RespondZoomInStart<WithCallbackMethod_SubscribeZoomOutStart<WithCallbackMethod_RespondZoomOutStart<WithCallbackMethod_SubscribeZoomStop<WithCallbackMethod_RespondZoomStop<WithCallbackMethod_SubscribeZoomRange<WithCallbackMethod_RespondZoomRange<WithCallbackMethod_SetTrackingRectangleStatus<WithCallbackMethod_SetTrackingOffStatus<WithCallbackMethod_SubscribeTrackingPointCommand<WithCallbackMethod_SubscribeTrackingRectangleCommand<WithCallbackMethod_SubscribeTrackingOffCommand<WithCallbackMethod_RespondTrackingPointCommand<WithCallbackMethod_RespondTrackingRectangleCommand<WithCallbackMethod_RespondTrackingOffCommand<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SetInformation : public BaseClass {
@@ -2878,6 +3467,142 @@ class CameraServerService final {
     }
     // disable synchronous version of this method
     ::grpc::Status RespondZoomRange(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondZoomRangeRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondZoomRangeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SetTrackingRectangleStatus : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SetTrackingRectangleStatus() {
+      ::grpc::Service::MarkMethodGeneric(31);
+    }
+    ~WithGenericMethod_SetTrackingRectangleStatus() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetTrackingRectangleStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* /*request*/, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SetTrackingOffStatus : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SetTrackingOffStatus() {
+      ::grpc::Service::MarkMethodGeneric(32);
+    }
+    ~WithGenericMethod_SetTrackingOffStatus() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetTrackingOffStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* /*request*/, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SubscribeTrackingPointCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SubscribeTrackingPointCommand() {
+      ::grpc::Service::MarkMethodGeneric(33);
+    }
+    ~WithGenericMethod_SubscribeTrackingPointCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeTrackingPointCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SubscribeTrackingRectangleCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SubscribeTrackingRectangleCommand() {
+      ::grpc::Service::MarkMethodGeneric(34);
+    }
+    ~WithGenericMethod_SubscribeTrackingRectangleCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeTrackingRectangleCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SubscribeTrackingOffCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SubscribeTrackingOffCommand() {
+      ::grpc::Service::MarkMethodGeneric(35);
+    }
+    ~WithGenericMethod_SubscribeTrackingOffCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeTrackingOffCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_RespondTrackingPointCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_RespondTrackingPointCommand() {
+      ::grpc::Service::MarkMethodGeneric(36);
+    }
+    ~WithGenericMethod_RespondTrackingPointCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondTrackingPointCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_RespondTrackingRectangleCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_RespondTrackingRectangleCommand() {
+      ::grpc::Service::MarkMethodGeneric(37);
+    }
+    ~WithGenericMethod_RespondTrackingRectangleCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondTrackingRectangleCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_RespondTrackingOffCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_RespondTrackingOffCommand() {
+      ::grpc::Service::MarkMethodGeneric(38);
+    }
+    ~WithGenericMethod_RespondTrackingOffCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondTrackingOffCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -3500,6 +4225,166 @@ class CameraServerService final {
     }
     void RequestRespondZoomRange(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(30, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SetTrackingRectangleStatus : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SetTrackingRectangleStatus() {
+      ::grpc::Service::MarkMethodRaw(31);
+    }
+    ~WithRawMethod_SetTrackingRectangleStatus() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetTrackingRectangleStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* /*request*/, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetTrackingRectangleStatus(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(31, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SetTrackingOffStatus : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SetTrackingOffStatus() {
+      ::grpc::Service::MarkMethodRaw(32);
+    }
+    ~WithRawMethod_SetTrackingOffStatus() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetTrackingOffStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* /*request*/, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetTrackingOffStatus(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(32, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SubscribeTrackingPointCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SubscribeTrackingPointCommand() {
+      ::grpc::Service::MarkMethodRaw(33);
+    }
+    ~WithRawMethod_SubscribeTrackingPointCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeTrackingPointCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeTrackingPointCommand(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(33, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SubscribeTrackingRectangleCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SubscribeTrackingRectangleCommand() {
+      ::grpc::Service::MarkMethodRaw(34);
+    }
+    ~WithRawMethod_SubscribeTrackingRectangleCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeTrackingRectangleCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeTrackingRectangleCommand(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(34, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SubscribeTrackingOffCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SubscribeTrackingOffCommand() {
+      ::grpc::Service::MarkMethodRaw(35);
+    }
+    ~WithRawMethod_SubscribeTrackingOffCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeTrackingOffCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeTrackingOffCommand(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(35, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_RespondTrackingPointCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_RespondTrackingPointCommand() {
+      ::grpc::Service::MarkMethodRaw(36);
+    }
+    ~WithRawMethod_RespondTrackingPointCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondTrackingPointCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestRespondTrackingPointCommand(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(36, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_RespondTrackingRectangleCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_RespondTrackingRectangleCommand() {
+      ::grpc::Service::MarkMethodRaw(37);
+    }
+    ~WithRawMethod_RespondTrackingRectangleCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondTrackingRectangleCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestRespondTrackingRectangleCommand(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(37, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_RespondTrackingOffCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_RespondTrackingOffCommand() {
+      ::grpc::Service::MarkMethodRaw(38);
+    }
+    ~WithRawMethod_RespondTrackingOffCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondTrackingOffCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestRespondTrackingOffCommand(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(38, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -4185,6 +5070,182 @@ class CameraServerService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithRawCallbackMethod_SetTrackingRectangleStatus : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SetTrackingRectangleStatus() {
+      ::grpc::Service::MarkMethodRawCallback(31,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetTrackingRectangleStatus(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_SetTrackingRectangleStatus() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetTrackingRectangleStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* /*request*/, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetTrackingRectangleStatus(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_SetTrackingOffStatus : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SetTrackingOffStatus() {
+      ::grpc::Service::MarkMethodRawCallback(32,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetTrackingOffStatus(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_SetTrackingOffStatus() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetTrackingOffStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* /*request*/, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetTrackingOffStatus(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_SubscribeTrackingPointCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SubscribeTrackingPointCommand() {
+      ::grpc::Service::MarkMethodRawCallback(33,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeTrackingPointCommand(context, request); }));
+    }
+    ~WithRawCallbackMethod_SubscribeTrackingPointCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeTrackingPointCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeTrackingPointCommand(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_SubscribeTrackingRectangleCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SubscribeTrackingRectangleCommand() {
+      ::grpc::Service::MarkMethodRawCallback(34,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeTrackingRectangleCommand(context, request); }));
+    }
+    ~WithRawCallbackMethod_SubscribeTrackingRectangleCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeTrackingRectangleCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeTrackingRectangleCommand(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_SubscribeTrackingOffCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SubscribeTrackingOffCommand() {
+      ::grpc::Service::MarkMethodRawCallback(35,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeTrackingOffCommand(context, request); }));
+    }
+    ~WithRawCallbackMethod_SubscribeTrackingOffCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeTrackingOffCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeTrackingOffCommand(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_RespondTrackingPointCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_RespondTrackingPointCommand() {
+      ::grpc::Service::MarkMethodRawCallback(36,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RespondTrackingPointCommand(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_RespondTrackingPointCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondTrackingPointCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* RespondTrackingPointCommand(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_RespondTrackingRectangleCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_RespondTrackingRectangleCommand() {
+      ::grpc::Service::MarkMethodRawCallback(37,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RespondTrackingRectangleCommand(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_RespondTrackingRectangleCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondTrackingRectangleCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* RespondTrackingRectangleCommand(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_RespondTrackingOffCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_RespondTrackingOffCommand() {
+      ::grpc::Service::MarkMethodRawCallback(38,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->RespondTrackingOffCommand(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_RespondTrackingOffCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status RespondTrackingOffCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* RespondTrackingOffCommand(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_SetInformation : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -4643,7 +5704,142 @@ class CameraServerService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedRespondZoomRange(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::camera_server::RespondZoomRangeRequest,::mavsdk::rpc::camera_server::RespondZoomRangeResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_SetInformation<WithStreamedUnaryMethod_SetVideoStreaming<WithStreamedUnaryMethod_SetInProgress<WithStreamedUnaryMethod_RespondTakePhoto<WithStreamedUnaryMethod_RespondStartVideo<WithStreamedUnaryMethod_RespondStopVideo<WithStreamedUnaryMethod_RespondStartVideoStreaming<WithStreamedUnaryMethod_RespondStopVideoStreaming<WithStreamedUnaryMethod_RespondSetMode<WithStreamedUnaryMethod_RespondStorageInformation<WithStreamedUnaryMethod_RespondCaptureStatus<WithStreamedUnaryMethod_RespondFormatStorage<WithStreamedUnaryMethod_RespondResetSettings<WithStreamedUnaryMethod_RespondZoomInStart<WithStreamedUnaryMethod_RespondZoomOutStart<WithStreamedUnaryMethod_RespondZoomStop<WithStreamedUnaryMethod_RespondZoomRange<Service > > > > > > > > > > > > > > > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_SetTrackingRectangleStatus : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_SetTrackingRectangleStatus() {
+      ::grpc::Service::MarkMethodStreamed(31,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>* streamer) {
+                       return this->StreamedSetTrackingRectangleStatus(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_SetTrackingRectangleStatus() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SetTrackingRectangleStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest* /*request*/, ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedSetTrackingRectangleStatus(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::camera_server::SetTrackingRectangleStatusRequest,::mavsdk::rpc::camera_server::SetTrackingRectangleStatusResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_SetTrackingOffStatus : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_SetTrackingOffStatus() {
+      ::grpc::Service::MarkMethodStreamed(32,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>* streamer) {
+                       return this->StreamedSetTrackingOffStatus(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_SetTrackingOffStatus() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SetTrackingOffStatus(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest* /*request*/, ::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedSetTrackingOffStatus(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::camera_server::SetTrackingOffStatusRequest,::mavsdk::rpc::camera_server::SetTrackingOffStatusResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_RespondTrackingPointCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_RespondTrackingPointCommand() {
+      ::grpc::Service::MarkMethodStreamed(36,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>* streamer) {
+                       return this->StreamedRespondTrackingPointCommand(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_RespondTrackingPointCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status RespondTrackingPointCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedRespondTrackingPointCommand(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::camera_server::RespondTrackingPointCommandRequest,::mavsdk::rpc::camera_server::RespondTrackingPointCommandResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_RespondTrackingRectangleCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_RespondTrackingRectangleCommand() {
+      ::grpc::Service::MarkMethodStreamed(37,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>* streamer) {
+                       return this->StreamedRespondTrackingRectangleCommand(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_RespondTrackingRectangleCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status RespondTrackingRectangleCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedRespondTrackingRectangleCommand(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest,::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_RespondTrackingOffCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_RespondTrackingOffCommand() {
+      ::grpc::Service::MarkMethodStreamed(38,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>* streamer) {
+                       return this->StreamedRespondTrackingOffCommand(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_RespondTrackingOffCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status RespondTrackingOffCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedRespondTrackingOffCommand(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest,::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_SetInformation<WithStreamedUnaryMethod_SetVideoStreaming<WithStreamedUnaryMethod_SetInProgress<WithStreamedUnaryMethod_RespondTakePhoto<WithStreamedUnaryMethod_RespondStartVideo<WithStreamedUnaryMethod_RespondStopVideo<WithStreamedUnaryMethod_RespondStartVideoStreaming<WithStreamedUnaryMethod_RespondStopVideoStreaming<WithStreamedUnaryMethod_RespondSetMode<WithStreamedUnaryMethod_RespondStorageInformation<WithStreamedUnaryMethod_RespondCaptureStatus<WithStreamedUnaryMethod_RespondFormatStorage<WithStreamedUnaryMethod_RespondResetSettings<WithStreamedUnaryMethod_RespondZoomInStart<WithStreamedUnaryMethod_RespondZoomOutStart<WithStreamedUnaryMethod_RespondZoomStop<WithStreamedUnaryMethod_RespondZoomRange<WithStreamedUnaryMethod_SetTrackingRectangleStatus<WithStreamedUnaryMethod_SetTrackingOffStatus<WithStreamedUnaryMethod_RespondTrackingPointCommand<WithStreamedUnaryMethod_RespondTrackingRectangleCommand<WithStreamedUnaryMethod_RespondTrackingOffCommand<Service > > > > > > > > > > > > > > > > > > > > > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeTakePhoto : public BaseClass {
    private:
@@ -5022,8 +6218,89 @@ class CameraServerService final {
     // replace default version of method with split streamed
     virtual ::grpc::Status StreamedSubscribeZoomRange(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::camera_server::SubscribeZoomRangeRequest,::mavsdk::rpc::camera_server::ZoomRangeResponse>* server_split_streamer) = 0;
   };
-  typedef WithSplitStreamingMethod_SubscribeTakePhoto<WithSplitStreamingMethod_SubscribeStartVideo<WithSplitStreamingMethod_SubscribeStopVideo<WithSplitStreamingMethod_SubscribeStartVideoStreaming<WithSplitStreamingMethod_SubscribeStopVideoStreaming<WithSplitStreamingMethod_SubscribeSetMode<WithSplitStreamingMethod_SubscribeStorageInformation<WithSplitStreamingMethod_SubscribeCaptureStatus<WithSplitStreamingMethod_SubscribeFormatStorage<WithSplitStreamingMethod_SubscribeResetSettings<WithSplitStreamingMethod_SubscribeZoomInStart<WithSplitStreamingMethod_SubscribeZoomOutStart<WithSplitStreamingMethod_SubscribeZoomStop<WithSplitStreamingMethod_SubscribeZoomRange<Service > > > > > > > > > > > > > > SplitStreamedService;
-  typedef WithStreamedUnaryMethod_SetInformation<WithStreamedUnaryMethod_SetVideoStreaming<WithStreamedUnaryMethod_SetInProgress<WithSplitStreamingMethod_SubscribeTakePhoto<WithStreamedUnaryMethod_RespondTakePhoto<WithSplitStreamingMethod_SubscribeStartVideo<WithStreamedUnaryMethod_RespondStartVideo<WithSplitStreamingMethod_SubscribeStopVideo<WithStreamedUnaryMethod_RespondStopVideo<WithSplitStreamingMethod_SubscribeStartVideoStreaming<WithStreamedUnaryMethod_RespondStartVideoStreaming<WithSplitStreamingMethod_SubscribeStopVideoStreaming<WithStreamedUnaryMethod_RespondStopVideoStreaming<WithSplitStreamingMethod_SubscribeSetMode<WithStreamedUnaryMethod_RespondSetMode<WithSplitStreamingMethod_SubscribeStorageInformation<WithStreamedUnaryMethod_RespondStorageInformation<WithSplitStreamingMethod_SubscribeCaptureStatus<WithStreamedUnaryMethod_RespondCaptureStatus<WithSplitStreamingMethod_SubscribeFormatStorage<WithStreamedUnaryMethod_RespondFormatStorage<WithSplitStreamingMethod_SubscribeResetSettings<WithStreamedUnaryMethod_RespondResetSettings<WithSplitStreamingMethod_SubscribeZoomInStart<WithStreamedUnaryMethod_RespondZoomInStart<WithSplitStreamingMethod_SubscribeZoomOutStart<WithStreamedUnaryMethod_RespondZoomOutStart<WithSplitStreamingMethod_SubscribeZoomStop<WithStreamedUnaryMethod_RespondZoomStop<WithSplitStreamingMethod_SubscribeZoomRange<WithStreamedUnaryMethod_RespondZoomRange<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
+  template <class BaseClass>
+  class WithSplitStreamingMethod_SubscribeTrackingPointCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_SubscribeTrackingPointCommand() {
+      ::grpc::Service::MarkMethodStreamed(33,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest, ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest, ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* streamer) {
+                       return this->StreamedSubscribeTrackingPointCommand(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_SubscribeTrackingPointCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SubscribeTrackingPointCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedSubscribeTrackingPointCommand(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::camera_server::SubscribeTrackingPointCommandRequest,::mavsdk::rpc::camera_server::TrackingPointCommandResponse>* server_split_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithSplitStreamingMethod_SubscribeTrackingRectangleCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_SubscribeTrackingRectangleCommand() {
+      ::grpc::Service::MarkMethodStreamed(34,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest, ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest, ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* streamer) {
+                       return this->StreamedSubscribeTrackingRectangleCommand(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_SubscribeTrackingRectangleCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SubscribeTrackingRectangleCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedSubscribeTrackingRectangleCommand(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::camera_server::SubscribeTrackingRectangleCommandRequest,::mavsdk::rpc::camera_server::TrackingRectangleCommandResponse>* server_split_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithSplitStreamingMethod_SubscribeTrackingOffCommand : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_SubscribeTrackingOffCommand() {
+      ::grpc::Service::MarkMethodStreamed(35,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest, ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest, ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* streamer) {
+                       return this->StreamedSubscribeTrackingOffCommand(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_SubscribeTrackingOffCommand() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SubscribeTrackingOffCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedSubscribeTrackingOffCommand(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest,::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* server_split_streamer) = 0;
+  };
+  typedef WithSplitStreamingMethod_SubscribeTakePhoto<WithSplitStreamingMethod_SubscribeStartVideo<WithSplitStreamingMethod_SubscribeStopVideo<WithSplitStreamingMethod_SubscribeStartVideoStreaming<WithSplitStreamingMethod_SubscribeStopVideoStreaming<WithSplitStreamingMethod_SubscribeSetMode<WithSplitStreamingMethod_SubscribeStorageInformation<WithSplitStreamingMethod_SubscribeCaptureStatus<WithSplitStreamingMethod_SubscribeFormatStorage<WithSplitStreamingMethod_SubscribeResetSettings<WithSplitStreamingMethod_SubscribeZoomInStart<WithSplitStreamingMethod_SubscribeZoomOutStart<WithSplitStreamingMethod_SubscribeZoomStop<WithSplitStreamingMethod_SubscribeZoomRange<WithSplitStreamingMethod_SubscribeTrackingPointCommand<WithSplitStreamingMethod_SubscribeTrackingRectangleCommand<WithSplitStreamingMethod_SubscribeTrackingOffCommand<Service > > > > > > > > > > > > > > > > > SplitStreamedService;
+  typedef WithStreamedUnaryMethod_SetInformation<WithStreamedUnaryMethod_SetVideoStreaming<WithStreamedUnaryMethod_SetInProgress<WithSplitStreamingMethod_SubscribeTakePhoto<WithStreamedUnaryMethod_RespondTakePhoto<WithSplitStreamingMethod_SubscribeStartVideo<WithStreamedUnaryMethod_RespondStartVideo<WithSplitStreamingMethod_SubscribeStopVideo<WithStreamedUnaryMethod_RespondStopVideo<WithSplitStreamingMethod_SubscribeStartVideoStreaming<WithStreamedUnaryMethod_RespondStartVideoStreaming<WithSplitStreamingMethod_SubscribeStopVideoStreaming<WithStreamedUnaryMethod_RespondStopVideoStreaming<WithSplitStreamingMethod_SubscribeSetMode<WithStreamedUnaryMethod_RespondSetMode<WithSplitStreamingMethod_SubscribeStorageInformation<WithStreamedUnaryMethod_RespondStorageInformation<WithSplitStreamingMethod_SubscribeCaptureStatus<WithStreamedUnaryMethod_RespondCaptureStatus<WithSplitStreamingMethod_SubscribeFormatStorage<WithStreamedUnaryMethod_RespondFormatStorage<WithSplitStreamingMethod_SubscribeResetSettings<WithStreamedUnaryMethod_RespondResetSettings<WithSplitStreamingMethod_SubscribeZoomInStart<WithStreamedUnaryMethod_RespondZoomInStart<WithSplitStreamingMethod_SubscribeZoomOutStart<WithStreamedUnaryMethod_RespondZoomOutStart<WithSplitStreamingMethod_SubscribeZoomStop<WithStreamedUnaryMethod_RespondZoomStop<WithSplitStreamingMethod_SubscribeZoomRange<WithStreamedUnaryMethod_RespondZoomRange<WithStreamedUnaryMethod_SetTrackingRectangleStatus<WithStreamedUnaryMethod_SetTrackingOffStatus<WithSplitStreamingMethod_SubscribeTrackingPointCommand<WithSplitStreamingMethod_SubscribeTrackingRectangleCommand<WithSplitStreamingMethod_SubscribeTrackingOffCommand<WithStreamedUnaryMethod_RespondTrackingPointCommand<WithStreamedUnaryMethod_RespondTrackingRectangleCommand<WithStreamedUnaryMethod_RespondTrackingOffCommand<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace camera_server
