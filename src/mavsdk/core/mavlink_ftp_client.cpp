@@ -1236,6 +1236,7 @@ void MavlinkFtpClient::timeout()
                         // In that case start requesting what we missed.
                         if (item.current_offset == item.file_size && item.missing_data.empty()) {
                             // We are done anyway.
+                            item.ofstream.close();
                             item.callback(ClientResult::Success, {});
                             download_burst_end(*work);
                             work_queue_guard.pop_front();
