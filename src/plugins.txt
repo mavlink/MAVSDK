@@ -4,7 +4,7 @@ arm_authorizer_server
 calibration
 camera
 camera_server
-component_information
+component_metadata
 component_information_server
 failure
 follow_me
