@@ -555,6 +555,13 @@ void ActionImpl::set_actuator_async(
                     break;
             }
             command.params.maybe_param7 = static_cast<float>(zero_based_index) / 6.0f;
+        } else {
+            if (callback) {
+                _system_impl->call_user_callback([temp_callback = callback]() {
+                    temp_callback(Action::Result::InvalidArgument);
+                });
+            }
+            return;
         }
     }
 

@@ -118,6 +118,8 @@ public:
                 return rpc::action::ActionResult_Result_RESULT_UNSUPPORTED;
             case mavsdk::Action::Result::Failed:
                 return rpc::action::ActionResult_Result_RESULT_FAILED;
+            case mavsdk::Action::Result::InvalidArgument:
+                return rpc::action::ActionResult_Result_RESULT_INVALID_ARGUMENT;
         }
     }
 
@@ -156,6 +158,8 @@ public:
                 return mavsdk::Action::Result::Unsupported;
             case rpc::action::ActionResult_Result_RESULT_FAILED:
                 return mavsdk::Action::Result::Failed;
+            case rpc::action::ActionResult_Result_RESULT_INVALID_ARGUMENT:
+                return mavsdk::Action::Result::InvalidArgument;
         }
     }
 

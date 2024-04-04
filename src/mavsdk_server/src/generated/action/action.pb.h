@@ -222,6 +222,7 @@ enum ActionResult_Result : int {
   ActionResult_Result_RESULT_PARAMETER_ERROR = 11,
   ActionResult_Result_RESULT_UNSUPPORTED = 12,
   ActionResult_Result_RESULT_FAILED = 13,
+  ActionResult_Result_RESULT_INVALID_ARGUMENT = 14,
   ActionResult_Result_ActionResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   ActionResult_Result_ActionResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -231,8 +232,8 @@ enum ActionResult_Result : int {
 bool ActionResult_Result_IsValid(int value);
 extern const uint32_t ActionResult_Result_internal_data_[];
 constexpr ActionResult_Result ActionResult_Result_Result_MIN = static_cast<ActionResult_Result>(0);
-constexpr ActionResult_Result ActionResult_Result_Result_MAX = static_cast<ActionResult_Result>(13);
-constexpr int ActionResult_Result_Result_ARRAYSIZE = 13 + 1;
+constexpr ActionResult_Result ActionResult_Result_Result_MAX = static_cast<ActionResult_Result>(14);
+constexpr int ActionResult_Result_Result_ARRAYSIZE = 14 + 1;
 const ::google::protobuf::EnumDescriptor*
 ActionResult_Result_descriptor();
 template <typename T>
@@ -245,7 +246,7 @@ const std::string& ActionResult_Result_Name(T value) {
 template <>
 inline const std::string& ActionResult_Result_Name(ActionResult_Result value) {
   return ::google::protobuf::internal::NameOfDenseEnum<ActionResult_Result_descriptor,
-                                                 0, 13>(
+                                                 0, 14>(
       static_cast<int>(value));
 }
 inline bool ActionResult_Result_Parse(absl::string_view name, ActionResult_Result* value) {
@@ -3811,6 +3812,7 @@ class ActionResult final :
   static constexpr Result RESULT_PARAMETER_ERROR = ActionResult_Result_RESULT_PARAMETER_ERROR;
   static constexpr Result RESULT_UNSUPPORTED = ActionResult_Result_RESULT_UNSUPPORTED;
   static constexpr Result RESULT_FAILED = ActionResult_Result_RESULT_FAILED;
+  static constexpr Result RESULT_INVALID_ARGUMENT = ActionResult_Result_RESULT_INVALID_ARGUMENT;
   static inline bool Result_IsValid(int value) {
     return ActionResult_Result_IsValid(value);
   }
