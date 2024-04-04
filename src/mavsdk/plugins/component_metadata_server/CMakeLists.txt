@@ -1,7 +1,7 @@
 target_sources(mavsdk
     PRIVATE
-    component_information_server.cpp
-    component_information_server_impl.cpp
+        component_metadata_server.cpp
+        component_metadata_server_impl.cpp
 )
 
 target_include_directories(mavsdk PUBLIC
@@ -10,6 +10,6 @@ target_include_directories(mavsdk PUBLIC
     )
 
 install(FILES
-    include/plugins/component_information_server/component_information_server.h
+        include/plugins/component_metadata_server/component_metadata_server.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/component_information_server
 )
