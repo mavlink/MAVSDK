@@ -22,6 +22,7 @@ target_sources(mavsdk
     system.cpp
     system_impl.cpp
     flight_mode.cpp
+    fs_utils.cpp
     math_conversions.cpp
     mavsdk.cpp
     mavsdk_impl.cpp
