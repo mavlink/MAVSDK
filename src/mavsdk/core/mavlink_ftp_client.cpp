@@ -381,7 +381,7 @@ bool MavlinkFtpClient::download_start(Work& work, DownloadItem& item)
     work.payload.size = item.remote_path.length() + 1;
 
     start_timer();
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -437,7 +437,7 @@ bool MavlinkFtpClient::download_continue(Work& work, DownloadItem& item, Payload
         }
 
         start_timer();
-        send_mavlink_ftp_message(work.payload);
+        send_mavlink_ftp_message(work.payload, work.target_compid);
 
         return true;
     } else {
@@ -457,7 +457,7 @@ bool MavlinkFtpClient::download_continue(Work& work, DownloadItem& item, Payload
         work.payload.size = 0;
 
         start_timer();
-        send_mavlink_ftp_message(work.payload);
+        send_mavlink_ftp_message(work.payload, work.target_compid);
     }
 
     return true;
@@ -489,7 +489,7 @@ bool MavlinkFtpClient::download_burst_start(Work& work, DownloadBurstItem& item)
     work.payload.size = item.remote_path.length() + 1;
 
     start_timer();
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -666,7 +666,7 @@ void MavlinkFtpClient::download_burst_end(Work& work)
     work.payload.size = 0;
 
     start_timer();
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 }
 
 void MavlinkFtpClient::request_burst(Work& work, DownloadBurstItem& item)
@@ -684,7 +684,7 @@ void MavlinkFtpClient::request_burst(Work& work, DownloadBurstItem& item)
     work.payload.size = max_data_length;
 
     start_timer();
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 }
 
 void MavlinkFtpClient::request_next_rest(Work& work, DownloadBurstItem& item)
@@ -706,7 +706,7 @@ void MavlinkFtpClient::request_next_rest(Work& work, DownloadBurstItem& item)
     work.payload.size = size;
 
     start_timer();
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 }
 
 size_t MavlinkFtpClient::burst_bytes_transferred(DownloadBurstItem& item)
@@ -762,7 +762,7 @@ bool MavlinkFtpClient::upload_start(Work& work, UploadItem& item)
     work.payload.size = remote_file_path.string().size() + 1;
 
     start_timer();
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -796,7 +796,7 @@ bool MavlinkFtpClient::upload_continue(Work& work, UploadItem& item)
         item.bytes_transferred += bytes_read;
 
         start_timer();
-        send_mavlink_ftp_message(work.payload);
+        send_mavlink_ftp_message(work.payload, work.target_compid);
 
     } else {
         // Final step
@@ -811,7 +811,7 @@ bool MavlinkFtpClient::upload_continue(Work& work, UploadItem& item)
         work.payload.size = 0;
 
         start_timer();
-        send_mavlink_ftp_message(work.payload);
+        send_mavlink_ftp_message(work.payload, work.target_compid);
     }
 
     item.callback(
@@ -839,7 +839,7 @@ bool MavlinkFtpClient::remove_start(Work& work, RemoveItem& item)
     work.payload.size = item.path.length() + 1;
 
     start_timer();
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -867,7 +867,7 @@ bool MavlinkFtpClient::rename_start(Work& work, RenameItem& item)
     work.payload.size += item.to_path.length() + 1;
     start_timer();
 
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -889,7 +889,7 @@ bool MavlinkFtpClient::create_dir_start(Work& work, CreateDirItem& item)
     work.payload.size = item.path.length() + 1;
     start_timer();
 
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -911,7 +911,7 @@ bool MavlinkFtpClient::remove_dir_start(Work& work, RemoveDirItem& item)
     work.payload.size = item.path.length() + 1;
     start_timer();
 
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -940,7 +940,7 @@ bool MavlinkFtpClient::compare_files_start(Work& work, CompareFilesItem& item)
     work.payload.size = item.remote_path.length() + 1;
     start_timer();
 
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -962,7 +962,7 @@ bool MavlinkFtpClient::list_dir_start(Work& work, ListDirItem& item)
     work.payload.size = item.path.length() + 1;
     start_timer();
 
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -1017,7 +1017,7 @@ bool MavlinkFtpClient::list_dir_continue(Work& work, ListDirItem& item, PayloadH
     work.payload.size = item.path.length() + 1;
     start_timer();
 
-    send_mavlink_ftp_message(work.payload);
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 
     return true;
 }
@@ -1061,14 +1061,16 @@ void MavlinkFtpClient::download_async(
     const std::string& remote_path,
     const std::string& local_folder,
     bool use_burst,
-    DownloadCallback callback)
+    DownloadCallback callback,
+    std::optional<uint8_t> maybe_target_compid)
 {
     if (use_burst) {
         auto item = DownloadBurstItem{};
         item.remote_path = remote_path;
         item.local_folder = local_folder;
         item.callback = callback;
-        auto new_work = Work{std::move(item)};
+        auto new_work =
+            Work{std::move(item), maybe_target_compid.value_or(get_target_component_id())};
         _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 
     } else {
@@ -1076,7 +1078,8 @@ void MavlinkFtpClient::download_async(
         item.remote_path = remote_path;
         item.local_folder = local_folder;
         item.callback = callback;
-        auto new_work = Work{std::move(item)};
+        auto new_work =
+            Work{std::move(item), maybe_target_compid.value_or(get_target_component_id())};
         _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
     }
 }
@@ -1088,7 +1091,7 @@ void MavlinkFtpClient::upload_async(
     item.local_file_path = local_file_path;
     item.remote_folder = remote_folder;
     item.callback = callback;
-    auto new_work = Work{std::move(item)};
+    auto new_work = Work{std::move(item), get_target_component_id()};
 
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 }
@@ -1098,7 +1101,7 @@ void MavlinkFtpClient::list_directory_async(const std::string& path, ListDirecto
     auto item = ListDirItem{};
     item.path = path;
     item.callback = callback;
-    auto new_work = Work{std::move(item)};
+    auto new_work = Work{std::move(item), get_target_component_id()};
 
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 }
@@ -1108,7 +1111,7 @@ void MavlinkFtpClient::create_directory_async(const std::string& path, ResultCal
     auto item = CreateDirItem{};
     item.path = path;
     item.callback = callback;
-    auto new_work = Work{std::move(item)};
+    auto new_work = Work{std::move(item), get_target_component_id()};
 
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 }
@@ -1118,7 +1121,7 @@ void MavlinkFtpClient::remove_directory_async(const std::string& path, ResultCal
     auto item = RemoveDirItem{};
     item.path = path;
     item.callback = callback;
-    auto new_work = Work{std::move(item)};
+    auto new_work = Work{std::move(item), get_target_component_id()};
 
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 }
@@ -1128,7 +1131,7 @@ void MavlinkFtpClient::remove_file_async(const std::string& path, ResultCallback
     auto item = RemoveItem{};
     item.path = path;
     item.callback = callback;
-    auto new_work = Work{std::move(item)};
+    auto new_work = Work{std::move(item), get_target_component_id()};
 
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 }
@@ -1140,7 +1143,7 @@ void MavlinkFtpClient::rename_async(
     item.from_path = from_path;
     item.to_path = to_path;
     item.callback = callback;
-    auto new_work = Work{std::move(item)};
+    auto new_work = Work{std::move(item), get_target_component_id()};
 
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 }
@@ -1154,12 +1157,12 @@ void MavlinkFtpClient::are_files_identical_async(
     item.local_path = local_path;
     item.remote_path = remote_path;
     item.callback = callback;
-    auto new_work = Work{std::move(item)};
+    auto new_work = Work{std::move(item), get_target_component_id()};
 
     _work_queue.push_back(std::make_shared<Work>(std::move(new_work)));
 }
 
-void MavlinkFtpClient::send_mavlink_ftp_message(const PayloadHeader& payload)
+void MavlinkFtpClient::send_mavlink_ftp_message(const PayloadHeader& payload, uint8_t target_compid)
 {
     _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
         mavlink_message_t message;
@@ -1170,7 +1173,7 @@ void MavlinkFtpClient::send_mavlink_ftp_message(const PayloadHeader& payload)
             &message,
             _network_id,
             _system_impl.get_system_id(),
-            get_target_component_id(),
+            target_compid,
             reinterpret_cast<const uint8_t*>(&payload));
         return message;
     });
@@ -1213,7 +1216,7 @@ void MavlinkFtpClient::timeout()
                 }
 
                 start_timer();
-                send_mavlink_ftp_message(work->payload);
+                send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](DownloadBurstItem& item) {
                 if (--work->retries == 0) {
@@ -1254,7 +1257,7 @@ void MavlinkFtpClient::timeout()
                     } else {
                         // Otherwise, start burst again.
                         start_timer();
-                        send_mavlink_ftp_message(work->payload);
+                        send_mavlink_ftp_message(work->payload, work->target_compid);
                     }
                 }
             },
@@ -1269,7 +1272,7 @@ void MavlinkFtpClient::timeout()
                 }
 
                 start_timer();
-                send_mavlink_ftp_message(work->payload);
+                send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](RemoveItem& item) {
                 if (--work->retries == 0) {
@@ -1282,7 +1285,7 @@ void MavlinkFtpClient::timeout()
                 }
 
                 start_timer();
-                send_mavlink_ftp_message(work->payload);
+                send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](RenameItem& item) {
                 if (--work->retries == 0) {
@@ -1295,7 +1298,7 @@ void MavlinkFtpClient::timeout()
                 }
 
                 start_timer();
-                send_mavlink_ftp_message(work->payload);
+                send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](CreateDirItem& item) {
                 if (--work->retries == 0) {
@@ -1308,7 +1311,7 @@ void MavlinkFtpClient::timeout()
                 }
 
                 start_timer();
-                send_mavlink_ftp_message(work->payload);
+                send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](RemoveDirItem& item) {
                 if (--work->retries == 0) {
@@ -1321,7 +1324,7 @@ void MavlinkFtpClient::timeout()
                 }
 
                 start_timer();
-                send_mavlink_ftp_message(work->payload);
+                send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](CompareFilesItem& item) {
                 if (--work->retries == 0) {
@@ -1334,7 +1337,7 @@ void MavlinkFtpClient::timeout()
                 }
 
                 start_timer();
-                send_mavlink_ftp_message(work->payload);
+                send_mavlink_ftp_message(work->payload, work->target_compid);
             },
             [&](ListDirItem& item) {
                 if (--work->retries == 0) {
@@ -1347,7 +1350,7 @@ void MavlinkFtpClient::timeout()
                 }
 
                 start_timer();
-                send_mavlink_ftp_message(work->payload);
+                send_mavlink_ftp_message(work->payload, work->target_compid);
             }},
         work->item);
 }

@@ -71,7 +71,8 @@ public:
         const std::string& remote_file_path,
         const std::string& local_folder,
         bool use_burst,
-        DownloadCallback callback);
+        DownloadCallback callback,
+        std::optional<uint8_t> maybe_target_compid = {});
     void upload_async(
         const std::string& local_file_path,
         const std::string& remote_folder,
@@ -225,7 +226,11 @@ private:
         Opcode last_opcode{};
         uint16_t last_received_seq_number{0};
         uint16_t last_sent_seq_number{0};
-        Work(Item new_item) : item(std::move(new_item)) {}
+        uint8_t target_compid{};
+        Work(Item new_item, uint8_t target_compid_) :
+            item(std::move(new_item)),
+            target_compid(target_compid_)
+        {}
     };
 
     /// @brief Possible server results returned for requests.
@@ -300,7 +305,7 @@ private:
     ClientResult calc_local_file_crc32(const std::string& path, uint32_t& csum);
 
     static ClientResult translate(ServerResult result);
-    void send_mavlink_ftp_message(const PayloadHeader& payload);
+    void send_mavlink_ftp_message(const PayloadHeader& payload, uint8_t target_compid);
 
     uint8_t get_target_component_id();
 
