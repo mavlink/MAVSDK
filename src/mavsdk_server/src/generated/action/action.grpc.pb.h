@@ -189,6 +189,8 @@ class ActionService final {
     }
     //
     // Send command to set the value of an actuator.
+    //
+    // Note that the index of the actuator starts at 1 and that the value goes from -1 to 1.
     virtual ::grpc::Status SetActuator(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetActuatorRequest& request, ::mavsdk::rpc::action::SetActuatorResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::SetActuatorResponse>> AsyncSetActuator(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetActuatorRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action::SetActuatorResponse>>(AsyncSetActuatorRaw(context, request, cq));
@@ -382,6 +384,8 @@ class ActionService final {
       virtual void Hold(::grpc::ClientContext* context, const ::mavsdk::rpc::action::HoldRequest* request, ::mavsdk::rpc::action::HoldResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       //
       // Send command to set the value of an actuator.
+      //
+      // Note that the index of the actuator starts at 1 and that the value goes from -1 to 1.
       virtual void SetActuator(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetActuatorRequest* request, ::mavsdk::rpc::action::SetActuatorResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetActuator(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetActuatorRequest* request, ::mavsdk::rpc::action::SetActuatorResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       //
@@ -848,6 +852,8 @@ class ActionService final {
     virtual ::grpc::Status Hold(::grpc::ServerContext* context, const ::mavsdk::rpc::action::HoldRequest* request, ::mavsdk::rpc::action::HoldResponse* response);
     //
     // Send command to set the value of an actuator.
+    //
+    // Note that the index of the actuator starts at 1 and that the value goes from -1 to 1.
     virtual ::grpc::Status SetActuator(::grpc::ServerContext* context, const ::mavsdk::rpc::action::SetActuatorRequest* request, ::mavsdk::rpc::action::SetActuatorResponse* response);
     //
     // Send command to transition the drone to fixedwing.

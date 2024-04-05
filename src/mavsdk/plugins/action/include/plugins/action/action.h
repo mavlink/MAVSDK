@@ -97,6 +97,7 @@ public:
         ParameterError, /**< @brief Error getting or setting parameter. */
         Unsupported, /**< @brief Action not supported. */
         Failed, /**< @brief Action failed. */
+        InvalidArgument, /**< @brief Invalid argument. */
     };
 
     /**
@@ -411,12 +412,16 @@ public:
     /**
      * @brief Send command to set the value of an actuator.
      *
+     * Note that the index of the actuator starts at 1 and that the value goes from -1 to 1.
+     *
      * This function is non-blocking. See 'set_actuator' for the blocking counterpart.
      */
     void set_actuator_async(int32_t index, float value, const ResultCallback callback);
 
     /**
      * @brief Send command to set the value of an actuator.
+     *
+     * Note that the index of the actuator starts at 1 and that the value goes from -1 to 1.
      *
      * This function is blocking. See 'set_actuator_async' for the non-blocking counterpart.
      *
