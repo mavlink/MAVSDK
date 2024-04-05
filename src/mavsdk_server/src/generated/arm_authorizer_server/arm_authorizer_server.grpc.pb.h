@@ -27,100 +27,100 @@
 
 namespace mavsdk {
 namespace rpc {
-namespace arm_authorizer {
+namespace arm_authorizer_server {
 
 class ArmAuthorizerServerService final {
  public:
   static constexpr char const* service_full_name() {
-    return "mavsdk.rpc.arm_authorizer.ArmAuthorizerServerService";
+    return "mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerService";
   }
   class StubInterface {
    public:
     virtual ~StubInterface() {}
     // Subscribe to arm authorization request messages. Each request received should respond to using RespondArmAuthorization
-    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>> SubscribeArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest& request) {
-      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>>(SubscribeArmAuthorizationRaw(context, request));
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>> SubscribeArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>>(SubscribeArmAuthorizationRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>> AsyncSubscribeArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>>(AsyncSubscribeArmAuthorizationRaw(context, request, cq, tag));
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>> AsyncSubscribeArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>>(AsyncSubscribeArmAuthorizationRaw(context, request, cq, tag));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>> PrepareAsyncSubscribeArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>>(PrepareAsyncSubscribeArmAuthorizationRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>> PrepareAsyncSubscribeArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>>(PrepareAsyncSubscribeArmAuthorizationRaw(context, request, cq));
     }
     // Authorize arm for the specific time
-    virtual ::grpc::Status AcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest& request, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>> AsyncAcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>>(AsyncAcceptArmAuthorizationRaw(context, request, cq));
+    virtual ::grpc::Status AcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest& request, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>> AsyncAcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>>(AsyncAcceptArmAuthorizationRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>> PrepareAsyncAcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>>(PrepareAsyncAcceptArmAuthorizationRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>> PrepareAsyncAcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>>(PrepareAsyncAcceptArmAuthorizationRaw(context, request, cq));
     }
     // Reject arm authorization request
-    virtual ::grpc::Status RejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest& request, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>> AsyncRejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>>(AsyncRejectArmAuthorizationRaw(context, request, cq));
+    virtual ::grpc::Status RejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest& request, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>> AsyncRejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>>(AsyncRejectArmAuthorizationRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>> PrepareAsyncRejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>>(PrepareAsyncRejectArmAuthorizationRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>> PrepareAsyncRejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>>(PrepareAsyncRejectArmAuthorizationRaw(context, request, cq));
     }
     class async_interface {
      public:
       virtual ~async_interface() {}
       // Subscribe to arm authorization request messages. Each request received should respond to using RespondArmAuthorization
-      virtual void SubscribeArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* reactor) = 0;
+      virtual void SubscribeArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* reactor) = 0;
       // Authorize arm for the specific time
-      virtual void AcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void AcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void AcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void AcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // Reject arm authorization request
-      virtual void RejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void RejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void RejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void RejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
    private:
-    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* SubscribeArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest& request) = 0;
-    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* AsyncSubscribeArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
-    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* PrepareAsyncSubscribeArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>* AsyncAcceptArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>* PrepareAsyncAcceptArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>* AsyncRejectArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>* PrepareAsyncRejectArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* SubscribeArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* AsyncSubscribeArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* PrepareAsyncSubscribeArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>* AsyncAcceptArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>* PrepareAsyncAcceptArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>* AsyncRejectArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>* PrepareAsyncRejectArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
-    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>> SubscribeArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest& request) {
-      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>>(SubscribeArmAuthorizationRaw(context, request));
+    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>> SubscribeArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>>(SubscribeArmAuthorizationRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>> AsyncSubscribeArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>>(AsyncSubscribeArmAuthorizationRaw(context, request, cq, tag));
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>> AsyncSubscribeArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>>(AsyncSubscribeArmAuthorizationRaw(context, request, cq, tag));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>> PrepareAsyncSubscribeArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>>(PrepareAsyncSubscribeArmAuthorizationRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>> PrepareAsyncSubscribeArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>>(PrepareAsyncSubscribeArmAuthorizationRaw(context, request, cq));
     }
-    ::grpc::Status AcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest& request, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>> AsyncAcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>>(AsyncAcceptArmAuthorizationRaw(context, request, cq));
+    ::grpc::Status AcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest& request, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>> AsyncAcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>>(AsyncAcceptArmAuthorizationRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>> PrepareAsyncAcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>>(PrepareAsyncAcceptArmAuthorizationRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>> PrepareAsyncAcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>>(PrepareAsyncAcceptArmAuthorizationRaw(context, request, cq));
     }
-    ::grpc::Status RejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest& request, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>> AsyncRejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>>(AsyncRejectArmAuthorizationRaw(context, request, cq));
+    ::grpc::Status RejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest& request, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>> AsyncRejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>>(AsyncRejectArmAuthorizationRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>> PrepareAsyncRejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>>(PrepareAsyncRejectArmAuthorizationRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>> PrepareAsyncRejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>>(PrepareAsyncRejectArmAuthorizationRaw(context, request, cq));
     }
     class async final :
       public StubInterface::async_interface {
      public:
-      void SubscribeArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* reactor) override;
-      void AcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse* response, std::function<void(::grpc::Status)>) override;
-      void AcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
-      void RejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse* response, std::function<void(::grpc::Status)>) override;
-      void RejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SubscribeArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* reactor) override;
+      void AcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse* response, std::function<void(::grpc::Status)>) override;
+      void AcceptArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void RejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse* response, std::function<void(::grpc::Status)>) override;
+      void RejectArmAuthorization(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -132,13 +132,13 @@ class ArmAuthorizerServerService final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class async async_stub_{this};
-    ::grpc::ClientReader< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* SubscribeArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest& request) override;
-    ::grpc::ClientAsyncReader< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* AsyncSubscribeArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
-    ::grpc::ClientAsyncReader< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* PrepareAsyncSubscribeArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>* AsyncAcceptArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>* PrepareAsyncAcceptArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>* AsyncRejectArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>* PrepareAsyncRejectArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* SubscribeArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest& request) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* AsyncSubscribeArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* PrepareAsyncSubscribeArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>* AsyncAcceptArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>* PrepareAsyncAcceptArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>* AsyncRejectArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>* PrepareAsyncRejectArmAuthorizationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeArmAuthorization_;
     const ::grpc::internal::RpcMethod rpcmethod_AcceptArmAuthorization_;
     const ::grpc::internal::RpcMethod rpcmethod_RejectArmAuthorization_;
@@ -150,11 +150,11 @@ class ArmAuthorizerServerService final {
     Service();
     virtual ~Service();
     // Subscribe to arm authorization request messages. Each request received should respond to using RespondArmAuthorization
-    virtual ::grpc::Status SubscribeArmAuthorization(::grpc::ServerContext* context, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* writer);
+    virtual ::grpc::Status SubscribeArmAuthorization(::grpc::ServerContext* context, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* writer);
     // Authorize arm for the specific time
-    virtual ::grpc::Status AcceptArmAuthorization(::grpc::ServerContext* context, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse* response);
+    virtual ::grpc::Status AcceptArmAuthorization(::grpc::ServerContext* context, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse* response);
     // Reject arm authorization request
-    virtual ::grpc::Status RejectArmAuthorization(::grpc::ServerContext* context, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse* response);
+    virtual ::grpc::Status RejectArmAuthorization(::grpc::ServerContext* context, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_SubscribeArmAuthorization : public BaseClass {
@@ -168,11 +168,11 @@ class ArmAuthorizerServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* /*writer*/) override {
+    ::grpc::Status SubscribeArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestSubscribeArmAuthorization(::grpc::ServerContext* context, ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestSubscribeArmAuthorization(::grpc::ServerContext* context, ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncServerStreaming(0, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
@@ -188,11 +188,11 @@ class ArmAuthorizerServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AcceptArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse* /*response*/) override {
+    ::grpc::Status AcceptArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestAcceptArmAuthorization(::grpc::ServerContext* context, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestAcceptArmAuthorization(::grpc::ServerContext* context, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -208,11 +208,11 @@ class ArmAuthorizerServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RejectArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse* /*response*/) override {
+    ::grpc::Status RejectArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestRejectArmAuthorization(::grpc::ServerContext* context, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestRejectArmAuthorization(::grpc::ServerContext* context, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -224,20 +224,20 @@ class ArmAuthorizerServerService final {
    public:
     WithCallbackMethod_SubscribeArmAuthorization() {
       ::grpc::Service::MarkMethodCallback(0,
-          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>(
+          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest* request) { return this->SubscribeArmAuthorization(context, request); }));
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest* request) { return this->SubscribeArmAuthorization(context, request); }));
     }
     ~WithCallbackMethod_SubscribeArmAuthorization() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* /*writer*/) override {
+    ::grpc::Status SubscribeArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* SubscribeArmAuthorization(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest* /*request*/)  { return nullptr; }
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* SubscribeArmAuthorization(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithCallbackMethod_AcceptArmAuthorization : public BaseClass {
@@ -246,25 +246,25 @@ class ArmAuthorizerServerService final {
    public:
     WithCallbackMethod_AcceptArmAuthorization() {
       ::grpc::Service::MarkMethodCallback(1,
-          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse* response) { return this->AcceptArmAuthorization(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse* response) { return this->AcceptArmAuthorization(context, request, response); }));}
     void SetMessageAllocatorFor_AcceptArmAuthorization(
-        ::grpc::MessageAllocator< ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>* allocator) {
+        ::grpc::MessageAllocator< ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~WithCallbackMethod_AcceptArmAuthorization() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AcceptArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse* /*response*/) override {
+    ::grpc::Status AcceptArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* AcceptArmAuthorization(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse* /*response*/)  { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithCallbackMethod_RejectArmAuthorization : public BaseClass {
@@ -273,25 +273,25 @@ class ArmAuthorizerServerService final {
    public:
     WithCallbackMethod_RejectArmAuthorization() {
       ::grpc::Service::MarkMethodCallback(2,
-          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse* response) { return this->RejectArmAuthorization(context, request, response); }));}
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest* request, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse* response) { return this->RejectArmAuthorization(context, request, response); }));}
     void SetMessageAllocatorFor_RejectArmAuthorization(
-        ::grpc::MessageAllocator< ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>* allocator) {
+        ::grpc::MessageAllocator< ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
     ~WithCallbackMethod_RejectArmAuthorization() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RejectArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse* /*response*/) override {
+    ::grpc::Status RejectArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* RejectArmAuthorization(
-      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse* /*response*/)  { return nullptr; }
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse* /*response*/)  { return nullptr; }
   };
   typedef WithCallbackMethod_SubscribeArmAuthorization<WithCallbackMethod_AcceptArmAuthorization<WithCallbackMethod_RejectArmAuthorization<Service > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
@@ -307,7 +307,7 @@ class ArmAuthorizerServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* /*writer*/) override {
+    ::grpc::Status SubscribeArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -324,7 +324,7 @@ class ArmAuthorizerServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AcceptArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse* /*response*/) override {
+    ::grpc::Status AcceptArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -341,7 +341,7 @@ class ArmAuthorizerServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RejectArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse* /*response*/) override {
+    ::grpc::Status RejectArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -358,7 +358,7 @@ class ArmAuthorizerServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* /*writer*/) override {
+    ::grpc::Status SubscribeArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -378,7 +378,7 @@ class ArmAuthorizerServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AcceptArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse* /*response*/) override {
+    ::grpc::Status AcceptArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -398,7 +398,7 @@ class ArmAuthorizerServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RejectArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse* /*response*/) override {
+    ::grpc::Status RejectArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -421,7 +421,7 @@ class ArmAuthorizerServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status SubscribeArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* /*writer*/) override {
+    ::grpc::Status SubscribeArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -443,7 +443,7 @@ class ArmAuthorizerServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status AcceptArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse* /*response*/) override {
+    ::grpc::Status AcceptArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -465,7 +465,7 @@ class ArmAuthorizerServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status RejectArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse* /*response*/) override {
+    ::grpc::Status RejectArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -480,10 +480,10 @@ class ArmAuthorizerServerService final {
     WithStreamedUnaryMethod_AcceptArmAuthorization() {
       ::grpc::Service::MarkMethodStreamed(1,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>(
+          ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>* streamer) {
+                     ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>* streamer) {
                        return this->StreamedAcceptArmAuthorization(context,
                          streamer);
                   }));
@@ -492,12 +492,12 @@ class ArmAuthorizerServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status AcceptArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse* /*response*/) override {
+    ::grpc::Status AcceptArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedAcceptArmAuthorization(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationRequest,::mavsdk::rpc::arm_authorizer::AcceptArmAuthorizationResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedAcceptArmAuthorization(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest,::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_RejectArmAuthorization : public BaseClass {
@@ -507,10 +507,10 @@ class ArmAuthorizerServerService final {
     WithStreamedUnaryMethod_RejectArmAuthorization() {
       ::grpc::Service::MarkMethodStreamed(2,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>(
+          ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>* streamer) {
+                     ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>* streamer) {
                        return this->StreamedRejectArmAuthorization(context,
                          streamer);
                   }));
@@ -519,12 +519,12 @@ class ArmAuthorizerServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status RejectArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse* /*response*/) override {
+    ::grpc::Status RejectArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest* /*request*/, ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedRejectArmAuthorization(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationRequest,::mavsdk::rpc::arm_authorizer::RejectArmAuthorizationResponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedRejectArmAuthorization(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest,::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>* server_unary_streamer) = 0;
   };
   typedef WithStreamedUnaryMethod_AcceptArmAuthorization<WithStreamedUnaryMethod_RejectArmAuthorization<Service > > StreamedUnaryService;
   template <class BaseClass>
@@ -535,10 +535,10 @@ class ArmAuthorizerServerService final {
     WithSplitStreamingMethod_SubscribeArmAuthorization() {
       ::grpc::Service::MarkMethodStreamed(0,
         new ::grpc::internal::SplitServerStreamingHandler<
-          ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>(
+          ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerSplitStreamer<
-                     ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* streamer) {
+                     ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest, ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* streamer) {
                        return this->StreamedSubscribeArmAuthorization(context,
                          streamer);
                   }));
@@ -547,18 +547,18 @@ class ArmAuthorizerServerService final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status SubscribeArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* /*writer*/) override {
+    ::grpc::Status SubscribeArmAuthorization(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with split streamed
-    virtual ::grpc::Status StreamedSubscribeArmAuthorization(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationRequest,::mavsdk::rpc::arm_authorizer::SubscribeArmAuthorizationResponse>* server_split_streamer) = 0;
+    virtual ::grpc::Status StreamedSubscribeArmAuthorization(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest,::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_SubscribeArmAuthorization<Service > SplitStreamedService;
   typedef WithSplitStreamingMethod_SubscribeArmAuthorization<WithStreamedUnaryMethod_AcceptArmAuthorization<WithStreamedUnaryMethod_RejectArmAuthorization<Service > > > StreamedService;
 };
 
-}  // namespace arm_authorizer
+}  // namespace arm_authorizer_server
 }  // namespace rpc
 }  // namespace mavsdk
 

@@ -48,7 +48,7 @@ int main(int argc, char** argv)
             result = arm_authorizer.accept_arm_authorization(5);
         } else {
             result = arm_authorizer.reject_arm_authorization(
-                true, ArmAuthorizerServer::RejectionReason::ReasonGeneric, 10);
+                true, ArmAuthorizerServer::RejectionReason::Generic, 10);
         }
         if (result == ArmAuthorizerServer::Result::Success) {
             std::cout << "Successfully sent the response" << std::endl;

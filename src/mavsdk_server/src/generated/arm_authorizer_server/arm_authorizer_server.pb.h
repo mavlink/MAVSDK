@@ -60,16 +60,19 @@ extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto;
 namespace mavsdk {
 namespace rpc {
-namespace arm_authorizer {
+namespace arm_authorizer_server {
 class AcceptArmAuthorizationRequest;
 struct AcceptArmAuthorizationRequestDefaultTypeInternal;
 extern AcceptArmAuthorizationRequestDefaultTypeInternal _AcceptArmAuthorizationRequest_default_instance_;
 class AcceptArmAuthorizationResponse;
 struct AcceptArmAuthorizationResponseDefaultTypeInternal;
 extern AcceptArmAuthorizationResponseDefaultTypeInternal _AcceptArmAuthorizationResponse_default_instance_;
-class ArmAutorizerServerResult;
-struct ArmAutorizerServerResultDefaultTypeInternal;
-extern ArmAutorizerServerResultDefaultTypeInternal _ArmAutorizerServerResult_default_instance_;
+class ArmAuthorizationResponse;
+struct ArmAuthorizationResponseDefaultTypeInternal;
+extern ArmAuthorizationResponseDefaultTypeInternal _ArmAuthorizationResponse_default_instance_;
+class ArmAuthorizerServerResult;
+struct ArmAuthorizerServerResultDefaultTypeInternal;
+extern ArmAuthorizerServerResultDefaultTypeInternal _ArmAuthorizerServerResult_default_instance_;
 class RejectArmAuthorizationRequest;
 struct RejectArmAuthorizationRequestDefaultTypeInternal;
 extern RejectArmAuthorizationRequestDefaultTypeInternal _RejectArmAuthorizationRequest_default_instance_;
@@ -79,10 +82,7 @@ extern RejectArmAuthorizationResponseDefaultTypeInternal _RejectArmAuthorization
 class SubscribeArmAuthorizationRequest;
 struct SubscribeArmAuthorizationRequestDefaultTypeInternal;
 extern SubscribeArmAuthorizationRequestDefaultTypeInternal _SubscribeArmAuthorizationRequest_default_instance_;
-class SubscribeArmAuthorizationResponse;
-struct SubscribeArmAuthorizationResponseDefaultTypeInternal;
-extern SubscribeArmAuthorizationResponseDefaultTypeInternal _SubscribeArmAuthorizationResponse_default_instance_;
-}  // namespace arm_authorizer
+}  // namespace arm_authorizer_server
 }  // namespace rpc
 }  // namespace mavsdk
 namespace google {
@@ -92,39 +92,40 @@ namespace protobuf {
 
 namespace mavsdk {
 namespace rpc {
-namespace arm_authorizer {
-enum ArmAutorizerServerResult_Result : int {
-  ArmAutorizerServerResult_Result_RESULT_SUCCESS = 0,
-  ArmAutorizerServerResult_Result_RESULT_FAILED = 1,
-  ArmAutorizerServerResult_Result_ArmAutorizerServerResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
+namespace arm_authorizer_server {
+enum ArmAuthorizerServerResult_Result : int {
+  ArmAuthorizerServerResult_Result_RESULT_UNKNOWN = 0,
+  ArmAuthorizerServerResult_Result_RESULT_SUCCESS = 1,
+  ArmAuthorizerServerResult_Result_RESULT_FAILED = 2,
+  ArmAuthorizerServerResult_Result_ArmAuthorizerServerResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
-  ArmAutorizerServerResult_Result_ArmAutorizerServerResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
+  ArmAuthorizerServerResult_Result_ArmAuthorizerServerResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::max(),
 };
 
-bool ArmAutorizerServerResult_Result_IsValid(int value);
-extern const uint32_t ArmAutorizerServerResult_Result_internal_data_[];
-constexpr ArmAutorizerServerResult_Result ArmAutorizerServerResult_Result_Result_MIN = static_cast<ArmAutorizerServerResult_Result>(0);
-constexpr ArmAutorizerServerResult_Result ArmAutorizerServerResult_Result_Result_MAX = static_cast<ArmAutorizerServerResult_Result>(1);
-constexpr int ArmAutorizerServerResult_Result_Result_ARRAYSIZE = 1 + 1;
+bool ArmAuthorizerServerResult_Result_IsValid(int value);
+extern const uint32_t ArmAuthorizerServerResult_Result_internal_data_[];
+constexpr ArmAuthorizerServerResult_Result ArmAuthorizerServerResult_Result_Result_MIN = static_cast<ArmAuthorizerServerResult_Result>(0);
+constexpr ArmAuthorizerServerResult_Result ArmAuthorizerServerResult_Result_Result_MAX = static_cast<ArmAuthorizerServerResult_Result>(2);
+constexpr int ArmAuthorizerServerResult_Result_Result_ARRAYSIZE = 2 + 1;
 const ::google::protobuf::EnumDescriptor*
-ArmAutorizerServerResult_Result_descriptor();
+ArmAuthorizerServerResult_Result_descriptor();
 template <typename T>
-const std::string& ArmAutorizerServerResult_Result_Name(T value) {
-  static_assert(std::is_same<T, ArmAutorizerServerResult_Result>::value ||
+const std::string& ArmAuthorizerServerResult_Result_Name(T value) {
+  static_assert(std::is_same<T, ArmAuthorizerServerResult_Result>::value ||
                     std::is_integral<T>::value,
                 "Incorrect type passed to Result_Name().");
-  return ArmAutorizerServerResult_Result_Name(static_cast<ArmAutorizerServerResult_Result>(value));
+  return ArmAuthorizerServerResult_Result_Name(static_cast<ArmAuthorizerServerResult_Result>(value));
 }
 template <>
-inline const std::string& ArmAutorizerServerResult_Result_Name(ArmAutorizerServerResult_Result value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<ArmAutorizerServerResult_Result_descriptor,
-                                                 0, 1>(
+inline const std::string& ArmAuthorizerServerResult_Result_Name(ArmAuthorizerServerResult_Result value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<ArmAuthorizerServerResult_Result_descriptor,
+                                                 0, 2>(
       static_cast<int>(value));
 }
-inline bool ArmAutorizerServerResult_Result_Parse(absl::string_view name, ArmAutorizerServerResult_Result* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<ArmAutorizerServerResult_Result>(
-      ArmAutorizerServerResult_Result_descriptor(), name, value);
+inline bool ArmAuthorizerServerResult_Result_Parse(absl::string_view name, ArmAuthorizerServerResult_Result* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ArmAuthorizerServerResult_Result>(
+      ArmAuthorizerServerResult_Result_descriptor(), name, value);
 }
 enum RejectionReason : int {
   REJECTION_REASON_GENERIC = 0,
@@ -169,183 +170,8 @@ inline bool RejectionReason_Parse(absl::string_view name, RejectionReason* value
 
 // -------------------------------------------------------------------
 
-class SubscribeArmAuthorizationResponse final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.arm_authorizer.SubscribeArmAuthorizationResponse) */ {
- public:
-  inline SubscribeArmAuthorizationResponse() : SubscribeArmAuthorizationResponse(nullptr) {}
-  ~SubscribeArmAuthorizationResponse() override;
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR SubscribeArmAuthorizationResponse(::google::protobuf::internal::ConstantInitialized);
-
-  inline SubscribeArmAuthorizationResponse(const SubscribeArmAuthorizationResponse& from)
-      : SubscribeArmAuthorizationResponse(nullptr, from) {}
-  SubscribeArmAuthorizationResponse(SubscribeArmAuthorizationResponse&& from) noexcept
-    : SubscribeArmAuthorizationResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline SubscribeArmAuthorizationResponse& operator=(const SubscribeArmAuthorizationResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline SubscribeArmAuthorizationResponse& operator=(SubscribeArmAuthorizationResponse&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetArena() == from.GetArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const SubscribeArmAuthorizationResponse& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const SubscribeArmAuthorizationResponse* internal_default_instance() {
-    return reinterpret_cast<const SubscribeArmAuthorizationResponse*>(
-               &_SubscribeArmAuthorizationResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    1;
-
-  friend void swap(SubscribeArmAuthorizationResponse& a, SubscribeArmAuthorizationResponse& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(SubscribeArmAuthorizationResponse* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() != nullptr &&
-        GetArena() == other->GetArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() == other->GetArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(SubscribeArmAuthorizationResponse* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  SubscribeArmAuthorizationResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<SubscribeArmAuthorizationResponse>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const SubscribeArmAuthorizationResponse& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const SubscribeArmAuthorizationResponse& from) {
-    SubscribeArmAuthorizationResponse::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  ::size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
-  void SharedCtor(::google::protobuf::Arena* arena);
-  void SharedDtor();
-  void InternalSwap(SubscribeArmAuthorizationResponse* other);
-
-  private:
-  friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.arm_authorizer.SubscribeArmAuthorizationResponse";
-  }
-  protected:
-  explicit SubscribeArmAuthorizationResponse(::google::protobuf::Arena* arena);
-  SubscribeArmAuthorizationResponse(::google::protobuf::Arena* arena, const SubscribeArmAuthorizationResponse& from);
-  public:
-
-  static const ClassData _class_data_;
-  const ::google::protobuf::Message::ClassData*GetClassData() const final;
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kSystemIdFieldNumber = 1,
-  };
-  // uint32 system_id = 1;
-  void clear_system_id() ;
-  ::uint32_t system_id() const;
-  void set_system_id(::uint32_t value);
-
-  private:
-  ::uint32_t _internal_system_id() const;
-  void _internal_set_system_id(::uint32_t value);
-
-  public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.arm_authorizer.SubscribeArmAuthorizationResponse)
- private:
-  class _Internal;
-
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
-      0, 2>
-      _table_;
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-
-        inline explicit constexpr Impl_(
-            ::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena);
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena, const Impl_& from);
-    ::uint32_t system_id_;
-    mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto;
-};// -------------------------------------------------------------------
-
 class SubscribeArmAuthorizationRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.arm_authorizer.SubscribeArmAuthorizationRequest) */ {
+    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.arm_authorizer_server.SubscribeArmAuthorizationRequest) */ {
  public:
   inline SubscribeArmAuthorizationRequest() : SubscribeArmAuthorizationRequest(nullptr) {}
   template<typename = void>
@@ -444,7 +270,7 @@ class SubscribeArmAuthorizationRequest final :
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.arm_authorizer.SubscribeArmAuthorizationRequest";
+    return "mavsdk.rpc.arm_authorizer_server.SubscribeArmAuthorizationRequest";
   }
   protected:
   explicit SubscribeArmAuthorizationRequest(::google::protobuf::Arena* arena);
@@ -457,7 +283,7 @@ class SubscribeArmAuthorizationRequest final :
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.arm_authorizer.SubscribeArmAuthorizationRequest)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.arm_authorizer_server.SubscribeArmAuthorizationRequest)
  private:
   class _Internal;
 
@@ -481,7 +307,7 @@ class SubscribeArmAuthorizationRequest final :
 };// -------------------------------------------------------------------
 
 class RejectArmAuthorizationRequest final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.arm_authorizer.RejectArmAuthorizationRequest) */ {
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest) */ {
  public:
   inline RejectArmAuthorizationRequest() : RejectArmAuthorizationRequest(nullptr) {}
   ~RejectArmAuthorizationRequest() override;
@@ -595,7 +421,7 @@ class RejectArmAuthorizationRequest final :
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.arm_authorizer.RejectArmAuthorizationRequest";
+    return "mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest";
   }
   protected:
   explicit RejectArmAuthorizationRequest(::google::protobuf::Arena* arena);
@@ -626,14 +452,14 @@ class RejectArmAuthorizationRequest final :
   void _internal_set_temporarily(bool value);
 
   public:
-  // .mavsdk.rpc.arm_authorizer.RejectionReason reason = 2;
+  // .mavsdk.rpc.arm_authorizer_server.RejectionReason reason = 2;
   void clear_reason() ;
-  ::mavsdk::rpc::arm_authorizer::RejectionReason reason() const;
-  void set_reason(::mavsdk::rpc::arm_authorizer::RejectionReason value);
+  ::mavsdk::rpc::arm_authorizer_server::RejectionReason reason() const;
+  void set_reason(::mavsdk::rpc::arm_authorizer_server::RejectionReason value);
 
   private:
-  ::mavsdk::rpc::arm_authorizer::RejectionReason _internal_reason() const;
-  void _internal_set_reason(::mavsdk::rpc::arm_authorizer::RejectionReason value);
+  ::mavsdk::rpc::arm_authorizer_server::RejectionReason _internal_reason() const;
+  void _internal_set_reason(::mavsdk::rpc::arm_authorizer_server::RejectionReason value);
 
   public:
   // int32 extra_info = 3;
@@ -646,7 +472,7 @@ class RejectArmAuthorizationRequest final :
   void _internal_set_extra_info(::int32_t value);
 
   public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.arm_authorizer.RejectArmAuthorizationRequest)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest)
  private:
   class _Internal;
 
@@ -679,26 +505,26 @@ class RejectArmAuthorizationRequest final :
   friend struct ::TableStruct_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto;
 };// -------------------------------------------------------------------
 
-class ArmAutorizerServerResult final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.arm_authorizer.ArmAutorizerServerResult) */ {
+class ArmAuthorizerServerResult final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult) */ {
  public:
-  inline ArmAutorizerServerResult() : ArmAutorizerServerResult(nullptr) {}
-  ~ArmAutorizerServerResult() override;
+  inline ArmAuthorizerServerResult() : ArmAuthorizerServerResult(nullptr) {}
+  ~ArmAuthorizerServerResult() override;
   template<typename = void>
-  explicit PROTOBUF_CONSTEXPR ArmAutorizerServerResult(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR ArmAuthorizerServerResult(::google::protobuf::internal::ConstantInitialized);
 
-  inline ArmAutorizerServerResult(const ArmAutorizerServerResult& from)
-      : ArmAutorizerServerResult(nullptr, from) {}
-  ArmAutorizerServerResult(ArmAutorizerServerResult&& from) noexcept
-    : ArmAutorizerServerResult() {
+  inline ArmAuthorizerServerResult(const ArmAuthorizerServerResult& from)
+      : ArmAuthorizerServerResult(nullptr, from) {}
+  ArmAuthorizerServerResult(ArmAuthorizerServerResult&& from) noexcept
+    : ArmAuthorizerServerResult() {
     *this = ::std::move(from);
   }
 
-  inline ArmAutorizerServerResult& operator=(const ArmAutorizerServerResult& from) {
+  inline ArmAuthorizerServerResult& operator=(const ArmAuthorizerServerResult& from) {
     CopyFrom(from);
     return *this;
   }
-  inline ArmAutorizerServerResult& operator=(ArmAutorizerServerResult&& from) noexcept {
+  inline ArmAuthorizerServerResult& operator=(ArmAuthorizerServerResult&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -730,20 +556,20 @@ class ArmAutorizerServerResult final :
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const ArmAutorizerServerResult& default_instance() {
+  static const ArmAuthorizerServerResult& default_instance() {
     return *internal_default_instance();
   }
-  static inline const ArmAutorizerServerResult* internal_default_instance() {
-    return reinterpret_cast<const ArmAutorizerServerResult*>(
-               &_ArmAutorizerServerResult_default_instance_);
+  static inline const ArmAuthorizerServerResult* internal_default_instance() {
+    return reinterpret_cast<const ArmAuthorizerServerResult*>(
+               &_ArmAuthorizerServerResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     6;
 
-  friend void swap(ArmAutorizerServerResult& a, ArmAutorizerServerResult& b) {
+  friend void swap(ArmAuthorizerServerResult& a, ArmAuthorizerServerResult& b) {
     a.Swap(&b);
   }
-  inline void Swap(ArmAutorizerServerResult* other) {
+  inline void Swap(ArmAuthorizerServerResult* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr &&
@@ -756,7 +582,7 @@ class ArmAutorizerServerResult final :
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(ArmAutorizerServerResult* other) {
+  void UnsafeArenaSwap(ArmAuthorizerServerResult* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -764,14 +590,14 @@ class ArmAutorizerServerResult final :
 
   // implements Message ----------------------------------------------
 
-  ArmAutorizerServerResult* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<ArmAutorizerServerResult>(arena);
+  ArmAuthorizerServerResult* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<ArmAuthorizerServerResult>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const ArmAutorizerServerResult& from);
+  void CopyFrom(const ArmAuthorizerServerResult& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const ArmAutorizerServerResult& from) {
-    ArmAutorizerServerResult::MergeImpl(*this, from);
+  void MergeFrom( const ArmAuthorizerServerResult& from) {
+    ArmAuthorizerServerResult::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
@@ -789,16 +615,16 @@ class ArmAutorizerServerResult final :
   ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
   void SharedCtor(::google::protobuf::Arena* arena);
   void SharedDtor();
-  void InternalSwap(ArmAutorizerServerResult* other);
+  void InternalSwap(ArmAuthorizerServerResult* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.arm_authorizer.ArmAutorizerServerResult";
+    return "mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult";
   }
   protected:
-  explicit ArmAutorizerServerResult(::google::protobuf::Arena* arena);
-  ArmAutorizerServerResult(::google::protobuf::Arena* arena, const ArmAutorizerServerResult& from);
+  explicit ArmAuthorizerServerResult(::google::protobuf::Arena* arena);
+  ArmAuthorizerServerResult(::google::protobuf::Arena* arena, const ArmAuthorizerServerResult& from);
   public:
 
   static const ClassData _class_data_;
@@ -808,24 +634,25 @@ class ArmAutorizerServerResult final :
 
   // nested types ----------------------------------------------------
 
-  using Result = ArmAutorizerServerResult_Result;
-  static constexpr Result RESULT_SUCCESS = ArmAutorizerServerResult_Result_RESULT_SUCCESS;
-  static constexpr Result RESULT_FAILED = ArmAutorizerServerResult_Result_RESULT_FAILED;
+  using Result = ArmAuthorizerServerResult_Result;
+  static constexpr Result RESULT_UNKNOWN = ArmAuthorizerServerResult_Result_RESULT_UNKNOWN;
+  static constexpr Result RESULT_SUCCESS = ArmAuthorizerServerResult_Result_RESULT_SUCCESS;
+  static constexpr Result RESULT_FAILED = ArmAuthorizerServerResult_Result_RESULT_FAILED;
   static inline bool Result_IsValid(int value) {
-    return ArmAutorizerServerResult_Result_IsValid(value);
+    return ArmAuthorizerServerResult_Result_IsValid(value);
   }
-  static constexpr Result Result_MIN = ArmAutorizerServerResult_Result_Result_MIN;
-  static constexpr Result Result_MAX = ArmAutorizerServerResult_Result_Result_MAX;
-  static constexpr int Result_ARRAYSIZE = ArmAutorizerServerResult_Result_Result_ARRAYSIZE;
+  static constexpr Result Result_MIN = ArmAuthorizerServerResult_Result_Result_MIN;
+  static constexpr Result Result_MAX = ArmAuthorizerServerResult_Result_Result_MAX;
+  static constexpr int Result_ARRAYSIZE = ArmAuthorizerServerResult_Result_Result_ARRAYSIZE;
   static inline const ::google::protobuf::EnumDescriptor* Result_descriptor() {
-    return ArmAutorizerServerResult_Result_descriptor();
+    return ArmAuthorizerServerResult_Result_descriptor();
   }
   template <typename T>
   static inline const std::string& Result_Name(T value) {
-    return ArmAutorizerServerResult_Result_Name(value);
+    return ArmAuthorizerServerResult_Result_Name(value);
   }
   static inline bool Result_Parse(absl::string_view name, Result* value) {
-    return ArmAutorizerServerResult_Result_Parse(name, value);
+    return ArmAuthorizerServerResult_Result_Parse(name, value);
   }
 
   // accessors -------------------------------------------------------
@@ -850,24 +677,24 @@ class ArmAutorizerServerResult final :
   std::string* _internal_mutable_result_str();
 
   public:
-  // .mavsdk.rpc.arm_authorizer.ArmAutorizerServerResult.Result result = 1;
+  // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.Result result = 1;
   void clear_result() ;
-  ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult_Result result() const;
-  void set_result(::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult_Result value);
+  ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result result() const;
+  void set_result(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result value);
 
   private:
-  ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult_Result _internal_result() const;
-  void _internal_set_result(::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult_Result value);
+  ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result _internal_result() const;
+  void _internal_set_result(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result value);
 
   public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.arm_authorizer.ArmAutorizerServerResult)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       1, 2, 0,
-      69, 2>
+      77, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
@@ -892,8 +719,183 @@ class ArmAutorizerServerResult final :
   friend struct ::TableStruct_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto;
 };// -------------------------------------------------------------------
 
+class ArmAuthorizationResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse) */ {
+ public:
+  inline ArmAuthorizationResponse() : ArmAuthorizationResponse(nullptr) {}
+  ~ArmAuthorizationResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR ArmAuthorizationResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline ArmAuthorizationResponse(const ArmAuthorizationResponse& from)
+      : ArmAuthorizationResponse(nullptr, from) {}
+  ArmAuthorizationResponse(ArmAuthorizationResponse&& from) noexcept
+    : ArmAuthorizationResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline ArmAuthorizationResponse& operator=(const ArmAuthorizationResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ArmAuthorizationResponse& operator=(ArmAuthorizationResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ArmAuthorizationResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ArmAuthorizationResponse* internal_default_instance() {
+    return reinterpret_cast<const ArmAuthorizationResponse*>(
+               &_ArmAuthorizationResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    1;
+
+  friend void swap(ArmAuthorizationResponse& a, ArmAuthorizationResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ArmAuthorizationResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ArmAuthorizationResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ArmAuthorizationResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<ArmAuthorizationResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ArmAuthorizationResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const ArmAuthorizationResponse& from) {
+    ArmAuthorizationResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(ArmAuthorizationResponse* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse";
+  }
+  protected:
+  explicit ArmAuthorizationResponse(::google::protobuf::Arena* arena);
+  ArmAuthorizationResponse(::google::protobuf::Arena* arena, const ArmAuthorizationResponse& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kSystemIdFieldNumber = 1,
+  };
+  // uint32 system_id = 1;
+  void clear_system_id() ;
+  ::uint32_t system_id() const;
+  void set_system_id(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_system_id() const;
+  void _internal_set_system_id(::uint32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::uint32_t system_id_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto;
+};// -------------------------------------------------------------------
+
 class AcceptArmAuthorizationRequest final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.arm_authorizer.AcceptArmAuthorizationRequest) */ {
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest) */ {
  public:
   inline AcceptArmAuthorizationRequest() : AcceptArmAuthorizationRequest(nullptr) {}
   ~AcceptArmAuthorizationRequest() override;
@@ -1007,7 +1009,7 @@ class AcceptArmAuthorizationRequest final :
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.arm_authorizer.AcceptArmAuthorizationRequest";
+    return "mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest";
   }
   protected:
   explicit AcceptArmAuthorizationRequest(::google::protobuf::Arena* arena);
@@ -1036,7 +1038,7 @@ class AcceptArmAuthorizationRequest final :
   void _internal_set_valid_time_s(::int32_t value);
 
   public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.arm_authorizer.AcceptArmAuthorizationRequest)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest)
  private:
   class _Internal;
 
@@ -1068,7 +1070,7 @@ class AcceptArmAuthorizationRequest final :
 };// -------------------------------------------------------------------
 
 class RejectArmAuthorizationResponse final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.arm_authorizer.RejectArmAuthorizationResponse) */ {
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse) */ {
  public:
   inline RejectArmAuthorizationResponse() : RejectArmAuthorizationResponse(nullptr) {}
   ~RejectArmAuthorizationResponse() override;
@@ -1182,7 +1184,7 @@ class RejectArmAuthorizationResponse final :
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.arm_authorizer.RejectArmAuthorizationResponse";
+    return "mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse";
   }
   protected:
   explicit RejectArmAuthorizationResponse(::google::protobuf::Arena* arena);
@@ -1201,22 +1203,22 @@ class RejectArmAuthorizationResponse final :
   enum : int {
     kArmAuthorizerServerResultFieldNumber = 1,
   };
-  // .mavsdk.rpc.arm_authorizer.ArmAutorizerServerResult arm_authorizer_server_result = 1;
+  // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult arm_authorizer_server_result = 1;
   bool has_arm_authorizer_server_result() const;
   void clear_arm_authorizer_server_result() ;
-  const ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult& arm_authorizer_server_result() const;
-  PROTOBUF_NODISCARD ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* release_arm_authorizer_server_result();
-  ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* mutable_arm_authorizer_server_result();
-  void set_allocated_arm_authorizer_server_result(::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* value);
-  void unsafe_arena_set_allocated_arm_authorizer_server_result(::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* value);
-  ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* unsafe_arena_release_arm_authorizer_server_result();
+  const ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult& arm_authorizer_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* release_arm_authorizer_server_result();
+  ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* mutable_arm_authorizer_server_result();
+  void set_allocated_arm_authorizer_server_result(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* value);
+  void unsafe_arena_set_allocated_arm_authorizer_server_result(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* value);
+  ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* unsafe_arena_release_arm_authorizer_server_result();
 
   private:
-  const ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult& _internal_arm_authorizer_server_result() const;
-  ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* _internal_mutable_arm_authorizer_server_result();
+  const ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult& _internal_arm_authorizer_server_result() const;
+  ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* _internal_mutable_arm_authorizer_server_result();
 
   public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.arm_authorizer.RejectArmAuthorizationResponse)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
  private:
   class _Internal;
 
@@ -1241,7 +1243,7 @@ class RejectArmAuthorizationResponse final :
                               ::google::protobuf::Arena* arena, const Impl_& from);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* arm_authorizer_server_result_;
+    ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* arm_authorizer_server_result_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -1249,7 +1251,7 @@ class RejectArmAuthorizationResponse final :
 };// -------------------------------------------------------------------
 
 class AcceptArmAuthorizationResponse final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.arm_authorizer.AcceptArmAuthorizationResponse) */ {
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse) */ {
  public:
   inline AcceptArmAuthorizationResponse() : AcceptArmAuthorizationResponse(nullptr) {}
   ~AcceptArmAuthorizationResponse() override;
@@ -1363,7 +1365,7 @@ class AcceptArmAuthorizationResponse final :
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.arm_authorizer.AcceptArmAuthorizationResponse";
+    return "mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse";
   }
   protected:
   explicit AcceptArmAuthorizationResponse(::google::protobuf::Arena* arena);
@@ -1382,22 +1384,22 @@ class AcceptArmAuthorizationResponse final :
   enum : int {
     kArmAuthorizerServerResultFieldNumber = 1,
   };
-  // .mavsdk.rpc.arm_authorizer.ArmAutorizerServerResult arm_authorizer_server_result = 1;
+  // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult arm_authorizer_server_result = 1;
   bool has_arm_authorizer_server_result() const;
   void clear_arm_authorizer_server_result() ;
-  const ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult& arm_authorizer_server_result() const;
-  PROTOBUF_NODISCARD ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* release_arm_authorizer_server_result();
-  ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* mutable_arm_authorizer_server_result();
-  void set_allocated_arm_authorizer_server_result(::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* value);
-  void unsafe_arena_set_allocated_arm_authorizer_server_result(::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* value);
-  ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* unsafe_arena_release_arm_authorizer_server_result();
+  const ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult& arm_authorizer_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* release_arm_authorizer_server_result();
+  ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* mutable_arm_authorizer_server_result();
+  void set_allocated_arm_authorizer_server_result(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* value);
+  void unsafe_arena_set_allocated_arm_authorizer_server_result(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* value);
+  ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* unsafe_arena_release_arm_authorizer_server_result();
 
   private:
-  const ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult& _internal_arm_authorizer_server_result() const;
-  ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* _internal_mutable_arm_authorizer_server_result();
+  const ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult& _internal_arm_authorizer_server_result() const;
+  ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* _internal_mutable_arm_authorizer_server_result();
 
   public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.arm_authorizer.AcceptArmAuthorizationResponse)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
  private:
   class _Internal;
 
@@ -1422,7 +1424,7 @@ class AcceptArmAuthorizationResponse final :
                               ::google::protobuf::Arena* arena, const Impl_& from);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* arm_authorizer_server_result_;
+    ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* arm_authorizer_server_result_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -1447,26 +1449,26 @@ class AcceptArmAuthorizationResponse final :
 
 // -------------------------------------------------------------------
 
-// SubscribeArmAuthorizationResponse
+// ArmAuthorizationResponse
 
 // uint32 system_id = 1;
-inline void SubscribeArmAuthorizationResponse::clear_system_id() {
+inline void ArmAuthorizationResponse::clear_system_id() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.system_id_ = 0u;
 }
-inline ::uint32_t SubscribeArmAuthorizationResponse::system_id() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer.SubscribeArmAuthorizationResponse.system_id)
+inline ::uint32_t ArmAuthorizationResponse::system_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse.system_id)
   return _internal_system_id();
 }
-inline void SubscribeArmAuthorizationResponse::set_system_id(::uint32_t value) {
+inline void ArmAuthorizationResponse::set_system_id(::uint32_t value) {
   _internal_set_system_id(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.arm_authorizer.SubscribeArmAuthorizationResponse.system_id)
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse.system_id)
 }
-inline ::uint32_t SubscribeArmAuthorizationResponse::_internal_system_id() const {
+inline ::uint32_t ArmAuthorizationResponse::_internal_system_id() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
   return _impl_.system_id_;
 }
-inline void SubscribeArmAuthorizationResponse::_internal_set_system_id(::uint32_t value) {
+inline void ArmAuthorizationResponse::_internal_set_system_id(::uint32_t value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
   _impl_.system_id_ = value;
@@ -1482,12 +1484,12 @@ inline void AcceptArmAuthorizationRequest::clear_valid_time_s() {
   _impl_.valid_time_s_ = 0;
 }
 inline ::int32_t AcceptArmAuthorizationRequest::valid_time_s() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer.AcceptArmAuthorizationRequest.valid_time_s)
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest.valid_time_s)
   return _internal_valid_time_s();
 }
 inline void AcceptArmAuthorizationRequest::set_valid_time_s(::int32_t value) {
   _internal_set_valid_time_s(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.arm_authorizer.AcceptArmAuthorizationRequest.valid_time_s)
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest.valid_time_s)
 }
 inline ::int32_t AcceptArmAuthorizationRequest::_internal_valid_time_s() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
@@ -1503,7 +1505,7 @@ inline void AcceptArmAuthorizationRequest::_internal_set_valid_time_s(::int32_t 
 
 // AcceptArmAuthorizationResponse
 
-// .mavsdk.rpc.arm_authorizer.ArmAutorizerServerResult arm_authorizer_server_result = 1;
+// .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult arm_authorizer_server_result = 1;
 inline bool AcceptArmAuthorizationResponse::has_arm_authorizer_server_result() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.arm_authorizer_server_result_ != nullptr);
@@ -1514,33 +1516,33 @@ inline void AcceptArmAuthorizationResponse::clear_arm_authorizer_server_result()
   if (_impl_.arm_authorizer_server_result_ != nullptr) _impl_.arm_authorizer_server_result_->Clear();
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult& AcceptArmAuthorizationResponse::_internal_arm_authorizer_server_result() const {
+inline const ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult& AcceptArmAuthorizationResponse::_internal_arm_authorizer_server_result() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  const ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* p = _impl_.arm_authorizer_server_result_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult&>(::mavsdk::rpc::arm_authorizer::_ArmAutorizerServerResult_default_instance_);
+  const ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* p = _impl_.arm_authorizer_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult&>(::mavsdk::rpc::arm_authorizer_server::_ArmAuthorizerServerResult_default_instance_);
 }
-inline const ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult& AcceptArmAuthorizationResponse::arm_authorizer_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer.AcceptArmAuthorizationResponse.arm_authorizer_server_result)
+inline const ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult& AcceptArmAuthorizationResponse::arm_authorizer_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse.arm_authorizer_server_result)
   return _internal_arm_authorizer_server_result();
 }
-inline void AcceptArmAuthorizationResponse::unsafe_arena_set_allocated_arm_authorizer_server_result(::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* value) {
+inline void AcceptArmAuthorizationResponse::unsafe_arena_set_allocated_arm_authorizer_server_result(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   if (GetArena() == nullptr) {
     delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.arm_authorizer_server_result_);
   }
-  _impl_.arm_authorizer_server_result_ = reinterpret_cast<::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult*>(value);
+  _impl_.arm_authorizer_server_result_ = reinterpret_cast<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult*>(value);
   if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
   } else {
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.arm_authorizer.AcceptArmAuthorizationResponse.arm_authorizer_server_result)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse.arm_authorizer_server_result)
 }
-inline ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* AcceptArmAuthorizationResponse::release_arm_authorizer_server_result() {
+inline ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* AcceptArmAuthorizationResponse::release_arm_authorizer_server_result() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
 
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* released = _impl_.arm_authorizer_server_result_;
+  ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* released = _impl_.arm_authorizer_server_result_;
   _impl_.arm_authorizer_server_result_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
@@ -1555,38 +1557,38 @@ inline ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* AcceptArmAuthori
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return released;
 }
-inline ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* AcceptArmAuthorizationResponse::unsafe_arena_release_arm_authorizer_server_result() {
+inline ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* AcceptArmAuthorizationResponse::unsafe_arena_release_arm_authorizer_server_result() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.arm_authorizer.AcceptArmAuthorizationResponse.arm_authorizer_server_result)
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse.arm_authorizer_server_result)
 
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* temp = _impl_.arm_authorizer_server_result_;
+  ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* temp = _impl_.arm_authorizer_server_result_;
   _impl_.arm_authorizer_server_result_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* AcceptArmAuthorizationResponse::_internal_mutable_arm_authorizer_server_result() {
+inline ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* AcceptArmAuthorizationResponse::_internal_mutable_arm_authorizer_server_result() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_._has_bits_[0] |= 0x00000001u;
   if (_impl_.arm_authorizer_server_result_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult>(GetArena());
-    _impl_.arm_authorizer_server_result_ = reinterpret_cast<::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult*>(p);
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult>(GetArena());
+    _impl_.arm_authorizer_server_result_ = reinterpret_cast<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult*>(p);
   }
   return _impl_.arm_authorizer_server_result_;
 }
-inline ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* AcceptArmAuthorizationResponse::mutable_arm_authorizer_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* _msg = _internal_mutable_arm_authorizer_server_result();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.arm_authorizer.AcceptArmAuthorizationResponse.arm_authorizer_server_result)
+inline ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* AcceptArmAuthorizationResponse::mutable_arm_authorizer_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* _msg = _internal_mutable_arm_authorizer_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse.arm_authorizer_server_result)
   return _msg;
 }
-inline void AcceptArmAuthorizationResponse::set_allocated_arm_authorizer_server_result(::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* value) {
+inline void AcceptArmAuthorizationResponse::set_allocated_arm_authorizer_server_result(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* value) {
   ::google::protobuf::Arena* message_arena = GetArena();
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   if (message_arena == nullptr) {
-    delete reinterpret_cast<::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult*>(_impl_.arm_authorizer_server_result_);
+    delete reinterpret_cast<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult*>(_impl_.arm_authorizer_server_result_);
   }
 
   if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult*>(value)->GetArena();
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult*>(value)->GetArena();
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
@@ -1595,8 +1597,8 @@ inline void AcceptArmAuthorizationResponse::set_allocated_arm_authorizer_server_
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
 
-  _impl_.arm_authorizer_server_result_ = reinterpret_cast<::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult*>(value);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.arm_authorizer.AcceptArmAuthorizationResponse.arm_authorizer_server_result)
+  _impl_.arm_authorizer_server_result_ = reinterpret_cast<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse.arm_authorizer_server_result)
 }
 
 // -------------------------------------------------------------------
@@ -1609,12 +1611,12 @@ inline void RejectArmAuthorizationRequest::clear_temporarily() {
   _impl_.temporarily_ = false;
 }
 inline bool RejectArmAuthorizationRequest::temporarily() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer.RejectArmAuthorizationRequest.temporarily)
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest.temporarily)
   return _internal_temporarily();
 }
 inline void RejectArmAuthorizationRequest::set_temporarily(bool value) {
   _internal_set_temporarily(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.arm_authorizer.RejectArmAuthorizationRequest.temporarily)
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest.temporarily)
 }
 inline bool RejectArmAuthorizationRequest::_internal_temporarily() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
@@ -1626,24 +1628,24 @@ inline void RejectArmAuthorizationRequest::_internal_set_temporarily(bool value)
   _impl_.temporarily_ = value;
 }
 
-// .mavsdk.rpc.arm_authorizer.RejectionReason reason = 2;
+// .mavsdk.rpc.arm_authorizer_server.RejectionReason reason = 2;
 inline void RejectArmAuthorizationRequest::clear_reason() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.reason_ = 0;
 }
-inline ::mavsdk::rpc::arm_authorizer::RejectionReason RejectArmAuthorizationRequest::reason() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer.RejectArmAuthorizationRequest.reason)
+inline ::mavsdk::rpc::arm_authorizer_server::RejectionReason RejectArmAuthorizationRequest::reason() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest.reason)
   return _internal_reason();
 }
-inline void RejectArmAuthorizationRequest::set_reason(::mavsdk::rpc::arm_authorizer::RejectionReason value) {
+inline void RejectArmAuthorizationRequest::set_reason(::mavsdk::rpc::arm_authorizer_server::RejectionReason value) {
   _internal_set_reason(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.arm_authorizer.RejectArmAuthorizationRequest.reason)
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest.reason)
 }
-inline ::mavsdk::rpc::arm_authorizer::RejectionReason RejectArmAuthorizationRequest::_internal_reason() const {
+inline ::mavsdk::rpc::arm_authorizer_server::RejectionReason RejectArmAuthorizationRequest::_internal_reason() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return static_cast<::mavsdk::rpc::arm_authorizer::RejectionReason>(_impl_.reason_);
+  return static_cast<::mavsdk::rpc::arm_authorizer_server::RejectionReason>(_impl_.reason_);
 }
-inline void RejectArmAuthorizationRequest::_internal_set_reason(::mavsdk::rpc::arm_authorizer::RejectionReason value) {
+inline void RejectArmAuthorizationRequest::_internal_set_reason(::mavsdk::rpc::arm_authorizer_server::RejectionReason value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
   _impl_.reason_ = value;
@@ -1655,12 +1657,12 @@ inline void RejectArmAuthorizationRequest::clear_extra_info() {
   _impl_.extra_info_ = 0;
 }
 inline ::int32_t RejectArmAuthorizationRequest::extra_info() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer.RejectArmAuthorizationRequest.extra_info)
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest.extra_info)
   return _internal_extra_info();
 }
 inline void RejectArmAuthorizationRequest::set_extra_info(::int32_t value) {
   _internal_set_extra_info(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.arm_authorizer.RejectArmAuthorizationRequest.extra_info)
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest.extra_info)
 }
 inline ::int32_t RejectArmAuthorizationRequest::_internal_extra_info() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
@@ -1676,7 +1678,7 @@ inline void RejectArmAuthorizationRequest::_internal_set_extra_info(::int32_t va
 
 // RejectArmAuthorizationResponse
 
-// .mavsdk.rpc.arm_authorizer.ArmAutorizerServerResult arm_authorizer_server_result = 1;
+// .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult arm_authorizer_server_result = 1;
 inline bool RejectArmAuthorizationResponse::has_arm_authorizer_server_result() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.arm_authorizer_server_result_ != nullptr);
@@ -1687,33 +1689,33 @@ inline void RejectArmAuthorizationResponse::clear_arm_authorizer_server_result()
   if (_impl_.arm_authorizer_server_result_ != nullptr) _impl_.arm_authorizer_server_result_->Clear();
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult& RejectArmAuthorizationResponse::_internal_arm_authorizer_server_result() const {
+inline const ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult& RejectArmAuthorizationResponse::_internal_arm_authorizer_server_result() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  const ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* p = _impl_.arm_authorizer_server_result_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult&>(::mavsdk::rpc::arm_authorizer::_ArmAutorizerServerResult_default_instance_);
+  const ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* p = _impl_.arm_authorizer_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult&>(::mavsdk::rpc::arm_authorizer_server::_ArmAuthorizerServerResult_default_instance_);
 }
-inline const ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult& RejectArmAuthorizationResponse::arm_authorizer_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer.RejectArmAuthorizationResponse.arm_authorizer_server_result)
+inline const ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult& RejectArmAuthorizationResponse::arm_authorizer_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse.arm_authorizer_server_result)
   return _internal_arm_authorizer_server_result();
 }
-inline void RejectArmAuthorizationResponse::unsafe_arena_set_allocated_arm_authorizer_server_result(::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* value) {
+inline void RejectArmAuthorizationResponse::unsafe_arena_set_allocated_arm_authorizer_server_result(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   if (GetArena() == nullptr) {
     delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.arm_authorizer_server_result_);
   }
-  _impl_.arm_authorizer_server_result_ = reinterpret_cast<::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult*>(value);
+  _impl_.arm_authorizer_server_result_ = reinterpret_cast<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult*>(value);
   if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
   } else {
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.arm_authorizer.RejectArmAuthorizationResponse.arm_authorizer_server_result)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse.arm_authorizer_server_result)
 }
-inline ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* RejectArmAuthorizationResponse::release_arm_authorizer_server_result() {
+inline ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* RejectArmAuthorizationResponse::release_arm_authorizer_server_result() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
 
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* released = _impl_.arm_authorizer_server_result_;
+  ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* released = _impl_.arm_authorizer_server_result_;
   _impl_.arm_authorizer_server_result_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
@@ -1728,38 +1730,38 @@ inline ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* RejectArmAuthori
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return released;
 }
-inline ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* RejectArmAuthorizationResponse::unsafe_arena_release_arm_authorizer_server_result() {
+inline ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* RejectArmAuthorizationResponse::unsafe_arena_release_arm_authorizer_server_result() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.arm_authorizer.RejectArmAuthorizationResponse.arm_authorizer_server_result)
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse.arm_authorizer_server_result)
 
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* temp = _impl_.arm_authorizer_server_result_;
+  ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* temp = _impl_.arm_authorizer_server_result_;
   _impl_.arm_authorizer_server_result_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* RejectArmAuthorizationResponse::_internal_mutable_arm_authorizer_server_result() {
+inline ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* RejectArmAuthorizationResponse::_internal_mutable_arm_authorizer_server_result() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_._has_bits_[0] |= 0x00000001u;
   if (_impl_.arm_authorizer_server_result_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult>(GetArena());
-    _impl_.arm_authorizer_server_result_ = reinterpret_cast<::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult*>(p);
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult>(GetArena());
+    _impl_.arm_authorizer_server_result_ = reinterpret_cast<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult*>(p);
   }
   return _impl_.arm_authorizer_server_result_;
 }
-inline ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* RejectArmAuthorizationResponse::mutable_arm_authorizer_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* _msg = _internal_mutable_arm_authorizer_server_result();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.arm_authorizer.RejectArmAuthorizationResponse.arm_authorizer_server_result)
+inline ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* RejectArmAuthorizationResponse::mutable_arm_authorizer_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* _msg = _internal_mutable_arm_authorizer_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse.arm_authorizer_server_result)
   return _msg;
 }
-inline void RejectArmAuthorizationResponse::set_allocated_arm_authorizer_server_result(::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult* value) {
+inline void RejectArmAuthorizationResponse::set_allocated_arm_authorizer_server_result(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult* value) {
   ::google::protobuf::Arena* message_arena = GetArena();
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   if (message_arena == nullptr) {
-    delete reinterpret_cast<::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult*>(_impl_.arm_authorizer_server_result_);
+    delete reinterpret_cast<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult*>(_impl_.arm_authorizer_server_result_);
   }
 
   if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult*>(value)->GetArena();
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult*>(value)->GetArena();
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
@@ -1768,80 +1770,80 @@ inline void RejectArmAuthorizationResponse::set_allocated_arm_authorizer_server_
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
 
-  _impl_.arm_authorizer_server_result_ = reinterpret_cast<::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult*>(value);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.arm_authorizer.RejectArmAuthorizationResponse.arm_authorizer_server_result)
+  _impl_.arm_authorizer_server_result_ = reinterpret_cast<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse.arm_authorizer_server_result)
 }
 
 // -------------------------------------------------------------------
 
-// ArmAutorizerServerResult
+// ArmAuthorizerServerResult
 
-// .mavsdk.rpc.arm_authorizer.ArmAutorizerServerResult.Result result = 1;
-inline void ArmAutorizerServerResult::clear_result() {
+// .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.Result result = 1;
+inline void ArmAuthorizerServerResult::clear_result() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.result_ = 0;
 }
-inline ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult_Result ArmAutorizerServerResult::result() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer.ArmAutorizerServerResult.result)
+inline ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result ArmAuthorizerServerResult::result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.result)
   return _internal_result();
 }
-inline void ArmAutorizerServerResult::set_result(::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult_Result value) {
+inline void ArmAuthorizerServerResult::set_result(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result value) {
   _internal_set_result(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.arm_authorizer.ArmAutorizerServerResult.result)
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.result)
 }
-inline ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult_Result ArmAutorizerServerResult::_internal_result() const {
+inline ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result ArmAuthorizerServerResult::_internal_result() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return static_cast<::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult_Result>(_impl_.result_);
+  return static_cast<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result>(_impl_.result_);
 }
-inline void ArmAutorizerServerResult::_internal_set_result(::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult_Result value) {
+inline void ArmAuthorizerServerResult::_internal_set_result(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
   _impl_.result_ = value;
 }
 
 // string result_str = 2;
-inline void ArmAutorizerServerResult::clear_result_str() {
+inline void ArmAuthorizerServerResult::clear_result_str() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.result_str_.ClearToEmpty();
 }
-inline const std::string& ArmAutorizerServerResult::result_str() const
+inline const std::string& ArmAuthorizerServerResult::result_str() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer.ArmAutorizerServerResult.result_str)
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.result_str)
   return _internal_result_str();
 }
 template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void ArmAutorizerServerResult::set_result_str(Arg_&& arg,
+inline PROTOBUF_ALWAYS_INLINE void ArmAuthorizerServerResult::set_result_str(Arg_&& arg,
                                                      Args_... args) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
   _impl_.result_str_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.arm_authorizer.ArmAutorizerServerResult.result_str)
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.result_str)
 }
-inline std::string* ArmAutorizerServerResult::mutable_result_str() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline std::string* ArmAuthorizerServerResult::mutable_result_str() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   std::string* _s = _internal_mutable_result_str();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.arm_authorizer.ArmAutorizerServerResult.result_str)
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.result_str)
   return _s;
 }
-inline const std::string& ArmAutorizerServerResult::_internal_result_str() const {
+inline const std::string& ArmAuthorizerServerResult::_internal_result_str() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
   return _impl_.result_str_.Get();
 }
-inline void ArmAutorizerServerResult::_internal_set_result_str(const std::string& value) {
+inline void ArmAuthorizerServerResult::_internal_set_result_str(const std::string& value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
   _impl_.result_str_.Set(value, GetArena());
 }
-inline std::string* ArmAutorizerServerResult::_internal_mutable_result_str() {
+inline std::string* ArmAuthorizerServerResult::_internal_mutable_result_str() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
   return _impl_.result_str_.Mutable( GetArena());
 }
-inline std::string* ArmAutorizerServerResult::release_result_str() {
+inline std::string* ArmAuthorizerServerResult::release_result_str() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.arm_authorizer.ArmAutorizerServerResult.result_str)
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.result_str)
   return _impl_.result_str_.Release();
 }
-inline void ArmAutorizerServerResult::set_allocated_result_str(std::string* value) {
+inline void ArmAuthorizerServerResult::set_allocated_result_str(std::string* value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.result_str_.SetAllocated(value, GetArena());
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -1849,7 +1851,7 @@ inline void ArmAutorizerServerResult::set_allocated_result_str(std::string* valu
           _impl_.result_str_.Set("", GetArena());
         }
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.arm_authorizer.ArmAutorizerServerResult.result_str)
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.result_str)
 }
 
 #ifdef __GNUC__
@@ -1857,7 +1859,7 @@ inline void ArmAutorizerServerResult::set_allocated_result_str(std::string* valu
 #endif  // __GNUC__
 
 // @@protoc_insertion_point(namespace_scope)
-}  // namespace arm_authorizer
+}  // namespace arm_authorizer_server
 }  // namespace rpc
 }  // namespace mavsdk
 
@@ -1866,16 +1868,16 @@ namespace google {
 namespace protobuf {
 
 template <>
-struct is_proto_enum<::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult_Result> : std::true_type {};
+struct is_proto_enum<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result> : std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult_Result>() {
-  return ::mavsdk::rpc::arm_authorizer::ArmAutorizerServerResult_Result_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result>() {
+  return ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result_descriptor();
 }
 template <>
-struct is_proto_enum<::mavsdk::rpc::arm_authorizer::RejectionReason> : std::true_type {};
+struct is_proto_enum<::mavsdk::rpc::arm_authorizer_server::RejectionReason> : std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::arm_authorizer::RejectionReason>() {
-  return ::mavsdk::rpc::arm_authorizer::RejectionReason_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::arm_authorizer_server::RejectionReason>() {
+  return ::mavsdk::rpc::arm_authorizer_server::RejectionReason_descriptor();
 }
 
 }  // namespace protobuf

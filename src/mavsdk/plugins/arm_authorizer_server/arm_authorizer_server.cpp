@@ -43,6 +43,8 @@ ArmAuthorizerServer::Result ArmAuthorizerServer::reject_arm_authorization(
 std::ostream& operator<<(std::ostream& str, ArmAuthorizerServer::Result const& result)
 {
     switch (result) {
+        case ArmAuthorizerServer::Result::Unknown:
+            return str << "Unknown";
         case ArmAuthorizerServer::Result::Success:
             return str << "Success";
         case ArmAuthorizerServer::Result::Failed:

@@ -93,30 +93,34 @@ public:
         }
     }
 
-    static rpc::arm_authorizer_server::ArmAutorizerServerResult::Result
+    static rpc::arm_authorizer_server::ArmAuthorizerServerResult::Result
     translateToRpcResult(const mavsdk::ArmAuthorizerServer::Result& result)
     {
         switch (result) {
             default:
                 LogErr() << "Unknown result enum value: " << static_cast<int>(result);
             // FALLTHROUGH
+            case mavsdk::ArmAuthorizerServer::Result::Unknown:
+                return rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result_RESULT_UNKNOWN;
             case mavsdk::ArmAuthorizerServer::Result::Success:
-                return rpc::arm_authorizer_server::ArmAutorizerServerResult_Result_RESULT_SUCCESS;
+                return rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result_RESULT_SUCCESS;
             case mavsdk::ArmAuthorizerServer::Result::Failed:
-                return rpc::arm_authorizer_server::ArmAutorizerServerResult_Result_RESULT_FAILED;
+                return rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result_RESULT_FAILED;
         }
     }
 
     static mavsdk::ArmAuthorizerServer::Result translateFromRpcResult(
-        const rpc::arm_authorizer_server::ArmAutorizerServerResult::Result result)
+        const rpc::arm_authorizer_server::ArmAuthorizerServerResult::Result result)
     {
         switch (result) {
             default:
                 LogErr() << "Unknown result enum value: " << static_cast<int>(result);
             // FALLTHROUGH
-            case rpc::arm_authorizer_server::ArmAutorizerServerResult_Result_RESULT_SUCCESS:
+            case rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result_RESULT_UNKNOWN:
+                return mavsdk::ArmAuthorizerServer::Result::Unknown;
+            case rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result_RESULT_SUCCESS:
                 return mavsdk::ArmAuthorizerServer::Result::Success;
-            case rpc::arm_authorizer_server::ArmAutorizerServerResult_Result_RESULT_FAILED:
+            case rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result_RESULT_FAILED:
                 return mavsdk::ArmAuthorizerServer::Result::Failed;
         }
     }

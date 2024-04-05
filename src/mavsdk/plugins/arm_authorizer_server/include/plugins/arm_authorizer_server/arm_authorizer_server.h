@@ -71,6 +71,7 @@ public:
      * @brief
      */
     enum class Result {
+        Unknown, /**< @brief Unknown result. */
         Success, /**< @brief Command accepted. */
         Failed, /**< @brief Command failed. */
     };
