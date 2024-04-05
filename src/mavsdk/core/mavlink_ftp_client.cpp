@@ -204,10 +204,19 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                     }
 
                 } else if (payload->opcode == RSP_NAK) {
-                    LogWarn() << "FTP: NAK received";
-                    stop_timer();
-                    item.callback(result_from_nak(payload), {});
-                    work_queue_guard.pop_front();
+                    const ServerResult sr = static_cast<ServerResult>(payload->data[0]);
+                    // In case there's no session available, there's another transfer in progress
+                    // for the given component. Back off and try again later.
+                    if (sr == ERR_NO_SESSIONS_AVAILABLE) {
+                        payload->seq_number = 0; // Ignore this response
+                        start_timer(3.0);
+                        LogDebug() << "No session available, retrying...";
+                    } else {
+                        LogWarn() << "FTP: NAK received";
+                        stop_timer();
+                        item.callback(result_from_nak(payload), {});
+                        work_queue_guard.pop_front();
+                    }
                 }
             },
             [&](UploadItem& item) {
@@ -1179,11 +1188,11 @@ void MavlinkFtpClient::send_mavlink_ftp_message(const PayloadHeader& payload, ui
     });
 }
 
-void MavlinkFtpClient::start_timer()
+void MavlinkFtpClient::start_timer(std::optional<double> duration_s)
 {
     _system_impl.unregister_timeout_handler(_timeout_cookie);
     _system_impl.register_timeout_handler(
-        [this]() { timeout(); }, _system_impl.timeout_s(), &_timeout_cookie);
+        [this]() { timeout(); }, duration_s.value_or(_system_impl.timeout_s()), &_timeout_cookie);
 }
 
 void MavlinkFtpClient::stop_timer()

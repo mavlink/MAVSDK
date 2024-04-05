@@ -299,7 +299,7 @@ private:
     static ClientResult result_from_nak(PayloadHeader* payload);
 
     void timeout();
-    void start_timer();
+    void start_timer(std::optional<double> duration_s = {});
     void stop_timer();
 
     ClientResult calc_local_file_crc32(const std::string& path, uint32_t& csum);
