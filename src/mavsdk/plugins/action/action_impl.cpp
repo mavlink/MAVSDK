@@ -554,7 +554,7 @@ void ActionImpl::set_actuator_async(
                     command.params.maybe_param6 = value;
                     break;
             }
-            command.params.maybe_param7 = static_cast<float>(zero_based_index) / 6.0f;
+            command.params.maybe_param7 = static_cast<float>(zero_based_index / 6);
         } else {
             if (callback) {
                 _system_impl->call_user_callback([temp_callback = callback]() {
