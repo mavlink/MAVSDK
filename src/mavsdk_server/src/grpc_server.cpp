@@ -30,6 +30,10 @@ int GrpcServer::run()
     builder.RegisterService(&_action_server_service);
 #endif
 
+#ifdef ARM_AUTHORIZER_SERVER_ENABLED
+    builder.RegisterService(&_arm_authorizer_server_service);
+#endif
+
 #ifdef CALIBRATION_ENABLED
     builder.RegisterService(&_calibration_service);
 #endif
@@ -187,6 +191,10 @@ void GrpcServer::stop()
 
 #ifdef ACTION_SERVER_ENABLED
         _action_server_service.stop();
+#endif
+
+#ifdef ARM_AUTHORIZER_SERVER_ENABLED
+        _arm_authorizer_server_service.stop();
 #endif
 
 #ifdef CALIBRATION_ENABLED
