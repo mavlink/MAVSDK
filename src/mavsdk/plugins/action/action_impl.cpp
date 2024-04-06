@@ -62,6 +62,16 @@ Action::Result ActionImpl::arm() const
     return fut.get();
 }
 
+Action::Result ActionImpl::arm_force() const
+{
+    auto prom = std::promise<Action::Result>();
+    auto fut = prom.get_future();
+
+    arm_force_async([&prom](Action::Result result) { prom.set_value(result); });
+
+    return fut.get();
+}
+
 Action::Result ActionImpl::disarm() const
 {
     auto prom = std::promise<Action::Result>();
@@ -283,6 +293,21 @@ bool ActionImpl::need_hold_before_arm_apm() const
     } else {
         return false;
     }
+}
+
+void ActionImpl::arm_force_async(const Action::ResultCallback& callback) const
+{
+    MavlinkCommandSender::CommandLong command{};
+
+    command.command = MAV_CMD_COMPONENT_ARM_DISARM;
+    command.params.maybe_param1 = 0.0f; // arm
+    command.params.maybe_param2 = 21196.f; // magic number to force
+    command.target_component_id = _system_impl->get_autopilot_id();
+
+    _system_impl->send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
 }
 
 void ActionImpl::disarm_async(const Action::ResultCallback& callback) const

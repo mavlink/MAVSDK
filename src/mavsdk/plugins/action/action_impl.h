@@ -21,6 +21,7 @@ public:
     void disable() override;
 
     Action::Result arm() const;
+    Action::Result arm_force() const;
     Action::Result disarm() const;
     Action::Result terminate() const;
     Action::Result kill() const;
@@ -47,6 +48,7 @@ public:
     Action::Result transition_to_multicopter() const;
 
     void arm_async(const Action::ResultCallback& callback) const;
+    void arm_force_async(const Action::ResultCallback& callback) const;
     void disarm_async(const Action::ResultCallback& callback) const;
     void terminate_async(const Action::ResultCallback& callback) const;
     void kill_async(const Action::ResultCallback& callback) const;

@@ -186,6 +186,29 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status ArmForce(
+        grpc::ServerContext* /* context */,
+        const rpc::action::ArmForceRequest* /* request */,
+        rpc::action::ArmForceResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->arm_force();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status Disarm(
         grpc::ServerContext* /* context */,
         const rpc::action::DisarmRequest* /* request */,
