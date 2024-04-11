@@ -44,14 +44,14 @@
 #include "camera_server/camera_server_service_impl.h"
 #endif
 
-#ifdef COMPONENT_INFORMATION_ENABLED
-#include "plugins/component_information/component_information.h"
-#include "component_information/component_information_service_impl.h"
+#ifdef COMPONENT_METADATA_ENABLED
+#include "plugins/component_metadata/component_metadata.h"
+#include "component_metadata/component_metadata_service_impl.h"
 #endif
 
-#ifdef COMPONENT_INFORMATION_SERVER_ENABLED
-#include "plugins/component_information_server/component_information_server.h"
-#include "component_information_server/component_information_server_service_impl.h"
+#ifdef COMPONENT_METADATA_SERVER_ENABLED
+#include "plugins/component_metadata_server/component_metadata_server.h"
+#include "component_metadata_server/component_metadata_server_service_impl.h"
 #endif
 
 #ifdef FAILURE_ENABLED
@@ -222,14 +222,14 @@ public:
         _camera_server_service(_camera_server_lazy_plugin),
 #endif
 
-#ifdef COMPONENT_INFORMATION_ENABLED
-        _component_information_lazy_plugin(mavsdk),
-        _component_information_service(_component_information_lazy_plugin),
+#ifdef COMPONENT_METADATA_ENABLED
+        _component_metadata_lazy_plugin(mavsdk),
+        _component_metadata_service(_component_metadata_lazy_plugin),
 #endif
 
-#ifdef COMPONENT_INFORMATION_SERVER_ENABLED
-        _component_information_server_lazy_plugin(mavsdk),
-        _component_information_server_service(_component_information_server_lazy_plugin),
+#ifdef COMPONENT_METADATA_SERVER_ENABLED
+        _component_metadata_server_lazy_plugin(mavsdk),
+        _component_metadata_server_service(_component_metadata_server_lazy_plugin),
 #endif
 
 #ifdef FAILURE_ENABLED
@@ -416,18 +416,18 @@ private:
     CameraServerServiceImpl<> _camera_server_service;
 #endif
 
-#ifdef COMPONENT_INFORMATION_ENABLED
+#ifdef COMPONENT_METADATA_ENABLED
 
-    LazyPlugin<ComponentInformation> _component_information_lazy_plugin;
+    LazyPlugin<ComponentMetadata> _component_metadata_lazy_plugin;
 
-    ComponentInformationServiceImpl<> _component_information_service;
+    ComponentMetadataServiceImpl<> _component_metadata_service;
 #endif
 
-#ifdef COMPONENT_INFORMATION_SERVER_ENABLED
+#ifdef COMPONENT_METADATA_SERVER_ENABLED
 
-    LazyServerPlugin<ComponentInformationServer> _component_information_server_lazy_plugin;
+    LazyServerPlugin<ComponentMetadataServer> _component_metadata_server_lazy_plugin;
 
-    ComponentInformationServerServiceImpl<> _component_information_server_service;
+    ComponentMetadataServerServiceImpl<> _component_metadata_server_service;
 #endif
 
 #ifdef FAILURE_ENABLED

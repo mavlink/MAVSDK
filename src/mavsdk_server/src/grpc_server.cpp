@@ -46,12 +46,12 @@ int GrpcServer::run()
     builder.RegisterService(&_camera_server_service);
 #endif
 
-#ifdef COMPONENT_INFORMATION_ENABLED
-    builder.RegisterService(&_component_information_service);
+#ifdef COMPONENT_METADATA_ENABLED
+    builder.RegisterService(&_component_metadata_service);
 #endif
 
-#ifdef COMPONENT_INFORMATION_SERVER_ENABLED
-    builder.RegisterService(&_component_information_server_service);
+#ifdef COMPONENT_METADATA_SERVER_ENABLED
+    builder.RegisterService(&_component_metadata_server_service);
 #endif
 
 #ifdef FAILURE_ENABLED
@@ -213,12 +213,12 @@ void GrpcServer::stop()
         _camera_server_service.stop();
 #endif
 
-#ifdef COMPONENT_INFORMATION_ENABLED
-        _component_information_service.stop();
+#ifdef COMPONENT_METADATA_ENABLED
+        _component_metadata_service.stop();
 #endif
 
-#ifdef COMPONENT_INFORMATION_SERVER_ENABLED
-        _component_information_server_service.stop();
+#ifdef COMPONENT_METADATA_SERVER_ENABLED
+        _component_metadata_server_service.stop();
 #endif
 
 #ifdef FAILURE_ENABLED

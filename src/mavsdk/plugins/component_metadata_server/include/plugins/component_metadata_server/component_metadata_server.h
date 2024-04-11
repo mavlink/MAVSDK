@@ -24,7 +24,7 @@ class ServerComponent;
 class ComponentMetadataServerImpl;
 
 /**
- * @brief Provide component metadata such as parameters.
+ * @brief Provide component metadata json definitions, such as parameters.
  */
 class ComponentMetadataServer : public ServerPluginBase {
 public:
@@ -46,18 +46,55 @@ public:
      */
     ~ComponentMetadataServer() override;
 
+    /**
+     * @brief
+     */
     enum class MetadataType {
-        Parameter,
-        Events,
-        Actuators,
+        Parameter, /**< @brief Parameter metadata. */
+        Events, /**< @brief Event definitions. */
+        Actuators, /**< @brief Actuator definitions. */
     };
 
+    /**
+     * @brief Stream operator to print information about a `ComponentMetadataServer::MetadataType`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, ComponentMetadataServer::MetadataType const& metadata_type);
+
+    /**
+     * @brief
+     */
     struct Metadata {
-        MetadataType type;
-        std::string json_data;
+        MetadataType type{}; /**< @brief The metadata type */
+        std::string json_metadata{}; /**< @brief The JSON metadata */
     };
 
-    void set_metadata(const std::vector<Metadata>& metadata);
+    /**
+     * @brief Equal operator to compare two `ComponentMetadataServer::Metadata` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(
+        const ComponentMetadataServer::Metadata& lhs, const ComponentMetadataServer::Metadata& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `ComponentMetadataServer::Metadata`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, ComponentMetadataServer::Metadata const& metadata);
+
+    /**
+     * @brief Provide metadata (can only be called once)
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    void set_metadata(std::vector<Metadata> metadata) const;
 
     /**
      * @brief Copy constructor.

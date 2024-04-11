@@ -3,10 +3,14 @@
 // (see
 // https://github.com/mavlink/MAVSDK-Proto/blob/master/protos/component_metadata_server/component_metadata_server.proto)
 
+#include <iomanip>
+
 #include "component_metadata_server_impl.h"
 #include "plugins/component_metadata_server/component_metadata_server.h"
 
 namespace mavsdk {
+
+using Metadata = ComponentMetadataServer::Metadata;
 
 ComponentMetadataServer::ComponentMetadataServer(
     std::shared_ptr<ServerComponent> server_component) :
@@ -15,9 +19,41 @@ ComponentMetadataServer::ComponentMetadataServer(
 {}
 
 ComponentMetadataServer::~ComponentMetadataServer() {}
-void ComponentMetadataServer::set_metadata(const std::vector<Metadata>& metadata)
+
+void ComponentMetadataServer::set_metadata(std::vector<Metadata> metadata) const
 {
     _impl->set_metadata(metadata);
+}
+
+bool operator==(
+    const ComponentMetadataServer::Metadata& lhs, const ComponentMetadataServer::Metadata& rhs)
+{
+    return (rhs.type == lhs.type) && (rhs.json_metadata == lhs.json_metadata);
+}
+
+std::ostream& operator<<(std::ostream& str, ComponentMetadataServer::Metadata const& metadata)
+{
+    str << std::setprecision(15);
+    str << "metadata:" << '\n' << "{\n";
+    str << "    type: " << metadata.type << '\n';
+    str << "    json_metadata: " << metadata.json_metadata << '\n';
+    str << '}';
+    return str;
+}
+
+std::ostream&
+operator<<(std::ostream& str, ComponentMetadataServer::MetadataType const& metadata_type)
+{
+    switch (metadata_type) {
+        case ComponentMetadataServer::MetadataType::Parameter:
+            return str << "Parameter";
+        case ComponentMetadataServer::MetadataType::Events:
+            return str << "Events";
+        case ComponentMetadataServer::MetadataType::Actuators:
+            return str << "Actuators";
+        default:
+            return str << "Unknown";
+    }
 }
 
 } // namespace mavsdk
