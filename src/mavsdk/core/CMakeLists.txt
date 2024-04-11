@@ -23,6 +23,7 @@ target_sources(mavsdk
     system_impl.cpp
     flight_mode.cpp
     fs_utils.cpp
+    inflate_lzma.cpp
     math_conversions.cpp
     mavsdk.cpp
     mavsdk_impl.cpp
@@ -64,6 +65,11 @@ cmake_policy(SET CMP0079 NEW)
 target_link_libraries(mavsdk
     PRIVATE
     Threads::Threads
+    ${LIBLZMA_LIBRARIES}
+)
+target_include_directories(mavsdk
+    PRIVATE
+    ${LIBLZMA_INCLUDE_DIRS}
 )
 
 if (NOT BUILD_WITHOUT_CURL)

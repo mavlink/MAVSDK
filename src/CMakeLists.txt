@@ -40,6 +40,7 @@ hunter_add_package(jsoncpp)
 hunter_add_package(CURL)
 
 find_package(CURL REQUIRED)
+find_package(LibLZMA REQUIRED)
 
 if(BUILD_TESTS AND (IOS OR ANDROID))
     message(STATUS "Building for iOS or Android: forcing BUILD_TESTS to FALSE...")
