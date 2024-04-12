@@ -99,6 +99,11 @@
 #include "log_files/log_files_service_impl.h"
 #endif
 
+#ifdef LOG_STREAMING_ENABLED
+#include "plugins/log_streaming/log_streaming.h"
+#include "log_streaming/log_streaming_service_impl.h"
+#endif
+
 #ifdef MANUAL_CONTROL_ENABLED
 #include "plugins/manual_control/manual_control.h"
 #include "manual_control/manual_control_service_impl.h"
@@ -270,6 +275,11 @@ public:
 #ifdef LOG_FILES_ENABLED
         _log_files_lazy_plugin(mavsdk),
         _log_files_service(_log_files_lazy_plugin),
+#endif
+
+#ifdef LOG_STREAMING_ENABLED
+        _log_streaming_lazy_plugin(mavsdk),
+        _log_streaming_service(_log_streaming_lazy_plugin),
 #endif
 
 #ifdef MANUAL_CONTROL_ENABLED
@@ -481,6 +491,13 @@ private:
     LazyPlugin<LogFiles> _log_files_lazy_plugin;
 
     LogFilesServiceImpl<> _log_files_service;
+#endif
+
+#ifdef LOG_STREAMING_ENABLED
+
+    LazyPlugin<LogStreaming> _log_streaming_lazy_plugin;
+
+    LogStreamingServiceImpl<> _log_streaming_service;
 #endif
 
 #ifdef MANUAL_CONTROL_ENABLED

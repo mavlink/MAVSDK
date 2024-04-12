@@ -25,6 +25,11 @@ namespace mavsdk {
 static std::mutex callback_mutex_{};
 static log::Callback callback_{nullptr};
 
+std::ostream& operator<<(std::ostream& os, std::byte b)
+{
+    return os << std::bitset<8>(std::to_integer<int>(b));
+}
+
 log::Callback& log::get_callback()
 {
     std::lock_guard<std::mutex> lock(callback_mutex_);
