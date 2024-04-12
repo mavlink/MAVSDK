@@ -28,6 +28,16 @@ Action::Result Action::arm() const
     return _impl->arm();
 }
 
+void Action::arm_force_async(const ResultCallback callback)
+{
+    _impl->arm_force_async(callback);
+}
+
+Action::Result Action::arm_force() const
+{
+    return _impl->arm_force();
+}
+
 void Action::disarm_async(const ResultCallback callback)
 {
     _impl->disarm_async(callback);

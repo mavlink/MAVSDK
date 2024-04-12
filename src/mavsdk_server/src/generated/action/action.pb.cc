@@ -345,6 +345,18 @@ struct ArmRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ArmRequestDefaultTypeInternal _ArmRequest_default_instance_;
+      template <typename>
+PROTOBUF_CONSTEXPR ArmForceRequest::ArmForceRequest(::_pbi::ConstantInitialized) {}
+struct ArmForceRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ArmForceRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ArmForceRequestDefaultTypeInternal() {}
+  union {
+    ArmForceRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ArmForceRequestDefaultTypeInternal _ArmForceRequest_default_instance_;
 
 inline constexpr ActionResult::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -788,10 +800,29 @@ struct ArmResponseDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ArmResponseDefaultTypeInternal _ArmResponse_default_instance_;
+
+inline constexpr ArmForceResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        action_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ArmForceResponse::ArmForceResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct ArmForceResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ArmForceResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ArmForceResponseDefaultTypeInternal() {}
+  union {
+    ArmForceResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ArmForceResponseDefaultTypeInternal _ArmForceResponse_default_instance_;
 }  // namespace action
 }  // namespace rpc
 }  // namespace mavsdk
-static ::_pb::Metadata file_level_metadata_action_2faction_2eproto[45];
+static ::_pb::Metadata file_level_metadata_action_2faction_2eproto[47];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_action_2faction_2eproto[2];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_action_2faction_2eproto = nullptr;
@@ -814,6 +845,24 @@ const ::uint32_t TableStruct_action_2faction_2eproto::offsets[] PROTOBUF_SECTION
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::ArmResponse, _impl_.action_result_),
+    0,
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::ArmForceRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::ArmForceResponse, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::ArmForceResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::ArmForceResponse, _impl_.action_result_),
     0,
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::DisarmRequest, _internal_metadata_),
@@ -1231,54 +1280,58 @@ static const ::_pbi::MigrationSchema
     schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
         {0, -1, -1, sizeof(::mavsdk::rpc::action::ArmRequest)},
         {8, 17, -1, sizeof(::mavsdk::rpc::action::ArmResponse)},
-        {18, -1, -1, sizeof(::mavsdk::rpc::action::DisarmRequest)},
-        {26, 35, -1, sizeof(::mavsdk::rpc::action::DisarmResponse)},
-        {36, -1, -1, sizeof(::mavsdk::rpc::action::TakeoffRequest)},
-        {44, 53, -1, sizeof(::mavsdk::rpc::action::TakeoffResponse)},
-        {54, -1, -1, sizeof(::mavsdk::rpc::action::LandRequest)},
-        {62, 71, -1, sizeof(::mavsdk::rpc::action::LandResponse)},
-        {72, -1, -1, sizeof(::mavsdk::rpc::action::RebootRequest)},
-        {80, 89, -1, sizeof(::mavsdk::rpc::action::RebootResponse)},
-        {90, -1, -1, sizeof(::mavsdk::rpc::action::ShutdownRequest)},
-        {98, 107, -1, sizeof(::mavsdk::rpc::action::ShutdownResponse)},
-        {108, -1, -1, sizeof(::mavsdk::rpc::action::TerminateRequest)},
-        {116, 125, -1, sizeof(::mavsdk::rpc::action::TerminateResponse)},
-        {126, -1, -1, sizeof(::mavsdk::rpc::action::KillRequest)},
-        {134, 143, -1, sizeof(::mavsdk::rpc::action::KillResponse)},
-        {144, -1, -1, sizeof(::mavsdk::rpc::action::ReturnToLaunchRequest)},
-        {152, 161, -1, sizeof(::mavsdk::rpc::action::ReturnToLaunchResponse)},
-        {162, -1, -1, sizeof(::mavsdk::rpc::action::GotoLocationRequest)},
-        {174, 183, -1, sizeof(::mavsdk::rpc::action::GotoLocationResponse)},
-        {184, -1, -1, sizeof(::mavsdk::rpc::action::DoOrbitRequest)},
-        {198, 207, -1, sizeof(::mavsdk::rpc::action::DoOrbitResponse)},
-        {208, -1, -1, sizeof(::mavsdk::rpc::action::HoldRequest)},
-        {216, 225, -1, sizeof(::mavsdk::rpc::action::HoldResponse)},
-        {226, -1, -1, sizeof(::mavsdk::rpc::action::SetActuatorRequest)},
-        {236, 245, -1, sizeof(::mavsdk::rpc::action::SetActuatorResponse)},
-        {246, -1, -1, sizeof(::mavsdk::rpc::action::TransitionToFixedwingRequest)},
-        {254, 263, -1, sizeof(::mavsdk::rpc::action::TransitionToFixedwingResponse)},
-        {264, -1, -1, sizeof(::mavsdk::rpc::action::TransitionToMulticopterRequest)},
-        {272, 281, -1, sizeof(::mavsdk::rpc::action::TransitionToMulticopterResponse)},
-        {282, -1, -1, sizeof(::mavsdk::rpc::action::GetTakeoffAltitudeRequest)},
-        {290, 300, -1, sizeof(::mavsdk::rpc::action::GetTakeoffAltitudeResponse)},
-        {302, -1, -1, sizeof(::mavsdk::rpc::action::SetTakeoffAltitudeRequest)},
-        {311, 320, -1, sizeof(::mavsdk::rpc::action::SetTakeoffAltitudeResponse)},
-        {321, -1, -1, sizeof(::mavsdk::rpc::action::GetMaximumSpeedRequest)},
-        {329, 339, -1, sizeof(::mavsdk::rpc::action::GetMaximumSpeedResponse)},
-        {341, -1, -1, sizeof(::mavsdk::rpc::action::SetMaximumSpeedRequest)},
-        {350, 359, -1, sizeof(::mavsdk::rpc::action::SetMaximumSpeedResponse)},
-        {360, -1, -1, sizeof(::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest)},
-        {368, 378, -1, sizeof(::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse)},
-        {380, -1, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest)},
-        {389, 398, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse)},
-        {399, -1, -1, sizeof(::mavsdk::rpc::action::SetCurrentSpeedRequest)},
-        {408, 417, -1, sizeof(::mavsdk::rpc::action::SetCurrentSpeedResponse)},
-        {418, -1, -1, sizeof(::mavsdk::rpc::action::ActionResult)},
+        {18, -1, -1, sizeof(::mavsdk::rpc::action::ArmForceRequest)},
+        {26, 35, -1, sizeof(::mavsdk::rpc::action::ArmForceResponse)},
+        {36, -1, -1, sizeof(::mavsdk::rpc::action::DisarmRequest)},
+        {44, 53, -1, sizeof(::mavsdk::rpc::action::DisarmResponse)},
+        {54, -1, -1, sizeof(::mavsdk::rpc::action::TakeoffRequest)},
+        {62, 71, -1, sizeof(::mavsdk::rpc::action::TakeoffResponse)},
+        {72, -1, -1, sizeof(::mavsdk::rpc::action::LandRequest)},
+        {80, 89, -1, sizeof(::mavsdk::rpc::action::LandResponse)},
+        {90, -1, -1, sizeof(::mavsdk::rpc::action::RebootRequest)},
+        {98, 107, -1, sizeof(::mavsdk::rpc::action::RebootResponse)},
+        {108, -1, -1, sizeof(::mavsdk::rpc::action::ShutdownRequest)},
+        {116, 125, -1, sizeof(::mavsdk::rpc::action::ShutdownResponse)},
+        {126, -1, -1, sizeof(::mavsdk::rpc::action::TerminateRequest)},
+        {134, 143, -1, sizeof(::mavsdk::rpc::action::TerminateResponse)},
+        {144, -1, -1, sizeof(::mavsdk::rpc::action::KillRequest)},
+        {152, 161, -1, sizeof(::mavsdk::rpc::action::KillResponse)},
+        {162, -1, -1, sizeof(::mavsdk::rpc::action::ReturnToLaunchRequest)},
+        {170, 179, -1, sizeof(::mavsdk::rpc::action::ReturnToLaunchResponse)},
+        {180, -1, -1, sizeof(::mavsdk::rpc::action::GotoLocationRequest)},
+        {192, 201, -1, sizeof(::mavsdk::rpc::action::GotoLocationResponse)},
+        {202, -1, -1, sizeof(::mavsdk::rpc::action::DoOrbitRequest)},
+        {216, 225, -1, sizeof(::mavsdk::rpc::action::DoOrbitResponse)},
+        {226, -1, -1, sizeof(::mavsdk::rpc::action::HoldRequest)},
+        {234, 243, -1, sizeof(::mavsdk::rpc::action::HoldResponse)},
+        {244, -1, -1, sizeof(::mavsdk::rpc::action::SetActuatorRequest)},
+        {254, 263, -1, sizeof(::mavsdk::rpc::action::SetActuatorResponse)},
+        {264, -1, -1, sizeof(::mavsdk::rpc::action::TransitionToFixedwingRequest)},
+        {272, 281, -1, sizeof(::mavsdk::rpc::action::TransitionToFixedwingResponse)},
+        {282, -1, -1, sizeof(::mavsdk::rpc::action::TransitionToMulticopterRequest)},
+        {290, 299, -1, sizeof(::mavsdk::rpc::action::TransitionToMulticopterResponse)},
+        {300, -1, -1, sizeof(::mavsdk::rpc::action::GetTakeoffAltitudeRequest)},
+        {308, 318, -1, sizeof(::mavsdk::rpc::action::GetTakeoffAltitudeResponse)},
+        {320, -1, -1, sizeof(::mavsdk::rpc::action::SetTakeoffAltitudeRequest)},
+        {329, 338, -1, sizeof(::mavsdk::rpc::action::SetTakeoffAltitudeResponse)},
+        {339, -1, -1, sizeof(::mavsdk::rpc::action::GetMaximumSpeedRequest)},
+        {347, 357, -1, sizeof(::mavsdk::rpc::action::GetMaximumSpeedResponse)},
+        {359, -1, -1, sizeof(::mavsdk::rpc::action::SetMaximumSpeedRequest)},
+        {368, 377, -1, sizeof(::mavsdk::rpc::action::SetMaximumSpeedResponse)},
+        {378, -1, -1, sizeof(::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest)},
+        {386, 396, -1, sizeof(::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse)},
+        {398, -1, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest)},
+        {407, 416, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse)},
+        {417, -1, -1, sizeof(::mavsdk::rpc::action::SetCurrentSpeedRequest)},
+        {426, 435, -1, sizeof(::mavsdk::rpc::action::SetCurrentSpeedResponse)},
+        {436, -1, -1, sizeof(::mavsdk::rpc::action::ActionResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::action::_ArmRequest_default_instance_._instance,
     &::mavsdk::rpc::action::_ArmResponse_default_instance_._instance,
+    &::mavsdk::rpc::action::_ArmForceRequest_default_instance_._instance,
+    &::mavsdk::rpc::action::_ArmForceResponse_default_instance_._instance,
     &::mavsdk::rpc::action::_DisarmRequest_default_instance_._instance,
     &::mavsdk::rpc::action::_DisarmResponse_default_instance_._instance,
     &::mavsdk::rpc::action::_TakeoffRequest_default_instance_._instance,
@@ -1327,149 +1380,154 @@ const char descriptor_table_protodef_action_2faction_2eproto[] PROTOBUF_SECTION_
     "\n\023action/action.proto\022\021mavsdk.rpc.action"
     "\032\024mavsdk_options.proto\"\014\n\nArmRequest\"E\n\013"
     "ArmResponse\0226\n\raction_result\030\001 \001(\0132\037.mav"
-    "sdk.rpc.action.ActionResult\"\017\n\rDisarmReq"
-    "uest\"H\n\016DisarmResponse\0226\n\raction_result\030"
-    "\001 \001(\0132\037.mavsdk.rpc.action.ActionResult\"\020"
-    "\n\016TakeoffRequest\"I\n\017TakeoffResponse\0226\n\ra"
-    "ction_result\030\001 \001(\0132\037.mavsdk.rpc.action.A"
-    "ctionResult\"\r\n\013LandRequest\"F\n\014LandRespon"
-    "se\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc.a"
-    "ction.ActionResult\"\017\n\rRebootRequest\"H\n\016R"
-    "ebootResponse\0226\n\raction_result\030\001 \001(\0132\037.m"
-    "avsdk.rpc.action.ActionResult\"\021\n\017Shutdow"
-    "nRequest\"J\n\020ShutdownResponse\0226\n\raction_r"
+    "sdk.rpc.action.ActionResult\"\021\n\017ArmForceR"
+    "equest\"J\n\020ArmForceResponse\0226\n\raction_res"
+    "ult\030\001 \001(\0132\037.mavsdk.rpc.action.ActionResu"
+    "lt\"\017\n\rDisarmRequest\"H\n\016DisarmResponse\0226\n"
+    "\raction_result\030\001 \001(\0132\037.mavsdk.rpc.action"
+    ".ActionResult\"\020\n\016TakeoffRequest\"I\n\017Takeo"
+    "ffResponse\0226\n\raction_result\030\001 \001(\0132\037.mavs"
+    "dk.rpc.action.ActionResult\"\r\n\013LandReques"
+    "t\"F\n\014LandResponse\0226\n\raction_result\030\001 \001(\013"
+    "2\037.mavsdk.rpc.action.ActionResult\"\017\n\rReb"
+    "ootRequest\"H\n\016RebootResponse\0226\n\raction_r"
     "esult\030\001 \001(\0132\037.mavsdk.rpc.action.ActionRe"
-    "sult\"\022\n\020TerminateRequest\"K\n\021TerminateRes"
-    "ponse\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.rp"
-    "c.action.ActionResult\"\r\n\013KillRequest\"F\n\014"
-    "KillResponse\0226\n\raction_result\030\001 \001(\0132\037.ma"
-    "vsdk.rpc.action.ActionResult\"\027\n\025ReturnTo"
-    "LaunchRequest\"P\n\026ReturnToLaunchResponse\022"
+    "sult\"\021\n\017ShutdownRequest\"J\n\020ShutdownRespo"
+    "nse\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc."
+    "action.ActionResult\"\022\n\020TerminateRequest\""
+    "K\n\021TerminateResponse\0226\n\raction_result\030\001 "
+    "\001(\0132\037.mavsdk.rpc.action.ActionResult\"\r\n\013"
+    "KillRequest\"F\n\014KillResponse\0226\n\raction_re"
+    "sult\030\001 \001(\0132\037.mavsdk.rpc.action.ActionRes"
+    "ult\"\027\n\025ReturnToLaunchRequest\"P\n\026ReturnTo"
+    "LaunchResponse\0226\n\raction_result\030\001 \001(\0132\037."
+    "mavsdk.rpc.action.ActionResult\"p\n\023GotoLo"
+    "cationRequest\022\024\n\014latitude_deg\030\001 \001(\001\022\025\n\rl"
+    "ongitude_deg\030\002 \001(\001\022\033\n\023absolute_altitude_"
+    "m\030\003 \001(\002\022\017\n\007yaw_deg\030\004 \001(\002\"N\n\024GotoLocation"
+    "Response\0226\n\raction_result\030\001 \001(\0132\037.mavsdk"
+    ".rpc.action.ActionResult\"\327\001\n\016DoOrbitRequ"
+    "est\022\020\n\010radius_m\030\001 \001(\002\022\023\n\013velocity_ms\030\002 \001"
+    "(\002\0229\n\014yaw_behavior\030\003 \001(\0162#.mavsdk.rpc.ac"
+    "tion.OrbitYawBehavior\022\035\n\014latitude_deg\030\005 "
+    "\001(\001B\007\202\265\030\003NaN\022\036\n\rlongitude_deg\030\006 \001(\001B\007\202\265\030"
+    "\003NaN\022$\n\023absolute_altitude_m\030\007 \001(\001B\007\202\265\030\003N"
+    "aN\"I\n\017DoOrbitResponse\0226\n\raction_result\030\001"
+    " \001(\0132\037.mavsdk.rpc.action.ActionResult\"\r\n"
+    "\013HoldRequest\"F\n\014HoldResponse\0226\n\raction_r"
+    "esult\030\001 \001(\0132\037.mavsdk.rpc.action.ActionRe"
+    "sult\"2\n\022SetActuatorRequest\022\r\n\005index\030\001 \001("
+    "\005\022\r\n\005value\030\002 \001(\002\"M\n\023SetActuatorResponse\022"
     "6\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc.acti"
-    "on.ActionResult\"p\n\023GotoLocationRequest\022\024"
-    "\n\014latitude_deg\030\001 \001(\001\022\025\n\rlongitude_deg\030\002 "
-    "\001(\001\022\033\n\023absolute_altitude_m\030\003 \001(\002\022\017\n\007yaw_"
-    "deg\030\004 \001(\002\"N\n\024GotoLocationResponse\0226\n\ract"
-    "ion_result\030\001 \001(\0132\037.mavsdk.rpc.action.Act"
-    "ionResult\"\327\001\n\016DoOrbitRequest\022\020\n\010radius_m"
-    "\030\001 \001(\002\022\023\n\013velocity_ms\030\002 \001(\002\0229\n\014yaw_behav"
-    "ior\030\003 \001(\0162#.mavsdk.rpc.action.OrbitYawBe"
-    "havior\022\035\n\014latitude_deg\030\005 \001(\001B\007\202\265\030\003NaN\022\036\n"
-    "\rlongitude_deg\030\006 \001(\001B\007\202\265\030\003NaN\022$\n\023absolut"
-    "e_altitude_m\030\007 \001(\001B\007\202\265\030\003NaN\"I\n\017DoOrbitRe"
-    "sponse\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.r"
-    "pc.action.ActionResult\"\r\n\013HoldRequest\"F\n"
-    "\014HoldResponse\0226\n\raction_result\030\001 \001(\0132\037.m"
-    "avsdk.rpc.action.ActionResult\"2\n\022SetActu"
-    "atorRequest\022\r\n\005index\030\001 \001(\005\022\r\n\005value\030\002 \001("
-    "\002\"M\n\023SetActuatorResponse\0226\n\raction_resul"
-    "t\030\001 \001(\0132\037.mavsdk.rpc.action.ActionResult"
-    "\"\036\n\034TransitionToFixedwingRequest\"W\n\035Tran"
-    "sitionToFixedwingResponse\0226\n\raction_resu"
-    "lt\030\001 \001(\0132\037.mavsdk.rpc.action.ActionResul"
-    "t\" \n\036TransitionToMulticopterRequest\"Y\n\037T"
-    "ransitionToMulticopterResponse\0226\n\raction"
-    "_result\030\001 \001(\0132\037.mavsdk.rpc.action.Action"
-    "Result\"\033\n\031GetTakeoffAltitudeRequest\"f\n\032G"
-    "etTakeoffAltitudeResponse\0226\n\raction_resu"
-    "lt\030\001 \001(\0132\037.mavsdk.rpc.action.ActionResul"
-    "t\022\020\n\010altitude\030\002 \001(\002\"-\n\031SetTakeoffAltitud"
-    "eRequest\022\020\n\010altitude\030\001 \001(\002\"T\n\032SetTakeoff"
-    "AltitudeResponse\0226\n\raction_result\030\001 \001(\0132"
-    "\037.mavsdk.rpc.action.ActionResult\"\030\n\026GetM"
-    "aximumSpeedRequest\"`\n\027GetMaximumSpeedRes"
+    "on.ActionResult\"\036\n\034TransitionToFixedwing"
+    "Request\"W\n\035TransitionToFixedwingResponse"
+    "\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc.act"
+    "ion.ActionResult\" \n\036TransitionToMulticop"
+    "terRequest\"Y\n\037TransitionToMulticopterRes"
     "ponse\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.rp"
-    "c.action.ActionResult\022\r\n\005speed\030\002 \001(\002\"\'\n\026"
-    "SetMaximumSpeedRequest\022\r\n\005speed\030\001 \001(\002\"Q\n"
-    "\027SetMaximumSpeedResponse\0226\n\raction_resul"
-    "t\030\001 \001(\0132\037.mavsdk.rpc.action.ActionResult"
-    "\"\"\n GetReturnToLaunchAltitudeRequest\"x\n!"
-    "GetReturnToLaunchAltitudeResponse\0226\n\ract"
-    "ion_result\030\001 \001(\0132\037.mavsdk.rpc.action.Act"
-    "ionResult\022\033\n\023relative_altitude_m\030\002 \001(\002\"\?"
-    "\n SetReturnToLaunchAltitudeRequest\022\033\n\023re"
-    "lative_altitude_m\030\001 \001(\002\"[\n!SetReturnToLa"
-    "unchAltitudeResponse\0226\n\raction_result\030\001 "
-    "\001(\0132\037.mavsdk.rpc.action.ActionResult\"+\n\026"
-    "SetCurrentSpeedRequest\022\021\n\tspeed_m_s\030\001 \001("
-    "\002\"Q\n\027SetCurrentSpeedResponse\0226\n\raction_r"
-    "esult\030\001 \001(\0132\037.mavsdk.rpc.action.ActionRe"
-    "sult\"\215\004\n\014ActionResult\0226\n\006result\030\001 \001(\0162&."
-    "mavsdk.rpc.action.ActionResult.Result\022\022\n"
-    "\nresult_str\030\002 \001(\t\"\260\003\n\006Result\022\022\n\016RESULT_U"
-    "NKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_N"
-    "O_SYSTEM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022"
-    "\017\n\013RESULT_BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIE"
-    "D\020\005\022.\n*RESULT_COMMAND_DENIED_LANDED_STAT"
-    "E_UNKNOWN\020\006\022$\n RESULT_COMMAND_DENIED_NOT"
-    "_LANDED\020\007\022\022\n\016RESULT_TIMEOUT\020\010\022*\n&RESULT_"
-    "VTOL_TRANSITION_SUPPORT_UNKNOWN\020\t\022%\n!RES"
-    "ULT_NO_VTOL_TRANSITION_SUPPORT\020\n\022\032\n\026RESU"
-    "LT_PARAMETER_ERROR\020\013\022\026\n\022RESULT_UNSUPPORT"
-    "ED\020\014\022\021\n\rRESULT_FAILED\020\r\022\033\n\027RESULT_INVALI"
-    "D_ARGUMENT\020\016*\363\001\n\020OrbitYawBehavior\0222\n.ORB"
-    "IT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIRCLE_CEN"
-    "TER\020\000\022+\n\'ORBIT_YAW_BEHAVIOR_HOLD_INITIAL"
-    "_HEADING\020\001\022#\n\037ORBIT_YAW_BEHAVIOR_UNCONTR"
-    "OLLED\020\002\0223\n/ORBIT_YAW_BEHAVIOR_HOLD_FRONT"
-    "_TANGENT_TO_CIRCLE\020\003\022$\n ORBIT_YAW_BEHAVI"
-    "OR_RC_CONTROLLED\020\0042\246\021\n\rActionService\022F\n\003"
-    "Arm\022\035.mavsdk.rpc.action.ArmRequest\032\036.mav"
-    "sdk.rpc.action.ArmResponse\"\000\022O\n\006Disarm\022 "
-    ".mavsdk.rpc.action.DisarmRequest\032!.mavsd"
-    "k.rpc.action.DisarmResponse\"\000\022R\n\007Takeoff"
-    "\022!.mavsdk.rpc.action.TakeoffRequest\032\".ma"
-    "vsdk.rpc.action.TakeoffResponse\"\000\022I\n\004Lan"
-    "d\022\036.mavsdk.rpc.action.LandRequest\032\037.mavs"
-    "dk.rpc.action.LandResponse\"\000\022O\n\006Reboot\022 "
-    ".mavsdk.rpc.action.RebootRequest\032!.mavsd"
-    "k.rpc.action.RebootResponse\"\000\022U\n\010Shutdow"
-    "n\022\".mavsdk.rpc.action.ShutdownRequest\032#."
-    "mavsdk.rpc.action.ShutdownResponse\"\000\022X\n\t"
-    "Terminate\022#.mavsdk.rpc.action.TerminateR"
-    "equest\032$.mavsdk.rpc.action.TerminateResp"
-    "onse\"\000\022I\n\004Kill\022\036.mavsdk.rpc.action.KillR"
-    "equest\032\037.mavsdk.rpc.action.KillResponse\""
-    "\000\022g\n\016ReturnToLaunch\022(.mavsdk.rpc.action."
-    "ReturnToLaunchRequest\032).mavsdk.rpc.actio"
-    "n.ReturnToLaunchResponse\"\000\022a\n\014GotoLocati"
-    "on\022&.mavsdk.rpc.action.GotoLocationReque"
-    "st\032\'.mavsdk.rpc.action.GotoLocationRespo"
-    "nse\"\000\022R\n\007DoOrbit\022!.mavsdk.rpc.action.DoO"
-    "rbitRequest\032\".mavsdk.rpc.action.DoOrbitR"
-    "esponse\"\000\022I\n\004Hold\022\036.mavsdk.rpc.action.Ho"
-    "ldRequest\032\037.mavsdk.rpc.action.HoldRespon"
-    "se\"\000\022^\n\013SetActuator\022%.mavsdk.rpc.action."
-    "SetActuatorRequest\032&.mavsdk.rpc.action.S"
-    "etActuatorResponse\"\000\022|\n\025TransitionToFixe"
-    "dwing\022/.mavsdk.rpc.action.TransitionToFi"
-    "xedwingRequest\0320.mavsdk.rpc.action.Trans"
-    "itionToFixedwingResponse\"\000\022\202\001\n\027Transitio"
-    "nToMulticopter\0221.mavsdk.rpc.action.Trans"
-    "itionToMulticopterRequest\0322.mavsdk.rpc.a"
-    "ction.TransitionToMulticopterResponse\"\000\022"
-    "s\n\022GetTakeoffAltitude\022,.mavsdk.rpc.actio"
-    "n.GetTakeoffAltitudeRequest\032-.mavsdk.rpc"
-    ".action.GetTakeoffAltitudeResponse\"\000\022s\n\022"
-    "SetTakeoffAltitude\022,.mavsdk.rpc.action.S"
-    "etTakeoffAltitudeRequest\032-.mavsdk.rpc.ac"
-    "tion.SetTakeoffAltitudeResponse\"\000\022j\n\017Get"
-    "MaximumSpeed\022).mavsdk.rpc.action.GetMaxi"
-    "mumSpeedRequest\032*.mavsdk.rpc.action.GetM"
-    "aximumSpeedResponse\"\000\022j\n\017SetMaximumSpeed"
-    "\022).mavsdk.rpc.action.SetMaximumSpeedRequ"
-    "est\032*.mavsdk.rpc.action.SetMaximumSpeedR"
-    "esponse\"\000\022\210\001\n\031GetReturnToLaunchAltitude\022"
-    "3.mavsdk.rpc.action.GetReturnToLaunchAlt"
-    "itudeRequest\0324.mavsdk.rpc.action.GetRetu"
-    "rnToLaunchAltitudeResponse\"\000\022\210\001\n\031SetRetu"
-    "rnToLaunchAltitude\0223.mavsdk.rpc.action.S"
-    "etReturnToLaunchAltitudeRequest\0324.mavsdk"
-    ".rpc.action.SetReturnToLaunchAltitudeRes"
-    "ponse\"\000\022j\n\017SetCurrentSpeed\022).mavsdk.rpc."
-    "action.SetCurrentSpeedRequest\032*.mavsdk.r"
-    "pc.action.SetCurrentSpeedResponse\"\000B\037\n\020i"
-    "o.mavsdk.actionB\013ActionProtob\006proto3"
+    "c.action.ActionResult\"\033\n\031GetTakeoffAltit"
+    "udeRequest\"f\n\032GetTakeoffAltitudeResponse"
+    "\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc.act"
+    "ion.ActionResult\022\020\n\010altitude\030\002 \001(\002\"-\n\031Se"
+    "tTakeoffAltitudeRequest\022\020\n\010altitude\030\001 \001("
+    "\002\"T\n\032SetTakeoffAltitudeResponse\0226\n\ractio"
+    "n_result\030\001 \001(\0132\037.mavsdk.rpc.action.Actio"
+    "nResult\"\030\n\026GetMaximumSpeedRequest\"`\n\027Get"
+    "MaximumSpeedResponse\0226\n\raction_result\030\001 "
+    "\001(\0132\037.mavsdk.rpc.action.ActionResult\022\r\n\005"
+    "speed\030\002 \001(\002\"\'\n\026SetMaximumSpeedRequest\022\r\n"
+    "\005speed\030\001 \001(\002\"Q\n\027SetMaximumSpeedResponse\022"
+    "6\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc.acti"
+    "on.ActionResult\"\"\n GetReturnToLaunchAlti"
+    "tudeRequest\"x\n!GetReturnToLaunchAltitude"
+    "Response\0226\n\raction_result\030\001 \001(\0132\037.mavsdk"
+    ".rpc.action.ActionResult\022\033\n\023relative_alt"
+    "itude_m\030\002 \001(\002\"\?\n SetReturnToLaunchAltitu"
+    "deRequest\022\033\n\023relative_altitude_m\030\001 \001(\002\"["
+    "\n!SetReturnToLaunchAltitudeResponse\0226\n\ra"
+    "ction_result\030\001 \001(\0132\037.mavsdk.rpc.action.A"
+    "ctionResult\"+\n\026SetCurrentSpeedRequest\022\021\n"
+    "\tspeed_m_s\030\001 \001(\002\"Q\n\027SetCurrentSpeedRespo"
+    "nse\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc."
+    "action.ActionResult\"\215\004\n\014ActionResult\0226\n\006"
+    "result\030\001 \001(\0162&.mavsdk.rpc.action.ActionR"
+    "esult.Result\022\022\n\nresult_str\030\002 \001(\t\"\260\003\n\006Res"
+    "ult\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCES"
+    "S\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CONN"
+    "ECTION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004\022\031\n\025RESUL"
+    "T_COMMAND_DENIED\020\005\022.\n*RESULT_COMMAND_DEN"
+    "IED_LANDED_STATE_UNKNOWN\020\006\022$\n RESULT_COM"
+    "MAND_DENIED_NOT_LANDED\020\007\022\022\n\016RESULT_TIMEO"
+    "UT\020\010\022*\n&RESULT_VTOL_TRANSITION_SUPPORT_U"
+    "NKNOWN\020\t\022%\n!RESULT_NO_VTOL_TRANSITION_SU"
+    "PPORT\020\n\022\032\n\026RESULT_PARAMETER_ERROR\020\013\022\026\n\022R"
+    "ESULT_UNSUPPORTED\020\014\022\021\n\rRESULT_FAILED\020\r\022\033"
+    "\n\027RESULT_INVALID_ARGUMENT\020\016*\363\001\n\020OrbitYaw"
+    "Behavior\0222\n.ORBIT_YAW_BEHAVIOR_HOLD_FRON"
+    "T_TO_CIRCLE_CENTER\020\000\022+\n\'ORBIT_YAW_BEHAVI"
+    "OR_HOLD_INITIAL_HEADING\020\001\022#\n\037ORBIT_YAW_B"
+    "EHAVIOR_UNCONTROLLED\020\002\0223\n/ORBIT_YAW_BEHA"
+    "VIOR_HOLD_FRONT_TANGENT_TO_CIRCLE\020\003\022$\n O"
+    "RBIT_YAW_BEHAVIOR_RC_CONTROLLED\020\0042\375\021\n\rAc"
+    "tionService\022F\n\003Arm\022\035.mavsdk.rpc.action.A"
+    "rmRequest\032\036.mavsdk.rpc.action.ArmRespons"
+    "e\"\000\022U\n\010ArmForce\022\".mavsdk.rpc.action.ArmF"
+    "orceRequest\032#.mavsdk.rpc.action.ArmForce"
+    "Response\"\000\022O\n\006Disarm\022 .mavsdk.rpc.action"
+    ".DisarmRequest\032!.mavsdk.rpc.action.Disar"
+    "mResponse\"\000\022R\n\007Takeoff\022!.mavsdk.rpc.acti"
+    "on.TakeoffRequest\032\".mavsdk.rpc.action.Ta"
+    "keoffResponse\"\000\022I\n\004Land\022\036.mavsdk.rpc.act"
+    "ion.LandRequest\032\037.mavsdk.rpc.action.Land"
+    "Response\"\000\022O\n\006Reboot\022 .mavsdk.rpc.action"
+    ".RebootRequest\032!.mavsdk.rpc.action.Reboo"
+    "tResponse\"\000\022U\n\010Shutdown\022\".mavsdk.rpc.act"
+    "ion.ShutdownRequest\032#.mavsdk.rpc.action."
+    "ShutdownResponse\"\000\022X\n\tTerminate\022#.mavsdk"
+    ".rpc.action.TerminateRequest\032$.mavsdk.rp"
+    "c.action.TerminateResponse\"\000\022I\n\004Kill\022\036.m"
+    "avsdk.rpc.action.KillRequest\032\037.mavsdk.rp"
+    "c.action.KillResponse\"\000\022g\n\016ReturnToLaunc"
+    "h\022(.mavsdk.rpc.action.ReturnToLaunchRequ"
+    "est\032).mavsdk.rpc.action.ReturnToLaunchRe"
+    "sponse\"\000\022a\n\014GotoLocation\022&.mavsdk.rpc.ac"
+    "tion.GotoLocationRequest\032\'.mavsdk.rpc.ac"
+    "tion.GotoLocationResponse\"\000\022R\n\007DoOrbit\022!"
+    ".mavsdk.rpc.action.DoOrbitRequest\032\".mavs"
+    "dk.rpc.action.DoOrbitResponse\"\000\022I\n\004Hold\022"
+    "\036.mavsdk.rpc.action.HoldRequest\032\037.mavsdk"
+    ".rpc.action.HoldResponse\"\000\022^\n\013SetActuato"
+    "r\022%.mavsdk.rpc.action.SetActuatorRequest"
+    "\032&.mavsdk.rpc.action.SetActuatorResponse"
+    "\"\000\022|\n\025TransitionToFixedwing\022/.mavsdk.rpc"
+    ".action.TransitionToFixedwingRequest\0320.m"
+    "avsdk.rpc.action.TransitionToFixedwingRe"
+    "sponse\"\000\022\202\001\n\027TransitionToMulticopter\0221.m"
+    "avsdk.rpc.action.TransitionToMulticopter"
+    "Request\0322.mavsdk.rpc.action.TransitionTo"
+    "MulticopterResponse\"\000\022s\n\022GetTakeoffAltit"
+    "ude\022,.mavsdk.rpc.action.GetTakeoffAltitu"
+    "deRequest\032-.mavsdk.rpc.action.GetTakeoff"
+    "AltitudeResponse\"\000\022s\n\022SetTakeoffAltitude"
+    "\022,.mavsdk.rpc.action.SetTakeoffAltitudeR"
+    "equest\032-.mavsdk.rpc.action.SetTakeoffAlt"
+    "itudeResponse\"\000\022j\n\017GetMaximumSpeed\022).mav"
+    "sdk.rpc.action.GetMaximumSpeedRequest\032*."
+    "mavsdk.rpc.action.GetMaximumSpeedRespons"
+    "e\"\000\022j\n\017SetMaximumSpeed\022).mavsdk.rpc.acti"
+    "on.SetMaximumSpeedRequest\032*.mavsdk.rpc.a"
+    "ction.SetMaximumSpeedResponse\"\000\022\210\001\n\031GetR"
+    "eturnToLaunchAltitude\0223.mavsdk.rpc.actio"
+    "n.GetReturnToLaunchAltitudeRequest\0324.mav"
+    "sdk.rpc.action.GetReturnToLaunchAltitude"
+    "Response\"\000\022\210\001\n\031SetReturnToLaunchAltitude"
+    "\0223.mavsdk.rpc.action.SetReturnToLaunchAl"
+    "titudeRequest\0324.mavsdk.rpc.action.SetRet"
+    "urnToLaunchAltitudeResponse\"\000\022j\n\017SetCurr"
+    "entSpeed\022).mavsdk.rpc.action.SetCurrentS"
+    "peedRequest\032*.mavsdk.rpc.action.SetCurre"
+    "ntSpeedResponse\"\000B\037\n\020io.mavsdk.actionB\013A"
+    "ctionProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_action_2faction_2eproto_deps[1] =
     {
@@ -1479,13 +1537,13 @@ static ::absl::once_flag descriptor_table_action_2faction_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_action_2faction_2eproto = {
     false,
     false,
-    5836,
+    6018,
     descriptor_table_protodef_action_2faction_2eproto,
     "action/action.proto",
     &descriptor_table_action_2faction_2eproto_once,
     descriptor_table_action_2faction_2eproto_deps,
     1,
-    45,
+    47,
     schemas,
     file_default_instances,
     TableStruct_action_2faction_2eproto::offsets,
@@ -1800,6 +1858,248 @@ void ArmResponse::InternalSwap(ArmResponse* PROTOBUF_RESTRICT other) {
 }
 // ===================================================================
 
+class ArmForceRequest::_Internal {
+ public:
+};
+
+ArmForceRequest::ArmForceRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action.ArmForceRequest)
+}
+ArmForceRequest::ArmForceRequest(
+    ::google::protobuf::Arena* arena,
+    const ArmForceRequest& from)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+  ArmForceRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action.ArmForceRequest)
+}
+
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata ArmForceRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
+      file_level_metadata_action_2faction_2eproto[2]);
+}
+// ===================================================================
+
+class ArmForceResponse::_Internal {
+ public:
+  using HasBits = decltype(std::declval<ArmForceResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(ArmForceResponse, _impl_._has_bits_);
+  static const ::mavsdk::rpc::action::ActionResult& action_result(const ArmForceResponse* msg);
+  static void set_has_action_result(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+};
+
+const ::mavsdk::rpc::action::ActionResult& ArmForceResponse::_Internal::action_result(const ArmForceResponse* msg) {
+  return *msg->_impl_.action_result_;
+}
+ArmForceResponse::ArmForceResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action.ArmForceResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE ArmForceResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+ArmForceResponse::ArmForceResponse(
+    ::google::protobuf::Arena* arena,
+    const ArmForceResponse& from)
+    : ::google::protobuf::Message(arena) {
+  ArmForceResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.action_result_ = (cached_has_bits & 0x00000001u)
+                ? CreateMaybeMessage<::mavsdk::rpc::action::ActionResult>(arena, *from._impl_.action_result_)
+                : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action.ArmForceResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE ArmForceResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void ArmForceResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.action_result_ = {};
+}
+ArmForceResponse::~ArmForceResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.action.ArmForceResponse)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void ArmForceResponse::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.action_result_;
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void ArmForceResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action.ArmForceResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.action_result_ != nullptr);
+    _impl_.action_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* ArmForceResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> ArmForceResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(ArmForceResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_ArmForceResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .mavsdk.rpc.action.ActionResult action_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(ArmForceResponse, _impl_.action_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.action.ActionResult action_result = 1;
+    {PROTOBUF_FIELD_OFFSET(ArmForceResponse, _impl_.action_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::action::ActionResult>()},
+  }}, {{
+  }},
+};
+
+::uint8_t* ArmForceResponse::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action.ArmForceResponse)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  // .mavsdk.rpc.action.ActionResult action_result = 1;
+  if (cached_has_bits & 0x00000001u) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, _Internal::action_result(this),
+        _Internal::action_result(this).GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action.ArmForceResponse)
+  return target;
+}
+
+::size_t ArmForceResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action.ArmForceResponse)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mavsdk.rpc.action.ActionResult action_result = 1;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.action_result_);
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData ArmForceResponse::_class_data_ = {
+    ArmForceResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* ArmForceResponse::GetClassData() const {
+  return &_class_data_;
+}
+
+void ArmForceResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<ArmForceResponse*>(&to_msg);
+  auto& from = static_cast<const ArmForceResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action.ArmForceResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_action_result()->::mavsdk::rpc::action::ActionResult::MergeFrom(
+        from._internal_action_result());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ArmForceResponse::CopyFrom(const ArmForceResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action.ArmForceResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool ArmForceResponse::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* ArmForceResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void ArmForceResponse::InternalSwap(ArmForceResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.action_result_, other->_impl_.action_result_);
+}
+
+::google::protobuf::Metadata ArmForceResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
+      file_level_metadata_action_2faction_2eproto[3]);
+}
+// ===================================================================
+
 class DisarmRequest::_Internal {
  public:
 };
@@ -1831,7 +2131,7 @@ DisarmRequest::DisarmRequest(
 ::google::protobuf::Metadata DisarmRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[2]);
+      file_level_metadata_action_2faction_2eproto[4]);
 }
 // ===================================================================
 
@@ -2038,7 +2338,7 @@ void DisarmResponse::InternalSwap(DisarmResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata DisarmResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[3]);
+      file_level_metadata_action_2faction_2eproto[5]);
 }
 // ===================================================================
 
@@ -2073,7 +2373,7 @@ TakeoffRequest::TakeoffRequest(
 ::google::protobuf::Metadata TakeoffRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[4]);
+      file_level_metadata_action_2faction_2eproto[6]);
 }
 // ===================================================================
 
@@ -2280,7 +2580,7 @@ void TakeoffResponse::InternalSwap(TakeoffResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata TakeoffResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[5]);
+      file_level_metadata_action_2faction_2eproto[7]);
 }
 // ===================================================================
 
@@ -2315,7 +2615,7 @@ LandRequest::LandRequest(
 ::google::protobuf::Metadata LandRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[6]);
+      file_level_metadata_action_2faction_2eproto[8]);
 }
 // ===================================================================
 
@@ -2522,7 +2822,7 @@ void LandResponse::InternalSwap(LandResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata LandResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[7]);
+      file_level_metadata_action_2faction_2eproto[9]);
 }
 // ===================================================================
 
@@ -2557,7 +2857,7 @@ RebootRequest::RebootRequest(
 ::google::protobuf::Metadata RebootRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[8]);
+      file_level_metadata_action_2faction_2eproto[10]);
 }
 // ===================================================================
 
@@ -2764,7 +3064,7 @@ void RebootResponse::InternalSwap(RebootResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata RebootResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[9]);
+      file_level_metadata_action_2faction_2eproto[11]);
 }
 // ===================================================================
 
@@ -2799,7 +3099,7 @@ ShutdownRequest::ShutdownRequest(
 ::google::protobuf::Metadata ShutdownRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[10]);
+      file_level_metadata_action_2faction_2eproto[12]);
 }
 // ===================================================================
 
@@ -3006,7 +3306,7 @@ void ShutdownResponse::InternalSwap(ShutdownResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata ShutdownResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[11]);
+      file_level_metadata_action_2faction_2eproto[13]);
 }
 // ===================================================================
 
@@ -3041,7 +3341,7 @@ TerminateRequest::TerminateRequest(
 ::google::protobuf::Metadata TerminateRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[12]);
+      file_level_metadata_action_2faction_2eproto[14]);
 }
 // ===================================================================
 
@@ -3248,7 +3548,7 @@ void TerminateResponse::InternalSwap(TerminateResponse* PROTOBUF_RESTRICT other)
 ::google::protobuf::Metadata TerminateResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[13]);
+      file_level_metadata_action_2faction_2eproto[15]);
 }
 // ===================================================================
 
@@ -3283,7 +3583,7 @@ KillRequest::KillRequest(
 ::google::protobuf::Metadata KillRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[14]);
+      file_level_metadata_action_2faction_2eproto[16]);
 }
 // ===================================================================
 
@@ -3490,7 +3790,7 @@ void KillResponse::InternalSwap(KillResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata KillResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[15]);
+      file_level_metadata_action_2faction_2eproto[17]);
 }
 // ===================================================================
 
@@ -3525,7 +3825,7 @@ ReturnToLaunchRequest::ReturnToLaunchRequest(
 ::google::protobuf::Metadata ReturnToLaunchRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[16]);
+      file_level_metadata_action_2faction_2eproto[18]);
 }
 // ===================================================================
 
@@ -3732,7 +4032,7 @@ void ReturnToLaunchResponse::InternalSwap(ReturnToLaunchResponse* PROTOBUF_RESTR
 ::google::protobuf::Metadata ReturnToLaunchResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[17]);
+      file_level_metadata_action_2faction_2eproto[19]);
 }
 // ===================================================================
 
@@ -4036,7 +4336,7 @@ void GotoLocationRequest::InternalSwap(GotoLocationRequest* PROTOBUF_RESTRICT ot
 ::google::protobuf::Metadata GotoLocationRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[18]);
+      file_level_metadata_action_2faction_2eproto[20]);
 }
 // ===================================================================
 
@@ -4243,7 +4543,7 @@ void GotoLocationResponse::InternalSwap(GotoLocationResponse* PROTOBUF_RESTRICT 
 ::google::protobuf::Metadata GotoLocationResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[19]);
+      file_level_metadata_action_2faction_2eproto[21]);
 }
 // ===================================================================
 
@@ -4607,7 +4907,7 @@ void DoOrbitRequest::InternalSwap(DoOrbitRequest* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata DoOrbitRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[20]);
+      file_level_metadata_action_2faction_2eproto[22]);
 }
 // ===================================================================
 
@@ -4814,7 +5114,7 @@ void DoOrbitResponse::InternalSwap(DoOrbitResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata DoOrbitResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[21]);
+      file_level_metadata_action_2faction_2eproto[23]);
 }
 // ===================================================================
 
@@ -4849,7 +5149,7 @@ HoldRequest::HoldRequest(
 ::google::protobuf::Metadata HoldRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[22]);
+      file_level_metadata_action_2faction_2eproto[24]);
 }
 // ===================================================================
 
@@ -5056,7 +5356,7 @@ void HoldResponse::InternalSwap(HoldResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata HoldResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[23]);
+      file_level_metadata_action_2faction_2eproto[25]);
 }
 // ===================================================================
 
@@ -5274,7 +5574,7 @@ void SetActuatorRequest::InternalSwap(SetActuatorRequest* PROTOBUF_RESTRICT othe
 ::google::protobuf::Metadata SetActuatorRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[24]);
+      file_level_metadata_action_2faction_2eproto[26]);
 }
 // ===================================================================
 
@@ -5481,7 +5781,7 @@ void SetActuatorResponse::InternalSwap(SetActuatorResponse* PROTOBUF_RESTRICT ot
 ::google::protobuf::Metadata SetActuatorResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[25]);
+      file_level_metadata_action_2faction_2eproto[27]);
 }
 // ===================================================================
 
@@ -5516,7 +5816,7 @@ TransitionToFixedwingRequest::TransitionToFixedwingRequest(
 ::google::protobuf::Metadata TransitionToFixedwingRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[26]);
+      file_level_metadata_action_2faction_2eproto[28]);
 }
 // ===================================================================
 
@@ -5723,7 +6023,7 @@ void TransitionToFixedwingResponse::InternalSwap(TransitionToFixedwingResponse* 
 ::google::protobuf::Metadata TransitionToFixedwingResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[27]);
+      file_level_metadata_action_2faction_2eproto[29]);
 }
 // ===================================================================
 
@@ -5758,7 +6058,7 @@ TransitionToMulticopterRequest::TransitionToMulticopterRequest(
 ::google::protobuf::Metadata TransitionToMulticopterRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[28]);
+      file_level_metadata_action_2faction_2eproto[30]);
 }
 // ===================================================================
 
@@ -5965,7 +6265,7 @@ void TransitionToMulticopterResponse::InternalSwap(TransitionToMulticopterRespon
 ::google::protobuf::Metadata TransitionToMulticopterResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[29]);
+      file_level_metadata_action_2faction_2eproto[31]);
 }
 // ===================================================================
 
@@ -6000,7 +6300,7 @@ GetTakeoffAltitudeRequest::GetTakeoffAltitudeRequest(
 ::google::protobuf::Metadata GetTakeoffAltitudeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[30]);
+      file_level_metadata_action_2faction_2eproto[32]);
 }
 // ===================================================================
 
@@ -6255,7 +6555,7 @@ void GetTakeoffAltitudeResponse::InternalSwap(GetTakeoffAltitudeResponse* PROTOB
 ::google::protobuf::Metadata GetTakeoffAltitudeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[31]);
+      file_level_metadata_action_2faction_2eproto[33]);
 }
 // ===================================================================
 
@@ -6439,7 +6739,7 @@ void SetTakeoffAltitudeRequest::InternalSwap(SetTakeoffAltitudeRequest* PROTOBUF
 ::google::protobuf::Metadata SetTakeoffAltitudeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[32]);
+      file_level_metadata_action_2faction_2eproto[34]);
 }
 // ===================================================================
 
@@ -6646,7 +6946,7 @@ void SetTakeoffAltitudeResponse::InternalSwap(SetTakeoffAltitudeResponse* PROTOB
 ::google::protobuf::Metadata SetTakeoffAltitudeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[33]);
+      file_level_metadata_action_2faction_2eproto[35]);
 }
 // ===================================================================
 
@@ -6681,7 +6981,7 @@ GetMaximumSpeedRequest::GetMaximumSpeedRequest(
 ::google::protobuf::Metadata GetMaximumSpeedRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[34]);
+      file_level_metadata_action_2faction_2eproto[36]);
 }
 // ===================================================================
 
@@ -6936,7 +7236,7 @@ void GetMaximumSpeedResponse::InternalSwap(GetMaximumSpeedResponse* PROTOBUF_RES
 ::google::protobuf::Metadata GetMaximumSpeedResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[35]);
+      file_level_metadata_action_2faction_2eproto[37]);
 }
 // ===================================================================
 
@@ -7120,7 +7420,7 @@ void SetMaximumSpeedRequest::InternalSwap(SetMaximumSpeedRequest* PROTOBUF_RESTR
 ::google::protobuf::Metadata SetMaximumSpeedRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[36]);
+      file_level_metadata_action_2faction_2eproto[38]);
 }
 // ===================================================================
 
@@ -7327,7 +7627,7 @@ void SetMaximumSpeedResponse::InternalSwap(SetMaximumSpeedResponse* PROTOBUF_RES
 ::google::protobuf::Metadata SetMaximumSpeedResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[37]);
+      file_level_metadata_action_2faction_2eproto[39]);
 }
 // ===================================================================
 
@@ -7362,7 +7662,7 @@ GetReturnToLaunchAltitudeRequest::GetReturnToLaunchAltitudeRequest(
 ::google::protobuf::Metadata GetReturnToLaunchAltitudeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[38]);
+      file_level_metadata_action_2faction_2eproto[40]);
 }
 // ===================================================================
 
@@ -7617,7 +7917,7 @@ void GetReturnToLaunchAltitudeResponse::InternalSwap(GetReturnToLaunchAltitudeRe
 ::google::protobuf::Metadata GetReturnToLaunchAltitudeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[39]);
+      file_level_metadata_action_2faction_2eproto[41]);
 }
 // ===================================================================
 
@@ -7801,7 +8101,7 @@ void SetReturnToLaunchAltitudeRequest::InternalSwap(SetReturnToLaunchAltitudeReq
 ::google::protobuf::Metadata SetReturnToLaunchAltitudeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[40]);
+      file_level_metadata_action_2faction_2eproto[42]);
 }
 // ===================================================================
 
@@ -8008,7 +8308,7 @@ void SetReturnToLaunchAltitudeResponse::InternalSwap(SetReturnToLaunchAltitudeRe
 ::google::protobuf::Metadata SetReturnToLaunchAltitudeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[41]);
+      file_level_metadata_action_2faction_2eproto[43]);
 }
 // ===================================================================
 
@@ -8192,7 +8492,7 @@ void SetCurrentSpeedRequest::InternalSwap(SetCurrentSpeedRequest* PROTOBUF_RESTR
 ::google::protobuf::Metadata SetCurrentSpeedRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[42]);
+      file_level_metadata_action_2faction_2eproto[44]);
 }
 // ===================================================================
 
@@ -8399,7 +8699,7 @@ void SetCurrentSpeedResponse::InternalSwap(SetCurrentSpeedResponse* PROTOBUF_RES
 ::google::protobuf::Metadata SetCurrentSpeedResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[43]);
+      file_level_metadata_action_2faction_2eproto[45]);
 }
 // ===================================================================
 
@@ -8615,7 +8915,7 @@ void ActionResult::InternalSwap(ActionResult* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata ActionResult::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[44]);
+      file_level_metadata_action_2faction_2eproto[46]);
 }
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace action

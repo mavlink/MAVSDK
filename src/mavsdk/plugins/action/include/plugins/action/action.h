@@ -135,6 +135,32 @@ public:
     Result arm() const;
 
     /**
+     * @brief Send command to force-arm the drone without any checks.
+     *
+     * Attention: this is not to be used for normal flying but only bench tests!
+     *
+     * Arming a drone normally causes motors to spin at idle.
+     * Before arming take all safety precautions and stand clear of the drone!
+     *
+     * This function is non-blocking. See 'arm_force' for the blocking counterpart.
+     */
+    void arm_force_async(const ResultCallback callback);
+
+    /**
+     * @brief Send command to force-arm the drone without any checks.
+     *
+     * Attention: this is not to be used for normal flying but only bench tests!
+     *
+     * Arming a drone normally causes motors to spin at idle.
+     * Before arming take all safety precautions and stand clear of the drone!
+     *
+     * This function is blocking. See 'arm_force_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result arm_force() const;
+
+    /**
      * @brief Send command to disarm the drone.
      *
      * This will disarm a drone that considers itself landed. If flying, the drone should

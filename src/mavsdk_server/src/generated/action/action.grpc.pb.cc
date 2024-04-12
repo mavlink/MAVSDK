@@ -25,6 +25,7 @@ namespace action {
 
 static const char* ActionService_method_names[] = {
   "/mavsdk.rpc.action.ActionService/Arm",
+  "/mavsdk.rpc.action.ActionService/ArmForce",
   "/mavsdk.rpc.action.ActionService/Disarm",
   "/mavsdk.rpc.action.ActionService/Takeoff",
   "/mavsdk.rpc.action.ActionService/Land",
@@ -56,27 +57,28 @@ std::unique_ptr< ActionService::Stub> ActionService::NewStub(const std::shared_p
 
 ActionService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
   : channel_(channel), rpcmethod_Arm_(ActionService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_Disarm_(ActionService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_Takeoff_(ActionService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_Land_(ActionService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_Reboot_(ActionService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_Shutdown_(ActionService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_Terminate_(ActionService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_Kill_(ActionService_method_names[7], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_ReturnToLaunch_(ActionService_method_names[8], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GotoLocation_(ActionService_method_names[9], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_DoOrbit_(ActionService_method_names[10], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_Hold_(ActionService_method_names[11], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetActuator_(ActionService_method_names[12], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_TransitionToFixedwing_(ActionService_method_names[13], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_TransitionToMulticopter_(ActionService_method_names[14], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetTakeoffAltitude_(ActionService_method_names[15], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetTakeoffAltitude_(ActionService_method_names[16], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetMaximumSpeed_(ActionService_method_names[17], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetMaximumSpeed_(ActionService_method_names[18], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetReturnToLaunchAltitude_(ActionService_method_names[19], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetReturnToLaunchAltitude_(ActionService_method_names[20], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetCurrentSpeed_(ActionService_method_names[21], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_ArmForce_(ActionService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_Disarm_(ActionService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_Takeoff_(ActionService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_Land_(ActionService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_Reboot_(ActionService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_Shutdown_(ActionService_method_names[6], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_Terminate_(ActionService_method_names[7], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_Kill_(ActionService_method_names[8], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_ReturnToLaunch_(ActionService_method_names[9], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GotoLocation_(ActionService_method_names[10], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_DoOrbit_(ActionService_method_names[11], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_Hold_(ActionService_method_names[12], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetActuator_(ActionService_method_names[13], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_TransitionToFixedwing_(ActionService_method_names[14], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_TransitionToMulticopter_(ActionService_method_names[15], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetTakeoffAltitude_(ActionService_method_names[16], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetTakeoffAltitude_(ActionService_method_names[17], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetMaximumSpeed_(ActionService_method_names[18], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetMaximumSpeed_(ActionService_method_names[19], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetReturnToLaunchAltitude_(ActionService_method_names[20], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetReturnToLaunchAltitude_(ActionService_method_names[21], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetCurrentSpeed_(ActionService_method_names[22], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status ActionService::Stub::Arm(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ArmRequest& request, ::mavsdk::rpc::action::ArmResponse* response) {
@@ -98,6 +100,29 @@ void ActionService::Stub::async::Arm(::grpc::ClientContext* context, const ::mav
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::ArmResponse>* ActionService::Stub::AsyncArmRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ArmRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncArmRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status ActionService::Stub::ArmForce(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ArmForceRequest& request, ::mavsdk::rpc::action::ArmForceResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action::ArmForceRequest, ::mavsdk::rpc::action::ArmForceResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_ArmForce_, context, request, response);
+}
+
+void ActionService::Stub::async::ArmForce(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ArmForceRequest* request, ::mavsdk::rpc::action::ArmForceResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::action::ArmForceRequest, ::mavsdk::rpc::action::ArmForceResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ArmForce_, context, request, response, std::move(f));
+}
+
+void ActionService::Stub::async::ArmForce(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ArmForceRequest* request, ::mavsdk::rpc::action::ArmForceResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ArmForce_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::ArmForceResponse>* ActionService::Stub::PrepareAsyncArmForceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ArmForceRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::action::ArmForceResponse, ::mavsdk::rpc::action::ArmForceRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_ArmForce_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::ArmForceResponse>* ActionService::Stub::AsyncArmForceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ArmForceRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncArmForceRaw(context, request, cq);
   result->StartCall();
   return result;
 }
@@ -599,6 +624,16 @@ ActionService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ActionService_method_names[1],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::ArmForceRequest, ::mavsdk::rpc::action::ArmForceResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](ActionService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::action::ArmForceRequest* req,
+             ::mavsdk::rpc::action::ArmForceResponse* resp) {
+               return service->ArmForce(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      ActionService_method_names[2],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::DisarmRequest, ::mavsdk::rpc::action::DisarmResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
              ::grpc::ServerContext* ctx,
@@ -607,7 +642,7 @@ ActionService::Service::Service() {
                return service->Disarm(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[2],
+      ActionService_method_names[3],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::TakeoffRequest, ::mavsdk::rpc::action::TakeoffResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -617,7 +652,7 @@ ActionService::Service::Service() {
                return service->Takeoff(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[3],
+      ActionService_method_names[4],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::LandRequest, ::mavsdk::rpc::action::LandResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -627,7 +662,7 @@ ActionService::Service::Service() {
                return service->Land(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[4],
+      ActionService_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::RebootRequest, ::mavsdk::rpc::action::RebootResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -637,7 +672,7 @@ ActionService::Service::Service() {
                return service->Reboot(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[5],
+      ActionService_method_names[6],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::ShutdownRequest, ::mavsdk::rpc::action::ShutdownResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -647,7 +682,7 @@ ActionService::Service::Service() {
                return service->Shutdown(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[6],
+      ActionService_method_names[7],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::TerminateRequest, ::mavsdk::rpc::action::TerminateResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -657,7 +692,7 @@ ActionService::Service::Service() {
                return service->Terminate(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[7],
+      ActionService_method_names[8],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::KillRequest, ::mavsdk::rpc::action::KillResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -667,7 +702,7 @@ ActionService::Service::Service() {
                return service->Kill(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[8],
+      ActionService_method_names[9],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::ReturnToLaunchRequest, ::mavsdk::rpc::action::ReturnToLaunchResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -677,7 +712,7 @@ ActionService::Service::Service() {
                return service->ReturnToLaunch(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[9],
+      ActionService_method_names[10],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::GotoLocationRequest, ::mavsdk::rpc::action::GotoLocationResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -687,7 +722,7 @@ ActionService::Service::Service() {
                return service->GotoLocation(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[10],
+      ActionService_method_names[11],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::DoOrbitRequest, ::mavsdk::rpc::action::DoOrbitResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -697,7 +732,7 @@ ActionService::Service::Service() {
                return service->DoOrbit(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[11],
+      ActionService_method_names[12],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::HoldRequest, ::mavsdk::rpc::action::HoldResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -707,7 +742,7 @@ ActionService::Service::Service() {
                return service->Hold(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[12],
+      ActionService_method_names[13],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::SetActuatorRequest, ::mavsdk::rpc::action::SetActuatorResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -717,7 +752,7 @@ ActionService::Service::Service() {
                return service->SetActuator(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[13],
+      ActionService_method_names[14],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::TransitionToFixedwingRequest, ::mavsdk::rpc::action::TransitionToFixedwingResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -727,7 +762,7 @@ ActionService::Service::Service() {
                return service->TransitionToFixedwing(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[14],
+      ActionService_method_names[15],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::TransitionToMulticopterRequest, ::mavsdk::rpc::action::TransitionToMulticopterResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -737,7 +772,7 @@ ActionService::Service::Service() {
                return service->TransitionToMulticopter(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[15],
+      ActionService_method_names[16],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::GetTakeoffAltitudeRequest, ::mavsdk::rpc::action::GetTakeoffAltitudeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -747,7 +782,7 @@ ActionService::Service::Service() {
                return service->GetTakeoffAltitude(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[16],
+      ActionService_method_names[17],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::SetTakeoffAltitudeRequest, ::mavsdk::rpc::action::SetTakeoffAltitudeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -757,7 +792,7 @@ ActionService::Service::Service() {
                return service->SetTakeoffAltitude(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[17],
+      ActionService_method_names[18],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::GetMaximumSpeedRequest, ::mavsdk::rpc::action::GetMaximumSpeedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -767,7 +802,7 @@ ActionService::Service::Service() {
                return service->GetMaximumSpeed(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[18],
+      ActionService_method_names[19],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::SetMaximumSpeedRequest, ::mavsdk::rpc::action::SetMaximumSpeedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -777,7 +812,7 @@ ActionService::Service::Service() {
                return service->SetMaximumSpeed(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[19],
+      ActionService_method_names[20],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -787,7 +822,7 @@ ActionService::Service::Service() {
                return service->GetReturnToLaunchAltitude(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[20],
+      ActionService_method_names[21],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -797,7 +832,7 @@ ActionService::Service::Service() {
                return service->SetReturnToLaunchAltitude(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[21],
+      ActionService_method_names[22],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::SetCurrentSpeedRequest, ::mavsdk::rpc::action::SetCurrentSpeedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -812,6 +847,13 @@ ActionService::Service::~Service() {
 }
 
 ::grpc::Status ActionService::Service::Arm(::grpc::ServerContext* context, const ::mavsdk::rpc::action::ArmRequest* request, ::mavsdk::rpc::action::ArmResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status ActionService::Service::ArmForce(::grpc::ServerContext* context, const ::mavsdk::rpc::action::ArmForceRequest* request, ::mavsdk::rpc::action::ArmForceResponse* response) {
   (void) context;
   (void) request;
   (void) response;
