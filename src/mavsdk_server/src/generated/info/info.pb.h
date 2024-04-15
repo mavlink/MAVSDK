@@ -1983,6 +1983,8 @@ class FlightInfo final :
   enum : int {
     kFlightUidFieldNumber = 2,
     kTimeBootMsFieldNumber = 1,
+    kDurationSinceArmingMsFieldNumber = 3,
+    kDurationSinceTakeoffMsFieldNumber = 4,
   };
   // uint64 flight_uid = 2;
   void clear_flight_uid() ;
@@ -2004,13 +2006,33 @@ class FlightInfo final :
   void _internal_set_time_boot_ms(::uint32_t value);
 
   public:
+  // uint32 duration_since_arming_ms = 3;
+  void clear_duration_since_arming_ms() ;
+  ::uint32_t duration_since_arming_ms() const;
+  void set_duration_since_arming_ms(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_duration_since_arming_ms() const;
+  void _internal_set_duration_since_arming_ms(::uint32_t value);
+
+  public:
+  // uint32 duration_since_takeoff_ms = 4;
+  void clear_duration_since_takeoff_ms() ;
+  ::uint32_t duration_since_takeoff_ms() const;
+  void set_duration_since_takeoff_ms(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_duration_since_takeoff_ms() const;
+  void _internal_set_duration_since_takeoff_ms(::uint32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.info.FlightInfo)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 0,
+      2, 4, 0,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -2029,6 +2051,8 @@ class FlightInfo final :
                               ::google::protobuf::Arena* arena, const Impl_& from);
     ::uint64_t flight_uid_;
     ::uint32_t time_boot_ms_;
+    ::uint32_t duration_since_arming_ms_;
+    ::uint32_t duration_since_takeoff_ms_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -4008,6 +4032,52 @@ inline void FlightInfo::_internal_set_flight_uid(::uint64_t value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
   _impl_.flight_uid_ = value;
+}
+
+// uint32 duration_since_arming_ms = 3;
+inline void FlightInfo::clear_duration_since_arming_ms() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.duration_since_arming_ms_ = 0u;
+}
+inline ::uint32_t FlightInfo::duration_since_arming_ms() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.info.FlightInfo.duration_since_arming_ms)
+  return _internal_duration_since_arming_ms();
+}
+inline void FlightInfo::set_duration_since_arming_ms(::uint32_t value) {
+  _internal_set_duration_since_arming_ms(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.info.FlightInfo.duration_since_arming_ms)
+}
+inline ::uint32_t FlightInfo::_internal_duration_since_arming_ms() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.duration_since_arming_ms_;
+}
+inline void FlightInfo::_internal_set_duration_since_arming_ms(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.duration_since_arming_ms_ = value;
+}
+
+// uint32 duration_since_takeoff_ms = 4;
+inline void FlightInfo::clear_duration_since_takeoff_ms() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.duration_since_takeoff_ms_ = 0u;
+}
+inline ::uint32_t FlightInfo::duration_since_takeoff_ms() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.info.FlightInfo.duration_since_takeoff_ms)
+  return _internal_duration_since_takeoff_ms();
+}
+inline void FlightInfo::set_duration_since_takeoff_ms(::uint32_t value) {
+  _internal_set_duration_since_takeoff_ms(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.info.FlightInfo.duration_since_takeoff_ms)
+}
+inline ::uint32_t FlightInfo::_internal_duration_since_takeoff_ms() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.duration_since_takeoff_ms_;
+}
+inline void FlightInfo::_internal_set_duration_since_takeoff_ms(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.duration_since_takeoff_ms_ = value;
 }
 
 // -------------------------------------------------------------------

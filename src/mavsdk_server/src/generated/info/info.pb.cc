@@ -192,6 +192,8 @@ inline constexpr FlightInfo::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : flight_uid_{::uint64_t{0u}},
         time_boot_ms_{0u},
+        duration_since_arming_ms_{0u},
+        duration_since_takeoff_ms_{0u},
         _cached_size_{0} {}
 
 template <typename>
@@ -426,6 +428,8 @@ const ::uint32_t TableStruct_info_2finfo_2eproto::offsets[] PROTOBUF_SECTION_VAR
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::FlightInfo, _impl_.time_boot_ms_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::FlightInfo, _impl_.flight_uid_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::FlightInfo, _impl_.duration_since_arming_ms_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::FlightInfo, _impl_.duration_since_takeoff_ms_),
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::info::Identification, _internal_metadata_),
     ~0u,  // no _extensions_
@@ -493,10 +497,10 @@ static const ::_pbi::MigrationSchema
         {80, -1, -1, sizeof(::mavsdk::rpc::info::GetSpeedFactorRequest)},
         {88, 98, -1, sizeof(::mavsdk::rpc::info::GetSpeedFactorResponse)},
         {100, -1, -1, sizeof(::mavsdk::rpc::info::FlightInfo)},
-        {110, -1, -1, sizeof(::mavsdk::rpc::info::Identification)},
-        {120, -1, -1, sizeof(::mavsdk::rpc::info::Product)},
-        {132, -1, -1, sizeof(::mavsdk::rpc::info::Version)},
-        {152, -1, -1, sizeof(::mavsdk::rpc::info::InfoResult)},
+        {112, -1, -1, sizeof(::mavsdk::rpc::info::Identification)},
+        {122, -1, -1, sizeof(::mavsdk::rpc::info::Product)},
+        {134, -1, -1, sizeof(::mavsdk::rpc::info::Version)},
+        {154, -1, -1, sizeof(::mavsdk::rpc::info::InfoResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -536,48 +540,50 @@ const char descriptor_table_protodef_info_2finfo_2eproto[] PROTOBUF_SECTION_VARI
     ".rpc.info.Version\"\027\n\025GetSpeedFactorReque"
     "st\"`\n\026GetSpeedFactorResponse\0220\n\013info_res"
     "ult\030\001 \001(\0132\033.mavsdk.rpc.info.InfoResult\022\024"
-    "\n\014speed_factor\030\002 \001(\001\"6\n\nFlightInfo\022\024\n\014ti"
-    "me_boot_ms\030\001 \001(\r\022\022\n\nflight_uid\030\002 \001(\004\":\n\016"
-    "Identification\022\024\n\014hardware_uid\030\001 \001(\t\022\022\n\n"
-    "legacy_uid\030\002 \001(\004\"[\n\007Product\022\021\n\tvendor_id"
-    "\030\001 \001(\005\022\023\n\013vendor_name\030\002 \001(\t\022\022\n\nproduct_i"
-    "d\030\003 \001(\005\022\024\n\014product_name\030\004 \001(\t\"\207\005\n\007Versio"
-    "n\022\027\n\017flight_sw_major\030\001 \001(\005\022\027\n\017flight_sw_"
-    "minor\030\002 \001(\005\022\027\n\017flight_sw_patch\030\003 \001(\005\022\036\n\026"
-    "flight_sw_vendor_major\030\004 \001(\005\022\036\n\026flight_s"
-    "w_vendor_minor\030\005 \001(\005\022\036\n\026flight_sw_vendor"
-    "_patch\030\006 \001(\005\022\023\n\013os_sw_major\030\007 \001(\005\022\023\n\013os_"
-    "sw_minor\030\010 \001(\005\022\023\n\013os_sw_patch\030\t \001(\005\022\032\n\022f"
-    "light_sw_git_hash\030\n \001(\t\022\026\n\016os_sw_git_has"
-    "h\030\013 \001(\t\022R\n\026flight_sw_version_type\030\014 \001(\0162"
-    "2.mavsdk.rpc.info.Version.FlightSoftware"
-    "VersionType\"\211\002\n\031FlightSoftwareVersionTyp"
-    "e\022(\n$FLIGHT_SOFTWARE_VERSION_TYPE_UNKNOW"
-    "N\020\000\022$\n FLIGHT_SOFTWARE_VERSION_TYPE_DEV\020"
-    "\001\022&\n\"FLIGHT_SOFTWARE_VERSION_TYPE_ALPHA\020"
-    "\002\022%\n!FLIGHT_SOFTWARE_VERSION_TYPE_BETA\020\003"
-    "\022#\n\037FLIGHT_SOFTWARE_VERSION_TYPE_RC\020\004\022(\n"
-    "$FLIGHT_SOFTWARE_VERSION_TYPE_RELEASE\020\005\""
-    "\305\001\n\nInfoResult\0222\n\006result\030\001 \001(\0162\".mavsdk."
-    "rpc.info.InfoResult.Result\022\022\n\nresult_str"
-    "\030\002 \001(\t\"o\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016"
-    "RESULT_SUCCESS\020\001\022\'\n#RESULT_INFORMATION_N"
-    "OT_RECEIVED_YET\020\002\022\024\n\020RESULT_NO_SYSTEM\020\0032"
-    "\235\004\n\013InfoService\022y\n\024GetFlightInformation\022"
-    ",.mavsdk.rpc.info.GetFlightInformationRe"
-    "quest\032-.mavsdk.rpc.info.GetFlightInforma"
-    "tionResponse\"\004\200\265\030\001\022p\n\021GetIdentification\022"
-    ").mavsdk.rpc.info.GetIdentificationReque"
-    "st\032*.mavsdk.rpc.info.GetIdentificationRe"
-    "sponse\"\004\200\265\030\001\022[\n\nGetProduct\022\".mavsdk.rpc."
-    "info.GetProductRequest\032#.mavsdk.rpc.info"
-    ".GetProductResponse\"\004\200\265\030\001\022[\n\nGetVersion\022"
-    "\".mavsdk.rpc.info.GetVersionRequest\032#.ma"
-    "vsdk.rpc.info.GetVersionResponse\"\004\200\265\030\001\022g"
-    "\n\016GetSpeedFactor\022&.mavsdk.rpc.info.GetSp"
-    "eedFactorRequest\032\'.mavsdk.rpc.info.GetSp"
-    "eedFactorResponse\"\004\200\265\030\001B\033\n\016io.mavsdk.inf"
-    "oB\tInfoProtob\006proto3"
+    "\n\014speed_factor\030\002 \001(\001\"{\n\nFlightInfo\022\024\n\014ti"
+    "me_boot_ms\030\001 \001(\r\022\022\n\nflight_uid\030\002 \001(\004\022 \n\030"
+    "duration_since_arming_ms\030\003 \001(\r\022!\n\031durati"
+    "on_since_takeoff_ms\030\004 \001(\r\":\n\016Identificat"
+    "ion\022\024\n\014hardware_uid\030\001 \001(\t\022\022\n\nlegacy_uid\030"
+    "\002 \001(\004\"[\n\007Product\022\021\n\tvendor_id\030\001 \001(\005\022\023\n\013v"
+    "endor_name\030\002 \001(\t\022\022\n\nproduct_id\030\003 \001(\005\022\024\n\014"
+    "product_name\030\004 \001(\t\"\207\005\n\007Version\022\027\n\017flight"
+    "_sw_major\030\001 \001(\005\022\027\n\017flight_sw_minor\030\002 \001(\005"
+    "\022\027\n\017flight_sw_patch\030\003 \001(\005\022\036\n\026flight_sw_v"
+    "endor_major\030\004 \001(\005\022\036\n\026flight_sw_vendor_mi"
+    "nor\030\005 \001(\005\022\036\n\026flight_sw_vendor_patch\030\006 \001("
+    "\005\022\023\n\013os_sw_major\030\007 \001(\005\022\023\n\013os_sw_minor\030\010 "
+    "\001(\005\022\023\n\013os_sw_patch\030\t \001(\005\022\032\n\022flight_sw_gi"
+    "t_hash\030\n \001(\t\022\026\n\016os_sw_git_hash\030\013 \001(\t\022R\n\026"
+    "flight_sw_version_type\030\014 \001(\01622.mavsdk.rp"
+    "c.info.Version.FlightSoftwareVersionType"
+    "\"\211\002\n\031FlightSoftwareVersionType\022(\n$FLIGHT"
+    "_SOFTWARE_VERSION_TYPE_UNKNOWN\020\000\022$\n FLIG"
+    "HT_SOFTWARE_VERSION_TYPE_DEV\020\001\022&\n\"FLIGHT"
+    "_SOFTWARE_VERSION_TYPE_ALPHA\020\002\022%\n!FLIGHT"
+    "_SOFTWARE_VERSION_TYPE_BETA\020\003\022#\n\037FLIGHT_"
+    "SOFTWARE_VERSION_TYPE_RC\020\004\022(\n$FLIGHT_SOF"
+    "TWARE_VERSION_TYPE_RELEASE\020\005\"\305\001\n\nInfoRes"
+    "ult\0222\n\006result\030\001 \001(\0162\".mavsdk.rpc.info.In"
+    "foResult.Result\022\022\n\nresult_str\030\002 \001(\t\"o\n\006R"
+    "esult\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCC"
+    "ESS\020\001\022\'\n#RESULT_INFORMATION_NOT_RECEIVED"
+    "_YET\020\002\022\024\n\020RESULT_NO_SYSTEM\020\0032\235\004\n\013InfoSer"
+    "vice\022y\n\024GetFlightInformation\022,.mavsdk.rp"
+    "c.info.GetFlightInformationRequest\032-.mav"
+    "sdk.rpc.info.GetFlightInformationRespons"
+    "e\"\004\200\265\030\001\022p\n\021GetIdentification\022).mavsdk.rp"
+    "c.info.GetIdentificationRequest\032*.mavsdk"
+    ".rpc.info.GetIdentificationResponse\"\004\200\265\030"
+    "\001\022[\n\nGetProduct\022\".mavsdk.rpc.info.GetPro"
+    "ductRequest\032#.mavsdk.rpc.info.GetProduct"
+    "Response\"\004\200\265\030\001\022[\n\nGetVersion\022\".mavsdk.rp"
+    "c.info.GetVersionRequest\032#.mavsdk.rpc.in"
+    "fo.GetVersionResponse\"\004\200\265\030\001\022g\n\016GetSpeedF"
+    "actor\022&.mavsdk.rpc.info.GetSpeedFactorRe"
+    "quest\032\'.mavsdk.rpc.info.GetSpeedFactorRe"
+    "sponse\"\004\200\265\030\001B\033\n\016io.mavsdk.infoB\tInfoProt"
+    "ob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_info_2finfo_2eproto_deps[1] =
     {
@@ -587,7 +593,7 @@ static ::absl::once_flag descriptor_table_info_2finfo_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_info_2finfo_2eproto = {
     false,
     false,
-    2420,
+    2489,
     descriptor_table_protodef_info_2finfo_2eproto,
     "info/info.proto",
     &descriptor_table_info_2finfo_2eproto_once,
@@ -2176,9 +2182,9 @@ inline void FlightInfo::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, flight_uid_),
            0,
-           offsetof(Impl_, time_boot_ms_) -
+           offsetof(Impl_, duration_since_takeoff_ms_) -
                offsetof(Impl_, flight_uid_) +
-               sizeof(Impl_::time_boot_ms_));
+               sizeof(Impl_::duration_since_takeoff_ms_));
 }
 FlightInfo::~FlightInfo() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.info.FlightInfo)
@@ -2198,8 +2204,8 @@ PROTOBUF_NOINLINE void FlightInfo::Clear() {
   (void) cached_has_bits;
 
   ::memset(&_impl_.flight_uid_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.time_boot_ms_) -
-      reinterpret_cast<char*>(&_impl_.flight_uid_)) + sizeof(_impl_.time_boot_ms_));
+      reinterpret_cast<char*>(&_impl_.duration_since_takeoff_ms_) -
+      reinterpret_cast<char*>(&_impl_.flight_uid_)) + sizeof(_impl_.duration_since_takeoff_ms_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -2211,26 +2217,32 @@ const char* FlightInfo::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 0, 0, 2> FlightInfo::_table_ = {
+const ::_pbi::TcParseTable<2, 4, 0, 0, 2> FlightInfo::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
+    4, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
+    4294967280,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
+    4,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     &_FlightInfo_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
-    // uint64 flight_uid = 2;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(FlightInfo, _impl_.flight_uid_), 63>(),
-     {16, 63, 0, PROTOBUF_FIELD_OFFSET(FlightInfo, _impl_.flight_uid_)}},
+    // uint32 duration_since_takeoff_ms = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(FlightInfo, _impl_.duration_since_takeoff_ms_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(FlightInfo, _impl_.duration_since_takeoff_ms_)}},
     // uint32 time_boot_ms = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(FlightInfo, _impl_.time_boot_ms_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(FlightInfo, _impl_.time_boot_ms_)}},
+    // uint64 flight_uid = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(FlightInfo, _impl_.flight_uid_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(FlightInfo, _impl_.flight_uid_)}},
+    // uint32 duration_since_arming_ms = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(FlightInfo, _impl_.duration_since_arming_ms_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(FlightInfo, _impl_.duration_since_arming_ms_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -2240,6 +2252,12 @@ const ::_pbi::TcParseTable<1, 2, 0, 0, 2> FlightInfo::_table_ = {
     // uint64 flight_uid = 2;
     {PROTOBUF_FIELD_OFFSET(FlightInfo, _impl_.flight_uid_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+    // uint32 duration_since_arming_ms = 3;
+    {PROTOBUF_FIELD_OFFSET(FlightInfo, _impl_.duration_since_arming_ms_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // uint32 duration_since_takeoff_ms = 4;
+    {PROTOBUF_FIELD_OFFSET(FlightInfo, _impl_.duration_since_takeoff_ms_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
   }},
   // no aux_entries
   {{
@@ -2265,6 +2283,20 @@ const ::_pbi::TcParseTable<1, 2, 0, 0, 2> FlightInfo::_table_ = {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
         2, this->_internal_flight_uid(), target);
+  }
+
+  // uint32 duration_since_arming_ms = 3;
+  if (this->_internal_duration_since_arming_ms() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        3, this->_internal_duration_since_arming_ms(), target);
+  }
+
+  // uint32 duration_since_takeoff_ms = 4;
+  if (this->_internal_duration_since_takeoff_ms() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        4, this->_internal_duration_since_takeoff_ms(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2296,6 +2328,18 @@ const ::_pbi::TcParseTable<1, 2, 0, 0, 2> FlightInfo::_table_ = {
         this->_internal_time_boot_ms());
   }
 
+  // uint32 duration_since_arming_ms = 3;
+  if (this->_internal_duration_since_arming_ms() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_duration_since_arming_ms());
+  }
+
+  // uint32 duration_since_takeoff_ms = 4;
+  if (this->_internal_duration_since_takeoff_ms() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_duration_since_takeoff_ms());
+  }
+
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -2321,6 +2365,12 @@ void FlightInfo::MergeImpl(::google::protobuf::Message& to_msg, const ::google::
   if (from._internal_time_boot_ms() != 0) {
     _this->_internal_set_time_boot_ms(from._internal_time_boot_ms());
   }
+  if (from._internal_duration_since_arming_ms() != 0) {
+    _this->_internal_set_duration_since_arming_ms(from._internal_duration_since_arming_ms());
+  }
+  if (from._internal_duration_since_takeoff_ms() != 0) {
+    _this->_internal_set_duration_since_takeoff_ms(from._internal_duration_since_takeoff_ms());
+  }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -2342,8 +2392,8 @@ void FlightInfo::InternalSwap(FlightInfo* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(FlightInfo, _impl_.time_boot_ms_)
-      + sizeof(FlightInfo::_impl_.time_boot_ms_)
+      PROTOBUF_FIELD_OFFSET(FlightInfo, _impl_.duration_since_takeoff_ms_)
+      + sizeof(FlightInfo::_impl_.duration_since_takeoff_ms_)
       - PROTOBUF_FIELD_OFFSET(FlightInfo, _impl_.flight_uid_)>(
           reinterpret_cast<char*>(&_impl_.flight_uid_),
           reinterpret_cast<char*>(&other->_impl_.flight_uid_));

@@ -65,6 +65,8 @@ public:
         uint32_t time_boot_ms{}; /**< @brief Time since system boot */
         uint64_t flight_uid{}; /**< @brief Flight counter. Starts from zero, is incremented at every
                                   disarm and is never reset (even after reboot) */
+        uint32_t duration_since_arming_ms{}; /**< @brief Duration since arming in milliseconds */
+        uint32_t duration_since_takeoff_ms{}; /**< @brief Duration since takeoff in milliseconds */
     };
 
     /**

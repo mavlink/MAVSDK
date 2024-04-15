@@ -31,8 +31,6 @@ public:
     InfoImpl& operator=(const InfoImpl&) = delete;
 
 private:
-    void request_version_again();
-    void request_flight_information();
     void process_heartbeat(const mavlink_message_t& message);
     void process_autopilot_version(const mavlink_message_t& message);
     void process_flight_information(const mavlink_message_t& message);
@@ -48,13 +46,12 @@ private:
     Info::Version _version{};
     Info::Product _product{};
     Info::Identification _identification{};
+    bool _identification_received{false};
+
     Info::FlightInfo _flight_info{};
-    std::atomic<bool> _information_received{false};
     bool _flight_information_received{false};
-    bool _was_armed{false};
 
     void* _call_every_cookie{nullptr};
-    void* _flight_info_call_every_cookie{nullptr};
 
     struct SpeedFactorMeasurement {
         double simulated_duration_s{0.0};
