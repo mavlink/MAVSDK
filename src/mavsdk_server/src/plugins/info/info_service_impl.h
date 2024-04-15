@@ -50,6 +50,10 @@ public:
 
         rpc_obj->set_flight_uid(flight_info.flight_uid);
 
+        rpc_obj->set_duration_since_arming_ms(flight_info.duration_since_arming_ms);
+
+        rpc_obj->set_duration_since_takeoff_ms(flight_info.duration_since_takeoff_ms);
+
         return rpc_obj;
     }
 
@@ -61,6 +65,10 @@ public:
         obj.time_boot_ms = flight_info.time_boot_ms();
 
         obj.flight_uid = flight_info.flight_uid();
+
+        obj.duration_since_arming_ms = flight_info.duration_since_arming_ms();
+
+        obj.duration_since_takeoff_ms = flight_info.duration_since_takeoff_ms();
 
         return obj;
     }
