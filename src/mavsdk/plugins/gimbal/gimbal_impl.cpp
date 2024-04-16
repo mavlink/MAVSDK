@@ -34,7 +34,11 @@ void GimbalImpl::init()
         this);
 }
 
-void GimbalImpl::deinit() {}
+void GimbalImpl::deinit()
+{
+    _gimbal_protocol.reset(nullptr);
+    _system_impl->unregister_all_mavlink_message_handlers(this);
+}
 
 void GimbalImpl::enable()
 {
@@ -50,7 +54,7 @@ void GimbalImpl::enable()
 
 void GimbalImpl::disable()
 {
-    _gimbal_protocol.reset(nullptr);
+    _system_impl->unregister_timeout_handler(_protocol_cookie);
 }
 
 void GimbalImpl::receive_protocol_timeout()
