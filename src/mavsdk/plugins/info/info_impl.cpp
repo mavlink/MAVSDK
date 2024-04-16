@@ -1,10 +1,14 @@
-#include <functional>
 #include <cstring>
+#include <functional>
+#include <future>
 #include <numeric>
 #include "info_impl.h"
 #include "system.h"
+#include "callback_list.tpp"
 
 namespace mavsdk {
+
+template class CallbackList<Info::FlightInfo>;
 
 InfoImpl::InfoImpl(System& system) : PluginImplBase(system)
 {
@@ -50,8 +54,10 @@ void InfoImpl::enable()
     _system_impl->add_call_every(
         [this]() { _system_impl->send_autopilot_version_request(); }, 1.0f, &_call_every_cookie);
 
-    // We're hoping to get flight information regularly to update flight time.
-    _system_impl->set_msg_rate(MAVLINK_MSG_ID_FLIGHT_INFORMATION, 1.0);
+    if (!_flight_info_subscriptions.empty()) {
+        // We're hoping to get flight information regularly to update flight time.
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_FLIGHT_INFORMATION, 1.0);
+    }
 }
 
 void InfoImpl::disable()
@@ -59,7 +65,6 @@ void InfoImpl::disable()
     _system_impl->remove_call_every(_call_every_cookie);
 
     std::lock_guard<std::mutex> lock(_mutex);
-    _flight_information_received = false;
     _identification_received = false;
 }
 
@@ -158,7 +163,8 @@ void InfoImpl::process_flight_information(const mavlink_message_t& message)
         _flight_info.duration_since_takeoff_ms = 0;
     }
 
-    _flight_information_received = true;
+    _flight_info_subscriptions.queue(
+        _flight_info, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 std::string InfoImpl::swap_and_translate_binary_to_str(uint8_t* binary, unsigned binary_len)
@@ -220,15 +226,23 @@ std::pair<Info::Result, Info::Product> InfoImpl::get_product() const
         _product);
 }
 
-std::pair<Info::Result, Info::FlightInfo> InfoImpl::get_flight_information() const
+std::pair<Info::Result, Info::FlightInfo> InfoImpl::get_flight_information()
 {
-    wait_for_information();
-    std::lock_guard<std::mutex> lock(_mutex);
-
-    return std::make_pair<>(
-        (_flight_information_received ? Info::Result::Success :
-                                        Info::Result::InformationNotReceivedYet),
-        _flight_info);
+    std::promise<std::pair<Info::Result, Info::FlightInfo>> prom;
+    auto fut = prom.get_future();
+    _system_impl->request_message().request(
+        MAVLINK_MSG_ID_FLIGHT_INFORMATION,
+        MAV_COMP_ID_AUTOPILOT1,
+        [&](MavlinkCommandSender::Result result, const mavlink_message_t& message) {
+            if (result == MavlinkCommandSender::Result::Success) {
+                // This call might happen twice but that's ok.
+                process_flight_information(message);
+                prom.set_value({Info::Result::Success, _flight_info});
+            } else {
+                prom.set_value({Info::Result::InformationNotReceivedYet, Info::FlightInfo{}});
+            }
+        });
+    return fut.get();
 }
 
 const std::string InfoImpl::vendor_id_str(uint16_t vendor_id)
@@ -292,8 +306,8 @@ std::pair<Info::Result, double> InfoImpl::get_speed_factor() const
 
 void InfoImpl::wait_for_identification() const
 {
-    // Wait 1.5 seconds max
-    for (unsigned i = 0; i < 150; ++i) {
+    // Wait 0.5 seconds max
+    for (unsigned i = 0; i < 50; ++i) {
         {
             std::lock_guard<std::mutex> lock(_mutex);
             if (_identification_received) {
@@ -304,18 +318,25 @@ void InfoImpl::wait_for_identification() const
     }
 }
 
-void InfoImpl::wait_for_information() const
+Info::FlightInformationHandle
+InfoImpl::subscribe_flight_information(const Info::FlightInformationCallback& callback)
 {
-    // Wait 1.5 seconds max
-    for (unsigned i = 0; i < 150; ++i) {
-        {
-            std::lock_guard<std::mutex> lock(_mutex);
-            if (_flight_information_received) {
-                break;
-            }
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    // Make sure we get the message regularly.
+    _system_impl->set_msg_rate(MAVLINK_MSG_ID_FLIGHT_INFORMATION, 1.0);
+
+    return _flight_info_subscriptions.subscribe(callback);
+}
+
+void InfoImpl::unsubscribe_flight_information(Info::FlightInformationHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    // Reset message to default
+    _system_impl->set_msg_rate(MAVLINK_MSG_ID_FLIGHT_INFORMATION, 0.0);
+
+    _flight_info_subscriptions.unsubscribe(handle);
 }
 
 } // namespace mavsdk
