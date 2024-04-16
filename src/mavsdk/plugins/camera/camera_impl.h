@@ -176,7 +176,6 @@ private:
     void process_camera_information(const mavlink_message_t& message);
     void process_video_information(const mavlink_message_t& message);
     void process_video_stream_status(const mavlink_message_t& message);
-    void process_flight_information(const mavlink_message_t& message);
     void reset_following_format_storage();
 
     Camera::Status::StorageStatus storage_status_from_mavlink(const int storage_status) const;
@@ -205,7 +204,6 @@ private:
     Camera::Mode to_camera_mode(const uint8_t mavlink_camera_mode) const;
 
     void* _camera_information_call_every_cookie{nullptr};
-    void* _flight_information_call_every_cookie{nullptr};
     void* _check_connection_status_call_every_cookie{nullptr};
     void* _request_missing_capture_info_cookie{nullptr};
 
@@ -214,12 +212,10 @@ private:
     void request_video_stream_info();
     void request_video_stream_status();
     void request_status();
-    void request_flight_information();
 
     MavlinkCommandSender::CommandLong make_command_take_photo(float interval_s, float no_of_photos);
     MavlinkCommandSender::CommandLong make_command_stop_photo();
 
-    MavlinkCommandSender::CommandLong make_command_request_flight_information();
     MavlinkCommandSender::CommandLong make_command_request_camera_info();
     MavlinkCommandSender::CommandLong make_command_set_camera_mode(float mavlink_mode);
     MavlinkCommandSender::CommandLong make_command_request_camera_settings();

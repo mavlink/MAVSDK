@@ -283,7 +283,6 @@ public:
     void send_autopilot_version_request();
     void send_autopilot_version_request_async(
         const MavlinkCommandSender::CommandResultCallback& callback);
-    void send_flight_information_request();
 
     MavlinkMissionTransferClient& mission_transfer_client() { return _mission_transfer_client; };
 
