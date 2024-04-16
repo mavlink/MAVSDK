@@ -79,13 +79,6 @@ void CameraImpl::init()
         [this](const mavlink_message_t& message) { process_video_stream_status(message); },
         this);
 
-    if (_system_impl->has_autopilot()) {
-        _system_impl->register_mavlink_message_handler(
-            MAVLINK_MSG_ID_FLIGHT_INFORMATION,
-            [this](const mavlink_message_t& message) { process_flight_information(message); },
-            this);
-    }
-
     _system_impl->add_call_every(
         [this]() { check_connection_status(); }, 0.5, &_check_connection_status_call_every_cookie);
 
@@ -99,7 +92,6 @@ void CameraImpl::deinit()
     _system_impl->remove_call_every(_check_connection_status_call_every_cookie);
     _system_impl->remove_call_every(_status.call_every_cookie);
     _system_impl->remove_call_every(_camera_information_call_every_cookie);
-    _system_impl->remove_call_every(_flight_information_call_every_cookie);
     _system_impl->remove_call_every(_mode.call_every_cookie);
     _system_impl->remove_call_every(_video_stream_info.call_every_cookie);
     _system_impl->unregister_all_mavlink_message_handlers(this);
@@ -207,16 +199,6 @@ void CameraImpl::manual_enable()
         [this]() { request_camera_information(); }, 10.0, &_camera_information_call_every_cookie);
 
     _system_impl->add_call_every([this]() { request_status(); }, 5.0, &_status.call_every_cookie);
-
-    // for backwards compatibility with Yuneec drones
-    if (_system_impl->has_autopilot()) {
-        request_flight_information();
-
-        _system_impl->add_call_every(
-            [this]() { request_flight_information(); },
-            10.0,
-            &_flight_information_call_every_cookie);
-    }
 }
 
 void CameraImpl::disable()
@@ -231,10 +213,6 @@ void CameraImpl::manual_disable()
     invalidate_params();
     _system_impl->remove_call_every(_camera_information_call_every_cookie);
     _system_impl->remove_call_every(_status.call_every_cookie);
-
-    if (_flight_information_call_every_cookie) {
-        _system_impl->remove_call_every(_flight_information_call_every_cookie);
-    }
 
     _camera_found = false;
 }
@@ -282,17 +260,6 @@ Camera::Result CameraImpl::select_camera(const size_t id)
     manual_enable();
 
     return Camera::Result::Success;
-}
-
-MavlinkCommandSender::CommandLong CameraImpl::make_command_request_flight_information()
-{
-    MavlinkCommandSender::CommandLong command_flight_information{};
-
-    command_flight_information.command = MAV_CMD_REQUEST_FLIGHT_INFORMATION;
-    command_flight_information.params.maybe_param1 = 1.0f; // Request it
-    command_flight_information.target_component_id = MAV_COMP_ID_AUTOPILOT1;
-
-    return command_flight_information;
 }
 
 MavlinkCommandSender::CommandLong CameraImpl::make_command_request_camera_info()
@@ -1678,39 +1645,6 @@ void CameraImpl::process_video_stream_status(const mavlink_message_t& message)
     notify_video_stream_info();
 }
 
-void CameraImpl::process_flight_information(const mavlink_message_t& message)
-{
-    mavlink_flight_information_t flight_information;
-    mavlink_msg_flight_information_decode(&message, &flight_information);
-
-    std::stringstream folder_name_stream;
-    {
-        std::lock_guard<std::mutex> information_lock(_information.mutex);
-
-        // For Yuneec cameras, the folder names can be derived from the flight ID,
-        // starting at 100 up to 999.
-        if (_information.data.vendor_name == "Yuneec" && _information.data.model_name == "E90") {
-            folder_name_stream << (101 + flight_information.flight_uuid % 899) << "E90HD";
-        } else if (
-            _information.data.vendor_name == "Yuneec" && _information.data.model_name == "E50") {
-            folder_name_stream << (101 + flight_information.flight_uuid % 899) << "E50HD";
-        } else if (
-            _information.data.vendor_name == "Yuneec" && _information.data.model_name == "CGOET") {
-            folder_name_stream << (101 + flight_information.flight_uuid % 899) << "CGOET";
-        } else if (
-            _information.data.vendor_name == "Yuneec" && _information.data.model_name == "E10T") {
-            folder_name_stream << (101 + flight_information.flight_uuid % 899) << "E10T";
-        } else {
-            // Folder name unknown
-        }
-    }
-
-    {
-        std::lock_guard<std::mutex> lock(_status.mutex);
-        _status.data.media_folder_name = folder_name_stream.str();
-    }
-}
-
 void CameraImpl::notify_video_stream_info()
 {
     std::lock_guard<std::mutex> lock(_video_stream_info.mutex);
@@ -2281,12 +2215,6 @@ void CameraImpl::request_camera_settings()
 {
     auto command_camera_settings = make_command_request_camera_settings();
     _system_impl->send_command_async(command_camera_settings, nullptr);
-}
-
-void CameraImpl::request_flight_information()
-{
-    auto command_flight_information = make_command_request_flight_information();
-    _system_impl->send_command_async(command_flight_information, nullptr);
 }
 
 void CameraImpl::request_camera_information()

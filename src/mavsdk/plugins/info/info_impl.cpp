@@ -188,7 +188,7 @@ std::string InfoImpl::translate_binary_to_str(uint8_t* binary, unsigned binary_l
 
 std::pair<Info::Result, Info::Identification> InfoImpl::get_identification() const
 {
-    wait_for_information();
+    wait_for_identification();
 
     std::lock_guard<std::mutex> lock(_mutex);
     return std::make_pair<>(
@@ -199,7 +199,7 @@ std::pair<Info::Result, Info::Identification> InfoImpl::get_identification() con
 
 std::pair<Info::Result, Info::Version> InfoImpl::get_version() const
 {
-    wait_for_information();
+    wait_for_identification();
 
     std::lock_guard<std::mutex> lock(_mutex);
 
@@ -211,7 +211,7 @@ std::pair<Info::Result, Info::Version> InfoImpl::get_version() const
 
 std::pair<Info::Result, Info::Product> InfoImpl::get_product() const
 {
-    wait_for_information();
+    wait_for_identification();
     std::lock_guard<std::mutex> lock(_mutex);
 
     return std::make_pair<>(
@@ -290,13 +290,27 @@ std::pair<Info::Result, double> InfoImpl::get_speed_factor() const
     return std::make_pair<>(Info::Result::Success, speed_factor);
 }
 
-void InfoImpl::wait_for_information() const
+void InfoImpl::wait_for_identification() const
 {
     // Wait 1.5 seconds max
     for (unsigned i = 0; i < 150; ++i) {
         {
             std::lock_guard<std::mutex> lock(_mutex);
             if (_identification_received) {
+                break;
+            }
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+}
+
+void InfoImpl::wait_for_information() const
+{
+    // Wait 1.5 seconds max
+    for (unsigned i = 0; i < 150; ++i) {
+        {
+            std::lock_guard<std::mutex> lock(_mutex);
+            if (_flight_information_received) {
                 break;
             }
         }
