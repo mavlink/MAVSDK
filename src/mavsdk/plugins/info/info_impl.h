@@ -39,6 +39,7 @@ private:
     Info::Version::FlightSoftwareVersionType
         get_flight_software_version_type(FIRMWARE_VERSION_TYPE);
 
+    void wait_for_identification() const;
     void wait_for_information() const;
 
     mutable std::mutex _mutex{};
