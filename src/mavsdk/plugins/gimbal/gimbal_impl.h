@@ -67,6 +67,9 @@ public:
     const GimbalImpl& operator=(const GimbalImpl&) = delete;
 
 private:
+    void receive_attitude_update(Gimbal::Attitude attitude);
+    void receive_control_status_update(Gimbal::ControlStatus control_status);
+
     std::unique_ptr<GimbalProtocolBase> _gimbal_protocol{nullptr};
 
     void* _protocol_cookie{nullptr};
