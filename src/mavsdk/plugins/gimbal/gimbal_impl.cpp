@@ -36,6 +36,8 @@ void GimbalImpl::init()
 
 void GimbalImpl::deinit()
 {
+    std::lock_guard<std::mutex> lock(_mutex);
+
     _gimbal_protocol.reset(nullptr);
     _system_impl->unregister_all_mavlink_message_handlers(this);
 }
@@ -61,7 +63,7 @@ void GimbalImpl::receive_protocol_timeout()
 {
     // We did not receive a GIMBAL_MANAGER_INFORMATION in time, so we have to
     // assume Version2 is not available.
-    LogDebug() << "Falling back to Gimbal Version 1";
+    LogWarn() << "Falling back to Gimbal Version 1";
     _gimbal_protocol.reset(new GimbalProtocolV1(*_system_impl));
     _protocol_cookie = nullptr;
 }
@@ -85,6 +87,10 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
         _system_impl->call_user_callback([=]() {
             _gimbal_protocol.reset(new GimbalProtocolV2(
                 *_system_impl, gimbal_manager_information, message.sysid, message.compid));
+            _gimbal_protocol->attitude_async(
+                [this](auto attitude) { receive_attitude_update(attitude); });
+            _gimbal_protocol->control_async(
+                [this](auto control_status) { receive_control_status_update(control_status); });
         });
     }
 }
@@ -273,6 +279,22 @@ void GimbalImpl::receive_command_result(
     if (callback) {
         callback(gimbal_result);
     }
+}
+
+void GimbalImpl::receive_attitude_update(Gimbal::Attitude attitude)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    _attitude_subscriptions.queue(
+        attitude, [this](const auto& func) { _system_impl->call_user_callback(func); });
+}
+
+void GimbalImpl::receive_control_status_update(Gimbal::ControlStatus control_status)
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+
+    _control_subscriptions.queue(
+        control_status, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 Gimbal::Result

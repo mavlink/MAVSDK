@@ -56,7 +56,7 @@ void InfoImpl::enable()
 
     if (!_flight_info_subscriptions.empty()) {
         // We're hoping to get flight information regularly to update flight time.
-        _system_impl->set_msg_rate(MAVLINK_MSG_ID_FLIGHT_INFORMATION, 1.0);
+        _system_impl->set_msg_rate_async(MAVLINK_MSG_ID_FLIGHT_INFORMATION, 1.0, nullptr);
     }
 }
 
@@ -321,20 +321,20 @@ void InfoImpl::wait_for_identification() const
 Info::FlightInformationHandle
 InfoImpl::subscribe_flight_information(const Info::FlightInformationCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     // Make sure we get the message regularly.
-    _system_impl->set_msg_rate(MAVLINK_MSG_ID_FLIGHT_INFORMATION, 1.0);
+    _system_impl->set_msg_rate_async(MAVLINK_MSG_ID_FLIGHT_INFORMATION, 1.0, nullptr);
+
+    std::lock_guard<std::mutex> lock(_mutex);
 
     return _flight_info_subscriptions.subscribe(callback);
 }
 
 void InfoImpl::unsubscribe_flight_information(Info::FlightInformationHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     // Reset message to default
-    _system_impl->set_msg_rate(MAVLINK_MSG_ID_FLIGHT_INFORMATION, 0.0);
+    _system_impl->set_msg_rate_async(MAVLINK_MSG_ID_FLIGHT_INFORMATION, 0.0, nullptr);
+
+    std::lock_guard<std::mutex> lock(_mutex);
 
     _flight_info_subscriptions.unsubscribe(handle);
 }
