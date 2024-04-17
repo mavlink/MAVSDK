@@ -46,6 +46,17 @@ std::pair<Info::Result, double> Info::get_speed_factor() const
     return _impl->get_speed_factor();
 }
 
+Info::FlightInformationHandle
+Info::subscribe_flight_information(const FlightInformationCallback& callback)
+{
+    return _impl->subscribe_flight_information(callback);
+}
+
+void Info::unsubscribe_flight_information(FlightInformationHandle handle)
+{
+    _impl->unsubscribe_flight_information(handle);
+}
+
 bool operator==(const Info::FlightInfo& lhs, const Info::FlightInfo& rhs)
 {
     return (rhs.time_boot_ms == lhs.time_boot_ms) && (rhs.flight_uid == lhs.flight_uid) &&

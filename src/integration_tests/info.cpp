@@ -74,7 +74,7 @@ TEST(SitlTest, PX4Info)
         if (flight_info_result.first == Info::Result::Success) {
             std::cout << flight_info_result.second << '\n';
         } else {
-            LogWarn() << "Product request result: " << flight_info_result.first;
+            LogWarn() << "Flight info request result: " << flight_info_result.first;
         }
 
         std::this_thread::sleep_for(std::chrono::seconds(2));

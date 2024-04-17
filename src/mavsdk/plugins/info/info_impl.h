@@ -6,6 +6,7 @@
 #include "plugins/info/info.h"
 #include "plugin_impl_base.h"
 #include "ringbuffer.h"
+#include "callback_list.h"
 
 namespace mavsdk {
 
@@ -24,8 +25,12 @@ public:
     std::pair<Info::Result, Info::Identification> get_identification() const;
     std::pair<Info::Result, Info::Version> get_version() const;
     std::pair<Info::Result, Info::Product> get_product() const;
-    std::pair<Info::Result, Info::FlightInfo> get_flight_information() const;
+    std::pair<Info::Result, Info::FlightInfo> get_flight_information();
     std::pair<Info::Result, double> get_speed_factor() const;
+
+    Info::FlightInformationHandle
+    subscribe_flight_information(const Info::FlightInformationCallback& callback);
+    void unsubscribe_flight_information(Info::FlightInformationHandle handle);
 
     InfoImpl(const InfoImpl&) = delete;
     InfoImpl& operator=(const InfoImpl&) = delete;
@@ -40,7 +45,6 @@ private:
         get_flight_software_version_type(FIRMWARE_VERSION_TYPE);
 
     void wait_for_identification() const;
-    void wait_for_information() const;
 
     mutable std::mutex _mutex{};
 
@@ -50,7 +54,6 @@ private:
     bool _identification_received{false};
 
     Info::FlightInfo _flight_info{};
-    bool _flight_information_received{false};
 
     void* _call_every_cookie{nullptr};
 
@@ -70,6 +73,8 @@ private:
     Time _time{};
     SteadyTimePoint _last_time_attitude_arrived{};
     uint32_t _last_time_boot_ms{0};
+
+    CallbackList<Info::FlightInfo> _flight_info_subscriptions{};
 
     static const std::string vendor_id_str(uint16_t vendor_id);
     static const std::string product_id_str(uint16_t product_id);
