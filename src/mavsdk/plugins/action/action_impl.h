@@ -29,6 +29,7 @@ public:
     Action::Result takeoff() const;
     Action::Result land() const;
     Action::Result return_to_launch() const;
+    Action::Result change_alt(const float altitude_amsl_m);
     Action::Result goto_location(
         const double latitude_deg,
         const double longitude_deg,
@@ -64,6 +65,7 @@ public:
     void takeoff_async(const Action::ResultCallback& callback) const;
     void land_async(const Action::ResultCallback& callback) const;
     void return_to_launch_async(const Action::ResultCallback& callback) const;
+    void change_alt_async(const float altitude_amsl_m, const Action::ResultCallback& callback);
     void goto_location_async(
         const double latitude_deg,
         const double longitude_deg,

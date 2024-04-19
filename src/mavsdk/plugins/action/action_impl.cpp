@@ -142,6 +142,18 @@ Action::Result ActionImpl::return_to_launch() const
     return fut.get();
 }
 
+Action::Result ActionImpl::change_alt(const float altitude_amsl_m)
+{
+    auto prom = std::promise<Action::Result>();
+    auto fut = prom.get_future();
+
+    change_alt_async(altitude_amsl_m, [&prom](Action::Result result) {
+            prom.set_value(result);
+        });
+
+    return fut.get();
+}
+
 Action::Result ActionImpl::goto_location(
     const double latitude_deg,
     const double longitude_deg,
@@ -465,6 +477,25 @@ void ActionImpl::return_to_launch_async(const Action::ResultCallback& callback) 
         });
 }
 
+void ActionImpl::change_alt_async(const float altitude_amsl_m, const Action::ResultCallback &callback)
+{
+    MavlinkCommandSender::CommandInt command{};
+
+    command.target_component_id = _system_impl->get_autopilot_id();
+    command.autocontinue = true;
+    command.command = MAV_CMD_NAV_WAYPOINT;
+    command.current = true;
+    command.frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
+    command.params.x = 0;
+    command.params.y = 0;
+    command.params.maybe_z = altitude_amsl_m;
+
+    _system_impl->send_command_async(
+        command, [this, callback](MavlinkCommandSender::Result result, float) {
+            command_result_callback(result, callback);
+        });
+}
+
 void ActionImpl::goto_location_async(
     const double latitude_deg,
     const double longitude_deg,
@@ -481,7 +512,7 @@ void ActionImpl::goto_location_async(
             if (_system_impl->autopilot() == Autopilot::Px4) {
                 command.frame = MAV_FRAME_GLOBAL_INT;
             } else {
-                command.frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
+                command.frame = MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
             }
             command.params.maybe_param4 = static_cast<float>(to_rad_from_deg(yaw_deg));
             command.params.x = int32_t(std::round(latitude_deg * 1e7));
@@ -842,7 +873,7 @@ Action::Result ActionImpl::action_result_from_command_result(MavlinkCommandSende
         case MavlinkCommandSender::Result::Busy:
             return Action::Result::Busy;
         case MavlinkCommandSender::Result::Denied:
-            // Fallthrough
+                                                   // Fallthrough
         case MavlinkCommandSender::Result::TemporarilyRejected:
             return Action::Result::CommandDenied;
         case MavlinkCommandSender::Result::Failed:

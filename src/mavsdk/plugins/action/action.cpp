@@ -108,6 +108,11 @@ Action::Result Action::return_to_launch() const
     return _impl->return_to_launch();
 }
 
+void Action::change_alt_async(float absolute_altitude_m, const ResultCallback callback)
+{
+    _impl->change_alt_async(absolute_altitude_m, callback);
+}
+
 void Action::goto_location_async(
     double latitude_deg,
     double longitude_deg,

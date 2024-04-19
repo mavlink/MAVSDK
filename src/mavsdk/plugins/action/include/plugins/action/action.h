@@ -316,6 +316,11 @@ public:
     Result return_to_launch() const;
 
     /**
+     * @brief Send command to change alt of plane.
+     */
+    void change_alt_async(float absolute_altitude_m, const ResultCallback callback);
+
+    /**
      * @brief Send command to move the vehicle to a specific global position.
      *
      * The latitude and longitude are given in degrees (WGS84 frame) and the altitude
