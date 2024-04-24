@@ -1,8 +1,6 @@
 #include <future>
 #include <limits>
 
-#include <iomanip> // FIXME: remove again
-
 #include "log_streaming_impl.h"
 #include "plugins/log_streaming/log_streaming.h"
 #include "callback_list.tpp"
@@ -150,6 +148,11 @@ void LogStreamingImpl::process_logging_data(const mavlink_message_t& message)
                    << ", sequence: " << logging_data.sequence;
     }
 
+    if (logging_data.length > sizeof(logging_data.data)) {
+        LogWarn() << "Invalid length";
+        return;
+    }
+
     std::lock_guard<std::mutex> lock(_mutex);
     check_sequence(logging_data.sequence);
 
@@ -157,6 +160,11 @@ void LogStreamingImpl::process_logging_data(const mavlink_message_t& message)
         _ulog_data.insert(
             _ulog_data.end(), logging_data.data, logging_data.data + logging_data.length);
     } else {
+        if (logging_data.first_message_offset > sizeof(logging_data.data)) {
+            LogWarn() << "Invalid first_message_offset";
+            return;
+        }
+
         if (logging_data.first_message_offset > 0) {
             _ulog_data.insert(
                 _ulog_data.end(),
@@ -174,6 +182,13 @@ void LogStreamingImpl::process_logging_data(const mavlink_message_t& message)
 
 void LogStreamingImpl::process_logging_data_acked(const mavlink_message_t& message)
 {
+    if (!_active) {
+        if (_debugging) {
+            LogDebug() << "Ignoring logging data acked because we're not active";
+        }
+        return;
+    }
+
     mavlink_logging_data_acked_t logging_data_acked;
     mavlink_msg_logging_data_acked_decode(&message, &logging_data_acked);
 
@@ -203,9 +218,6 @@ void LogStreamingImpl::process_logging_data_acked(const mavlink_message_t& messa
             return response_message;
         });
 
-    std::lock_guard<std::mutex> lock(_mutex);
-    check_sequence(logging_data_acked.sequence);
-
     if (_debugging) {
         LogInfo() << "Received logging data acked with len: "
                   << std::to_string(logging_data_acked.length)
@@ -213,12 +225,25 @@ void LogStreamingImpl::process_logging_data_acked(const mavlink_message_t& messa
                   << ", sequence: " << logging_data_acked.sequence;
     }
 
+    if (logging_data_acked.length > sizeof(logging_data_acked.data)) {
+        LogWarn() << "Invalid length";
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(_mutex);
+    check_sequence(logging_data_acked.sequence);
+
     if (logging_data_acked.first_message_offset == std::numeric_limits<uint8_t>::max()) {
         _ulog_data.insert(
             _ulog_data.end(),
             logging_data_acked.data,
             logging_data_acked.data + logging_data_acked.length);
     } else {
+        if (logging_data_acked.first_message_offset > sizeof(logging_data_acked.data)) {
+            LogWarn() << "Invalid first_message_offset";
+            return;
+        }
+
         if (logging_data_acked.first_message_offset > 0) {
             _ulog_data.insert(
                 _ulog_data.end(),
