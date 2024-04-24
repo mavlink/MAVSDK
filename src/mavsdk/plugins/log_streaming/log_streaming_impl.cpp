@@ -54,8 +54,15 @@ void LogStreamingImpl::init()
 
 void LogStreamingImpl::deinit()
 {
-    // We try to stop log streaming before we leave but without waiting for a result.
-    stop_log_streaming_async(nullptr);
+    auto is_active = [this]() {
+        std::lock_guard<std::mutex> lock(_mutex);
+        return _active;
+    }();
+
+    if (is_active) {
+        // We try to stop log streaming before we leave but without waiting for a result.
+        stop_log_streaming_async(nullptr);
+    }
 }
 
 void LogStreamingImpl::enable() {}
