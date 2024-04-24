@@ -48,6 +48,8 @@ private:
     std::optional<uint16_t> _maybe_current_sequence{};
     unsigned _drops{0};
     std::vector<uint8_t> _ulog_data{};
+    bool _active = false;
+
     bool _debugging{false};
 };
 

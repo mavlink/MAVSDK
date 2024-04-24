@@ -64,6 +64,12 @@ void LogStreamingImpl::disable() {}
 
 void LogStreamingImpl::start_log_streaming_async(const LogStreaming::ResultCallback& callback)
 {
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        _maybe_current_sequence = {};
+        _active = true;
+    }
+
     MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_LOGGING_START;
     command.params.maybe_param1 = 0.0f; // ulog
@@ -101,6 +107,10 @@ void LogStreamingImpl::stop_log_streaming_async(const LogStreaming::ResultCallba
             }
         }
     });
+
+    std::lock_guard<std::mutex> lock(_mutex);
+    _maybe_current_sequence = {};
+    _active = false;
 }
 
 LogStreaming::Result LogStreamingImpl::stop_log_streaming()
@@ -130,6 +140,13 @@ void LogStreamingImpl::unsubscribe_log_streaming_raw(LogStreaming::LogStreamingR
 
 void LogStreamingImpl::process_logging_data(const mavlink_message_t& message)
 {
+    if (!_active) {
+        if (_debugging) {
+            LogDebug() << "Ignoring logging data because we're not active";
+        }
+        return;
+    }
+
     mavlink_logging_data_t logging_data;
     mavlink_msg_logging_data_decode(&message, &logging_data);
 
