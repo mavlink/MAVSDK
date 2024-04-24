@@ -189,14 +189,13 @@ void LogStreamingImpl::process_logging_data(const mavlink_message_t& message)
             return;
         }
 
-        if (logging_data.first_message_offset > 0) {
-            _ulog_data.insert(
-                _ulog_data.end(),
-                logging_data.data,
-                logging_data.data + logging_data.first_message_offset);
-            process_message();
-            _ulog_data.clear();
-        }
+        _ulog_data.insert(
+            _ulog_data.end(),
+            logging_data.data,
+            logging_data.data + logging_data.first_message_offset);
+        process_message();
+        _ulog_data.clear();
+
         _ulog_data.insert(
             _ulog_data.end(),
             logging_data.data + logging_data.first_message_offset,
@@ -268,14 +267,13 @@ void LogStreamingImpl::process_logging_data_acked(const mavlink_message_t& messa
             return;
         }
 
-        if (logging_data_acked.first_message_offset > 0) {
-            _ulog_data.insert(
-                _ulog_data.end(),
-                logging_data_acked.data,
-                logging_data_acked.data + logging_data_acked.first_message_offset);
-            process_message();
-            _ulog_data.clear();
-        }
+        _ulog_data.insert(
+            _ulog_data.end(),
+            logging_data_acked.data,
+            logging_data_acked.data + logging_data_acked.first_message_offset);
+        process_message();
+        _ulog_data.clear();
+
         _ulog_data.insert(
             _ulog_data.end(),
             logging_data_acked.data + logging_data_acked.first_message_offset,
@@ -324,11 +322,6 @@ void LogStreamingImpl::process_message()
 
     if (_debugging) {
         LogDebug() << "Processing ulog message with size " << _ulog_data.size();
-    }
-
-    if (_ulog_data.size() < 16) {
-        LogWarn() << "Ulog message too small";
-        return;
     }
 
     // We don't check the magic and version. That's up to the log viewer to parse.
