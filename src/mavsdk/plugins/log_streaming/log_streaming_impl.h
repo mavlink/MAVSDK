@@ -4,7 +4,9 @@
 
 #include "plugin_impl_base.h"
 #include "callback_list.h"
+
 #include <mutex>
+#include <optional>
 
 namespace mavsdk {
 
