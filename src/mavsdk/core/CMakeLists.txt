@@ -14,6 +14,7 @@ configure_file(include/mavsdk/mavlink_include.h.in include/mavsdk/mavlink_includ
 
 target_sources(mavsdk
     PRIVATE
+    base64.cpp
     call_every_handler.cpp
     connection.cpp
     connection_result.cpp
@@ -150,6 +151,7 @@ install(TARGETS mavsdk
 
 install(FILES
     include/mavsdk/autopilot.h
+    include/mavsdk/base64.h
     include/mavsdk/connection_result.h
     include/mavsdk/deprecated.h
     include/mavsdk/handle.h

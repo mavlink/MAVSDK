@@ -15,6 +15,7 @@ gimbal
 gripper
 info
 log_files
+log_streaming
 manual_control
 mission
 mission_raw

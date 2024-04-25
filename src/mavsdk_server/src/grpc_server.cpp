@@ -90,6 +90,10 @@ int GrpcServer::run()
     builder.RegisterService(&_log_files_service);
 #endif
 
+#ifdef LOG_STREAMING_ENABLED
+    builder.RegisterService(&_log_streaming_service);
+#endif
+
 #ifdef MANUAL_CONTROL_ENABLED
     builder.RegisterService(&_manual_control_service);
 #endif
@@ -251,6 +255,10 @@ void GrpcServer::stop()
 
 #ifdef LOG_FILES_ENABLED
         _log_files_service.stop();
+#endif
+
+#ifdef LOG_STREAMING_ENABLED
+        _log_streaming_service.stop();
 #endif
 
 #ifdef MANUAL_CONTROL_ENABLED
