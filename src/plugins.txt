@@ -4,8 +4,8 @@ arm_authorizer_server
 calibration
 camera
 camera_server
-component_information
-component_information_server
+component_metadata
+component_metadata_server
 failure
 follow_me
 ftp
