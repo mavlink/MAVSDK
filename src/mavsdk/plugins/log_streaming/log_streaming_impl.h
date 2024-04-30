@@ -37,9 +37,15 @@ public:
     void unsubscribe_log_streaming_raw(LogStreaming::LogStreamingRawHandle handle);
 
 private:
+    enum class DropState {
+        Ok,
+        Dropped,
+        Duplicate,
+    };
+
     void process_logging_data(const mavlink_message_t& message);
     void process_logging_data_acked(const mavlink_message_t& message);
-    void check_sequence(uint16_t sequence);
+    DropState check_sequence(uint16_t sequence);
     void process_message();
 
     static LogStreaming::Result

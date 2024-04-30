@@ -19,18 +19,19 @@ using std::this_thread::sleep_for;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << "Usage : " << bin_name << " <connection_url> [--rm]\n"
+    std::cerr << "Usage : " << bin_name << " <connection_url> [--drop]\n"
               << '\n'
               << "Connection URL format should be :\n"
               << " For TCP : tcp://[server_host][:server_port]\n"
               << " For UDP : udp://[bind_host][:bind_port]\n"
               << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
-              << "For example, to connect to the simulator use URL: udp://:14540" << std::endl;
+              << "For example, to connect to the simulator use URL: udp://:14540" << '\n'
+              << "--drop   To drop some of the messages" << std::endl;
 }
 
 int main(int argc, char** argv)
 {
-    if (argc > 2) {
+    if (argc < 2) {
         usage(argv[0]);
         return 1;
     }
@@ -47,6 +48,14 @@ int main(int argc, char** argv)
     if (!system) {
         std::cerr << "Timed out waiting for system\n";
         return 1;
+    }
+
+    // To simulate message drops.
+    if (argc == 3 && std::string(argv[2]) == "--drop") {
+        std::cout << "Dropping some messages" << std::endl;
+        unsigned counter = 0;
+        mavsdk.intercept_incoming_messages_async(
+            [&](const mavlink_message_t&) { return counter++ % 10 != 0; });
     }
 
     // Create file to log to.
