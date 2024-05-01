@@ -59,26 +59,6 @@ target_include_directories(integration_tests_runner
     ${PROJECT_SOURCE_DIR}/mavsdk/core
 )
 
-# SYSTEM because we don't want warnings for gtest headers.
-target_include_directories(integration_tests_runner
-    SYSTEM
-    PRIVATE ${PROJECT_SOURCE_DIR}/third_party/gtest/googletest/include
-    PRIVATE ${PROJECT_SOURCE_DIR}/third_party/gtest/googlemock/include
-    PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/../third_party/include
-)
-
-if(MSVC)
-    target_compile_options(integration_tests_runner
-        PRIVATE
-         /wd4996 # ignore deprecated
-    )
-else()
-    target_compile_options(integration_tests_runner
-        PRIVATE
-        -Wno-error=deprecated-declarations
-    )
-endif()
-
 target_compile_definitions(integration_tests_runner
     PRIVATE
     "-DTESTING")
@@ -87,12 +67,14 @@ set_target_properties(integration_tests_runner
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
+find_package(GTest)
+
 target_link_libraries(integration_tests_runner
     PRIVATE
     mavsdk
-    gtest
-    gtest_main
-    gmock
+    GTest::gtest
+    GTest::gtest_main
+    GTest::gmock
 )
 
 add_test(integration_tests
