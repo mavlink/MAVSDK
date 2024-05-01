@@ -67,7 +67,7 @@ set_target_properties(integration_tests_runner
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
-hunter_add_package(gtest)
+hunter_add_package(GTest)
 find_package(GTest REQUIRED)
 
 target_link_libraries(integration_tests_runner

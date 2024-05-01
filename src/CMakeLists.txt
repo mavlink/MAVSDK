@@ -41,7 +41,7 @@ hunter_add_package(jsoncpp)
 hunter_add_package(CURL)
 find_package(CURL REQUIRED)
 
-hunter_add_package(LibLZMA)
+hunter_add_package(lzma)
 find_package(LibLZMA REQUIRED)
 
 if(BUILD_TESTS AND (IOS OR ANDROID))
