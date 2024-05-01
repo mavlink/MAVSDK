@@ -26,12 +26,14 @@ target_include_directories(system_tests_runner
     ${PROJECT_SOURCE_DIR}/mavsdk/core
 )
 
+find_package(GTest)
+
 target_link_libraries(system_tests_runner
     PRIVATE
     mavsdk
-    gtest
-    gtest_main
-    gmock
+    GTest::gtest
+    GTest::gtest_main
+    GTest::gmock
 )
 
 if(ENABLE_CPPTRACE)

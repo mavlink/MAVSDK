@@ -29,14 +29,16 @@ target_include_directories(unit_tests_mavsdk_server
     ${PROJECT_SOURCE_DIR}/mavsdk_server/src/generated
 )
 
+find_package(GTest REQUIRED)
+
 target_link_libraries(unit_tests_mavsdk_server
     PRIVATE
     mavsdk
     mavsdk_server
     gRPC::grpc++
-    gtest
-    gmock
-    gmock_main
+    GTest::gtest
+    GTest::gmock
+    GTest::gmock_main
 )
 
 if (BUILD_STATIC_MAVSDK_SERVER)

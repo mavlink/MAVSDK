@@ -10,13 +10,15 @@ set_target_properties(unit_tests_runner
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
+find_package(GTest)
+
 target_link_libraries(unit_tests_runner
     mavsdk
     CURL::libcurl
     JsonCpp::JsonCpp
-    gtest
-    gtest_main
-    gmock
+    GTest::gtest
+    GTest::gtest_main
+    GTest::gmock
 )
 
 target_include_directories(unit_tests_runner

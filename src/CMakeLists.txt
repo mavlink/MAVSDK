@@ -71,12 +71,9 @@ include(cmake/static_analyzers.cmake)
 
 if(BUILD_TESTS)
     enable_testing()
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/third_party/gtest EXCLUDE_FROM_ALL)
 
     add_subdirectory(integration_tests)
-
     add_subdirectory(unit_tests)
-
     add_subdirectory(system_tests)
 endif()
 
