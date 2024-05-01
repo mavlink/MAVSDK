@@ -38,7 +38,7 @@ else()
             set(warnings "${warnings} -Wduplicated-cond -Wnull-dereference")
         endif()
         if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 7)
-            set(warnings "${warnings} -Wduplicated-branches")
+            set(warnings "${warnings} -Wduplicated-branches -Wno-psabi")
         endif()
 
         if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5)
