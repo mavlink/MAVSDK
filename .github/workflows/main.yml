@@ -73,11 +73,11 @@ jobs:
       #  run: ./build/release/src/system_tests/system_tests_runner
 
   ubuntu-superbuild:
-    name: ${{ matrix.ubuntu_image }} (mavsdk_server, superbuild)
-    runs-on: ${{ matrix.ubuntu_image }}
+    name: ${{ matrix.ubuntu_version }} (mavsdk_server, superbuild)
+    runs-on: ${{ matrix.ubuntu_version }}
     strategy:
       matrix:
-        ubuntu_image: [ubuntu-20.04, ubuntu-22.04]
+        ubuntu_version: [ubuntu-20.04, ubuntu-22.04]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -86,7 +86,7 @@ jobs:
         id: cache
         with:
           path: ./build/release/third_party/install
-          key: ${{ github.job }}-${{ matrix.ubuntu_image }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ matrix.ubuntu_version }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
@@ -110,7 +110,7 @@ jobs:
       - name: install
         run: cmake --build build/release --target install
       - name: temporary workaround for Ubuntu 22.04
-        if: ${{ matrix.ubuntu_image }} == "ubuntu-22.04"
+        if: ${{ matrix.ubuntu_version }} == "ubuntu-22.04"
         run: |
          echo 'APT::Get::Always-Include-Phased-Updates "true";' | sudo tee -a /etc/apt/apt.conf.d/99-phased-updates
          sudo apt-get update
@@ -179,12 +179,11 @@ jobs:
         run: git diff --exit-code
 
   deb-package:
-    name: ${{ matrix.container_name }} (package, non-mavsdk_server)
-    runs-on: ubuntu-20.04
-    container: mavsdk/mavsdk-${{ matrix.container_name }}
+    name: ${{ matrix.ubuntu_version }} (package, non-mavsdk_server)
+    runs-on: ${{ matrix.ubuntu_version }}
     strategy:
       matrix:
-        container_name: [ubuntu-20.04, ubuntu-22.04]
+        ubuntu_version: [ubuntu-20.04, ubuntu-22.04]
     steps:
       - uses: actions/checkout@v4
         with:
