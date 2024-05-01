@@ -58,7 +58,7 @@ jobs:
         with:
           submodules: recursive
       - name: install
-        run: sudo apt-get update && sudo apt-get install -y libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev
+        run: sudo apt-get update && sudo apt-get install -y libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev libgtest-dev libgmock-dev
       - name: install mavlink on the system
         run: |
             cmake -Bthird_party/mavlink/build -Sthird_party/mavlink

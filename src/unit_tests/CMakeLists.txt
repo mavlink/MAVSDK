@@ -6,11 +6,8 @@ add_executable(unit_tests_runner
 
 target_compile_definitions(unit_tests_runner PRIVATE FAKE_TIME=1)
 
-set_target_properties(unit_tests_runner
-    PROPERTIES COMPILE_FLAGS ${warnings}
-)
-
-find_package(GTest)
+hunter_add_package(GTest)
+find_package(GTest REQUIRED)
 
 target_link_libraries(unit_tests_runner
     mavsdk

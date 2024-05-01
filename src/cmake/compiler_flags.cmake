@@ -27,9 +27,6 @@ else()
     else()
         add_definitions(-fno-exceptions)
         set(warnings "-Wall -Wextra -Wshadow -Wno-strict-aliasing -Wold-style-cast -Wdouble-promotion -Wformat=2 -Wno-address-of-packed-member")
-        if (WERROR)
-            set(warnings "${warnings} -Werror")
-        endif()
     endif()
 
 
@@ -61,6 +58,8 @@ else()
 
     # Otherwise tinyxml2 complains.
     set(warnings "${warnings} -Wno-old-style-cast")
+
+    set(warnings "${warnings} -Wno-double-promotion -Wno-sign-compare")
 endif()
 
 if(APPLE)
@@ -79,19 +78,26 @@ if(UNIX AND NOT APPLE)
     add_definitions("-DLINUX")
 endif()
 
+if(WERROR)
+    set(warnings "${warnings} -Werror")
+endif()
+
+set(CMAKE_C_FLAGS "${warnings} ${CMAKE_C_FLAGS}")
+set(CMAKE_CXX_FLAGS "${warnings} ${CMAKE_CXX_FLAGS}")
+
 if(ASAN)
     set(CMAKE_C_FLAGS "-fsanitize=address ${CMAKE_C_FLAGS}")
-    set(CMAKE_CXX_FLAGS "-fsanitize=address ${CMAKE_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-fsanitize=address ${CMAKE_CXX_FLAGS}")
 endif()
 
 if(UBSAN)
     set(CMAKE_C_FLAGS "-fsanitize=undefined ${CMAKE_C_FLAGS}")
-    set(CMAKE_CXX_FLAGS "-fsanitize=undefined ${CMAKE_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-fsanitize=undefined ${CMAKE_CXX_FLAGS}")
 endif()
 
 if(LSAN)
     set(CMAKE_C_FLAGS "-fsanitize=leak ${CMAKE_C_FLAGS}")
-    set(CMAKE_CXX_FLAGS "-fsanitize=leak ${CMAKE_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-fsanitize=leak ${CMAKE_CXX_FLAGS}")
 endif()
 
 if(TSAN)
