@@ -18,7 +18,7 @@ static constexpr double reduced_timeout_s = 0.1;
 static std::map<std::string, float> generate_float_params()
 {
     std::map<std::string, float> params;
-    for (int i = 0; i < num_params_per_type; ++i) {
+    for (unsigned i = 0; i < num_params_per_type; ++i) {
         const auto id = std::string("TEST_FLOAT") + std::to_string(i);
         const float value = 42.0f + static_cast<float>(i);
         params[id] = value;
@@ -29,7 +29,7 @@ static std::map<std::string, float> generate_float_params()
 static std::map<std::string, int> generate_int_params()
 {
     std::map<std::string, int> params;
-    for (int i = 0; i < num_params_per_type; ++i) {
+    for (unsigned i = 0; i < num_params_per_type; ++i) {
         const auto id = std::string("TEST_INT") + std::to_string(i);
         const int value = 42 + i;
         params[id] = value;

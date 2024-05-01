@@ -21,10 +21,6 @@ public:
         const std::string& url,
         const std::string& path,
         const ProgressCallback& progress_callback) = 0;
-    virtual bool upload_file(
-        const std::string& url,
-        const std::string& path,
-        const ProgressCallback& progress_callback) = 0;
 };
 
 class CurlWrapper : public ICurlWrapper {
@@ -37,10 +33,6 @@ public:
         const std::string& url,
         const std::string& path,
         const ProgressCallback& progress_callback) override;
-    bool upload_file(
-        const std::string& url,
-        const std::string& path,
-        const ProgressCallback& progress_callback) override;
 };
 
 #ifdef TESTING
@@ -49,12 +41,6 @@ public:
     MOCK_METHOD2(download_text, bool(const std::string& url, std::string& content));
     MOCK_METHOD3(
         download_file_to_path,
-        bool(
-            const std::string& url,
-            const std::string& path,
-            const ProgressCallback& progress_callback));
-    MOCK_METHOD3(
-        upload_file,
         bool(
             const std::string& url,
             const std::string& path,
