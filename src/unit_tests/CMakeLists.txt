@@ -10,9 +10,6 @@ set_target_properties(unit_tests_runner
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
-hunter_add_package(GTest)
-find_package(GTest REQUIRED)
-
 target_link_libraries(unit_tests_runner
     mavsdk
     CURL::libcurl

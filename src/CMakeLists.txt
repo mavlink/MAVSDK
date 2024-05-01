@@ -74,6 +74,38 @@ include(cmake/static_analyzers.cmake)
 if(BUILD_TESTS)
     enable_testing()
 
+    hunter_add_package(GTest)
+    find_package(GTest REQUIRED)
+
+    # Check if the GTest::gtest target exists, for older cmake with Ubuntu 20.04
+
+    # Check and create GTest::gtest if not available
+    if(NOT TARGET GTest::gtest)
+        add_library(GTest::gtest INTERFACE IMPORTED)
+        set_property(TARGET GTest::gtest PROPERTY
+            INTERFACE_INCLUDE_DIRECTORIES ${GTEST_INCLUDE_DIRS})
+        set_property(TARGET GTest::gtest PROPERTY
+            INTERFACE_LINK_LIBRARIES ${GTEST_BOTH_LIBRARIES})
+    endif()
+
+    # Check and create GTest::gtest_main if not available
+    if(NOT TARGET GTest::gtest_main)
+        add_library(GTest::gtest_main INTERFACE IMPORTED)
+        set_property(TARGET GTest::gtest_main PROPERTY
+            INTERFACE_INCLUDE_DIRECTORIES ${GTEST_INCLUDE_DIRS})
+        set_property(TARGET GTest::gtest_main PROPERTY
+            INTERFACE_LINK_LIBRARIES ${GTEST_MAIN_LIBRARIES})
+    endif()
+
+    # Check and create GTest::gmock if not available
+    if(NOT TARGET GTest::gmock)
+        add_library(GTest::gmock INTERFACE IMPORTED)
+        set_property(TARGET GTest::gmock PROPERTY
+            INTERFACE_INCLUDE_DIRECTORIES ${GMOCK_INCLUDE_DIRS})
+        set_property(TARGET GTest::gmock PROPERTY
+            INTERFACE_LINK_LIBRARIES ${GMOCK_BOTH_LIBRARIES})
+    endif()
+
     add_subdirectory(integration_tests)
     add_subdirectory(unit_tests)
     add_subdirectory(system_tests)
