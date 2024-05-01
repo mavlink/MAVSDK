@@ -9,6 +9,7 @@
 #include "plugins/ftp/ftp.h"
 #include "plugins/ftp_server/ftp_server.h"
 #include "fs_helpers.h"
+#include "unused.h"
 
 using namespace mavsdk;
 
@@ -234,6 +235,7 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
     };
 
     auto drop_at_some_point_out = [&received, msg_count](mavlink_message_t& message) {
+        UNUSED(message);
         if (received >= msg_count / 2) {
             return false;
         }
@@ -259,24 +261,26 @@ TEST(SystemTest, FtpDownloadBurstStopAndTryAgain)
 
     auto ftp = Ftp{system};
 
-    auto prom = std::promise<Ftp::Result>();
-    auto fut = prom.get_future();
-    ftp.download_async(
-        ("" / temp_file).string(),
-        temp_dir_downloaded.string(),
-        true,
-        [&prom](Ftp::Result result, Ftp::ProgressData progress_data) {
-            if (result != Ftp::Result::Next) {
-                prom.set_value(result);
-            } else {
-                LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                           << progress_data.total_bytes << " bytes";
-            }
-        });
+    {
+        auto prom = std::promise<Ftp::Result>();
+        auto fut = prom.get_future();
+        ftp.download_async(
+            ("" / temp_file).string(),
+            temp_dir_downloaded.string(),
+            true,
+            [&prom](Ftp::Result result, Ftp::ProgressData progress_data) {
+                if (result != Ftp::Result::Next) {
+                    prom.set_value(result);
+                } else {
+                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
+                               << progress_data.total_bytes << " bytes";
+                }
+            });
 
-    auto future_status = fut.wait_for(std::chrono::seconds(10));
-    ASSERT_EQ(future_status, std::future_status::ready);
-    EXPECT_EQ(fut.get(), Ftp::Result::Timeout);
+        auto future_status = fut.wait_for(std::chrono::seconds(10));
+        ASSERT_EQ(future_status, std::future_status::ready);
+        EXPECT_EQ(fut.get(), Ftp::Result::Timeout);
+    }
 
     // Before going out of scope, we need to make sure to no longer access the
     // drop_some callback which accesses the local counter variable.
@@ -344,6 +348,7 @@ TEST(SystemTest, FtpDownloadBurstFileOutsideOfRoot)
             temp_dir_downloaded.string(),
             true,
             [&prom](Ftp::Result result, Ftp::ProgressData progress_data) {
+                UNUSED(progress_data);
                 prom.set_value(result);
             });
 
