@@ -37,9 +37,11 @@ endif()
 
 # This will noop if hunter is not enabled
 hunter_add_package(jsoncpp)
-hunter_add_package(CURL)
 
+hunter_add_package(CURL)
 find_package(CURL REQUIRED)
+
+hunter_add_package(LibLZMA)
 find_package(LibLZMA REQUIRED)
 
 if(BUILD_TESTS AND (IOS OR ANDROID))
