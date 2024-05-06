@@ -563,9 +563,9 @@ jobs:
             choco install nasm
             echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: configure
-        run: cmake -G "Visual Studio 17 2022" $env:superbuild $env:cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild/release -S.
+        run: cmake -G "Visual Studio 17 2022" $env:superbuild $env:cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild/release -S.
       - name: build
-        run: cmake --build build/release -j2 --config RelWithDebInfo --target install
+        run: cmake --build build/release -j2 --config Release --target install
       - name: Create zip file mavsdk libraries
         if: startsWith(github.ref, 'refs/tags/v')
         run: cd build/release/install && 7z.exe a -tzip ../../../mavsdk-windows-x64-release.zip . && cd ../../..
