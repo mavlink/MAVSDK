@@ -65,11 +65,7 @@ cmake_policy(SET CMP0079 NEW)
 target_link_libraries(mavsdk
     PRIVATE
     Threads::Threads
-    ${LIBLZMA_LIBRARIES}
-)
-target_include_directories(mavsdk
-    PRIVATE
-    ${LIBLZMA_INCLUDE_DIRS}
+    LibLZMA::LibLZMA
 )
 
 if (NOT BUILD_WITHOUT_CURL)
