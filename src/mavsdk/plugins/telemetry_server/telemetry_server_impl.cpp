@@ -392,10 +392,21 @@ TelemetryServer::Result TelemetryServerImpl::publish_raw_imu(TelemetryServer::Im
 
 TelemetryServer::Result TelemetryServerImpl::publish_unix_epoch_time(uint64_t time_us)
 {
-    UNUSED(time_us);
-
-    // TODO :)
-    return {};
+    return _server_component_impl->queue_message(
+               [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                   mavlink_message_t message;
+                   mavlink_msg_system_time_pack_chan(
+                       mavlink_address.system_id,
+                       mavlink_address.component_id,
+                       channel,
+                       &message,
+                       time_us,
+                       0 // TODO: add timestamping in general
+                   );
+                   return message;
+               }) ?
+               TelemetryServer::Result::Success :
+               TelemetryServer::Result::Unsupported;
 }
 
 TelemetryServer::Result TelemetryServerImpl::publish_sys_status(
