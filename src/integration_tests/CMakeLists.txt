@@ -63,8 +63,11 @@ target_compile_definitions(integration_tests_runner
     PRIVATE
     "-DTESTING")
 
-hunter_add_package(gtest)
-find_package(GTest REQUIRED)
+set_target_properties(integration_tests_runner
+    PROPERTIES COMPILE_FLAGS ${warnings}
+)
+
+find_package(GTest)
 
 target_link_libraries(integration_tests_runner
     PRIVATE

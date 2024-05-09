@@ -130,6 +130,10 @@ if((BUILD_STATIC_MAVSDK_SERVER AND ("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")) OR
     target_link_libraries(mavsdk PRIVATE atomic)
 endif()
 
+set_target_properties(mavsdk
+    PROPERTIES COMPILE_FLAGS ${warnings}
+    )
+
 target_include_directories(mavsdk
     PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/mavsdk>

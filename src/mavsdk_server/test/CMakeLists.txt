@@ -12,6 +12,8 @@ add_executable(unit_tests_mavsdk_server
     info_service_impl_test.cpp
 )
 
+set_target_properties(unit_tests_mavsdk_server PROPERTIES COMPILE_FLAGS ${warnings})
+
 target_include_directories(unit_tests_mavsdk_server
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../src

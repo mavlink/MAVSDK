@@ -82,9 +82,6 @@ if(WERROR)
     set(warnings "${warnings} -Werror")
 endif()
 
-set(CMAKE_C_FLAGS "${warnings} ${CMAKE_C_FLAGS}")
-set(CMAKE_CXX_FLAGS "${warnings} ${CMAKE_CXX_FLAGS}")
-
 if(ASAN)
     set(CMAKE_C_FLAGS "-fsanitize=address ${CMAKE_C_FLAGS}")
     set(CMAKE_CXX_FLAGS "-fsanitize=address ${CMAKE_CXX_FLAGS}")
