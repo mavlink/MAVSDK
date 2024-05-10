@@ -79,7 +79,11 @@ if(UNIX AND NOT APPLE)
 endif()
 
 if(WERROR)
-    set(warnings "${warnings} -Werror")
+    if(MSVC)
+        set(warnings "${warnings} /WX")
+    else()
+        set(warnings "${warnings} -Werror")
+    endif()
 endif()
 
 if(ASAN)
