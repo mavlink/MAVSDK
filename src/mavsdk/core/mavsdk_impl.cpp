@@ -372,19 +372,6 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
 
     std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
-    // The only situation where we create a system with sysid 0 is when we initialize the connection
-    // to the remote.
-    if (_systems.size() == 1 && _systems[0].first == 0) {
-        LogDebug() << "New: System ID: " << static_cast<int>(message.sysid)
-                   << " Comp ID: " << static_cast<int>(message.compid);
-        _systems[0].first = message.sysid;
-        _systems[0].second->system_impl()->set_system_id(message.sysid);
-
-        // Even though the fake system was already discovered, we can now
-        // send a notification, now that it seems to really actually exist.
-        notify_on_discover();
-    }
-
     bool found_system = false;
     for (auto& system : _systems) {
         if (system.first == message.sysid) {
@@ -559,12 +546,8 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::setup_udp_remo
         new_conn->add_remote(remote_ip, remote_port);
         auto handle = add_connection(new_conn);
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-        if (_systems.empty()) {
-            make_system_with_component(0, 0);
-        }
 
-        // With a UDP remote, we need to initiate the connection by sending
-        // heartbeats.
+        // With a UDP remote, we need to initiate the connection by sending heartbeats.
         auto new_configuration = get_configuration();
         new_configuration.set_always_send_heartbeats(true);
         set_configuration(new_configuration);

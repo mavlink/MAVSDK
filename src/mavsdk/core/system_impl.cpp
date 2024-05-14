@@ -541,11 +541,7 @@ void SystemImpl::set_connected()
 
             _connected = true;
 
-            // System with sysid 0 is a bit special: it is a placeholder for a connection initiated
-            // by MAVSDK. As such, it should not be advertised as a newly discovered system.
-            if (static_cast<int>(get_system_id()) != 0) {
-                _mavsdk_impl.notify_on_discover();
-            }
+            _mavsdk_impl.notify_on_discover();
 
             // We call this later to avoid deadlocks on creating the server components.
             _mavsdk_impl.call_user_callback([this]() {
