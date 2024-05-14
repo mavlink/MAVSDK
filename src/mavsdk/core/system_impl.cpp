@@ -541,8 +541,6 @@ void SystemImpl::set_connected()
 
             _connected = true;
 
-            _mavsdk_impl.notify_on_discover();
-
             // We call this later to avoid deadlocks on creating the server components.
             _mavsdk_impl.call_user_callback([this]() {
                 // Send a heartbeat back immediately.
@@ -564,6 +562,9 @@ void SystemImpl::set_connected()
         }
         // If not yet connected there is nothing to do/
     }
+
+    _mavsdk_impl.notify_on_discover();
+
     if (enable_needed) {
         if (has_autopilot()) {
             send_autopilot_version_request_async(nullptr);
@@ -587,10 +588,10 @@ void SystemImpl::set_disconnected()
         //_heartbeat_timeout_cookie = nullptr;
 
         _connected = false;
-        _mavsdk_impl.notify_on_timeout();
         _is_connected_callbacks.queue(
             false, [this](const auto& func) { _mavsdk_impl.call_user_callback(func); });
     }
+    _mavsdk_impl.notify_on_timeout();
 
     _mavsdk_impl.stop_sending_heartbeats();
 
