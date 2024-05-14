@@ -504,8 +504,8 @@ void SystemImpl::send_autopilot_version_request()
 
     if (fut.get() == MavlinkCommandSender::Result::Unsupported) {
         _old_message_520_supported = false;
-        LogWarn() << "Trying alternative command (512).";
-        send_autopilot_version_request();
+        LogWarn()
+            << "Trying alternative command REQUEST_MESSAGE instead of REQUEST_AUTOPILOT_CAPABILITIES next.";
     }
 }
 
@@ -541,12 +541,6 @@ void SystemImpl::set_connected()
 
             _connected = true;
 
-            // System with sysid 0 is a bit special: it is a placeholder for a connection initiated
-            // by MAVSDK. As such, it should not be advertised as a newly discovered system.
-            if (static_cast<int>(get_system_id()) != 0) {
-                _mavsdk_impl.notify_on_discover();
-            }
-
             // We call this later to avoid deadlocks on creating the server components.
             _mavsdk_impl.call_user_callback([this]() {
                 // Send a heartbeat back immediately.
@@ -568,6 +562,9 @@ void SystemImpl::set_connected()
         }
         // If not yet connected there is nothing to do/
     }
+
+    _mavsdk_impl.notify_on_discover();
+
     if (enable_needed) {
         if (has_autopilot()) {
             send_autopilot_version_request_async(nullptr);
@@ -591,10 +588,10 @@ void SystemImpl::set_disconnected()
         //_heartbeat_timeout_cookie = nullptr;
 
         _connected = false;
-        _mavsdk_impl.notify_on_timeout();
         _is_connected_callbacks.queue(
             false, [this](const auto& func) { _mavsdk_impl.call_user_callback(func); });
     }
+    _mavsdk_impl.notify_on_timeout();
 
     _mavsdk_impl.stop_sending_heartbeats();
 
