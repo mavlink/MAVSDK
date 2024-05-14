@@ -504,8 +504,8 @@ void SystemImpl::send_autopilot_version_request()
 
     if (fut.get() == MavlinkCommandSender::Result::Unsupported) {
         _old_message_520_supported = false;
-        LogWarn() << "Trying alternative command (512).";
-        send_autopilot_version_request();
+        LogWarn()
+            << "Trying alternative command REQUEST_MESSAGE instead of REQUEST_AUTOPILOT_CAPABILITIES next.";
     }
 }
 
