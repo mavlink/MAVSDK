@@ -1,10 +1,12 @@
 #pragma once
 
+#include "mavsdk_time.h"
+
+#include <cstdint>
 #include <mutex>
 #include <memory>
 #include <functional>
-#include <unordered_map>
-#include "mavsdk_time.h"
+#include <vector>
 
 namespace mavsdk {
 
@@ -30,13 +32,16 @@ private:
         std::function<void()> callback{};
         SteadyTimePoint time{};
         double duration_s{0.0};
+        uint64_t cookie{0};
     };
 
-    std::unordered_map<void*, std::shared_ptr<Timeout>> _timeouts{};
+    std::vector<Timeout> _timeouts{};
     std::mutex _timeouts_mutex{};
     bool _iterator_invalidated{false};
 
     Time& _time;
+
+    uint64_t _next_cookie{1};
 };
 
 } // namespace mavsdk

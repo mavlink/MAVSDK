@@ -74,21 +74,6 @@ void SystemImpl::init(uint8_t system_id, uint8_t comp_id)
         [this](const mavlink_message_t& message) { process_autopilot_version(message); },
         this);
 
-    // register_mavlink_command_handler(
-    //    MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
-    //    [this](const MavlinkCommandReceiver::CommandLong& command) {
-    //        return process_autopilot_version_request(command);
-    //    },
-    //    this);
-
-    //// TO-DO!
-    // register_mavlink_command_handler(
-    //    MAV_CMD_REQUEST_MESSAGE,
-    //    [this](const MavlinkCommandReceiver::CommandLong& command) {
-    //        return make_command_ack_message(command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
-    //    },
-    //    this);
-
     add_new_component(comp_id);
 }
 
@@ -313,17 +298,6 @@ void SystemImpl::system_thread()
     }
 }
 
-// std::optional<mavlink_message_t>
-// SystemImpl::process_autopilot_version_request(const MavlinkCommandReceiver::CommandLong& command)
-//{
-//    if (_should_send_autopilot_version) {
-//        send_autopilot_version();
-//        return make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
-//    }
-//
-//    return {};
-//}
-
 std::string SystemImpl::component_name(uint8_t component_id)
 {
     switch (component_id) {
@@ -496,22 +470,6 @@ bool SystemImpl::queue_message(
 
 void SystemImpl::send_autopilot_version_request()
 {
-    auto prom = std::promise<MavlinkCommandSender::Result>();
-    auto fut = prom.get_future();
-
-    send_autopilot_version_request_async(
-        [&prom](MavlinkCommandSender::Result result, float) { prom.set_value(result); });
-
-    if (fut.get() == MavlinkCommandSender::Result::Unsupported) {
-        _old_message_520_supported = false;
-        LogWarn()
-            << "Trying alternative command REQUEST_MESSAGE instead of REQUEST_AUTOPILOT_CAPABILITIES next.";
-    }
-}
-
-void SystemImpl::send_autopilot_version_request_async(
-    const MavlinkCommandSender::CommandResultCallback& callback)
-{
     MavlinkCommandSender::CommandLong command{};
     command.target_component_id = get_autopilot_id();
 
@@ -525,7 +483,18 @@ void SystemImpl::send_autopilot_version_request_async(
         command.params.maybe_param1 = {static_cast<float>(MAVLINK_MSG_ID_AUTOPILOT_VERSION)};
     }
 
-    send_command_async(command, callback);
+    send_command_async(command, [this](MavlinkCommandSender::Result result, float) {
+        receive_autopilot_version_request_ack(result);
+    });
+}
+
+void SystemImpl::receive_autopilot_version_request_ack(MavlinkCommandSender::Result result)
+{
+    if (result == MavlinkCommandSender::Result::Unsupported) {
+        _old_message_520_supported = false;
+        LogWarn()
+            << "Trying alternative command REQUEST_MESSAGE instead of REQUEST_AUTOPILOT_CAPABILITIES next.";
+    }
 }
 
 void SystemImpl::set_connected()
@@ -567,7 +536,7 @@ void SystemImpl::set_connected()
 
     if (enable_needed) {
         if (has_autopilot()) {
-            send_autopilot_version_request_async(nullptr);
+            send_autopilot_version_request();
         }
 
         std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
