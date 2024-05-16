@@ -220,8 +220,7 @@ Gimbal::ControlHandle GimbalImpl::subscribe_control(const Gimbal::ControlCallbac
 
     if (result.first) {
         wait_for_protocol_async([=]() {
-            // We don't lock here because we don't expect the protocol to change once it has been
-            // set.
+            std::lock_guard<std::mutex> lock(_mutex);
             _gimbal_protocol->control_async([this](Gimbal::ControlStatus status) {
                 _control_subscriptions.queue(
                     status, [this](const auto& func) { _system_impl->call_user_callback(func); });
@@ -254,8 +253,7 @@ Gimbal::AttitudeHandle GimbalImpl::subscribe_attitude(const Gimbal::AttitudeCall
 
     if (result.first) {
         wait_for_protocol_async([=]() {
-            // We don't lock here because we don't expect the protocol to change once it has been
-            // set.
+            std::lock_guard<std::mutex> lock(_mutex);
             _gimbal_protocol->attitude_async([this](Gimbal::Attitude attitude) {
                 _attitude_subscriptions.queue(
                     attitude, [this](const auto& func) { _system_impl->call_user_callback(func); });
