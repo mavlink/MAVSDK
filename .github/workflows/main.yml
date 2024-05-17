@@ -234,7 +234,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        arch_name: [armv6, armv7, arm64]
+        arch_name: [armv6, armv7, arm64, arm64-lts]
     steps:
       - uses: actions/checkout@v4
         with:
