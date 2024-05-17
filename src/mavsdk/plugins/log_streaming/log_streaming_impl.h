@@ -6,7 +6,6 @@
 #include "callback_list.h"
 
 #include <mutex>
-#include <optional>
 
 namespace mavsdk {
 
@@ -38,14 +37,17 @@ public:
 
 private:
     enum class DropState {
-        Ok,
+        Unknown,
         Dropped,
-        Duplicate,
+        RecoveringFromDropped,
+        Ok,
     };
 
+    void reset();
     void process_logging_data(const mavlink_message_t& message);
     void process_logging_data_acked(const mavlink_message_t& message);
-    DropState check_sequence(uint16_t sequence);
+    bool is_duplicate(uint16_t sequence) const;
+    void check_drop_state(uint16_t sequence, uint8_t first_message);
     void process_message();
 
     static LogStreaming::Result
@@ -53,9 +55,10 @@ private:
 
     std::mutex _mutex{};
     CallbackList<LogStreaming::LogStreamingRaw> _subscription_callbacks{};
-    std::optional<uint16_t> _maybe_current_sequence{};
-    unsigned _drops{0};
     std::vector<uint8_t> _ulog_data{};
+    DropState _drop_state{DropState::Unknown};
+    unsigned _drops{0};
+    uint16_t _current_sequence{0};
     bool _active = false;
 
     bool _debugging{false};

@@ -73,7 +73,7 @@ void LogStreamingImpl::start_log_streaming_async(const LogStreaming::ResultCallb
 {
     {
         std::lock_guard<std::mutex> lock(_mutex);
-        _maybe_current_sequence = {};
+        reset();
         _active = true;
     }
 
@@ -116,7 +116,7 @@ void LogStreamingImpl::stop_log_streaming_async(const LogStreaming::ResultCallba
     });
 
     std::lock_guard<std::mutex> lock(_mutex);
-    _maybe_current_sequence = {};
+    reset();
     _active = false;
 }
 
@@ -145,6 +145,14 @@ void LogStreamingImpl::unsubscribe_log_streaming_raw(LogStreaming::LogStreamingR
     _subscription_callbacks.unsubscribe(handle);
 }
 
+void LogStreamingImpl::reset()
+{
+    // Assume we have lock
+
+    _current_sequence = 0;
+    _drop_state = DropState::Unknown;
+}
+
 void LogStreamingImpl::process_logging_data(const mavlink_message_t& message)
 {
     if (!_active) {
@@ -168,6 +176,7 @@ void LogStreamingImpl::process_logging_data(const mavlink_message_t& message)
 
     if (_debugging) {
         LogDebug() << "Received logging data with len: " << std::to_string(logging_data.length)
+
                    << ", first message: " << std::to_string(logging_data.first_message_offset)
                    << ", sequence: " << logging_data.sequence;
     }
@@ -177,21 +186,28 @@ void LogStreamingImpl::process_logging_data(const mavlink_message_t& message)
         return;
     }
 
-    std::lock_guard<std::mutex> lock(_mutex);
-    auto drop_state = check_sequence(logging_data.sequence);
+    if (logging_data.first_message_offset != 255 &&
+        logging_data.first_message_offset > sizeof(logging_data.data)) {
+        LogWarn() << "Invalid first_message_offset";
+        return;
+    }
 
-    switch (drop_state) {
+    std::lock_guard<std::mutex> lock(_mutex);
+    if (is_duplicate(logging_data.sequence)) {
+        return;
+    }
+    check_drop_state(logging_data.sequence, logging_data.first_message_offset);
+
+    switch (_drop_state) {
         case DropState::Ok:
-            if (logging_data.first_message_offset == std::numeric_limits<uint8_t>::max()) {
+            // All data can be used.
+            if (logging_data.first_message_offset == 255) {
+                // This is just part that we add for now.
                 _ulog_data.insert(
                     _ulog_data.end(), logging_data.data, logging_data.data + logging_data.length);
 
             } else {
-                if (logging_data.first_message_offset > sizeof(logging_data.data)) {
-                    LogWarn() << "Invalid first_message_offset";
-                    return;
-                }
-
+                // Finish the previous message.
                 _ulog_data.insert(
                     _ulog_data.end(),
                     logging_data.data,
@@ -199,6 +215,7 @@ void LogStreamingImpl::process_logging_data(const mavlink_message_t& message)
                 process_message();
 
                 _ulog_data.clear();
+                // Then start the next one.
                 _ulog_data.insert(
                     _ulog_data.end(),
                     logging_data.data + logging_data.first_message_offset,
@@ -207,15 +224,21 @@ void LogStreamingImpl::process_logging_data(const mavlink_message_t& message)
             break;
 
         case DropState::Dropped:
+            // Nothing to do with the partial message.
             _ulog_data.clear();
+            break;
+
+        case DropState::RecoveringFromDropped:
+            // Nothing to do with any partial message.
+            _ulog_data.clear();
+            // Now start fresh.
             _ulog_data.insert(
                 _ulog_data.end(),
                 logging_data.data + logging_data.first_message_offset,
                 logging_data.data + logging_data.length);
             break;
-
-        case DropState::Duplicate:
-            // Ignore.
+        case DropState::Unknown:
+            LogErr() << "Logical error";
             break;
     }
 }
@@ -270,29 +293,38 @@ void LogStreamingImpl::process_logging_data_acked(const mavlink_message_t& messa
         return;
     }
 
-    std::lock_guard<std::mutex> lock(_mutex);
-    auto drop_state = check_sequence(logging_data_acked.sequence);
+    if (logging_data_acked.first_message_offset != 255 &&
+        logging_data_acked.first_message_offset > sizeof(logging_data_acked.data)) {
+        LogWarn() << "Invalid first_message_offset";
+        return;
+    }
 
-    switch (drop_state) {
+    std::lock_guard<std::mutex> lock(_mutex);
+    if (is_duplicate(logging_data_acked.sequence)) {
+        return;
+    }
+    check_drop_state(logging_data_acked.sequence, logging_data_acked.first_message_offset);
+
+    switch (_drop_state) {
         case DropState::Ok:
-            if (logging_data_acked.first_message_offset == std::numeric_limits<uint8_t>::max()) {
+            // All data can be used.
+            if (logging_data_acked.first_message_offset == 255) {
+                // This is just part that we add for now.
                 _ulog_data.insert(
                     _ulog_data.end(),
                     logging_data_acked.data,
                     logging_data_acked.data + logging_data_acked.length);
-            } else {
-                if (logging_data_acked.first_message_offset > sizeof(logging_data_acked.data)) {
-                    LogWarn() << "Invalid first_message_offset";
-                    return;
-                }
 
+            } else {
+                // Finish the previous message.
                 _ulog_data.insert(
                     _ulog_data.end(),
                     logging_data_acked.data,
                     logging_data_acked.data + logging_data_acked.first_message_offset);
                 process_message();
-                _ulog_data.clear();
 
+                _ulog_data.clear();
+                // Then start the next one.
                 _ulog_data.insert(
                     _ulog_data.end(),
                     logging_data_acked.data + logging_data_acked.first_message_offset,
@@ -301,56 +333,82 @@ void LogStreamingImpl::process_logging_data_acked(const mavlink_message_t& messa
             break;
 
         case DropState::Dropped:
+            // Nothing to do with the partial message.
             _ulog_data.clear();
+            break;
+
+        case DropState::RecoveringFromDropped:
+            // Nothing to do with any partial message.
+            _ulog_data.clear();
+            // Now start fresh.
             _ulog_data.insert(
                 _ulog_data.end(),
                 logging_data_acked.data + logging_data_acked.first_message_offset,
                 logging_data_acked.data + logging_data_acked.length);
             break;
-
-        case DropState::Duplicate:
-            // Ignore.
+        case DropState::Unknown:
+            LogErr() << "Logical error";
             break;
     }
 }
 
-LogStreamingImpl::DropState LogStreamingImpl::check_sequence(uint16_t sequence)
+bool LogStreamingImpl::is_duplicate(uint16_t sequence) const
+{
+    // Assume we have lock
+    return _drop_state != DropState::Unknown && sequence == _current_sequence;
+}
+
+void LogStreamingImpl::check_drop_state(uint16_t sequence, uint8_t first_message_offset)
 {
     // Assume we have lock.
 
-    if (!_maybe_current_sequence) {
-        // This is the first time we use the sequence.
-        _maybe_current_sequence = sequence;
-        return DropState::Ok;
-    }
+    switch (_drop_state) {
+        case DropState::Dropped:
+            if (first_message_offset != 255) {
+                // This is the first time we use the sequence.
+                _current_sequence = sequence;
+                _drop_state = DropState::RecoveringFromDropped;
+            } else {
+                _drop_state = DropState::Dropped;
+            }
+            break;
 
-    if (_maybe_current_sequence.value() == sequence) {
-        // Duplicate
-        return DropState::Duplicate;
-    }
+        case DropState::Unknown:
+            _drop_state = DropState::Ok;
+            _current_sequence = sequence;
+            break;
+        case DropState::Ok:
+        case DropState::RecoveringFromDropped:
+            uint16_t drop;
+            if (sequence > _current_sequence) {
+                // No wrap around.
+                drop = (sequence - 1 - _current_sequence);
+                _drops += drop;
+                if (drop > 0 && _debugging) {
+                    LogDebug() << "Dropped: " << drop << " (no wrap around), overall: " << _drops;
+                }
 
-    if (sequence > _maybe_current_sequence.value()) {
-        // No wrap around.
-        uint16_t drop = (sequence - 1 - _maybe_current_sequence.value());
-        _drops += drop;
-        if (drop > 0 && _debugging) {
-            LogDebug() << "Dropped: " << drop << " (no wrap around), overall: " << _drops;
-        }
+            } else {
+                // Wrap around!
+                drop = (sequence + std::numeric_limits<uint16_t>::max() - 1 - _current_sequence);
+                _drops += drop;
+                if (drop > 0 && _debugging) {
+                    LogDebug() << "Dropped: " << drop << " (with wrap around), overall: " << _drops;
+                }
+            }
 
-        _maybe_current_sequence = sequence;
-        return drop > 0 ? DropState::Dropped : DropState::Ok;
+            _current_sequence = sequence;
 
-    } else {
-        // Wrap around!
-        uint16_t drop =
-            (sequence + std::numeric_limits<uint16_t>::max() - 1 - _maybe_current_sequence.value());
-        _drops += drop;
-        if (drop > 0 && _debugging) {
-            LogDebug() << "Dropped: " << drop << " (with wrap around), overall: " << _drops;
-        }
-
-        _maybe_current_sequence = sequence;
-        return drop > 0 ? DropState::Dropped : DropState::Ok;
+            if (drop > 0) {
+                if (first_message_offset == 255) {
+                    _drop_state = DropState::Dropped;
+                } else {
+                    _drop_state = DropState::RecoveringFromDropped;
+                }
+            } else {
+                _drop_state = DropState::Ok;
+            }
+            break;
     }
 }
 
