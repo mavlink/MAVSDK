@@ -20,6 +20,12 @@ if(IOS)
         )
 endif()
 
+if (MSVC)
+    list(APPEND CMAKE_ARGS
+        "-Dgtest_force_shared_crt=ON"
+    )
+endif()
+
 message(STATUS "Preparing external project \"gtest\" with args:")
 foreach(CMAKE_ARG ${CMAKE_ARGS})
     message(STATUS "-- ${CMAKE_ARG}")
