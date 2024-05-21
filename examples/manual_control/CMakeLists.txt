@@ -34,5 +34,5 @@ target_link_libraries(manual_control
 if(NOT MSVC)
     add_compile_options(manual_control PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(manual_control PRIVATE -WX -W2)
+    add_compile_options(manual_control PRIVATE -W2)
 endif()

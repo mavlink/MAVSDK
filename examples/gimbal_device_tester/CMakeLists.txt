@@ -20,5 +20,5 @@ target_link_libraries(gimbal_device_tester
 if(NOT MSVC)
     add_compile_options(gimbal_device_tester PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(gimbal_device_tester PRIVATE -WX -W2)
+    add_compile_options(gimbal_device_tester PRIVATE -W2)
 endif()

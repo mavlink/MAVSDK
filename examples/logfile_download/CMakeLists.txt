@@ -18,5 +18,5 @@ target_link_libraries(logfile_download
 if(NOT MSVC)
     add_compile_options(logfile_download PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(logfile_download PRIVATE -WX -W2)
+    add_compile_options(logfile_download PRIVATE -W2)
 endif()

@@ -18,5 +18,5 @@ target_link_libraries(set_actuator
 if(NOT MSVC)
     add_compile_options(set_actuator PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(set_actuator PRIVATE -WX -W2)
+    add_compile_options(set_actuator PRIVATE -W2)
 endif()

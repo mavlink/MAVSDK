@@ -18,5 +18,5 @@ target_link_libraries(vtol_transition
 if(NOT MSVC)
     add_compile_options(vtol_transition PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(vtol_transition PRIVATE -WX -W2)
+    add_compile_options(vtol_transition PRIVATE -W2)
 endif()

@@ -18,5 +18,5 @@ target_link_libraries(log_streaming
 if(NOT MSVC)
     add_compile_options(log_streaming PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(log_streaming PRIVATE -WX -W2)
+    add_compile_options(log_streaming PRIVATE -W2)
 endif()

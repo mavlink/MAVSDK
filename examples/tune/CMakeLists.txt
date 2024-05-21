@@ -18,5 +18,5 @@ target_link_libraries(tune
 if(NOT MSVC)
     add_compile_options(tune PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(tune PRIVATE -WX -W2)
+    add_compile_options(tune PRIVATE -W2)
 endif()

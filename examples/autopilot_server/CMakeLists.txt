@@ -20,5 +20,5 @@ target_link_libraries(autopilot_server
 if(NOT MSVC)
     add_compile_options(autopilot_server PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(autopilot_server PRIVATE -WX -W2)
+    add_compile_options(autopilot_server PRIVATE -W2)
 endif()

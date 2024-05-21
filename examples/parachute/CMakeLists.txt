@@ -18,5 +18,5 @@ target_link_libraries(parachute
 if(NOT MSVC)
     add_compile_options(parachute PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(parachute PRIVATE -WX -W2)
+    add_compile_options(parachute PRIVATE -W2)
 endif()

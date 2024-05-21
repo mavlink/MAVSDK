@@ -18,5 +18,5 @@ target_link_libraries(transponder
 if(NOT MSVC)
     add_compile_options(transponder PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(transponder PRIVATE -WX -W2)
+    add_compile_options(transponder PRIVATE -W2)
 endif()

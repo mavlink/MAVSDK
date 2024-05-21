@@ -18,5 +18,5 @@ target_link_libraries(log_callback
 if(NOT MSVC)
     add_compile_options(log_callback PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(log_callback PRIVATE -WX -W2)
+    add_compile_options(log_callback PRIVATE -W2)
 endif()

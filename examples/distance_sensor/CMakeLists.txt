@@ -18,5 +18,5 @@ target_link_libraries(distance_sensor
 if(NOT MSVC)
     add_compile_options(distance_sensor PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(distance_sensor PRIVATE -WX -W2)
+    add_compile_options(distance_sensor PRIVATE -W2)
 endif()
