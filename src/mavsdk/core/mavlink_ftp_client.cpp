@@ -392,7 +392,7 @@ bool MavlinkFtpClient::download_start(Work& work, DownloadItem& item)
     work.last_opcode = CMD_OPEN_FILE_RO;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(
@@ -491,7 +491,7 @@ bool MavlinkFtpClient::download_burst_start(Work& work, DownloadBurstItem& item)
     work.last_opcode = CMD_OPEN_FILE_RO;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(
@@ -764,7 +764,7 @@ bool MavlinkFtpClient::upload_start(Work& work, UploadItem& item)
     work.last_opcode = CMD_CREATE_FILE;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(
@@ -845,7 +845,7 @@ bool MavlinkFtpClient::remove_start(Work& work, RemoveItem& item)
     work.last_opcode = CMD_REMOVE_FILE;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(reinterpret_cast<char*>(work.payload.data), item.path.c_str(), max_data_length - 1);
@@ -867,7 +867,7 @@ bool MavlinkFtpClient::rename_start(Work& work, RenameItem& item)
     work.last_opcode = CMD_RENAME;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(
@@ -895,7 +895,7 @@ bool MavlinkFtpClient::create_dir_start(Work& work, CreateDirItem& item)
     work.last_opcode = CMD_CREATE_DIRECTORY;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(reinterpret_cast<char*>(work.payload.data), item.path.c_str(), max_data_length - 1);
@@ -917,7 +917,7 @@ bool MavlinkFtpClient::remove_dir_start(Work& work, RemoveDirItem& item)
     work.last_opcode = CMD_REMOVE_DIRECTORY;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(reinterpret_cast<char*>(work.payload.data), item.path.c_str(), max_data_length - 1);
@@ -945,7 +945,7 @@ bool MavlinkFtpClient::compare_files_start(Work& work, CompareFilesItem& item)
     work.last_opcode = CMD_CALC_FILE_CRC32;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(
@@ -968,7 +968,7 @@ bool MavlinkFtpClient::list_dir_start(Work& work, ListDirItem& item)
     work.last_opcode = CMD_LIST_DIRECTORY;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = 0;
     strncpy(reinterpret_cast<char*>(work.payload.data), item.path.c_str(), max_data_length - 1);
@@ -1023,7 +1023,7 @@ bool MavlinkFtpClient::list_dir_continue(Work& work, ListDirItem& item, PayloadH
     work.last_opcode = CMD_LIST_DIRECTORY;
     work.payload = {};
     work.payload.seq_number = work.last_sent_seq_number++;
-    work.payload.session = 0;
+    work.payload.session = _session;
     work.payload.opcode = work.last_opcode;
     work.payload.offset = item.offset;
     strncpy(reinterpret_cast<char*>(work.payload.data), item.path.c_str(), max_data_length - 1);
