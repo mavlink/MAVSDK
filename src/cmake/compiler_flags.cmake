@@ -4,7 +4,7 @@ endif()
 
 if(MSVC)
     add_definitions(-DWINDOWS -D_USE_MATH_DEFINES -DNOMINMAX -DWIN32_LEAN_AND_MEAN)
-    set(warnings "-WX -W2")
+    set(warnings "-W2")
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
     # Needed by gRPC headers
