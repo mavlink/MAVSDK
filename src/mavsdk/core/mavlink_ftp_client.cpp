@@ -177,6 +177,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     call_callback(item.callback, result_from_nak(payload), {});
+                    terminate_session(*work);
                     work_queue_guard.pop_front();
                 }
             },
@@ -215,6 +216,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                         LogWarn() << "FTP: NAK received";
                         stop_timer();
                         call_callback(item.callback, result_from_nak(payload), {});
+                        terminate_session(*work);
                         work_queue_guard.pop_front();
                     }
                 }
@@ -245,6 +247,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     call_callback(item.callback, result_from_nak(payload), {});
+                    terminate_session(*work);
                     work_queue_guard.pop_front();
                 }
             },
@@ -262,6 +265,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     call_callback(item.callback, result_from_nak(payload));
+                    terminate_session(*work);
                     work_queue_guard.pop_front();
                 }
             },
@@ -279,6 +283,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     call_callback(item.callback, result_from_nak(payload));
+                    terminate_session(*work);
                     work_queue_guard.pop_front();
                 }
             },
@@ -296,6 +301,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     call_callback(item.callback, result_from_nak(payload));
+                    terminate_session(*work);
                     work_queue_guard.pop_front();
                 }
             },
@@ -313,6 +319,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     call_callback(item.callback, result_from_nak(payload));
+                    terminate_session(*work);
                     work_queue_guard.pop_front();
                 }
             },
@@ -332,6 +339,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                 } else if (payload->opcode == RSP_NAK) {
                     stop_timer();
                     call_callback(item.callback, result_from_nak(payload), false);
+                    terminate_session(*work);
                     work_queue_guard.pop_front();
                 }
             },
@@ -357,6 +365,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                     } else {
                         call_callback(item.callback, result_from_nak(payload), {});
                     }
+                    terminate_session(*work);
                     work_queue_guard.pop_front();
                 }
             }},
@@ -456,19 +465,9 @@ bool MavlinkFtpClient::download_continue(Work& work, DownloadItem& item, Payload
             LogDebug() << "All bytes written, terminating session";
         }
 
-        // Final step
-        work.last_opcode = CMD_TERMINATE_SESSION;
-
-        work.payload = {};
-        work.payload.seq_number = work.last_sent_seq_number++;
-        work.payload.session = _session;
-
-        work.payload.opcode = work.last_opcode;
-        work.payload.offset = 0;
-        work.payload.size = 0;
-
         start_timer();
-        send_mavlink_ftp_message(work.payload, work.target_compid);
+        terminate_session(work);
+        return true;
     }
 
     return true;
@@ -1397,6 +1396,21 @@ MavlinkFtpClient::calc_local_file_crc32(const std::string& path, uint32_t& csum)
     csum = checksum.get();
 
     return ClientResult::Success;
+}
+
+void MavlinkFtpClient::terminate_session(Work& work)
+{
+    work.last_opcode = CMD_TERMINATE_SESSION;
+
+    work.payload = {};
+    work.payload.seq_number = work.last_sent_seq_number++;
+    work.payload.session = _session;
+
+    work.payload.opcode = work.last_opcode;
+    work.payload.offset = 0;
+    work.payload.size = 0;
+
+    send_mavlink_ftp_message(work.payload, work.target_compid);
 }
 
 uint8_t MavlinkFtpClient::get_our_compid()

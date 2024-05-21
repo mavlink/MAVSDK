@@ -296,6 +296,8 @@ private:
     bool list_dir_start(Work& work, ListDirItem& item);
     bool list_dir_continue(Work& work, ListDirItem& item, PayloadHeader* payload);
 
+    void terminate_session(Work& work);
+
     template<typename CallbackT> void call_callback(const CallbackT& callback, ClientResult result);
     template<typename CallbackT>
     void call_callback(
