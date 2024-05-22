@@ -11,7 +11,7 @@
 #include "autopilot.h"
 #include "call_every_handler.h"
 #include "connection.h"
-#include "handle.h"
+#include "handle_factory.h"
 #include "mavsdk.h"
 #include "mavlink_include.h"
 #include "mavlink_address.h"
@@ -135,7 +135,7 @@ private:
     static uint8_t get_target_component_id(const mavlink_message_t& message);
 
     std::mutex _connections_mutex{};
-    uint64_t _connections_handle_id{1};
+    HandleFactory<> _connections_handle_factory;
     struct ConnectionEntry {
         std::shared_ptr<Connection> connection;
         Handle<> handle;
