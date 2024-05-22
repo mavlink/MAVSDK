@@ -296,13 +296,13 @@ void ComponentMetadataImpl::retrieve_metadata(uint8_t compid, COMP_METADATA_TYPE
                     uri,
                     tmp_download_path.string(),
                     [this, &component, tmp_download_path, compid, type, file_cache_tag](
-                        int progress, Status status, CURLcode curl_code) -> int {
+                        int progress, HttpStatus status, CURLcode curl_code) -> int {
                         UNUSED(progress);
-                        if (status == Status::Error) {
+                        if (status == HttpStatus::Error) {
                             LogErr() << "File download failed with result " << curl_code;
                             // Move on to the next uri or type
                             retrieve_metadata(compid, type);
-                        } else if (status == Status::Finished) {
+                        } else if (status == HttpStatus::Finished) {
                             if (_verbose_debugging) {
                                 LogDebug() << "File download finished " << tmp_download_path;
                             }
