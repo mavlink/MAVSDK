@@ -2,6 +2,7 @@
 
 #include "autopilot.h"
 #include "callback_list.h"
+#include "mavlink_component_metadata.h"
 #include "call_every_handler.h"
 #include "flight_mode.h"
 #include "mavlink_address.h"
@@ -271,7 +272,7 @@ public:
     bool is_connected() const;
 
     Time& get_time();
-    AutopilotTime& get_autopilot_time() { return _autopilot_time; };
+    AutopilotTime& get_autopilot_time() { return _autopilot_time; }
 
     double get_ping_time_s() const { return _ping.last_ping_time_s(); }
 
@@ -283,11 +284,13 @@ public:
 
     void send_autopilot_version_request();
 
-    MavlinkMissionTransferClient& mission_transfer_client() { return _mission_transfer_client; };
+    MavlinkMissionTransferClient& mission_transfer_client() { return _mission_transfer_client; }
 
-    MavlinkFtpClient& mavlink_ftp_client() { return _mavlink_ftp_client; };
+    MavlinkFtpClient& mavlink_ftp_client() { return _mavlink_ftp_client; }
 
-    RequestMessage& request_message() { return _request_message; };
+    MavlinkComponentMetadata& component_metadata() { return _mavlink_component_metadata; }
+
+    RequestMessage& request_message() { return _request_message; }
 
     // Non-copyable
     SystemImpl(const SystemImpl&) = delete;
@@ -396,6 +399,7 @@ private:
     MavlinkMissionTransferClient _mission_transfer_client;
     RequestMessage _request_message;
     MavlinkFtpClient _mavlink_ftp_client;
+    MavlinkComponentMetadata _mavlink_component_metadata;
 
     std::mutex _plugin_impls_mutex{};
     std::vector<PluginImplBase*> _plugin_impls{};
