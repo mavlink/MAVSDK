@@ -413,7 +413,6 @@ private:
     std::unordered_map<std::string, std::string> _mavlink_ftp_files{};
 
     bool _old_message_520_supported{true};
-    bool _old_message_528_supported{true};
 };
 
 } // namespace mavsdk
