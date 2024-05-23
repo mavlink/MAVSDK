@@ -78,13 +78,13 @@ TEST(SystemTest, ParamSetAndGet)
     EXPECT_EQ(result_pair_int.second, param_value_int + 2);
 
     // Also check the server side
-    auto server_result_pair = param_server.retrieve_param_float(param_name_float);
-    EXPECT_EQ(server_result_pair.first, ParamServer::Result::Success);
-    EXPECT_FLOAT_EQ(server_result_pair.second, param_value_float + 1.0f);
+    auto server_result_pair_float = param_server.retrieve_param_float(param_name_float);
+    EXPECT_EQ(server_result_pair_float.first, ParamServer::Result::Success);
+    EXPECT_FLOAT_EQ(server_result_pair_float.second, param_value_float + 1.0f);
 
-    server_result_pair = param_server.retrieve_param_int(param_name_int);
-    EXPECT_EQ(server_result_pair.first, ParamServer::Result::Success);
-    EXPECT_FLOAT_EQ(server_result_pair.second, param_value_int + 2);
+    auto server_result_pair_int = param_server.retrieve_param_int(param_name_int);
+    EXPECT_EQ(server_result_pair_int.first, ParamServer::Result::Success);
+    EXPECT_EQ(server_result_pair_int.second, param_value_int + 2);
 
     // Also try to retrieve them all at once
     auto server_result_all_params = param_server.retrieve_all_params();
@@ -157,13 +157,13 @@ TEST(SystemTest, ParamSetAndGetLossy)
     EXPECT_EQ(result_pair_int.second, param_value_int + 2);
 
     // Also check the server side
-    auto server_result_pair = param_server.retrieve_param_float(param_name_float);
-    EXPECT_EQ(server_result_pair.first, ParamServer::Result::Success);
-    EXPECT_FLOAT_EQ(server_result_pair.second, param_value_float + 1.0f);
+    auto server_result_pair_float = param_server.retrieve_param_float(param_name_float);
+    EXPECT_EQ(server_result_pair_float.first, ParamServer::Result::Success);
+    EXPECT_FLOAT_EQ(server_result_pair_float.second, param_value_float + 1.0f);
 
-    server_result_pair = param_server.retrieve_param_int(param_name_int);
-    EXPECT_EQ(server_result_pair.first, ParamServer::Result::Success);
-    EXPECT_FLOAT_EQ(server_result_pair.second, param_value_int + 2);
+    auto server_result_pair_int = param_server.retrieve_param_int(param_name_int);
+    EXPECT_EQ(server_result_pair_int.first, ParamServer::Result::Success);
+    EXPECT_EQ(server_result_pair_int.second, param_value_int + 2);
 
     // Also try to retrieve them all at once
     auto server_result_all_params = param_server.retrieve_all_params();
