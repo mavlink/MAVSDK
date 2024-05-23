@@ -134,7 +134,8 @@ void MissionRawImpl::upload_mission_items_async(
     uint8_t type,
     const MissionRaw::ResultCallback& callback)
 {
-    if (_last_upload.lock()) {
+    auto work_item = _last_upload.lock();
+    if (work_item && !work_item->is_done()) {
         _system_impl->call_user_callback([callback]() {
             if (callback) {
                 callback(MissionRaw::Result::Busy);
@@ -227,7 +228,8 @@ MissionRawImpl::download_mission()
 
 void MissionRawImpl::download_mission_async(const MissionRaw::DownloadMissionCallback& callback)
 {
-    if (_last_download.lock()) {
+    auto work_item = _last_download.lock();
+    if (work_item && !work_item->is_done()) {
         _system_impl->call_user_callback([callback]() {
             if (callback) {
                 std::vector<MissionRaw::MissionItem> empty_items;
