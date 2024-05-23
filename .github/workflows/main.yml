@@ -180,8 +180,7 @@ jobs:
 
   deb-package:
     name: ${{ matrix.container_name }} (package, non-mavsdk_server)
-    runs-on: ubuntu-20.04
-    container: mavsdk/mavsdk-${{ matrix.container_name }}
+    runs-on: ${{ matrix.container_name }}
     strategy:
       matrix:
         container_name: [ubuntu-20.04, ubuntu-22.04]
@@ -193,6 +192,11 @@ jobs:
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global --add safe.directory /github/workspace
+      - name: Install ruby, gem, and fpm
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ruby-dev
+          sudo gem install --no-document fpm
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -Bbuild/release -H.
       - name: build
