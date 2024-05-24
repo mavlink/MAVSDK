@@ -46,9 +46,22 @@ std::pair<Info::Result, double> Info::get_speed_factor() const
     return _impl->get_speed_factor();
 }
 
+Info::FlightInformationHandle
+Info::subscribe_flight_information(const FlightInformationCallback& callback)
+{
+    return _impl->subscribe_flight_information(callback);
+}
+
+void Info::unsubscribe_flight_information(FlightInformationHandle handle)
+{
+    _impl->unsubscribe_flight_information(handle);
+}
+
 bool operator==(const Info::FlightInfo& lhs, const Info::FlightInfo& rhs)
 {
-    return (rhs.time_boot_ms == lhs.time_boot_ms) && (rhs.flight_uid == lhs.flight_uid);
+    return (rhs.time_boot_ms == lhs.time_boot_ms) && (rhs.flight_uid == lhs.flight_uid) &&
+           (rhs.duration_since_arming_ms == lhs.duration_since_arming_ms) &&
+           (rhs.duration_since_takeoff_ms == lhs.duration_since_takeoff_ms);
 }
 
 std::ostream& operator<<(std::ostream& str, Info::FlightInfo const& flight_info)
@@ -57,6 +70,8 @@ std::ostream& operator<<(std::ostream& str, Info::FlightInfo const& flight_info)
     str << "flight_info:" << '\n' << "{\n";
     str << "    time_boot_ms: " << flight_info.time_boot_ms << '\n';
     str << "    flight_uid: " << flight_info.flight_uid << '\n';
+    str << "    duration_since_arming_ms: " << flight_info.duration_since_arming_ms << '\n';
+    str << "    duration_since_takeoff_ms: " << flight_info.duration_since_takeoff_ms << '\n';
     str << '}';
     return str;
 }

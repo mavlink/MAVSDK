@@ -43,6 +43,15 @@ void MavlinkCommandReceiver::receive_command_int(const mavlink_message_t& messag
         LogDebug() << "Received command int " << (int)cmd.command;
     }
 
+    if (cmd.target_component_id != _server_component_impl.get_own_component_id() &&
+        cmd.target_component_id != MAV_COMP_ID_ALL) {
+        if (_debugging) {
+            LogDebug() << "Ignored command int to component " << (int)cmd.target_component_id
+                       << " instead of " << _server_component_impl.get_own_component_id();
+        }
+        return;
+    }
+
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);
 
     for (auto& handler : _mavlink_command_int_handler_table) {
@@ -81,6 +90,15 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
 
     if (_debugging) {
         LogDebug() << "Received command long " << (int)cmd.command;
+    }
+
+    if (cmd.target_component_id != _server_component_impl.get_own_component_id() &&
+        cmd.target_component_id != MAV_COMP_ID_ALL) {
+        if (_debugging) {
+            LogDebug() << "Ignored command long to component " << (int)cmd.target_component_id
+                       << " instead of " << _server_component_impl.get_own_component_id();
+        }
+        return;
     }
 
     std::lock_guard<std::mutex> lock(_mavlink_command_handler_table_mutex);

@@ -4,6 +4,8 @@
 namespace mavsdk {
 
 template class CallbackList<int32_t>;
+template class CallbackList<CameraServer::TrackPoint>;
+template class CallbackList<CameraServer::TrackRectangle>;
 
 CameraServerImpl::CameraServerImpl(std::shared_ptr<ServerComponent> server_component) :
     ServerPluginImplBase(server_component)
@@ -132,12 +134,68 @@ void CameraServerImpl::init()
             return process_video_stream_status_request(command);
         },
         this);
+    _server_component_impl->register_mavlink_command_handler(
+        MAV_CMD_CAMERA_TRACK_POINT,
+        [this](const MavlinkCommandReceiver::CommandLong& command) {
+            return process_track_point_command(command);
+        },
+        this);
+
+    _server_component_impl->register_mavlink_command_handler(
+        MAV_CMD_CAMERA_TRACK_RECTANGLE,
+        [this](const MavlinkCommandReceiver::CommandLong& command) {
+            return process_track_rectangle_command(command);
+        },
+        this);
+
+    _server_component_impl->register_mavlink_command_handler(
+        MAV_CMD_CAMERA_STOP_TRACKING,
+        [this](const MavlinkCommandReceiver::CommandLong& command) {
+            return process_track_off_command(command);
+        },
+        this);
+    _server_component_impl->register_mavlink_command_handler(
+        MAV_CMD_SET_MESSAGE_INTERVAL,
+        [this](const MavlinkCommandReceiver::CommandLong& command) {
+            return process_set_message_interval(command);
+        },
+        this);
 }
 
 void CameraServerImpl::deinit()
 {
     stop_image_capture_interval();
     _server_component_impl->unregister_all_mavlink_command_handlers(this);
+}
+
+bool CameraServerImpl::is_command_sender_ok(const MavlinkCommandReceiver::CommandLong& command)
+{
+    if (command.target_system_id != 0 &&
+        command.target_system_id != _server_component_impl->get_own_system_id()) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+void CameraServerImpl::set_tracking_point_status(CameraServer::TrackPoint tracked_point)
+{
+    std::lock_guard<std::mutex> lg{_tracking_status_mutex};
+    _tracking_mode = TrackingMode::POINT;
+    _tracked_point = tracked_point;
+}
+
+void CameraServerImpl::set_tracking_rectangle_status(CameraServer::TrackRectangle tracked_rectangle)
+{
+    std::lock_guard<std::mutex> lg{_tracking_status_mutex};
+    _tracking_mode = TrackingMode::RECTANGLE;
+    _tracked_rectangle = tracked_rectangle;
+}
+
+void CameraServerImpl::set_tracking_off_status()
+{
+    std::lock_guard<std::mutex> lg{_tracking_status_mutex};
+    _tracking_mode = TrackingMode::NONE;
 }
 
 bool CameraServerImpl::parse_version_string(const std::string& version_str)
@@ -326,7 +384,7 @@ CameraServerImpl::respond_start_video(CameraServer::CameraFeedback start_video_f
             auto command_ack = _server_component_impl->make_command_ack_message(
                 _last_start_video_command, MAV_RESULT_ACCEPTED);
             _server_component_impl->send_command_ack(command_ack);
-            break;
+            return CameraServer::Result::Success;
         }
         case CameraServer::CameraFeedback::Busy: {
             auto command_ack = _server_component_impl->make_command_ack_message(
@@ -341,7 +399,6 @@ CameraServerImpl::respond_start_video(CameraServer::CameraFeedback start_video_f
             return CameraServer::Result::Success;
         }
     }
-    return CameraServer::Result::Success;
 }
 
 CameraServer::StopVideoHandle
@@ -367,7 +424,7 @@ CameraServerImpl::respond_stop_video(CameraServer::CameraFeedback stop_video_fee
             auto command_ack = _server_component_impl->make_command_ack_message(
                 _last_stop_video_command, MAV_RESULT_ACCEPTED);
             _server_component_impl->send_command_ack(command_ack);
-            break;
+            return CameraServer::Result::Success;
         }
         case CameraServer::CameraFeedback::Busy: {
             auto command_ack = _server_component_impl->make_command_ack_message(
@@ -382,7 +439,6 @@ CameraServerImpl::respond_stop_video(CameraServer::CameraFeedback stop_video_fee
             return CameraServer::Result::Success;
         }
     }
-    return CameraServer::Result::Success;
 }
 
 CameraServer::StartVideoStreamingHandle CameraServerImpl::subscribe_start_video_streaming(
@@ -409,7 +465,7 @@ CameraServer::Result CameraServerImpl::respond_start_video_streaming(
             auto command_ack = _server_component_impl->make_command_ack_message(
                 _last_start_video_streaming_command, MAV_RESULT_ACCEPTED);
             _server_component_impl->send_command_ack(command_ack);
-            break;
+            return CameraServer::Result::Success;
         }
         case CameraServer::CameraFeedback::Busy: {
             auto command_ack = _server_component_impl->make_command_ack_message(
@@ -424,7 +480,6 @@ CameraServer::Result CameraServerImpl::respond_start_video_streaming(
             return CameraServer::Result::Success;
         }
     }
-    return CameraServer::Result::Success;
 }
 
 CameraServer::StopVideoStreamingHandle CameraServerImpl::subscribe_stop_video_streaming(
@@ -451,7 +506,7 @@ CameraServer::Result CameraServerImpl::respond_stop_video_streaming(
             auto command_ack = _server_component_impl->make_command_ack_message(
                 _last_stop_video_streaming_command, MAV_RESULT_ACCEPTED);
             _server_component_impl->send_command_ack(command_ack);
-            break;
+            return CameraServer::Result::Success;
         }
         case CameraServer::CameraFeedback::Busy: {
             auto command_ack = _server_component_impl->make_command_ack_message(
@@ -466,7 +521,6 @@ CameraServer::Result CameraServerImpl::respond_stop_video_streaming(
             return CameraServer::Result::Success;
         }
     }
-    return CameraServer::Result::Success;
 }
 
 CameraServer::SetModeHandle
@@ -492,7 +546,7 @@ CameraServerImpl::respond_set_mode(CameraServer::CameraFeedback set_mode_feedbac
             auto command_ack = _server_component_impl->make_command_ack_message(
                 _last_set_mode_command, MAV_RESULT_ACCEPTED);
             _server_component_impl->send_command_ack(command_ack);
-            break;
+            return CameraServer::Result::Success;
         }
         case CameraServer::CameraFeedback::Busy: {
             auto command_ack = _server_component_impl->make_command_ack_message(
@@ -507,7 +561,6 @@ CameraServerImpl::respond_set_mode(CameraServer::CameraFeedback set_mode_feedbac
             return CameraServer::Result::Success;
         }
     }
-    return CameraServer::Result::Success;
 }
 
 CameraServer::StorageInformationHandle CameraServerImpl::subscribe_storage_information(
@@ -697,7 +750,7 @@ CameraServerImpl::respond_format_storage(CameraServer::CameraFeedback format_sto
             auto command_ack = _server_component_impl->make_command_ack_message(
                 _last_format_storage_command, MAV_RESULT_ACCEPTED);
             _server_component_impl->send_command_ack(command_ack);
-            break;
+            return CameraServer::Result::Success;
         }
         case CameraServer::CameraFeedback::Busy: {
             auto command_ack = _server_component_impl->make_command_ack_message(
@@ -712,7 +765,6 @@ CameraServerImpl::respond_format_storage(CameraServer::CameraFeedback format_sto
             return CameraServer::Result::Success;
         }
     }
-    return CameraServer::Result::Success;
 }
 
 CameraServer::ResetSettingsHandle
@@ -738,7 +790,7 @@ CameraServerImpl::respond_reset_settings(CameraServer::CameraFeedback reset_sett
             auto command_ack = _server_component_impl->make_command_ack_message(
                 _last_reset_settings_command, MAV_RESULT_ACCEPTED);
             _server_component_impl->send_command_ack(command_ack);
-            break;
+            return CameraServer::Result::Success;
         }
         case CameraServer::CameraFeedback::Busy: {
             auto command_ack = _server_component_impl->make_command_ack_message(
@@ -749,6 +801,131 @@ CameraServerImpl::respond_reset_settings(CameraServer::CameraFeedback reset_sett
         case CameraServer::CameraFeedback::Failed: {
             auto command_ack = _server_component_impl->make_command_ack_message(
                 _last_reset_settings_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+    }
+}
+
+CameraServer::TrackingPointCommandHandle CameraServerImpl::subscribe_tracking_point_command(
+    const CameraServer::TrackingPointCommandCallback& callback)
+{
+    return _tracking_point_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_tracking_point_command(
+    CameraServer::TrackingPointCommandHandle handle)
+{
+    _tracking_point_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result CameraServerImpl::respond_tracking_point_command(
+    CameraServer::CameraFeedback tracking_point_feedback)
+{
+    switch (tracking_point_feedback) {
+        default:
+            // Fallthrough
+        case CameraServer::CameraFeedback::Unknown:
+            return CameraServer::Result::Error;
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_track_point_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            break;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_track_point_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_track_point_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+    }
+    return CameraServer::Result::Success;
+}
+
+CameraServer::TrackingRectangleCommandHandle CameraServerImpl::subscribe_tracking_rectangle_command(
+    const CameraServer::TrackingRectangleCommandCallback& callback)
+{
+    return _tracking_rectangle_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_tracking_rectangle_command(
+    CameraServer::TrackingRectangleCommandHandle handle)
+{
+    _tracking_rectangle_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result CameraServerImpl::respond_tracking_rectangle_command(
+    CameraServer::CameraFeedback tracking_rectangle_feedback)
+{
+    switch (tracking_rectangle_feedback) {
+        default:
+            // Fallthrough
+        case CameraServer::CameraFeedback::Unknown:
+            return CameraServer::Result::Error;
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_track_rectangle_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            break;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_track_rectangle_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_track_rectangle_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+    }
+    return CameraServer::Result::Success;
+}
+
+CameraServer::TrackingOffCommandHandle CameraServerImpl::subscribe_tracking_off_command(
+    const CameraServer::TrackingOffCommandCallback& callback)
+{
+    return _tracking_off_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_tracking_off_command(
+    CameraServer::TrackingOffCommandHandle handle)
+{
+    _tracking_off_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_tracking_off_command(CameraServer::CameraFeedback tracking_off_feedback)
+{
+    switch (tracking_off_feedback) {
+        default:
+            // Fallthrough
+        case CameraServer::CameraFeedback::Unknown:
+            return CameraServer::Result::Error;
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_tracking_off_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            break;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_tracking_off_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_tracking_off_command, MAV_RESULT_FAILED);
             _server_component_impl->send_command_ack(command_ack);
             return CameraServer::Result::Success;
         }
@@ -837,6 +1014,14 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_informatio
 
     if (_is_video_streaming_set) {
         capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM;
+    }
+
+    if (!_tracking_point_callbacks.empty()) {
+        capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_TRACKING_POINT;
+    }
+
+    if (!_tracking_rectangle_callbacks.empty()) {
+        capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE;
     }
 
     _information.vendor_name.resize(sizeof(mavlink_camera_information_t::vendor_name));
@@ -1143,13 +1328,81 @@ CameraServerImpl::process_set_camera_zoom(const MavlinkCommandReceiver::CommandL
     auto zoom_type = static_cast<CAMERA_ZOOM_TYPE>(command.params.param1);
     auto zoom_value = command.params.param2;
 
-    UNUSED(zoom_type);
-    UNUSED(zoom_value);
+    if (_zoom_in_start_callbacks.empty() && _zoom_out_start_callbacks.empty() &&
+        _zoom_stop_callbacks.empty() && _zoom_range_callbacks.empty()) {
+        LogWarn() << "No camera zoom is supported";
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    }
 
-    LogDebug() << "unsupported set camera zoom request";
+    auto unsupported = [&]() {
+        LogWarn() << "unsupported set camera zoom type (" << (int)zoom_type << ") request";
+    };
 
-    return _server_component_impl->make_command_ack_message(
-        command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    switch (zoom_type) {
+        case ZOOM_TYPE_CONTINUOUS:
+            if (zoom_value == -1.f) {
+                if (_zoom_out_start_callbacks.empty()) {
+                    unsupported();
+                    return _server_component_impl->make_command_ack_message(
+                        command, MAV_RESULT::MAV_RESULT_DENIED);
+                } else {
+                    _last_zoom_out_start_command = command;
+                    int dummy = 0;
+                    _zoom_out_start_callbacks(dummy);
+                }
+            } else if (zoom_value == 1.f) {
+                if (_zoom_in_start_callbacks.empty()) {
+                    unsupported();
+                    return _server_component_impl->make_command_ack_message(
+                        command, MAV_RESULT::MAV_RESULT_DENIED);
+                } else {
+                    _last_zoom_in_start_command = command;
+                    int dummy = 0;
+                    _zoom_in_start_callbacks(dummy);
+                }
+            } else if (zoom_value == 0.f) {
+                if (_zoom_stop_callbacks.empty()) {
+                    unsupported();
+                    return _server_component_impl->make_command_ack_message(
+                        command, MAV_RESULT::MAV_RESULT_DENIED);
+                } else {
+                    _last_zoom_stop_command = command;
+                    int dummy = 0;
+                    _zoom_stop_callbacks(dummy);
+                }
+            } else {
+                LogWarn() << "Invalid zoom value";
+                return _server_component_impl->make_command_ack_message(
+                    command, MAV_RESULT::MAV_RESULT_DENIED);
+            }
+            break;
+        case ZOOM_TYPE_RANGE:
+            if (_zoom_range_callbacks.empty()) {
+                unsupported();
+                return _server_component_impl->make_command_ack_message(
+                    command, MAV_RESULT::MAV_RESULT_DENIED);
+
+            } else {
+                _last_zoom_range_command = command;
+                _zoom_range_callbacks(zoom_value);
+            }
+            break;
+        case ZOOM_TYPE_STEP:
+        // Fallthrough
+        case ZOOM_TYPE_FOCAL_LENGTH:
+        // Fallthrough
+        case ZOOM_TYPE_HORIZONTAL_FOV:
+        // Fallthrough
+        default:
+            unsupported();
+            return _server_component_impl->make_command_ack_message(
+                command, MAV_RESULT::MAV_RESULT_DENIED);
+            break;
+    }
+
+    // For any success so far, we don't ack yet, but later when the respond function is called.
+    return std::nullopt;
 }
 
 std::optional<mavlink_command_ack_t>
@@ -1400,6 +1653,365 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_stat
 
     // ack was already sent
     return std::nullopt;
+}
+
+CameraServer::ZoomInStartHandle
+CameraServerImpl::subscribe_zoom_in_start(const CameraServer::ZoomInStartCallback& callback)
+{
+    return _zoom_in_start_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_zoom_in_start(CameraServer::ZoomInStartHandle handle)
+{
+    _zoom_in_start_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_zoom_in_start(CameraServer::CameraFeedback zoom_in_start_feedback)
+{
+    switch (zoom_in_start_feedback) {
+        default:
+            // Fallthrough
+        case CameraServer::CameraFeedback::Unknown:
+            return CameraServer::Result::Error;
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_zoom_in_start_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_zoom_in_start_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_zoom_in_start_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+    }
+}
+
+CameraServer::ZoomOutStartHandle
+CameraServerImpl::subscribe_zoom_out_start(const CameraServer::ZoomOutStartCallback& callback)
+{
+    return _zoom_out_start_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_zoom_out_start(CameraServer::ZoomOutStartHandle handle)
+{
+    _zoom_out_start_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_zoom_out_start(CameraServer::CameraFeedback zoom_out_start_feedback)
+{
+    switch (zoom_out_start_feedback) {
+        default:
+            // Fallthrough
+        case CameraServer::CameraFeedback::Unknown:
+            return CameraServer::Result::Error;
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_zoom_out_start_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_zoom_out_start_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_zoom_out_start_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+    }
+}
+
+CameraServer::ZoomStopHandle
+CameraServerImpl::subscribe_zoom_stop(const CameraServer::ZoomStopCallback& callback)
+{
+    return _zoom_stop_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_zoom_stop(CameraServer::ZoomStopHandle handle)
+{
+    _zoom_stop_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_zoom_stop(CameraServer::CameraFeedback zoom_stop_feedback)
+{
+    switch (zoom_stop_feedback) {
+        default:
+            // Fallthrough
+        case CameraServer::CameraFeedback::Unknown:
+            return CameraServer::Result::Error;
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_zoom_stop_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_zoom_stop_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_zoom_stop_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+    }
+}
+
+CameraServer::ZoomRangeHandle
+CameraServerImpl::subscribe_zoom_range(const CameraServer::ZoomRangeCallback& callback)
+{
+    return _zoom_range_callbacks.subscribe(callback);
+}
+
+void CameraServerImpl::unsubscribe_zoom_range(CameraServer::ZoomRangeHandle handle)
+{
+    _zoom_range_callbacks.unsubscribe(handle);
+}
+
+CameraServer::Result
+CameraServerImpl::respond_zoom_range(CameraServer::CameraFeedback zoom_range_feedback)
+{
+    switch (zoom_range_feedback) {
+        case CameraServer::CameraFeedback::Ok: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_zoom_range_command, MAV_RESULT_ACCEPTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Busy: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_zoom_range_command, MAV_RESULT_TEMPORARILY_REJECTED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Failed: {
+            auto command_ack = _server_component_impl->make_command_ack_message(
+                _last_zoom_range_command, MAV_RESULT_FAILED);
+            _server_component_impl->send_command_ack(command_ack);
+            return CameraServer::Result::Success;
+        }
+        case CameraServer::CameraFeedback::Unknown:
+            // Fallthrough
+        default:
+            return CameraServer::Result::Error;
+    }
+}
+
+std::optional<mavlink_command_ack_t>
+CameraServerImpl::process_track_point_command(const MavlinkCommandReceiver::CommandLong& command)
+{
+    if (!is_command_sender_ok(command)) {
+        LogWarn() << "Incoming track point command is for target sysid "
+                  << int(command.target_system_id) << " instead of "
+                  << int(_server_component_impl->get_own_system_id());
+        return std::nullopt;
+    }
+
+    if (_tracking_point_callbacks.empty()) {
+        LogDebug() << "Track point requested with no user callback provided";
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    }
+
+    CameraServer::TrackPoint track_point{
+        command.params.param1, command.params.param2, command.params.param3};
+
+    _last_track_point_command = command;
+    _tracking_point_callbacks(track_point);
+    // We don't send an ack but leave that to the user.
+    return std::nullopt;
+}
+
+std::optional<mavlink_command_ack_t> CameraServerImpl::process_track_rectangle_command(
+    const MavlinkCommandReceiver::CommandLong& command)
+{
+    if (!is_command_sender_ok(command)) {
+        LogWarn() << "Incoming track rectangle command is for target sysid "
+                  << int(command.target_system_id) << " instead of "
+                  << int(_server_component_impl->get_own_system_id());
+        return std::nullopt;
+    }
+
+    if (_tracking_rectangle_callbacks.empty()) {
+        LogDebug() << "Track rectangle requested with no user callback provided";
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    }
+
+    CameraServer::TrackRectangle track_rectangle{
+        command.params.param1, command.params.param2, command.params.param3, command.params.param4};
+
+    _last_track_rectangle_command = command;
+    _tracking_rectangle_callbacks(track_rectangle);
+    // We don't send an ack but leave that to the user.
+    return std::nullopt;
+}
+
+std::optional<mavlink_command_ack_t>
+CameraServerImpl::process_track_off_command(const MavlinkCommandReceiver::CommandLong& command)
+{
+    if (!is_command_sender_ok(command)) {
+        LogWarn() << "Incoming track off command is for target sysid "
+                  << int(command.target_system_id) << " instead of "
+                  << int(_server_component_impl->get_own_system_id());
+        return std::nullopt;
+    }
+
+    if (_tracking_off_callbacks.empty()) {
+        LogDebug() << "Tracking off requested with no user callback provided";
+        return _server_component_impl->make_command_ack_message(
+            command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
+    }
+
+    _last_tracking_off_command = command;
+    _tracking_off_callbacks(0);
+    // We don't send an ack but leave that to the user.
+    return std::nullopt;
+}
+
+std::optional<mavlink_command_ack_t>
+CameraServerImpl::process_set_message_interval(const MavlinkCommandReceiver::CommandLong& command)
+{
+    if (!is_command_sender_ok(command)) {
+        LogWarn() << "Incoming track off command is for target sysid "
+                  << int(command.target_system_id) << " instead of "
+                  << int(_server_component_impl->get_own_system_id());
+        return std::nullopt;
+    }
+
+    auto message_id = static_cast<uint32_t>(command.params.param1);
+    auto interval_us = static_cast<int32_t>(command.params.param2);
+    UNUSED(message_id);
+
+    // Interval value of -1 means to disable sending messages
+    if (interval_us < 0) {
+        stop_sending_tracking_status();
+    } else {
+        start_sending_tracking_status(interval_us);
+    }
+
+    // Always send the "Accepted" result
+    return _server_component_impl->make_command_ack_message(
+        command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+}
+
+void CameraServerImpl::send_tracking_status_with_interval(uint32_t interval_us)
+{
+    while (true) {
+        std::this_thread::sleep_for(std::chrono::microseconds{interval_us});
+        {
+            std::scoped_lock lg{_tracking_status_mutex};
+            if (!_sending_tracking_status) {
+                return;
+            }
+        }
+        _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+            mavlink_message_t message;
+            std::lock_guard<std::mutex> lg{_tracking_status_mutex};
+
+            // The message is filled based on current tracking mode
+            switch (_tracking_mode) {
+                default:
+                    // Fallthrough
+                case TrackingMode::NONE:
+
+                    mavlink_msg_camera_tracking_image_status_pack_chan(
+                        mavlink_address.system_id,
+                        mavlink_address.component_id,
+                        channel,
+                        &message,
+                        CAMERA_TRACKING_STATUS_FLAGS_IDLE,
+                        CAMERA_TRACKING_MODE_NONE,
+                        CAMERA_TRACKING_TARGET_DATA_NONE,
+                        0.0f,
+                        0.0f,
+                        0.0f,
+                        0.0f,
+                        0.0f,
+                        0.0f,
+                        0.0f);
+                    break;
+                case TrackingMode::POINT:
+
+                    mavlink_msg_camera_tracking_image_status_pack_chan(
+                        mavlink_address.system_id,
+                        mavlink_address.component_id,
+                        channel,
+                        &message,
+                        CAMERA_TRACKING_STATUS_FLAGS_ACTIVE,
+                        CAMERA_TRACKING_MODE_POINT,
+                        CAMERA_TRACKING_TARGET_DATA_IN_STATUS,
+                        _tracked_point.point_x,
+                        _tracked_point.point_y,
+                        _tracked_point.radius,
+                        0.0f,
+                        0.0f,
+                        0.0f,
+                        0.0f);
+                    break;
+
+                case TrackingMode::RECTANGLE:
+
+                    mavlink_msg_camera_tracking_image_status_pack_chan(
+                        mavlink_address.system_id,
+                        mavlink_address.component_id,
+                        channel,
+                        &message,
+                        CAMERA_TRACKING_STATUS_FLAGS_ACTIVE,
+                        CAMERA_TRACKING_MODE_RECTANGLE,
+                        CAMERA_TRACKING_TARGET_DATA_IN_STATUS,
+                        0.0f,
+                        0.0f,
+                        0.0f,
+                        _tracked_rectangle.top_left_corner_x,
+                        _tracked_rectangle.top_left_corner_y,
+                        _tracked_rectangle.bottom_right_corner_x,
+                        _tracked_rectangle.bottom_right_corner_y);
+                    break;
+            }
+            return message;
+        });
+    }
+}
+
+void CameraServerImpl::start_sending_tracking_status(uint32_t interval_ms)
+{
+    // Stop sending status with the old interval
+    stop_sending_tracking_status();
+    _sending_tracking_status = true;
+    _tracking_status_sending_thread =
+        std::thread{&CameraServerImpl::send_tracking_status_with_interval, this, interval_ms};
+}
+
+void CameraServerImpl::stop_sending_tracking_status()
+{
+    // Firstly, ask the other thread to stop sending the status
+    {
+        std::scoped_lock lg{_tracking_status_mutex};
+        _sending_tracking_status = false;
+    }
+    // If the thread was active, wait for it to finish
+    if (_tracking_status_sending_thread.joinable()) {
+        _tracking_status_sending_thread.join();
+    }
 }
 
 } // namespace mavsdk

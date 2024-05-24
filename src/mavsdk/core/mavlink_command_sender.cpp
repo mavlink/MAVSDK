@@ -25,7 +25,15 @@ MavlinkCommandSender::MavlinkCommandSender(SystemImpl& system_impl) : _system_im
 
 MavlinkCommandSender::~MavlinkCommandSender()
 {
+    if (_command_debugging) {
+        LogDebug() << "CommandSender destroyed";
+    }
     _system_impl.unregister_all_mavlink_message_handlers(this);
+
+    LockedQueue<Work>::Guard work_queue_guard(_work_queue);
+    for (const auto& work : _work_queue) {
+        _system_impl.unregister_timeout_handler(work->timeout_cookie);
+    }
 }
 
 MavlinkCommandSender::Result
@@ -238,15 +246,13 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
                 }
                 // If we get a progress update, we can raise the timeout
                 // to something higher because we know the initial command
-                // has arrived. A possible timeout for this case is the initial
-                // timeout * the possible retries because this should match the
-                // case where there is no progress update, and we keep trying.
+                // has arrived.
                 _system_impl.unregister_timeout_handler(work->timeout_cookie);
                 _system_impl.register_timeout_handler(
                     [this, identification = work->identification] {
                         receive_timeout(identification);
                     },
-                    work->retries_to_do * work->timeout_s,
+                    3.0,
                     &work->timeout_cookie);
 
                 temp_result = {
@@ -287,6 +293,9 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
 
 void MavlinkCommandSender::receive_timeout(const CommandIdentification& identification)
 {
+    if (_command_debugging) {
+        LogDebug() << "Got timeout!";
+    }
     bool found_command = false;
     CommandResultCallback temp_callback = nullptr;
     std::pair<Result, float> temp_result{Result::UnknownError, NAN};

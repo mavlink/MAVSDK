@@ -920,6 +920,189 @@ public:
     Result reset_settings() const;
 
     /**
+     * @brief Start zooming in.
+     *
+     * This function is non-blocking. See 'zoom_in_start' for the blocking counterpart.
+     */
+    void zoom_in_start_async(const ResultCallback callback);
+
+    /**
+     * @brief Start zooming in.
+     *
+     * This function is blocking. See 'zoom_in_start_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result zoom_in_start() const;
+
+    /**
+     * @brief Start zooming out.
+     *
+     * This function is non-blocking. See 'zoom_out_start' for the blocking counterpart.
+     */
+    void zoom_out_start_async(const ResultCallback callback);
+
+    /**
+     * @brief Start zooming out.
+     *
+     * This function is blocking. See 'zoom_out_start_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result zoom_out_start() const;
+
+    /**
+     * @brief Stop zooming.
+     *
+     * This function is non-blocking. See 'zoom_stop' for the blocking counterpart.
+     */
+    void zoom_stop_async(const ResultCallback callback);
+
+    /**
+     * @brief Stop zooming.
+     *
+     * This function is blocking. See 'zoom_stop_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result zoom_stop() const;
+
+    /**
+     * @brief Zoom to value as proportion of full camera range (percentage between 0.0 and 100.0).
+     *
+     * This function is non-blocking. See 'zoom_range' for the blocking counterpart.
+     */
+    void zoom_range_async(float range, const ResultCallback callback);
+
+    /**
+     * @brief Zoom to value as proportion of full camera range (percentage between 0.0 and 100.0).
+     *
+     * This function is blocking. See 'zoom_range_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result zoom_range(float range) const;
+
+    /**
+     * @brief Track point.
+     *
+     * This function is non-blocking. See 'track_point' for the blocking counterpart.
+     */
+    void
+    track_point_async(float point_x, float point_y, float radius, const ResultCallback callback);
+
+    /**
+     * @brief Track point.
+     *
+     * This function is blocking. See 'track_point_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result track_point(float point_x, float point_y, float radius) const;
+
+    /**
+     * @brief Track rectangle.
+     *
+     * This function is non-blocking. See 'track_rectangle' for the blocking counterpart.
+     */
+    void track_rectangle_async(
+        float top_left_x,
+        float top_left_y,
+        float bottom_right_x,
+        float bottom_right_y,
+        const ResultCallback callback);
+
+    /**
+     * @brief Track rectangle.
+     *
+     * This function is blocking. See 'track_rectangle_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result track_rectangle(
+        float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y) const;
+
+    /**
+     * @brief Stop tracking.
+     *
+     * This function is non-blocking. See 'track_stop' for the blocking counterpart.
+     */
+    void track_stop_async(const ResultCallback callback);
+
+    /**
+     * @brief Stop tracking.
+     *
+     * This function is blocking. See 'track_stop_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result track_stop() const;
+
+    /**
+     * @brief Start focusing in.
+     *
+     * This function is non-blocking. See 'focus_in_start' for the blocking counterpart.
+     */
+    void focus_in_start_async(const ResultCallback callback);
+
+    /**
+     * @brief Start focusing in.
+     *
+     * This function is blocking. See 'focus_in_start_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result focus_in_start() const;
+
+    /**
+     * @brief Start focusing out.
+     *
+     * This function is non-blocking. See 'focus_out_start' for the blocking counterpart.
+     */
+    void focus_out_start_async(const ResultCallback callback);
+
+    /**
+     * @brief Start focusing out.
+     *
+     * This function is blocking. See 'focus_out_start_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result focus_out_start() const;
+
+    /**
+     * @brief Stop focus.
+     *
+     * This function is non-blocking. See 'focus_stop' for the blocking counterpart.
+     */
+    void focus_stop_async(const ResultCallback callback);
+
+    /**
+     * @brief Stop focus.
+     *
+     * This function is blocking. See 'focus_stop_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result focus_stop() const;
+
+    /**
+     * @brief Focus with range value of full range (value between 0.0 and 100.0).
+     *
+     * This function is non-blocking. See 'focus_range' for the blocking counterpart.
+     */
+    void focus_range_async(float range, const ResultCallback callback);
+
+    /**
+     * @brief Focus with range value of full range (value between 0.0 and 100.0).
+     *
+     * This function is blocking. See 'focus_range_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result focus_range(float range) const;
+
+    /**
      * @brief Copy constructor.
      */
     Camera(const Camera& other);

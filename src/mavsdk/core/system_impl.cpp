@@ -74,21 +74,6 @@ void SystemImpl::init(uint8_t system_id, uint8_t comp_id)
         [this](const mavlink_message_t& message) { process_autopilot_version(message); },
         this);
 
-    // register_mavlink_command_handler(
-    //    MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES,
-    //    [this](const MavlinkCommandReceiver::CommandLong& command) {
-    //        return process_autopilot_version_request(command);
-    //    },
-    //    this);
-
-    //// TO-DO!
-    // register_mavlink_command_handler(
-    //    MAV_CMD_REQUEST_MESSAGE,
-    //    [this](const MavlinkCommandReceiver::CommandLong& command) {
-    //        return make_command_ack_message(command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
-    //    },
-    //    this);
-
     add_new_component(comp_id);
 }
 
@@ -313,17 +298,6 @@ void SystemImpl::system_thread()
     }
 }
 
-// std::optional<mavlink_message_t>
-// SystemImpl::process_autopilot_version_request(const MavlinkCommandReceiver::CommandLong& command)
-//{
-//    if (_should_send_autopilot_version) {
-//        send_autopilot_version();
-//        return make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
-//    }
-//
-//    return {};
-//}
-
 std::string SystemImpl::component_name(uint8_t component_id)
 {
     switch (component_id) {
@@ -345,6 +319,8 @@ std::string SystemImpl::component_name(uint8_t component_id)
             return "Gimbal";
         case MAV_COMP_ID_MISSIONPLANNER:
             return "Ground station";
+        case MAV_COMP_ID_ONBOARD_COMPUTER:
+            return "Companion Computer";
         case MAV_COMP_ID_WINCH:
             return "Winch";
         default:
@@ -494,22 +470,6 @@ bool SystemImpl::queue_message(
 
 void SystemImpl::send_autopilot_version_request()
 {
-    auto prom = std::promise<MavlinkCommandSender::Result>();
-    auto fut = prom.get_future();
-
-    send_autopilot_version_request_async(
-        [&prom](MavlinkCommandSender::Result result, float) { prom.set_value(result); });
-
-    if (fut.get() == MavlinkCommandSender::Result::Unsupported) {
-        _old_message_520_supported = false;
-        LogWarn() << "Trying alternative command (512).";
-        send_autopilot_version_request();
-    }
-}
-
-void SystemImpl::send_autopilot_version_request_async(
-    const MavlinkCommandSender::CommandResultCallback& callback)
-{
     MavlinkCommandSender::CommandLong command{};
     command.target_component_id = get_autopilot_id();
 
@@ -523,33 +483,17 @@ void SystemImpl::send_autopilot_version_request_async(
         command.params.maybe_param1 = {static_cast<float>(MAVLINK_MSG_ID_AUTOPILOT_VERSION)};
     }
 
-    send_command_async(command, callback);
+    send_command_async(command, [this](MavlinkCommandSender::Result result, float) {
+        receive_autopilot_version_request_ack(result);
+    });
 }
 
-void SystemImpl::send_flight_information_request()
+void SystemImpl::receive_autopilot_version_request_ack(MavlinkCommandSender::Result result)
 {
-    auto prom = std::promise<MavlinkCommandSender::Result>();
-    auto fut = prom.get_future();
-
-    MavlinkCommandSender::CommandLong command{};
-    command.target_component_id = get_autopilot_id();
-
-    if (_old_message_528_supported) {
-        // Note: This MAVLINK message is deprecated and would be removed from MAVSDK in a future
-        // release.
-        command.command = MAV_CMD_REQUEST_FLIGHT_INFORMATION;
-        command.params.maybe_param1 = 1.0f;
-    } else {
-        command.command = MAV_CMD_REQUEST_MESSAGE;
-        command.params.maybe_param1 = {static_cast<float>(MAVLINK_MSG_ID_FLIGHT_INFORMATION)};
-    }
-
-    send_command_async(
-        command, [&prom](MavlinkCommandSender::Result result, float) { prom.set_value(result); });
-    if (fut.get() == MavlinkCommandSender::Result::Unsupported) {
-        _old_message_528_supported = false;
-        LogWarn() << "Trying alternative command (512)..";
-        send_flight_information_request();
+    if (result == MavlinkCommandSender::Result::Unsupported) {
+        _old_message_520_supported = false;
+        LogWarn()
+            << "Trying alternative command REQUEST_MESSAGE instead of REQUEST_AUTOPILOT_CAPABILITIES next.";
     }
 }
 
@@ -565,12 +509,6 @@ void SystemImpl::set_connected()
             }
 
             _connected = true;
-
-            // System with sysid 0 is a bit special: it is a placeholder for a connection initiated
-            // by MAVSDK. As such, it should not be advertised as a newly discovered system.
-            if (static_cast<int>(get_system_id()) != 0) {
-                _mavsdk_impl.notify_on_discover();
-            }
 
             // We call this later to avoid deadlocks on creating the server components.
             _mavsdk_impl.call_user_callback([this]() {
@@ -593,9 +531,12 @@ void SystemImpl::set_connected()
         }
         // If not yet connected there is nothing to do/
     }
+
+    _mavsdk_impl.notify_on_discover();
+
     if (enable_needed) {
         if (has_autopilot()) {
-            send_autopilot_version_request_async(nullptr);
+            send_autopilot_version_request();
         }
 
         std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
@@ -616,10 +557,10 @@ void SystemImpl::set_disconnected()
         //_heartbeat_timeout_cookie = nullptr;
 
         _connected = false;
-        _mavsdk_impl.notify_on_timeout();
         _is_connected_callbacks.queue(
             false, [this](const auto& func) { _mavsdk_impl.call_user_callback(func); });
     }
+    _mavsdk_impl.notify_on_timeout();
 
     _mavsdk_impl.stop_sending_heartbeats();
 

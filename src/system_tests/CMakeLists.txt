@@ -1,6 +1,6 @@
 add_executable(system_tests_runner
     camera_take_photo.cpp
-    component_information.cpp
+    component_metadata.cpp
     action_arm_disarm.cpp
     param_set_and_get.cpp
     param_get_all.cpp

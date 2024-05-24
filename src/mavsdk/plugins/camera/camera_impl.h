@@ -34,6 +34,37 @@ public:
     Camera::Result start_video();
     Camera::Result stop_video();
 
+    Camera::Result zoom_in_start();
+    Camera::Result zoom_out_start();
+    Camera::Result zoom_stop();
+    Camera::Result zoom_range(float range);
+    Camera::Result track_point(float point_x, float point_y, float radius);
+    Camera::Result
+    track_rectangle(float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y);
+    Camera::Result track_stop();
+    Camera::Result focus_in_start();
+    Camera::Result focus_out_start();
+    Camera::Result focus_stop();
+    Camera::Result focus_range(float range);
+
+    void zoom_in_start_async(const Camera::ResultCallback& callback);
+    void zoom_out_start_async(const Camera::ResultCallback& callback);
+    void zoom_stop_async(const Camera::ResultCallback& callback);
+    void zoom_range_async(float range, const Camera::ResultCallback& callback);
+    void track_point_async(
+        float point_x, float point_y, float radius, const Camera::ResultCallback& callback);
+    void track_rectangle_async(
+        float top_left_x,
+        float top_left_y,
+        float bottom_right_x,
+        float bottom_right_y,
+        const Camera::ResultCallback& callback);
+    void track_stop_async(const Camera::ResultCallback& callback);
+    void focus_in_start_async(const Camera::ResultCallback& callback);
+    void focus_out_start_async(const Camera::ResultCallback& callback);
+    void focus_stop_async(const Camera::ResultCallback& callback);
+    void focus_range_async(float range, const Camera::ResultCallback& callback);
+
     void prepare_async(const Camera::ResultCallback& callback);
     void take_photo_async(const Camera::ResultCallback& callback);
     void start_photo_interval_async(float interval_s, const Camera::ResultCallback& callback);
@@ -145,7 +176,6 @@ private:
     void process_camera_information(const mavlink_message_t& message);
     void process_video_information(const mavlink_message_t& message);
     void process_video_stream_status(const mavlink_message_t& message);
-    void process_flight_information(const mavlink_message_t& message);
     void reset_following_format_storage();
 
     Camera::Status::StorageStatus storage_status_from_mavlink(const int storage_status) const;
@@ -174,7 +204,6 @@ private:
     Camera::Mode to_camera_mode(const uint8_t mavlink_camera_mode) const;
 
     void* _camera_information_call_every_cookie{nullptr};
-    void* _flight_information_call_every_cookie{nullptr};
     void* _check_connection_status_call_every_cookie{nullptr};
     void* _request_missing_capture_info_cookie{nullptr};
 
@@ -183,12 +212,10 @@ private:
     void request_video_stream_info();
     void request_video_stream_status();
     void request_status();
-    void request_flight_information();
 
     MavlinkCommandSender::CommandLong make_command_take_photo(float interval_s, float no_of_photos);
     MavlinkCommandSender::CommandLong make_command_stop_photo();
 
-    MavlinkCommandSender::CommandLong make_command_request_flight_information();
     MavlinkCommandSender::CommandLong make_command_request_camera_info();
     MavlinkCommandSender::CommandLong make_command_set_camera_mode(float mavlink_mode);
     MavlinkCommandSender::CommandLong make_command_request_camera_settings();
@@ -204,6 +231,20 @@ private:
 
     MavlinkCommandSender::CommandLong make_command_request_video_stream_info();
     MavlinkCommandSender::CommandLong make_command_request_video_stream_status();
+
+    MavlinkCommandSender::CommandLong make_command_zoom_in();
+    MavlinkCommandSender::CommandLong make_command_zoom_out();
+    MavlinkCommandSender::CommandLong make_command_zoom_stop();
+    MavlinkCommandSender::CommandLong make_command_zoom_range(float range);
+    MavlinkCommandSender::CommandLong
+    make_command_track_point(float point_x, float point_y, float radius);
+    MavlinkCommandSender::CommandLong make_command_track_rectangle(
+        float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y);
+    MavlinkCommandSender::CommandLong make_command_track_stop();
+    MavlinkCommandSender::CommandLong make_command_focus_in();
+    MavlinkCommandSender::CommandLong make_command_focus_out();
+    MavlinkCommandSender::CommandLong make_command_focus_stop();
+    MavlinkCommandSender::CommandLong make_command_focus_range(float range);
 
     void request_missing_capture_info();
 

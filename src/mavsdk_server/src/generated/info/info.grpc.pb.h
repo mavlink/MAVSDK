@@ -78,6 +78,16 @@ class InfoService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetSpeedFactorResponse>> PrepareAsyncGetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetSpeedFactorResponse>>(PrepareAsyncGetSpeedFactorRaw(context, request, cq));
     }
+    // Subscribe to 'flight information' updates.
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::info::FlightInformationResponse>> SubscribeFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::mavsdk::rpc::info::FlightInformationResponse>>(SubscribeFlightInformationRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::info::FlightInformationResponse>> AsyncSubscribeFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::info::FlightInformationResponse>>(AsyncSubscribeFlightInformationRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::info::FlightInformationResponse>> PrepareAsyncSubscribeFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::info::FlightInformationResponse>>(PrepareAsyncSubscribeFlightInformationRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -96,6 +106,8 @@ class InfoService final {
       // Get the speed factor of a simulation (with lockstep a simulation can run faster or slower than realtime).
       virtual void GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Subscribe to 'flight information' updates.
+      virtual void SubscribeFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::info::FlightInformationResponse>* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -111,6 +123,9 @@ class InfoService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetVersionResponse>* PrepareAsyncGetVersionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetSpeedFactorResponse>* AsyncGetSpeedFactorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::info::GetSpeedFactorResponse>* PrepareAsyncGetSpeedFactorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::mavsdk::rpc::info::FlightInformationResponse>* SubscribeFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::info::FlightInformationResponse>* AsyncSubscribeFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::info::FlightInformationResponse>* PrepareAsyncSubscribeFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -150,6 +165,15 @@ class InfoService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetSpeedFactorResponse>> PrepareAsyncGetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetSpeedFactorResponse>>(PrepareAsyncGetSpeedFactorRaw(context, request, cq));
     }
+    std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::info::FlightInformationResponse>> SubscribeFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::mavsdk::rpc::info::FlightInformationResponse>>(SubscribeFlightInformationRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::info::FlightInformationResponse>> AsyncSubscribeFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::info::FlightInformationResponse>>(AsyncSubscribeFlightInformationRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::info::FlightInformationResponse>> PrepareAsyncSubscribeFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::mavsdk::rpc::info::FlightInformationResponse>>(PrepareAsyncSubscribeFlightInformationRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
@@ -163,6 +187,7 @@ class InfoService final {
       void GetVersion(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, std::function<void(::grpc::Status)>) override;
       void GetSpeedFactor(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SubscribeFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::info::FlightInformationResponse>* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -184,11 +209,15 @@ class InfoService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetVersionResponse>* PrepareAsyncGetVersionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetVersionRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetSpeedFactorResponse>* AsyncGetSpeedFactorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::info::GetSpeedFactorResponse>* PrepareAsyncGetSpeedFactorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::mavsdk::rpc::info::FlightInformationResponse>* SubscribeFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest& request) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::info::FlightInformationResponse>* AsyncSubscribeFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::mavsdk::rpc::info::FlightInformationResponse>* PrepareAsyncSubscribeFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_GetFlightInformation_;
     const ::grpc::internal::RpcMethod rpcmethod_GetIdentification_;
     const ::grpc::internal::RpcMethod rpcmethod_GetProduct_;
     const ::grpc::internal::RpcMethod rpcmethod_GetVersion_;
     const ::grpc::internal::RpcMethod rpcmethod_GetSpeedFactor_;
+    const ::grpc::internal::RpcMethod rpcmethod_SubscribeFlightInformation_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -206,6 +235,8 @@ class InfoService final {
     virtual ::grpc::Status GetVersion(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetVersionRequest* request, ::mavsdk::rpc::info::GetVersionResponse* response);
     // Get the speed factor of a simulation (with lockstep a simulation can run faster or slower than realtime).
     virtual ::grpc::Status GetSpeedFactor(::grpc::ServerContext* context, const ::mavsdk::rpc::info::GetSpeedFactorRequest* request, ::mavsdk::rpc::info::GetSpeedFactorResponse* response);
+    // Subscribe to 'flight information' updates.
+    virtual ::grpc::Status SubscribeFlightInformation(::grpc::ServerContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::info::FlightInformationResponse>* writer);
   };
   template <class BaseClass>
   class WithAsyncMethod_GetFlightInformation : public BaseClass {
@@ -307,7 +338,27 @@ class InfoService final {
       ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_GetFlightInformation<WithAsyncMethod_GetIdentification<WithAsyncMethod_GetProduct<WithAsyncMethod_GetVersion<WithAsyncMethod_GetSpeedFactor<Service > > > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_SubscribeFlightInformation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SubscribeFlightInformation() {
+      ::grpc::Service::MarkMethodAsync(5);
+    }
+    ~WithAsyncMethod_SubscribeFlightInformation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeFlightInformation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::info::FlightInformationResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeFlightInformation(::grpc::ServerContext* context, ::mavsdk::rpc::info::SubscribeFlightInformationRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::info::FlightInformationResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(5, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_GetFlightInformation<WithAsyncMethod_GetIdentification<WithAsyncMethod_GetProduct<WithAsyncMethod_GetVersion<WithAsyncMethod_GetSpeedFactor<WithAsyncMethod_SubscribeFlightInformation<Service > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_GetFlightInformation : public BaseClass {
    private:
@@ -443,7 +494,29 @@ class InfoService final {
     virtual ::grpc::ServerUnaryReactor* GetSpeedFactor(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::GetSpeedFactorRequest* /*request*/, ::mavsdk::rpc::info::GetSpeedFactorResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_GetFlightInformation<WithCallbackMethod_GetIdentification<WithCallbackMethod_GetProduct<WithCallbackMethod_GetVersion<WithCallbackMethod_GetSpeedFactor<Service > > > > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_SubscribeFlightInformation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SubscribeFlightInformation() {
+      ::grpc::Service::MarkMethodCallback(5,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::info::SubscribeFlightInformationRequest, ::mavsdk::rpc::info::FlightInformationResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest* request) { return this->SubscribeFlightInformation(context, request); }));
+    }
+    ~WithCallbackMethod_SubscribeFlightInformation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeFlightInformation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::info::FlightInformationResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::mavsdk::rpc::info::FlightInformationResponse>* SubscribeFlightInformation(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest* /*request*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_GetFlightInformation<WithCallbackMethod_GetIdentification<WithCallbackMethod_GetProduct<WithCallbackMethod_GetVersion<WithCallbackMethod_GetSpeedFactor<WithCallbackMethod_SubscribeFlightInformation<Service > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_GetFlightInformation : public BaseClass {
@@ -526,6 +599,23 @@ class InfoService final {
     }
     // disable synchronous version of this method
     ::grpc::Status GetSpeedFactor(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::GetSpeedFactorRequest* /*request*/, ::mavsdk::rpc::info::GetSpeedFactorResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SubscribeFlightInformation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SubscribeFlightInformation() {
+      ::grpc::Service::MarkMethodGeneric(5);
+    }
+    ~WithGenericMethod_SubscribeFlightInformation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeFlightInformation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::info::FlightInformationResponse>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -628,6 +718,26 @@ class InfoService final {
     }
     void RequestGetSpeedFactor(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SubscribeFlightInformation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SubscribeFlightInformation() {
+      ::grpc::Service::MarkMethodRaw(5);
+    }
+    ~WithRawMethod_SubscribeFlightInformation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeFlightInformation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::info::FlightInformationResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSubscribeFlightInformation(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(5, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -739,6 +849,28 @@ class InfoService final {
     }
     virtual ::grpc::ServerUnaryReactor* GetSpeedFactor(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_SubscribeFlightInformation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SubscribeFlightInformation() {
+      ::grpc::Service::MarkMethodRawCallback(5,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeFlightInformation(context, request); }));
+    }
+    ~WithRawCallbackMethod_SubscribeFlightInformation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SubscribeFlightInformation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::info::FlightInformationResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* SubscribeFlightInformation(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_GetFlightInformation : public BaseClass {
@@ -876,8 +1008,35 @@ class InfoService final {
     virtual ::grpc::Status StreamedGetSpeedFactor(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::info::GetSpeedFactorRequest,::mavsdk::rpc::info::GetSpeedFactorResponse>* server_unary_streamer) = 0;
   };
   typedef WithStreamedUnaryMethod_GetFlightInformation<WithStreamedUnaryMethod_GetIdentification<WithStreamedUnaryMethod_GetProduct<WithStreamedUnaryMethod_GetVersion<WithStreamedUnaryMethod_GetSpeedFactor<Service > > > > > StreamedUnaryService;
-  typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetFlightInformation<WithStreamedUnaryMethod_GetIdentification<WithStreamedUnaryMethod_GetProduct<WithStreamedUnaryMethod_GetVersion<WithStreamedUnaryMethod_GetSpeedFactor<Service > > > > > StreamedService;
+  template <class BaseClass>
+  class WithSplitStreamingMethod_SubscribeFlightInformation : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_SubscribeFlightInformation() {
+      ::grpc::Service::MarkMethodStreamed(5,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::mavsdk::rpc::info::SubscribeFlightInformationRequest, ::mavsdk::rpc::info::FlightInformationResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::mavsdk::rpc::info::SubscribeFlightInformationRequest, ::mavsdk::rpc::info::FlightInformationResponse>* streamer) {
+                       return this->StreamedSubscribeFlightInformation(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_SubscribeFlightInformation() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SubscribeFlightInformation(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest* /*request*/, ::grpc::ServerWriter< ::mavsdk::rpc::info::FlightInformationResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedSubscribeFlightInformation(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::info::SubscribeFlightInformationRequest,::mavsdk::rpc::info::FlightInformationResponse>* server_split_streamer) = 0;
+  };
+  typedef WithSplitStreamingMethod_SubscribeFlightInformation<Service > SplitStreamedService;
+  typedef WithStreamedUnaryMethod_GetFlightInformation<WithStreamedUnaryMethod_GetIdentification<WithStreamedUnaryMethod_GetProduct<WithStreamedUnaryMethod_GetVersion<WithStreamedUnaryMethod_GetSpeedFactor<WithSplitStreamingMethod_SubscribeFlightInformation<Service > > > > > > StreamedService;
 };
 
 }  // namespace info
