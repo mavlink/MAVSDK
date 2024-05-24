@@ -819,10 +819,8 @@ void MavsdkImpl::process_user_callbacks_thread()
             continue;
         }
 
-        void* cookie{nullptr};
-
         const double timeout_s = 1.0;
-        timeout_handler.add(
+        auto cookie = timeout_handler.add(
             [&]() {
                 if (_callback_debugging) {
                     LogWarn() << "Callback called from " << callback.value().filename << ":"
@@ -837,8 +835,7 @@ void MavsdkImpl::process_user_callbacks_thread()
                         << "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
                 }
             },
-            timeout_s,
-            &cookie);
+            timeout_s);
         callback.value().func();
         timeout_handler.remove(cookie);
     }

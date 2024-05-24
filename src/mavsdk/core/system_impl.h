@@ -65,10 +65,10 @@ public:
     void
     update_component_id_messages_handler(uint16_t msg_id, uint8_t component_id, const void* cookie);
 
-    void register_timeout_handler(
-        const std::function<void()>& callback, double duration_s, void** cookie);
-    void refresh_timeout_handler(const void* cookie);
-    void unregister_timeout_handler(const void* cookie);
+    TimeoutHandler::Cookie
+    register_timeout_handler(const std::function<void()>& callback, double duration_s);
+    void refresh_timeout_handler(TimeoutHandler::Cookie cookie);
+    void unregister_timeout_handler(TimeoutHandler::Cookie cookie);
 
     void add_call_every(std::function<void()> callback, float interval_s, void** cookie);
     void change_call_every(float interval_s, const void* cookie);
@@ -374,7 +374,7 @@ private:
     std::mutex _connection_mutex{};
     std::atomic<bool> _connected{false};
     CallbackList<bool> _is_connected_callbacks{};
-    void* _heartbeat_timeout_cookie = nullptr;
+    TimeoutHandler::Cookie _heartbeat_timeout_cookie{};
 
     std::atomic<bool> _autopilot_version_pending{false};
 

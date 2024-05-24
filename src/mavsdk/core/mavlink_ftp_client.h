@@ -14,6 +14,7 @@
 
 #include "mavlink_include.h"
 #include "locked_queue.h"
+#include "timeout_handler.h"
 
 // As found in
 // https://stackoverflow.com/questions/1537964#answer-3312896
@@ -327,7 +328,7 @@ private:
     uint8_t _session = 0;
     uint8_t _network_id = 0;
 
-    void* _timeout_cookie = nullptr;
+    TimeoutHandler::Cookie _timeout_cookie{};
 
     LockedQueue<Work> _work_queue{};
 

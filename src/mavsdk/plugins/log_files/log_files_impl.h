@@ -34,7 +34,7 @@ struct LogData {
     uint32_t chunk_bytes_written{};
     uint32_t total_bytes_written{};
 
-    void* timeout_cookie{};
+    TimeoutHandler::Cookie timeout_cookie{};
 
     LogFiles::DownloadLogFileCallback user_callback{};
 };
@@ -79,7 +79,7 @@ private:
     std::mutex _entries_mutex;
     std::unordered_map<uint16_t, LogFiles::Entry> _log_entries;
     uint32_t _total_entries{0};
-    void* _entries_timeout_cookie{};
+    TimeoutHandler::Cookie _entries_timeout_cookie{};
     LogFiles::GetEntriesCallback _entries_user_callback{};
 
     // The current log download data structure

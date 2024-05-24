@@ -49,8 +49,8 @@ void GimbalImpl::enable()
         LogInfo() << "Forcing gimbal version 2";
     } else {
         if (_gimbal_protocol == nullptr) {
-            _system_impl->register_timeout_handler(
-                [this]() { receive_protocol_timeout(); }, 1.0, &_protocol_cookie);
+            _protocol_cookie = _system_impl->register_timeout_handler(
+                [this]() { receive_protocol_timeout(); }, 1.0);
         }
     }
 
@@ -78,7 +78,7 @@ void GimbalImpl::receive_protocol_timeout()
     LogWarn() << "Falling back to Gimbal Version 1";
     std::lock_guard<std::mutex> lock(_mutex);
     _gimbal_protocol.reset(new GimbalProtocolV1(*_system_impl));
-    _protocol_cookie = nullptr;
+    _protocol_cookie = {};
 }
 
 void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& message)
@@ -92,7 +92,7 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
                << static_cast<int>(gimbal_manager_information.gimbal_device_id)
                << " was discovered";
 
-    _protocol_cookie = nullptr;
+    _protocol_cookie = {};
 
     // We need to schedule the construction for later because it wants
     // to register more message subscriptions which blocks.

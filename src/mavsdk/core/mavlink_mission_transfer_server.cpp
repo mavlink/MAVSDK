@@ -145,7 +145,7 @@ void MavlinkMissionTransferServer::ReceiveIncomingMission::start()
 
     _started = true;
     _retries_done = 0;
-    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
+    _cookie = _timeout_handler.add([this]() { process_timeout(); }, _timeout_s);
     process_mission_count();
 }
 
@@ -288,7 +288,7 @@ void MavlinkMissionTransferServer::ReceiveIncomingMission::process_timeout()
         return;
     }
 
-    _timeout_handler.add([this]() { process_timeout(); }, _timeout_s, &_cookie);
+    _cookie = _timeout_handler.add([this]() { process_timeout(); }, _timeout_s);
     request_item();
 }
 

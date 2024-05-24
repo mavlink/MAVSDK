@@ -48,8 +48,8 @@ void MissionImpl::init()
 
 void MissionImpl::enable()
 {
-    _system_impl->register_timeout_handler(
-        [this]() { receive_protocol_timeout(); }, 1.0, &_gimbal_protocol_cookie);
+    _gimbal_protocol_cookie =
+        _system_impl->register_timeout_handler([this]() { receive_protocol_timeout(); }, 1.0);
 
     MavlinkCommandSender::CommandLong command{};
     command.command = MAV_CMD_REQUEST_MESSAGE;
@@ -103,7 +103,7 @@ void MissionImpl::process_mission_item_reached(const mavlink_message_t& message)
 void MissionImpl::process_gimbal_manager_information(const mavlink_message_t& message)
 {
     UNUSED(message);
-    if (_gimbal_protocol_cookie != nullptr) {
+    if (_gimbal_protocol == GimbalProtocol::Unknown) {
         LogDebug() << "Using gimbal protocol v2";
         _gimbal_protocol = GimbalProtocol::V2;
         _system_impl->unregister_timeout_handler(_gimbal_protocol_cookie);
@@ -127,7 +127,7 @@ void MissionImpl::receive_protocol_timeout()
 {
     LogDebug() << "Falling back to gimbal protocol v1";
     _gimbal_protocol = GimbalProtocol::V1;
-    _gimbal_protocol_cookie = nullptr;
+    _gimbal_protocol_cookie = {};
 }
 
 Mission::Result MissionImpl::upload_mission(const Mission::MissionPlan& mission_plan)

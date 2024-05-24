@@ -89,10 +89,10 @@ public:
     void unregister_mavlink_message_handler(uint16_t msg_id, const void* cookie);
     void unregister_all_mavlink_message_handlers(const void* cookie);
 
-    void register_timeout_handler(
-        const std::function<void()>& callback, double duration_s, void** cookie);
-    void refresh_timeout_handler(const void* cookie);
-    void unregister_timeout_handler(const void* cookie);
+    TimeoutHandler::Cookie
+    register_timeout_handler(const std::function<void()>& callback, double duration_s);
+    void refresh_timeout_handler(TimeoutHandler::Cookie cookie);
+    void unregister_timeout_handler(TimeoutHandler::Cookie cookie);
 
     [[nodiscard]] uint8_t get_own_system_id() const;
 

@@ -452,9 +452,9 @@ private:
     double _velocity_ned_rate_hz{0.0};
     double _position_rate_hz{-1.0};
 
-    void* _rc_channels_timeout_cookie{nullptr};
-    void* _gps_raw_timeout_cookie{nullptr};
-    void* _unix_epoch_timeout_cookie{nullptr};
+    TimeoutHandler::Cookie _rc_channels_timeout_cookie{};
+    TimeoutHandler::Cookie _gps_raw_timeout_cookie{};
+    TimeoutHandler::Cookie _unix_epoch_timeout_cookie{};
 
     // Battery info can be extracted from SYS_STATUS or from BATTERY_STATUS.
     // If no BATTERY_STATUS messages are received, use info from SYS_STATUS.

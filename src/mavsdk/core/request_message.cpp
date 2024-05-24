@@ -110,12 +110,11 @@ void RequestMessage::handle_command_result(uint32_t message_id, MavlinkCommandSe
             case MavlinkCommandSender::Result::Success:
                 // This is promising, let's hope the message will actually arrive.
                 // We'll set a timeout in case we need to retry.
-                _timeout_handler.add(
+                it->timeout_cookie = _timeout_handler.add(
                     [this, message_id, target_component = it->target_component]() {
                         handle_timeout(message_id, target_component);
                     },
-                    1.0,
-                    &it->timeout_cookie);
+                    1.0);
                 return;
 
             case MavlinkCommandSender::Result::NoSystem:

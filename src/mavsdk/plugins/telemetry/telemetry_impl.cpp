@@ -219,11 +219,11 @@ void TelemetryImpl::deinit()
 
 void TelemetryImpl::enable()
 {
-    _system_impl->register_timeout_handler(
-        [this]() { receive_gps_raw_timeout(); }, 2.0, &_gps_raw_timeout_cookie);
+    _gps_raw_timeout_cookie =
+        _system_impl->register_timeout_handler([this]() { receive_gps_raw_timeout(); }, 2.0);
 
-    _system_impl->register_timeout_handler(
-        [this]() { receive_unix_epoch_timeout(); }, 2.0, &_unix_epoch_timeout_cookie);
+    _unix_epoch_timeout_cookie =
+        _system_impl->register_timeout_handler([this]() { receive_unix_epoch_timeout(); }, 2.0);
 
     // FIXME: The calibration check should eventually be better than this.
     //        For now, we just do the same as QGC does.

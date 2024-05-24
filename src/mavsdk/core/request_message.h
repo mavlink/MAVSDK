@@ -38,7 +38,7 @@ private:
         RequestMessageCallback callback{};
         uint32_t param2{0};
         std::size_t retries{0};
-        void* timeout_cookie{nullptr};
+        TimeoutHandler::Cookie timeout_cookie{};
         std::optional<MavlinkCommandSender::Result> maybe_result{};
     };
 

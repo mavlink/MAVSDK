@@ -248,12 +248,11 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
                 // to something higher because we know the initial command
                 // has arrived.
                 _system_impl.unregister_timeout_handler(work->timeout_cookie);
-                _system_impl.register_timeout_handler(
+                work->timeout_cookie = _system_impl.register_timeout_handler(
                     [this, identification = work->identification] {
                         receive_timeout(identification);
                     },
-                    3.0,
-                    &work->timeout_cookie);
+                    3.0);
 
                 temp_result = {
                     Result::InProgress, static_cast<float>(command_ack.progress) / 100.0f};
@@ -336,12 +335,11 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
                 break;
             } else {
                 --work->retries_to_do;
-                _system_impl.register_timeout_handler(
+                work->timeout_cookie = _system_impl.register_timeout_handler(
                     [this, identification = work->identification] {
                         receive_timeout(identification);
                     },
-                    work->timeout_s,
-                    &work->timeout_cookie);
+                    work->timeout_s);
             }
         } else {
             // We have tried retransmitting, giving up now.
@@ -413,10 +411,9 @@ void MavlinkCommandSender::do_work()
 
         work->already_sent = true;
 
-        _system_impl.register_timeout_handler(
+        work->timeout_cookie = _system_impl.register_timeout_handler(
             [this, identification = work->identification] { receive_timeout(identification); },
-            work->timeout_s,
-            &work->timeout_cookie);
+            work->timeout_s);
     }
 }
 

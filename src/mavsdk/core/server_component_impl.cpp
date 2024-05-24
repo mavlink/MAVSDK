@@ -275,18 +275,18 @@ void ServerComponentImpl::call_user_callback_located(
     _mavsdk_impl.call_user_callback_located(filename, linenumber, func);
 }
 
-void ServerComponentImpl::register_timeout_handler(
-    const std::function<void()>& callback, double duration_s, void** cookie)
+TimeoutHandler::Cookie ServerComponentImpl::register_timeout_handler(
+    const std::function<void()>& callback, double duration_s)
 {
-    _mavsdk_impl.timeout_handler.add(callback, duration_s, cookie);
+    return _mavsdk_impl.timeout_handler.add(callback, duration_s);
 }
 
-void ServerComponentImpl::refresh_timeout_handler(const void* cookie)
+void ServerComponentImpl::refresh_timeout_handler(TimeoutHandler::Cookie cookie)
 {
     _mavsdk_impl.timeout_handler.refresh(cookie);
 }
 
-void ServerComponentImpl::unregister_timeout_handler(const void* cookie)
+void ServerComponentImpl::unregister_timeout_handler(TimeoutHandler::Cookie cookie)
 {
     _mavsdk_impl.timeout_handler.remove(cookie);
 }

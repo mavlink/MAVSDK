@@ -113,18 +113,18 @@ void SystemImpl::update_component_id_messages_handler(
     _mavlink_message_handler.update_component_id(msg_id, component_id, cookie);
 }
 
-void SystemImpl::register_timeout_handler(
-    const std::function<void()>& callback, double duration_s, void** cookie)
+TimeoutHandler::Cookie
+SystemImpl::register_timeout_handler(const std::function<void()>& callback, double duration_s)
 {
-    _mavsdk_impl.timeout_handler.add(callback, duration_s, cookie);
+    return _mavsdk_impl.timeout_handler.add(callback, duration_s);
 }
 
-void SystemImpl::refresh_timeout_handler(const void* cookie)
+void SystemImpl::refresh_timeout_handler(TimeoutHandler::Cookie cookie)
 {
     _mavsdk_impl.timeout_handler.refresh(cookie);
 }
 
-void SystemImpl::unregister_timeout_handler(const void* cookie)
+void SystemImpl::unregister_timeout_handler(TimeoutHandler::Cookie cookie)
 {
     _mavsdk_impl.timeout_handler.remove(cookie);
 }
@@ -516,10 +516,8 @@ void SystemImpl::set_connected()
                 _mavsdk_impl.start_sending_heartbeats();
             });
 
-            register_timeout_handler(
-                [this] { heartbeats_timed_out(); },
-                HEARTBEAT_TIMEOUT_S,
-                &_heartbeat_timeout_cookie);
+            _heartbeat_timeout_cookie =
+                register_timeout_handler([this] { heartbeats_timed_out(); }, HEARTBEAT_TIMEOUT_S);
 
             enable_needed = true;
 
