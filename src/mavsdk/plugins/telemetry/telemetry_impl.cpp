@@ -151,7 +151,7 @@ void TelemetryImpl::init()
         this);
 
     _system_impl->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_UTM_GLOBAL_POSITION,
+        MAVLINK_MSG_ID_SYSTEM_TIME,
         [this](const mavlink_message_t& message) { process_unix_epoch_time(message); },
         this);
 
@@ -399,7 +399,7 @@ Telemetry::Result TelemetryImpl::set_rate_scaled_pressure(double rate_hz)
 Telemetry::Result TelemetryImpl::set_rate_unix_epoch_time(double rate_hz)
 {
     return telemetry_result_from_command_result(
-        _system_impl->set_msg_rate(MAVLINK_MSG_ID_UTM_GLOBAL_POSITION, rate_hz));
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_SYSTEM_TIME, rate_hz));
 }
 
 Telemetry::Result TelemetryImpl::set_rate_altitude(double rate_hz)
@@ -1352,10 +1352,10 @@ void TelemetryImpl::process_rc_channels(const mavlink_message_t& message)
 
 void TelemetryImpl::process_unix_epoch_time(const mavlink_message_t& message)
 {
-    mavlink_utm_global_position_t utm_global_position;
-    mavlink_msg_utm_global_position_decode(&message, &utm_global_position);
+    mavlink_system_time_t system_time;
+    mavlink_msg_system_time_decode(&message, &system_time);
 
-    set_unix_epoch_time_us(utm_global_position.time);
+    set_unix_epoch_time_us(system_time.time_unix_usec);
 
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _unix_epoch_time_subscriptions.queue(

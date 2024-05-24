@@ -15,6 +15,7 @@
 #include <future>
 #include <limits>
 #include <memory>
+#include <mutex>
 #include <sstream>
 #include <vector>
 
@@ -118,6 +119,8 @@ public:
                 return rpc::action::ActionResult_Result_RESULT_UNSUPPORTED;
             case mavsdk::Action::Result::Failed:
                 return rpc::action::ActionResult_Result_RESULT_FAILED;
+            case mavsdk::Action::Result::InvalidArgument:
+                return rpc::action::ActionResult_Result_RESULT_INVALID_ARGUMENT;
         }
     }
 
@@ -156,6 +159,8 @@ public:
                 return mavsdk::Action::Result::Unsupported;
             case rpc::action::ActionResult_Result_RESULT_FAILED:
                 return mavsdk::Action::Result::Failed;
+            case rpc::action::ActionResult_Result_RESULT_INVALID_ARGUMENT:
+                return mavsdk::Action::Result::InvalidArgument;
         }
     }
 
@@ -174,6 +179,29 @@ public:
         }
 
         auto result = _lazy_plugin.maybe_plugin()->arm();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status ArmForce(
+        grpc::ServerContext* /* context */,
+        const rpc::action::ArmForceRequest* /* request */,
+        rpc::action::ArmForceResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Action::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->arm_force();
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
@@ -720,6 +748,7 @@ public:
     void stop()
     {
         _stopped.store(true);
+        std::lock_guard<std::mutex> lock(_stream_stop_mutex);
         for (auto& prom : _stream_stop_promises) {
             if (auto handle = prom.lock()) {
                 handle->set_value();
@@ -736,12 +765,14 @@ private:
                 handle->set_value();
             }
         } else {
+            std::lock_guard<std::mutex> lock(_stream_stop_mutex);
             _stream_stop_promises.push_back(prom);
         }
     }
 
     void unregister_stream_stop_promise(std::shared_ptr<std::promise<void>> prom)
     {
+        std::lock_guard<std::mutex> lock(_stream_stop_mutex);
         for (auto it = _stream_stop_promises.begin(); it != _stream_stop_promises.end();
              /* ++it */) {
             if (it->lock() == prom) {
@@ -755,6 +786,7 @@ private:
     LazyPlugin& _lazy_plugin;
 
     std::atomic<bool> _stopped{false};
+    std::mutex _stream_stop_mutex{};
     std::vector<std::weak_ptr<std::promise<void>>> _stream_stop_promises{};
 };
 

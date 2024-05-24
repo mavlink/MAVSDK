@@ -1,5 +1,7 @@
 #pragma once
 
+#include <bitset>
+#include <cstddef>
 #include <mutex>
 #include <sstream>
 #include "log_callback.h"
@@ -29,6 +31,8 @@
 namespace mavsdk {
 
 static std::mutex log_mutex_{};
+
+std::ostream& operator<<(std::ostream& os, std::byte b);
 
 enum class Color { Red, Green, Yellow, Blue, Gray, Reset };
 

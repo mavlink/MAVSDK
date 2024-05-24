@@ -11,6 +11,7 @@ if (SUPERBUILD)
     build_target(mavlink)
     build_target(jsoncpp)
     build_target(tinyxml2)
+    build_target(liblzma)
 
     if(NOT BUILD_WITHOUT_CURL)
         if(NOT IOS)

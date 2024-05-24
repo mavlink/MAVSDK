@@ -100,7 +100,7 @@ private:
     {
         std::lock_guard<std::mutex> remove_later_lock(_remove_later_mutex);
 
-        // We could probably just grab the lock here but it's safer not to
+        // We could probably just grab the lock here, but it's safer not to
         // acquire both locks to avoid deadlocks.
         if (_mutex.try_lock()) {
             if (_remove_all_later) {

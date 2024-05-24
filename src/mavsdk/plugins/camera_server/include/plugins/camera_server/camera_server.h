@@ -23,7 +23,7 @@ class ServerComponent;
 class CameraServerImpl;
 
 /**
- * @brief Provides handling of camera trigger commands.
+ * @brief Provides handling of camera interface
  */
 class CameraServer : public ServerPluginBase {
 public:
@@ -380,6 +380,63 @@ public:
     operator<<(std::ostream& str, CameraServer::CaptureStatus const& capture_status);
 
     /**
+     * @brief Point description type
+     */
+    struct TrackPoint {
+        float point_x{}; /**< @brief Point to track x value (normalized 0..1, 0 is left, 1 is
+                            right). */
+        float point_y{}; /**< @brief Point to track y value (normalized 0..1, 0 is top, 1 is
+                            bottom). */
+        float radius{}; /**< @brief Point to track y value (normalized 0..1, 0 is top, 1 is bottom).
+                         */
+    };
+
+    /**
+     * @brief Equal operator to compare two `CameraServer::TrackPoint` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const CameraServer::TrackPoint& lhs, const CameraServer::TrackPoint& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `CameraServer::TrackPoint`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, CameraServer::TrackPoint const& track_point);
+
+    /**
+     * @brief Rectangle description type
+     */
+    struct TrackRectangle {
+        float top_left_corner_x{}; /**< @brief Top left corner of rectangle x value (normalized
+                                      0..1, 0 is left, 1 is right). */
+        float top_left_corner_y{}; /**< @brief Top left corner of rectangle y value (normalized
+                                      0..1, 0 is top, 1 is bottom). */
+        float bottom_right_corner_x{}; /**< @brief Bottom right corner of rectangle x value
+                                          (normalized 0..1, 0 is left, 1 is right). */
+        float bottom_right_corner_y{}; /**< @brief Bottom right corner of rectangle y value
+                                          (normalized 0..1, 0 is top, 1 is bottom). */
+    };
+
+    /**
+     * @brief Equal operator to compare two `CameraServer::TrackRectangle` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const CameraServer::TrackRectangle& lhs, const CameraServer::TrackRectangle& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `CameraServer::TrackRectangle`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, CameraServer::TrackRectangle const& track_rectangle);
+
+    /**
      * @brief Callback type for asynchronous CameraServer calls.
      */
     using ResultCallback = std::function<void(Result)>;
@@ -718,6 +775,230 @@ public:
      * @return Result of request.
      */
     Result respond_reset_settings(CameraFeedback reset_settings_feedback) const;
+
+    /**
+     * @brief Callback type for subscribe_zoom_in_start.
+     */
+    using ZoomInStartCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_zoom_in_start.
+     */
+    using ZoomInStartHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to zoom in start command
+     */
+    ZoomInStartHandle subscribe_zoom_in_start(const ZoomInStartCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_zoom_in_start
+     */
+    void unsubscribe_zoom_in_start(ZoomInStartHandle handle);
+
+    /**
+     * @brief Respond to zoom in start.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_zoom_in_start(CameraFeedback zoom_in_start_feedback) const;
+
+    /**
+     * @brief Callback type for subscribe_zoom_out_start.
+     */
+    using ZoomOutStartCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_zoom_out_start.
+     */
+    using ZoomOutStartHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to zoom out start command
+     */
+    ZoomOutStartHandle subscribe_zoom_out_start(const ZoomOutStartCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_zoom_out_start
+     */
+    void unsubscribe_zoom_out_start(ZoomOutStartHandle handle);
+
+    /**
+     * @brief Respond to zoom out start.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_zoom_out_start(CameraFeedback zoom_out_start_feedback) const;
+
+    /**
+     * @brief Callback type for subscribe_zoom_stop.
+     */
+    using ZoomStopCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_zoom_stop.
+     */
+    using ZoomStopHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to zoom stop command
+     */
+    ZoomStopHandle subscribe_zoom_stop(const ZoomStopCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_zoom_stop
+     */
+    void unsubscribe_zoom_stop(ZoomStopHandle handle);
+
+    /**
+     * @brief Respond to zoom stop.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_zoom_stop(CameraFeedback zoom_stop_feedback) const;
+
+    /**
+     * @brief Callback type for subscribe_zoom_range.
+     */
+    using ZoomRangeCallback = std::function<void(float)>;
+
+    /**
+     * @brief Handle type for subscribe_zoom_range.
+     */
+    using ZoomRangeHandle = Handle<float>;
+
+    /**
+     * @brief Subscribe to zoom range command
+     */
+    ZoomRangeHandle subscribe_zoom_range(const ZoomRangeCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_zoom_range
+     */
+    void unsubscribe_zoom_range(ZoomRangeHandle handle);
+
+    /**
+     * @brief Respond to zoom range.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_zoom_range(CameraFeedback zoom_range_feedback) const;
+
+    /**
+     * @brief Set/update the current rectangle tracking status.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    void set_tracking_rectangle_status(TrackRectangle tracked_rectangle) const;
+
+    /**
+     * @brief Set the current tracking status to off.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    void set_tracking_off_status() const;
+
+    /**
+     * @brief Callback type for subscribe_tracking_point_command.
+     */
+    using TrackingPointCommandCallback = std::function<void(TrackPoint)>;
+
+    /**
+     * @brief Handle type for subscribe_tracking_point_command.
+     */
+    using TrackingPointCommandHandle = Handle<TrackPoint>;
+
+    /**
+     * @brief Subscribe to incoming tracking point command.
+     */
+    TrackingPointCommandHandle
+    subscribe_tracking_point_command(const TrackingPointCommandCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_tracking_point_command
+     */
+    void unsubscribe_tracking_point_command(TrackingPointCommandHandle handle);
+
+    /**
+     * @brief Callback type for subscribe_tracking_rectangle_command.
+     */
+    using TrackingRectangleCommandCallback = std::function<void(TrackRectangle)>;
+
+    /**
+     * @brief Handle type for subscribe_tracking_rectangle_command.
+     */
+    using TrackingRectangleCommandHandle = Handle<TrackRectangle>;
+
+    /**
+     * @brief Subscribe to incoming tracking rectangle command.
+     */
+    TrackingRectangleCommandHandle
+    subscribe_tracking_rectangle_command(const TrackingRectangleCommandCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_tracking_rectangle_command
+     */
+    void unsubscribe_tracking_rectangle_command(TrackingRectangleCommandHandle handle);
+
+    /**
+     * @brief Callback type for subscribe_tracking_off_command.
+     */
+    using TrackingOffCommandCallback = std::function<void(int32_t)>;
+
+    /**
+     * @brief Handle type for subscribe_tracking_off_command.
+     */
+    using TrackingOffCommandHandle = Handle<int32_t>;
+
+    /**
+     * @brief Subscribe to incoming tracking off command.
+     */
+    TrackingOffCommandHandle
+    subscribe_tracking_off_command(const TrackingOffCommandCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_tracking_off_command
+     */
+    void unsubscribe_tracking_off_command(TrackingOffCommandHandle handle);
+
+    /**
+     * @brief Respond to an incoming tracking point command.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_tracking_point_command(CameraFeedback stop_video_feedback) const;
+
+    /**
+     * @brief Respond to an incoming tracking rectangle command.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_tracking_rectangle_command(CameraFeedback stop_video_feedback) const;
+
+    /**
+     * @brief Respond to an incoming tracking off command.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result respond_tracking_off_command(CameraFeedback stop_video_feedback) const;
 
     /**
      * @brief Copy constructor.
