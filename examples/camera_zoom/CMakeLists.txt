@@ -18,5 +18,5 @@ target_link_libraries(camera_zoom
 if(NOT MSVC)
     add_compile_options(camera_zoom PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(camera_zoom PRIVATE -WX -W2)
+    add_compile_options(camera_zoom PRIVATE -W2)
 endif()

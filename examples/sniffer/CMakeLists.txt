@@ -18,5 +18,5 @@ target_link_libraries(sniffer
 if(NOT MSVC)
     add_compile_options(sniffer PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(sniffer PRIVATE -WX -W2)
+    add_compile_options(sniffer PRIVATE -W2)
 endif()

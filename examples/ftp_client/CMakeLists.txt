@@ -18,5 +18,5 @@ target_link_libraries(ftp_client
 if(NOT MSVC)
     add_compile_options(ftp_client PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(ftp_client PRIVATE -WX -W2)
+    add_compile_options(ftp_client PRIVATE -W2)
 endif()

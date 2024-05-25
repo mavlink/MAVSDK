@@ -29,6 +29,8 @@ if (SUPERBUILD)
         build_target(grpc)
     endif()
 
+    build_target(gtest)
+
 endif()
 
 if (ENABLE_CPPTRACE)

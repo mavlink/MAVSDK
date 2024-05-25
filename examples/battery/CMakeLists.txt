@@ -18,5 +18,5 @@ target_link_libraries(battery
 if(NOT MSVC)
     add_compile_options(battery PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(battery PRIVATE -WX -W2)
+    add_compile_options(battery PRIVATE -W2)
 endif()

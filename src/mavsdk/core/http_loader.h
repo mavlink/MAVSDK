@@ -89,40 +89,12 @@ private:
         ProgressCallback _progress_callback{};
     };
 
-    class UploadItem : public WorkItem {
-    public:
-        UploadItem(
-            std::string target_url, std::string local_path, ProgressCallback progress_callback) :
-            _target_url(std::move(target_url)),
-            _local_path(std::move(local_path)),
-            _progress_callback(std::move(progress_callback))
-        {}
-
-        virtual ~UploadItem() = default;
-
-        [[nodiscard]] std::string get_local_path() const { return _local_path; }
-
-        [[nodiscard]] std::string get_target_url() const { return _target_url; }
-
-        [[nodiscard]] ProgressCallback get_progress_callback() const { return _progress_callback; }
-
-        UploadItem(UploadItem&) = delete;
-        UploadItem operator=(UploadItem&) = delete;
-
-    private:
-        std::string _target_url;
-        std::string _local_path;
-        ProgressCallback _progress_callback{};
-    };
-
     static void work_thread(HttpLoader* self);
     static void do_item(
         const std::shared_ptr<WorkItem>& item, const std::shared_ptr<ICurlWrapper>& curl_wrapper);
     static bool do_download(
         const std::shared_ptr<DownloadItem>& item,
         const std::shared_ptr<ICurlWrapper>& curl_wrapper);
-    static bool do_upload(
-        const std::shared_ptr<UploadItem>& item, const std::shared_ptr<ICurlWrapper>& curl_wrapper);
 
     std::shared_ptr<ICurlWrapper> _curl_wrapper;
 

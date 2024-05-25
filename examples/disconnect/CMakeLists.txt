@@ -18,5 +18,5 @@ target_link_libraries(disconnect
 if(NOT MSVC)
     add_compile_options(disconnect PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(disconnect PRIVATE -WX -W2)
+    add_compile_options(disconnect PRIVATE -W2)
 endif()

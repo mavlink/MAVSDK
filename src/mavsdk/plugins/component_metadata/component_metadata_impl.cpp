@@ -2,6 +2,7 @@
 #include "callback_list.tpp"
 #include "fs_utils.h"
 #include "inflate_lzma.h"
+#include "unused.h"
 
 #include <utility>
 #include <filesystem>
@@ -284,6 +285,7 @@ void ComponentMetadataImpl::retrieve_metadata(uint8_t compid, COMP_METADATA_TYPE
                     tmp_download_path.string(),
                     [this, &component, tmp_download_path, compid, type, file_cache_tag](
                         int progress, Status status, CURLcode curl_code) -> int {
+                        UNUSED(progress);
                         if (status == Status::Error) {
                             LogErr() << "File download failed with result " << curl_code;
                             // Move on to the next uri or type

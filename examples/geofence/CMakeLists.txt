@@ -18,5 +18,5 @@ target_link_libraries(geofence
 if(NOT MSVC)
     add_compile_options(geofence PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(geofence PRIVATE -WX -W2)
+    add_compile_options(geofence PRIVATE -W2)
 endif()

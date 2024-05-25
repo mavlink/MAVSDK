@@ -18,5 +18,5 @@ target_link_libraries(arm_authorizer_server
 if (NOT MSVC)
     add_compile_options(arm_authorizer_server PRIVATE -Wall -Wextra)
 else ()
-    add_compile_options(arm_authorizer_server PRIVATE -WX -W2)
+    add_compile_options(arm_authorizer_server PRIVATE -W2)
 endif ()

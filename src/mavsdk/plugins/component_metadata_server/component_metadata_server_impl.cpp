@@ -2,6 +2,7 @@
 #include "mavlink_address.h"
 #include "mavlink_request_message_handler.h"
 #include "callback_list.tpp"
+#include "unused.h"
 #include "fs_utils.h"
 #include "crc32.h"
 
@@ -38,6 +39,8 @@ void ComponentMetadataServerImpl::init()
         MAVLINK_MSG_ID_COMPONENT_METADATA,
         [this](
             uint8_t source_sys_id, uint8_t source_comp_id, MavlinkRequestMessageHandler::Params) {
+            UNUSED(source_sys_id);
+            UNUSED(source_comp_id);
             return process_component_metadata_requested();
         },
         this);

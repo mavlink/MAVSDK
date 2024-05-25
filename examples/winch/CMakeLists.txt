@@ -18,5 +18,5 @@ target_link_libraries(winch
 if(NOT MSVC)
     add_compile_options(winch PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(winch PRIVATE -WX -W2)
+    add_compile_options(winch PRIVATE -W2)
 endif()

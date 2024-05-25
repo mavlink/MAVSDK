@@ -18,5 +18,5 @@ target_link_libraries(mavshell
 if(NOT MSVC)
     add_compile_options(mavshell PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(mavshell PRIVATE -WX -W2)
+    add_compile_options(mavshell PRIVATE -W2)
 endif()

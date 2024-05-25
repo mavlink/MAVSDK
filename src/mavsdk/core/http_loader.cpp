@@ -54,22 +54,6 @@ void HttpLoader::download_async(
     _work_queue.enqueue(work_item);
 }
 
-bool HttpLoader::upload_sync(const std::string& target_url, const std::string& local_path)
-{
-    auto work_item = std::make_shared<UploadItem>(target_url, local_path, nullptr);
-    bool success = do_upload(work_item, _curl_wrapper);
-    return success;
-}
-
-void HttpLoader::upload_async(
-    const std::string& target_url,
-    const std::string& local_path,
-    const ProgressCallback& progress_callback)
-{
-    auto work_item = std::make_shared<UploadItem>(target_url, local_path, progress_callback);
-    _work_queue.enqueue(work_item);
-}
-
 void HttpLoader::work_thread(HttpLoader* self)
 {
     while (!self->_should_exit) {
@@ -90,12 +74,6 @@ void HttpLoader::do_item(
         do_download(download_item, curl_wrapper);
         return;
     }
-
-    auto upload_item = std::dynamic_pointer_cast<UploadItem>(item);
-    if (nullptr != upload_item) {
-        do_upload(upload_item, curl_wrapper);
-        return;
-    }
 }
 
 bool HttpLoader::do_download(
@@ -103,14 +81,6 @@ bool HttpLoader::do_download(
 {
     bool success = curl_wrapper->download_file_to_path(
         item->get_url(), item->get_local_path(), item->get_progress_callback());
-    return success;
-}
-
-bool HttpLoader::do_upload(
-    const std::shared_ptr<UploadItem>& item, const std::shared_ptr<ICurlWrapper>& curl_wrapper)
-{
-    bool success = curl_wrapper->upload_file(
-        item->get_target_url(), item->get_local_path(), item->get_progress_callback());
     return success;
 }
 

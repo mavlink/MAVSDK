@@ -18,7 +18,7 @@ target_link_libraries(offboard
 if(NOT MSVC)
     add_compile_options(offboard PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(offboard PRIVATE -WX -W2)
+    add_compile_options(offboard PRIVATE -W2)
 endif()
 
 if(MINGW OR MSVC)

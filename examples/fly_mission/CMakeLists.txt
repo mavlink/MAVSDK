@@ -18,5 +18,5 @@ target_link_libraries(fly_mission
 if(NOT MSVC)
     add_compile_options(fly_mission PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(fly_mission PRIVATE -WX -W2)
+    add_compile_options(fly_mission PRIVATE -W2)
 endif()

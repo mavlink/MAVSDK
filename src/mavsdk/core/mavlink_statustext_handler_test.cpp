@@ -2,6 +2,7 @@
 #include "mavlink_statustext_handler.h"
 #include <algorithm>
 #include <gtest/gtest.h>
+#include <cstring>
 
 using namespace mavsdk;
 
@@ -45,7 +46,7 @@ TEST(MavlinkStatustextHandler, SingleStatustextWithoutNull)
 {
     mavlink_statustext_t statustext{};
     auto str = std::string{"asdfghjkl;asdfghjkl;asdfghjkl;asdfghjkl;asdfghjkl;"};
-    strncpy(statustext.text, str.c_str(), sizeof(statustext.text));
+    std::memcpy(statustext.text, str.c_str(), sizeof(statustext.text));
 
     MavlinkStatustextHandler handler;
     auto result = handler.process(statustext);
@@ -76,7 +77,10 @@ TEST(MavlinkStatustextHandler, MultiStatustext)
         const auto chunk = str.substr(start, len);
 
         mavlink_statustext_t statustext{};
-        strncpy(statustext.text, chunk.c_str(), sizeof(statustext.text));
+        std::memcpy(statustext.text, chunk.c_str(), len);
+        if (len < chunk_len) {
+            statustext.text[len] = '\0';
+        }
         statustext.id = 42;
         statustext.chunk_seq = chunk_seq;
 
@@ -111,7 +115,10 @@ TEST(MavlinkStatustextHandler, MultiStatustextDivisibleByChunkLen)
 
         mavlink_statustext_t statustext{};
         if (len > 0) {
-            strncpy(statustext.text, chunk.c_str(), sizeof(statustext.text));
+            std::memcpy(statustext.text, chunk.c_str(), len);
+            if (len < chunk_len) {
+                statustext.text[len] = '\0';
+            }
         } else {
             // Last message with null only.
             statustext.text[0] = '\0';
@@ -163,7 +170,10 @@ TEST(MavlinkStatustextHandler, MultiStatustextMissingPart)
         const auto chunk = str.substr(start, len);
 
         mavlink_statustext_t statustext{};
-        strncpy(statustext.text, chunk.c_str(), sizeof(statustext.text));
+        std::memcpy(statustext.text, chunk.c_str(), len);
+        if (len < chunk_len) {
+            statustext.text[len] = '\0';
+        }
         statustext.id = 42;
         statustext.chunk_seq = chunk_seq;
 
@@ -205,7 +215,10 @@ TEST(MavlinkStatustextHandler, MultiStatustextConsecutive)
             const auto chunk = str.substr(start, len);
 
             mavlink_statustext_t statustext{};
-            strncpy(statustext.text, chunk.c_str(), sizeof(statustext.text));
+            std::memcpy(statustext.text, chunk.c_str(), len);
+            if (len < chunk_len) {
+                statustext.text[len] = '\0';
+            }
             statustext.id = 42;
             statustext.chunk_seq = chunk_seq;
 
@@ -235,7 +248,10 @@ TEST(MavlinkStatustextHandler, MultiStatustextConsecutive)
             const auto chunk = str.substr(start, len);
 
             mavlink_statustext_t statustext{};
-            strncpy(statustext.text, chunk.c_str(), sizeof(statustext.text));
+            std::memcpy(statustext.text, chunk.c_str(), len);
+            if (len < chunk_len) {
+                statustext.text[len] = '\0';
+            }
             statustext.id = 43;
             statustext.chunk_seq = chunk_seq;
 

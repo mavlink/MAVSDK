@@ -18,5 +18,5 @@ target_link_libraries(mavlink_forwarding
 if(NOT MSVC)
     add_compile_options(mavlink_forwarding PRIVATE -Wall -Wextra)
 else()
-    add_compile_options(mavlink_forwarding PRIVATE -WX -W2)
+    add_compile_options(mavlink_forwarding PRIVATE -W2)
 endif()
