@@ -51,11 +51,13 @@ foreach(plugin ${COMPONENTS_LIST})
     )
 endforeach()
 
-set_target_properties(mavsdk_server
-    PROPERTIES COMPILE_FLAGS "${warnings} -Wno-null-dereference"
-    VERSION ${MAVSDK_VERSION_STRING}
-    SOVERSION ${MAVSDK_SOVERSION_STRING}
-    )
+if(NOT MSVC)
+    set_target_properties(mavsdk_server
+        PROPERTIES COMPILE_FLAGS "${warnings} -Wno-null-dereference"
+        VERSION ${MAVSDK_VERSION_STRING}
+        SOVERSION ${MAVSDK_SOVERSION_STRING}
+        )
+endif()
 
 target_link_libraries(mavsdk_server PRIVATE ${CMAKE_DL_LIBS})
 
