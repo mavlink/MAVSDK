@@ -156,23 +156,24 @@ void SystemImpl::process_mavlink_message(mavlink_message_t& message)
     _mavlink_message_handler.process_message(message);
 }
 
-void SystemImpl::add_call_every(std::function<void()> callback, float interval_s, void** cookie)
+CallEveryHandler::Cookie
+SystemImpl::add_call_every(std::function<void()> callback, float interval_s)
 {
-    _mavsdk_impl.call_every_handler.add(
-        std::move(callback), static_cast<double>(interval_s), cookie);
+    return _mavsdk_impl.call_every_handler.add(
+        std::move(callback), static_cast<double>(interval_s));
 }
 
-void SystemImpl::change_call_every(float interval_s, const void* cookie)
+void SystemImpl::change_call_every(float interval_s, CallEveryHandler::Cookie cookie)
 {
     _mavsdk_impl.call_every_handler.change(static_cast<double>(interval_s), cookie);
 }
 
-void SystemImpl::reset_call_every(const void* cookie)
+void SystemImpl::reset_call_every(CallEveryHandler::Cookie cookie)
 {
     _mavsdk_impl.call_every_handler.reset(cookie);
 }
 
-void SystemImpl::remove_call_every(const void* cookie)
+void SystemImpl::remove_call_every(CallEveryHandler::Cookie cookie)
 {
     _mavsdk_impl.call_every_handler.remove(cookie);
 }

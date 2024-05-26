@@ -79,11 +79,11 @@ void CameraImpl::init()
         [this](const mavlink_message_t& message) { process_video_stream_status(message); },
         this);
 
-    _system_impl->add_call_every(
-        [this]() { check_connection_status(); }, 0.5, &_check_connection_status_call_every_cookie);
+    _check_connection_status_call_every_cookie =
+        _system_impl->add_call_every([this]() { check_connection_status(); }, 0.5);
 
-    _system_impl->add_call_every(
-        [this]() { request_missing_capture_info(); }, 0.5, &_request_missing_capture_info_cookie);
+    _request_missing_capture_info_cookie =
+        _system_impl->add_call_every([this]() { request_missing_capture_info(); }, 0.5);
 }
 
 void CameraImpl::deinit()
@@ -195,10 +195,10 @@ void CameraImpl::manual_enable()
     request_status();
     request_camera_information();
 
-    _system_impl->add_call_every(
-        [this]() { request_camera_information(); }, 10.0, &_camera_information_call_every_cookie);
+    _camera_information_call_every_cookie =
+        _system_impl->add_call_every([this]() { request_camera_information(); }, 10.0);
 
-    _system_impl->add_call_every([this]() { request_status(); }, 5.0, &_status.call_every_cookie);
+    _status.call_every_cookie = _system_impl->add_call_every([this]() { request_status(); }, 5.0);
 }
 
 void CameraImpl::disable()
@@ -935,13 +935,11 @@ CameraImpl::subscribe_information(const Camera::InformationCallback& callback)
     }
 
     if (callback) {
-        if (_status.call_every_cookie == nullptr) {
-            _system_impl->add_call_every(
-                [this]() { request_status(); }, 1.0, &_status.call_every_cookie);
-        }
+        _system_impl->remove_call_every(_status.call_every_cookie);
+        _status.call_every_cookie =
+            _system_impl->add_call_every([this]() { request_status(); }, 1.0);
     } else {
         _system_impl->remove_call_every(_status.call_every_cookie);
-        _status.call_every_cookie = nullptr;
     }
 
     return handle;
@@ -1011,8 +1009,9 @@ CameraImpl::subscribe_video_stream_info(const Camera::VideoStreamInfoCallback& c
     auto handle = _video_stream_info.subscription_callbacks.subscribe(callback);
 
     if (callback) {
-        _system_impl->add_call_every(
-            [this]() { request_video_stream_info(); }, 1.0, &_video_stream_info.call_every_cookie);
+        _system_impl->remove_call_every(_video_stream_info.call_every_cookie);
+        _video_stream_info.call_every_cookie =
+            _system_impl->add_call_every([this]() { request_video_stream_info(); }, 1.0);
     } else {
         _system_impl->remove_call_every(_video_stream_info.call_every_cookie);
     }
@@ -1188,8 +1187,9 @@ Camera::ModeHandle CameraImpl::subscribe_mode(const Camera::ModeCallback& callba
     notify_mode();
 
     if (callback) {
-        _system_impl->add_call_every(
-            [this]() { request_camera_settings(); }, 5.0, &_mode.call_every_cookie);
+        _system_impl->remove_call_every(_mode.call_every_cookie);
+        _mode.call_every_cookie =
+            _system_impl->add_call_every([this]() { request_camera_settings(); }, 5.0);
     } else {
         _system_impl->remove_call_every(_mode.call_every_cookie);
     }

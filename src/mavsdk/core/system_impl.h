@@ -2,6 +2,7 @@
 
 #include "autopilot.h"
 #include "callback_list.h"
+#include "call_every_handler.h"
 #include "flight_mode.h"
 #include "mavlink_address.h"
 #include "mavlink_include.h"
@@ -70,10 +71,10 @@ public:
     void refresh_timeout_handler(TimeoutHandler::Cookie cookie);
     void unregister_timeout_handler(TimeoutHandler::Cookie cookie);
 
-    void add_call_every(std::function<void()> callback, float interval_s, void** cookie);
-    void change_call_every(float interval_s, const void* cookie);
-    void reset_call_every(const void* cookie);
-    void remove_call_every(const void* cookie);
+    CallEveryHandler::Cookie add_call_every(std::function<void()> callback, float interval_s);
+    void change_call_every(float interval_s, CallEveryHandler::Cookie cookie);
+    void reset_call_every(CallEveryHandler::Cookie cookie);
+    void remove_call_every(CallEveryHandler::Cookie cookie);
 
     void register_statustext_handler(
         std::function<void(const MavlinkStatustextHandler::Statustext&)>, void* cookie);

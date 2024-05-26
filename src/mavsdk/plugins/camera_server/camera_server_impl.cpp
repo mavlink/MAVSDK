@@ -938,7 +938,7 @@ void CameraServerImpl::start_image_capture_interval(float interval_s, int32_t co
     // If count == 0, it means capture "forever" until a stop command is received.
     auto remaining = std::make_shared<int32_t>(count == 0 ? INT32_MAX : count);
 
-    _server_component_impl->add_call_every(
+    _image_capture_timer_cookie = _server_component_impl->add_call_every(
         [this, remaining, index]() {
             LogDebug() << "capture image timer triggered";
 
@@ -951,8 +951,7 @@ void CameraServerImpl::start_image_capture_interval(float interval_s, int32_t co
                 stop_image_capture_interval();
             }
         },
-        interval_s,
-        &_image_capture_timer_cookie);
+        interval_s);
 
     _is_image_capture_interval_set = true;
     _image_capture_timer_interval_s = interval_s;
@@ -960,11 +959,8 @@ void CameraServerImpl::start_image_capture_interval(float interval_s, int32_t co
 
 void CameraServerImpl::stop_image_capture_interval()
 {
-    if (_image_capture_timer_cookie) {
-        _server_component_impl->remove_call_every(_image_capture_timer_cookie);
-    }
+    _server_component_impl->remove_call_every(_image_capture_timer_cookie);
 
-    _image_capture_timer_cookie = nullptr;
     _is_image_capture_interval_set = false;
     _image_capture_timer_interval_s = 0;
 }

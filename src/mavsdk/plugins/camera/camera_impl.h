@@ -203,9 +203,9 @@ private:
     float to_mavlink_camera_mode(const Camera::Mode mode) const;
     Camera::Mode to_camera_mode(const uint8_t mavlink_camera_mode) const;
 
-    void* _camera_information_call_every_cookie{nullptr};
-    void* _check_connection_status_call_every_cookie{nullptr};
-    void* _request_missing_capture_info_cookie{nullptr};
+    CallEveryHandler::Cookie _camera_information_call_every_cookie{};
+    CallEveryHandler::Cookie _check_connection_status_call_every_cookie{};
+    CallEveryHandler::Cookie _request_missing_capture_info_cookie{};
 
     void request_camera_settings();
     void request_camera_information();
@@ -269,7 +269,7 @@ private:
         bool is_fetching_photos{false};
 
         CallbackList<Camera::Status> subscription_callbacks{};
-        void* call_every_cookie{nullptr};
+        CallEveryHandler::Cookie call_every_cookie{};
     } _status{};
 
     static constexpr double DEFAULT_TIMEOUT_S = 3.0;
@@ -278,7 +278,7 @@ private:
         std::mutex mutex{};
         Camera::Mode data{};
         CallbackList<Camera::Mode> subscription_callbacks{};
-        void* call_every_cookie{nullptr};
+        CallEveryHandler::Cookie call_every_cookie{};
     } _mode{};
 
     struct {
@@ -297,7 +297,7 @@ private:
         std::mutex mutex{};
         Camera::VideoStreamInfo data{};
         bool available{false};
-        void* call_every_cookie{nullptr};
+        CallEveryHandler::Cookie call_every_cookie{};
         CallbackList<Camera::VideoStreamInfo> subscription_callbacks{};
     } _video_stream_info{};
 

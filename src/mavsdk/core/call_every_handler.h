@@ -1,9 +1,10 @@
 #pragma once
 
+#include <cstdint>
 #include <mutex>
 #include <memory>
 #include <functional>
-#include <unordered_map>
+#include <vector>
 #include "mavsdk_time.h"
 
 namespace mavsdk {
@@ -19,10 +20,12 @@ public:
     CallEveryHandler& operator=(CallEveryHandler const&) = delete; // Copy assign
     CallEveryHandler& operator=(CallEveryHandler&&) = delete; // Move assign
 
-    void add(std::function<void()> callback, double interval_s, void** cookie);
-    void change(double interval_s, const void* cookie);
-    void reset(const void* cookie);
-    void remove(const void* cookie);
+    using Cookie = uint64_t;
+
+    Cookie add(std::function<void()> callback, double interval_s);
+    void change(double interval_s, Cookie cookie);
+    void reset(Cookie cookie);
+    void remove(Cookie cookie);
 
     void run_once();
 
@@ -31,13 +34,16 @@ private:
         std::function<void()> callback{nullptr};
         SteadyTimePoint last_time{};
         double interval_s{0.0};
+        Cookie cookie{};
     };
 
-    std::unordered_map<void*, std::shared_ptr<Entry>> _entries{};
+    std::vector<Entry> _entries{};
     std::mutex _entries_mutex{};
     bool _iterator_invalidated{false};
 
     Time& _time;
+
+    Cookie _next_cookie{1};
 };
 
 } // namespace mavsdk

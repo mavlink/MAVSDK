@@ -89,7 +89,7 @@ private:
     ActionServer::AllowableFlightModes _allowed_flight_modes{};
     std::atomic<ActionServer::FlightMode> _flight_mode{ActionServer::FlightMode::Unknown};
 
-    void* _send_version_cookie{nullptr};
+    CallEveryHandler::Cookie _send_version_cookie{};
 };
 
 } // namespace mavsdk

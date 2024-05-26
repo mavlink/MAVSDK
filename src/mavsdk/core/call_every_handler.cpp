@@ -6,75 +6,78 @@ namespace mavsdk {
 
 CallEveryHandler::CallEveryHandler(Time& time) : _time(time) {}
 
-void CallEveryHandler::add(std::function<void()> callback, double interval_s, void** cookie)
+CallEveryHandler::Cookie CallEveryHandler::add(std::function<void()> callback, double interval_s)
 {
     std::lock_guard<std::mutex> lock(_entries_mutex);
 
-    auto new_entry = std::make_shared<Entry>();
-    new_entry->callback = std::move(callback);
+    auto new_entry = Entry{};
+    new_entry.callback = std::move(callback);
     auto before = _time.steady_time();
     // Make sure it gets run straightaway. The epsilon seemed not enough, so
     // we use the arbitrary value of 1 ms.
     _time.shift_steady_time_by(before, -interval_s - 0.001);
-    new_entry->last_time = before;
-    new_entry->interval_s = interval_s;
+    new_entry.last_time = before;
+    new_entry.interval_s = interval_s;
+    new_entry.cookie = _next_cookie++;
+    _entries.push_back(new_entry);
 
-    void* new_cookie = static_cast<void*>(new_entry.get());
+    _iterator_invalidated = true;
 
-    _entries.insert(std::pair<void*, std::shared_ptr<Entry>>(new_cookie, new_entry));
-
-    if (cookie != nullptr) {
-        *cookie = new_cookie;
-    }
+    return new_entry.cookie;
 }
 
-void CallEveryHandler::change(double interval_s, const void* cookie)
+void CallEveryHandler::change(double interval_s, Cookie cookie)
 {
     std::lock_guard<std::mutex> lock(_entries_mutex);
 
-    auto it = _entries.find(const_cast<void*>(cookie));
+    auto it = std::find_if(_entries.begin(), _entries.end(), [&](const Entry& entry) {
+        return entry.cookie == cookie;
+    });
     if (it != _entries.end()) {
-        it->second->interval_s = interval_s;
+        it->interval_s = interval_s;
     }
 }
 
-void CallEveryHandler::reset(const void* cookie)
+void CallEveryHandler::reset(Cookie cookie)
 {
     std::lock_guard<std::mutex> lock(_entries_mutex);
 
-    auto it = _entries.find(const_cast<void*>(cookie));
+    auto it = std::find_if(_entries.begin(), _entries.end(), [&](const Entry& entry) {
+        return entry.cookie == cookie;
+    });
     if (it != _entries.end()) {
-        it->second->last_time = _time.steady_time();
+        it->last_time = _time.steady_time();
     }
 }
 
-void CallEveryHandler::remove(const void* cookie)
+void CallEveryHandler::remove(Cookie cookie)
 {
     std::lock_guard<std::mutex> lock(_entries_mutex);
 
-    auto it = _entries.find(const_cast<void*>(cookie));
+    auto it = std::find_if(
+        _entries.begin(), _entries.end(), [&](auto& timeout) { return timeout.cookie == cookie; });
+
     if (it != _entries.end()) {
-        _entries.erase(const_cast<void*>(cookie));
+        _entries.erase(it);
         _iterator_invalidated = true;
     }
 }
 
 void CallEveryHandler::run_once()
 {
-    _entries_mutex.lock();
+    std::unique_lock<std::mutex> lock(_entries_mutex);
 
     for (auto& entry : _entries) {
-        if (_time.elapsed_since_s(entry.second->last_time) > double(entry.second->interval_s)) {
-            _time.shift_steady_time_by(entry.second->last_time, double(entry.second->interval_s));
+        if (_time.elapsed_since_s(entry.last_time) > double(entry.interval_s)) {
+            _time.shift_steady_time_by(entry.last_time, double(entry.interval_s));
 
-            if (entry.second->callback) {
-                // Get a copy for the callback because we unlock.
-                std::function<void()> callback = entry.second->callback;
-
-                // Unlock while we call back because it might in turn want to add timeouts.
-                _entries_mutex.unlock();
+            if (entry.callback) {
+                // Make a copy and unlock while we call back because it might
+                // in turn want to remove or change it within.
+                std::function<void()> callback = entry.callback;
+                lock.unlock();
                 callback();
-                _entries_mutex.lock();
+                lock.lock();
             }
         }
 
@@ -85,7 +88,6 @@ void CallEveryHandler::run_once()
             break;
         }
     }
-    _entries_mutex.unlock();
 }
 
 } // namespace mavsdk

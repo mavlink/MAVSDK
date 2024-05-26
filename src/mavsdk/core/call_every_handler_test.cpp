@@ -16,8 +16,7 @@ TEST(CallEveryHandler, Single)
 
     int num_called = 0;
 
-    void* cookie = nullptr;
-    ceh.add([&num_called]() { ++num_called; }, 0.1, &cookie);
+    auto cookie = ceh.add([&num_called]() { ++num_called; }, 0.1);
 
     for (int i = 0; i < 11; ++i) {
         time.sleep_for(std::chrono::milliseconds(10));
@@ -35,8 +34,7 @@ TEST(CallEveryHandler, Multiple)
 
     int num_called = 0;
 
-    void* cookie = nullptr;
-    ceh.add([&num_called]() { ++num_called; }, 0.1, &cookie);
+    auto cookie = ceh.add([&num_called]() { ++num_called; }, 0.1);
 
     for (int i = 0; i < 10; ++i) {
         ceh.run_once();
@@ -69,10 +67,8 @@ TEST(CallEveryHandler, InParallel)
     int num_called1 = 0;
     int num_called2 = 0;
 
-    void* cookie1 = nullptr;
-    void* cookie2 = nullptr;
-    ceh.add([&num_called1]() { ++num_called1; }, 0.1, &cookie1);
-    ceh.add([&num_called2]() { ++num_called2; }, 0.2, &cookie2);
+    auto cookie1 = ceh.add([&num_called1]() { ++num_called1; }, 0.1);
+    auto cookie2 = ceh.add([&num_called2]() { ++num_called2; }, 0.2);
 
     for (int i = 0; i < 10; ++i) {
         ceh.run_once();
@@ -104,8 +100,7 @@ TEST(CallEveryHandler, Reset)
 
     int num_called = 0;
 
-    void* cookie = nullptr;
-    ceh.add([&num_called]() { ++num_called; }, 0.1, &cookie);
+    auto cookie = ceh.add([&num_called]() { ++num_called; }, 0.1);
 
     for (int i = 0; i < 8; ++i) {
         ceh.run_once();
@@ -135,8 +130,8 @@ TEST(CallEveryHandler, CallImmediately)
 
     int num_called = 0;
 
-    void* cookie = nullptr;
-    ceh.add([&num_called]() { ++num_called; }, 0.1, &cookie);
+    auto cookie = ceh.add([&num_called]() { ++num_called; }, 0.1);
+    UNUSED(cookie);
 
     for (int i = 0; i < 1; ++i) {
         ceh.run_once();

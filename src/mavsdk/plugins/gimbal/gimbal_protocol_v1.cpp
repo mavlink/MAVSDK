@@ -214,8 +214,8 @@ void GimbalProtocolV1::control_async(Gimbal::ControlCallback callback)
 {
     if (_control_callback == nullptr && callback != nullptr) {
         _control_callback = callback;
-        _system_impl.add_call_every(
-            [this]() { _control_callback(_current_control_status); }, 1.0, &_control_cookie);
+        _control_cookie = _system_impl.add_call_every(
+            [this]() { _control_callback(_current_control_status); }, 1.0);
 
     } else if (_control_callback != nullptr && callback == nullptr) {
         _control_callback = callback;
@@ -235,8 +235,8 @@ void GimbalProtocolV1::attitude_async(Gimbal::AttitudeCallback callback)
 {
     if (_attitude_callback == nullptr && callback != nullptr) {
         _attitude_callback = callback;
-        _system_impl.add_call_every(
-            [this]() { _attitude_callback(_current_attitude); }, 1.0, &_attitude_cookie);
+        _attitude_cookie =
+            _system_impl.add_call_every([this]() { _attitude_callback(_current_attitude); }, 1.0);
 
     } else if (_attitude_callback != nullptr && callback == nullptr) {
         _attitude_callback = callback;

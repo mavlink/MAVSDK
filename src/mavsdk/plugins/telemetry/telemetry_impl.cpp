@@ -228,11 +228,11 @@ void TelemetryImpl::enable()
     // FIXME: The calibration check should eventually be better than this.
     //        For now, we just do the same as QGC does.
 
-    _system_impl->add_call_every([this]() { check_calibration(); }, 5.0, &_calibration_cookie);
+    _calibration_cookie = _system_impl->add_call_every([this]() { check_calibration(); }, 5.0);
 
     // We're going to retry until we have the Home Position.
-    _system_impl->add_call_every(
-        [this]() { request_home_position_again(); }, 2.0f, &_homepos_cookie);
+    _homepos_cookie =
+        _system_impl->add_call_every([this]() { request_home_position_again(); }, 2.0f);
 }
 
 void TelemetryImpl::disable()
