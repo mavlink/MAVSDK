@@ -17,6 +17,8 @@ public:
     Handle() = default;
     ~Handle() = default;
 
+    bool operator<(const Handle& other) const { return _id < other._id; }
+
 private:
     bool operator==(const Handle& other) const { return _id == other._id; }
 

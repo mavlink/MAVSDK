@@ -25,6 +25,12 @@ template<typename... Args> void CallbackList<Args...>::unsubscribe(Handle<Args..
     _impl->unsubscribe(handle);
 }
 
+template<typename... Args>
+void CallbackList<Args...>::subscribe_conditional(const std::function<bool(Args...)>& callback)
+{
+    _impl->subscribe_conditional(callback);
+}
+
 template<typename... Args> void CallbackList<Args...>::operator()(Args... args)
 {
     _impl->exec(args...);

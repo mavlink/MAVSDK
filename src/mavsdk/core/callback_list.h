@@ -17,6 +17,7 @@ public:
 
     Handle<Args...> subscribe(const std::function<void(Args...)>& callback);
     void unsubscribe(Handle<Args...> handle);
+    void subscribe_conditional(const std::function<bool(Args...)>& callback);
     void operator()(Args... args);
     [[nodiscard]] bool empty();
     void clear();
