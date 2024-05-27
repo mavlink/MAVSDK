@@ -9,6 +9,7 @@
 #include "mavlink_parameter_subscription.h"
 #include "mavlink_parameter_cache.h"
 #include "mavlink_parameter_helper.h"
+#include "timeout_handler.h"
 
 #include <array>
 #include <cstddef>
@@ -25,7 +26,6 @@ namespace mavsdk {
 
 class Sender;
 class MavlinkMessageHandler;
-class TimeoutHandler;
 
 class MavlinkParameterClient : public MavlinkParameterSubscription {
 public:
@@ -204,7 +204,7 @@ private:
 
     // These are specific depending on the work item type
     LockedQueue<WorkItem> _work_queue{};
-    void* _timeout_cookie = nullptr;
+    TimeoutHandler::Cookie _timeout_cookie{};
 
     MavlinkParameterCache _param_cache{};
 

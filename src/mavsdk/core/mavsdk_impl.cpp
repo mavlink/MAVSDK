@@ -819,10 +819,8 @@ void MavsdkImpl::process_user_callbacks_thread()
             continue;
         }
 
-        void* cookie{nullptr};
-
         const double timeout_s = 1.0;
-        timeout_handler.add(
+        auto cookie = timeout_handler.add(
             [&]() {
                 if (_callback_debugging) {
                     LogWarn() << "Callback called from " << callback.value().filename << ":"
@@ -837,8 +835,7 @@ void MavsdkImpl::process_user_callbacks_thread()
                         << "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
                 }
             },
-            timeout_s,
-            &cookie);
+            timeout_s);
         callback.value().func();
         timeout_handler.remove(cookie);
     }
@@ -850,17 +847,15 @@ void MavsdkImpl::start_sending_heartbeats()
     // default server component.
     default_server_component_impl();
 
-    if (_heartbeat_send_cookie == nullptr) {
-        call_every_handler.add(
-            [this]() { send_heartbeat(); }, HEARTBEAT_SEND_INTERVAL_S, &_heartbeat_send_cookie);
-    }
+    call_every_handler.remove(_heartbeat_send_cookie);
+    _heartbeat_send_cookie =
+        call_every_handler.add([this]() { send_heartbeat(); }, HEARTBEAT_SEND_INTERVAL_S);
 }
 
 void MavsdkImpl::stop_sending_heartbeats()
 {
     if (!_configuration.get_always_send_heartbeats()) {
         call_every_handler.remove(_heartbeat_send_cookie);
-        _heartbeat_send_cookie = nullptr;
     }
 }
 

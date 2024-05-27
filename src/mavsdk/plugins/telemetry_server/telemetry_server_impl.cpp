@@ -42,7 +42,7 @@ void TelemetryServerImpl::init()
 
             if (found == _interval_requests.end() && command.params.param2 != -1) {
                 // If not found interval already, add a new one
-                _interval_requests.push_back({msgid, interval_ms, nullptr});
+                _interval_requests.push_back({msgid, interval_ms});
                 //_server_component_impl->add_call_every(
                 //    [this, msgid]() {
                 //        std::lock_guard<std::mutex> lock_interval(_mutex);

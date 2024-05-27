@@ -21,9 +21,7 @@ FollowMeImpl::FollowMeImpl(std::shared_ptr<System> system) : PluginImplBase(std:
 
 FollowMeImpl::~FollowMeImpl()
 {
-    if (_target_location_cookie) {
-        _system_impl->remove_call_every(_target_location_cookie);
-    }
+    _system_impl->remove_call_every(_target_location_cookie);
     _system_impl->unregister_plugin(this);
 }
 
@@ -198,8 +196,8 @@ FollowMe::Result FollowMeImpl::set_target_location(const FollowMe::TargetLocatio
 
         } else {
             // Register now for sending now and in the next cycle.
-            _system_impl->add_call_every(
-                [this]() { send_target_location(); }, SENDER_RATE, &_target_location_cookie);
+            _target_location_cookie =
+                _system_impl->add_call_every([this]() { send_target_location(); }, SENDER_RATE);
         }
     }
 
@@ -232,8 +230,8 @@ FollowMe::Result FollowMeImpl::start()
         std::lock_guard<std::mutex> lock(
             _mutex); // locking is not necessary here but lets do it for integrity
         if (is_target_location_set()) {
-            _system_impl->add_call_every(
-                [this]() { send_target_location(); }, SENDER_RATE, &_target_location_cookie);
+            _target_location_cookie =
+                _system_impl->add_call_every([this]() { send_target_location(); }, SENDER_RATE);
         }
     }
     return result;
@@ -365,10 +363,7 @@ void FollowMeImpl::send_target_location()
 void FollowMeImpl::stop_sending_target_location()
 {
     // We assume that mutex was acquired by the caller
-    if (_target_location_cookie) {
-        _system_impl->remove_call_every(_target_location_cookie);
-        _target_location_cookie = nullptr;
-    }
+    _system_impl->remove_call_every(_target_location_cookie);
     _mode = Mode::NOT_ACTIVE;
 }
 

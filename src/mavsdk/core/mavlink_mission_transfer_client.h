@@ -146,7 +146,7 @@ public:
         ResultCallback _callback{nullptr};
         ProgressCallback _progress_callback{nullptr};
         std::size_t _next_sequence{0};
-        void* _cookie{nullptr};
+        TimeoutHandler::Cookie _cookie{};
         unsigned _retries_done{0};
 
         uint8_t _target_system_id;
@@ -195,7 +195,7 @@ public:
         std::vector<ItemInt> _items{};
         ResultAndItemsCallback _callback{nullptr};
         ProgressCallback _progress_callback{nullptr};
-        void* _cookie{nullptr};
+        TimeoutHandler::Cookie _cookie{};
         std::size_t _next_sequence{0};
         std::size_t _expected_count{0};
         unsigned _retries_done{0};
@@ -230,7 +230,7 @@ public:
         void callback_and_reset(Result result);
 
         ResultCallback _callback{nullptr};
-        void* _cookie{nullptr};
+        TimeoutHandler::Cookie _cookie{};
         unsigned _retries_done{0};
         uint8_t _target_system_id;
     };
@@ -265,7 +265,7 @@ public:
 
         int _current{0};
         ResultCallback _callback{nullptr};
-        void* _cookie{nullptr};
+        TimeoutHandler::Cookie _cookie{};
         unsigned _retries_done{0};
         uint8_t _target_system_id;
     };

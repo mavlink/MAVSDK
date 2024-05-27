@@ -170,24 +170,24 @@ bool ServerComponentImpl::queue_message(
     return _mavsdk_impl.send_message(message);
 }
 
-void ServerComponentImpl::add_call_every(
-    std::function<void()> callback, float interval_s, void** cookie)
+CallEveryHandler::Cookie
+ServerComponentImpl::add_call_every(std::function<void()> callback, float interval_s)
 {
-    _mavsdk_impl.call_every_handler.add(
-        std::move(callback), static_cast<double>(interval_s), cookie);
+    return _mavsdk_impl.call_every_handler.add(
+        std::move(callback), static_cast<double>(interval_s));
 }
 
-void ServerComponentImpl::change_call_every(float interval_s, const void* cookie)
+void ServerComponentImpl::change_call_every(float interval_s, CallEveryHandler::Cookie cookie)
 {
     _mavsdk_impl.call_every_handler.change(static_cast<double>(interval_s), cookie);
 }
 
-void ServerComponentImpl::reset_call_every(const void* cookie)
+void ServerComponentImpl::reset_call_every(CallEveryHandler::Cookie cookie)
 {
     _mavsdk_impl.call_every_handler.reset(cookie);
 }
 
-void ServerComponentImpl::remove_call_every(const void* cookie)
+void ServerComponentImpl::remove_call_every(CallEveryHandler::Cookie cookie)
 {
     _mavsdk_impl.call_every_handler.remove(cookie);
 }
@@ -275,18 +275,18 @@ void ServerComponentImpl::call_user_callback_located(
     _mavsdk_impl.call_user_callback_located(filename, linenumber, func);
 }
 
-void ServerComponentImpl::register_timeout_handler(
-    const std::function<void()>& callback, double duration_s, void** cookie)
+TimeoutHandler::Cookie ServerComponentImpl::register_timeout_handler(
+    const std::function<void()>& callback, double duration_s)
 {
-    _mavsdk_impl.timeout_handler.add(callback, duration_s, cookie);
+    return _mavsdk_impl.timeout_handler.add(callback, duration_s);
 }
 
-void ServerComponentImpl::refresh_timeout_handler(const void* cookie)
+void ServerComponentImpl::refresh_timeout_handler(TimeoutHandler::Cookie cookie)
 {
     _mavsdk_impl.timeout_handler.refresh(cookie);
 }
 
-void ServerComponentImpl::unregister_timeout_handler(const void* cookie)
+void ServerComponentImpl::unregister_timeout_handler(TimeoutHandler::Cookie cookie)
 {
     _mavsdk_impl.timeout_handler.remove(cookie);
 }

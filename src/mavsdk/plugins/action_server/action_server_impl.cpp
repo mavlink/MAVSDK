@@ -56,8 +56,8 @@ ActionServerImpl::~ActionServerImpl()
 
 void ActionServerImpl::init()
 {
-    _server_component_impl->add_call_every(
-        [this]() { _server_component_impl->send_autopilot_version(); }, 1.0, &_send_version_cookie);
+    _send_version_cookie = _server_component_impl->add_call_every(
+        [this]() { _server_component_impl->send_autopilot_version(); }, 1.0);
 
     // Arming / Disarm / Kill
     _server_component_impl->register_mavlink_command_handler(

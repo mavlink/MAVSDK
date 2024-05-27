@@ -72,7 +72,7 @@ private:
     void receive_attitude_update(Gimbal::Attitude attitude);
     void receive_control_status_update(Gimbal::ControlStatus control_status);
 
-    void* _protocol_cookie{nullptr};
+    TimeoutHandler::Cookie _protocol_cookie{};
 
     void wait_for_protocol();
     void wait_for_protocol_async(std::function<void()> callback);

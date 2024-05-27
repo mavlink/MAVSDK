@@ -1,5 +1,6 @@
 #pragma once
 
+#include "timeout_handler.h"
 #include "mavlink_include.h"
 #include "locked_queue.h"
 #include "mavsdk_time.h"
@@ -114,7 +115,7 @@ private:
         CommandIdentification identification{};
         CommandResultCallback callback{};
         SteadyTimePoint time_started{};
-        void* timeout_cookie = nullptr;
+        TimeoutHandler::Cookie timeout_cookie{};
         double timeout_s{0.5};
         int retries_to_do{3};
         bool already_sent{false};

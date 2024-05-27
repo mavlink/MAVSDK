@@ -51,8 +51,8 @@ void InfoImpl::deinit()
 void InfoImpl::enable()
 {
     // We're going to retry until we have the version.
-    _system_impl->add_call_every(
-        [this]() { _system_impl->send_autopilot_version_request(); }, 2.0f, &_call_every_cookie);
+    _call_every_cookie = _system_impl->add_call_every(
+        [this]() { _system_impl->send_autopilot_version_request(); }, 2.0f);
 
     if (!_flight_info_subscriptions.empty()) {
         // We're hoping to get flight information regularly to update flight time.

@@ -4,33 +4,27 @@ namespace mavsdk {
 
 TimeoutHandler::TimeoutHandler(Time& time) : _time(time) {}
 
-void TimeoutHandler::add(std::function<void()> callback, double duration_s, void** cookie)
+TimeoutHandler::Cookie TimeoutHandler::add(std::function<void()> callback, double duration_s)
 {
     std::lock_guard<std::mutex> lock(_timeouts_mutex);
     auto new_timeout = Timeout{};
-    new_timeout.callback = callback;
+    new_timeout.callback = std::move(callback);
     new_timeout.time = _time.steady_time_in_future(duration_s);
     new_timeout.duration_s = duration_s;
     new_timeout.cookie = _next_cookie++;
     _timeouts.push_back(new_timeout);
 
-    if (cookie != nullptr) {
-        // TODO: change this API in the future
-        *cookie = reinterpret_cast<void*>(new_timeout.cookie);
-    }
     _iterator_invalidated = true;
+
+    return new_timeout.cookie;
 }
 
-void TimeoutHandler::refresh(const void* cookie)
+void TimeoutHandler::refresh(Cookie cookie)
 {
-    if (cookie == nullptr) {
-        return;
-    }
-
     std::lock_guard<std::mutex> lock(_timeouts_mutex);
 
     auto it = std::find_if(_timeouts.begin(), _timeouts.end(), [&](const Timeout& timeout) {
-        return timeout.cookie == reinterpret_cast<uint64_t>(cookie);
+        return timeout.cookie == cookie;
     });
     if (it != _timeouts.end()) {
         auto future_time = _time.steady_time_in_future(it->duration_s);
@@ -38,16 +32,12 @@ void TimeoutHandler::refresh(const void* cookie)
     }
 }
 
-void TimeoutHandler::remove(const void* cookie)
+void TimeoutHandler::remove(Cookie cookie)
 {
-    if (cookie == nullptr) {
-        return;
-    }
-
     std::lock_guard<std::mutex> lock(_timeouts_mutex);
 
     auto it = std::find_if(_timeouts.begin(), _timeouts.end(), [&](auto& timeout) {
-        return timeout.cookie == reinterpret_cast<uint64_t>(cookie);
+        return timeout.cookie == cookie;
     });
 
     if (it != _timeouts.end()) {

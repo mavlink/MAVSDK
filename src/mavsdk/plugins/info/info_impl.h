@@ -55,7 +55,7 @@ private:
 
     Info::FlightInfo _flight_info{};
 
-    void* _call_every_cookie{nullptr};
+    CallEveryHandler::Cookie _call_every_cookie{};
 
     struct SpeedFactorMeasurement {
         double simulated_duration_s{0.0};

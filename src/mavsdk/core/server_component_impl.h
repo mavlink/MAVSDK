@@ -10,6 +10,7 @@
 #include "mavlink_ftp_server.h"
 #include "mavsdk_time.h"
 #include "flight_mode.h"
+#include "call_every_handler.h"
 #include "log.h"
 #include "sender.h"
 
@@ -89,10 +90,10 @@ public:
     void unregister_mavlink_message_handler(uint16_t msg_id, const void* cookie);
     void unregister_all_mavlink_message_handlers(const void* cookie);
 
-    void register_timeout_handler(
-        const std::function<void()>& callback, double duration_s, void** cookie);
-    void refresh_timeout_handler(const void* cookie);
-    void unregister_timeout_handler(const void* cookie);
+    TimeoutHandler::Cookie
+    register_timeout_handler(const std::function<void()>& callback, double duration_s);
+    void refresh_timeout_handler(TimeoutHandler::Cookie cookie);
+    void unregister_timeout_handler(TimeoutHandler::Cookie cookie);
 
     [[nodiscard]] uint8_t get_own_system_id() const;
 
@@ -107,10 +108,10 @@ public:
     bool queue_message(
         std::function<mavlink_message_t(MavlinkAddress mavlink_addres, uint8_t channel)> fun);
 
-    void add_call_every(std::function<void()> callback, float interval_s, void** cookie);
-    void change_call_every(float interval_s, const void* cookie);
-    void reset_call_every(const void* cookie);
-    void remove_call_every(const void* cookie);
+    CallEveryHandler::Cookie add_call_every(std::function<void()> callback, float interval_s);
+    void change_call_every(float interval_s, CallEveryHandler::Cookie cookie);
+    void reset_call_every(CallEveryHandler::Cookie cookie);
+    void remove_call_every(CallEveryHandler::Cookie cookie);
 
     mavlink_command_ack_t
     make_command_ack_message(const MavlinkCommandReceiver::CommandLong& command, MAV_RESULT result);

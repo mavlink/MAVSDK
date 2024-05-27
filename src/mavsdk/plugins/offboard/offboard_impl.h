@@ -96,7 +96,7 @@ private:
     Offboard::ActuatorControl _actuator_control{};
     SteadyTimePoint _last_started{};
 
-    void* _call_every_cookie = nullptr;
+    CallEveryHandler::Cookie _call_every_cookie{};
 
     const float SEND_INTERVAL_S = 0.05f;
 };

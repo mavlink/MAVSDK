@@ -137,7 +137,7 @@ public:
 
         std::vector<ItemInt> _items{};
         ResultAndItemsCallback _callback{nullptr};
-        void* _cookie{nullptr};
+        TimeoutHandler::Cookie _cookie{};
         std::size_t _next_sequence{0};
         std::size_t _expected_count{0};
         unsigned _retries_done{0};

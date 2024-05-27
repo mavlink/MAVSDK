@@ -1,7 +1,6 @@
 #include "mavlink_parameter_helper.h"
 #include "mavlink_parameter_client.h"
 #include "mavlink_message_handler.h"
-#include "timeout_handler.h"
 #include "system_impl.h"
 #include "plugin_base.h"
 #include <algorithm>
@@ -436,8 +435,8 @@ void MavlinkParameterClient::do_work()
                 }
                 work->already_requested = true;
                 // We want to get notified if a timeout happens
-                _timeout_handler.add(
-                    [this] { receive_timeout(); }, _timeout_s_callback(), &_timeout_cookie);
+                _timeout_cookie =
+                    _timeout_handler.add([this] { receive_timeout(); }, _timeout_s_callback());
             },
             [&](WorkItemGet& item) {
                 if (!send_get_param_message(item)) {
@@ -452,8 +451,8 @@ void MavlinkParameterClient::do_work()
                 }
                 work->already_requested = true;
                 // We want to get notified if a timeout happens
-                _timeout_handler.add(
-                    [this] { receive_timeout(); }, _timeout_s_callback(), &_timeout_cookie);
+                _timeout_cookie =
+                    _timeout_handler.add([this] { receive_timeout(); }, _timeout_s_callback());
             },
             [&](WorkItemGetAll& item) {
                 if (!send_request_list_message()) {
@@ -468,8 +467,8 @@ void MavlinkParameterClient::do_work()
                 }
                 work->already_requested = true;
                 // We want to get notified if a timeout happens
-                _timeout_handler.add(
-                    [this] { receive_timeout(); }, _timeout_s_callback(), &_timeout_cookie);
+                _timeout_cookie =
+                    _timeout_handler.add([this] { receive_timeout(); }, _timeout_s_callback());
             }},
         work->work_item_variant);
 }
@@ -802,7 +801,7 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                             } else {
                                 // update the timeout handler, messages are still coming in.
                             }
-                            _timeout_handler.refresh(&_timeout_cookie);
+                            _timeout_handler.refresh(_timeout_cookie);
                         }
                         break;
                     case MavlinkParameterCache::AddNewParamResult::TooManyParams:
@@ -908,7 +907,7 @@ void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& me
                                            << " but is " << param_ext_value.param_count;
                             }
                             // update the timeout handler, messages are still coming in.
-                            _timeout_handler.refresh(&_timeout_cookie);
+                            _timeout_handler.refresh(_timeout_cookie);
                         }
                         break;
                     case MavlinkParameterCache::AddNewParamResult::TooManyParams:
@@ -1038,8 +1037,8 @@ void MavlinkParameterClient::receive_timeout()
                         }
                     } else {
                         --work->retries_to_do;
-                        _timeout_handler.add(
-                            [this] { receive_timeout(); }, _timeout_s_callback(), &_timeout_cookie);
+                        _timeout_cookie = _timeout_handler.add(
+                            [this] { receive_timeout(); }, _timeout_s_callback());
                     }
                 } else {
                     // We have tried retransmitting, giving up now.
@@ -1066,8 +1065,8 @@ void MavlinkParameterClient::receive_timeout()
                         }
                     } else {
                         --work->retries_to_do;
-                        _timeout_handler.add(
-                            [this] { receive_timeout(); }, _timeout_s_callback(), &_timeout_cookie);
+                        _timeout_cookie = _timeout_handler.add(
+                            [this] { receive_timeout(); }, _timeout_s_callback());
                     }
                 } else {
                     // We have tried retransmitting, giving up now.
@@ -1106,8 +1105,8 @@ void MavlinkParameterClient::receive_timeout()
                         }
 
                         // We want to get notified if a timeout happens
-                        _timeout_handler.add(
-                            [this] { receive_timeout(); }, _timeout_s_callback(), &_timeout_cookie);
+                        _timeout_cookie = _timeout_handler.add(
+                            [this] { receive_timeout(); }, _timeout_s_callback());
                     } else {
                         if (item.callback) {
                             auto callback = item.callback;
@@ -1142,8 +1141,8 @@ void MavlinkParameterClient::receive_timeout()
                         }
                         return;
                     }
-                    _timeout_handler.add(
-                        [this] { receive_timeout(); }, _timeout_s_callback(), &_timeout_cookie);
+                    _timeout_cookie =
+                        _timeout_handler.add([this] { receive_timeout(); }, _timeout_s_callback());
                 }
             }},
         work->work_item_variant);

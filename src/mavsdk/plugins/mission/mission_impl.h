@@ -136,7 +136,7 @@ private:
         bool gimbal_v2_in_control{false};
     } _mission_data{};
 
-    void* _timeout_cookie{nullptr};
+    TimeoutHandler::Cookie _timeout_cookie{};
 
     bool _enable_return_to_launch_after_mission{false};
 
@@ -144,7 +144,7 @@ private:
     //        Ultimate it needs a setter.
     bool _enable_absolute_gimbal_yaw_angle{true};
 
-    void* _gimbal_protocol_cookie{nullptr};
+    TimeoutHandler::Cookie _gimbal_protocol_cookie{};
     enum class GimbalProtocol { Unknown, V1, V2 };
     std::atomic<GimbalProtocol> _gimbal_protocol{GimbalProtocol::Unknown};
 };

@@ -14,7 +14,7 @@ public:
     struct RequestMsgInterval {
         uint32_t msg_id{0};
         uint32_t interval{0};
-        void* cookie{nullptr};
+        CallEveryHandler::Cookie cookie{};
     };
 
     explicit TelemetryServerImpl(std::shared_ptr<ServerComponent> server_component);

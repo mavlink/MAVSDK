@@ -1195,8 +1195,8 @@ void MavlinkFtpClient::send_mavlink_ftp_message(const PayloadHeader& payload, ui
 void MavlinkFtpClient::start_timer(std::optional<double> duration_s)
 {
     _system_impl.unregister_timeout_handler(_timeout_cookie);
-    _system_impl.register_timeout_handler(
-        [this]() { timeout(); }, duration_s.value_or(_system_impl.timeout_s()), &_timeout_cookie);
+    _timeout_cookie = _system_impl.register_timeout_handler(
+        [this]() { timeout(); }, duration_s.value_or(_system_impl.timeout_s()));
 }
 
 void MavlinkFtpClient::stop_timer()

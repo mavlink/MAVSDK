@@ -216,7 +216,7 @@ private:
     bool _is_image_capture_in_progress{};
     bool _is_image_capture_interval_set{};
     float _image_capture_timer_interval_s{};
-    void* _image_capture_timer_cookie{};
+    CallEveryHandler::Cookie _image_capture_timer_cookie{};
     int32_t _image_capture_count{};
 
     CallbackList<int32_t> _take_photo_callbacks{};

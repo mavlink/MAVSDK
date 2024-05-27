@@ -21,9 +21,11 @@ public:
     TimeoutHandler& operator=(TimeoutHandler const&) = delete; // Copy assign
     TimeoutHandler& operator=(TimeoutHandler&&) = delete; // Move assign
 
-    void add(std::function<void()> callback, double duration_s, void** cookie);
-    void refresh(const void* cookie);
-    void remove(const void* cookie);
+    using Cookie = uint64_t;
+
+    [[nodiscard]] Cookie add(std::function<void()> callback, double duration_s);
+    void refresh(Cookie cookie);
+    void remove(Cookie cookie);
 
     void run_once();
 
@@ -32,7 +34,7 @@ private:
         std::function<void()> callback{};
         SteadyTimePoint time{};
         double duration_s{0.0};
-        uint64_t cookie{0};
+        Cookie cookie{0};
     };
 
     std::vector<Timeout> _timeouts{};
@@ -41,7 +43,7 @@ private:
 
     Time& _time;
 
-    uint64_t _next_cookie{1};
+    Cookie _next_cookie{1};
 };
 
 } // namespace mavsdk

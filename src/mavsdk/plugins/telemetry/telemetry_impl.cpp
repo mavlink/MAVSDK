@@ -219,20 +219,20 @@ void TelemetryImpl::deinit()
 
 void TelemetryImpl::enable()
 {
-    _system_impl->register_timeout_handler(
-        [this]() { receive_gps_raw_timeout(); }, 2.0, &_gps_raw_timeout_cookie);
+    _gps_raw_timeout_cookie =
+        _system_impl->register_timeout_handler([this]() { receive_gps_raw_timeout(); }, 2.0);
 
-    _system_impl->register_timeout_handler(
-        [this]() { receive_unix_epoch_timeout(); }, 2.0, &_unix_epoch_timeout_cookie);
+    _unix_epoch_timeout_cookie =
+        _system_impl->register_timeout_handler([this]() { receive_unix_epoch_timeout(); }, 2.0);
 
     // FIXME: The calibration check should eventually be better than this.
     //        For now, we just do the same as QGC does.
 
-    _system_impl->add_call_every([this]() { check_calibration(); }, 5.0, &_calibration_cookie);
+    _calibration_cookie = _system_impl->add_call_every([this]() { check_calibration(); }, 5.0);
 
     // We're going to retry until we have the Home Position.
-    _system_impl->add_call_every(
-        [this]() { request_home_position_again(); }, 2.0f, &_homepos_cookie);
+    _homepos_cookie =
+        _system_impl->add_call_every([this]() { request_home_position_again(); }, 2.0f);
 }
 
 void TelemetryImpl::disable()

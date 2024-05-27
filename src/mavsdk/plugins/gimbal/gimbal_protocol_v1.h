@@ -57,11 +57,11 @@ private:
 
     Gimbal::ControlStatus _current_control_status{Gimbal::ControlMode::None, 0, 0, 0, 0};
     Gimbal::ControlCallback _control_callback;
-    void* _control_cookie{nullptr};
+    CallEveryHandler::Cookie _control_cookie{};
 
     Gimbal::Attitude _current_attitude{};
     Gimbal::AttitudeCallback _attitude_callback{};
-    void* _attitude_cookie{nullptr};
+    CallEveryHandler::Cookie _attitude_cookie{};
 };
 
 } // namespace mavsdk
