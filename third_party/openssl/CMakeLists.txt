@@ -35,7 +35,7 @@ if(ANDROID)
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
         PATCH_COMMAND patch -p 0 < ${PROJECT_SOURCE_DIR}/dockcross-android.patch
-        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env ANDROID_NDK=$ENV{CROSS_ROOT} <SOURCE_DIR>/Configure --sysroot=$ENV{CROSS_ROOT}/sysroot ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env ANDROID_NDK=$ENV{CROSS_ROOT} <SOURCE_DIR>/Configure --sysroot=$ENV{CROSS_ROOT}/sysroot ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-asm no-shared
         BUILD_COMMAND make
         INSTALL_COMMAND make install_sw
         )
