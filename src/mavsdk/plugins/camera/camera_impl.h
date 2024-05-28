@@ -194,7 +194,9 @@ private:
     Camera::Result fetch_camera_definition(
         const mavlink_camera_information_t& camera_information, std::string& camera_definition_out);
     Camera::Result
-    download_definition_file(const std::string& uri, std::string& camera_definition_out);
+    download_definition_file_curl(const std::string& uri, std::string& camera_definition_out);
+    Camera::Result
+    download_definition_file_mftp(const std::string& uri, std::string& camera_definition_out);
 
     void refresh_params();
     void invalidate_params();
@@ -247,6 +249,10 @@ private:
     MavlinkCommandSender::CommandLong make_command_focus_range(float range);
 
     void request_missing_capture_info();
+
+    static bool starts_with(const std::string& str, const std::string& prefix);
+    static std::string get_filename_from_path(const std::string& path);
+    static std::string strip_mavlinkftp_prefix(const std::string& str);
 
     std::unique_ptr<CameraDefinition> _camera_definition{};
     bool _is_fetching_camera_definition{false};

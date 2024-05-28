@@ -5,10 +5,13 @@
 #include "http_loader.h"
 #include "unused.h"
 #include "callback_list.tpp"
+#include "fs_utils.h"
 
 #include <algorithm>
-#include <functional>
 #include <cmath>
+#include <filesystem>
+#include <fstream>
+#include <functional>
 #include <sstream>
 
 namespace mavsdk {
@@ -1557,17 +1560,34 @@ bool CameraImpl::should_fetch_camera_definition(const std::string& uri) const
            !_has_camera_definition_timed_out;
 }
 
+bool CameraImpl::starts_with(const std::string& str, const std::string& prefix)
+{
+    return str.compare(0, prefix.size(), prefix) == 0;
+}
+
 Camera::Result CameraImpl::fetch_camera_definition(
     const mavlink_camera_information_t& camera_information, std::string& camera_definition_out)
 {
-    auto result =
-        download_definition_file(camera_information.cam_definition_uri, camera_definition_out);
+    auto& uri = camera_information.cam_definition_uri;
 
-    return result;
+    if (starts_with(uri, "http://") || starts_with(uri, "https://")) {
+        LogInfo() << "Download file: " << uri << " using cURL...";
+        auto result = download_definition_file_curl(uri, camera_definition_out);
+        LogInfo() << "Downloaded file, result " << result;
+        return result;
+    } else if (starts_with(uri, "mftp://") || starts_with(uri, "mavlinkftp://")) {
+        LogInfo() << "Download file: " << uri << " using MAVLink FTP...";
+        auto result = download_definition_file_mftp(uri, camera_definition_out);
+        LogInfo() << "Downloaded file, result " << result;
+        return result;
+    } else {
+        LogErr() << "Unknown protocol for URL: " << uri;
+        return Camera::Result::ProtocolUnsupported;
+    }
 }
 
-Camera::Result
-CameraImpl::download_definition_file(const std::string& uri, std::string& camera_definition_out)
+Camera::Result CameraImpl::download_definition_file_curl(
+    const std::string& uri, std::string& camera_definition_out)
 {
 #if BUILD_WITHOUT_CURL == 1
     UNUSED(uri);
@@ -1582,6 +1602,77 @@ CameraImpl::download_definition_file(const std::string& uri, std::string& camera
     }
 #endif
 
+    return Camera::Result::Success;
+}
+
+std::string CameraImpl::get_filename_from_path(const std::string& path)
+{
+    size_t pos = path.find_last_of("/");
+    if (pos != std::string::npos) {
+        return path.substr(pos + 1);
+    }
+    return path; // If no directory separator is found, return the whole path as the filename
+}
+
+std::string CameraImpl::strip_mavlinkftp_prefix(const std::string& str)
+{
+    const std::string prefix1 = "mftp://";
+    const std::string prefix2 = "mavlinkftp://";
+
+    if (str.compare(0, prefix1.size(), prefix1) == 0) {
+        return str.substr(prefix1.size());
+    }
+    if (str.compare(0, prefix2.size(), prefix2) == 0) {
+        return str.substr(prefix2.size());
+    }
+    return str; // If no known prefix is found, return the original string
+}
+
+Camera::Result CameraImpl::download_definition_file_mftp(
+    const std::string& uri, std::string& camera_definition_out)
+{
+    std::string tmp_download_path;
+    const auto tmp_option = create_tmp_directory("mavsdk-camera-definition-download");
+    if (tmp_option) {
+        tmp_download_path = tmp_option.value().string();
+    } else {
+        tmp_download_path = "./mavsdk-camera-definition-download";
+        std::error_code err;
+        std::filesystem::create_directory(tmp_download_path, err);
+    }
+
+    auto prom = std::promise<MavlinkFtpClient::ClientResult>();
+    auto fut = prom.get_future();
+
+    _system_impl->mavlink_ftp_client().download_async(
+        strip_mavlinkftp_prefix(uri),
+        tmp_download_path,
+        false,
+        [&prom](MavlinkFtpClient::ClientResult client_result, MavlinkFtpClient::ProgressData) {
+            if (client_result != MavlinkFtpClient::ClientResult::Next) {
+                prom.set_value(client_result);
+            }
+        },
+        static_cast<uint8_t>(_camera_id + MAV_COMP_ID_CAMERA));
+
+    auto result = fut.get();
+
+    if (result != MavlinkFtpClient::ClientResult::Success) {
+        LogErr() << "MAVLink FTP download failed: " << result;
+        return Camera::Result::Error;
+    }
+
+    std::filesystem::path tmp_file = std::filesystem::path(tmp_download_path) /
+                                     std::filesystem::path(get_filename_from_path(uri));
+
+    std::ifstream file_stream(tmp_file.string());
+    if (!file_stream.is_open()) {
+        LogErr() << "Could not open: " << tmp_file.string();
+        return Camera::Result::Error;
+    }
+    std::stringstream buffer;
+    buffer << file_stream.rdbuf();
+    camera_definition_out = buffer.str();
     return Camera::Result::Success;
 }
 
