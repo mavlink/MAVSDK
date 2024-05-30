@@ -831,6 +831,11 @@ Action::Result ActionImpl::action_result_from_command_result(MavlinkCommandSende
 void ActionImpl::command_result_callback(
     MavlinkCommandSender::Result command_result, const Action::ResultCallback& callback) const
 {
+    if (command_result == MavlinkCommandSender::Result::InProgress) {
+        // We only want to return once, so we can't call the callback on progress updates.
+        return;
+    }
+
     Action::Result action_result = action_result_from_command_result(command_result);
 
     if (callback) {
