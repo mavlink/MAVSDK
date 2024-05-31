@@ -95,6 +95,7 @@ int main(int argc, char** argv)
         TelemetryServer::RawGps rawGps{
             0, 55.953251, -3.188267, 0, NAN, NAN, 0, NAN, 0, 0, 0, 0, 0, 0};
         TelemetryServer::GpsInfo gpsInfo{11, TelemetryServer::FixType::Fix3D};
+        TelemetryServer::Battery battery;
 
         // Publish home already, so that it is available.
         telemServer.publish_home(position);
@@ -138,6 +139,8 @@ int main(int argc, char** argv)
             std::this_thread::sleep_for(std::chrono::seconds(1));
 
             // Publish the telemetry
+            telemServer.publish_home(position);
+            telemServer.publish_sys_status(battery, true, true, true, true, true);
             telemServer.publish_position(position, velocity, heading);
             telemServer.publish_position_velocity_ned(positionVelocityNed);
             telemServer.publish_raw_gps(rawGps, gpsInfo);
