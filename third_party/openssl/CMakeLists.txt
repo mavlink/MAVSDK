@@ -5,7 +5,7 @@ include(ExternalProject)
 
 message(STATUS "Preparing external project \"openssl\"")
 
-set(OPENSSL_VERSION 3.0.9)
+set(OPENSSL_VERSION 3.3.0)
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     set(OPENSSL_BUILD_TYPE "--debug")
@@ -35,7 +35,7 @@ if(ANDROID)
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
         PATCH_COMMAND patch -p 0 < ${PROJECT_SOURCE_DIR}/dockcross-android.patch
-        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env ANDROID_NDK=$ENV{CROSS_ROOT} <SOURCE_DIR>/Configure --sysroot=$ENV{CROSS_ROOT}/sysroot ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env ANDROID_NDK=$ENV{CROSS_ROOT} <SOURCE_DIR>/Configure --sysroot=$ENV{CROSS_ROOT}/sysroot ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-asm no-shared
         BUILD_COMMAND make
         INSTALL_COMMAND make install_sw
         )
@@ -45,6 +45,8 @@ elseif(IOS)
         set(OPENSSL_PLATFORM "ios64-xcrun")
     elseif(${PLATFORM} STREQUAL "SIMULATOR64")
         set(OPENSSL_PLATFORM "iossimulator-xcrun")
+    elseif(${PLATFORM} STREQUAL "SIMULATORARM64")
+        set(OPENSSL_PLATFORM "iossimulator-arm64-xcrun")
     else()
         message(FATAL_ERROR "Unexpected PLATFORM: \"${PLATFORM}\"")
     endif()
