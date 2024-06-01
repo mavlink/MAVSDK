@@ -221,7 +221,7 @@ private:
 
     struct Work {
         Item item;
-        PayloadHeader payload; // The last payload saved for retries
+        PayloadHeader payload{}; // The last payload saved for retries
         unsigned retries{RETRIES};
         bool started{false};
         Opcode last_opcode{};

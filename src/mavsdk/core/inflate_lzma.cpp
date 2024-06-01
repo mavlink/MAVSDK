@@ -112,6 +112,15 @@ static bool decompress(lzma_stream* strm, const char* inname, FILE* infile, FILE
 
             if (ferror(infile)) {
                 fprintf(stderr, "%s: Read error: %s\n", inname, strerror(errno));
+                // SonarCloud: Address of stack memory associated with local
+                // variable 'inbuf' is still referred to by the stack variable
+                // 'strm' upon returning to the caller. This will be a
+                // dangling reference
+                // Fixed by setting to nullptr.
+                strm->next_in = nullptr;
+                strm->avail_in = 0;
+                strm->next_out = nullptr;
+                strm->avail_out = 0;
                 return false;
             }
 
