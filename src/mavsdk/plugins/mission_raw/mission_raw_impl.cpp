@@ -79,11 +79,17 @@ void MissionRawImpl::process_mission_ack(const mavlink_message_t& message)
         return;
     }
 
-    // We assume that if the vehicle sends an ACCEPTED ack might have received
-    // a new mission. In that case we need to notify our user.
-    std::lock_guard<std::mutex> lock(_mission_changed.mutex);
-    _mission_changed.callbacks.queue(
-        true, [this](const auto& func) { _system_impl->call_user_callback(func); });
+    // We assume that if the vehicle sends an ACCEPTED ack, we might have received
+    // a new mission. In that case we can notify our user.
+    // However, with the (opaque) mission_id, we can determine this properly using
+    // the id. Therefore, we only do the notification if the opaque ID is 0 and
+    // therefore not yet supported. This way we stay backwards compatible with
+    // previous autopilot versions.
+    if (mission_ack.opaque_id == 0) {
+        std::lock_guard<std::mutex> lock(_mission_changed.mutex);
+        _mission_changed.callbacks.queue(
+            true, [this](const auto& func) { _system_impl->call_user_callback(func); });
+    }
 }
 
 void MissionRawImpl::process_mission_current(const mavlink_message_t& message)
@@ -98,6 +104,16 @@ void MissionRawImpl::process_mission_current(const mavlink_message_t& message)
         // so we need to ignore that case.
         if (mission_current.seq != _mission_progress.last_reached) {
             _mission_progress.last.current = mission_current.seq;
+        }
+    }
+    {
+        std::lock_guard<std::mutex> lock(_mission_changed.mutex);
+        if (_mission_changed.last_mission_id != mission_current.mission_id) {
+            _mission_changed.last_mission_id = mission_current.mission_id;
+
+            _mission_changed.callbacks.queue(
+                true, [this](const auto& func) { _system_impl->call_user_callback(func); });
+            LogDebug() << "Mission changed";
         }
     }
 
