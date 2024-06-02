@@ -140,6 +140,10 @@ static bool decompress(lzma_stream* strm, const char* inname, FILE* infile, FILE
 
             if (fwrite(outbuf, 1, write_size, outfile) != write_size) {
                 fprintf(stderr, "Write error: %s\n", strerror(errno));
+                strm->next_in = nullptr;
+                strm->avail_in = 0;
+                strm->next_out = nullptr;
+                strm->avail_out = 0;
                 return false;
             }
 
@@ -156,8 +160,13 @@ static bool decompress(lzma_stream* strm, const char* inname, FILE* infile, FILE
             // everything has gone well or that when you aren't
             // getting more output it must have successfully
             // decoded everything.
-            if (ret == LZMA_STREAM_END)
+            if (ret == LZMA_STREAM_END) {
+                strm->next_in = nullptr;
+                strm->avail_in = 0;
+                strm->next_out = nullptr;
+                strm->avail_out = 0;
                 return true;
+            }
 
             // It's not LZMA_OK nor LZMA_STREAM_END,
             // so it must be an error code. See lzma/base.h
@@ -225,6 +234,11 @@ static bool decompress(lzma_stream* strm, const char* inname, FILE* infile, FILE
                 inname,
                 msg,
                 ret);
+
+            strm->next_in = nullptr;
+            strm->avail_in = 0;
+            strm->next_out = nullptr;
+            strm->avail_out = 0;
             return false;
         }
     }
