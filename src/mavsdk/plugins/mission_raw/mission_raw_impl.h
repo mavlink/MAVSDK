@@ -125,6 +125,7 @@ private:
     struct {
         std::mutex mutex{};
         CallbackList<bool> callbacks{};
+        uint32_t last_mission_id{0};
     } _mission_changed{};
 };
 

@@ -283,7 +283,7 @@ jobs:
     container: alpine:3.19.0
     steps:
       - name: install tools
-        run: apk update && apk add build-base cmake git linux-headers perl tar python3 py3-pip
+        run: apk update && apk add build-base cmake git linux-headers perl tar python3 py3-pip rust cargo
       - uses: actions/checkout@v4
         with:
           submodules: recursive
