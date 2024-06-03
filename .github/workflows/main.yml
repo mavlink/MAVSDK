@@ -238,30 +238,36 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        arch_name: [armv6, armv7, arm64, arm64-lts]
         include:
-          - arch_name: arm64-lts
+          - docker_name: armv6
+            arch_name: armv6
+          - docker_name: armv7
+            arch_name: armv7
+          - docker_name: arm64
+            arch_name: arm64
+          - docker_name: arm64-lts
+            arch_name: arm64
             rename_distro: true
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: setup dockcross
-        run: docker run --rm docker.io/mavsdk/mavsdk-dockcross-linux-${{ matrix.arch_name }}-custom > ./dockcross-linux-${{ matrix.arch_name }}-custom; chmod +x ./dockcross-linux-${{ matrix.arch_name }}-custom
+        run: docker run --rm docker.io/mavsdk/mavsdk-dockcross-linux-${{ matrix.docker_name }}-custom > ./dockcross-linux-${{ matrix.docker_name }}-custom; chmod +x ./dockcross-linux-${{ matrix.docker_name }}-custom
       - uses: actions/cache@v4
         id: cache
         with:
-          path: ./build/linux-${{ matrix.arch_name }}/third_party/install
-          key: ${{ github.job }}-linux-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}-6
+          path: ./build/linux-${{ matrix.docker_name }}/third_party/install
+          key: ${{ github.job }}-linux-${{ matrix.docker_name }}-${{ hashFiles('./third_party/**') }}-6
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/linux-${{ matrix.arch_name }}/third_party/install" >> $GITHUB_ENV
+        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/linux-${{ matrix.docker_name }}/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-linux-${{ matrix.arch_name }}-custom /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DWERROR=ON -Bbuild/linux-${{ matrix.arch_name }} -H."
+        run: ./dockcross-linux-${{ matrix.docker_name }}-custom /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-${{ matrix.docker_name }}/install -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DWERROR=ON -Bbuild/linux-${{ matrix.docker_name }} -H."
       - name: build
-        run: ./dockcross-linux-${{ matrix.arch_name }}-custom cmake --build build/linux-${{ matrix.arch_name }} -j2 --target install
+        run: ./dockcross-linux-${{ matrix.docker_name }}-custom cmake --build build/linux-${{ matrix.docker_name }} -j2 --target install
       - name: create deb packages
-        run: ./dockcross-linux-${{ matrix.arch_name }}-custom tools/create_packages.sh ./build/linux-${{ matrix.arch_name }}/install . ${{ matrix.arch_name }} libmavsdk-dev
+        run: ./dockcross-linux-${{ matrix.docker_name }}-custom tools/create_packages.sh ./build/linux-${{ matrix.docker_name }}/install . ${{ matrix.arch_name }} libmavsdk-dev
       - if: ${{ matrix.rename_distro }}
         name: Rename LTS versions from debian12 to debian11
         run: |
