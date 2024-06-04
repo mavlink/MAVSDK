@@ -199,6 +199,26 @@ struct ListDirectoryRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ListDirectoryRequestDefaultTypeInternal _ListDirectoryRequest_default_instance_;
 
+inline constexpr ListDirectoryData::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : dirs_{},
+        files_{},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ListDirectoryData::ListDirectoryData(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct ListDirectoryDataDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ListDirectoryDataDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ListDirectoryDataDefaultTypeInternal() {}
+  union {
+    ListDirectoryData _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ListDirectoryDataDefaultTypeInternal _ListDirectoryData_default_instance_;
+
 inline constexpr FtpResult::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : result_str_(
@@ -365,8 +385,8 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 inline constexpr ListDirectoryResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
-        paths_{},
-        ftp_result_{nullptr} {}
+        ftp_result_{nullptr},
+        data_{nullptr} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR ListDirectoryResponse::ListDirectoryResponse(::_pbi::ConstantInitialized)
@@ -443,7 +463,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 }  // namespace ftp
 }  // namespace rpc
 }  // namespace mavsdk
-static ::_pb::Metadata file_level_metadata_ftp_2fftp_2eproto[20];
+static ::_pb::Metadata file_level_metadata_ftp_2fftp_2eproto[21];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_ftp_2fftp_2eproto[1];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_ftp_2fftp_2eproto = nullptr;
@@ -503,6 +523,16 @@ const ::uint32_t TableStruct_ftp_2fftp_2eproto::offsets[] PROTOBUF_SECTION_VARIA
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ListDirectoryRequest, _impl_.remote_dir_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ListDirectoryData, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ListDirectoryData, _impl_.dirs_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ListDirectoryData, _impl_.files_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ListDirectoryResponse, _impl_._has_bits_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ListDirectoryResponse, _internal_metadata_),
     ~0u,  // no _extensions_
@@ -512,9 +542,9 @@ const ::uint32_t TableStruct_ftp_2fftp_2eproto::offsets[] PROTOBUF_SECTION_VARIA
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ListDirectoryResponse, _impl_.ftp_result_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ListDirectoryResponse, _impl_.paths_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::ListDirectoryResponse, _impl_.data_),
     0,
-    ~0u,
+    1,
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::ftp::CreateDirectoryRequest, _internal_metadata_),
     ~0u,  // no _extensions_
@@ -662,21 +692,22 @@ static const ::_pbi::MigrationSchema
         {23, -1, -1, sizeof(::mavsdk::rpc::ftp::SubscribeUploadRequest)},
         {33, 43, -1, sizeof(::mavsdk::rpc::ftp::UploadResponse)},
         {45, -1, -1, sizeof(::mavsdk::rpc::ftp::ListDirectoryRequest)},
-        {54, 64, -1, sizeof(::mavsdk::rpc::ftp::ListDirectoryResponse)},
-        {66, -1, -1, sizeof(::mavsdk::rpc::ftp::CreateDirectoryRequest)},
-        {75, 84, -1, sizeof(::mavsdk::rpc::ftp::CreateDirectoryResponse)},
-        {85, -1, -1, sizeof(::mavsdk::rpc::ftp::RemoveDirectoryRequest)},
-        {94, 103, -1, sizeof(::mavsdk::rpc::ftp::RemoveDirectoryResponse)},
-        {104, -1, -1, sizeof(::mavsdk::rpc::ftp::RemoveFileRequest)},
-        {113, 122, -1, sizeof(::mavsdk::rpc::ftp::RemoveFileResponse)},
-        {123, -1, -1, sizeof(::mavsdk::rpc::ftp::RenameRequest)},
-        {133, 142, -1, sizeof(::mavsdk::rpc::ftp::RenameResponse)},
-        {143, -1, -1, sizeof(::mavsdk::rpc::ftp::AreFilesIdenticalRequest)},
-        {153, 163, -1, sizeof(::mavsdk::rpc::ftp::AreFilesIdenticalResponse)},
-        {165, -1, -1, sizeof(::mavsdk::rpc::ftp::SetTargetCompidRequest)},
-        {174, 183, -1, sizeof(::mavsdk::rpc::ftp::SetTargetCompidResponse)},
-        {184, -1, -1, sizeof(::mavsdk::rpc::ftp::ProgressData)},
-        {194, -1, -1, sizeof(::mavsdk::rpc::ftp::FtpResult)},
+        {54, -1, -1, sizeof(::mavsdk::rpc::ftp::ListDirectoryData)},
+        {64, 74, -1, sizeof(::mavsdk::rpc::ftp::ListDirectoryResponse)},
+        {76, -1, -1, sizeof(::mavsdk::rpc::ftp::CreateDirectoryRequest)},
+        {85, 94, -1, sizeof(::mavsdk::rpc::ftp::CreateDirectoryResponse)},
+        {95, -1, -1, sizeof(::mavsdk::rpc::ftp::RemoveDirectoryRequest)},
+        {104, 113, -1, sizeof(::mavsdk::rpc::ftp::RemoveDirectoryResponse)},
+        {114, -1, -1, sizeof(::mavsdk::rpc::ftp::RemoveFileRequest)},
+        {123, 132, -1, sizeof(::mavsdk::rpc::ftp::RemoveFileResponse)},
+        {133, -1, -1, sizeof(::mavsdk::rpc::ftp::RenameRequest)},
+        {143, 152, -1, sizeof(::mavsdk::rpc::ftp::RenameResponse)},
+        {153, -1, -1, sizeof(::mavsdk::rpc::ftp::AreFilesIdenticalRequest)},
+        {163, 173, -1, sizeof(::mavsdk::rpc::ftp::AreFilesIdenticalResponse)},
+        {175, -1, -1, sizeof(::mavsdk::rpc::ftp::SetTargetCompidRequest)},
+        {184, 193, -1, sizeof(::mavsdk::rpc::ftp::SetTargetCompidResponse)},
+        {194, -1, -1, sizeof(::mavsdk::rpc::ftp::ProgressData)},
+        {204, -1, -1, sizeof(::mavsdk::rpc::ftp::FtpResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -685,6 +716,7 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::ftp::_SubscribeUploadRequest_default_instance_._instance,
     &::mavsdk::rpc::ftp::_UploadResponse_default_instance_._instance,
     &::mavsdk::rpc::ftp::_ListDirectoryRequest_default_instance_._instance,
+    &::mavsdk::rpc::ftp::_ListDirectoryData_default_instance_._instance,
     &::mavsdk::rpc::ftp::_ListDirectoryResponse_default_instance_._instance,
     &::mavsdk::rpc::ftp::_CreateDirectoryRequest_default_instance_._instance,
     &::mavsdk::rpc::ftp::_CreateDirectoryResponse_default_instance_._instance,
@@ -714,64 +746,66 @@ const char descriptor_table_protodef_ftp_2fftp_2eproto[] PROTOBUF_SECTION_VARIAB
     "p_result\030\001 \001(\0132\031.mavsdk.rpc.ftp.FtpResul"
     "t\0223\n\rprogress_data\030\002 \001(\0132\034.mavsdk.rpc.ft"
     "p.ProgressData\"*\n\024ListDirectoryRequest\022\022"
-    "\n\nremote_dir\030\001 \001(\t\"U\n\025ListDirectoryRespo"
-    "nse\022-\n\nftp_result\030\001 \001(\0132\031.mavsdk.rpc.ftp"
-    ".FtpResult\022\r\n\005paths\030\002 \003(\t\",\n\026CreateDirec"
-    "toryRequest\022\022\n\nremote_dir\030\001 \001(\t\"H\n\027Creat"
-    "eDirectoryResponse\022-\n\nftp_result\030\001 \001(\0132\031"
-    ".mavsdk.rpc.ftp.FtpResult\",\n\026RemoveDirec"
-    "toryRequest\022\022\n\nremote_dir\030\001 \001(\t\"H\n\027Remov"
-    "eDirectoryResponse\022-\n\nftp_result\030\001 \001(\0132\031"
-    ".mavsdk.rpc.ftp.FtpResult\"-\n\021RemoveFileR"
-    "equest\022\030\n\020remote_file_path\030\001 \001(\t\"C\n\022Remo"
-    "veFileResponse\022-\n\nftp_result\030\001 \001(\0132\031.mav"
-    "sdk.rpc.ftp.FtpResult\"A\n\rRenameRequest\022\030"
-    "\n\020remote_from_path\030\001 \001(\t\022\026\n\016remote_to_pa"
-    "th\030\002 \001(\t\"\?\n\016RenameResponse\022-\n\nftp_result"
-    "\030\001 \001(\0132\031.mavsdk.rpc.ftp.FtpResult\"M\n\030Are"
-    "FilesIdenticalRequest\022\027\n\017local_file_path"
-    "\030\001 \001(\t\022\030\n\020remote_file_path\030\002 \001(\t\"a\n\031AreF"
-    "ilesIdenticalResponse\022-\n\nftp_result\030\001 \001("
-    "\0132\031.mavsdk.rpc.ftp.FtpResult\022\025\n\rare_iden"
-    "tical\030\002 \001(\010\"(\n\026SetTargetCompidRequest\022\016\n"
-    "\006compid\030\001 \001(\r\"H\n\027SetTargetCompidResponse"
-    "\022-\n\nftp_result\030\001 \001(\0132\031.mavsdk.rpc.ftp.Ft"
-    "pResult\">\n\014ProgressData\022\031\n\021bytes_transfe"
-    "rred\030\001 \001(\r\022\023\n\013total_bytes\030\002 \001(\r\"\216\003\n\tFtpR"
-    "esult\0220\n\006result\030\001 \001(\0162 .mavsdk.rpc.ftp.F"
-    "tpResult.Result\022\022\n\nresult_str\030\002 \001(\t\"\272\002\n\006"
-    "Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUC"
-    "CESS\020\001\022\017\n\013RESULT_NEXT\020\002\022\022\n\016RESULT_TIMEOU"
-    "T\020\003\022\017\n\013RESULT_BUSY\020\004\022\030\n\024RESULT_FILE_IO_E"
-    "RROR\020\005\022\026\n\022RESULT_FILE_EXISTS\020\006\022\036\n\032RESULT"
-    "_FILE_DOES_NOT_EXIST\020\007\022\031\n\025RESULT_FILE_PR"
-    "OTECTED\020\010\022\034\n\030RESULT_INVALID_PARAMETER\020\t\022"
-    "\026\n\022RESULT_UNSUPPORTED\020\n\022\031\n\025RESULT_PROTOC"
-    "OL_ERROR\020\013\022\024\n\020RESULT_NO_SYSTEM\020\0142\204\007\n\nFtp"
-    "Service\022k\n\021SubscribeDownload\022(.mavsdk.rp"
-    "c.ftp.SubscribeDownloadRequest\032 .mavsdk."
-    "rpc.ftp.DownloadResponse\"\010\200\265\030\000\210\265\030\0010\001\022e\n\017"
-    "SubscribeUpload\022&.mavsdk.rpc.ftp.Subscri"
-    "beUploadRequest\032\036.mavsdk.rpc.ftp.UploadR"
-    "esponse\"\010\200\265\030\000\210\265\030\0010\001\022^\n\rListDirectory\022$.m"
-    "avsdk.rpc.ftp.ListDirectoryRequest\032%.mav"
-    "sdk.rpc.ftp.ListDirectoryResponse\"\000\022d\n\017C"
-    "reateDirectory\022&.mavsdk.rpc.ftp.CreateDi"
-    "rectoryRequest\032\'.mavsdk.rpc.ftp.CreateDi"
-    "rectoryResponse\"\000\022d\n\017RemoveDirectory\022&.m"
-    "avsdk.rpc.ftp.RemoveDirectoryRequest\032\'.m"
-    "avsdk.rpc.ftp.RemoveDirectoryResponse\"\000\022"
-    "U\n\nRemoveFile\022!.mavsdk.rpc.ftp.RemoveFil"
-    "eRequest\032\".mavsdk.rpc.ftp.RemoveFileResp"
-    "onse\"\000\022I\n\006Rename\022\035.mavsdk.rpc.ftp.Rename"
-    "Request\032\036.mavsdk.rpc.ftp.RenameResponse\""
-    "\000\022j\n\021AreFilesIdentical\022(.mavsdk.rpc.ftp."
-    "AreFilesIdenticalRequest\032).mavsdk.rpc.ft"
-    "p.AreFilesIdenticalResponse\"\000\022h\n\017SetTarg"
-    "etCompid\022&.mavsdk.rpc.ftp.SetTargetCompi"
-    "dRequest\032\'.mavsdk.rpc.ftp.SetTargetCompi"
-    "dResponse\"\004\200\265\030\001B\031\n\rio.mavsdk.ftpB\010FtpPro"
-    "tob\006proto3"
+    "\n\nremote_dir\030\001 \001(\t\"0\n\021ListDirectoryData\022"
+    "\014\n\004dirs\030\001 \003(\t\022\r\n\005files\030\002 \003(\t\"w\n\025ListDire"
+    "ctoryResponse\022-\n\nftp_result\030\001 \001(\0132\031.mavs"
+    "dk.rpc.ftp.FtpResult\022/\n\004data\030\002 \001(\0132!.mav"
+    "sdk.rpc.ftp.ListDirectoryData\",\n\026CreateD"
+    "irectoryRequest\022\022\n\nremote_dir\030\001 \001(\t\"H\n\027C"
+    "reateDirectoryResponse\022-\n\nftp_result\030\001 \001"
+    "(\0132\031.mavsdk.rpc.ftp.FtpResult\",\n\026RemoveD"
+    "irectoryRequest\022\022\n\nremote_dir\030\001 \001(\t\"H\n\027R"
+    "emoveDirectoryResponse\022-\n\nftp_result\030\001 \001"
+    "(\0132\031.mavsdk.rpc.ftp.FtpResult\"-\n\021RemoveF"
+    "ileRequest\022\030\n\020remote_file_path\030\001 \001(\t\"C\n\022"
+    "RemoveFileResponse\022-\n\nftp_result\030\001 \001(\0132\031"
+    ".mavsdk.rpc.ftp.FtpResult\"A\n\rRenameReque"
+    "st\022\030\n\020remote_from_path\030\001 \001(\t\022\026\n\016remote_t"
+    "o_path\030\002 \001(\t\"\?\n\016RenameResponse\022-\n\nftp_re"
+    "sult\030\001 \001(\0132\031.mavsdk.rpc.ftp.FtpResult\"M\n"
+    "\030AreFilesIdenticalRequest\022\027\n\017local_file_"
+    "path\030\001 \001(\t\022\030\n\020remote_file_path\030\002 \001(\t\"a\n\031"
+    "AreFilesIdenticalResponse\022-\n\nftp_result\030"
+    "\001 \001(\0132\031.mavsdk.rpc.ftp.FtpResult\022\025\n\rare_"
+    "identical\030\002 \001(\010\"(\n\026SetTargetCompidReques"
+    "t\022\016\n\006compid\030\001 \001(\r\"H\n\027SetTargetCompidResp"
+    "onse\022-\n\nftp_result\030\001 \001(\0132\031.mavsdk.rpc.ft"
+    "p.FtpResult\">\n\014ProgressData\022\031\n\021bytes_tra"
+    "nsferred\030\001 \001(\r\022\023\n\013total_bytes\030\002 \001(\r\"\216\003\n\t"
+    "FtpResult\0220\n\006result\030\001 \001(\0162 .mavsdk.rpc.f"
+    "tp.FtpResult.Result\022\022\n\nresult_str\030\002 \001(\t\""
+    "\272\002\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT"
+    "_SUCCESS\020\001\022\017\n\013RESULT_NEXT\020\002\022\022\n\016RESULT_TI"
+    "MEOUT\020\003\022\017\n\013RESULT_BUSY\020\004\022\030\n\024RESULT_FILE_"
+    "IO_ERROR\020\005\022\026\n\022RESULT_FILE_EXISTS\020\006\022\036\n\032RE"
+    "SULT_FILE_DOES_NOT_EXIST\020\007\022\031\n\025RESULT_FIL"
+    "E_PROTECTED\020\010\022\034\n\030RESULT_INVALID_PARAMETE"
+    "R\020\t\022\026\n\022RESULT_UNSUPPORTED\020\n\022\031\n\025RESULT_PR"
+    "OTOCOL_ERROR\020\013\022\024\n\020RESULT_NO_SYSTEM\020\0142\204\007\n"
+    "\nFtpService\022k\n\021SubscribeDownload\022(.mavsd"
+    "k.rpc.ftp.SubscribeDownloadRequest\032 .mav"
+    "sdk.rpc.ftp.DownloadResponse\"\010\200\265\030\000\210\265\030\0010\001"
+    "\022e\n\017SubscribeUpload\022&.mavsdk.rpc.ftp.Sub"
+    "scribeUploadRequest\032\036.mavsdk.rpc.ftp.Upl"
+    "oadResponse\"\010\200\265\030\000\210\265\030\0010\001\022^\n\rListDirectory"
+    "\022$.mavsdk.rpc.ftp.ListDirectoryRequest\032%"
+    ".mavsdk.rpc.ftp.ListDirectoryResponse\"\000\022"
+    "d\n\017CreateDirectory\022&.mavsdk.rpc.ftp.Crea"
+    "teDirectoryRequest\032\'.mavsdk.rpc.ftp.Crea"
+    "teDirectoryResponse\"\000\022d\n\017RemoveDirectory"
+    "\022&.mavsdk.rpc.ftp.RemoveDirectoryRequest"
+    "\032\'.mavsdk.rpc.ftp.RemoveDirectoryRespons"
+    "e\"\000\022U\n\nRemoveFile\022!.mavsdk.rpc.ftp.Remov"
+    "eFileRequest\032\".mavsdk.rpc.ftp.RemoveFile"
+    "Response\"\000\022I\n\006Rename\022\035.mavsdk.rpc.ftp.Re"
+    "nameRequest\032\036.mavsdk.rpc.ftp.RenameRespo"
+    "nse\"\000\022j\n\021AreFilesIdentical\022(.mavsdk.rpc."
+    "ftp.AreFilesIdenticalRequest\032).mavsdk.rp"
+    "c.ftp.AreFilesIdenticalResponse\"\000\022h\n\017Set"
+    "TargetCompid\022&.mavsdk.rpc.ftp.SetTargetC"
+    "ompidRequest\032\'.mavsdk.rpc.ftp.SetTargetC"
+    "ompidResponse\"\004\200\265\030\001B\031\n\rio.mavsdk.ftpB\010Ft"
+    "pProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_ftp_2fftp_2eproto_deps[1] =
     {
@@ -781,13 +815,13 @@ static ::absl::once_flag descriptor_table_ftp_2fftp_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_ftp_2fftp_2eproto = {
     false,
     false,
-    2770,
+    2854,
     descriptor_table_protodef_ftp_2fftp_2eproto,
     "ftp/ftp.proto",
     &descriptor_table_ftp_2fftp_2eproto_once,
     descriptor_table_ftp_2fftp_2eproto_deps,
     1,
-    20,
+    21,
     schemas,
     file_default_instances,
     TableStruct_ftp_2fftp_2eproto::offsets,
@@ -2029,6 +2063,217 @@ void ListDirectoryRequest::InternalSwap(ListDirectoryRequest* PROTOBUF_RESTRICT 
 }
 // ===================================================================
 
+class ListDirectoryData::_Internal {
+ public:
+};
+
+ListDirectoryData::ListDirectoryData(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.ftp.ListDirectoryData)
+}
+inline PROTOBUF_NDEBUG_INLINE ListDirectoryData::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : dirs_{visibility, arena, from.dirs_},
+        files_{visibility, arena, from.files_},
+        _cached_size_{0} {}
+
+ListDirectoryData::ListDirectoryData(
+    ::google::protobuf::Arena* arena,
+    const ListDirectoryData& from)
+    : ::google::protobuf::Message(arena) {
+  ListDirectoryData* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.ftp.ListDirectoryData)
+}
+inline PROTOBUF_NDEBUG_INLINE ListDirectoryData::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : dirs_{visibility, arena},
+        files_{visibility, arena},
+        _cached_size_{0} {}
+
+inline void ListDirectoryData::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+ListDirectoryData::~ListDirectoryData() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.ListDirectoryData)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void ListDirectoryData::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void ListDirectoryData::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.ftp.ListDirectoryData)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.dirs_.Clear();
+  _impl_.files_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* ListDirectoryData::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 50, 2> ListDirectoryData::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_ListDirectoryData_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // repeated string files = 2;
+    {::_pbi::TcParser::FastUR1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(ListDirectoryData, _impl_.files_)}},
+    // repeated string dirs = 1;
+    {::_pbi::TcParser::FastUR1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(ListDirectoryData, _impl_.dirs_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // repeated string dirs = 1;
+    {PROTOBUF_FIELD_OFFSET(ListDirectoryData, _impl_.dirs_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
+    // repeated string files = 2;
+    {PROTOBUF_FIELD_OFFSET(ListDirectoryData, _impl_.files_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
+  }},
+  // no aux_entries
+  {{
+    "\40\4\5\0\0\0\0\0"
+    "mavsdk.rpc.ftp.ListDirectoryData"
+    "dirs"
+    "files"
+  }},
+};
+
+::uint8_t* ListDirectoryData::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.ftp.ListDirectoryData)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // repeated string dirs = 1;
+  for (int i = 0, n = this->_internal_dirs_size(); i < n; ++i) {
+    const auto& s = this->_internal_dirs().Get(i);
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.ftp.ListDirectoryData.dirs");
+    target = stream->WriteString(1, s, target);
+  }
+
+  // repeated string files = 2;
+  for (int i = 0, n = this->_internal_files_size(); i < n; ++i) {
+    const auto& s = this->_internal_files().Get(i);
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.ftp.ListDirectoryData.files");
+    target = stream->WriteString(2, s, target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.ftp.ListDirectoryData)
+  return target;
+}
+
+::size_t ListDirectoryData::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.ftp.ListDirectoryData)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated string dirs = 1;
+  total_size += 1 * ::google::protobuf::internal::FromIntSize(_internal_dirs().size());
+  for (int i = 0, n = _internal_dirs().size(); i < n; ++i) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+        _internal_dirs().Get(i));
+  }
+  // repeated string files = 2;
+  total_size += 1 * ::google::protobuf::internal::FromIntSize(_internal_files().size());
+  for (int i = 0, n = _internal_files().size(); i < n; ++i) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+        _internal_files().Get(i));
+  }
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData ListDirectoryData::_class_data_ = {
+    ListDirectoryData::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* ListDirectoryData::GetClassData() const {
+  return &_class_data_;
+}
+
+void ListDirectoryData::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<ListDirectoryData*>(&to_msg);
+  auto& from = static_cast<const ListDirectoryData&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.ftp.ListDirectoryData)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_internal_mutable_dirs()->MergeFrom(from._internal_dirs());
+  _this->_internal_mutable_files()->MergeFrom(from._internal_files());
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ListDirectoryData::CopyFrom(const ListDirectoryData& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.ftp.ListDirectoryData)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool ListDirectoryData::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* ListDirectoryData::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void ListDirectoryData::InternalSwap(ListDirectoryData* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.dirs_.InternalSwap(&other->_impl_.dirs_);
+  _impl_.files_.InternalSwap(&other->_impl_.files_);
+}
+
+::google::protobuf::Metadata ListDirectoryData::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
+      file_level_metadata_ftp_2fftp_2eproto[5]);
+}
+// ===================================================================
+
 class ListDirectoryResponse::_Internal {
  public:
   using HasBits = decltype(std::declval<ListDirectoryResponse>()._impl_._has_bits_);
@@ -2038,10 +2283,17 @@ class ListDirectoryResponse::_Internal {
   static void set_has_ftp_result(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
+  static const ::mavsdk::rpc::ftp::ListDirectoryData& data(const ListDirectoryResponse* msg);
+  static void set_has_data(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
 };
 
 const ::mavsdk::rpc::ftp::FtpResult& ListDirectoryResponse::_Internal::ftp_result(const ListDirectoryResponse* msg) {
   return *msg->_impl_.ftp_result_;
+}
+const ::mavsdk::rpc::ftp::ListDirectoryData& ListDirectoryResponse::_Internal::data(const ListDirectoryResponse* msg) {
+  return *msg->_impl_.data_;
 }
 ListDirectoryResponse::ListDirectoryResponse(::google::protobuf::Arena* arena)
     : ::google::protobuf::Message(arena) {
@@ -2052,8 +2304,7 @@ inline PROTOBUF_NDEBUG_INLINE ListDirectoryResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from)
       : _has_bits_{from._has_bits_},
-        _cached_size_{0},
-        paths_{visibility, arena, from.paths_} {}
+        _cached_size_{0} {}
 
 ListDirectoryResponse::ListDirectoryResponse(
     ::google::protobuf::Arena* arena,
@@ -2068,18 +2319,25 @@ ListDirectoryResponse::ListDirectoryResponse(
   _impl_.ftp_result_ = (cached_has_bits & 0x00000001u)
                 ? CreateMaybeMessage<::mavsdk::rpc::ftp::FtpResult>(arena, *from._impl_.ftp_result_)
                 : nullptr;
+  _impl_.data_ = (cached_has_bits & 0x00000002u)
+                ? CreateMaybeMessage<::mavsdk::rpc::ftp::ListDirectoryData>(arena, *from._impl_.data_)
+                : nullptr;
 
   // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.ftp.ListDirectoryResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE ListDirectoryResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : _cached_size_{0},
-        paths_{visibility, arena} {}
+      : _cached_size_{0} {}
 
 inline void ListDirectoryResponse::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.ftp_result_ = {};
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, ftp_result_),
+           0,
+           offsetof(Impl_, data_) -
+               offsetof(Impl_, ftp_result_) +
+               sizeof(Impl_::data_));
 }
 ListDirectoryResponse::~ListDirectoryResponse() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.ftp.ListDirectoryResponse)
@@ -2089,6 +2347,7 @@ ListDirectoryResponse::~ListDirectoryResponse() {
 inline void ListDirectoryResponse::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
   delete _impl_.ftp_result_;
+  delete _impl_.data_;
   _impl_.~Impl_();
 }
 
@@ -2099,11 +2358,16 @@ PROTOBUF_NOINLINE void ListDirectoryResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.paths_.Clear();
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(_impl_.ftp_result_ != nullptr);
-    _impl_.ftp_result_->Clear();
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      ABSL_DCHECK(_impl_.ftp_result_ != nullptr);
+      _impl_.ftp_result_->Clear();
+    }
+    if (cached_has_bits & 0x00000002u) {
+      ABSL_DCHECK(_impl_.data_ != nullptr);
+      _impl_.data_->Clear();
+    }
   }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -2117,7 +2381,7 @@ const char* ListDirectoryResponse::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 1, 50, 2> ListDirectoryResponse::_table_ = {
+const ::_pbi::TcParseTable<1, 2, 2, 0, 2> ListDirectoryResponse::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(ListDirectoryResponse, _impl_._has_bits_),
     0, // no _extensions_
@@ -2126,14 +2390,14 @@ const ::_pbi::TcParseTable<1, 2, 1, 50, 2> ListDirectoryResponse::_table_ = {
     4294967292,  // skipmap
     offsetof(decltype(_table_), field_entries),
     2,  // num_field_entries
-    1,  // num_aux_entries
+    2,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     &_ListDirectoryResponse_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
-    // repeated string paths = 2;
-    {::_pbi::TcParser::FastUR1,
-     {18, 63, 0, PROTOBUF_FIELD_OFFSET(ListDirectoryResponse, _impl_.paths_)}},
+    // .mavsdk.rpc.ftp.ListDirectoryData data = 2;
+    {::_pbi::TcParser::FastMtS1,
+     {18, 1, 1, PROTOBUF_FIELD_OFFSET(ListDirectoryResponse, _impl_.data_)}},
     // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
     {::_pbi::TcParser::FastMtS1,
      {10, 0, 0, PROTOBUF_FIELD_OFFSET(ListDirectoryResponse, _impl_.ftp_result_)}},
@@ -2143,15 +2407,13 @@ const ::_pbi::TcParseTable<1, 2, 1, 50, 2> ListDirectoryResponse::_table_ = {
     // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
     {PROTOBUF_FIELD_OFFSET(ListDirectoryResponse, _impl_.ftp_result_), _Internal::kHasBitsOffset + 0, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // repeated string paths = 2;
-    {PROTOBUF_FIELD_OFFSET(ListDirectoryResponse, _impl_.paths_), -1, 0,
-    (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
+    // .mavsdk.rpc.ftp.ListDirectoryData data = 2;
+    {PROTOBUF_FIELD_OFFSET(ListDirectoryResponse, _impl_.data_), _Internal::kHasBitsOffset + 1, 1,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
     {::_pbi::TcParser::GetTable<::mavsdk::rpc::ftp::FtpResult>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::ftp::ListDirectoryData>()},
   }}, {{
-    "\44\0\5\0\0\0\0\0"
-    "mavsdk.rpc.ftp.ListDirectoryResponse"
-    "paths"
   }},
 };
 
@@ -2170,12 +2432,11 @@ const ::_pbi::TcParseTable<1, 2, 1, 50, 2> ListDirectoryResponse::_table_ = {
         _Internal::ftp_result(this).GetCachedSize(), target, stream);
   }
 
-  // repeated string paths = 2;
-  for (int i = 0, n = this->_internal_paths_size(); i < n; ++i) {
-    const auto& s = this->_internal_paths().Get(i);
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-        s.data(), static_cast<int>(s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.ftp.ListDirectoryResponse.paths");
-    target = stream->WriteString(2, s, target);
+  // .mavsdk.rpc.ftp.ListDirectoryData data = 2;
+  if (cached_has_bits & 0x00000002u) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        2, _Internal::data(this),
+        _Internal::data(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2195,19 +2456,21 @@ const ::_pbi::TcParseTable<1, 2, 1, 50, 2> ListDirectoryResponse::_table_ = {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated string paths = 2;
-  total_size += 1 * ::google::protobuf::internal::FromIntSize(_internal_paths().size());
-  for (int i = 0, n = _internal_paths().size(); i < n; ++i) {
-    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
-        _internal_paths().Get(i));
-  }
-  // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
   cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    total_size +=
-        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.ftp_result_);
-  }
+  if (cached_has_bits & 0x00000003u) {
+    // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
+    if (cached_has_bits & 0x00000001u) {
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.ftp_result_);
+    }
 
+    // .mavsdk.rpc.ftp.ListDirectoryData data = 2;
+    if (cached_has_bits & 0x00000002u) {
+      total_size +=
+          1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.data_);
+    }
+
+  }
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -2227,10 +2490,16 @@ void ListDirectoryResponse::MergeImpl(::google::protobuf::Message& to_msg, const
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  _this->_internal_mutable_paths()->MergeFrom(from._internal_paths());
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_internal_mutable_ftp_result()->::mavsdk::rpc::ftp::FtpResult::MergeFrom(
-        from._internal_ftp_result());
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      _this->_internal_mutable_ftp_result()->::mavsdk::rpc::ftp::FtpResult::MergeFrom(
+          from._internal_ftp_result());
+    }
+    if (cached_has_bits & 0x00000002u) {
+      _this->_internal_mutable_data()->::mavsdk::rpc::ftp::ListDirectoryData::MergeFrom(
+          from._internal_data());
+    }
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -2253,14 +2522,18 @@ void ListDirectoryResponse::InternalSwap(ListDirectoryResponse* PROTOBUF_RESTRIC
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  _impl_.paths_.InternalSwap(&other->_impl_.paths_);
-  swap(_impl_.ftp_result_, other->_impl_.ftp_result_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(ListDirectoryResponse, _impl_.data_)
+      + sizeof(ListDirectoryResponse::_impl_.data_)
+      - PROTOBUF_FIELD_OFFSET(ListDirectoryResponse, _impl_.ftp_result_)>(
+          reinterpret_cast<char*>(&_impl_.ftp_result_),
+          reinterpret_cast<char*>(&other->_impl_.ftp_result_));
 }
 
 ::google::protobuf::Metadata ListDirectoryResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
-      file_level_metadata_ftp_2fftp_2eproto[5]);
+      file_level_metadata_ftp_2fftp_2eproto[6]);
 }
 // ===================================================================
 
@@ -2450,7 +2723,7 @@ void CreateDirectoryRequest::InternalSwap(CreateDirectoryRequest* PROTOBUF_RESTR
 ::google::protobuf::Metadata CreateDirectoryRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
-      file_level_metadata_ftp_2fftp_2eproto[6]);
+      file_level_metadata_ftp_2fftp_2eproto[7]);
 }
 // ===================================================================
 
@@ -2657,7 +2930,7 @@ void CreateDirectoryResponse::InternalSwap(CreateDirectoryResponse* PROTOBUF_RES
 ::google::protobuf::Metadata CreateDirectoryResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
-      file_level_metadata_ftp_2fftp_2eproto[7]);
+      file_level_metadata_ftp_2fftp_2eproto[8]);
 }
 // ===================================================================
 
@@ -2847,7 +3120,7 @@ void RemoveDirectoryRequest::InternalSwap(RemoveDirectoryRequest* PROTOBUF_RESTR
 ::google::protobuf::Metadata RemoveDirectoryRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
-      file_level_metadata_ftp_2fftp_2eproto[8]);
+      file_level_metadata_ftp_2fftp_2eproto[9]);
 }
 // ===================================================================
 
@@ -3054,7 +3327,7 @@ void RemoveDirectoryResponse::InternalSwap(RemoveDirectoryResponse* PROTOBUF_RES
 ::google::protobuf::Metadata RemoveDirectoryResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
-      file_level_metadata_ftp_2fftp_2eproto[9]);
+      file_level_metadata_ftp_2fftp_2eproto[10]);
 }
 // ===================================================================
 
@@ -3244,7 +3517,7 @@ void RemoveFileRequest::InternalSwap(RemoveFileRequest* PROTOBUF_RESTRICT other)
 ::google::protobuf::Metadata RemoveFileRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
-      file_level_metadata_ftp_2fftp_2eproto[10]);
+      file_level_metadata_ftp_2fftp_2eproto[11]);
 }
 // ===================================================================
 
@@ -3451,7 +3724,7 @@ void RemoveFileResponse::InternalSwap(RemoveFileResponse* PROTOBUF_RESTRICT othe
 ::google::protobuf::Metadata RemoveFileResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
-      file_level_metadata_ftp_2fftp_2eproto[11]);
+      file_level_metadata_ftp_2fftp_2eproto[12]);
 }
 // ===================================================================
 
@@ -3670,7 +3943,7 @@ void RenameRequest::InternalSwap(RenameRequest* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata RenameRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
-      file_level_metadata_ftp_2fftp_2eproto[12]);
+      file_level_metadata_ftp_2fftp_2eproto[13]);
 }
 // ===================================================================
 
@@ -3877,7 +4150,7 @@ void RenameResponse::InternalSwap(RenameResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata RenameResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
-      file_level_metadata_ftp_2fftp_2eproto[13]);
+      file_level_metadata_ftp_2fftp_2eproto[14]);
 }
 // ===================================================================
 
@@ -4096,7 +4369,7 @@ void AreFilesIdenticalRequest::InternalSwap(AreFilesIdenticalRequest* PROTOBUF_R
 ::google::protobuf::Metadata AreFilesIdenticalRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
-      file_level_metadata_ftp_2fftp_2eproto[14]);
+      file_level_metadata_ftp_2fftp_2eproto[15]);
 }
 // ===================================================================
 
@@ -4336,7 +4609,7 @@ void AreFilesIdenticalResponse::InternalSwap(AreFilesIdenticalResponse* PROTOBUF
 ::google::protobuf::Metadata AreFilesIdenticalResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
-      file_level_metadata_ftp_2fftp_2eproto[15]);
+      file_level_metadata_ftp_2fftp_2eproto[16]);
 }
 // ===================================================================
 
@@ -4506,7 +4779,7 @@ void SetTargetCompidRequest::InternalSwap(SetTargetCompidRequest* PROTOBUF_RESTR
 ::google::protobuf::Metadata SetTargetCompidRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
-      file_level_metadata_ftp_2fftp_2eproto[16]);
+      file_level_metadata_ftp_2fftp_2eproto[17]);
 }
 // ===================================================================
 
@@ -4713,7 +4986,7 @@ void SetTargetCompidResponse::InternalSwap(SetTargetCompidResponse* PROTOBUF_RES
 ::google::protobuf::Metadata SetTargetCompidResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
-      file_level_metadata_ftp_2fftp_2eproto[17]);
+      file_level_metadata_ftp_2fftp_2eproto[18]);
 }
 // ===================================================================
 
@@ -4917,7 +5190,7 @@ void ProgressData::InternalSwap(ProgressData* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata ProgressData::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
-      file_level_metadata_ftp_2fftp_2eproto[18]);
+      file_level_metadata_ftp_2fftp_2eproto[19]);
 }
 // ===================================================================
 
@@ -5133,7 +5406,7 @@ void FtpResult::InternalSwap(FtpResult* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata FtpResult::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_ftp_2fftp_2eproto_getter, &descriptor_table_ftp_2fftp_2eproto_once,
-      file_level_metadata_ftp_2fftp_2eproto[19]);
+      file_level_metadata_ftp_2fftp_2eproto[20]);
 }
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace ftp

@@ -360,9 +360,10 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
                     stop_timer();
                     if (payload->data[0] == ERR_EOF) {
                         std::sort(item.dirs.begin(), item.dirs.end());
-                        item.callback(ClientResult::Success, item.dirs);
+                        std::sort(item.files.begin(), item.files.end());
+                        item.callback(ClientResult::Success, item.dirs, item.files);
                     } else {
-                        item.callback(result_from_nak(payload), {});
+                        item.callback(result_from_nak(payload), {}, {});
                     }
                     terminate_session(*work);
                     work_queue_guard.pop_front();
@@ -956,7 +957,7 @@ bool MavlinkFtpClient::compare_files_start(Work& work, CompareFilesItem& item)
 bool MavlinkFtpClient::list_dir_start(Work& work, ListDirItem& item)
 {
     if (item.path.length() + 1 >= max_data_length) {
-        item.callback(ClientResult::InvalidParameter, {});
+        item.callback(ClientResult::InvalidParameter, {}, {});
         return false;
     }
 
@@ -988,7 +989,8 @@ bool MavlinkFtpClient::list_dir_continue(Work& work, ListDirItem& item, PayloadH
 
     if (payload->size == 0) {
         std::sort(item.dirs.begin(), item.dirs.end());
-        item.callback(ClientResult::Success, item.dirs);
+        std::sort(item.files.begin(), item.files.end());
+        item.callback(ClientResult::Success, item.dirs, item.files);
         return false;
     }
 
@@ -1012,7 +1014,18 @@ bool MavlinkFtpClient::list_dir_continue(Work& work, ListDirItem& item, PayloadH
             continue;
         }
 
-        item.dirs.push_back(entry);
+        auto tab = entry.find('\t');
+        if (tab != std::string::npos) {
+            entry = entry.substr(0, tab);
+        }
+
+        if (entry[0] == 'D') {
+            item.dirs.push_back(entry.substr(1, entry.size() - 1));
+        } else if (entry[0] == 'F') {
+            item.files.push_back(entry.substr(1, entry.size() - 1));
+        } else {
+            LogErr() << "Unknown list_dir entry: " << entry;
+        }
     }
 
     work.last_opcode = CMD_LIST_DIRECTORY;
@@ -1350,7 +1363,7 @@ void MavlinkFtpClient::timeout()
             },
             [&](ListDirItem& item) {
                 if (--work->retries == 0) {
-                    item.callback(ClientResult::Timeout, {});
+                    item.callback(ClientResult::Timeout, {}, {});
                     work_queue_guard.pop_front();
                     return;
                 }

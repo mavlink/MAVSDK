@@ -59,6 +59,29 @@ public:
     ~Ftp() override;
 
     /**
+     * @brief
+     */
+    struct ListDirectoryData {
+        std::vector<std::string> dirs{}; /**< @brief The found directories. */
+        std::vector<std::string> files{}; /**< @brief The found files. */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Ftp::ListDirectoryData` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Ftp::ListDirectoryData& lhs, const Ftp::ListDirectoryData& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Ftp::ListDirectoryData`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Ftp::ListDirectoryData const& list_directory_data);
+
+    /**
      * @brief Progress data type for file transfer.
      */
     struct ProgressData {
@@ -139,7 +162,7 @@ public:
     /**
      * @brief Callback type for list_directory_async.
      */
-    using ListDirectoryCallback = std::function<void(Result, std::vector<std::string>)>;
+    using ListDirectoryCallback = std::function<void(Result, ListDirectoryData)>;
 
     /**
      * @brief Lists items from a remote directory.
@@ -155,7 +178,7 @@ public:
      *
      * @return Result of request.
      */
-    std::pair<Result, std::vector<std::string>> list_directory(std::string remote_dir) const;
+    std::pair<Result, Ftp::ListDirectoryData> list_directory(std::string remote_dir) const;
 
     /**
      * @brief Creates a remote directory.
