@@ -234,7 +234,7 @@ jobs:
         run: dpkg-buildpackage -us -uc -b
 
   dockcross-linux-arm:
-    name: linux-${{ matrix.arch_name }}
+    name: linux-${{ matrix.docker-name }}
     runs-on: ubuntu-20.04
     strategy:
       matrix:
@@ -272,7 +272,7 @@ jobs:
         name: Rename LTS versions from debian12 to debian11
         run: |
           sudo apt update && sudo apt install -y rename
-          rename 's/debian12_arm64-lts/debian11_arm64/' *.deb
+          rename 's/debian12_arm64/debian11_arm64/' *.deb
       - name: Publish artefacts
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
