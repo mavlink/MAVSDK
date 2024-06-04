@@ -1,5 +1,5 @@
 #include "rtk_impl.h"
-#include "unused.h"
+#include "base64.h"
 
 namespace mavsdk {
 
@@ -30,8 +30,10 @@ Rtk::Result RtkImpl::send_rtcm_data(Rtk::RtcmData rtcm_data)
 {
     constexpr size_t field_len = MAVLINK_MSG_GPS_RTCM_DATA_FIELD_DATA_LEN;
 
+    std::vector<uint8_t> decoded = base64_decode(rtcm_data.data_base64);
+
     const size_t num_packets_required =
-        rtcm_data.data.size() / field_len + (rtcm_data.data.size() % field_len == 0 ? 0 : 1);
+        decoded.size() / field_len + (decoded.size() % field_len == 0 ? 0 : 1);
 
     // The maximum is 4 times the 180 bytes because we only have two bits to
     // denote the fragment ID.
@@ -40,11 +42,11 @@ Rtk::Result RtkImpl::send_rtcm_data(Rtk::RtcmData rtcm_data)
     }
 
     // Copy length before we change it.
-    size_t bytes_to_send = rtcm_data.data.size();
+    size_t bytes_to_send = decoded.size();
 
     // The mavlink helpers memcpy, so we need to make sure we're not
     // copying from where we shouldn't.
-    rtcm_data.data.resize(num_packets_required * field_len);
+    decoded.resize(num_packets_required * field_len);
 
     for (size_t i = 0; i < num_packets_required; ++i) {
         const uint8_t flags =
@@ -59,7 +61,7 @@ Rtk::Result RtkImpl::send_rtcm_data(Rtk::RtcmData rtcm_data)
                     &message,
                     flags,
                     static_cast<uint8_t>(std::min(field_len, bytes_to_send)),
-                    reinterpret_cast<const uint8_t*>(rtcm_data.data.c_str() + (i * field_len)));
+                    (decoded.data() + (i * field_len)));
                 return message;
             })) {
             ++_sequence;

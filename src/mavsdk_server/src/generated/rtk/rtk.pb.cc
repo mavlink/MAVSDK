@@ -48,7 +48,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr RtcmData::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : data_(
+      : data_base64_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         _cached_size_{0} {}
@@ -121,7 +121,7 @@ const ::uint32_t TableStruct_rtk_2frtk_2eproto::offsets[] PROTOBUF_SECTION_VARIA
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::rtk::RtcmData, _impl_.data_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::rtk::RtcmData, _impl_.data_base64_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::rtk::SendRtcmDataRequest, _impl_._has_bits_),
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::rtk::SendRtcmDataRequest, _internal_metadata_),
     ~0u,  // no _extensions_
@@ -170,20 +170,20 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 const char descriptor_table_protodef_rtk_2frtk_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
     "\n\rrtk/rtk.proto\022\016mavsdk.rpc.rtk\032\024mavsdk_"
-    "options.proto\"\030\n\010RtcmData\022\014\n\004data\030\001 \001(\t\""
-    "B\n\023SendRtcmDataRequest\022+\n\trtcm_data\030\001 \001("
-    "\0132\030.mavsdk.rpc.rtk.RtcmData\"E\n\024SendRtcmD"
-    "ataResponse\022-\n\nrtk_result\030\001 \001(\0132\031.mavsdk"
-    ".rpc.rtk.RtkResult\"\313\001\n\tRtkResult\0220\n\006resu"
-    "lt\030\001 \001(\0162 .mavsdk.rpc.rtk.RtkResult.Resu"
-    "lt\022\022\n\nresult_str\030\002 \001(\t\"x\n\006Result\022\022\n\016RESU"
-    "LT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\023\n\017RESU"
-    "LT_TOO_LONG\020\002\022\024\n\020RESULT_NO_SYSTEM\020\005\022\033\n\027R"
-    "ESULT_CONNECTION_ERROR\020\0062m\n\nRtkService\022_"
-    "\n\014SendRtcmData\022#.mavsdk.rpc.rtk.SendRtcm"
-    "DataRequest\032$.mavsdk.rpc.rtk.SendRtcmDat"
-    "aResponse\"\004\200\265\030\001B\031\n\rio.mavsdk.rtkB\010RtkPro"
-    "tob\006proto3"
+    "options.proto\"\037\n\010RtcmData\022\023\n\013data_base64"
+    "\030\001 \001(\t\"B\n\023SendRtcmDataRequest\022+\n\trtcm_da"
+    "ta\030\001 \001(\0132\030.mavsdk.rpc.rtk.RtcmData\"E\n\024Se"
+    "ndRtcmDataResponse\022-\n\nrtk_result\030\001 \001(\0132\031"
+    ".mavsdk.rpc.rtk.RtkResult\"\313\001\n\tRtkResult\022"
+    "0\n\006result\030\001 \001(\0162 .mavsdk.rpc.rtk.RtkResu"
+    "lt.Result\022\022\n\nresult_str\030\002 \001(\t\"x\n\006Result\022"
+    "\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022"
+    "\023\n\017RESULT_TOO_LONG\020\002\022\024\n\020RESULT_NO_SYSTEM"
+    "\020\005\022\033\n\027RESULT_CONNECTION_ERROR\020\0062m\n\nRtkSe"
+    "rvice\022_\n\014SendRtcmData\022#.mavsdk.rpc.rtk.S"
+    "endRtcmDataRequest\032$.mavsdk.rpc.rtk.Send"
+    "RtcmDataResponse\"\004\200\265\030\001B\031\n\rio.mavsdk.rtkB"
+    "\010RtkProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_rtk_2frtk_2eproto_deps[1] =
     {
@@ -193,7 +193,7 @@ static ::absl::once_flag descriptor_table_rtk_2frtk_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_rtk_2frtk_2eproto = {
     false,
     false,
-    570,
+    577,
     descriptor_table_protodef_rtk_2frtk_2eproto,
     "rtk/rtk.proto",
     &descriptor_table_rtk_2frtk_2eproto_once,
@@ -265,7 +265,7 @@ RtcmData::RtcmData(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE RtcmData::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from)
-      : data_(arena, from.data_),
+      : data_base64_(arena, from.data_base64_),
         _cached_size_{0} {}
 
 RtcmData::RtcmData(
@@ -283,7 +283,7 @@ RtcmData::RtcmData(
 inline PROTOBUF_NDEBUG_INLINE RtcmData::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : data_(arena),
+      : data_base64_(arena),
         _cached_size_{0} {}
 
 inline void RtcmData::SharedCtor(::_pb::Arena* arena) {
@@ -296,7 +296,7 @@ RtcmData::~RtcmData() {
 }
 inline void RtcmData::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
-  _impl_.data_.Destroy();
+  _impl_.data_base64_.Destroy();
   _impl_.~Impl_();
 }
 
@@ -307,7 +307,7 @@ PROTOBUF_NOINLINE void RtcmData::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.data_.ClearToEmpty();
+  _impl_.data_base64_.ClearToEmpty();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -319,7 +319,7 @@ const char* RtcmData::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 36, 2> RtcmData::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 0, 43, 2> RtcmData::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -333,21 +333,21 @@ const ::_pbi::TcParseTable<0, 1, 0, 36, 2> RtcmData::_table_ = {
     &_RtcmData_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
-    // string data = 1;
+    // string data_base64 = 1;
     {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(RtcmData, _impl_.data_)}},
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(RtcmData, _impl_.data_base64_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string data = 1;
-    {PROTOBUF_FIELD_OFFSET(RtcmData, _impl_.data_), 0, 0,
+    // string data_base64 = 1;
+    {PROTOBUF_FIELD_OFFSET(RtcmData, _impl_.data_base64_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\27\4\0\0\0\0\0\0"
+    "\27\13\0\0\0\0\0\0"
     "mavsdk.rpc.rtk.RtcmData"
-    "data"
+    "data_base64"
   }},
 };
 
@@ -358,11 +358,11 @@ const ::_pbi::TcParseTable<0, 1, 0, 36, 2> RtcmData::_table_ = {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // string data = 1;
-  if (!this->_internal_data().empty()) {
-    const std::string& _s = this->_internal_data();
+  // string data_base64 = 1;
+  if (!this->_internal_data_base64().empty()) {
+    const std::string& _s = this->_internal_data_base64();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.rtk.RtcmData.data");
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.rtk.RtcmData.data_base64");
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
@@ -383,10 +383,10 @@ const ::_pbi::TcParseTable<0, 1, 0, 36, 2> RtcmData::_table_ = {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string data = 1;
-  if (!this->_internal_data().empty()) {
+  // string data_base64 = 1;
+  if (!this->_internal_data_base64().empty()) {
     total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                    this->_internal_data());
+                                    this->_internal_data_base64());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -408,8 +408,8 @@ void RtcmData::MergeImpl(::google::protobuf::Message& to_msg, const ::google::pr
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_data().empty()) {
-    _this->_internal_set_data(from._internal_data());
+  if (!from._internal_data_base64().empty()) {
+    _this->_internal_set_data_base64(from._internal_data_base64());
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -433,7 +433,7 @@ void RtcmData::InternalSwap(RtcmData* PROTOBUF_RESTRICT other) {
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.data_, &other->_impl_.data_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.data_base64_, &other->_impl_.data_base64_, arena);
 }
 
 ::google::protobuf::Metadata RtcmData::GetMetadata() const {
