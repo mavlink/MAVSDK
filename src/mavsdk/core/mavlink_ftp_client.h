@@ -299,13 +299,6 @@ private:
 
     void terminate_session(Work& work);
 
-    template<typename CallbackT> void call_callback(const CallbackT& callback, ClientResult result);
-    template<typename CallbackT>
-    void call_callback(
-        const CallbackT& callback,
-        ClientResult result,
-        const typename CallbackT::second_argument_type& extra_arg);
-
     static ClientResult result_from_nak(PayloadHeader* payload);
 
     void timeout();
