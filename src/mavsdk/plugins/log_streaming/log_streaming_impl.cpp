@@ -424,7 +424,7 @@ void LogStreamingImpl::process_message()
 
     // Convert to base64
     LogStreaming::LogStreamingRaw part;
-    part.data = base64_encode(_ulog_data);
+    part.data_base64 = base64_encode(_ulog_data);
 
     // Let's pass it to the user.
     if (!_subscription_callbacks.empty()) {

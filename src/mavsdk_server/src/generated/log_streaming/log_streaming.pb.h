@@ -900,22 +900,22 @@ class LogStreamingRaw final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kDataFieldNumber = 1,
+    kDataBase64FieldNumber = 1,
   };
-  // string data = 1;
-  void clear_data() ;
-  const std::string& data() const;
+  // string data_base64 = 1;
+  void clear_data_base64() ;
+  const std::string& data_base64() const;
   template <typename Arg_ = const std::string&, typename... Args_>
-  void set_data(Arg_&& arg, Args_... args);
-  std::string* mutable_data();
-  PROTOBUF_NODISCARD std::string* release_data();
-  void set_allocated_data(std::string* value);
+  void set_data_base64(Arg_&& arg, Args_... args);
+  std::string* mutable_data_base64();
+  PROTOBUF_NODISCARD std::string* release_data_base64();
+  void set_allocated_data_base64(std::string* value);
 
   private:
-  const std::string& _internal_data() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_data(
+  const std::string& _internal_data_base64() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_data_base64(
       const std::string& value);
-  std::string* _internal_mutable_data();
+  std::string* _internal_mutable_data_base64();
 
   public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_streaming.LogStreamingRaw)
@@ -925,7 +925,7 @@ class LogStreamingRaw final :
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       0, 1, 0,
-      53, 2>
+      60, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
@@ -941,7 +941,7 @@ class LogStreamingRaw final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
-    ::google::protobuf::internal::ArenaStringPtr data_;
+    ::google::protobuf::internal::ArenaStringPtr data_base64_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -1820,57 +1820,57 @@ inline void LogStreamingRawResponse::set_allocated_logging_raw(::mavsdk::rpc::lo
 
 // LogStreamingRaw
 
-// string data = 1;
-inline void LogStreamingRaw::clear_data() {
+// string data_base64 = 1;
+inline void LogStreamingRaw::clear_data_base64() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.data_.ClearToEmpty();
+  _impl_.data_base64_.ClearToEmpty();
 }
-inline const std::string& LogStreamingRaw::data() const
+inline const std::string& LogStreamingRaw::data_base64() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.log_streaming.LogStreamingRaw.data)
-  return _internal_data();
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.log_streaming.LogStreamingRaw.data_base64)
+  return _internal_data_base64();
 }
 template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void LogStreamingRaw::set_data(Arg_&& arg,
+inline PROTOBUF_ALWAYS_INLINE void LogStreamingRaw::set_data_base64(Arg_&& arg,
                                                      Args_... args) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
-  _impl_.data_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.log_streaming.LogStreamingRaw.data)
+  _impl_.data_base64_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.log_streaming.LogStreamingRaw.data_base64)
 }
-inline std::string* LogStreamingRaw::mutable_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_data();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.log_streaming.LogStreamingRaw.data)
+inline std::string* LogStreamingRaw::mutable_data_base64() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_data_base64();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.log_streaming.LogStreamingRaw.data_base64)
   return _s;
 }
-inline const std::string& LogStreamingRaw::_internal_data() const {
+inline const std::string& LogStreamingRaw::_internal_data_base64() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.data_.Get();
+  return _impl_.data_base64_.Get();
 }
-inline void LogStreamingRaw::_internal_set_data(const std::string& value) {
+inline void LogStreamingRaw::_internal_set_data_base64(const std::string& value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
-  _impl_.data_.Set(value, GetArena());
+  _impl_.data_base64_.Set(value, GetArena());
 }
-inline std::string* LogStreamingRaw::_internal_mutable_data() {
+inline std::string* LogStreamingRaw::_internal_mutable_data_base64() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
-  return _impl_.data_.Mutable( GetArena());
+  return _impl_.data_base64_.Mutable( GetArena());
 }
-inline std::string* LogStreamingRaw::release_data() {
+inline std::string* LogStreamingRaw::release_data_base64() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.log_streaming.LogStreamingRaw.data)
-  return _impl_.data_.Release();
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.log_streaming.LogStreamingRaw.data_base64)
+  return _impl_.data_base64_.Release();
 }
-inline void LogStreamingRaw::set_allocated_data(std::string* value) {
+inline void LogStreamingRaw::set_allocated_data_base64(std::string* value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.data_.SetAllocated(value, GetArena());
+  _impl_.data_base64_.SetAllocated(value, GetArena());
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        if (_impl_.data_.IsDefault()) {
-          _impl_.data_.Set("", GetArena());
+        if (_impl_.data_base64_.IsDefault()) {
+          _impl_.data_base64_.Set("", GetArena());
         }
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.log_streaming.LogStreamingRaw.data)
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.log_streaming.LogStreamingRaw.data_base64)
 }
 
 // -------------------------------------------------------------------
