@@ -54,6 +54,10 @@ int GrpcServer::run()
     builder.RegisterService(&_component_metadata_server_service);
 #endif
 
+#ifdef EVENTS_ENABLED
+    builder.RegisterService(&_events_service);
+#endif
+
 #ifdef FAILURE_ENABLED
     builder.RegisterService(&_failure_service);
 #endif
@@ -219,6 +223,10 @@ void GrpcServer::stop()
 
 #ifdef COMPONENT_METADATA_SERVER_ENABLED
         _component_metadata_server_service.stop();
+#endif
+
+#ifdef EVENTS_ENABLED
+        _events_service.stop();
 #endif
 
 #ifdef FAILURE_ENABLED

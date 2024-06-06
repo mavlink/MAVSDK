@@ -11,10 +11,13 @@ find_package(jsoncpp REQUIRED)
 hunter_add_package(tinyxml2)
 find_package(tinyxml2 REQUIRED)
 
+find_package(libevents REQUIRED)
+
 target_link_libraries(mavsdk
     PRIVATE
     JsonCpp::JsonCpp
     tinyxml2::tinyxml2
+    LibEvents::LibEvents
 )
 
 if (NOT APPLE AND NOT ANDROID AND NOT MSVC)
