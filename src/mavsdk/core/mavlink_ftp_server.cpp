@@ -770,22 +770,31 @@ void MavlinkFtpServer::_work_burst(const PayloadHeader& payload)
 
     _session_info.burst_offset = payload.offset;
     _session_info.burst_chunk_size = payload.size;
-
     _burst_seq = payload.seq_number + 1;
 
+    if (_session_info.burst_thread.joinable()) {
+        _session_info.burst_stop = true;
+        _session_info.burst_thread.join();
+    }
+
+    _session_info.burst_stop = false;
+
     // Schedule sending out burst messages.
-    // Use some arbitrary "fast" rate: 100 packets per second
-    _server_component_impl.add_call_every(
-        [this]() { _send_burst_packet(); }, 0.01f, &_burst_call_every_cookie);
+    _session_info.burst_thread = std::thread([this]() {
+        while (!_session_info.burst_stop)
+            if (_send_burst_packet())
+                break;
+    });
 
     // Don't send response as that's done in the call every burst call above.
 }
 
-void MavlinkFtpServer::_send_burst_packet()
+// Returns true if sending is complete
+bool MavlinkFtpServer::_send_burst_packet()
 {
     std::lock_guard<std::mutex> lock(_mutex);
     if (!_session_info.ifstream.is_open()) {
-        _reset();
+        return false;
     }
 
     PayloadHeader burst_packet{};
@@ -797,11 +806,10 @@ void MavlinkFtpServer::_send_burst_packet()
     _send_mavlink_ftp_message(burst_packet);
 
     if (burst_packet.burst_complete == 1) {
-        if (_burst_call_every_cookie != nullptr) {
-            _server_component_impl.remove_call_every(_burst_call_every_cookie);
-            _burst_call_every_cookie = nullptr;
-        }
+        return true;
     }
+
+    return false;
 }
 
 void MavlinkFtpServer::_make_burst_packet(PayloadHeader& packet)
@@ -902,9 +910,9 @@ void MavlinkFtpServer::_reset()
         _session_info.ofstream.close();
     }
 
-    if (_burst_call_every_cookie != nullptr) {
-        _server_component_impl.remove_call_every(_burst_call_every_cookie);
-        _burst_call_every_cookie = nullptr;
+    _session_info.burst_stop = true;
+    if (_session_info.burst_thread.joinable()) {
+        _session_info.burst_thread.join();
     }
 }
 

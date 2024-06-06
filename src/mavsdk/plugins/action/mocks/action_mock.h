@@ -11,6 +11,7 @@ namespace testing {
 class MockAction {
 public:
     MOCK_CONST_METHOD0(arm, Action::Result()){};
+    MOCK_CONST_METHOD0(arm_force, Action::Result()){};
     MOCK_CONST_METHOD0(disarm, Action::Result()){};
     MOCK_CONST_METHOD0(takeoff, Action::Result()){};
     MOCK_CONST_METHOD0(land, Action::Result()){};

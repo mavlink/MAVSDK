@@ -283,9 +283,6 @@ public:
         const std::string& filename, int linenumber, const std::function<void()>& func);
 
     void send_autopilot_version_request();
-    void send_autopilot_version_request_async(
-        const MavlinkCommandSender::CommandResultCallback& callback);
-    void send_flight_information_request();
 
     MavlinkMissionTransferClient& mission_transfer_client() { return _mission_transfer_client; };
 
@@ -310,8 +307,7 @@ private:
     void set_connected();
     void set_disconnected();
 
-    std::optional<mavlink_message_t>
-    process_autopilot_version_request(const MavlinkCommandReceiver::CommandLong& command);
+    void receive_autopilot_version_request_ack(MavlinkCommandSender::Result result);
 
     static std::string component_name(uint8_t component_id);
     static System::ComponentType component_type(uint8_t component_id);

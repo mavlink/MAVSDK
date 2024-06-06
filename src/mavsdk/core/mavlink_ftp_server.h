@@ -9,6 +9,7 @@
 #include <utility>
 #include <variant>
 #include <vector>
+#include <thread>
 
 #include "mavlink_include.h"
 
@@ -133,9 +134,8 @@ private:
     void _work_rename(const PayloadHeader& payload);
     void _work_calc_file_CRC32(const PayloadHeader& payload);
 
-    void _send_burst_packet();
+    bool _send_burst_packet();
     void _make_burst_packet(PayloadHeader& packet);
-    void* _burst_call_every_cookie{nullptr};
 
     std::mutex _mutex{};
     struct SessionInfo {
@@ -144,6 +144,8 @@ private:
         uint8_t burst_chunk_size{0};
         std::ifstream ifstream;
         std::ofstream ofstream;
+        bool burst_stop{false};
+        std::thread burst_thread;
     } _session_info{};
 
     uint8_t _network_id = 0;

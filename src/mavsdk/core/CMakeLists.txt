@@ -14,6 +14,7 @@ configure_file(include/mavsdk/mavlink_include.h.in include/mavsdk/mavlink_includ
 
 target_sources(mavsdk
     PRIVATE
+    base64.cpp
     call_every_handler.cpp
     connection.cpp
     connection_result.cpp
@@ -21,6 +22,8 @@ target_sources(mavsdk
     system.cpp
     system_impl.cpp
     flight_mode.cpp
+    fs_utils.cpp
+    inflate_lzma.cpp
     math_conversions.cpp
     mavsdk.cpp
     mavsdk_impl.cpp
@@ -62,6 +65,7 @@ cmake_policy(SET CMP0079 NEW)
 target_link_libraries(mavsdk
     PRIVATE
     Threads::Threads
+    LibLZMA::LibLZMA
 )
 
 if (NOT BUILD_WITHOUT_CURL)
@@ -150,6 +154,7 @@ install(TARGETS mavsdk
 
 install(FILES
     include/mavsdk/autopilot.h
+    include/mavsdk/base64.h
     include/mavsdk/connection_result.h
     include/mavsdk/deprecated.h
     include/mavsdk/handle.h

@@ -67,7 +67,10 @@ public:
     const GimbalImpl& operator=(const GimbalImpl&) = delete;
 
 private:
-    std::unique_ptr<GimbalProtocolBase> _gimbal_protocol{nullptr};
+    void request_gimbal_information();
+
+    void receive_attitude_update(Gimbal::Attitude attitude);
+    void receive_control_status_update(Gimbal::ControlStatus control_status);
 
     void* _protocol_cookie{nullptr};
 
@@ -77,6 +80,7 @@ private:
     void process_gimbal_manager_information(const mavlink_message_t& message);
 
     std::mutex _mutex{};
+    std::unique_ptr<GimbalProtocolBase> _gimbal_protocol{nullptr};
     CallbackList<Gimbal::ControlStatus> _control_subscriptions{};
     CallbackList<Gimbal::Attitude> _attitude_subscriptions{};
 };

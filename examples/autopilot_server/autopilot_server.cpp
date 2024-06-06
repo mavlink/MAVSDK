@@ -141,6 +141,9 @@ int main(int argc, char** argv)
             telemServer.publish_position(position, velocity, heading);
             telemServer.publish_position_velocity_ned(positionVelocityNed);
             telemServer.publish_raw_gps(rawGps, gpsInfo);
+
+            // Just a silly test.
+            telemServer.publish_unix_epoch_time(42);
         }
     });
 
@@ -245,6 +248,11 @@ int main(int argc, char** argv)
     // Set up callback to monitor altitude while the vehicle is in flight
     telemetry.subscribe_position([](mavsdk::Telemetry::Position position) {
         std::cout << "Altitude: " << position.relative_altitude_m << " m" << std::endl;
+    });
+
+    // Set up callback to monitor Unix time
+    telemetry.subscribe_unix_epoch_time([](uint64_t time_us) {
+        std::cout << "Unix epoch time: " << time_us << " us" << std::endl;
     });
 
     // Check if vehicle is ready to arm

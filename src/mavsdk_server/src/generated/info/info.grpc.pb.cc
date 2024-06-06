@@ -29,6 +29,7 @@ static const char* InfoService_method_names[] = {
   "/mavsdk.rpc.info.InfoService/GetProduct",
   "/mavsdk.rpc.info.InfoService/GetVersion",
   "/mavsdk.rpc.info.InfoService/GetSpeedFactor",
+  "/mavsdk.rpc.info.InfoService/SubscribeFlightInformation",
 };
 
 std::unique_ptr< InfoService::Stub> InfoService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -43,6 +44,7 @@ InfoService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channe
   , rpcmethod_GetProduct_(InfoService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_GetVersion_(InfoService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_GetSpeedFactor_(InfoService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SubscribeFlightInformation_(InfoService_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   {}
 
 ::grpc::Status InfoService::Stub::GetFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::GetFlightInformationRequest& request, ::mavsdk::rpc::info::GetFlightInformationResponse* response) {
@@ -160,6 +162,22 @@ void InfoService::Stub::async::GetSpeedFactor(::grpc::ClientContext* context, co
   return result;
 }
 
+::grpc::ClientReader< ::mavsdk::rpc::info::FlightInformationResponse>* InfoService::Stub::SubscribeFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::mavsdk::rpc::info::FlightInformationResponse>::Create(channel_.get(), rpcmethod_SubscribeFlightInformation_, context, request);
+}
+
+void InfoService::Stub::async::SubscribeFlightInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::info::FlightInformationResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::mavsdk::rpc::info::FlightInformationResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_SubscribeFlightInformation_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::info::FlightInformationResponse>* InfoService::Stub::AsyncSubscribeFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::info::FlightInformationResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFlightInformation_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::mavsdk::rpc::info::FlightInformationResponse>* InfoService::Stub::PrepareAsyncSubscribeFlightInformationRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::mavsdk::rpc::info::FlightInformationResponse>::Create(channel_.get(), cq, rpcmethod_SubscribeFlightInformation_, context, request, false, nullptr);
+}
+
 InfoService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       InfoService_method_names[0],
@@ -211,6 +229,16 @@ InfoService::Service::Service() {
              ::mavsdk::rpc::info::GetSpeedFactorResponse* resp) {
                return service->GetSpeedFactor(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      InfoService_method_names[5],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< InfoService::Service, ::mavsdk::rpc::info::SubscribeFlightInformationRequest, ::mavsdk::rpc::info::FlightInformationResponse>(
+          [](InfoService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::info::SubscribeFlightInformationRequest* req,
+             ::grpc::ServerWriter<::mavsdk::rpc::info::FlightInformationResponse>* writer) {
+               return service->SubscribeFlightInformation(ctx, req, writer);
+             }, this)));
 }
 
 InfoService::Service::~Service() {
@@ -248,6 +276,13 @@ InfoService::Service::~Service() {
   (void) context;
   (void) request;
   (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status InfoService::Service::SubscribeFlightInformation(::grpc::ServerContext* context, const ::mavsdk::rpc::info::SubscribeFlightInformationRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::info::FlightInformationResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 

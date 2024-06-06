@@ -64,6 +64,9 @@ namespace info {
 class FlightInfo;
 struct FlightInfoDefaultTypeInternal;
 extern FlightInfoDefaultTypeInternal _FlightInfo_default_instance_;
+class FlightInformationResponse;
+struct FlightInformationResponseDefaultTypeInternal;
+extern FlightInformationResponseDefaultTypeInternal _FlightInformationResponse_default_instance_;
 class GetFlightInformationRequest;
 struct GetFlightInformationRequestDefaultTypeInternal;
 extern GetFlightInformationRequestDefaultTypeInternal _GetFlightInformationRequest_default_instance_;
@@ -103,6 +106,9 @@ extern InfoResultDefaultTypeInternal _InfoResult_default_instance_;
 class Product;
 struct ProductDefaultTypeInternal;
 extern ProductDefaultTypeInternal _Product_default_instance_;
+class SubscribeFlightInformationRequest;
+struct SubscribeFlightInformationRequestDefaultTypeInternal;
+extern SubscribeFlightInformationRequestDefaultTypeInternal _SubscribeFlightInformationRequest_default_instance_;
 class Version;
 struct VersionDefaultTypeInternal;
 extern VersionDefaultTypeInternal _Version_default_instance_;
@@ -254,7 +260,7 @@ class Version final :
                &_Version_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    15;
 
   friend void swap(Version& a, Version& b) {
     a.Swap(&b);
@@ -538,6 +544,142 @@ class Version final :
   friend struct ::TableStruct_info_2finfo_2eproto;
 };// -------------------------------------------------------------------
 
+class SubscribeFlightInformationRequest final :
+    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.info.SubscribeFlightInformationRequest) */ {
+ public:
+  inline SubscribeFlightInformationRequest() : SubscribeFlightInformationRequest(nullptr) {}
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeFlightInformationRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline SubscribeFlightInformationRequest(const SubscribeFlightInformationRequest& from)
+      : SubscribeFlightInformationRequest(nullptr, from) {}
+  SubscribeFlightInformationRequest(SubscribeFlightInformationRequest&& from) noexcept
+    : SubscribeFlightInformationRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SubscribeFlightInformationRequest& operator=(const SubscribeFlightInformationRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeFlightInformationRequest& operator=(SubscribeFlightInformationRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeFlightInformationRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeFlightInformationRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeFlightInformationRequest*>(
+               &_SubscribeFlightInformationRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    10;
+
+  friend void swap(SubscribeFlightInformationRequest& a, SubscribeFlightInformationRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SubscribeFlightInformationRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeFlightInformationRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubscribeFlightInformationRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<SubscribeFlightInformationRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeFlightInformationRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeFlightInformationRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+  public:
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.info.SubscribeFlightInformationRequest";
+  }
+  protected:
+  explicit SubscribeFlightInformationRequest(::google::protobuf::Arena* arena);
+  SubscribeFlightInformationRequest(::google::protobuf::Arena* arena, const SubscribeFlightInformationRequest& from);
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.info.SubscribeFlightInformationRequest)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_info_2finfo_2eproto;
+};// -------------------------------------------------------------------
+
 class Product final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.info.Product) */ {
  public:
@@ -597,7 +739,7 @@ class Product final :
                &_Product_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    14;
 
   friend void swap(Product& a, Product& b) {
     a.Swap(&b);
@@ -820,7 +962,7 @@ class InfoResult final :
                &_InfoResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    16;
 
   friend void swap(InfoResult& a, InfoResult& b) {
     a.Swap(&b);
@@ -1035,7 +1177,7 @@ class Identification final :
                &_Identification_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    13;
 
   friend void swap(Identification& a, Identification& b) {
     a.Swap(&b);
@@ -1908,7 +2050,7 @@ class FlightInfo final :
                &_FlightInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    12;
 
   friend void swap(FlightInfo& a, FlightInfo& b) {
     a.Swap(&b);
@@ -1983,6 +2125,8 @@ class FlightInfo final :
   enum : int {
     kFlightUidFieldNumber = 2,
     kTimeBootMsFieldNumber = 1,
+    kDurationSinceArmingMsFieldNumber = 3,
+    kDurationSinceTakeoffMsFieldNumber = 4,
   };
   // uint64 flight_uid = 2;
   void clear_flight_uid() ;
@@ -2004,13 +2148,33 @@ class FlightInfo final :
   void _internal_set_time_boot_ms(::uint32_t value);
 
   public:
+  // uint32 duration_since_arming_ms = 3;
+  void clear_duration_since_arming_ms() ;
+  ::uint32_t duration_since_arming_ms() const;
+  void set_duration_since_arming_ms(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_duration_since_arming_ms() const;
+  void _internal_set_duration_since_arming_ms(::uint32_t value);
+
+  public:
+  // uint32 duration_since_takeoff_ms = 4;
+  void clear_duration_since_takeoff_ms() ;
+  ::uint32_t duration_since_takeoff_ms() const;
+  void set_duration_since_takeoff_ms(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_duration_since_takeoff_ms() const;
+  void _internal_set_duration_since_takeoff_ms(::uint32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.info.FlightInfo)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 0,
+      2, 4, 0,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -2029,6 +2193,8 @@ class FlightInfo final :
                               ::google::protobuf::Arena* arena, const Impl_& from);
     ::uint64_t flight_uid_;
     ::uint32_t time_boot_ms_;
+    ::uint32_t duration_since_arming_ms_;
+    ::uint32_t duration_since_takeoff_ms_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -3019,6 +3185,187 @@ class GetFlightInformationResponse final :
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_info_2finfo_2eproto;
+};// -------------------------------------------------------------------
+
+class FlightInformationResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.info.FlightInformationResponse) */ {
+ public:
+  inline FlightInformationResponse() : FlightInformationResponse(nullptr) {}
+  ~FlightInformationResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR FlightInformationResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline FlightInformationResponse(const FlightInformationResponse& from)
+      : FlightInformationResponse(nullptr, from) {}
+  FlightInformationResponse(FlightInformationResponse&& from) noexcept
+    : FlightInformationResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline FlightInformationResponse& operator=(const FlightInformationResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FlightInformationResponse& operator=(FlightInformationResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FlightInformationResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FlightInformationResponse* internal_default_instance() {
+    return reinterpret_cast<const FlightInformationResponse*>(
+               &_FlightInformationResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    11;
+
+  friend void swap(FlightInformationResponse& a, FlightInformationResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(FlightInformationResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(FlightInformationResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  FlightInformationResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<FlightInformationResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const FlightInformationResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const FlightInformationResponse& from) {
+    FlightInformationResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(FlightInformationResponse* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.info.FlightInformationResponse";
+  }
+  protected:
+  explicit FlightInformationResponse(::google::protobuf::Arena* arena);
+  FlightInformationResponse(::google::protobuf::Arena* arena, const FlightInformationResponse& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kFlightInfoFieldNumber = 1,
+  };
+  // .mavsdk.rpc.info.FlightInfo flight_info = 1;
+  bool has_flight_info() const;
+  void clear_flight_info() ;
+  const ::mavsdk::rpc::info::FlightInfo& flight_info() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::info::FlightInfo* release_flight_info();
+  ::mavsdk::rpc::info::FlightInfo* mutable_flight_info();
+  void set_allocated_flight_info(::mavsdk::rpc::info::FlightInfo* value);
+  void unsafe_arena_set_allocated_flight_info(::mavsdk::rpc::info::FlightInfo* value);
+  ::mavsdk::rpc::info::FlightInfo* unsafe_arena_release_flight_info();
+
+  private:
+  const ::mavsdk::rpc::info::FlightInfo& _internal_flight_info() const;
+  ::mavsdk::rpc::info::FlightInfo* _internal_mutable_flight_info();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.info.FlightInformationResponse)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::info::FlightInfo* flight_info_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_info_2finfo_2eproto;
 };
 
 // ===================================================================
@@ -3962,6 +4309,110 @@ inline void GetSpeedFactorResponse::_internal_set_speed_factor(double value) {
 
 // -------------------------------------------------------------------
 
+// SubscribeFlightInformationRequest
+
+// -------------------------------------------------------------------
+
+// FlightInformationResponse
+
+// .mavsdk.rpc.info.FlightInfo flight_info = 1;
+inline bool FlightInformationResponse::has_flight_info() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.flight_info_ != nullptr);
+  return value;
+}
+inline void FlightInformationResponse::clear_flight_info() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.flight_info_ != nullptr) _impl_.flight_info_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::info::FlightInfo& FlightInformationResponse::_internal_flight_info() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::info::FlightInfo* p = _impl_.flight_info_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::info::FlightInfo&>(::mavsdk::rpc::info::_FlightInfo_default_instance_);
+}
+inline const ::mavsdk::rpc::info::FlightInfo& FlightInformationResponse::flight_info() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.info.FlightInformationResponse.flight_info)
+  return _internal_flight_info();
+}
+inline void FlightInformationResponse::unsafe_arena_set_allocated_flight_info(::mavsdk::rpc::info::FlightInfo* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.flight_info_);
+  }
+  _impl_.flight_info_ = reinterpret_cast<::mavsdk::rpc::info::FlightInfo*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.info.FlightInformationResponse.flight_info)
+}
+inline ::mavsdk::rpc::info::FlightInfo* FlightInformationResponse::release_flight_info() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::info::FlightInfo* released = _impl_.flight_info_;
+  _impl_.flight_info_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::info::FlightInfo* FlightInformationResponse::unsafe_arena_release_flight_info() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.info.FlightInformationResponse.flight_info)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::info::FlightInfo* temp = _impl_.flight_info_;
+  _impl_.flight_info_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::info::FlightInfo* FlightInformationResponse::_internal_mutable_flight_info() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.flight_info_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::info::FlightInfo>(GetArena());
+    _impl_.flight_info_ = reinterpret_cast<::mavsdk::rpc::info::FlightInfo*>(p);
+  }
+  return _impl_.flight_info_;
+}
+inline ::mavsdk::rpc::info::FlightInfo* FlightInformationResponse::mutable_flight_info() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::info::FlightInfo* _msg = _internal_mutable_flight_info();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.info.FlightInformationResponse.flight_info)
+  return _msg;
+}
+inline void FlightInformationResponse::set_allocated_flight_info(::mavsdk::rpc::info::FlightInfo* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::info::FlightInfo*>(_impl_.flight_info_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::info::FlightInfo*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.flight_info_ = reinterpret_cast<::mavsdk::rpc::info::FlightInfo*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.info.FlightInformationResponse.flight_info)
+}
+
+// -------------------------------------------------------------------
+
 // FlightInfo
 
 // uint32 time_boot_ms = 1;
@@ -4008,6 +4459,52 @@ inline void FlightInfo::_internal_set_flight_uid(::uint64_t value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
   _impl_.flight_uid_ = value;
+}
+
+// uint32 duration_since_arming_ms = 3;
+inline void FlightInfo::clear_duration_since_arming_ms() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.duration_since_arming_ms_ = 0u;
+}
+inline ::uint32_t FlightInfo::duration_since_arming_ms() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.info.FlightInfo.duration_since_arming_ms)
+  return _internal_duration_since_arming_ms();
+}
+inline void FlightInfo::set_duration_since_arming_ms(::uint32_t value) {
+  _internal_set_duration_since_arming_ms(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.info.FlightInfo.duration_since_arming_ms)
+}
+inline ::uint32_t FlightInfo::_internal_duration_since_arming_ms() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.duration_since_arming_ms_;
+}
+inline void FlightInfo::_internal_set_duration_since_arming_ms(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.duration_since_arming_ms_ = value;
+}
+
+// uint32 duration_since_takeoff_ms = 4;
+inline void FlightInfo::clear_duration_since_takeoff_ms() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.duration_since_takeoff_ms_ = 0u;
+}
+inline ::uint32_t FlightInfo::duration_since_takeoff_ms() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.info.FlightInfo.duration_since_takeoff_ms)
+  return _internal_duration_since_takeoff_ms();
+}
+inline void FlightInfo::set_duration_since_takeoff_ms(::uint32_t value) {
+  _internal_set_duration_since_takeoff_ms(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.info.FlightInfo.duration_since_takeoff_ms)
+}
+inline ::uint32_t FlightInfo::_internal_duration_since_takeoff_ms() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.duration_since_takeoff_ms_;
+}
+inline void FlightInfo::_internal_set_duration_since_takeoff_ms(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.duration_since_takeoff_ms_ = value;
 }
 
 // -------------------------------------------------------------------

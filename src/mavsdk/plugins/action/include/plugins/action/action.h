@@ -97,6 +97,7 @@ public:
         ParameterError, /**< @brief Error getting or setting parameter. */
         Unsupported, /**< @brief Action not supported. */
         Failed, /**< @brief Action failed. */
+        InvalidArgument, /**< @brief Invalid argument. */
     };
 
     /**
@@ -132,6 +133,32 @@ public:
      * @return Result of request.
      */
     Result arm() const;
+
+    /**
+     * @brief Send command to force-arm the drone without any checks.
+     *
+     * Attention: this is not to be used for normal flying but only bench tests!
+     *
+     * Arming a drone normally causes motors to spin at idle.
+     * Before arming take all safety precautions and stand clear of the drone!
+     *
+     * This function is non-blocking. See 'arm_force' for the blocking counterpart.
+     */
+    void arm_force_async(const ResultCallback callback);
+
+    /**
+     * @brief Send command to force-arm the drone without any checks.
+     *
+     * Attention: this is not to be used for normal flying but only bench tests!
+     *
+     * Arming a drone normally causes motors to spin at idle.
+     * Before arming take all safety precautions and stand clear of the drone!
+     *
+     * This function is blocking. See 'arm_force_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    Result arm_force() const;
 
     /**
      * @brief Send command to disarm the drone.
@@ -430,12 +457,16 @@ public:
     /**
      * @brief Send command to set the value of an actuator.
      *
+     * Note that the index of the actuator starts at 1 and that the value goes from -1 to 1.
+     *
      * This function is non-blocking. See 'set_actuator' for the blocking counterpart.
      */
     void set_actuator_async(int32_t index, float value, const ResultCallback callback);
 
     /**
      * @brief Send command to set the value of an actuator.
+     *
+     * Note that the index of the actuator starts at 1 and that the value goes from -1 to 1.
      *
      * This function is blocking. See 'set_actuator_async' for the non-blocking counterpart.
      *

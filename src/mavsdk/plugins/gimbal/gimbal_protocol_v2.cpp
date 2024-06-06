@@ -37,8 +37,6 @@ GimbalProtocolV2::GimbalProtocolV2(
         MAVLINK_MSG_ID_ATTITUDE,
         [this](const mavlink_message_t& message) { process_attitude(message); },
         this);
-
-    LogErr() << "Registered!";
 }
 
 GimbalProtocolV2::~GimbalProtocolV2()
@@ -46,8 +44,6 @@ GimbalProtocolV2::~GimbalProtocolV2()
     std::lock_guard<std::mutex> lock(_mutex);
 
     _system_impl.unregister_all_mavlink_message_handlers(this);
-
-    LogErr() << "Unregistered!";
 }
 
 void GimbalProtocolV2::process_gimbal_manager_status(const mavlink_message_t& message)

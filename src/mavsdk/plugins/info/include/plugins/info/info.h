@@ -65,6 +65,8 @@ public:
         uint32_t time_boot_ms{}; /**< @brief Time since system boot */
         uint64_t flight_uid{}; /**< @brief Flight counter. Starts from zero, is incremented at every
                                   disarm and is never reset (even after reboot) */
+        uint32_t duration_since_arming_ms{}; /**< @brief Duration since arming in milliseconds */
+        uint32_t duration_since_takeoff_ms{}; /**< @brief Duration since takeoff in milliseconds */
     };
 
     /**
@@ -251,6 +253,26 @@ public:
      * @return Result of request.
      */
     std::pair<Result, double> get_speed_factor() const;
+
+    /**
+     * @brief Callback type for subscribe_flight_information.
+     */
+    using FlightInformationCallback = std::function<void(FlightInfo)>;
+
+    /**
+     * @brief Handle type for subscribe_flight_information.
+     */
+    using FlightInformationHandle = Handle<FlightInfo>;
+
+    /**
+     * @brief Subscribe to 'flight information' updates.
+     */
+    FlightInformationHandle subscribe_flight_information(const FlightInformationCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_flight_information
+     */
+    void unsubscribe_flight_information(FlightInformationHandle handle);
 
     /**
      * @brief Copy constructor.
