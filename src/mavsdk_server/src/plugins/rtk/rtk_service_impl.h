@@ -47,7 +47,7 @@ public:
     {
         auto rpc_obj = std::make_unique<rpc::rtk::RtcmData>();
 
-        rpc_obj->set_data(rtcm_data.data);
+        rpc_obj->set_data_base64(rtcm_data.data_base64);
 
         return rpc_obj;
     }
@@ -56,7 +56,7 @@ public:
     {
         mavsdk::Rtk::RtcmData obj;
 
-        obj.data = rtcm_data.data();
+        obj.data_base64 = rtcm_data.data_base64();
 
         return obj;
     }

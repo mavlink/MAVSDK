@@ -24,14 +24,14 @@ Rtk::Result Rtk::send_rtcm_data(RtcmData rtcm_data) const
 
 bool operator==(const Rtk::RtcmData& lhs, const Rtk::RtcmData& rhs)
 {
-    return (rhs.data == lhs.data);
+    return (rhs.data_base64 == lhs.data_base64);
 }
 
 std::ostream& operator<<(std::ostream& str, Rtk::RtcmData const& rtcm_data)
 {
     str << std::setprecision(15);
     str << "rtcm_data:" << '\n' << "{\n";
-    str << "    data: " << rtcm_data.data << '\n';
+    str << "    data_base64: " << rtcm_data.data_base64 << '\n';
     str << '}';
     return str;
 }
