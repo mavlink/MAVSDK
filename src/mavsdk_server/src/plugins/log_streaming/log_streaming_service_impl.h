@@ -48,7 +48,7 @@ public:
     {
         auto rpc_obj = std::make_unique<rpc::log_streaming::LogStreamingRaw>();
 
-        rpc_obj->set_data(log_streaming_raw.data);
+        rpc_obj->set_data_base64(log_streaming_raw.data_base64);
 
         return rpc_obj;
     }
@@ -58,7 +58,7 @@ public:
     {
         mavsdk::LogStreaming::LogStreamingRaw obj;
 
-        obj.data = log_streaming_raw.data();
+        obj.data_base64 = log_streaming_raw.data_base64();
 
         return obj;
     }

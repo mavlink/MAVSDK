@@ -62,7 +62,7 @@ public:
      * @brief Raw logging data type
      */
     struct LogStreamingRaw {
-        std::string data{}; /**< @brief Ulog file stream data encoded as base64 */
+        std::string data_base64{}; /**< @brief Ulog file stream data encoded as base64 */
     };
 
     /**

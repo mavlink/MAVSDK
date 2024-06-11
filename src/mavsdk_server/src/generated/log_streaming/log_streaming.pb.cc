@@ -84,7 +84,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr LogStreamingRaw::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : data_(
+      : data_base64_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
         _cached_size_{0} {}
@@ -230,7 +230,7 @@ const ::uint32_t TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto::offsets[
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::log_streaming::LogStreamingRaw, _impl_.data_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::log_streaming::LogStreamingRaw, _impl_.data_base64_),
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::log_streaming::LogStreamingResult, _internal_metadata_),
     ~0u,  // no _extensions_
@@ -277,28 +277,28 @@ const char descriptor_table_protodef_log_5fstreaming_2flog_5fstreaming_2eproto[]
     "treaming.LogStreamingResult\"!\n\037Subscribe"
     "LogStreamingRawRequest\"Y\n\027LogStreamingRa"
     "wResponse\022>\n\013logging_raw\030\001 \001(\0132).mavsdk."
-    "rpc.log_streaming.LogStreamingRaw\"\037\n\017Log"
-    "StreamingRaw\022\014\n\004data\030\001 \001(\t\"\253\002\n\022LogStream"
-    "ingResult\022C\n\006result\030\001 \001(\01623.mavsdk.rpc.l"
-    "og_streaming.LogStreamingResult.Result\022\022"
-    "\n\nresult_str\030\002 \001(\t\"\273\001\n\006Result\022\022\n\016RESULT_"
-    "SUCCESS\020\000\022\024\n\020RESULT_NO_SYSTEM\020\001\022\033\n\027RESUL"
-    "T_CONNECTION_ERROR\020\002\022\017\n\013RESULT_BUSY\020\003\022\031\n"
-    "\025RESULT_COMMAND_DENIED\020\004\022\022\n\016RESULT_TIMEO"
-    "UT\020\005\022\026\n\022RESULT_UNSUPPORTED\020\006\022\022\n\016RESULT_U"
-    "NKNOWN\020\0072\245\003\n\023LogStreamingService\022~\n\021Star"
-    "tLogStreaming\0222.mavsdk.rpc.log_streaming"
-    ".StartLogStreamingRequest\0323.mavsdk.rpc.l"
-    "og_streaming.StartLogStreamingResponse\"\000"
-    "\022{\n\020StopLogStreaming\0221.mavsdk.rpc.log_st"
-    "reaming.StopLogStreamingRequest\0322.mavsdk"
-    ".rpc.log_streaming.StopLogStreamingRespo"
-    "nse\"\000\022\220\001\n\030SubscribeLogStreamingRaw\0229.mav"
-    "sdk.rpc.log_streaming.SubscribeLogStream"
-    "ingRawRequest\0321.mavsdk.rpc.log_streaming"
-    ".LogStreamingRawResponse\"\004\200\265\030\0000\001B,\n\027io.m"
-    "avsdk.log_streamingB\021LogStreamingProtob\006"
-    "proto3"
+    "rpc.log_streaming.LogStreamingRaw\"&\n\017Log"
+    "StreamingRaw\022\023\n\013data_base64\030\001 \001(\t\"\253\002\n\022Lo"
+    "gStreamingResult\022C\n\006result\030\001 \001(\01623.mavsd"
+    "k.rpc.log_streaming.LogStreamingResult.R"
+    "esult\022\022\n\nresult_str\030\002 \001(\t\"\273\001\n\006Result\022\022\n\016"
+    "RESULT_SUCCESS\020\000\022\024\n\020RESULT_NO_SYSTEM\020\001\022\033"
+    "\n\027RESULT_CONNECTION_ERROR\020\002\022\017\n\013RESULT_BU"
+    "SY\020\003\022\031\n\025RESULT_COMMAND_DENIED\020\004\022\022\n\016RESUL"
+    "T_TIMEOUT\020\005\022\026\n\022RESULT_UNSUPPORTED\020\006\022\022\n\016R"
+    "ESULT_UNKNOWN\020\0072\245\003\n\023LogStreamingService\022"
+    "~\n\021StartLogStreaming\0222.mavsdk.rpc.log_st"
+    "reaming.StartLogStreamingRequest\0323.mavsd"
+    "k.rpc.log_streaming.StartLogStreamingRes"
+    "ponse\"\000\022{\n\020StopLogStreaming\0221.mavsdk.rpc"
+    ".log_streaming.StopLogStreamingRequest\0322"
+    ".mavsdk.rpc.log_streaming.StopLogStreami"
+    "ngResponse\"\000\022\220\001\n\030SubscribeLogStreamingRa"
+    "w\0229.mavsdk.rpc.log_streaming.SubscribeLo"
+    "gStreamingRawRequest\0321.mavsdk.rpc.log_st"
+    "reaming.LogStreamingRawResponse\"\004\200\265\030\0000\001B"
+    ",\n\027io.mavsdk.log_streamingB\021LogStreaming"
+    "Protob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_log_5fstreaming_2flog_5fstreaming_2eproto_deps[1] =
     {
@@ -308,7 +308,7 @@ static ::absl::once_flag descriptor_table_log_5fstreaming_2flog_5fstreaming_2epr
 const ::_pbi::DescriptorTable descriptor_table_log_5fstreaming_2flog_5fstreaming_2eproto = {
     false,
     false,
-    1286,
+    1293,
     descriptor_table_protodef_log_5fstreaming_2flog_5fstreaming_2eproto,
     "log_streaming/log_streaming.proto",
     &descriptor_table_log_5fstreaming_2flog_5fstreaming_2eproto_once,
@@ -1109,7 +1109,7 @@ LogStreamingRaw::LogStreamingRaw(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE LogStreamingRaw::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from)
-      : data_(arena, from.data_),
+      : data_base64_(arena, from.data_base64_),
         _cached_size_{0} {}
 
 LogStreamingRaw::LogStreamingRaw(
@@ -1127,7 +1127,7 @@ LogStreamingRaw::LogStreamingRaw(
 inline PROTOBUF_NDEBUG_INLINE LogStreamingRaw::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : data_(arena),
+      : data_base64_(arena),
         _cached_size_{0} {}
 
 inline void LogStreamingRaw::SharedCtor(::_pb::Arena* arena) {
@@ -1140,7 +1140,7 @@ LogStreamingRaw::~LogStreamingRaw() {
 }
 inline void LogStreamingRaw::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
-  _impl_.data_.Destroy();
+  _impl_.data_base64_.Destroy();
   _impl_.~Impl_();
 }
 
@@ -1151,7 +1151,7 @@ PROTOBUF_NOINLINE void LogStreamingRaw::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  _impl_.data_.ClearToEmpty();
+  _impl_.data_base64_.ClearToEmpty();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -1163,7 +1163,7 @@ const char* LogStreamingRaw::_InternalParse(
 
 
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 53, 2> LogStreamingRaw::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 0, 60, 2> LogStreamingRaw::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -1177,21 +1177,21 @@ const ::_pbi::TcParseTable<0, 1, 0, 53, 2> LogStreamingRaw::_table_ = {
     &_LogStreamingRaw_default_instance_._instance,
     ::_pbi::TcParser::GenericFallback,  // fallback
   }, {{
-    // string data = 1;
+    // string data_base64 = 1;
     {::_pbi::TcParser::FastUS1,
-     {10, 63, 0, PROTOBUF_FIELD_OFFSET(LogStreamingRaw, _impl_.data_)}},
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(LogStreamingRaw, _impl_.data_base64_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // string data = 1;
-    {PROTOBUF_FIELD_OFFSET(LogStreamingRaw, _impl_.data_), 0, 0,
+    // string data_base64 = 1;
+    {PROTOBUF_FIELD_OFFSET(LogStreamingRaw, _impl_.data_base64_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
   }},
   // no aux_entries
   {{
-    "\50\4\0\0\0\0\0\0"
+    "\50\13\0\0\0\0\0\0"
     "mavsdk.rpc.log_streaming.LogStreamingRaw"
-    "data"
+    "data_base64"
   }},
 };
 
@@ -1202,11 +1202,11 @@ const ::_pbi::TcParseTable<0, 1, 0, 53, 2> LogStreamingRaw::_table_ = {
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
-  // string data = 1;
-  if (!this->_internal_data().empty()) {
-    const std::string& _s = this->_internal_data();
+  // string data_base64 = 1;
+  if (!this->_internal_data_base64().empty()) {
+    const std::string& _s = this->_internal_data_base64();
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.log_streaming.LogStreamingRaw.data");
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.log_streaming.LogStreamingRaw.data_base64");
     target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
@@ -1227,10 +1227,10 @@ const ::_pbi::TcParseTable<0, 1, 0, 53, 2> LogStreamingRaw::_table_ = {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string data = 1;
-  if (!this->_internal_data().empty()) {
+  // string data_base64 = 1;
+  if (!this->_internal_data_base64().empty()) {
     total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                    this->_internal_data());
+                                    this->_internal_data_base64());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -1252,8 +1252,8 @@ void LogStreamingRaw::MergeImpl(::google::protobuf::Message& to_msg, const ::goo
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from._internal_data().empty()) {
-    _this->_internal_set_data(from._internal_data());
+  if (!from._internal_data_base64().empty()) {
+    _this->_internal_set_data_base64(from._internal_data_base64());
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -1277,7 +1277,7 @@ void LogStreamingRaw::InternalSwap(LogStreamingRaw* PROTOBUF_RESTRICT other) {
   auto* arena = GetArena();
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.data_, &other->_impl_.data_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.data_base64_, &other->_impl_.data_base64_, arena);
 }
 
 ::google::protobuf::Metadata LogStreamingRaw::GetMetadata() const {
