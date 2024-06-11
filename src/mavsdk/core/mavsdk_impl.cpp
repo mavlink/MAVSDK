@@ -12,6 +12,7 @@
 #include "cli_arg.h"
 #include "version.h"
 #include "server_component_impl.h"
+#include "plugin_base.h"
 #include "mavlink_channels.h"
 #include "callback_list.tpp"
 
@@ -467,44 +468,33 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_any_connec
         return {ConnectionResult::ConnectionUrlInvalid, Mavsdk::ConnectionHandle{}};
     }
 
-    switch (cli_arg.get_protocol()) {
-        case CliArg::Protocol::Udp: {
-            int port = cli_arg.get_port() ? cli_arg.get_port() : Mavsdk::DEFAULT_UDP_PORT;
-
-            if (cli_arg.get_path().empty() || cli_arg.get_path() == Mavsdk::DEFAULT_UDP_BIND_IP) {
-                std::string path = Mavsdk::DEFAULT_UDP_BIND_IP;
-                return add_udp_connection(path, port, forwarding_option);
-            } else {
-                std::string path = cli_arg.get_path();
-                return setup_udp_remote(path, port, forwarding_option);
-            }
-        }
-
-        case CliArg::Protocol::Tcp: {
-            std::string path = Mavsdk::DEFAULT_TCP_REMOTE_IP;
-            int port = Mavsdk::DEFAULT_TCP_REMOTE_PORT;
-            if (!cli_arg.get_path().empty()) {
-                path = cli_arg.get_path();
-            }
-            if (cli_arg.get_port()) {
-                port = cli_arg.get_port();
-            }
-            return add_tcp_connection(path, port, forwarding_option);
-        }
-
-        case CliArg::Protocol::Serial: {
-            int baudrate = Mavsdk::DEFAULT_SERIAL_BAUDRATE;
-            if (cli_arg.get_baudrate()) {
-                baudrate = cli_arg.get_baudrate();
-            }
-            bool flow_control = cli_arg.get_flow_control();
-            return add_serial_connection(
-                cli_arg.get_path(), baudrate, flow_control, forwarding_option);
-        }
-
-        default:
-            return {ConnectionResult::ConnectionError, Mavsdk::ConnectionHandle{}};
-    }
+    return std::visit(
+        overloaded{
+            [&](std::monostate) -> std::pair<ConnectionResult, Mavsdk::ConnectionHandle> {
+                // Should not happen anyway.
+                return {ConnectionResult::ConnectionUrlInvalid, Mavsdk::ConnectionHandle()};
+            },
+            [&](CliArg::Udp& udp) -> std::pair<ConnectionResult, Mavsdk::ConnectionHandle> {
+                if (udp.mode == CliArg::Udp::Mode::In) {
+                    return add_udp_connection(udp.host, udp.port, forwarding_option);
+                } else {
+                    return setup_udp_remote(udp.host, udp.port, forwarding_option);
+                }
+            },
+            [&](CliArg::Tcp& tcp) -> std::pair<ConnectionResult, Mavsdk::ConnectionHandle> {
+                if (tcp.mode == CliArg::Tcp::Mode::In) {
+                    // TODO: implement
+                    return {ConnectionResult::ConnectionError, Mavsdk::ConnectionHandle()};
+                } else {
+                    return add_tcp_connection(tcp.host, tcp.port, forwarding_option);
+                }
+                // TODO in out
+            },
+            [&](CliArg::Serial& serial) -> std::pair<ConnectionResult, Mavsdk::ConnectionHandle> {
+                return add_serial_connection(
+                    serial.path, serial.baudrate, serial.flow_control_enabled, forwarding_option);
+            }},
+        cli_arg.protocol);
 }
 
 std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_udp_connection(

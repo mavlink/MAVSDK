@@ -28,23 +28,6 @@ namespace mavsdk {
 
 class MavsdkImpl {
 public:
-    /** @brief Default System ID for GCS configuration type. */
-    static constexpr int DEFAULT_SYSTEM_ID_GCS = 245;
-    /** @brief Default Component ID for GCS configuration type. */
-    static constexpr int DEFAULT_COMPONENT_ID_GCS = MAV_COMP_ID_MISSIONPLANNER;
-    /** @brief Default System ID for CompanionComputer configuration type. */
-    static constexpr int DEFAULT_SYSTEM_ID_CC = 1;
-    /** @brief Default Component ID for CompanionComputer configuration type. */
-    static constexpr int DEFAULT_COMPONENT_ID_CC = MAV_COMP_ID_PATHPLANNER;
-    /** @brief Default System ID for Autopilot configuration type. */
-    static constexpr int DEFAULT_SYSTEM_ID_AUTOPILOT = 1;
-    /** @brief Default Component ID for Autopilot configuration type. */
-    static constexpr int DEFAULT_COMPONENT_ID_AUTOPILOT = MAV_COMP_ID_AUTOPILOT1;
-    /** @brief Default System ID for Camera configuration type. */
-    static constexpr int DEFAULT_SYSTEM_ID_CAMERA = 1;
-    /** @brief Default Component ID for Camera configuration type. */
-    static constexpr int DEFAULT_COMPONENT_ID_CAMERA = MAV_COMP_ID_CAMERA;
-
     MavsdkImpl(const Mavsdk::Configuration& configuration);
     ~MavsdkImpl();
     MavsdkImpl(const MavsdkImpl&) = delete;
@@ -57,18 +40,6 @@ public:
 
     std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
     add_any_connection(const std::string& connection_url, ForwardingOption forwarding_option);
-    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_udp_connection(
-        const std::string& local_ip, int local_port_number, ForwardingOption forwarding_option);
-    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_tcp_connection(
-        const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option);
-    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_serial_connection(
-        const std::string& dev_path,
-        int baudrate,
-        bool flow_control,
-        ForwardingOption forwarding_option);
-    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> setup_udp_remote(
-        const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option);
-
     void remove_connection(Mavsdk::ConnectionHandle handle);
 
     std::vector<std::shared_ptr<System>> systems() const;
@@ -122,6 +93,20 @@ public:
     ServerComponentImpl& default_server_component_impl();
 
 private:
+    static constexpr float DEFAULT_TIMEOUT_S = 0.5f;
+
+    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_udp_connection(
+        const std::string& local_ip, int local_port_number, ForwardingOption forwarding_option);
+    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_tcp_connection(
+        const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option);
+    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_serial_connection(
+        const std::string& dev_path,
+        int baudrate,
+        bool flow_control,
+        ForwardingOption forwarding_option);
+    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> setup_udp_remote(
+        const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option);
+
     Mavsdk::ConnectionHandle add_connection(const std::shared_ptr<Connection>&);
     void make_system_with_component(uint8_t system_id, uint8_t component_id);
 
@@ -178,7 +163,7 @@ private:
     std::function<bool(mavlink_message_t&)> _intercept_incoming_messages_callback{nullptr};
     std::function<bool(mavlink_message_t&)> _intercept_outgoing_messages_callback{nullptr};
 
-    std::atomic<double> _timeout_s{Mavsdk::DEFAULT_TIMEOUT_S};
+    std::atomic<double> _timeout_s{};
 
     static constexpr double HEARTBEAT_SEND_INTERVAL_S = 1.0;
     CallEveryHandler::Cookie _heartbeat_send_cookie{};
