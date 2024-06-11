@@ -1,6 +1,7 @@
 #include "telemetry_server_impl.h"
 #include "unused.h"
 #include <array>
+#include <algorithm>
 
 namespace mavsdk {
 
