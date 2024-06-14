@@ -76,14 +76,14 @@ static int download_progress_update(
     }
 
     if (dltotal == 0 || dlnow == 0) {
-        return myp->progress_callback(0, Status::Idle, CURLcode::CURLE_OK);
+        return myp->progress_callback(0, HttpStatus::Idle, CURLcode::CURLE_OK);
     }
 
     int percentage = static_cast<int>(100 / dltotal * dlnow);
 
     if (percentage > myp->progress_in_percentage) {
         myp->progress_in_percentage = percentage;
-        return myp->progress_callback(percentage, Status::Downloading, CURLcode::CURLE_OK);
+        return myp->progress_callback(percentage, HttpStatus::Downloading, CURLcode::CURLE_OK);
     }
 
     return 0;
@@ -113,12 +113,12 @@ bool CurlWrapper::download_file_to_path(
 
         if (res == CURLcode::CURLE_OK) {
             if (nullptr != progress_callback) {
-                progress_callback(100, Status::Finished, res);
+                progress_callback(100, HttpStatus::Finished, res);
             }
             return true;
         } else {
             if (nullptr != progress_callback) {
-                progress_callback(0, Status::Error, res);
+                progress_callback(0, HttpStatus::Error, res);
             }
             remove(path.c_str());
             LogErr() << "Error while downloading file, curl error code: "

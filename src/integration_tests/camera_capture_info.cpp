@@ -1,5 +1,6 @@
 #include "integration_test_helper.h"
 #include "mavsdk.h"
+#include <algorithm>
 #include <iostream>
 #include <functional>
 #include <atomic>

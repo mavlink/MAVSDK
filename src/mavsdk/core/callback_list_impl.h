@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <cstdint>
 #include <functional>
 #include <atomic>
@@ -9,6 +10,7 @@
 #include <vector>
 #include "log.h"
 #include "callback_list.h"
+#include "handle_factory.h"
 
 namespace mavsdk {
 
@@ -22,8 +24,7 @@ public:
         // We need to return a handle, even if the callback is nullptr to
         // unsubscribe. That's fine, the handle just won't remove anything
         // when/if used later.
-        auto handleId = _last_id.fetch_add(1, std::memory_order_relaxed);
-        auto handle = Handle<Args...>(handleId);
+        auto handle = _handle_factory.create();
 
         if (callback != nullptr) {
             if (_mutex.try_lock()) {
@@ -48,7 +49,7 @@ public:
     void unsubscribe(Handle<Args...> handle)
     {
         // Ignore null handle.
-        if (handle._id == 0) {
+        if (!handle.valid()) {
             LogErr() << "Invalid null handle";
             return;
         }
@@ -61,13 +62,11 @@ public:
         if (lock.owns_lock()) {
             _list.erase(
                 std::remove_if(
-                    _list.begin(),
-                    _list.end(),
-                    [&](auto& pair) { return pair.first._id == handle._id; }),
+                    _list.begin(), _list.end(), [&](auto& pair) { return pair.first == handle; }),
                 _list.end());
         } else {
             std::lock_guard<std::mutex> remove_later_lock(_remove_later_mutex);
-            _remove_later.push_back(handle._id);
+            _remove_later.push_back(handle);
         }
 
         // check and remove from deferred lock list if present
@@ -76,7 +75,7 @@ public:
             std::remove_if(
                 _subscribe_later.begin(),
                 _subscribe_later.end(),
-                [&](const auto& pair) { return pair.first._id == handle._id; }),
+                [&](const auto& pair) { return pair.first == handle; }),
             _subscribe_later.end());
     }
 
@@ -172,12 +171,12 @@ private:
                 _remove_later.clear();
             }
 
-            for (auto& id : _remove_later) {
+            for (const auto& handle : _remove_later) {
                 _list.erase(
                     std::remove_if(
                         _list.begin(),
                         _list.end(),
-                        [&](auto& pair) { return pair.first._id == id; }),
+                        [&](auto& pair) { return pair.first == handle; }),
                     _list.end());
             }
             _mutex.unlock();
@@ -215,12 +214,12 @@ private:
     }
 
     mutable std::mutex _mutex{};
-    std::atomic<uint64_t> _last_id{1}; // Start at 1 because 0 is the "null handle"
+    HandleFactory<Args...> _handle_factory;
     std::vector<std::pair<Handle<Args...>, std::function<void(Args...)>>> _list{};
     std::vector<std::function<bool(Args...)>> _cond_cb_list{};
 
     mutable std::mutex _remove_later_mutex{};
-    std::vector<uint64_t> _remove_later{};
+    std::vector<Handle<Args...>> _remove_later{};
 
     std::mutex _subscribe_later_mutex;
     std::vector<std::pair<Handle<Args...>, std::function<void(Args...)>>> _subscribe_later;

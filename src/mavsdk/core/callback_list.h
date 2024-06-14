@@ -10,6 +10,8 @@
 
 namespace mavsdk {
 
+template<typename... Args> class CallbackListImpl;
+
 template<typename... Args> class CallbackList {
 public:
     CallbackList();

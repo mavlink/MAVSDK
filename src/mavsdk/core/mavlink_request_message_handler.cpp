@@ -3,6 +3,7 @@
 #include "server_component_impl.h"
 #include "mavlink_command_receiver.h"
 #include "log.h"
+#include <algorithm>
 
 namespace mavsdk {
 

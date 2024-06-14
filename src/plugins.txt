@@ -6,6 +6,7 @@ camera
 camera_server
 component_metadata
 component_metadata_server
+events
 failure
 follow_me
 ftp
