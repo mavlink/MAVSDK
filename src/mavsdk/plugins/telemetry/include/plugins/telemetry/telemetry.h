@@ -101,6 +101,12 @@ public:
         Acro, /**< @brief In 'Acro' mode. */
         Stabilized, /**< @brief In 'Stabilize' mode. */
         Rattitude, /**< @brief In 'Rattitude' mode. */
+        QStabilize,
+        QLoiter,
+        QLand,
+        QRtl,
+        FBWA,
+        FBWB
     };
 
     /**

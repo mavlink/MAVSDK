@@ -223,10 +223,9 @@ void SystemImpl::process_heartbeat(const mavlink_message_t& message)
         _armed = (heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) != 0;
         _hitl_enabled = (heartbeat.base_mode & MAV_MODE_FLAG_HIL_ENABLED) != 0;
     }
-    if (heartbeat.base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED) {
+    if (heartbeat.base_mode & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED)
         _flight_mode =
             to_flight_mode_from_custom_mode(_autopilot, _vehicle_type, heartbeat.custom_mode);
-    }
 
     set_connected();
 }
