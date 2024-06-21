@@ -505,10 +505,10 @@ void ActionImpl::return_to_launch_async(const Action::ResultCallback& callback) 
 void ActionImpl::change_alt_async(const float altitude_amsl_m, const Action::ResultCallback &callback)
 {
     MavlinkCommandSender::CommandInt command{};
-
+// FOR TEST ONLY
     command.target_component_id = _system_impl->get_autopilot_id();
     command.autocontinue = true;
-    command.command = MAV_CMD_NAV_WAYPOINT;
+    command.command = MAV_CMD_NAV_LOITER_TO_ALT;
     command.current = true;
     command.frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
     command.params.x = 0;
