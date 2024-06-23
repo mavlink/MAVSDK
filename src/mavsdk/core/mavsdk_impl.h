@@ -100,8 +100,8 @@ private:
     std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
     add_udp_connection(const CliArg::Udp& udp, ForwardingOption forwarding_option);
 
-    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_tcp_connection(
-        const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option);
+    std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
+    add_tcp_connection(const CliArg::Tcp& tcp, ForwardingOption forwarding_option);
     std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_serial_connection(
         const std::string& dev_path,
         int baudrate,

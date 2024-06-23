@@ -2,9 +2,11 @@
 
 #include <algorithm>
 #include <mutex>
+#include <tcp_server_connection.h>
 
 #include "connection.h"
 #include "tcp_client_connection.h"
+#include "tcp_server_connection.h"
 #include "udp_connection.h"
 #include "system.h"
 #include "system_impl.h"
@@ -477,13 +479,7 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_any_connec
                 return add_udp_connection(udp, forwarding_option);
             },
             [&](CliArg::Tcp& tcp) -> std::pair<ConnectionResult, Mavsdk::ConnectionHandle> {
-                if (tcp.mode == CliArg::Tcp::Mode::In) {
-                    // TODO: implement
-                    return {ConnectionResult::ConnectionError, Mavsdk::ConnectionHandle()};
-                } else {
-                    return add_tcp_connection(tcp.host, tcp.port, forwarding_option);
-                }
-                // TODO in out
+                return add_tcp_connection(tcp, forwarding_option);
             },
             [&](CliArg::Serial& serial) -> std::pair<ConnectionResult, Mavsdk::ConnectionHandle> {
                 return add_serial_connection(
@@ -527,24 +523,43 @@ MavsdkImpl::add_udp_connection(const CliArg::Udp& udp, ForwardingOption forwardi
     return {ConnectionResult::Success, handle};
 }
 
-std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_tcp_connection(
-    const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option)
+std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
+MavsdkImpl::add_tcp_connection(const CliArg::Tcp& tcp, ForwardingOption forwarding_option)
 {
-    auto new_conn = std::make_shared<TcpClientConnection>(
-        [this](mavlink_message_t& message, Connection* connection) {
-            receive_message(message, connection);
-        },
-        remote_ip,
-        remote_port,
-        forwarding_option);
-    if (!new_conn) {
-        return {ConnectionResult::ConnectionError, Mavsdk::ConnectionHandle{}};
-    }
-    ConnectionResult ret = new_conn->start();
-    if (ret == ConnectionResult::Success) {
-        return {ret, add_connection(new_conn)};
+    if (tcp.mode == CliArg::Tcp::Mode::Out) {
+        auto new_conn = std::make_shared<TcpClientConnection>(
+            [this](mavlink_message_t& message, Connection* connection) {
+                receive_message(message, connection);
+            },
+            tcp.host,
+            tcp.port,
+            forwarding_option);
+        if (!new_conn) {
+            return {ConnectionResult::ConnectionError, Mavsdk::ConnectionHandle{}};
+        }
+        ConnectionResult ret = new_conn->start();
+        if (ret == ConnectionResult::Success) {
+            return {ret, add_connection(new_conn)};
+        } else {
+            return {ret, Mavsdk::ConnectionHandle{}};
+        }
     } else {
-        return {ret, Mavsdk::ConnectionHandle{}};
+        auto new_conn = std::make_shared<TcpServerConnection>(
+            [this](mavlink_message_t& message, Connection* connection) {
+                receive_message(message, connection);
+            },
+            tcp.host,
+            tcp.port,
+            forwarding_option);
+        if (!new_conn) {
+            return {ConnectionResult::ConnectionError, Mavsdk::ConnectionHandle{}};
+        }
+        ConnectionResult ret = new_conn->start();
+        if (ret == ConnectionResult::Success) {
+            return {ret, add_connection(new_conn)};
+        } else {
+            return {ret, Mavsdk::ConnectionHandle{}};
+        }
     }
 }
 

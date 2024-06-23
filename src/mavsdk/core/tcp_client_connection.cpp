@@ -16,6 +16,7 @@
 
 #include <cassert>
 #include <utility>
+#include <thread>
 
 #ifndef WINDOWS
 #define GET_ERROR(_x) strerror(_x)
