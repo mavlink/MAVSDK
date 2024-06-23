@@ -4,7 +4,7 @@
 #include <mutex>
 
 #include "connection.h"
-#include "tcp_connection.h"
+#include "tcp_client_connection.h"
 #include "udp_connection.h"
 #include "system.h"
 #include "system_impl.h"
@@ -530,7 +530,7 @@ MavsdkImpl::add_udp_connection(const CliArg::Udp& udp, ForwardingOption forwardi
 std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_tcp_connection(
     const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option)
 {
-    auto new_conn = std::make_shared<TcpConnection>(
+    auto new_conn = std::make_shared<TcpClientConnection>(
         [this](mavlink_message_t& message, Connection* connection) {
             receive_message(message, connection);
         },

@@ -1,4 +1,4 @@
-#include "tcp_connection.h"
+#include "tcp_client_connection.h"
 #include "log.h"
 
 #ifdef WINDOWS
@@ -26,7 +26,7 @@
 namespace mavsdk {
 
 /* change to remote_ip and remote_port */
-TcpConnection::TcpConnection(
+TcpClientConnection::TcpClientConnection(
     Connection::ReceiverCallback receiver_callback,
     std::string remote_ip,
     int remote_port,
@@ -37,13 +37,13 @@ TcpConnection::TcpConnection(
     _should_exit(false)
 {}
 
-TcpConnection::~TcpConnection()
+TcpClientConnection::~TcpClientConnection()
 {
     // If no one explicitly called stop before, we should at least do it.
     stop();
 }
 
-ConnectionResult TcpConnection::start()
+ConnectionResult TcpClientConnection::start()
 {
     if (!start_mavlink_receiver()) {
         return ConnectionResult::ConnectionsExhausted;
@@ -59,7 +59,7 @@ ConnectionResult TcpConnection::start()
     return ConnectionResult::Success;
 }
 
-ConnectionResult TcpConnection::setup_port()
+ConnectionResult TcpClientConnection::setup_port()
 {
 #ifdef WINDOWS
     WSADATA wsa;
@@ -103,12 +103,12 @@ ConnectionResult TcpConnection::setup_port()
     return ConnectionResult::Success;
 }
 
-void TcpConnection::start_recv_thread()
+void TcpClientConnection::start_recv_thread()
 {
-    _recv_thread = std::make_unique<std::thread>(&TcpConnection::receive, this);
+    _recv_thread = std::make_unique<std::thread>(&TcpClientConnection::receive, this);
 }
 
-ConnectionResult TcpConnection::stop()
+ConnectionResult TcpClientConnection::stop()
 {
     _should_exit = true;
 
@@ -138,7 +138,7 @@ ConnectionResult TcpConnection::stop()
     return ConnectionResult::Success;
 }
 
-bool TcpConnection::send_message(const mavlink_message_t& message)
+bool TcpClientConnection::send_message(const mavlink_message_t& message)
 {
     if (!_is_ok) {
         return false;
@@ -189,7 +189,7 @@ bool TcpConnection::send_message(const mavlink_message_t& message)
     return true;
 }
 
-void TcpConnection::receive()
+void TcpClientConnection::receive()
 {
     // Enough for MTU 1500 bytes.
     char buffer[2048];
