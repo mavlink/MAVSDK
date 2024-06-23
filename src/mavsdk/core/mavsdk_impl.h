@@ -11,7 +11,9 @@
 #include "autopilot.h"
 #include "call_every_handler.h"
 #include "connection.h"
+#include "cli_arg.h"
 #include "handle_factory.h"
+#include "handle.h"
 #include "mavsdk.h"
 #include "mavlink_include.h"
 #include "mavlink_address.h"
@@ -95,8 +97,9 @@ public:
 private:
     static constexpr float DEFAULT_TIMEOUT_S = 0.5f;
 
-    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_udp_connection(
-        const std::string& local_ip, int local_port_number, ForwardingOption forwarding_option);
+    std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
+    add_udp_connection(const CliArg::Udp& udp, ForwardingOption forwarding_option);
+
     std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_tcp_connection(
         const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option);
     std::pair<ConnectionResult, Mavsdk::ConnectionHandle> add_serial_connection(
@@ -104,8 +107,6 @@ private:
         int baudrate,
         bool flow_control,
         ForwardingOption forwarding_option);
-    std::pair<ConnectionResult, Mavsdk::ConnectionHandle> setup_udp_remote(
-        const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option);
 
     Mavsdk::ConnectionHandle add_connection(const std::shared_ptr<Connection>&);
     void make_system_with_component(uint8_t system_id, uint8_t component_id);
