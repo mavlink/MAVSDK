@@ -15,21 +15,18 @@ using namespace mavsdk;
 
 void usage(const std::string& bin_name)
 {
-    std::cerr << "Usage : " << bin_name << " <remote_ip> <remote_port> <root_dir>\n"
-              << '\n'
-              << "    Start mavlink FTP server on <root_dir>\n"
-              << "    sending heartbeats to <remote_ip>:<remote_port>\n";
+    std::cerr << "Usage : " << bin_name << " <connection> <root_dir>" << std::endl;
 }
 
 int main(int argc, char** argv)
 {
-    if (argc != 4) {
+    if (argc != 3) {
         usage(argv[0]);
         return 1;
     }
 
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::CompanionComputer}};
-    ConnectionResult connection_result = mavsdk.setup_udp_remote(argv[1], std::stoi(argv[2]));
+    ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
     if (connection_result != ConnectionResult::Success) {
         std::cerr << "Error setting up Mavlink FTP server.\n";
         return 1;
@@ -37,12 +34,12 @@ int main(int argc, char** argv)
 
     auto component = mavsdk.server_component();
     auto ftp_server = FtpServer{component};
-    ftp_server.set_root_dir(argv[3]);
+    ftp_server.set_root_dir(argv[2]);
 
-    std::cout << "Mavlink FTP server running.\n"
-              << '\n'
-              << "Remote:       " << argv[1] << ":" << argv[2] << '\n'
-              << "Component ID: " << std::to_string(component->component_id()) << '\n';
+    std::cout << "MAVLink FTP server running\n"
+              << "  connection: " << argv[1] << '\n'
+              << "  directory: " << argv[2] << '\n'
+              << "  component ID: " << std::to_string(component->component_id()) << std::endl;
 
     while (true) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
