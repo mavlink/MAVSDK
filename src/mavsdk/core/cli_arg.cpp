@@ -25,6 +25,7 @@ bool CliArg::parse(const std::string& uri)
     const std::string delimiter = "://";
 
     if (uri.find(udp + delimiter) == 0) {
+        LogWarn() << "Connection using udp:// is deprecated, please use udpin:// or udpout://";
         return parse_udp(uri.substr(udp.size() + delimiter.size()));
     }
 
@@ -37,6 +38,7 @@ bool CliArg::parse(const std::string& uri)
     }
 
     if (uri.find(tcp + delimiter) == 0) {
+        LogWarn() << "Connection using tcp:// is deprecated, please use tcpin:// or tcpout://";
         return parse_tcp(uri.substr(tcp.size() + delimiter.size()));
     }
 
