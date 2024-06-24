@@ -31,12 +31,8 @@ TcpServerConnection::TcpServerConnection(
     int local_port,
     ForwardingOption forwarding_option) :
     Connection(std::move(receiver_callback), forwarding_option),
-    _local_ip(local_ip),
-    _local_port(local_port),
-    _server_socket_fd(-1),
-    _client_socket_fd(-1),
-    _should_exit(false),
-    _is_ok(false)
+    _local_ip(std::move(local_ip)),
+    _local_port(local_port)
 {}
 
 TcpServerConnection::~TcpServerConnection()
@@ -64,12 +60,13 @@ ConnectionResult TcpServerConnection::start()
         return ConnectionResult::SocketError;
     }
 
-    struct sockaddr_in server_addr {};
+    sockaddr_in server_addr{};
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = INADDR_ANY;
     server_addr.sin_port = htons(_local_port);
 
-    if (bind(_server_socket_fd, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0) {
+    if (bind(_server_socket_fd, reinterpret_cast<sockaddr*>(&server_addr), sizeof(server_addr)) <
+        0) {
         LogErr() << "bind error: " << GET_ERROR(errno);
         return ConnectionResult::SocketError;
     }
@@ -79,8 +76,8 @@ ConnectionResult TcpServerConnection::start()
         return ConnectionResult::SocketError;
     }
 
-    _is_ok = true;
-    _accept_thread = std::make_unique<std::thread>(&TcpServerConnection::accept_client, this);
+    _accept_receive_thread =
+        std::make_unique<std::thread>(&TcpServerConnection::accept_client, this);
 
     return ConnectionResult::Success;
 }
@@ -100,12 +97,9 @@ ConnectionResult TcpServerConnection::stop()
     WSACleanup();
 #endif
 
-    if (_accept_thread && _accept_thread->joinable()) {
-        _accept_thread->join();
-    }
-
-    if (_recv_thread && _recv_thread->joinable()) {
-        _recv_thread->join();
+    if (_accept_receive_thread && _accept_receive_thread->joinable()) {
+        _accept_receive_thread->join();
+        _accept_receive_thread.reset();
     }
 
     // We need to stop this after stopping the receive thread, otherwise
@@ -117,10 +111,6 @@ ConnectionResult TcpServerConnection::stop()
 
 bool TcpServerConnection::send_message(const mavlink_message_t& message)
 {
-    if (!_is_ok) {
-        return false;
-    }
-
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
     uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
 
@@ -143,22 +133,21 @@ bool TcpServerConnection::send_message(const mavlink_message_t& message)
 
 void TcpServerConnection::accept_client()
 {
-    fd_set readfds;
-    struct timeval timeout;
-
     // Set server socket to non-blocking
     int flags = fcntl(_server_socket_fd, F_GETFL, 0);
     fcntl(_server_socket_fd, F_SETFL, flags | O_NONBLOCK);
 
     while (!_should_exit) {
+        fd_set readfds;
         FD_ZERO(&readfds);
         FD_SET(_server_socket_fd, &readfds);
 
         // Set timeout to 1 second
+        timeval timeout;
         timeout.tv_sec = 1;
         timeout.tv_usec = 0;
 
-        int activity = select(_server_socket_fd + 1, &readfds, nullptr, nullptr, &timeout);
+        const int activity = select(_server_socket_fd + 1, &readfds, nullptr, nullptr, &timeout);
 
         if (activity < 0 && errno != EINTR) {
             LogErr() << "select error: " << GET_ERROR(errno);
@@ -171,11 +160,11 @@ void TcpServerConnection::accept_client()
         }
 
         if (FD_ISSET(_server_socket_fd, &readfds)) {
-            struct sockaddr_in client_addr {};
+            sockaddr_in client_addr{};
             socklen_t client_addr_len = sizeof(client_addr);
 
-            _client_socket_fd =
-                accept(_server_socket_fd, (struct sockaddr*)&client_addr, &client_addr_len);
+            _client_socket_fd = accept(
+                _server_socket_fd, reinterpret_cast<sockaddr*>(&client_addr), &client_addr_len);
             if (_client_socket_fd < 0) {
                 if (_should_exit) {
                     return;
@@ -184,35 +173,28 @@ void TcpServerConnection::accept_client()
                 continue;
             }
 
-            _recv_thread = std::make_unique<std::thread>(&TcpServerConnection::receive, this);
+            receive();
         }
     }
 }
 
 void TcpServerConnection::receive()
 {
-    char buffer[2048];
+    std::array<char, 2048> buffer{};
 
     while (!_should_exit) {
-        if (!_is_ok) {
-            // LogErr() << "TCP receive error, trying to reconnect...";
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-            continue;
-        }
-
-        const auto recv_len = recv(_client_socket_fd, buffer, sizeof(buffer), 0);
+        const auto recv_len = recv(_client_socket_fd, buffer.data(), buffer.size(), 0);
 
         if (recv_len == 0) {
-            _is_ok = false;
             continue;
         }
 
         if (recv_len < 0) {
-            _is_ok = false;
-            continue;
+            LogErr() << "recv failed: " << GET_ERROR(errno);
+            return;
         }
 
-        _mavlink_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
+        _mavlink_receiver->set_new_datagram(buffer.data(), static_cast<int>(recv_len));
 
         // Parse all mavlink messages in one data packet. Once exhausted, we'll exit while.
         while (_mavlink_receiver->parse_message()) {

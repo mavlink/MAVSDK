@@ -19,7 +19,7 @@ namespace mavsdk {
 
 class TcpClientConnection : public Connection {
 public:
-    explicit TcpClientConnection(
+    TcpClientConnection(
         Connection::ReceiverCallback receiver_callback,
         std::string remote_ip,
         int remote_port,
