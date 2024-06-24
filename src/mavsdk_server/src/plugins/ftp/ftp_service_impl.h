@@ -42,6 +42,38 @@ public:
         response->set_allocated_ftp_result(rpc_ftp_result);
     }
 
+    static std::unique_ptr<rpc::ftp::ListDirectoryData>
+    translateToRpcListDirectoryData(const mavsdk::Ftp::ListDirectoryData& list_directory_data)
+    {
+        auto rpc_obj = std::make_unique<rpc::ftp::ListDirectoryData>();
+
+        for (const auto& elem : list_directory_data.dirs) {
+            rpc_obj->add_dirs(elem);
+        }
+
+        for (const auto& elem : list_directory_data.files) {
+            rpc_obj->add_files(elem);
+        }
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Ftp::ListDirectoryData
+    translateFromRpcListDirectoryData(const rpc::ftp::ListDirectoryData& list_directory_data)
+    {
+        mavsdk::Ftp::ListDirectoryData obj;
+
+        for (const auto& elem : list_directory_data.dirs()) {
+            obj.dirs.push_back(elem);
+        }
+
+        for (const auto& elem : list_directory_data.files()) {
+            obj.files.push_back(elem);
+        }
+
+        return obj;
+    }
+
     static std::unique_ptr<rpc::ftp::ProgressData>
     translateToRpcProgressData(const mavsdk::Ftp::ProgressData& progress_data)
     {
@@ -269,9 +301,7 @@ public:
         if (response != nullptr) {
             fillResponseWithResult(response, result.first);
 
-            for (auto elem : result.second) {
-                response->add_paths(elem);
-            }
+            response->set_allocated_data(translateToRpcListDirectoryData(result.second).release());
         }
 
         return grpc::Status::OK;

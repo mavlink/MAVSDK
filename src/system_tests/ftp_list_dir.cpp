@@ -25,7 +25,8 @@ TEST(SystemTest, FtpListDir)
 {
     ASSERT_TRUE(reset_directories(temp_dir_provided));
 
-    std::vector<std::string> truth_list;
+    std::vector<std::string> truth_files;
+    std::vector<std::string> truth_dirs;
 
     for (unsigned i = 0; i < 100; ++i) {
         auto foldername = std::string(temp_dir + std::to_string(i));
@@ -33,11 +34,12 @@ TEST(SystemTest, FtpListDir)
         ASSERT_TRUE(reset_directories(temp_dir_provided / fs::path(foldername)));
         ASSERT_TRUE(create_temp_file(temp_dir_provided / fs::path(filename), i));
 
-        truth_list.push_back(std::string("D") + foldername);
-        truth_list.push_back(std::string("F") + filename + std::string("\t") + std::to_string(i));
+        truth_dirs.push_back(foldername);
+        truth_files.push_back(filename);
     }
 
-    std::sort(truth_list.begin(), truth_list.end());
+    std::sort(truth_dirs.begin(), truth_dirs.end());
+    std::sort(truth_files.begin(), truth_files.end());
 
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
@@ -68,7 +70,8 @@ TEST(SystemTest, FtpListDir)
     auto ret = ftp.list_directory("./");
     EXPECT_EQ(ret.first, Ftp::Result::Success);
 
-    EXPECT_EQ(ret.second, truth_list);
+    EXPECT_EQ(ret.second.files, truth_files);
+    EXPECT_EQ(ret.second.dirs, truth_dirs);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }

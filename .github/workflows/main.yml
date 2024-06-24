@@ -38,7 +38,7 @@ jobs:
       - name: unit tests
         run: ./build/src/unit_tests/unit_tests_runner
       - name: system tests
-        run: ./build/src/system_tests/system_tests_runner
+        run: MAVSDK_FTP_DEBUGGING=1 ./build/src/system_tests/system_tests_runner
       - name: run lcov
         run: lcov --capture --directory . --no-external --exclude "*/third_party/*"  --output-file lcov.info
       - name: check size of lcov.info

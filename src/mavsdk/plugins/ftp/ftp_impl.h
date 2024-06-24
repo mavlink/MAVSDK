@@ -25,7 +25,7 @@ public:
     void enable() override;
     void disable() override;
 
-    std::pair<Ftp::Result, std::vector<std::string>> list_directory(const std::string& path);
+    std::pair<Ftp::Result, Ftp::ListDirectoryData> list_directory(const std::string& path);
     Ftp::Result create_directory(const std::string& path);
     Ftp::Result remove_directory(const std::string& path);
     Ftp::Result remove_file(const std::string& path);

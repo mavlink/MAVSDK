@@ -62,7 +62,8 @@ public:
     using ResultCallback = std::function<void(ClientResult)>;
     using UploadCallback = std::function<void(ClientResult, ProgressData)>;
     using DownloadCallback = std::function<void(ClientResult, ProgressData)>;
-    using ListDirectoryCallback = std::function<void(ClientResult, std::vector<std::string>)>;
+    using ListDirectoryCallback =
+        std::function<void(ClientResult, std::vector<std::string>, std::vector<std::string>)>;
     using AreFilesIdenticalCallback = std::function<void(ClientResult, bool)>;
 
     void do_work();
@@ -206,6 +207,7 @@ private:
         ListDirectoryCallback callback{};
         uint32_t offset{0};
         std::vector<std::string> dirs{};
+        std::vector<std::string> files{};
     };
 
     using Item = std::variant<
@@ -298,13 +300,6 @@ private:
     bool list_dir_continue(Work& work, ListDirItem& item, PayloadHeader* payload);
 
     void terminate_session(Work& work);
-
-    template<typename CallbackT> void call_callback(const CallbackT& callback, ClientResult result);
-    template<typename CallbackT>
-    void call_callback(
-        const CallbackT& callback,
-        ClientResult result,
-        const typename CallbackT::second_argument_type& extra_arg);
 
     static ClientResult result_from_nak(PayloadHeader* payload);
 
