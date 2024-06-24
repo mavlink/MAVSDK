@@ -471,17 +471,18 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_any_connec
 
     return std::visit(
         overloaded{
-            [&](std::monostate) -> std::pair<ConnectionResult, Mavsdk::ConnectionHandle> {
+            [](std::monostate) {
                 // Should not happen anyway.
-                return {ConnectionResult::ConnectionUrlInvalid, Mavsdk::ConnectionHandle()};
+                return std::pair<ConnectionResult, Mavsdk::ConnectionHandle>{
+                    ConnectionResult::ConnectionUrlInvalid, Mavsdk::ConnectionHandle()};
             },
-            [&](CliArg::Udp& udp) -> std::pair<ConnectionResult, Mavsdk::ConnectionHandle> {
+            [this, forwarding_option](const CliArg::Udp& udp) {
                 return add_udp_connection(udp, forwarding_option);
             },
-            [&](CliArg::Tcp& tcp) -> std::pair<ConnectionResult, Mavsdk::ConnectionHandle> {
+            [this, forwarding_option](const CliArg::Tcp& tcp) {
                 return add_tcp_connection(tcp, forwarding_option);
             },
-            [&](CliArg::Serial& serial) -> std::pair<ConnectionResult, Mavsdk::ConnectionHandle> {
+            [this, forwarding_option](const CliArg::Serial& serial) {
                 return add_serial_connection(
                     serial.path, serial.baudrate, serial.flow_control_enabled, forwarding_option);
             }},

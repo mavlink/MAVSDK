@@ -1,6 +1,10 @@
 #include "tcp_client_connection.h"
 #include "log.h"
 
+#include <cassert>
+#include <utility>
+#include <thread>
+
 #ifdef WINDOWS
 #ifndef MINGW
 #pragma comment(lib, "Ws2_32.lib") // Without this, Ws2_32.lib is not included in static library.
@@ -13,10 +17,6 @@
 #include <netdb.h>
 #include <unistd.h> // for close()
 #endif
-
-#include <cassert>
-#include <utility>
-#include <thread>
 
 #ifndef WINDOWS
 #define GET_ERROR(_x) strerror(_x)

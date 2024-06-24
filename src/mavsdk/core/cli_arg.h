@@ -14,7 +14,8 @@ public:
             Unknown,
             In,
             Out,
-        } mode{Mode::Unknown};
+        };
+        Mode mode{Mode::Unknown};
         std::string host{};
         int port{};
     };
@@ -24,7 +25,8 @@ public:
             Unknown,
             In,
             Out,
-        } mode{Mode::Unknown};
+        };
+        Mode mode{Mode::Unknown};
         std::string host{};
         int port{};
     };
