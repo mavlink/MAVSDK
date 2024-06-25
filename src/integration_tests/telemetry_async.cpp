@@ -62,7 +62,7 @@ TEST(SitlTest, PX4TelemetryAsync)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     std::this_thread::sleep_for(std::chrono::seconds(3));

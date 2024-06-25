@@ -28,38 +28,6 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> Mavsdk::add_any_connection
     return _impl->add_any_connection(connection_url, forwarding_option);
 }
 
-ConnectionResult Mavsdk::add_udp_connection(int local_port, ForwardingOption forwarding_option)
-{
-    return _impl->add_udp_connection(DEFAULT_UDP_BIND_IP, local_port, forwarding_option).first;
-}
-
-ConnectionResult Mavsdk::add_udp_connection(
-    const std::string& local_bind_ip, const int local_port, ForwardingOption forwarding_option)
-{
-    return _impl->add_udp_connection(local_bind_ip, local_port, forwarding_option).first;
-}
-
-ConnectionResult Mavsdk::setup_udp_remote(
-    const std::string& remote_ip, int remote_port, ForwardingOption forwarding_option)
-{
-    return _impl->setup_udp_remote(remote_ip, remote_port, forwarding_option).first;
-}
-
-ConnectionResult Mavsdk::add_tcp_connection(
-    const std::string& remote_ip, const int remote_port, ForwardingOption forwarding_option)
-{
-    return _impl->add_tcp_connection(remote_ip, remote_port, forwarding_option).first;
-}
-
-ConnectionResult Mavsdk::add_serial_connection(
-    const std::string& dev_path,
-    const int baudrate,
-    bool flow_control,
-    ForwardingOption forwarding_option)
-{
-    return _impl->add_serial_connection(dev_path, baudrate, flow_control, forwarding_option).first;
-}
-
 void Mavsdk::remove_connection(ConnectionHandle handle)
 {
     _impl->remove_connection(handle);
@@ -122,13 +90,13 @@ Mavsdk::Configuration::Configuration(
 Mavsdk::ComponentType Mavsdk::Configuration::component_type_for_component_id(uint8_t component_id)
 {
     switch (component_id) {
-        case MavsdkImpl::DEFAULT_COMPONENT_ID_GCS:
+        case Mavsdk::DEFAULT_COMPONENT_ID_GCS:
             return ComponentType::GroundStation;
-        case MavsdkImpl::DEFAULT_COMPONENT_ID_CC:
+        case Mavsdk::DEFAULT_COMPONENT_ID_CC:
             return ComponentType::CompanionComputer;
-        case MavsdkImpl::DEFAULT_COMPONENT_ID_AUTOPILOT:
+        case Mavsdk::DEFAULT_COMPONENT_ID_AUTOPILOT:
             return ComponentType::Autopilot;
-        case MavsdkImpl::DEFAULT_COMPONENT_ID_CAMERA:
+        case Mavsdk::DEFAULT_COMPONENT_ID_CAMERA:
             return ComponentType::Camera;
         default:
             return ComponentType::Custom;
@@ -136,31 +104,31 @@ Mavsdk::ComponentType Mavsdk::Configuration::component_type_for_component_id(uin
 }
 
 Mavsdk::Configuration::Configuration(ComponentType component_type) :
-    _system_id(MavsdkImpl::DEFAULT_SYSTEM_ID_GCS),
-    _component_id(MavsdkImpl::DEFAULT_COMPONENT_ID_GCS),
+    _system_id(Mavsdk::DEFAULT_SYSTEM_ID_GCS),
+    _component_id(Mavsdk::DEFAULT_COMPONENT_ID_GCS),
     _always_send_heartbeats(false),
     _component_type(component_type)
 {
     switch (component_type) {
         case Mavsdk::ComponentType::GroundStation:
-            _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_GCS;
-            _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_GCS;
+            _system_id = Mavsdk::DEFAULT_SYSTEM_ID_GCS;
+            _component_id = Mavsdk::DEFAULT_COMPONENT_ID_GCS;
             _always_send_heartbeats = false;
             break;
         case Mavsdk::ComponentType::CompanionComputer:
             // TODO implement auto-detection of system ID - maybe from heartbeats?
-            _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_CC;
-            _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_CC;
+            _system_id = Mavsdk::DEFAULT_SYSTEM_ID_CC;
+            _component_id = Mavsdk::DEFAULT_COMPONENT_ID_CC;
             _always_send_heartbeats = true;
             break;
         case Mavsdk::ComponentType::Autopilot:
-            _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_AUTOPILOT;
-            _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_AUTOPILOT;
+            _system_id = Mavsdk::DEFAULT_SYSTEM_ID_AUTOPILOT;
+            _component_id = Mavsdk::DEFAULT_COMPONENT_ID_AUTOPILOT;
             _always_send_heartbeats = true;
             break;
         case Mavsdk::ComponentType::Camera:
-            _system_id = MavsdkImpl::DEFAULT_SYSTEM_ID_CAMERA;
-            _component_id = MavsdkImpl::DEFAULT_COMPONENT_ID_CAMERA;
+            _system_id = Mavsdk::DEFAULT_SYSTEM_ID_CAMERA;
+            _component_id = Mavsdk::DEFAULT_COMPONENT_ID_CAMERA;
             _always_send_heartbeats = true;
             break;
         default:

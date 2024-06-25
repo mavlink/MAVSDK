@@ -17,22 +17,22 @@
 
 namespace mavsdk {
 
-class TcpConnection : public Connection {
+class TcpClientConnection : public Connection {
 public:
-    explicit TcpConnection(
+    TcpClientConnection(
         Connection::ReceiverCallback receiver_callback,
         std::string remote_ip,
         int remote_port,
         ForwardingOption forwarding_option = ForwardingOption::ForwardingOff);
-    ~TcpConnection() override;
+    ~TcpClientConnection() override;
     ConnectionResult start() override;
     ConnectionResult stop() override;
 
     bool send_message(const mavlink_message_t& message) override;
 
     // Non-copyable
-    TcpConnection(const TcpConnection&) = delete;
-    const TcpConnection& operator=(const TcpConnection&) = delete;
+    TcpClientConnection(const TcpClientConnection&) = delete;
+    const TcpClientConnection& operator=(const TcpClientConnection&) = delete;
 
 private:
     ConnectionResult setup_port();

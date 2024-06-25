@@ -10,7 +10,7 @@ using namespace mavsdk;
 TEST(SitlTest, PX4MavlinkPassthrough)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
-    ASSERT_EQ(mavsdk.add_udp_connection(), ConnectionResult::Success);
+    ASSERT_EQ(mavsdk.add_any_connection("udpin://0.0.0.0:14540"), ConnectionResult::Success);
 
     {
         LogInfo() << "Waiting to discover vehicle";

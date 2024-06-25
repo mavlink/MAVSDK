@@ -10,8 +10,8 @@ namespace mavsdk {
 /**
  * @brief Result type returned when adding a connection.
  *
- * **Note**: Mavsdk does not throw exceptions. Instead a result of this type will be
- * returned when you add a connection: add_udp_connection().
+ * **Note**: Mavsdk does not throw exceptions. Instead a result of this type
+ *           will be returned.
  */
 enum class ConnectionResult {
     Success = 0, /**< @brief %Connection succeeded. */

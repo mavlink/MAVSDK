@@ -56,7 +56,7 @@ TEST(CameraTest, TakePhotosMultiple)
 
     const int num_photos_to_take = 3;
 
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
