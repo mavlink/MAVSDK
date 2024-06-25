@@ -1,14 +1,54 @@
 cmake_minimum_required(VERSION 3.10.2)
 
+option(HUNTER_ENABLED "Enable Hunter package manager support" OFF)
+option(BUILD_MAVSDK_SERVER "Build mavsdk_server" OFF)
+option(BUILD_WITH_PROTO_REFLECTION "Build mavsdk_server with proto reflection" OFF)
+option(BUILD_WITHOUT_CURL "Build without curl" OFF)
+option(MAVLINK_DIALECT "MAVLink dialect. Default: common" "common")
+option(BUILD_TESTING "Build tests" ON)
+option(CMAKE_POSITION_INDEPENDENT_CODE "Position independent code" ON)
+option(CCACHE "Use ccache if available" ON)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 cmake_policy(SET CMP0025 NEW)
 
+execute_process(
+    COMMAND git describe --abbrev=8 --dirty --always --tags
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    OUTPUT_VARIABLE VERSION_STR
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    RESULT_VARIABLE GITVER
+)
+
+if (NOT GITVER EQUAL "0")
+    message(STATUS "No git version found. Falling back to empty version no")
+    set(VERSION_STR "0.0.0")
+endif()
+
+message(STATUS "Version: ${VERSION_STR}")
+STRING(REGEX REPLACE v\([0-9]+\).[0-9]+.[0-9]+.*$ \\1 MAVSDK_VERSION_MAJOR "${VERSION_STR}")
+STRING(REGEX REPLACE v[0-9]+.\([0-9]+\).[0-9]+.*$ \\1 MAVSDK_VERSION_MINOR "${VERSION_STR}")
+STRING(REGEX REPLACE v[0-9]+.[0-9]+.\([0-9]+\).*$ \\1 MAVSDK_VERSION_PATCH "${VERSION_STR}")
+
+message(STATUS "Version major: ${MAVSDK_VERSION_MAJOR}")
+message(STATUS "Version minor: ${MAVSDK_VERSION_MINOR}")
+message(STATUS "Version patch: ${MAVSDK_VERSION_PATCH}")
+
+set(MAVSDK_SOVERSION_STRING ${MAVSDK_VERSION_MAJOR})
+set(MAVSDK_VERSION_STRING ${MAVSDK_VERSION_MAJOR}.${MAVSDK_VERSION_MINOR}.${MAVSDK_VERSION_PATCH})
+
+include("cmake/HunterGate.cmake")
+HunterGate(
+    URL "https://github.com/cpp-pm/hunter/archive/v0.23.315.tar.gz"
+    SHA1 "ea5d72afc0df67f2126e7fd069f20c5f723709e1"
+)
+
 project(mavsdk)
+include(GNUInstallDirs)
 
 # ccache
-option(CCACHE "Use ccache if available" ON)
 find_program(CCACHE_PROGRAM ccache)
 if(CCACHE AND CCACHE_PROGRAM AND NOT DEFINED ENV{CCACHE_DISABLE})
 
@@ -23,9 +63,6 @@ if(CCACHE AND CCACHE_PROGRAM AND NOT DEFINED ENV{CCACHE_DISABLE})
         set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
     endif()
 endif()
-
-option(BUILD_TESTS "Build tests" ON)
-option(CMAKE_POSITION_INDEPENDENT_CODE "Position independent code" ON)
 
 include(cmake/compiler_flags.cmake)
 
@@ -43,9 +80,9 @@ hunter_add_package(lzma)
 find_package(CURL REQUIRED)
 find_package(LibLZMA REQUIRED)
 
-if(BUILD_TESTS AND (IOS OR ANDROID))
-    message(STATUS "Building for iOS or Android: forcing BUILD_TESTS to FALSE...")
-    set(BUILD_TESTS OFF)
+if(BUILD_TESTING AND (IOS OR ANDROID))
+    message(STATUS "Building for iOS or Android: forcing BUILD_TESTING to FALSE...")
+    set(BUILD_TESTING OFF)
 endif()
 
 if(ANDROID)
@@ -70,7 +107,7 @@ add_subdirectory(mavsdk)
 
 include(cmake/static_analyzers.cmake)
 
-if(BUILD_TESTS)
+if(BUILD_TESTING)
     enable_testing()
 
     add_subdirectory(integration_tests)

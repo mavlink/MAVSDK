@@ -10,6 +10,6 @@ override_dh_auto_configure:
 	dh_auto_configure -O--buildsystem=cmake -O--builddirectory=build -- \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DBUILD_SHARED_LIBS=ON \
-		-DBUILD_TESTS=OFF \
+		-DBUILD_TESTING=OFF \
 		-DSUPERBUILD=OFF \
 		-DCMAKE_INSTALL_PREFIX=/usr

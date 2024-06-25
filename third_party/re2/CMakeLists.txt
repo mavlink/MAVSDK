@@ -27,8 +27,10 @@ endforeach()
 
 ExternalProject_add(
     re2
-    GIT_REPOSITORY https://github.com/google/re2
-    GIT_TAG b84e3ff189980a33d4a0c6fa1201aa0b3b8bab4a
+    DOWNLOAD_DIR ${DOWNLOAD_DIR}
+    URL https://github.com/google/re2/archive/refs/tags/2024-06-01.tar.gz
+    URL_MD5 498b85ca94755285d5c04ffc065b423e
     PREFIX re2
     CMAKE_ARGS "${CMAKE_ARGS}"
+    DEPENDS absl
     )

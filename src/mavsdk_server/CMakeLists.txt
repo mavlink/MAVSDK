@@ -6,6 +6,6 @@ find_package(gRPC REQUIRED)
 
 add_subdirectory(src)
 
-if(BUILD_TESTS)
+if(BUILD_TESTING)
     add_subdirectory(test)
 endif()

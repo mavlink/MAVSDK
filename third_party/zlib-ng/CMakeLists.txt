@@ -30,7 +30,9 @@ endforeach()
 
 ExternalProject_add(
     zlib-ng
+    DOWNLOAD_DIR ${DOWNLOAD_DIR}
     URL https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.1.6.tar.gz
+    URL_MD5 4854ab6a98d4b3d817b3e69ddbb148ce
     PREFIX zlib-ng
     CMAKE_ARGS "${CMAKE_ARGS}"
     )

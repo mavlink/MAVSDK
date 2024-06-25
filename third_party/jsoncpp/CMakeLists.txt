@@ -29,8 +29,9 @@ endforeach()
 
 ExternalProject_Add(
     jsoncpp
-    GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp
-    GIT_TAG 69098a18b9af0c47549d9a271c054d13ca92b006
     PREFIX jsoncpp
+    DOWNLOAD_DIR ${DOWNLOAD_DIR}
+    URL https://github.com/open-source-parsers/jsoncpp/archive/69098a18b9af0c47549d9a271c054d13ca92b006.tar.gz
+    URL_MD5 a808676f343e2d1073c6507b2a10539e
     CMAKE_ARGS "${CMAKE_ARGS}"
     )

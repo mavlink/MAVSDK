@@ -33,8 +33,9 @@ endforeach()
 
 ExternalProject_Add(
     gtest
-    GIT_REPOSITORY https://github.com/google/googletest
-    GIT_TAG v1.14.0
+    DOWNLOAD_DIR ${DOWNLOAD_DIR}
+    URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.tar.gz
+    URL_MD5 c8340a482851ef6a3fe618a082304cfc
     PREFIX gtest
     CMAKE_ARGS "${CMAKE_ARGS}"
     )

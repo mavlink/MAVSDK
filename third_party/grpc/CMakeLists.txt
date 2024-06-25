@@ -53,7 +53,10 @@ endforeach()
 
 ExternalProject_add(
     grpc
+    DOWNLOAD_DIR ${DOWNLOAD_DIR}
     URL https://github.com/grpc/grpc/archive/v1.61.1.tar.gz
+    URL_MD5 ebc2bfbf6deee40c908a6e8b8e2dd191
     PREFIX grpc
     CMAKE_ARGS "${CMAKE_ARGS}"
+    DEPENDS openssl cares absl protobuf re2
     )
