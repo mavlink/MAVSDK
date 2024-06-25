@@ -45,9 +45,9 @@ endforeach()
 
 ExternalProject_add(
     curl
-    GIT_REPOSITORY https://github.com/curl/curl.git
-    GIT_TAG curl-7_88_1
-    GIT_SHALLOW ON
+    DOWNLOAD_DIR ${DOWNLOAD_DIR}
+    URL https://github.com/curl/curl/releases/download/curl-8_8_0/curl-8.8.0.tar.gz
+    URL_MD5 2300048f61e6196678281a8612a873ef
     PREFIX curl
     CMAKE_ARGS "${CMAKE_ARGS}"
     )

@@ -6,6 +6,9 @@ include(ExternalProject)
 message(STATUS "Preparing external project \"openssl\"")
 
 set(OPENSSL_VERSION 3.3.0)
+set(OPENSSL_URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz)
+set(OPENSSL_URL_MD5 c8b063afbea85d867e161ecb8816cfa9)
+
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     set(OPENSSL_BUILD_TYPE "--debug")
@@ -32,7 +35,9 @@ if(ANDROID)
 
     ExternalProject_add(
         openssl
-        URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
+        DOWNLOAD_DIR ${DOWNLOAD_DIR}
+        URL ${OPENSSL_URL}
+        URL_MD5 ${OPENSSL_URL_MD5}
         PREFIX openssl
         PATCH_COMMAND patch -p 0 < ${PROJECT_SOURCE_DIR}/dockcross-android.patch
         CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env ANDROID_NDK=$ENV{CROSS_ROOT} <SOURCE_DIR>/Configure --sysroot=$ENV{CROSS_ROOT}/sysroot ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-asm no-shared
@@ -55,7 +60,9 @@ elseif(IOS)
 
     ExternalProject_add(
         openssl
-        URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
+        DOWNLOAD_DIR ${DOWNLOAD_DIR}
+        URL ${OPENSSL_URL}
+        URL_MD5 ${OPENSSL_URL_MD5}
         PREFIX openssl
         CONFIGURE_COMMAND <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
         )
@@ -73,7 +80,9 @@ elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
 
     ExternalProject_add(
         openssl
-        URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
+        DOWNLOAD_DIR ${DOWNLOAD_DIR}
+        URL ${OPENSSL_URL}
+        URL_MD5 ${OPENSSL_URL_MD5}
         PREFIX openssl
         CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CROSS_COMPILE="" <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
         BUILD_COMMAND make
@@ -89,7 +98,9 @@ elseif(MSVC)
 
     ExternalProject_add(
         openssl
-        URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
+        DOWNLOAD_DIR ${DOWNLOAD_DIR}
+        URL ${OPENSSL_URL}
+        URL_MD5 ${OPENSSL_URL_MD5}
         PREFIX openssl
         CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure VC-WIN64A --prefix=${NATIVE_INSTALL_PREFIX} --openssldir=${NATIVE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared no-asm
         BUILD_COMMAND set MAKEFLAGS= && nmake
@@ -99,7 +110,9 @@ elseif(MSVC)
 else()
     ExternalProject_add(
         openssl
-        URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
+        DOWNLOAD_DIR ${DOWNLOAD_DIR}
+        URL ${OPENSSL_URL}
+        URL_MD5 ${OPENSSL_URL_MD5}
         PREFIX openssl
         CONFIGURE_COMMAND <SOURCE_DIR>/config ${OPENSSL_BUILD_TYPE} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
         BUILD_COMMAND make

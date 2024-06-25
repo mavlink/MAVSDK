@@ -38,7 +38,10 @@ endforeach()
 
 ExternalProject_add(
     protobuf
+    DOWNLOAD_DIR ${DOWNLOAD_DIR}
     URL https://github.com/protocolbuffers/protobuf/releases/download/v25.1/protobuf-25.1.tar.gz
+    URL_MD5 105105aae0153d60059e982ead4d1d94
     PREFIX protobuf
     CMAKE_ARGS "${CMAKE_ARGS}"
+    DEPENDS zlib-ng openssl cares absl
     )

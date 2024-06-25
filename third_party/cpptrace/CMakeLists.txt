@@ -19,8 +19,9 @@ endforeach()
 
 ExternalProject_add(
     cpptrace
-    GIT_REPOSITORY https://github.com/jeremy-rifkin/cpptrace.git
-    GIT_TAG v0.3.1
+    DOWNLOAD_DIR ${DOWNLOAD_DIR}
+    URL https://github.com/jeremy-rifkin/cpptrace/archive/refs/tags/v0.6.2.tar.gz
+    URL_MD5 8a04f30985f6d7a94841c94f29e1fd65
     PREFIX cpptrace
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
