@@ -23,6 +23,27 @@ namespace _fl = ::google::protobuf::internal::field_layout;
 namespace mavsdk {
 namespace rpc {
 namespace core {
+
+inline constexpr SystemComponents::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : component_ids_{},
+        _component_ids_cached_byte_size_{0},
+        system_id_{0u},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR SystemComponents::SystemComponents(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct SystemComponentsDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SystemComponentsDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SystemComponentsDefaultTypeInternal() {}
+  union {
+    SystemComponents _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SystemComponentsDefaultTypeInternal _SystemComponents_default_instance_;
       template <typename>
 PROTOBUF_CONSTEXPR SubscribeConnectionStateRequest::SubscribeConnectionStateRequest(::_pbi::ConstantInitialized) {}
 struct SubscribeConnectionStateRequestDefaultTypeInternal {
@@ -66,6 +87,18 @@ struct SetMavlinkTimeoutRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetMavlinkTimeoutRequestDefaultTypeInternal _SetMavlinkTimeoutRequest_default_instance_;
+      template <typename>
+PROTOBUF_CONSTEXPR ListComponentsRequest::ListComponentsRequest(::_pbi::ConstantInitialized) {}
+struct ListComponentsRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ListComponentsRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ListComponentsRequestDefaultTypeInternal() {}
+  union {
+    ListComponentsRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ListComponentsRequestDefaultTypeInternal _ListComponentsRequest_default_instance_;
 
 inline constexpr ConnectionState::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -85,6 +118,25 @@ struct ConnectionStateDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConnectionStateDefaultTypeInternal _ConnectionState_default_instance_;
+
+inline constexpr ListComponentsResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : systems_{},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ListComponentsResponse::ListComponentsResponse(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct ListComponentsResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ListComponentsResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ListComponentsResponseDefaultTypeInternal() {}
+  union {
+    ListComponentsResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ListComponentsResponseDefaultTypeInternal _ListComponentsResponse_default_instance_;
 
 inline constexpr ConnectionStateResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -107,7 +159,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 }  // namespace core
 }  // namespace rpc
 }  // namespace mavsdk
-static ::_pb::Metadata file_level_metadata_core_2fcore_2eproto[5];
+static ::_pb::Metadata file_level_metadata_core_2fcore_2eproto[8];
 static constexpr const ::_pb::EnumDescriptor**
     file_level_enum_descriptors_core_2fcore_2eproto = nullptr;
 static constexpr const ::_pb::ServiceDescriptor**
@@ -158,6 +210,33 @@ const ::uint32_t TableStruct_core_2fcore_2eproto::offsets[] PROTOBUF_SECTION_VAR
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ConnectionState, _impl_.is_connected_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ListComponentsRequest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SystemComponents, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SystemComponents, _impl_.system_id_),
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::SystemComponents, _impl_.component_ids_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ListComponentsResponse, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::core::ListComponentsResponse, _impl_.systems_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -167,6 +246,9 @@ static const ::_pbi::MigrationSchema
         {18, -1, -1, sizeof(::mavsdk::rpc::core::SetMavlinkTimeoutRequest)},
         {27, -1, -1, sizeof(::mavsdk::rpc::core::SetMavlinkTimeoutResponse)},
         {35, -1, -1, sizeof(::mavsdk::rpc::core::ConnectionState)},
+        {44, -1, -1, sizeof(::mavsdk::rpc::core::ListComponentsRequest)},
+        {52, -1, -1, sizeof(::mavsdk::rpc::core::SystemComponents)},
+        {62, -1, -1, sizeof(::mavsdk::rpc::core::ListComponentsResponse)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -175,6 +257,9 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::core::_SetMavlinkTimeoutRequest_default_instance_._instance,
     &::mavsdk::rpc::core::_SetMavlinkTimeoutResponse_default_instance_._instance,
     &::mavsdk::rpc::core::_ConnectionState_default_instance_._instance,
+    &::mavsdk::rpc::core::_ListComponentsRequest_default_instance_._instance,
+    &::mavsdk::rpc::core::_SystemComponents_default_instance_._instance,
+    &::mavsdk::rpc::core::_ListComponentsResponse_default_instance_._instance,
 };
 const char descriptor_table_protodef_core_2fcore_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
     "\n\017core/core.proto\022\017mavsdk.rpc.core\"!\n\037Su"
@@ -183,26 +268,33 @@ const char descriptor_table_protodef_core_2fcore_2eproto[] PROTOBUF_SECTION_VARI
     "(\0132 .mavsdk.rpc.core.ConnectionState\"-\n\030"
     "SetMavlinkTimeoutRequest\022\021\n\ttimeout_s\030\001 "
     "\001(\001\"\033\n\031SetMavlinkTimeoutResponse\"\'\n\017Conn"
-    "ectionState\022\024\n\014is_connected\030\002 \001(\0102\367\001\n\013Co"
-    "reService\022z\n\030SubscribeConnectionState\0220."
-    "mavsdk.rpc.core.SubscribeConnectionState"
-    "Request\032(.mavsdk.rpc.core.ConnectionStat"
-    "eResponse\"\0000\001\022l\n\021SetMavlinkTimeout\022).mav"
-    "sdk.rpc.core.SetMavlinkTimeoutRequest\032*."
-    "mavsdk.rpc.core.SetMavlinkTimeoutRespons"
-    "e\"\000B\033\n\016io.mavsdk.coreB\tCoreProtob\006proto3"
+    "ectionState\022\024\n\014is_connected\030\002 \001(\010\"\027\n\025Lis"
+    "tComponentsRequest\"<\n\020SystemComponents\022\021"
+    "\n\tsystem_id\030\001 \001(\r\022\025\n\rcomponent_ids\030\002 \003(\r"
+    "\"L\n\026ListComponentsResponse\0222\n\007systems\030\001 "
+    "\003(\0132!.mavsdk.rpc.core.SystemComponents2\334"
+    "\002\n\013CoreService\022z\n\030SubscribeConnectionSta"
+    "te\0220.mavsdk.rpc.core.SubscribeConnection"
+    "StateRequest\032(.mavsdk.rpc.core.Connectio"
+    "nStateResponse\"\0000\001\022l\n\021SetMavlinkTimeout\022"
+    ").mavsdk.rpc.core.SetMavlinkTimeoutReque"
+    "st\032*.mavsdk.rpc.core.SetMavlinkTimeoutRe"
+    "sponse\"\000\022c\n\016ListComponents\022&.mavsdk.rpc."
+    "core.ListComponentsRequest\032\'.mavsdk.rpc."
+    "core.ListComponentsResponse\"\000B\033\n\016io.mavs"
+    "dk.coreB\tCoreProtob\006proto3"
 };
 static ::absl::once_flag descriptor_table_core_2fcore_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_core_2fcore_2eproto = {
     false,
     false,
-    560,
+    826,
     descriptor_table_protodef_core_2fcore_2eproto,
     "core/core.proto",
     &descriptor_table_core_2fcore_2eproto_once,
     nullptr,
     0,
-    5,
+    8,
     schemas,
     file_default_instances,
     TableStruct_core_2fcore_2eproto::offsets,
@@ -860,6 +952,442 @@ void ConnectionState::InternalSwap(ConnectionState* PROTOBUF_RESTRICT other) {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_core_2fcore_2eproto_getter, &descriptor_table_core_2fcore_2eproto_once,
       file_level_metadata_core_2fcore_2eproto[4]);
+}
+// ===================================================================
+
+class ListComponentsRequest::_Internal {
+ public:
+};
+
+ListComponentsRequest::ListComponentsRequest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.core.ListComponentsRequest)
+}
+ListComponentsRequest::ListComponentsRequest(
+    ::google::protobuf::Arena* arena,
+    const ListComponentsRequest& from)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+  ListComponentsRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.ListComponentsRequest)
+}
+
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata ListComponentsRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_core_2fcore_2eproto_getter, &descriptor_table_core_2fcore_2eproto_once,
+      file_level_metadata_core_2fcore_2eproto[5]);
+}
+// ===================================================================
+
+class SystemComponents::_Internal {
+ public:
+};
+
+SystemComponents::SystemComponents(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.core.SystemComponents)
+}
+inline PROTOBUF_NDEBUG_INLINE SystemComponents::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : component_ids_{visibility, arena, from.component_ids_},
+        _component_ids_cached_byte_size_{0},
+        _cached_size_{0} {}
+
+SystemComponents::SystemComponents(
+    ::google::protobuf::Arena* arena,
+    const SystemComponents& from)
+    : ::google::protobuf::Message(arena) {
+  SystemComponents* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  _impl_.system_id_ = from._impl_.system_id_;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.SystemComponents)
+}
+inline PROTOBUF_NDEBUG_INLINE SystemComponents::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : component_ids_{visibility, arena},
+        _component_ids_cached_byte_size_{0},
+        _cached_size_{0} {}
+
+inline void SystemComponents::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.system_id_ = {};
+}
+SystemComponents::~SystemComponents() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.core.SystemComponents)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void SystemComponents::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void SystemComponents::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.SystemComponents)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.component_ids_.Clear();
+  _impl_.system_id_ = 0u;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* SystemComponents::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2> SystemComponents::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_SystemComponents_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // repeated uint32 component_ids = 2;
+    {::_pbi::TcParser::FastV32P1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(SystemComponents, _impl_.component_ids_)}},
+    // uint32 system_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SystemComponents, _impl_.system_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(SystemComponents, _impl_.system_id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint32 system_id = 1;
+    {PROTOBUF_FIELD_OFFSET(SystemComponents, _impl_.system_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+    // repeated uint32 component_ids = 2;
+    {PROTOBUF_FIELD_OFFSET(SystemComponents, _impl_.component_ids_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kPackedUInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+::uint8_t* SystemComponents::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.core.SystemComponents)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // uint32 system_id = 1;
+  if (this->_internal_system_id() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        1, this->_internal_system_id(), target);
+  }
+
+  // repeated uint32 component_ids = 2;
+  {
+    int byte_size = _impl_._component_ids_cached_byte_size_.Get();
+    if (byte_size > 0) {
+      target = stream->WriteUInt32Packed(
+          2, _internal_component_ids(), byte_size, target);
+    }
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.core.SystemComponents)
+  return target;
+}
+
+::size_t SystemComponents::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.core.SystemComponents)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated uint32 component_ids = 2;
+  {
+    std::size_t data_size = ::_pbi::WireFormatLite::UInt32Size(
+        this->_internal_component_ids())
+    ;
+    _impl_._component_ids_cached_byte_size_.Set(::_pbi::ToCachedSize(data_size));
+    std::size_t tag_size = data_size == 0
+        ? 0
+        : 1 + ::_pbi::WireFormatLite::Int32Size(
+                            static_cast<int32_t>(data_size))
+    ;
+    total_size += tag_size + data_size;
+  }
+  // uint32 system_id = 1;
+  if (this->_internal_system_id() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_system_id());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData SystemComponents::_class_data_ = {
+    SystemComponents::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* SystemComponents::GetClassData() const {
+  return &_class_data_;
+}
+
+void SystemComponents::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<SystemComponents*>(&to_msg);
+  auto& from = static_cast<const SystemComponents&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.SystemComponents)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_internal_mutable_component_ids()->MergeFrom(from._internal_component_ids());
+  if (from._internal_system_id() != 0) {
+    _this->_internal_set_system_id(from._internal_system_id());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SystemComponents::CopyFrom(const SystemComponents& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.core.SystemComponents)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool SystemComponents::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* SystemComponents::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void SystemComponents::InternalSwap(SystemComponents* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.component_ids_.InternalSwap(&other->_impl_.component_ids_);
+        swap(_impl_.system_id_, other->_impl_.system_id_);
+}
+
+::google::protobuf::Metadata SystemComponents::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_core_2fcore_2eproto_getter, &descriptor_table_core_2fcore_2eproto_once,
+      file_level_metadata_core_2fcore_2eproto[6]);
+}
+// ===================================================================
+
+class ListComponentsResponse::_Internal {
+ public:
+};
+
+ListComponentsResponse::ListComponentsResponse(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.core.ListComponentsResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE ListComponentsResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : systems_{visibility, arena, from.systems_},
+        _cached_size_{0} {}
+
+ListComponentsResponse::ListComponentsResponse(
+    ::google::protobuf::Arena* arena,
+    const ListComponentsResponse& from)
+    : ::google::protobuf::Message(arena) {
+  ListComponentsResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.core.ListComponentsResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE ListComponentsResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : systems_{visibility, arena},
+        _cached_size_{0} {}
+
+inline void ListComponentsResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+ListComponentsResponse::~ListComponentsResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.core.ListComponentsResponse)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void ListComponentsResponse::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
+}
+
+PROTOBUF_NOINLINE void ListComponentsResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.core.ListComponentsResponse)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.systems_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* ListComponentsResponse::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> ListComponentsResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_ListComponentsResponse_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // repeated .mavsdk.rpc.core.SystemComponents systems = 1;
+    {::_pbi::TcParser::FastMtR1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(ListComponentsResponse, _impl_.systems_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // repeated .mavsdk.rpc.core.SystemComponents systems = 1;
+    {PROTOBUF_FIELD_OFFSET(ListComponentsResponse, _impl_.systems_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::core::SystemComponents>()},
+  }}, {{
+  }},
+};
+
+::uint8_t* ListComponentsResponse::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.core.ListComponentsResponse)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // repeated .mavsdk.rpc.core.SystemComponents systems = 1;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_systems_size()); i < n; i++) {
+    const auto& repfield = this->_internal_systems().Get(i);
+    target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(1, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.core.ListComponentsResponse)
+  return target;
+}
+
+::size_t ListComponentsResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.core.ListComponentsResponse)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .mavsdk.rpc.core.SystemComponents systems = 1;
+  total_size += 1UL * this->_internal_systems_size();
+  for (const auto& msg : this->_internal_systems()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+  }
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::google::protobuf::Message::ClassData ListComponentsResponse::_class_data_ = {
+    ListComponentsResponse::MergeImpl,
+    nullptr,  // OnDemandRegisterArenaDtor
+};
+const ::google::protobuf::Message::ClassData* ListComponentsResponse::GetClassData() const {
+  return &_class_data_;
+}
+
+void ListComponentsResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
+  auto* const _this = static_cast<ListComponentsResponse*>(&to_msg);
+  auto& from = static_cast<const ListComponentsResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.core.ListComponentsResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_internal_mutable_systems()->MergeFrom(
+      from._internal_systems());
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void ListComponentsResponse::CopyFrom(const ListComponentsResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.core.ListComponentsResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool ListComponentsResponse::IsInitialized() const {
+  return true;
+}
+
+::_pbi::CachedSize* ListComponentsResponse::AccessCachedSize() const {
+  return &_impl_._cached_size_;
+}
+void ListComponentsResponse::InternalSwap(ListComponentsResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.systems_.InternalSwap(&other->_impl_.systems_);
+}
+
+::google::protobuf::Metadata ListComponentsResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_core_2fcore_2eproto_getter, &descriptor_table_core_2fcore_2eproto_once,
+      file_level_metadata_core_2fcore_2eproto[7]);
 }
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace core

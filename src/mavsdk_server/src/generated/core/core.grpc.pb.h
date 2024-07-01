@@ -63,6 +63,15 @@ class CoreService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>> PrepareAsyncSetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>>(PrepareAsyncSetMavlinkTimeoutRaw(context, request, cq));
     }
+    //
+    // List all components (computers, cameras, servos, gimbals, etc.) connected to the system.
+    virtual ::grpc::Status ListComponents(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest& request, ::mavsdk::rpc::core::ListComponentsResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::ListComponentsResponse>> AsyncListComponents(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::ListComponentsResponse>>(AsyncListComponentsRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::ListComponentsResponse>> PrepareAsyncListComponents(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::ListComponentsResponse>>(PrepareAsyncListComponentsRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -78,6 +87,10 @@ class CoreService final {
       // need to be increased to prevent timeouts.
       virtual void SetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      //
+      // List all components (computers, cameras, servos, gimbals, etc.) connected to the system.
+      virtual void ListComponents(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest* request, ::mavsdk::rpc::core::ListComponentsResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void ListComponents(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest* request, ::mavsdk::rpc::core::ListComponentsResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -88,6 +101,8 @@ class CoreService final {
     virtual ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::core::ConnectionStateResponse>* PrepareAsyncSubscribeConnectionStateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>* AsyncSetMavlinkTimeoutRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>* PrepareAsyncSetMavlinkTimeoutRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::ListComponentsResponse>* AsyncListComponentsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::core::ListComponentsResponse>* PrepareAsyncListComponentsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -108,12 +123,21 @@ class CoreService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>> PrepareAsyncSetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>>(PrepareAsyncSetMavlinkTimeoutRaw(context, request, cq));
     }
+    ::grpc::Status ListComponents(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest& request, ::mavsdk::rpc::core::ListComponentsResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::ListComponentsResponse>> AsyncListComponents(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::ListComponentsResponse>>(AsyncListComponentsRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::ListComponentsResponse>> PrepareAsyncListComponents(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::ListComponentsResponse>>(PrepareAsyncListComponentsRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
       void SubscribeConnectionState(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::core::ConnectionStateResponse>* reactor) override;
       void SetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response, std::function<void(::grpc::Status)>) override;
       void SetMavlinkTimeout(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void ListComponents(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest* request, ::mavsdk::rpc::core::ListComponentsResponse* response, std::function<void(::grpc::Status)>) override;
+      void ListComponents(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest* request, ::mavsdk::rpc::core::ListComponentsResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -130,8 +154,11 @@ class CoreService final {
     ::grpc::ClientAsyncReader< ::mavsdk::rpc::core::ConnectionStateResponse>* PrepareAsyncSubscribeConnectionStateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>* AsyncSetMavlinkTimeoutRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::SetMavlinkTimeoutResponse>* PrepareAsyncSetMavlinkTimeoutRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::ListComponentsResponse>* AsyncListComponentsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::ListComponentsResponse>* PrepareAsyncListComponentsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeConnectionState_;
     const ::grpc::internal::RpcMethod rpcmethod_SetMavlinkTimeout_;
+    const ::grpc::internal::RpcMethod rpcmethod_ListComponents_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -150,6 +177,9 @@ class CoreService final {
     // if MAVSDK has to communicate over links with high latency it might
     // need to be increased to prevent timeouts.
     virtual ::grpc::Status SetMavlinkTimeout(::grpc::ServerContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response);
+    //
+    // List all components (computers, cameras, servos, gimbals, etc.) connected to the system.
+    virtual ::grpc::Status ListComponents(::grpc::ServerContext* context, const ::mavsdk::rpc::core::ListComponentsRequest* request, ::mavsdk::rpc::core::ListComponentsResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_SubscribeConnectionState : public BaseClass {
@@ -191,7 +221,27 @@ class CoreService final {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SubscribeConnectionState<WithAsyncMethod_SetMavlinkTimeout<Service > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_ListComponents : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_ListComponents() {
+      ::grpc::Service::MarkMethodAsync(2);
+    }
+    ~WithAsyncMethod_ListComponents() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ListComponents(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::ListComponentsRequest* /*request*/, ::mavsdk::rpc::core::ListComponentsResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestListComponents(::grpc::ServerContext* context, ::mavsdk::rpc::core::ListComponentsRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::core::ListComponentsResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_SubscribeConnectionState<WithAsyncMethod_SetMavlinkTimeout<WithAsyncMethod_ListComponents<Service > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_SubscribeConnectionState : public BaseClass {
    private:
@@ -241,7 +291,34 @@ class CoreService final {
     virtual ::grpc::ServerUnaryReactor* SetMavlinkTimeout(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* /*request*/, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_SubscribeConnectionState<WithCallbackMethod_SetMavlinkTimeout<Service > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_ListComponents : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_ListComponents() {
+      ::grpc::Service::MarkMethodCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::core::ListComponentsRequest, ::mavsdk::rpc::core::ListComponentsResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::core::ListComponentsRequest* request, ::mavsdk::rpc::core::ListComponentsResponse* response) { return this->ListComponents(context, request, response); }));}
+    void SetMessageAllocatorFor_ListComponents(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::core::ListComponentsRequest, ::mavsdk::rpc::core::ListComponentsResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::core::ListComponentsRequest, ::mavsdk::rpc::core::ListComponentsResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_ListComponents() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ListComponents(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::ListComponentsRequest* /*request*/, ::mavsdk::rpc::core::ListComponentsResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* ListComponents(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::core::ListComponentsRequest* /*request*/, ::mavsdk::rpc::core::ListComponentsResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_SubscribeConnectionState<WithCallbackMethod_SetMavlinkTimeout<WithCallbackMethod_ListComponents<Service > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SubscribeConnectionState : public BaseClass {
@@ -273,6 +350,23 @@ class CoreService final {
     }
     // disable synchronous version of this method
     ::grpc::Status SetMavlinkTimeout(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* /*request*/, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_ListComponents : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_ListComponents() {
+      ::grpc::Service::MarkMethodGeneric(2);
+    }
+    ~WithGenericMethod_ListComponents() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ListComponents(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::ListComponentsRequest* /*request*/, ::mavsdk::rpc::core::ListComponentsResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -315,6 +409,26 @@ class CoreService final {
     }
     void RequestSetMavlinkTimeout(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_ListComponents : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_ListComponents() {
+      ::grpc::Service::MarkMethodRaw(2);
+    }
+    ~WithRawMethod_ListComponents() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ListComponents(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::ListComponentsRequest* /*request*/, ::mavsdk::rpc::core::ListComponentsResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestListComponents(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -362,6 +476,28 @@ class CoreService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithRawCallbackMethod_ListComponents : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_ListComponents() {
+      ::grpc::Service::MarkMethodRawCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ListComponents(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_ListComponents() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ListComponents(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::ListComponentsRequest* /*request*/, ::mavsdk::rpc::core::ListComponentsResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* ListComponents(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_SetMavlinkTimeout : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -388,7 +524,34 @@ class CoreService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedSetMavlinkTimeout(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::core::SetMavlinkTimeoutRequest,::mavsdk::rpc::core::SetMavlinkTimeoutResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_SetMavlinkTimeout<Service > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_ListComponents : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_ListComponents() {
+      ::grpc::Service::MarkMethodStreamed(2,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::core::ListComponentsRequest, ::mavsdk::rpc::core::ListComponentsResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::core::ListComponentsRequest, ::mavsdk::rpc::core::ListComponentsResponse>* streamer) {
+                       return this->StreamedListComponents(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_ListComponents() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status ListComponents(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::core::ListComponentsRequest* /*request*/, ::mavsdk::rpc::core::ListComponentsResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedListComponents(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::core::ListComponentsRequest,::mavsdk::rpc::core::ListComponentsResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_SetMavlinkTimeout<WithStreamedUnaryMethod_ListComponents<Service > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeConnectionState : public BaseClass {
    private:
@@ -417,7 +580,7 @@ class CoreService final {
     virtual ::grpc::Status StreamedSubscribeConnectionState(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::core::SubscribeConnectionStateRequest,::mavsdk::rpc::core::ConnectionStateResponse>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_SubscribeConnectionState<Service > SplitStreamedService;
-  typedef WithSplitStreamingMethod_SubscribeConnectionState<WithStreamedUnaryMethod_SetMavlinkTimeout<Service > > StreamedService;
+  typedef WithSplitStreamingMethod_SubscribeConnectionState<WithStreamedUnaryMethod_SetMavlinkTimeout<WithStreamedUnaryMethod_ListComponents<Service > > > StreamedService;
 };
 
 }  // namespace core

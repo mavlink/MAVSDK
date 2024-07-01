@@ -26,6 +26,7 @@ namespace core {
 static const char* CoreService_method_names[] = {
   "/mavsdk.rpc.core.CoreService/SubscribeConnectionState",
   "/mavsdk.rpc.core.CoreService/SetMavlinkTimeout",
+  "/mavsdk.rpc.core.CoreService/ListComponents",
 };
 
 std::unique_ptr< CoreService::Stub> CoreService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -37,6 +38,7 @@ std::unique_ptr< CoreService::Stub> CoreService::NewStub(const std::shared_ptr< 
 CoreService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
   : channel_(channel), rpcmethod_SubscribeConnectionState_(CoreService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   , rpcmethod_SetMavlinkTimeout_(CoreService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_ListComponents_(CoreService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::ClientReader< ::mavsdk::rpc::core::ConnectionStateResponse>* CoreService::Stub::SubscribeConnectionStateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::SubscribeConnectionStateRequest& request) {
@@ -78,6 +80,29 @@ void CoreService::Stub::async::SetMavlinkTimeout(::grpc::ClientContext* context,
   return result;
 }
 
+::grpc::Status CoreService::Stub::ListComponents(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest& request, ::mavsdk::rpc::core::ListComponentsResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::core::ListComponentsRequest, ::mavsdk::rpc::core::ListComponentsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_ListComponents_, context, request, response);
+}
+
+void CoreService::Stub::async::ListComponents(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest* request, ::mavsdk::rpc::core::ListComponentsResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::core::ListComponentsRequest, ::mavsdk::rpc::core::ListComponentsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ListComponents_, context, request, response, std::move(f));
+}
+
+void CoreService::Stub::async::ListComponents(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest* request, ::mavsdk::rpc::core::ListComponentsResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_ListComponents_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::ListComponentsResponse>* CoreService::Stub::PrepareAsyncListComponentsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::core::ListComponentsResponse, ::mavsdk::rpc::core::ListComponentsRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_ListComponents_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::core::ListComponentsResponse>* CoreService::Stub::AsyncListComponentsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::core::ListComponentsRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncListComponentsRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 CoreService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       CoreService_method_names[0],
@@ -99,6 +124,16 @@ CoreService::Service::Service() {
              ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* resp) {
                return service->SetMavlinkTimeout(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CoreService_method_names[2],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CoreService::Service, ::mavsdk::rpc::core::ListComponentsRequest, ::mavsdk::rpc::core::ListComponentsResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CoreService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::core::ListComponentsRequest* req,
+             ::mavsdk::rpc::core::ListComponentsResponse* resp) {
+               return service->ListComponents(ctx, req, resp);
+             }, this)));
 }
 
 CoreService::Service::~Service() {
@@ -112,6 +147,13 @@ CoreService::Service::~Service() {
 }
 
 ::grpc::Status CoreService::Service::SetMavlinkTimeout(::grpc::ServerContext* context, const ::mavsdk::rpc::core::SetMavlinkTimeoutRequest* request, ::mavsdk::rpc::core::SetMavlinkTimeoutResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CoreService::Service::ListComponents(::grpc::ServerContext* context, const ::mavsdk::rpc::core::ListComponentsRequest* request, ::mavsdk::rpc::core::ListComponentsResponse* response) {
   (void) context;
   (void) request;
   (void) response;
