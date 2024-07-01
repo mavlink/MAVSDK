@@ -43,6 +43,27 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status ListComponents(
+        grpc::ServerContext* /* context */,
+        const rpc::core::ListComponentsRequest* /* request */,
+        rpc::core::ListComponentsResponse* response) override
+    {
+        auto systems = _mavsdk.systems();
+        for (const auto& system : systems) {
+            // Create a new SystemComponents message for each system.
+            auto* system_components = response->add_systems();
+
+            // Set the system_id for the current system.
+            system_components->set_system_id(system->get_system_id());
+
+            // Iterate over component IDs and add them to the current system's component list.
+            for (const auto& component_id : system->component_ids()) {
+                system_components->add_component_ids(component_id);
+            }
+        }
+        return grpc::Status::OK;
+    }
+
     void stop() { _stop_promise.set_value(); }
 
 private:

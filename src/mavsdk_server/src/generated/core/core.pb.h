@@ -65,6 +65,12 @@ extern ConnectionStateDefaultTypeInternal _ConnectionState_default_instance_;
 class ConnectionStateResponse;
 struct ConnectionStateResponseDefaultTypeInternal;
 extern ConnectionStateResponseDefaultTypeInternal _ConnectionStateResponse_default_instance_;
+class ListComponentsRequest;
+struct ListComponentsRequestDefaultTypeInternal;
+extern ListComponentsRequestDefaultTypeInternal _ListComponentsRequest_default_instance_;
+class ListComponentsResponse;
+struct ListComponentsResponseDefaultTypeInternal;
+extern ListComponentsResponseDefaultTypeInternal _ListComponentsResponse_default_instance_;
 class SetMavlinkTimeoutRequest;
 struct SetMavlinkTimeoutRequestDefaultTypeInternal;
 extern SetMavlinkTimeoutRequestDefaultTypeInternal _SetMavlinkTimeoutRequest_default_instance_;
@@ -74,6 +80,9 @@ extern SetMavlinkTimeoutResponseDefaultTypeInternal _SetMavlinkTimeoutResponse_d
 class SubscribeConnectionStateRequest;
 struct SubscribeConnectionStateRequestDefaultTypeInternal;
 extern SubscribeConnectionStateRequestDefaultTypeInternal _SubscribeConnectionStateRequest_default_instance_;
+class SystemComponents;
+struct SystemComponentsDefaultTypeInternal;
+extern SystemComponentsDefaultTypeInternal _SystemComponents_default_instance_;
 }  // namespace core
 }  // namespace rpc
 }  // namespace mavsdk
@@ -90,6 +99,202 @@ namespace core {
 
 
 // -------------------------------------------------------------------
+
+class SystemComponents final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.SystemComponents) */ {
+ public:
+  inline SystemComponents() : SystemComponents(nullptr) {}
+  ~SystemComponents() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR SystemComponents(::google::protobuf::internal::ConstantInitialized);
+
+  inline SystemComponents(const SystemComponents& from)
+      : SystemComponents(nullptr, from) {}
+  SystemComponents(SystemComponents&& from) noexcept
+    : SystemComponents() {
+    *this = ::std::move(from);
+  }
+
+  inline SystemComponents& operator=(const SystemComponents& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SystemComponents& operator=(SystemComponents&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SystemComponents& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SystemComponents* internal_default_instance() {
+    return reinterpret_cast<const SystemComponents*>(
+               &_SystemComponents_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    6;
+
+  friend void swap(SystemComponents& a, SystemComponents& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SystemComponents* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SystemComponents* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SystemComponents* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<SystemComponents>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SystemComponents& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const SystemComponents& from) {
+    SystemComponents::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(SystemComponents* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.core.SystemComponents";
+  }
+  protected:
+  explicit SystemComponents(::google::protobuf::Arena* arena);
+  SystemComponents(::google::protobuf::Arena* arena, const SystemComponents& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kComponentIdsFieldNumber = 2,
+    kSystemIdFieldNumber = 1,
+  };
+  // repeated uint32 component_ids = 2;
+  int component_ids_size() const;
+  private:
+  int _internal_component_ids_size() const;
+
+  public:
+  void clear_component_ids() ;
+  ::uint32_t component_ids(int index) const;
+  void set_component_ids(int index, ::uint32_t value);
+  void add_component_ids(::uint32_t value);
+  const ::google::protobuf::RepeatedField<::uint32_t>& component_ids() const;
+  ::google::protobuf::RepeatedField<::uint32_t>* mutable_component_ids();
+
+  private:
+  const ::google::protobuf::RepeatedField<::uint32_t>& _internal_component_ids() const;
+  ::google::protobuf::RepeatedField<::uint32_t>* _internal_mutable_component_ids();
+
+  public:
+  // uint32 system_id = 1;
+  void clear_system_id() ;
+  ::uint32_t system_id() const;
+  void set_system_id(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_system_id() const;
+  void _internal_set_system_id(::uint32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.core.SystemComponents)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::RepeatedField<::uint32_t> component_ids_;
+    mutable ::google::protobuf::internal::CachedSize _component_ids_cached_byte_size_;
+    ::uint32_t system_id_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_core_2fcore_2eproto;
+};// -------------------------------------------------------------------
 
 class SubscribeConnectionStateRequest final :
     public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.SubscribeConnectionStateRequest) */ {
@@ -538,6 +743,142 @@ class SetMavlinkTimeoutRequest final :
   friend struct ::TableStruct_core_2fcore_2eproto;
 };// -------------------------------------------------------------------
 
+class ListComponentsRequest final :
+    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.ListComponentsRequest) */ {
+ public:
+  inline ListComponentsRequest() : ListComponentsRequest(nullptr) {}
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR ListComponentsRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline ListComponentsRequest(const ListComponentsRequest& from)
+      : ListComponentsRequest(nullptr, from) {}
+  ListComponentsRequest(ListComponentsRequest&& from) noexcept
+    : ListComponentsRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline ListComponentsRequest& operator=(const ListComponentsRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ListComponentsRequest& operator=(ListComponentsRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ListComponentsRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ListComponentsRequest* internal_default_instance() {
+    return reinterpret_cast<const ListComponentsRequest*>(
+               &_ListComponentsRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    5;
+
+  friend void swap(ListComponentsRequest& a, ListComponentsRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ListComponentsRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ListComponentsRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ListComponentsRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<ListComponentsRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const ListComponentsRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const ListComponentsRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+  public:
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.core.ListComponentsRequest";
+  }
+  protected:
+  explicit ListComponentsRequest(::google::protobuf::Arena* arena);
+  ListComponentsRequest(::google::protobuf::Arena* arena, const ListComponentsRequest& from);
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.core.ListComponentsRequest)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_core_2fcore_2eproto;
+};// -------------------------------------------------------------------
+
 class ConnectionState final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.ConnectionState) */ {
  public:
@@ -706,6 +1047,189 @@ class ConnectionState final :
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
     bool is_connected_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_core_2fcore_2eproto;
+};// -------------------------------------------------------------------
+
+class ListComponentsResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.core.ListComponentsResponse) */ {
+ public:
+  inline ListComponentsResponse() : ListComponentsResponse(nullptr) {}
+  ~ListComponentsResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR ListComponentsResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline ListComponentsResponse(const ListComponentsResponse& from)
+      : ListComponentsResponse(nullptr, from) {}
+  ListComponentsResponse(ListComponentsResponse&& from) noexcept
+    : ListComponentsResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline ListComponentsResponse& operator=(const ListComponentsResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ListComponentsResponse& operator=(ListComponentsResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ListComponentsResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ListComponentsResponse* internal_default_instance() {
+    return reinterpret_cast<const ListComponentsResponse*>(
+               &_ListComponentsResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    7;
+
+  friend void swap(ListComponentsResponse& a, ListComponentsResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ListComponentsResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ListComponentsResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ListComponentsResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<ListComponentsResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ListComponentsResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const ListComponentsResponse& from) {
+    ListComponentsResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(ListComponentsResponse* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.core.ListComponentsResponse";
+  }
+  protected:
+  explicit ListComponentsResponse(::google::protobuf::Arena* arena);
+  ListComponentsResponse(::google::protobuf::Arena* arena, const ListComponentsResponse& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kSystemsFieldNumber = 1,
+  };
+  // repeated .mavsdk.rpc.core.SystemComponents systems = 1;
+  int systems_size() const;
+  private:
+  int _internal_systems_size() const;
+
+  public:
+  void clear_systems() ;
+  ::mavsdk::rpc::core::SystemComponents* mutable_systems(int index);
+  ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::core::SystemComponents >*
+      mutable_systems();
+  private:
+  const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::core::SystemComponents>& _internal_systems() const;
+  ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::core::SystemComponents>* _internal_mutable_systems();
+  public:
+  const ::mavsdk::rpc::core::SystemComponents& systems(int index) const;
+  ::mavsdk::rpc::core::SystemComponents* add_systems();
+  const ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::core::SystemComponents >&
+      systems() const;
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.core.ListComponentsResponse)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::core::SystemComponents > systems_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -1066,6 +1590,135 @@ inline void ConnectionState::_internal_set_is_connected(bool value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
   _impl_.is_connected_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// ListComponentsRequest
+
+// -------------------------------------------------------------------
+
+// SystemComponents
+
+// uint32 system_id = 1;
+inline void SystemComponents::clear_system_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.system_id_ = 0u;
+}
+inline ::uint32_t SystemComponents::system_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.core.SystemComponents.system_id)
+  return _internal_system_id();
+}
+inline void SystemComponents::set_system_id(::uint32_t value) {
+  _internal_set_system_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.core.SystemComponents.system_id)
+}
+inline ::uint32_t SystemComponents::_internal_system_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.system_id_;
+}
+inline void SystemComponents::_internal_set_system_id(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.system_id_ = value;
+}
+
+// repeated uint32 component_ids = 2;
+inline int SystemComponents::_internal_component_ids_size() const {
+  return _internal_component_ids().size();
+}
+inline int SystemComponents::component_ids_size() const {
+  return _internal_component_ids_size();
+}
+inline void SystemComponents::clear_component_ids() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_ids_.Clear();
+}
+inline ::uint32_t SystemComponents::component_ids(int index) const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.core.SystemComponents.component_ids)
+  return _internal_component_ids().Get(index);
+}
+inline void SystemComponents::set_component_ids(int index, ::uint32_t value) {
+  _internal_mutable_component_ids()->Set(index, value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.core.SystemComponents.component_ids)
+}
+inline void SystemComponents::add_component_ids(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _internal_mutable_component_ids()->Add(value);
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.core.SystemComponents.component_ids)
+}
+inline const ::google::protobuf::RepeatedField<::uint32_t>& SystemComponents::component_ids() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.core.SystemComponents.component_ids)
+  return _internal_component_ids();
+}
+inline ::google::protobuf::RepeatedField<::uint32_t>* SystemComponents::mutable_component_ids()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.core.SystemComponents.component_ids)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  return _internal_mutable_component_ids();
+}
+inline const ::google::protobuf::RepeatedField<::uint32_t>& SystemComponents::_internal_component_ids()
+    const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_ids_;
+}
+inline ::google::protobuf::RepeatedField<::uint32_t>* SystemComponents::_internal_mutable_component_ids() {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return &_impl_.component_ids_;
+}
+
+// -------------------------------------------------------------------
+
+// ListComponentsResponse
+
+// repeated .mavsdk.rpc.core.SystemComponents systems = 1;
+inline int ListComponentsResponse::_internal_systems_size() const {
+  return _internal_systems().size();
+}
+inline int ListComponentsResponse::systems_size() const {
+  return _internal_systems_size();
+}
+inline void ListComponentsResponse::clear_systems() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.systems_.Clear();
+}
+inline ::mavsdk::rpc::core::SystemComponents* ListComponentsResponse::mutable_systems(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.core.ListComponentsResponse.systems)
+  return _internal_mutable_systems()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::core::SystemComponents>* ListComponentsResponse::mutable_systems()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.core.ListComponentsResponse.systems)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  return _internal_mutable_systems();
+}
+inline const ::mavsdk::rpc::core::SystemComponents& ListComponentsResponse::systems(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.core.ListComponentsResponse.systems)
+  return _internal_systems().Get(index);
+}
+inline ::mavsdk::rpc::core::SystemComponents* ListComponentsResponse::add_systems() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::mavsdk::rpc::core::SystemComponents* _add = _internal_mutable_systems()->Add();
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.core.ListComponentsResponse.systems)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::core::SystemComponents>& ListComponentsResponse::systems() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.core.ListComponentsResponse.systems)
+  return _internal_systems();
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::core::SystemComponents>&
+ListComponentsResponse::_internal_systems() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.systems_;
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::core::SystemComponents>*
+ListComponentsResponse::_internal_mutable_systems() {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return &_impl_.systems_;
 }
 
 #ifdef __GNUC__
