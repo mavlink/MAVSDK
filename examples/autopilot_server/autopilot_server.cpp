@@ -15,7 +15,7 @@
 
 /*
  This example runs a MAVLink "autopilot" utilising the MAVSDK server plugins
- on a seperate thread. This uses two MAVSDK instances, one GCS, one autopilot.
+ on a separate thread. This uses two MAVSDK instances, one GCS, one autopilot.
 
  The main thread acts as a GCS and reads telemetry, parameters, transmits across
  a mission, clears the mission, arms the vehicle and then triggers a vehicle takeoff.
@@ -55,13 +55,20 @@ Mission::MissionItem make_mission_item(
 
 int main(int argc, char** argv)
 {
-    // We run the server plugins on a seperate thread so we can use the main
+    // We run the server plugins on a separate thread so we can use the main
     // thread as a ground station.
-    std::thread autopilotThread([]() {
+
+    if (argc < 2) {
+        std::cerr << "Too few input arguments. usage: $ arm_authorizer_server <connection_url>"
+                  << std::endl;
+        return 1;
+    }
+
+    std::thread autopilotThread([&]() {
         mavsdk::Mavsdk mavsdkTester{
             mavsdk::Mavsdk::Configuration{mavsdk::Mavsdk::ComponentType::Autopilot}};
 
-        auto result = mavsdkTester.add_any_connection("udp://127.0.0.1:14551");
+        auto result = mavsdkTester.add_any_connection("udp://127.0.0.1:14550");
         if (result == mavsdk::ConnectionResult::Success) {
             std::cout << "Connected autopilot server side!" << std::endl;
         }
@@ -112,7 +119,7 @@ int main(int argc, char** argv)
                     MissionRawServer::Result res, MissionRawServer::MissionPlan plan) {
                     std::cout << "Received Uploaded Mission!" << std::endl;
                     std::cout << plan << std::endl;
-                    // Unsubscribe so we only recieve one mission
+                    // Unsubscribe so we only receive one mission
                     missionRawServer.unsubscribe_incoming_mission(handle);
                     mission_prom.set_value(plan);
                 });
@@ -127,7 +134,7 @@ int main(int argc, char** argv)
         // Set current item to complete to progress the current item state
         missionRawServer.set_current_item_complete();
 
-        // As we're acting as an autopilot, lets just make the vehicle jump to 10m altitude on
+        // As we're acting as an autopilot, let's just make the vehicle jump to 10m altitude on
         // successful takeoff
         actionServer.subscribe_takeoff([&position](ActionServer::Result result, bool takeoff) {
             if (result == ActionServer::Result::Success) {
@@ -154,7 +161,7 @@ int main(int argc, char** argv)
     // to communicate with the autopilot server plugins.
     mavsdk::Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
-    auto result = mavsdk.add_any_connection("udp://:14551");
+    auto result = mavsdk.add_any_connection(argv[1]);
     if (result == mavsdk::ConnectionResult::Success) {
         std::cout << "Connected!" << std::endl;
     }
@@ -288,9 +295,24 @@ int main(int argc, char** argv)
         break;
     }
 
-    while (true) {
+    // Monitor flight for a certain duration
+    std::this_thread::sleep_for(std::chrono::seconds(20)); // Flight duration
+
+    // Land the vehicle
+    std::cout << "Landing..." << std::endl;
+    const Action::Result land_result = action.land();
+
+    if (land_result != Action::Result::Success) {
+        std::cout << "Landing failed:" << land_result << std::endl;
+        return 1;
+    }
+
+    // Wait until the vehicle has landed
+    while (telemetry.in_air()) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
+
+    std::cout << "Landed successfully!" << std::endl;
 
     return 0;
 }
