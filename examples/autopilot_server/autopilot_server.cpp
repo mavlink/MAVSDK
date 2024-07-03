@@ -59,7 +59,7 @@ int main(int argc, char** argv)
     // thread as a ground station.
 
     if (argc < 2) {
-        std::cerr << "Too few input arguments. usage: $ arm_authorizer_server <connection_url>"
+        std::cerr << "Too few input arguments. usage: argv[0]"
                   << std::endl;
         return 1;
     }
