@@ -101,12 +101,43 @@ public:
         Acro, /**< @brief In 'Acro' mode. */
         Stabilized, /**< @brief In 'Stabilize' mode. */
         Rattitude, /**< @brief In 'Rattitude' mode. */
+
         QStabilize,
         QLoiter,
         QLand,
         QRtl,
         FBWA,
-        FBWB
+        FBWB,
+
+        AutoTune,
+        Circle,
+        Drift,
+        Sport,
+        Flip,
+        Brake,
+        Throw,
+        AvoidADSB,
+        GuidedNoGPS,
+        SmartRTL,
+        ZigZag,
+        SystemId,
+        AutoRotate,
+        Turtle,
+
+        Training,
+        Cruise,
+        Initializing,
+        QHover,
+        QAutotune,
+        QAcro,
+        Thermal
+    };
+
+    enum class VehicleType {
+        Unknown,
+        Plane,
+        Multirotor,
+        VTOL
     };
 
     /**
@@ -1462,6 +1493,12 @@ public:
      * @return One FlightMode update.
      */
     FlightMode flight_mode() const;
+
+    using VehicleTypeCallback = std::function<void(VehicleType)>;
+    using VehicleTypeHandle = Handle<VehicleType>;
+    VehicleTypeHandle subscribe_vehicle_type(const VehicleTypeCallback& callback);
+    void unsubscribe_vehicle_type(VehicleTypeHandle handle);
+    VehicleType vehicle_type() const;
 
     /**
      * @brief Callback type for subscribe_health.

@@ -295,6 +295,21 @@ Telemetry::FlightMode Telemetry::flight_mode() const
     return _impl->flight_mode();
 }
 
+Telemetry::VehicleTypeHandle Telemetry::subscribe_vehicle_type(const VehicleTypeCallback& callback)
+{
+    return _impl->subscribe_vehicle_type(callback);
+}
+
+void Telemetry::unsubscribe_vehicle_type(VehicleTypeHandle handle)
+{
+    _impl->unsubscribe_vehicle_type(handle);
+}
+
+Telemetry::VehicleType Telemetry::vehicle_type() const
+{
+    return _impl->vehicle_type();
+}
+
 Telemetry::HealthHandle Telemetry::subscribe_health(const HealthCallback& callback)
 {
     return _impl->subscribe_health(callback);

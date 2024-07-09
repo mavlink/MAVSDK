@@ -1283,6 +1283,10 @@ void TelemetryImpl::process_heartbeat(const mavlink_message_t& message)
         telemetry_flight_mode_from_flight_mode(_system_impl->get_flight_mode()),
         [this](const auto& func) { _system_impl->call_user_callback(func); });
 
+    _vehicle_type_subscriptions.queue(
+        telemetry_vehicle_type_from_MAV_TYPE(_system_impl->get_vehicle_type()),
+        [this](const auto& func) { _system_impl->call_user_callback(func); });
+
     _health_subscriptions.queue(
         health(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 
@@ -1749,6 +1753,8 @@ Telemetry::VtolState TelemetryImpl::to_vtol_state(mavlink_extended_sys_state_t e
 Telemetry::FlightMode TelemetryImpl::telemetry_flight_mode_from_flight_mode(FlightMode flight_mode)
 {
     switch (flight_mode) {
+        case FlightMode::Stabilized:
+            return Telemetry::FlightMode::Stabilized;
         case FlightMode::Ready:
             return Telemetry::FlightMode::Ready;
         case FlightMode::Takeoff:
@@ -1784,14 +1790,71 @@ Telemetry::FlightMode TelemetryImpl::telemetry_flight_mode_from_flight_mode(Flig
             return Telemetry::FlightMode::QLand;
         case FlightMode::QRtl:
             return Telemetry::FlightMode::QRtl;
-
         case FlightMode::FBWA:
             return Telemetry::FlightMode::FBWA;
         case FlightMode::FBWB:
             return Telemetry::FlightMode::FBWB;
 
+        case FlightMode::Circle:
+            return Telemetry::FlightMode::Circle;
+        case FlightMode::Drift:
+            return Telemetry::FlightMode::Drift;
+        case FlightMode::Sport:
+            return Telemetry::FlightMode::Sport;
+        case FlightMode::Flip:
+            return Telemetry::FlightMode::Flip;
+        case FlightMode::Autotune:
+            return Telemetry::FlightMode::AutoTune;
+        case FlightMode::Brake:
+            return Telemetry::FlightMode::Brake;
+        case FlightMode::Throw:
+            return Telemetry::FlightMode::Throw;
+        case FlightMode::AvoidADSB:
+            return Telemetry::FlightMode::AvoidADSB;
+        case FlightMode::GuidedNoGPS:
+            return Telemetry::FlightMode::GuidedNoGPS;
+        case FlightMode::SmartRTL:
+            return Telemetry::FlightMode::SmartRTL;
+        case FlightMode::ZigZag:
+            return Telemetry::FlightMode::ZigZag;
+        case FlightMode::SystemId:
+            return Telemetry::FlightMode::SystemId;
+        case FlightMode::AutoRotate:
+            return Telemetry::FlightMode::AutoRotate;
+        case FlightMode::Turtle:
+            return Telemetry::FlightMode::Turtle;
+
+        case FlightMode::Training:
+            return Telemetry::FlightMode::Training;
+        case FlightMode::Cruise:
+            return Telemetry::FlightMode::Cruise;
+        case FlightMode::Initializing:
+            return Telemetry::FlightMode::Initializing;
+        case FlightMode::QHover:
+            return Telemetry::FlightMode::QHover;
+        case FlightMode::QAutotune:
+            return Telemetry::FlightMode::QAutotune;
+        case FlightMode::QAcro:
+            return Telemetry::FlightMode::QAcro;
+        case FlightMode::Thermal:
+            return Telemetry::FlightMode::Thermal;
+
+        case FlightMode::Unknown:
         default:
             return Telemetry::FlightMode::Unknown;
+    }
+}
+
+Telemetry::VehicleType TelemetryImpl::telemetry_vehicle_type_from_MAV_TYPE(MAV_TYPE vehicle_type)
+{
+    switch (vehicle_type) {
+        case MAV_TYPE_FIXED_WING:
+            return Telemetry::VehicleType::Plane;
+        case MAV_TYPE_QUADROTOR:
+            return Telemetry::VehicleType::Multirotor;
+        //TODO: VTOL (not needed here)
+        default:
+            return Telemetry::VehicleType::Unknown;
     }
 }
 
@@ -2272,6 +2335,11 @@ Telemetry::FlightMode TelemetryImpl::flight_mode() const
     return telemetry_flight_mode_from_flight_mode(_system_impl->get_flight_mode());
 }
 
+Telemetry::VehicleType TelemetryImpl::vehicle_type() const
+{
+    return telemetry_vehicle_type_from_MAV_TYPE(_system_impl->get_vehicle_type());
+}
+
 Telemetry::Health TelemetryImpl::health() const
 {
     std::lock_guard<std::mutex> lock(_health_mutex);
@@ -2727,6 +2795,19 @@ void TelemetryImpl::unsubscribe_flight_mode(Telemetry::FlightModeHandle handle)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _flight_mode_subscriptions.unsubscribe(handle);
+}
+
+Telemetry::VehicleTypeHandle
+TelemetryImpl::subscribe_vehicle_type(const Telemetry::VehicleTypeCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    return _vehicle_type_subscriptions.subscribe(callback);
+}
+
+void TelemetryImpl::unsubscribe_vehicle_type(Telemetry::VehicleTypeHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _vehicle_type_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::HealthHandle TelemetryImpl::subscribe_health(const Telemetry::HealthCallback& callback)

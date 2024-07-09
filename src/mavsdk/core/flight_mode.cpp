@@ -72,8 +72,37 @@ FlightMode to_flight_mode_from_ardupilot_copter_mode(uint32_t custom_mode)
             return FlightMode::Offboard;
         case ardupilot::CopterMode::Stabilize:
             return FlightMode::Stabilized;
+
+        case ardupilot::CopterMode::Circle:
+            return FlightMode::Circle;
+        case ardupilot::CopterMode::Drift:
+            return FlightMode::Drift;
+        case ardupilot::CopterMode::Sport:
+            return FlightMode::Sport;
+        case ardupilot::CopterMode::Flip:
+            return FlightMode::Flip;
+        case ardupilot::CopterMode::AutoTune:
+            return FlightMode::Autotune;
+        case ardupilot::CopterMode::Break:
+            return FlightMode::Brake;
+        case ardupilot::CopterMode::Throw:
+            return FlightMode::Throw;
+        case ardupilot::CopterMode::AvoidAdbs:
+            return FlightMode::AvoidADSB;
+        case ardupilot::CopterMode::GuidedNoGps:
+            return FlightMode::GuidedNoGPS;
+        case ardupilot::CopterMode::SmartRtl:
+            return FlightMode::SmartRTL;
+        case ardupilot::CopterMode::Zigzag:
+            return FlightMode::ZigZag;
+        case ardupilot::CopterMode::SystemId:
+            return FlightMode::SystemId;
+        case ardupilot::CopterMode::AutoRotate:
+            return FlightMode::AutoRotate;
+        case ardupilot::CopterMode::Turtle:
+            return FlightMode::Turtle;
+
         case ardupilot::CopterMode::Unknown:
-            return FlightMode::Unknown;
         default:
             return FlightMode::Unknown;
     }
@@ -94,7 +123,7 @@ FlightMode to_flight_mode_from_ardupilot_plane_mode(uint32_t custom_mode)
         case ardupilot::PlaneMode::Fbwb:
             return FlightMode::FBWB;
         case ardupilot::PlaneMode::Guided:
-            return FlightMode::Guided;
+            return FlightMode::Offboard;
         case ardupilot::PlaneMode::Loiter:
             return FlightMode::Hold;
         case ardupilot::PlaneMode::Rtl:
@@ -109,8 +138,29 @@ FlightMode to_flight_mode_from_ardupilot_plane_mode(uint32_t custom_mode)
             return FlightMode::QLand;
         case ardupilot::PlaneMode::QRtl:
             return FlightMode::QRtl;
+
+        case ardupilot::PlaneMode::Circle:
+            return FlightMode::Circle;
+        case ardupilot::PlaneMode::Training:
+            return FlightMode::Training;
+        case ardupilot::PlaneMode::Cruise:
+            return FlightMode::Cruise;
+        case ardupilot::PlaneMode::Takeoff:
+            return FlightMode::Takeoff;
+        case ardupilot::PlaneMode::AvoidAdsb:
+            return FlightMode::AvoidADSB;
+        case ardupilot::PlaneMode::Initializing:
+            return FlightMode::Initializing;
+        case ardupilot::PlaneMode::QHover:
+            return FlightMode::QHover;
+        case ardupilot::PlaneMode::QAutotune:
+            return FlightMode::QAutotune;
+        case ardupilot::PlaneMode::QAcro:
+            return FlightMode::QAcro;
+        case ardupilot::PlaneMode::Thermal:
+            return FlightMode::Thermal;
+
         case ardupilot::PlaneMode::Unknown:
-            return FlightMode::Unknown;
         default:
             return FlightMode::Unknown;
     }

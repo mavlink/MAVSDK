@@ -104,6 +104,7 @@ public:
     Telemetry::RawGps raw_gps() const;
     Telemetry::Battery battery() const;
     Telemetry::FlightMode flight_mode() const;
+    Telemetry::VehicleType vehicle_type() const;
     Telemetry::Health health() const;
     bool health_all_ok() const;
     Telemetry::RcStatus rc_status() const;
@@ -170,6 +171,11 @@ public:
     Telemetry::FlightModeHandle
     subscribe_flight_mode(const Telemetry::FlightModeCallback& callback);
     void unsubscribe_flight_mode(Telemetry::FlightModeHandle handle);
+
+    Telemetry::VehicleTypeHandle
+    subscribe_vehicle_type(const Telemetry::VehicleTypeCallback& callback);
+    void unsubscribe_vehicle_type(Telemetry::VehicleTypeHandle handle);
+
     Telemetry::HealthHandle subscribe_health(const Telemetry::HealthCallback& callback);
     void unsubscribe_health(Telemetry::HealthHandle handle);
     Telemetry::HealthAllOkHandle
@@ -312,6 +318,7 @@ private:
     static Telemetry::VtolState to_vtol_state(mavlink_extended_sys_state_t extended_sys_state);
 
     static Telemetry::FlightMode telemetry_flight_mode_from_flight_mode(FlightMode flight_mode);
+    static Telemetry::VehicleType telemetry_vehicle_type_from_MAV_TYPE(MAV_TYPE vehicle_type);
 
     // Make all fields thread-safe using mutexs
     // The mutexs are mutable so that the lock can get aqcuired in
@@ -433,6 +440,7 @@ private:
     CallbackList<Telemetry::RawGps> _raw_gps_subscriptions{};
     CallbackList<Telemetry::Battery> _battery_subscriptions{};
     CallbackList<Telemetry::FlightMode> _flight_mode_subscriptions{};
+    CallbackList<Telemetry::VehicleType> _vehicle_type_subscriptions{};
     CallbackList<Telemetry::Health> _health_subscriptions{};
     CallbackList<bool> _health_all_ok_subscriptions{};
     CallbackList<Telemetry::VtolState> _vtol_state_subscriptions{};

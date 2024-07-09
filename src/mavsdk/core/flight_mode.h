@@ -11,7 +11,6 @@ enum class FlightMode {
     FBWA,
     FBWB,
     Autotune,
-    Guided,
     Ready,
     Takeoff,
     Hold,
@@ -29,7 +28,29 @@ enum class FlightMode {
     QStabilize,
     QLoiter,
     QLand,
-    QRtl
+    QRtl,
+
+    Circle,
+    Drift,
+    Sport,
+    Flip,
+    Brake,
+    Throw,
+    AvoidADSB,
+    GuidedNoGPS,
+    SmartRTL,
+    ZigZag,
+    SystemId,
+    AutoRotate,
+    Turtle,
+
+    Training,
+    Cruise,
+    Initializing,
+    QHover,
+    QAutotune,
+    QAcro,
+    Thermal
 };
 
 FlightMode
