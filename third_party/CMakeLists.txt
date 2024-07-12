@@ -20,6 +20,8 @@ if (SUPERBUILD)
         build_target(curl)
     endif()
 
+    build_target(gtest)
+
     if(BUILD_MAVSDK_SERVER)
         build_target(openssl)
         build_target(cares)
@@ -28,9 +30,6 @@ if (SUPERBUILD)
         build_target(re2)
         build_target(grpc)
     endif()
-
-    build_target(gtest)
-
 endif()
 
 if (ENABLE_CPPTRACE)
