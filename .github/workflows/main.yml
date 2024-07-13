@@ -234,7 +234,7 @@ jobs:
         run: dpkg-buildpackage -us -uc -b
 
   dockcross-linux-arm:
-    name: linux-${{ matrix.docker-name }}
+    name: linux-${{ matrix.docker_name }}
     runs-on: ubuntu-20.04
     strategy:
       matrix:
