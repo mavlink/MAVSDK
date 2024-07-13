@@ -1001,6 +1001,26 @@ public:
     Result respond_tracking_off_command(CameraFeedback stop_video_feedback) const;
 
     /**
+     * @brief Set support for capturing images while in video mode. Affects CAMERA_CAP_FLAGS flags
+     * sent in CAMERA_INFORMATION.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result support_image_in_video_mode(bool support) const;
+
+    /**
+     * @brief Set support for capturing video while in image mode. Affects CAMERA_CAP_FLAGS flags
+     * sent in CAMERA_INFORMATION.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result support_video_in_image_mode(bool support) const;
+
+    /**
      * @brief Copy constructor.
      */
     CameraServer(const CameraServer& other);

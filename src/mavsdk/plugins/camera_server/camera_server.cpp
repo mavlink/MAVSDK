@@ -332,6 +332,16 @@ CameraServer::respond_tracking_off_command(CameraFeedback stop_video_feedback) c
     return _impl->respond_tracking_off_command(stop_video_feedback);
 }
 
+CameraServer::Result CameraServer::support_image_in_video_mode(bool support) const
+{
+    return _impl->support_image_in_video_mode(support);
+}
+
+CameraServer::Result CameraServer::support_video_in_image_mode(bool support) const
+{
+    return _impl->support_video_in_image_mode(support);
+}
+
 bool operator==(const CameraServer::Information& lhs, const CameraServer::Information& rhs)
 {
     return (rhs.vendor_name == lhs.vendor_name) && (rhs.model_name == lhs.model_name) &&

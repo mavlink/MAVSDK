@@ -2015,6 +2015,66 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SupportImageInVideoMode(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::SupportImageInVideoModeRequest* request,
+        rpc::camera_server::SupportImageInVideoModeResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SupportImageInVideoMode sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->support_image_in_video_mode(request->support());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SupportVideoInImageMode(
+        grpc::ServerContext* /* context */,
+        const rpc::camera_server::SupportVideoInImageModeRequest* request,
+        rpc::camera_server::SupportVideoInImageModeResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::CameraServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SupportVideoInImageMode sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->support_video_in_image_mode(request->support());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     void stop()
     {
         _stopped.store(true);

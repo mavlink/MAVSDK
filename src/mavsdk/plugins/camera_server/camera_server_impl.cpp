@@ -933,6 +933,18 @@ CameraServerImpl::respond_tracking_off_command(CameraServer::CameraFeedback trac
     return CameraServer::Result::Success;
 }
 
+CameraServer::Result CameraServerImpl::support_image_in_video_mode(bool allow)
+{
+    _support_image_in_video_mode = allow;
+    return CameraServer::Result::Success;
+}
+
+CameraServer::Result CameraServerImpl::support_video_in_image_mode(bool allow)
+{
+    _support_video_in_image_mode = allow;
+    return CameraServer::Result::Success;
+}
+
 void CameraServerImpl::start_image_capture_interval(float interval_s, int32_t count, int32_t index)
 {
     // If count == 0, it means capture "forever" until a stop command is received.
@@ -1006,6 +1018,14 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_informatio
 
     if (!_set_mode_callbacks.empty()) {
         capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_MODES;
+    }
+
+    if (_support_image_in_video_mode) {
+        capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAN_CAPTURE_IMAGE_IN_VIDEO_MODE;
+    }
+
+    if (_support_video_in_image_mode) {
+        capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAN_CAPTURE_VIDEO_IN_IMAGE_MODE;
     }
 
     if (_is_video_streaming_set) {
