@@ -42,6 +42,8 @@ int main(int argc, char** argv)
         .lens_id = 0,
         .definition_file_version = 0, // TODO: add this
         .definition_file_uri = "", // TODO: implement this using MAVLink FTP
+        .image_in_video_mode_supported = false,
+        .video_in_image_mode_supported = false,
     });
 
     if (ret != mavsdk::CameraServer::Result::Success) {

@@ -140,6 +140,10 @@ public:
 
         rpc_obj->set_definition_file_uri(information.definition_file_uri);
 
+        rpc_obj->set_image_in_video_mode_supported(information.image_in_video_mode_supported);
+
+        rpc_obj->set_video_in_image_mode_supported(information.video_in_image_mode_supported);
+
         return rpc_obj;
     }
 
@@ -169,6 +173,10 @@ public:
         obj.definition_file_version = information.definition_file_version();
 
         obj.definition_file_uri = information.definition_file_uri();
+
+        obj.image_in_video_mode_supported = information.image_in_video_mode_supported();
+
+        obj.video_in_image_mode_supported = information.video_in_image_mode_supported();
 
         return obj;
     }

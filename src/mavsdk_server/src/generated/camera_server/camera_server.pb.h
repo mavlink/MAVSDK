@@ -9820,6 +9820,8 @@ class Information final :
     kVerticalResolutionPxFieldNumber = 8,
     kLensIdFieldNumber = 9,
     kDefinitionFileVersionFieldNumber = 10,
+    kImageInVideoModeSupportedFieldNumber = 12,
+    kVideoInImageModeSupportedFieldNumber = 13,
   };
   // string vendor_name = 1;
   void clear_vendor_name() ;
@@ -9955,13 +9957,33 @@ class Information final :
   void _internal_set_definition_file_version(::uint32_t value);
 
   public:
+  // bool image_in_video_mode_supported = 12;
+  void clear_image_in_video_mode_supported() ;
+  bool image_in_video_mode_supported() const;
+  void set_image_in_video_mode_supported(bool value);
+
+  private:
+  bool _internal_image_in_video_mode_supported() const;
+  void _internal_set_image_in_video_mode_supported(bool value);
+
+  public:
+  // bool video_in_image_mode_supported = 13;
+  void clear_video_in_image_mode_supported() ;
+  bool video_in_image_mode_supported() const;
+  void set_video_in_image_mode_supported(bool value);
+
+  private:
+  bool _internal_video_in_image_mode_supported() const;
+  void _internal_set_video_in_image_mode_supported(bool value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera_server.Information)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      4, 11, 0,
+      4, 13, 0,
       109, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -9989,6 +10011,8 @@ class Information final :
     ::uint32_t vertical_resolution_px_;
     ::uint32_t lens_id_;
     ::uint32_t definition_file_version_;
+    bool image_in_video_mode_supported_;
+    bool video_in_image_mode_supported_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -19794,6 +19818,52 @@ inline void Information::set_allocated_definition_file_uri(std::string* value) {
         }
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera_server.Information.definition_file_uri)
+}
+
+// bool image_in_video_mode_supported = 12;
+inline void Information::clear_image_in_video_mode_supported() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.image_in_video_mode_supported_ = false;
+}
+inline bool Information::image_in_video_mode_supported() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.Information.image_in_video_mode_supported)
+  return _internal_image_in_video_mode_supported();
+}
+inline void Information::set_image_in_video_mode_supported(bool value) {
+  _internal_set_image_in_video_mode_supported(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.Information.image_in_video_mode_supported)
+}
+inline bool Information::_internal_image_in_video_mode_supported() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.image_in_video_mode_supported_;
+}
+inline void Information::_internal_set_image_in_video_mode_supported(bool value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.image_in_video_mode_supported_ = value;
+}
+
+// bool video_in_image_mode_supported = 13;
+inline void Information::clear_video_in_image_mode_supported() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.video_in_image_mode_supported_ = false;
+}
+inline bool Information::video_in_image_mode_supported() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera_server.Information.video_in_image_mode_supported)
+  return _internal_video_in_image_mode_supported();
+}
+inline void Information::set_video_in_image_mode_supported(bool value) {
+  _internal_set_video_in_image_mode_supported(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera_server.Information.video_in_image_mode_supported)
+}
+inline bool Information::_internal_video_in_image_mode_supported() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.video_in_image_mode_supported_;
+}
+inline void Information::_internal_set_video_in_image_mode_supported(bool value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.video_in_image_mode_supported_ = value;
 }
 
 // -------------------------------------------------------------------

@@ -97,6 +97,10 @@ public:
             definition_file_version{}; /**< @brief Camera definition file version (iteration) */
         std::string
             definition_file_uri{}; /**< @brief Camera definition URI (http or mavlink ftp) */
+        bool image_in_video_mode_supported{}; /**< @brief Camera supports taking images while in
+                                                 video mode */
+        bool video_in_image_mode_supported{}; /**< @brief Camera supports recording video while in
+                                                 image mode */
     };
 
     /**

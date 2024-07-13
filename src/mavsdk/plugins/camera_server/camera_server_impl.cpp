@@ -1008,6 +1008,14 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_informatio
         capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_MODES;
     }
 
+    if (_information.image_in_video_mode_supported) {
+        capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAN_CAPTURE_IMAGE_IN_VIDEO_MODE;
+    }
+
+    if (_information.video_in_image_mode_supported) {
+        capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_CAN_CAPTURE_VIDEO_IN_IMAGE_MODE;
+    }
+
     if (_is_video_streaming_set) {
         capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_VIDEO_STREAM;
     }
