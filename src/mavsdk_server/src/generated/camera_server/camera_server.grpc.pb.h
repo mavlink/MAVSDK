@@ -384,6 +384,22 @@ class CameraServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>> PrepareAsyncRespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>>(PrepareAsyncRespondTrackingOffCommandRaw(context, request, cq));
     }
+    // Set support for capturing images while in video mode. Affects CAMERA_CAP_FLAGS flags sent in CAMERA_INFORMATION.
+    virtual ::grpc::Status SupportImageInVideoMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest& request, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>> AsyncSupportImageInVideoMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>>(AsyncSupportImageInVideoModeRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>> PrepareAsyncSupportImageInVideoMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>>(PrepareAsyncSupportImageInVideoModeRaw(context, request, cq));
+    }
+    // Set support for capturing video while in image mode. Affects CAMERA_CAP_FLAGS flags sent in CAMERA_INFORMATION.
+    virtual ::grpc::Status SupportVideoInImageMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest& request, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>> AsyncSupportVideoInImageMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>>(AsyncSupportVideoInImageModeRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>> PrepareAsyncSupportVideoInImageMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>>(PrepareAsyncSupportVideoInImageModeRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -487,6 +503,12 @@ class CameraServerService final {
       // Respond to an incoming tracking off command.
       virtual void RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Set support for capturing images while in video mode. Affects CAMERA_CAP_FLAGS flags sent in CAMERA_INFORMATION.
+      virtual void SupportImageInVideoMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* request, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SupportImageInVideoMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* request, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Set support for capturing video while in image mode. Affects CAMERA_CAP_FLAGS flags sent in CAMERA_INFORMATION.
+      virtual void SupportVideoInImageMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* request, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SupportVideoInImageMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* request, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -587,6 +609,10 @@ class CameraServerService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>* PrepareAsyncRespondTrackingRectangleCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>* AsyncRespondTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>* PrepareAsyncRespondTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>* AsyncSupportImageInVideoModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>* PrepareAsyncSupportImageInVideoModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>* AsyncSupportVideoInImageModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>* PrepareAsyncSupportVideoInImageModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -898,6 +924,20 @@ class CameraServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>> PrepareAsyncRespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>>(PrepareAsyncRespondTrackingOffCommandRaw(context, request, cq));
     }
+    ::grpc::Status SupportImageInVideoMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest& request, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>> AsyncSupportImageInVideoMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>>(AsyncSupportImageInVideoModeRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>> PrepareAsyncSupportImageInVideoMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>>(PrepareAsyncSupportImageInVideoModeRaw(context, request, cq));
+    }
+    ::grpc::Status SupportVideoInImageMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest& request, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>> AsyncSupportVideoInImageMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>>(AsyncSupportVideoInImageModeRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>> PrepareAsyncSupportVideoInImageMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>>(PrepareAsyncSupportVideoInImageModeRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
@@ -962,6 +1002,10 @@ class CameraServerService final {
       void RespondTrackingRectangleCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response, std::function<void(::grpc::Status)>) override;
       void RespondTrackingOffCommand(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SupportImageInVideoMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* request, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* response, std::function<void(::grpc::Status)>) override;
+      void SupportImageInVideoMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* request, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SupportVideoInImageMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* request, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* response, std::function<void(::grpc::Status)>) override;
+      void SupportVideoInImageMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* request, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -1068,6 +1112,10 @@ class CameraServerService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse>* PrepareAsyncRespondTrackingRectangleCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>* AsyncRespondTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>* PrepareAsyncRespondTrackingOffCommandRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>* AsyncSupportImageInVideoModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>* PrepareAsyncSupportImageInVideoModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>* AsyncSupportVideoInImageModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>* PrepareAsyncSupportVideoInImageModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SetInformation_;
     const ::grpc::internal::RpcMethod rpcmethod_SetVideoStreaming_;
     const ::grpc::internal::RpcMethod rpcmethod_SetInProgress_;
@@ -1107,6 +1155,8 @@ class CameraServerService final {
     const ::grpc::internal::RpcMethod rpcmethod_RespondTrackingPointCommand_;
     const ::grpc::internal::RpcMethod rpcmethod_RespondTrackingRectangleCommand_;
     const ::grpc::internal::RpcMethod rpcmethod_RespondTrackingOffCommand_;
+    const ::grpc::internal::RpcMethod rpcmethod_SupportImageInVideoMode_;
+    const ::grpc::internal::RpcMethod rpcmethod_SupportVideoInImageMode_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -1192,6 +1242,10 @@ class CameraServerService final {
     virtual ::grpc::Status RespondTrackingRectangleCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingRectangleCommandResponse* response);
     // Respond to an incoming tracking off command.
     virtual ::grpc::Status RespondTrackingOffCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response);
+    // Set support for capturing images while in video mode. Affects CAMERA_CAP_FLAGS flags sent in CAMERA_INFORMATION.
+    virtual ::grpc::Status SupportImageInVideoMode(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* request, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* response);
+    // Set support for capturing video while in image mode. Affects CAMERA_CAP_FLAGS flags sent in CAMERA_INFORMATION.
+    virtual ::grpc::Status SupportVideoInImageMode(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* request, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_SetInformation : public BaseClass {
@@ -1973,7 +2027,47 @@ class CameraServerService final {
       ::grpc::Service::RequestAsyncUnary(38, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SetInformation<WithAsyncMethod_SetVideoStreaming<WithAsyncMethod_SetInProgress<WithAsyncMethod_SubscribeTakePhoto<WithAsyncMethod_RespondTakePhoto<WithAsyncMethod_SubscribeStartVideo<WithAsyncMethod_RespondStartVideo<WithAsyncMethod_SubscribeStopVideo<WithAsyncMethod_RespondStopVideo<WithAsyncMethod_SubscribeStartVideoStreaming<WithAsyncMethod_RespondStartVideoStreaming<WithAsyncMethod_SubscribeStopVideoStreaming<WithAsyncMethod_RespondStopVideoStreaming<WithAsyncMethod_SubscribeSetMode<WithAsyncMethod_RespondSetMode<WithAsyncMethod_SubscribeStorageInformation<WithAsyncMethod_RespondStorageInformation<WithAsyncMethod_SubscribeCaptureStatus<WithAsyncMethod_RespondCaptureStatus<WithAsyncMethod_SubscribeFormatStorage<WithAsyncMethod_RespondFormatStorage<WithAsyncMethod_SubscribeResetSettings<WithAsyncMethod_RespondResetSettings<WithAsyncMethod_SubscribeZoomInStart<WithAsyncMethod_RespondZoomInStart<WithAsyncMethod_SubscribeZoomOutStart<WithAsyncMethod_RespondZoomOutStart<WithAsyncMethod_SubscribeZoomStop<WithAsyncMethod_RespondZoomStop<WithAsyncMethod_SubscribeZoomRange<WithAsyncMethod_RespondZoomRange<WithAsyncMethod_SetTrackingRectangleStatus<WithAsyncMethod_SetTrackingOffStatus<WithAsyncMethod_SubscribeTrackingPointCommand<WithAsyncMethod_SubscribeTrackingRectangleCommand<WithAsyncMethod_SubscribeTrackingOffCommand<WithAsyncMethod_RespondTrackingPointCommand<WithAsyncMethod_RespondTrackingRectangleCommand<WithAsyncMethod_RespondTrackingOffCommand<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_SupportImageInVideoMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SupportImageInVideoMode() {
+      ::grpc::Service::MarkMethodAsync(39);
+    }
+    ~WithAsyncMethod_SupportImageInVideoMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SupportImageInVideoMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* /*request*/, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSupportImageInVideoMode(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(39, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_SupportVideoInImageMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SupportVideoInImageMode() {
+      ::grpc::Service::MarkMethodAsync(40);
+    }
+    ~WithAsyncMethod_SupportVideoInImageMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SupportVideoInImageMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* /*request*/, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSupportVideoInImageMode(::grpc::ServerContext* context, ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(40, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_SetInformation<WithAsyncMethod_SetVideoStreaming<WithAsyncMethod_SetInProgress<WithAsyncMethod_SubscribeTakePhoto<WithAsyncMethod_RespondTakePhoto<WithAsyncMethod_SubscribeStartVideo<WithAsyncMethod_RespondStartVideo<WithAsyncMethod_SubscribeStopVideo<WithAsyncMethod_RespondStopVideo<WithAsyncMethod_SubscribeStartVideoStreaming<WithAsyncMethod_RespondStartVideoStreaming<WithAsyncMethod_SubscribeStopVideoStreaming<WithAsyncMethod_RespondStopVideoStreaming<WithAsyncMethod_SubscribeSetMode<WithAsyncMethod_RespondSetMode<WithAsyncMethod_SubscribeStorageInformation<WithAsyncMethod_RespondStorageInformation<WithAsyncMethod_SubscribeCaptureStatus<WithAsyncMethod_RespondCaptureStatus<WithAsyncMethod_SubscribeFormatStorage<WithAsyncMethod_RespondFormatStorage<WithAsyncMethod_SubscribeResetSettings<WithAsyncMethod_RespondResetSettings<WithAsyncMethod_SubscribeZoomInStart<WithAsyncMethod_RespondZoomInStart<WithAsyncMethod_SubscribeZoomOutStart<WithAsyncMethod_RespondZoomOutStart<WithAsyncMethod_SubscribeZoomStop<WithAsyncMethod_RespondZoomStop<WithAsyncMethod_SubscribeZoomRange<WithAsyncMethod_RespondZoomRange<WithAsyncMethod_SetTrackingRectangleStatus<WithAsyncMethod_SetTrackingOffStatus<WithAsyncMethod_SubscribeTrackingPointCommand<WithAsyncMethod_SubscribeTrackingRectangleCommand<WithAsyncMethod_SubscribeTrackingOffCommand<WithAsyncMethod_RespondTrackingPointCommand<WithAsyncMethod_RespondTrackingRectangleCommand<WithAsyncMethod_RespondTrackingOffCommand<WithAsyncMethod_SupportImageInVideoMode<WithAsyncMethod_SupportVideoInImageMode<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_SetInformation : public BaseClass {
    private:
@@ -2942,7 +3036,61 @@ class CameraServerService final {
     virtual ::grpc::ServerUnaryReactor* RespondTrackingOffCommand(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_SetInformation<WithCallbackMethod_SetVideoStreaming<WithCallbackMethod_SetInProgress<WithCallbackMethod_SubscribeTakePhoto<WithCallbackMethod_RespondTakePhoto<WithCallbackMethod_SubscribeStartVideo<WithCallbackMethod_RespondStartVideo<WithCallbackMethod_SubscribeStopVideo<WithCallbackMethod_RespondStopVideo<WithCallbackMethod_SubscribeStartVideoStreaming<WithCallbackMethod_RespondStartVideoStreaming<WithCallbackMethod_SubscribeStopVideoStreaming<WithCallbackMethod_RespondStopVideoStreaming<WithCallbackMethod_SubscribeSetMode<WithCallbackMethod_RespondSetMode<WithCallbackMethod_SubscribeStorageInformation<WithCallbackMethod_RespondStorageInformation<WithCallbackMethod_SubscribeCaptureStatus<WithCallbackMethod_RespondCaptureStatus<WithCallbackMethod_SubscribeFormatStorage<WithCallbackMethod_RespondFormatStorage<WithCallbackMethod_SubscribeResetSettings<WithCallbackMethod_RespondResetSettings<WithCallbackMethod_SubscribeZoomInStart<WithCallbackMethod_RespondZoomInStart<WithCallbackMethod_SubscribeZoomOutStart<WithCallbackMethod_RespondZoomOutStart<WithCallbackMethod_SubscribeZoomStop<WithCallbackMethod_RespondZoomStop<WithCallbackMethod_SubscribeZoomRange<WithCallbackMethod_RespondZoomRange<WithCallbackMethod_SetTrackingRectangleStatus<WithCallbackMethod_SetTrackingOffStatus<WithCallbackMethod_SubscribeTrackingPointCommand<WithCallbackMethod_SubscribeTrackingRectangleCommand<WithCallbackMethod_SubscribeTrackingOffCommand<WithCallbackMethod_RespondTrackingPointCommand<WithCallbackMethod_RespondTrackingRectangleCommand<WithCallbackMethod_RespondTrackingOffCommand<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_SupportImageInVideoMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SupportImageInVideoMode() {
+      ::grpc::Service::MarkMethodCallback(39,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* request, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* response) { return this->SupportImageInVideoMode(context, request, response); }));}
+    void SetMessageAllocatorFor_SupportImageInVideoMode(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(39);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_SupportImageInVideoMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SupportImageInVideoMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* /*request*/, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SupportImageInVideoMode(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* /*request*/, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_SupportVideoInImageMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SupportVideoInImageMode() {
+      ::grpc::Service::MarkMethodCallback(40,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* request, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* response) { return this->SupportVideoInImageMode(context, request, response); }));}
+    void SetMessageAllocatorFor_SupportVideoInImageMode(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(40);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_SupportVideoInImageMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SupportVideoInImageMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* /*request*/, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SupportVideoInImageMode(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* /*request*/, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_SetInformation<WithCallbackMethod_SetVideoStreaming<WithCallbackMethod_SetInProgress<WithCallbackMethod_SubscribeTakePhoto<WithCallbackMethod_RespondTakePhoto<WithCallbackMethod_SubscribeStartVideo<WithCallbackMethod_RespondStartVideo<WithCallbackMethod_SubscribeStopVideo<WithCallbackMethod_RespondStopVideo<WithCallbackMethod_SubscribeStartVideoStreaming<WithCallbackMethod_RespondStartVideoStreaming<WithCallbackMethod_SubscribeStopVideoStreaming<WithCallbackMethod_RespondStopVideoStreaming<WithCallbackMethod_SubscribeSetMode<WithCallbackMethod_RespondSetMode<WithCallbackMethod_SubscribeStorageInformation<WithCallbackMethod_RespondStorageInformation<WithCallbackMethod_SubscribeCaptureStatus<WithCallbackMethod_RespondCaptureStatus<WithCallbackMethod_SubscribeFormatStorage<WithCallbackMethod_RespondFormatStorage<WithCallbackMethod_SubscribeResetSettings<WithCallbackMethod_RespondResetSettings<WithCallbackMethod_SubscribeZoomInStart<WithCallbackMethod_RespondZoomInStart<WithCallbackMethod_SubscribeZoomOutStart<WithCallbackMethod_RespondZoomOutStart<WithCallbackMethod_SubscribeZoomStop<WithCallbackMethod_RespondZoomStop<WithCallbackMethod_SubscribeZoomRange<WithCallbackMethod_RespondZoomRange<WithCallbackMethod_SetTrackingRectangleStatus<WithCallbackMethod_SetTrackingOffStatus<WithCallbackMethod_SubscribeTrackingPointCommand<WithCallbackMethod_SubscribeTrackingRectangleCommand<WithCallbackMethod_SubscribeTrackingOffCommand<WithCallbackMethod_RespondTrackingPointCommand<WithCallbackMethod_RespondTrackingRectangleCommand<WithCallbackMethod_RespondTrackingOffCommand<WithCallbackMethod_SupportImageInVideoMode<WithCallbackMethod_SupportVideoInImageMode<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SetInformation : public BaseClass {
@@ -3603,6 +3751,40 @@ class CameraServerService final {
     }
     // disable synchronous version of this method
     ::grpc::Status RespondTrackingOffCommand(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* /*request*/, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SupportImageInVideoMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SupportImageInVideoMode() {
+      ::grpc::Service::MarkMethodGeneric(39);
+    }
+    ~WithGenericMethod_SupportImageInVideoMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SupportImageInVideoMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* /*request*/, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SupportVideoInImageMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SupportVideoInImageMode() {
+      ::grpc::Service::MarkMethodGeneric(40);
+    }
+    ~WithGenericMethod_SupportVideoInImageMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SupportVideoInImageMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* /*request*/, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -4385,6 +4567,46 @@ class CameraServerService final {
     }
     void RequestRespondTrackingOffCommand(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(38, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SupportImageInVideoMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SupportImageInVideoMode() {
+      ::grpc::Service::MarkMethodRaw(39);
+    }
+    ~WithRawMethod_SupportImageInVideoMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SupportImageInVideoMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* /*request*/, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSupportImageInVideoMode(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(39, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SupportVideoInImageMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SupportVideoInImageMode() {
+      ::grpc::Service::MarkMethodRaw(40);
+    }
+    ~WithRawMethod_SupportVideoInImageMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SupportVideoInImageMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* /*request*/, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSupportVideoInImageMode(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(40, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -5246,6 +5468,50 @@ class CameraServerService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithRawCallbackMethod_SupportImageInVideoMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SupportImageInVideoMode() {
+      ::grpc::Service::MarkMethodRawCallback(39,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SupportImageInVideoMode(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_SupportImageInVideoMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SupportImageInVideoMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* /*request*/, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SupportImageInVideoMode(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_SupportVideoInImageMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SupportVideoInImageMode() {
+      ::grpc::Service::MarkMethodRawCallback(40,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SupportVideoInImageMode(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_SupportVideoInImageMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SupportVideoInImageMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* /*request*/, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SupportVideoInImageMode(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_SetInformation : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -5839,7 +6105,61 @@ class CameraServerService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedRespondTrackingOffCommand(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest,::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_SetInformation<WithStreamedUnaryMethod_SetVideoStreaming<WithStreamedUnaryMethod_SetInProgress<WithStreamedUnaryMethod_RespondTakePhoto<WithStreamedUnaryMethod_RespondStartVideo<WithStreamedUnaryMethod_RespondStopVideo<WithStreamedUnaryMethod_RespondStartVideoStreaming<WithStreamedUnaryMethod_RespondStopVideoStreaming<WithStreamedUnaryMethod_RespondSetMode<WithStreamedUnaryMethod_RespondStorageInformation<WithStreamedUnaryMethod_RespondCaptureStatus<WithStreamedUnaryMethod_RespondFormatStorage<WithStreamedUnaryMethod_RespondResetSettings<WithStreamedUnaryMethod_RespondZoomInStart<WithStreamedUnaryMethod_RespondZoomOutStart<WithStreamedUnaryMethod_RespondZoomStop<WithStreamedUnaryMethod_RespondZoomRange<WithStreamedUnaryMethod_SetTrackingRectangleStatus<WithStreamedUnaryMethod_SetTrackingOffStatus<WithStreamedUnaryMethod_RespondTrackingPointCommand<WithStreamedUnaryMethod_RespondTrackingRectangleCommand<WithStreamedUnaryMethod_RespondTrackingOffCommand<Service > > > > > > > > > > > > > > > > > > > > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_SupportImageInVideoMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_SupportImageInVideoMode() {
+      ::grpc::Service::MarkMethodStreamed(39,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>* streamer) {
+                       return this->StreamedSupportImageInVideoMode(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_SupportImageInVideoMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SupportImageInVideoMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* /*request*/, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedSupportImageInVideoMode(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest,::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_SupportVideoInImageMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_SupportVideoInImageMode() {
+      ::grpc::Service::MarkMethodStreamed(40,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>* streamer) {
+                       return this->StreamedSupportVideoInImageMode(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_SupportVideoInImageMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SupportVideoInImageMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* /*request*/, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedSupportVideoInImageMode(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest,::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_SetInformation<WithStreamedUnaryMethod_SetVideoStreaming<WithStreamedUnaryMethod_SetInProgress<WithStreamedUnaryMethod_RespondTakePhoto<WithStreamedUnaryMethod_RespondStartVideo<WithStreamedUnaryMethod_RespondStopVideo<WithStreamedUnaryMethod_RespondStartVideoStreaming<WithStreamedUnaryMethod_RespondStopVideoStreaming<WithStreamedUnaryMethod_RespondSetMode<WithStreamedUnaryMethod_RespondStorageInformation<WithStreamedUnaryMethod_RespondCaptureStatus<WithStreamedUnaryMethod_RespondFormatStorage<WithStreamedUnaryMethod_RespondResetSettings<WithStreamedUnaryMethod_RespondZoomInStart<WithStreamedUnaryMethod_RespondZoomOutStart<WithStreamedUnaryMethod_RespondZoomStop<WithStreamedUnaryMethod_RespondZoomRange<WithStreamedUnaryMethod_SetTrackingRectangleStatus<WithStreamedUnaryMethod_SetTrackingOffStatus<WithStreamedUnaryMethod_RespondTrackingPointCommand<WithStreamedUnaryMethod_RespondTrackingRectangleCommand<WithStreamedUnaryMethod_RespondTrackingOffCommand<WithStreamedUnaryMethod_SupportImageInVideoMode<WithStreamedUnaryMethod_SupportVideoInImageMode<Service > > > > > > > > > > > > > > > > > > > > > > > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeTakePhoto : public BaseClass {
    private:
@@ -6300,7 +6620,7 @@ class CameraServerService final {
     virtual ::grpc::Status StreamedSubscribeTrackingOffCommand(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::camera_server::SubscribeTrackingOffCommandRequest,::mavsdk::rpc::camera_server::TrackingOffCommandResponse>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_SubscribeTakePhoto<WithSplitStreamingMethod_SubscribeStartVideo<WithSplitStreamingMethod_SubscribeStopVideo<WithSplitStreamingMethod_SubscribeStartVideoStreaming<WithSplitStreamingMethod_SubscribeStopVideoStreaming<WithSplitStreamingMethod_SubscribeSetMode<WithSplitStreamingMethod_SubscribeStorageInformation<WithSplitStreamingMethod_SubscribeCaptureStatus<WithSplitStreamingMethod_SubscribeFormatStorage<WithSplitStreamingMethod_SubscribeResetSettings<WithSplitStreamingMethod_SubscribeZoomInStart<WithSplitStreamingMethod_SubscribeZoomOutStart<WithSplitStreamingMethod_SubscribeZoomStop<WithSplitStreamingMethod_SubscribeZoomRange<WithSplitStreamingMethod_SubscribeTrackingPointCommand<WithSplitStreamingMethod_SubscribeTrackingRectangleCommand<WithSplitStreamingMethod_SubscribeTrackingOffCommand<Service > > > > > > > > > > > > > > > > > SplitStreamedService;
-  typedef WithStreamedUnaryMethod_SetInformation<WithStreamedUnaryMethod_SetVideoStreaming<WithStreamedUnaryMethod_SetInProgress<WithSplitStreamingMethod_SubscribeTakePhoto<WithStreamedUnaryMethod_RespondTakePhoto<WithSplitStreamingMethod_SubscribeStartVideo<WithStreamedUnaryMethod_RespondStartVideo<WithSplitStreamingMethod_SubscribeStopVideo<WithStreamedUnaryMethod_RespondStopVideo<WithSplitStreamingMethod_SubscribeStartVideoStreaming<WithStreamedUnaryMethod_RespondStartVideoStreaming<WithSplitStreamingMethod_SubscribeStopVideoStreaming<WithStreamedUnaryMethod_RespondStopVideoStreaming<WithSplitStreamingMethod_SubscribeSetMode<WithStreamedUnaryMethod_RespondSetMode<WithSplitStreamingMethod_SubscribeStorageInformation<WithStreamedUnaryMethod_RespondStorageInformation<WithSplitStreamingMethod_SubscribeCaptureStatus<WithStreamedUnaryMethod_RespondCaptureStatus<WithSplitStreamingMethod_SubscribeFormatStorage<WithStreamedUnaryMethod_RespondFormatStorage<WithSplitStreamingMethod_SubscribeResetSettings<WithStreamedUnaryMethod_RespondResetSettings<WithSplitStreamingMethod_SubscribeZoomInStart<WithStreamedUnaryMethod_RespondZoomInStart<WithSplitStreamingMethod_SubscribeZoomOutStart<WithStreamedUnaryMethod_RespondZoomOutStart<WithSplitStreamingMethod_SubscribeZoomStop<WithStreamedUnaryMethod_RespondZoomStop<WithSplitStreamingMethod_SubscribeZoomRange<WithStreamedUnaryMethod_RespondZoomRange<WithStreamedUnaryMethod_SetTrackingRectangleStatus<WithStreamedUnaryMethod_SetTrackingOffStatus<WithSplitStreamingMethod_SubscribeTrackingPointCommand<WithSplitStreamingMethod_SubscribeTrackingRectangleCommand<WithSplitStreamingMethod_SubscribeTrackingOffCommand<WithStreamedUnaryMethod_RespondTrackingPointCommand<WithStreamedUnaryMethod_RespondTrackingRectangleCommand<WithStreamedUnaryMethod_RespondTrackingOffCommand<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_SetInformation<WithStreamedUnaryMethod_SetVideoStreaming<WithStreamedUnaryMethod_SetInProgress<WithSplitStreamingMethod_SubscribeTakePhoto<WithStreamedUnaryMethod_RespondTakePhoto<WithSplitStreamingMethod_SubscribeStartVideo<WithStreamedUnaryMethod_RespondStartVideo<WithSplitStreamingMethod_SubscribeStopVideo<WithStreamedUnaryMethod_RespondStopVideo<WithSplitStreamingMethod_SubscribeStartVideoStreaming<WithStreamedUnaryMethod_RespondStartVideoStreaming<WithSplitStreamingMethod_SubscribeStopVideoStreaming<WithStreamedUnaryMethod_RespondStopVideoStreaming<WithSplitStreamingMethod_SubscribeSetMode<WithStreamedUnaryMethod_RespondSetMode<WithSplitStreamingMethod_SubscribeStorageInformation<WithStreamedUnaryMethod_RespondStorageInformation<WithSplitStreamingMethod_SubscribeCaptureStatus<WithStreamedUnaryMethod_RespondCaptureStatus<WithSplitStreamingMethod_SubscribeFormatStorage<WithStreamedUnaryMethod_RespondFormatStorage<WithSplitStreamingMethod_SubscribeResetSettings<WithStreamedUnaryMethod_RespondResetSettings<WithSplitStreamingMethod_SubscribeZoomInStart<WithStreamedUnaryMethod_RespondZoomInStart<WithSplitStreamingMethod_SubscribeZoomOutStart<WithStreamedUnaryMethod_RespondZoomOutStart<WithSplitStreamingMethod_SubscribeZoomStop<WithStreamedUnaryMethod_RespondZoomStop<WithSplitStreamingMethod_SubscribeZoomRange<WithStreamedUnaryMethod_RespondZoomRange<WithStreamedUnaryMethod_SetTrackingRectangleStatus<WithStreamedUnaryMethod_SetTrackingOffStatus<WithSplitStreamingMethod_SubscribeTrackingPointCommand<WithSplitStreamingMethod_SubscribeTrackingRectangleCommand<WithSplitStreamingMethod_SubscribeTrackingOffCommand<WithStreamedUnaryMethod_RespondTrackingPointCommand<WithStreamedUnaryMethod_RespondTrackingRectangleCommand<WithStreamedUnaryMethod_RespondTrackingOffCommand<WithStreamedUnaryMethod_SupportImageInVideoMode<WithStreamedUnaryMethod_SupportVideoInImageMode<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace camera_server

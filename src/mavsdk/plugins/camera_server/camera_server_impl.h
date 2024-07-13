@@ -119,6 +119,9 @@ public:
     CameraServer::Result
     respond_tracking_off_command(CameraServer::CameraFeedback tracking_off_feedback);
 
+    CameraServer::Result support_image_in_video_mode(bool allow);
+    CameraServer::Result support_video_in_image_mode(bool allow);
+
 private:
     enum StatusFlags {
         IN_PROGRESS = 1 << 0,
@@ -196,6 +199,9 @@ private:
     void send_capture_status();
 
     bool _is_information_set{};
+
+    bool _support_image_in_video_mode{false};
+    bool _support_video_in_image_mode{false};
 
     // CAMERA_TRACKING_STATUS messages sending fields
     std::mutex _tracking_status_mutex{};

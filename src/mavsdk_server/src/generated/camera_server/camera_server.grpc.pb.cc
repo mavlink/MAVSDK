@@ -63,6 +63,8 @@ static const char* CameraServerService_method_names[] = {
   "/mavsdk.rpc.camera_server.CameraServerService/RespondTrackingPointCommand",
   "/mavsdk.rpc.camera_server.CameraServerService/RespondTrackingRectangleCommand",
   "/mavsdk.rpc.camera_server.CameraServerService/RespondTrackingOffCommand",
+  "/mavsdk.rpc.camera_server.CameraServerService/SupportImageInVideoMode",
+  "/mavsdk.rpc.camera_server.CameraServerService/SupportVideoInImageMode",
 };
 
 std::unique_ptr< CameraServerService::Stub> CameraServerService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -111,6 +113,8 @@ CameraServerService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>
   , rpcmethod_RespondTrackingPointCommand_(CameraServerService_method_names[36], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_RespondTrackingRectangleCommand_(CameraServerService_method_names[37], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_RespondTrackingOffCommand_(CameraServerService_method_names[38], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SupportImageInVideoMode_(CameraServerService_method_names[39], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SupportVideoInImageMode_(CameraServerService_method_names[40], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status CameraServerService::Stub::SetInformation(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SetInformationRequest& request, ::mavsdk::rpc::camera_server::SetInformationResponse* response) {
@@ -891,6 +895,52 @@ void CameraServerService::Stub::async::RespondTrackingOffCommand(::grpc::ClientC
   return result;
 }
 
+::grpc::Status CameraServerService::Stub::SupportImageInVideoMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest& request, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SupportImageInVideoMode_, context, request, response);
+}
+
+void CameraServerService::Stub::async::SupportImageInVideoMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* request, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SupportImageInVideoMode_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::SupportImageInVideoMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* request, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SupportImageInVideoMode_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>* CameraServerService::Stub::PrepareAsyncSupportImageInVideoModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse, ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SupportImageInVideoMode_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse>* CameraServerService::Stub::AsyncSupportImageInVideoModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSupportImageInVideoModeRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status CameraServerService::Stub::SupportVideoInImageMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest& request, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SupportVideoInImageMode_, context, request, response);
+}
+
+void CameraServerService::Stub::async::SupportVideoInImageMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* request, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SupportVideoInImageMode_, context, request, response, std::move(f));
+}
+
+void CameraServerService::Stub::async::SupportVideoInImageMode(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* request, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SupportVideoInImageMode_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>* CameraServerService::Stub::PrepareAsyncSupportVideoInImageModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse, ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SupportVideoInImageMode_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse>* CameraServerService::Stub::AsyncSupportVideoInImageModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSupportVideoInImageModeRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 CameraServerService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       CameraServerService_method_names[0],
@@ -1282,6 +1332,26 @@ CameraServerService::Service::Service() {
              ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* resp) {
                return service->RespondTrackingOffCommand(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[39],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* req,
+             ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* resp) {
+               return service->SupportImageInVideoMode(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      CameraServerService_method_names[40],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< CameraServerService::Service, ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](CameraServerService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* req,
+             ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* resp) {
+               return service->SupportVideoInImageMode(ctx, req, resp);
+             }, this)));
 }
 
 CameraServerService::Service::~Service() {
@@ -1554,6 +1624,20 @@ CameraServerService::Service::~Service() {
 }
 
 ::grpc::Status CameraServerService::Service::RespondTrackingOffCommand(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::RespondTrackingOffCommandRequest* request, ::mavsdk::rpc::camera_server::RespondTrackingOffCommandResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SupportImageInVideoMode(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SupportImageInVideoModeRequest* request, ::mavsdk::rpc::camera_server::SupportImageInVideoModeResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status CameraServerService::Service::SupportVideoInImageMode(::grpc::ServerContext* context, const ::mavsdk::rpc::camera_server::SupportVideoInImageModeRequest* request, ::mavsdk::rpc::camera_server::SupportVideoInImageModeResponse* response) {
   (void) context;
   (void) request;
   (void) response;
