@@ -240,35 +240,47 @@ void ComponentMetadataImpl::retrieve_metadata(uint8_t compid, COMP_METADATA_TYPE
 
                 const std::filesystem::path local_path =
                     tmp_download_path / std::filesystem::path(download_path).filename();
-                _system_impl->mavlink_ftp_client().download_async(
-                    download_path,
-                    tmp_download_path.string(),
-                    true,
-                    [this, &component, local_path, compid, type, file_cache_tag](
-                        MavlinkFtpClient::ClientResult download_result,
-                        MavlinkFtpClient::ProgressData progress_data) {
-                        if (download_result == MavlinkFtpClient::ClientResult::Next) {
-                            if (_verbose_debugging) {
-                                LogDebug()
-                                    << "File download progress: " << progress_data.bytes_transferred
-                                    << '/' << progress_data.total_bytes;
+
+                _system_impl->call_user_callback([this,
+                                                  download_path,
+                                                  tmp_download_path,
+                                                  &component,
+                                                  target_compid,
+                                                  local_path,
+                                                  compid,
+                                                  type,
+                                                  file_cache_tag]() {
+                    _system_impl->mavlink_ftp_client().download_async(
+                        download_path,
+                        tmp_download_path.string(),
+                        true,
+                        [this, &component, local_path, compid, type, file_cache_tag](
+                            MavlinkFtpClient::ClientResult download_result,
+                            MavlinkFtpClient::ProgressData progress_data) {
+                            if (download_result == MavlinkFtpClient::ClientResult::Next) {
+                                if (_verbose_debugging) {
+                                    LogDebug() << "File download progress: "
+                                               << progress_data.bytes_transferred << '/'
+                                               << progress_data.total_bytes;
+                                }
+                                // TODO: detect slow link (e.g. telemetry), and cancel download
+                                // (fallback to http) e.g. by estimating the remaining download
+                                // time, and cancel if >40s
+                            } else {
+                                if (_verbose_debugging) {
+                                    LogDebug()
+                                        << "File download ended with result " << download_result;
+                                }
+                                if (download_result == MavlinkFtpClient::ClientResult::Success) {
+                                    component.current_metadata_path() =
+                                        extract_and_cache_file(local_path, file_cache_tag);
+                                }
+                                // Move on to the next uri or type
+                                retrieve_metadata(compid, type);
                             }
-                            // TODO: detect slow link (e.g. telemetry), and cancel download
-                            // (fallback to http) e.g. by estimating the remaining download time,
-                            // and cancel if >40s
-                        } else {
-                            if (_verbose_debugging) {
-                                LogDebug() << "File download ended with result " << download_result;
-                            }
-                            if (download_result == MavlinkFtpClient::ClientResult::Success) {
-                                component.current_metadata_path() =
-                                    extract_and_cache_file(local_path, file_cache_tag);
-                            }
-                            // Move on to the next uri or type
-                            retrieve_metadata(compid, type);
-                        }
-                    },
-                    target_compid);
+                        },
+                        target_compid);
+                });
 
             } else {
                 // http(s) download

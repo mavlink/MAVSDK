@@ -78,6 +78,9 @@ extern DownloadResponseDefaultTypeInternal _DownloadResponse_default_instance_;
 class FtpResult;
 struct FtpResultDefaultTypeInternal;
 extern FtpResultDefaultTypeInternal _FtpResult_default_instance_;
+class ListDirectoryData;
+struct ListDirectoryDataDefaultTypeInternal;
+extern ListDirectoryDataDefaultTypeInternal _ListDirectoryData_default_instance_;
 class ListDirectoryRequest;
 struct ListDirectoryRequestDefaultTypeInternal;
 extern ListDirectoryRequestDefaultTypeInternal _ListDirectoryRequest_default_instance_;
@@ -650,7 +653,7 @@ class SetTargetCompidRequest final :
                &_SetTargetCompidRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    17;
 
   friend void swap(SetTargetCompidRequest& a, SetTargetCompidRequest& b) {
     a.Swap(&b);
@@ -825,7 +828,7 @@ class RenameRequest final :
                &_RenameRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    13;
 
   friend void swap(RenameRequest& a, RenameRequest& b) {
     a.Swap(&b);
@@ -1024,7 +1027,7 @@ class RemoveFileRequest final :
                &_RemoveFileRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    11;
 
   friend void swap(RemoveFileRequest& a, RemoveFileRequest& b) {
     a.Swap(&b);
@@ -1205,7 +1208,7 @@ class RemoveDirectoryRequest final :
                &_RemoveDirectoryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    9;
 
   friend void swap(RemoveDirectoryRequest& a, RemoveDirectoryRequest& b) {
     a.Swap(&b);
@@ -1386,7 +1389,7 @@ class ProgressData final :
                &_ProgressData_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    19;
 
   friend void swap(ProgressData& a, ProgressData& b) {
     a.Swap(&b);
@@ -1695,6 +1698,229 @@ class ListDirectoryRequest final :
   friend struct ::TableStruct_ftp_2fftp_2eproto;
 };// -------------------------------------------------------------------
 
+class ListDirectoryData final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.ListDirectoryData) */ {
+ public:
+  inline ListDirectoryData() : ListDirectoryData(nullptr) {}
+  ~ListDirectoryData() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR ListDirectoryData(::google::protobuf::internal::ConstantInitialized);
+
+  inline ListDirectoryData(const ListDirectoryData& from)
+      : ListDirectoryData(nullptr, from) {}
+  ListDirectoryData(ListDirectoryData&& from) noexcept
+    : ListDirectoryData() {
+    *this = ::std::move(from);
+  }
+
+  inline ListDirectoryData& operator=(const ListDirectoryData& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ListDirectoryData& operator=(ListDirectoryData&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ListDirectoryData& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ListDirectoryData* internal_default_instance() {
+    return reinterpret_cast<const ListDirectoryData*>(
+               &_ListDirectoryData_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    5;
+
+  friend void swap(ListDirectoryData& a, ListDirectoryData& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ListDirectoryData* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ListDirectoryData* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  ListDirectoryData* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<ListDirectoryData>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ListDirectoryData& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const ListDirectoryData& from) {
+    ListDirectoryData::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(ListDirectoryData* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.ftp.ListDirectoryData";
+  }
+  protected:
+  explicit ListDirectoryData(::google::protobuf::Arena* arena);
+  ListDirectoryData(::google::protobuf::Arena* arena, const ListDirectoryData& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kDirsFieldNumber = 1,
+    kFilesFieldNumber = 2,
+  };
+  // repeated string dirs = 1;
+  int dirs_size() const;
+  private:
+  int _internal_dirs_size() const;
+
+  public:
+  void clear_dirs() ;
+  const std::string& dirs(int index) const;
+  std::string* mutable_dirs(int index);
+  void set_dirs(int index, const std::string& value);
+  void set_dirs(int index, std::string&& value);
+  void set_dirs(int index, const char* value);
+  void set_dirs(int index, const char* value, std::size_t size);
+  void set_dirs(int index, absl::string_view value);
+  std::string* add_dirs();
+  void add_dirs(const std::string& value);
+  void add_dirs(std::string&& value);
+  void add_dirs(const char* value);
+  void add_dirs(const char* value, std::size_t size);
+  void add_dirs(absl::string_view value);
+  const ::google::protobuf::RepeatedPtrField<std::string>& dirs() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* mutable_dirs();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<std::string>& _internal_dirs() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_dirs();
+
+  public:
+  // repeated string files = 2;
+  int files_size() const;
+  private:
+  int _internal_files_size() const;
+
+  public:
+  void clear_files() ;
+  const std::string& files(int index) const;
+  std::string* mutable_files(int index);
+  void set_files(int index, const std::string& value);
+  void set_files(int index, std::string&& value);
+  void set_files(int index, const char* value);
+  void set_files(int index, const char* value, std::size_t size);
+  void set_files(int index, absl::string_view value);
+  std::string* add_files();
+  void add_files(const std::string& value);
+  void add_files(std::string&& value);
+  void add_files(const char* value);
+  void add_files(const char* value, std::size_t size);
+  void add_files(absl::string_view value);
+  const ::google::protobuf::RepeatedPtrField<std::string>& files() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* mutable_files();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<std::string>& _internal_files() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_files();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.ListDirectoryData)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      50, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::RepeatedPtrField<std::string> dirs_;
+    ::google::protobuf::RepeatedPtrField<std::string> files_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
+};// -------------------------------------------------------------------
+
 class FtpResult final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.FtpResult) */ {
  public:
@@ -1754,7 +1980,7 @@ class FtpResult final :
                &_FtpResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    20;
 
   friend void swap(FtpResult& a, FtpResult& b) {
     a.Swap(&b);
@@ -1978,7 +2204,7 @@ class CreateDirectoryRequest final :
                &_CreateDirectoryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    7;
 
   friend void swap(CreateDirectoryRequest& a, CreateDirectoryRequest& b) {
     a.Swap(&b);
@@ -2159,7 +2385,7 @@ class AreFilesIdenticalRequest final :
                &_AreFilesIdenticalRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    15;
 
   friend void swap(AreFilesIdenticalRequest& a, AreFilesIdenticalRequest& b) {
     a.Swap(&b);
@@ -2556,7 +2782,7 @@ class SetTargetCompidResponse final :
                &_SetTargetCompidResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    18;
 
   friend void swap(SetTargetCompidResponse& a, SetTargetCompidResponse& b) {
     a.Swap(&b);
@@ -2737,7 +2963,7 @@ class RenameResponse final :
                &_RenameResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    14;
 
   friend void swap(RenameResponse& a, RenameResponse& b) {
     a.Swap(&b);
@@ -2918,7 +3144,7 @@ class RemoveFileResponse final :
                &_RemoveFileResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    12;
 
   friend void swap(RemoveFileResponse& a, RemoveFileResponse& b) {
     a.Swap(&b);
@@ -3099,7 +3325,7 @@ class RemoveDirectoryResponse final :
                &_RemoveDirectoryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    10;
 
   friend void swap(RemoveDirectoryResponse& a, RemoveDirectoryResponse& b) {
     a.Swap(&b);
@@ -3280,7 +3506,7 @@ class ListDirectoryResponse final :
                &_ListDirectoryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   friend void swap(ListDirectoryResponse& a, ListDirectoryResponse& b) {
     a.Swap(&b);
@@ -3353,37 +3579,9 @@ class ListDirectoryResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPathsFieldNumber = 2,
     kFtpResultFieldNumber = 1,
+    kDataFieldNumber = 2,
   };
-  // repeated string paths = 2;
-  int paths_size() const;
-  private:
-  int _internal_paths_size() const;
-
-  public:
-  void clear_paths() ;
-  const std::string& paths(int index) const;
-  std::string* mutable_paths(int index);
-  void set_paths(int index, const std::string& value);
-  void set_paths(int index, std::string&& value);
-  void set_paths(int index, const char* value);
-  void set_paths(int index, const char* value, std::size_t size);
-  void set_paths(int index, absl::string_view value);
-  std::string* add_paths();
-  void add_paths(const std::string& value);
-  void add_paths(std::string&& value);
-  void add_paths(const char* value);
-  void add_paths(const char* value, std::size_t size);
-  void add_paths(absl::string_view value);
-  const ::google::protobuf::RepeatedPtrField<std::string>& paths() const;
-  ::google::protobuf::RepeatedPtrField<std::string>* mutable_paths();
-
-  private:
-  const ::google::protobuf::RepeatedPtrField<std::string>& _internal_paths() const;
-  ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_paths();
-
-  public:
   // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
   bool has_ftp_result() const;
   void clear_ftp_result() ;
@@ -3399,14 +3597,29 @@ class ListDirectoryResponse final :
   ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
 
   public:
+  // .mavsdk.rpc.ftp.ListDirectoryData data = 2;
+  bool has_data() const;
+  void clear_data() ;
+  const ::mavsdk::rpc::ftp::ListDirectoryData& data() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::ListDirectoryData* release_data();
+  ::mavsdk::rpc::ftp::ListDirectoryData* mutable_data();
+  void set_allocated_data(::mavsdk::rpc::ftp::ListDirectoryData* value);
+  void unsafe_arena_set_allocated_data(::mavsdk::rpc::ftp::ListDirectoryData* value);
+  ::mavsdk::rpc::ftp::ListDirectoryData* unsafe_arena_release_data();
+
+  private:
+  const ::mavsdk::rpc::ftp::ListDirectoryData& _internal_data() const;
+  ::mavsdk::rpc::ftp::ListDirectoryData* _internal_mutable_data();
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.ListDirectoryResponse)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      1, 2, 1,
-      50, 2>
+      1, 2, 2,
+      0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
@@ -3424,8 +3637,8 @@ class ListDirectoryResponse final :
                               ::google::protobuf::Arena* arena, const Impl_& from);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::RepeatedPtrField<std::string> paths_;
     ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
+    ::mavsdk::rpc::ftp::ListDirectoryData* data_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -3689,7 +3902,7 @@ class CreateDirectoryResponse final :
                &_CreateDirectoryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    8;
 
   friend void swap(CreateDirectoryResponse& a, CreateDirectoryResponse& b) {
     a.Swap(&b);
@@ -3870,7 +4083,7 @@ class AreFilesIdenticalResponse final :
                &_AreFilesIdenticalResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    16;
 
   friend void swap(AreFilesIdenticalResponse& a, AreFilesIdenticalResponse& b) {
     a.Swap(&b);
@@ -4710,6 +4923,212 @@ inline void ListDirectoryRequest::set_allocated_remote_dir(std::string* value) {
 
 // -------------------------------------------------------------------
 
+// ListDirectoryData
+
+// repeated string dirs = 1;
+inline int ListDirectoryData::_internal_dirs_size() const {
+  return _internal_dirs().size();
+}
+inline int ListDirectoryData::dirs_size() const {
+  return _internal_dirs_size();
+}
+inline void ListDirectoryData::clear_dirs() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.dirs_.Clear();
+}
+inline std::string* ListDirectoryData::add_dirs()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  std::string* _s = _internal_mutable_dirs()->Add();
+  // @@protoc_insertion_point(field_add_mutable:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+  return _s;
+}
+inline const std::string& ListDirectoryData::dirs(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+  return _internal_dirs().Get(index);
+}
+inline std::string* ListDirectoryData::mutable_dirs(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+  return _internal_mutable_dirs()->Mutable(index);
+}
+inline void ListDirectoryData::set_dirs(int index, const std::string& value) {
+  _internal_mutable_dirs()->Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+}
+inline void ListDirectoryData::set_dirs(int index, std::string&& value) {
+  _internal_mutable_dirs()->Mutable(index)->assign(std::move(value));
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+}
+inline void ListDirectoryData::set_dirs(int index, const char* value) {
+  ABSL_DCHECK(value != nullptr);
+  _internal_mutable_dirs()->Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+}
+inline void ListDirectoryData::set_dirs(int index, const char* value,
+                              std::size_t size) {
+  _internal_mutable_dirs()->Mutable(index)->assign(
+      reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+}
+inline void ListDirectoryData::set_dirs(int index, absl::string_view value) {
+  _internal_mutable_dirs()->Mutable(index)->assign(value.data(),
+                                                     value.size());
+  // @@protoc_insertion_point(field_set_string_piece:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+}
+inline void ListDirectoryData::add_dirs(const std::string& value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _internal_mutable_dirs()->Add()->assign(value);
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+}
+inline void ListDirectoryData::add_dirs(std::string&& value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _internal_mutable_dirs()->Add(std::move(value));
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+}
+inline void ListDirectoryData::add_dirs(const char* value) {
+  ABSL_DCHECK(value != nullptr);
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _internal_mutable_dirs()->Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+}
+inline void ListDirectoryData::add_dirs(const char* value, std::size_t size) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _internal_mutable_dirs()->Add()->assign(
+      reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+}
+inline void ListDirectoryData::add_dirs(absl::string_view value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _internal_mutable_dirs()->Add()->assign(value.data(), value.size());
+  // @@protoc_insertion_point(field_add_string_piece:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+}
+inline const ::google::protobuf::RepeatedPtrField<std::string>&
+ListDirectoryData::dirs() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+  return _internal_dirs();
+}
+inline ::google::protobuf::RepeatedPtrField<std::string>*
+ListDirectoryData::mutable_dirs() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  return _internal_mutable_dirs();
+}
+inline const ::google::protobuf::RepeatedPtrField<std::string>&
+ListDirectoryData::_internal_dirs() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.dirs_;
+}
+inline ::google::protobuf::RepeatedPtrField<std::string>*
+ListDirectoryData::_internal_mutable_dirs() {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return &_impl_.dirs_;
+}
+
+// repeated string files = 2;
+inline int ListDirectoryData::_internal_files_size() const {
+  return _internal_files().size();
+}
+inline int ListDirectoryData::files_size() const {
+  return _internal_files_size();
+}
+inline void ListDirectoryData::clear_files() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.files_.Clear();
+}
+inline std::string* ListDirectoryData::add_files()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  std::string* _s = _internal_mutable_files()->Add();
+  // @@protoc_insertion_point(field_add_mutable:mavsdk.rpc.ftp.ListDirectoryData.files)
+  return _s;
+}
+inline const std::string& ListDirectoryData::files(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ListDirectoryData.files)
+  return _internal_files().Get(index);
+}
+inline std::string* ListDirectoryData::mutable_files(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.ListDirectoryData.files)
+  return _internal_mutable_files()->Mutable(index);
+}
+inline void ListDirectoryData::set_files(int index, const std::string& value) {
+  _internal_mutable_files()->Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.ListDirectoryData.files)
+}
+inline void ListDirectoryData::set_files(int index, std::string&& value) {
+  _internal_mutable_files()->Mutable(index)->assign(std::move(value));
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.ListDirectoryData.files)
+}
+inline void ListDirectoryData::set_files(int index, const char* value) {
+  ABSL_DCHECK(value != nullptr);
+  _internal_mutable_files()->Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:mavsdk.rpc.ftp.ListDirectoryData.files)
+}
+inline void ListDirectoryData::set_files(int index, const char* value,
+                              std::size_t size) {
+  _internal_mutable_files()->Mutable(index)->assign(
+      reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:mavsdk.rpc.ftp.ListDirectoryData.files)
+}
+inline void ListDirectoryData::set_files(int index, absl::string_view value) {
+  _internal_mutable_files()->Mutable(index)->assign(value.data(),
+                                                     value.size());
+  // @@protoc_insertion_point(field_set_string_piece:mavsdk.rpc.ftp.ListDirectoryData.files)
+}
+inline void ListDirectoryData::add_files(const std::string& value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _internal_mutable_files()->Add()->assign(value);
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.ftp.ListDirectoryData.files)
+}
+inline void ListDirectoryData::add_files(std::string&& value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _internal_mutable_files()->Add(std::move(value));
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.ftp.ListDirectoryData.files)
+}
+inline void ListDirectoryData::add_files(const char* value) {
+  ABSL_DCHECK(value != nullptr);
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _internal_mutable_files()->Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:mavsdk.rpc.ftp.ListDirectoryData.files)
+}
+inline void ListDirectoryData::add_files(const char* value, std::size_t size) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _internal_mutable_files()->Add()->assign(
+      reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:mavsdk.rpc.ftp.ListDirectoryData.files)
+}
+inline void ListDirectoryData::add_files(absl::string_view value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _internal_mutable_files()->Add()->assign(value.data(), value.size());
+  // @@protoc_insertion_point(field_add_string_piece:mavsdk.rpc.ftp.ListDirectoryData.files)
+}
+inline const ::google::protobuf::RepeatedPtrField<std::string>&
+ListDirectoryData::files() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.ftp.ListDirectoryData.files)
+  return _internal_files();
+}
+inline ::google::protobuf::RepeatedPtrField<std::string>*
+ListDirectoryData::mutable_files() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.ftp.ListDirectoryData.files)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  return _internal_mutable_files();
+}
+inline const ::google::protobuf::RepeatedPtrField<std::string>&
+ListDirectoryData::_internal_files() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.files_;
+}
+inline ::google::protobuf::RepeatedPtrField<std::string>*
+ListDirectoryData::_internal_mutable_files() {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return &_impl_.files_;
+}
+
+// -------------------------------------------------------------------
+
 // ListDirectoryResponse
 
 // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
@@ -4808,105 +5227,100 @@ inline void ListDirectoryResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.ListDirectoryResponse.ftp_result)
 }
 
-// repeated string paths = 2;
-inline int ListDirectoryResponse::_internal_paths_size() const {
-  return _internal_paths().size();
+// .mavsdk.rpc.ftp.ListDirectoryData data = 2;
+inline bool ListDirectoryResponse::has_data() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.data_ != nullptr);
+  return value;
 }
-inline int ListDirectoryResponse::paths_size() const {
-  return _internal_paths_size();
-}
-inline void ListDirectoryResponse::clear_paths() {
+inline void ListDirectoryResponse::clear_data() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.paths_.Clear();
+  if (_impl_.data_ != nullptr) _impl_.data_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline std::string* ListDirectoryResponse::add_paths()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  std::string* _s = _internal_mutable_paths()->Add();
-  // @@protoc_insertion_point(field_add_mutable:mavsdk.rpc.ftp.ListDirectoryResponse.paths)
-  return _s;
-}
-inline const std::string& ListDirectoryResponse::paths(int index) const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ListDirectoryResponse.paths)
-  return _internal_paths().Get(index);
-}
-inline std::string* ListDirectoryResponse::mutable_paths(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.ListDirectoryResponse.paths)
-  return _internal_mutable_paths()->Mutable(index);
-}
-inline void ListDirectoryResponse::set_paths(int index, const std::string& value) {
-  _internal_mutable_paths()->Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.ListDirectoryResponse.paths)
-}
-inline void ListDirectoryResponse::set_paths(int index, std::string&& value) {
-  _internal_mutable_paths()->Mutable(index)->assign(std::move(value));
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.ListDirectoryResponse.paths)
-}
-inline void ListDirectoryResponse::set_paths(int index, const char* value) {
-  ABSL_DCHECK(value != nullptr);
-  _internal_mutable_paths()->Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:mavsdk.rpc.ftp.ListDirectoryResponse.paths)
-}
-inline void ListDirectoryResponse::set_paths(int index, const char* value,
-                              std::size_t size) {
-  _internal_mutable_paths()->Mutable(index)->assign(
-      reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:mavsdk.rpc.ftp.ListDirectoryResponse.paths)
-}
-inline void ListDirectoryResponse::set_paths(int index, absl::string_view value) {
-  _internal_mutable_paths()->Mutable(index)->assign(value.data(),
-                                                     value.size());
-  // @@protoc_insertion_point(field_set_string_piece:mavsdk.rpc.ftp.ListDirectoryResponse.paths)
-}
-inline void ListDirectoryResponse::add_paths(const std::string& value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _internal_mutable_paths()->Add()->assign(value);
-  // @@protoc_insertion_point(field_add:mavsdk.rpc.ftp.ListDirectoryResponse.paths)
-}
-inline void ListDirectoryResponse::add_paths(std::string&& value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _internal_mutable_paths()->Add(std::move(value));
-  // @@protoc_insertion_point(field_add:mavsdk.rpc.ftp.ListDirectoryResponse.paths)
-}
-inline void ListDirectoryResponse::add_paths(const char* value) {
-  ABSL_DCHECK(value != nullptr);
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _internal_mutable_paths()->Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:mavsdk.rpc.ftp.ListDirectoryResponse.paths)
-}
-inline void ListDirectoryResponse::add_paths(const char* value, std::size_t size) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _internal_mutable_paths()->Add()->assign(
-      reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:mavsdk.rpc.ftp.ListDirectoryResponse.paths)
-}
-inline void ListDirectoryResponse::add_paths(absl::string_view value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _internal_mutable_paths()->Add()->assign(value.data(), value.size());
-  // @@protoc_insertion_point(field_add_string_piece:mavsdk.rpc.ftp.ListDirectoryResponse.paths)
-}
-inline const ::google::protobuf::RepeatedPtrField<std::string>&
-ListDirectoryResponse::paths() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:mavsdk.rpc.ftp.ListDirectoryResponse.paths)
-  return _internal_paths();
-}
-inline ::google::protobuf::RepeatedPtrField<std::string>*
-ListDirectoryResponse::mutable_paths() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.ftp.ListDirectoryResponse.paths)
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  return _internal_mutable_paths();
-}
-inline const ::google::protobuf::RepeatedPtrField<std::string>&
-ListDirectoryResponse::_internal_paths() const {
+inline const ::mavsdk::rpc::ftp::ListDirectoryData& ListDirectoryResponse::_internal_data() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.paths_;
+  const ::mavsdk::rpc::ftp::ListDirectoryData* p = _impl_.data_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::ftp::ListDirectoryData&>(::mavsdk::rpc::ftp::_ListDirectoryData_default_instance_);
 }
-inline ::google::protobuf::RepeatedPtrField<std::string>*
-ListDirectoryResponse::_internal_mutable_paths() {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return &_impl_.paths_;
+inline const ::mavsdk::rpc::ftp::ListDirectoryData& ListDirectoryResponse::data() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ListDirectoryResponse.data)
+  return _internal_data();
+}
+inline void ListDirectoryResponse::unsafe_arena_set_allocated_data(::mavsdk::rpc::ftp::ListDirectoryData* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.data_);
+  }
+  _impl_.data_ = reinterpret_cast<::mavsdk::rpc::ftp::ListDirectoryData*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.ListDirectoryResponse.data)
+}
+inline ::mavsdk::rpc::ftp::ListDirectoryData* ListDirectoryResponse::release_data() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::ftp::ListDirectoryData* released = _impl_.data_;
+  _impl_.data_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::ftp::ListDirectoryData* ListDirectoryResponse::unsafe_arena_release_data() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.ListDirectoryResponse.data)
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::ftp::ListDirectoryData* temp = _impl_.data_;
+  _impl_.data_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::ftp::ListDirectoryData* ListDirectoryResponse::_internal_mutable_data() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000002u;
+  if (_impl_.data_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::ftp::ListDirectoryData>(GetArena());
+    _impl_.data_ = reinterpret_cast<::mavsdk::rpc::ftp::ListDirectoryData*>(p);
+  }
+  return _impl_.data_;
+}
+inline ::mavsdk::rpc::ftp::ListDirectoryData* ListDirectoryResponse::mutable_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::ftp::ListDirectoryData* _msg = _internal_mutable_data();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.ListDirectoryResponse.data)
+  return _msg;
+}
+inline void ListDirectoryResponse::set_allocated_data(::mavsdk::rpc::ftp::ListDirectoryData* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::ftp::ListDirectoryData*>(_impl_.data_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::ftp::ListDirectoryData*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+
+  _impl_.data_ = reinterpret_cast<::mavsdk::rpc::ftp::ListDirectoryData*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.ListDirectoryResponse.data)
 }
 
 // -------------------------------------------------------------------

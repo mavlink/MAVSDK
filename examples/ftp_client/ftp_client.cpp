@@ -70,22 +70,16 @@ Ftp::Result remove_file(Ftp& ftp, const std::string& path)
 Ftp::Result remove_directory(Ftp& ftp, const std::string& path, bool recursive = true)
 {
     if (recursive) {
-        auto prom = std::promise<std::pair<Ftp::Result, std::vector<std::string>>>{};
+        auto prom = std::promise<std::pair<Ftp::Result, Ftp::ListDirectoryData>>{};
         auto future_result = prom.get_future();
-        ftp.list_directory_async(path, [&prom](Ftp::Result result, std::vector<std::string> list) {
-            prom.set_value(std::pair<Ftp::Result, std::vector<std::string>>(result, list));
+        ftp.list_directory_async(path, [&prom](Ftp::Result result, auto data) {
+            prom.set_value(std::pair(result, data));
         });
 
-        std::pair<Ftp::Result, std::vector<std::string>> result = future_result.get();
+        auto result = future_result.get();
         if (result.first == Ftp::Result::Success) {
-            for (auto entry : result.second) {
-                if (entry[0] == 'D') {
-                    remove_directory(ftp, path + "/" + entry.substr(1, entry.size() - 1));
-                } else if (entry[0] == 'F') {
-                    auto i = entry.find('\t');
-                    std::string name = entry.substr(1, i - 1);
-                    remove_file(ftp, path + "/" + name);
-                }
+            for (auto entry : result.second.dirs) {
+                remove_directory(ftp, path + "/" + entry.substr(1, entry.size() - 1));
             }
         }
     }
@@ -101,15 +95,20 @@ Ftp::Result remove_directory(Ftp& ftp, const std::string& path, bool recursive =
 Ftp::Result list_directory(Ftp& ftp, const std::string& path)
 {
     std::cerr << "List directory: " << path << '\n';
-    auto prom = std::promise<std::pair<Ftp::Result, std::vector<std::string>>>{};
+    auto prom = std::promise<std::pair<Ftp::Result, Ftp::ListDirectoryData>>{};
     auto future_result = prom.get_future();
-    ftp.list_directory_async(path, [&prom](Ftp::Result result, std::vector<std::string> list) {
-        prom.set_value(std::pair<Ftp::Result, std::vector<std::string>>(result, list));
+    ftp.list_directory_async(path, [&prom](Ftp::Result result, Ftp::ListDirectoryData data) {
+        prom.set_value(std::pair(result, data));
     });
 
-    std::pair<Ftp::Result, std::vector<std::string>> result = future_result.get();
+    auto result = future_result.get();
     if (result.first == Ftp::Result::Success) {
-        for (auto entry : result.second) {
+        std::cerr << "Directories: " << '\n';
+        for (auto entry : result.second.dirs) {
+            std::cerr << entry << '\n';
+        }
+        std::cerr << "Files: " << '\n';
+        for (auto entry : result.second.files) {
             std::cerr << entry << '\n';
         }
     }
