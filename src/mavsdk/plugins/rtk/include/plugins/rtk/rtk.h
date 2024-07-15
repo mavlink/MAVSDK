@@ -62,7 +62,7 @@ public:
      * @brief RTCM data type
      */
     struct RtcmData {
-        std::string data{}; /**< @brief The data encoded as a string */
+        std::string data_base64{}; /**< @brief The data encoded as a base64 string */
     };
 
     /**
