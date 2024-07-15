@@ -140,7 +140,7 @@ public:
      */
     struct HealthAndArmingCheckMode {
         std::string mode_name{}; /**< @brief Mode name, e.g. "Position" */
-        bool can_arm_or_run{}; /**< @brief If disarmed: indicated if arming is possible. If armed:
+        bool can_arm_or_run{}; /**< @brief If disarmed: indicates if arming is possible. If armed:
                                   indicates if the mode can be selected */
         std::vector<HealthAndArmingCheckProblem>
             problems{}; /**< @brief List of reported problems for the mode */
