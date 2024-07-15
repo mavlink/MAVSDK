@@ -34,7 +34,8 @@ SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
         [this]() { return autopilot(); }),
     _request_message(
         *this, _command_sender, _mavlink_message_handler, _mavsdk_impl.timeout_handler),
-    _mavlink_ftp_client(*this)
+    _mavlink_ftp_client(*this),
+    _mavlink_component_metadata(*this)
 {
     _system_thread = new std::thread(&SystemImpl::system_thread, this);
 }

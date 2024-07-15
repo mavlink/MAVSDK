@@ -54,6 +54,11 @@
 #include "component_metadata_server/component_metadata_server_service_impl.h"
 #endif
 
+#ifdef EVENTS_ENABLED
+#include "plugins/events/events.h"
+#include "events/events_service_impl.h"
+#endif
+
 #ifdef FAILURE_ENABLED
 #include "plugins/failure/failure.h"
 #include "failure/failure_service_impl.h"
@@ -230,6 +235,11 @@ public:
 #ifdef COMPONENT_METADATA_SERVER_ENABLED
         _component_metadata_server_lazy_plugin(mavsdk),
         _component_metadata_server_service(_component_metadata_server_lazy_plugin),
+#endif
+
+#ifdef EVENTS_ENABLED
+        _events_lazy_plugin(mavsdk),
+        _events_service(_events_lazy_plugin),
 #endif
 
 #ifdef FAILURE_ENABLED
@@ -428,6 +438,13 @@ private:
     LazyServerPlugin<ComponentMetadataServer> _component_metadata_server_lazy_plugin;
 
     ComponentMetadataServerServiceImpl<> _component_metadata_server_service;
+#endif
+
+#ifdef EVENTS_ENABLED
+
+    LazyPlugin<Events> _events_lazy_plugin;
+
+    EventsServiceImpl<> _events_service;
 #endif
 
 #ifdef FAILURE_ENABLED

@@ -4,10 +4,10 @@ project(third_party)
 
 include(cmake/build_target.cmake)
 
-if (SUPERBUILD)
-    list(APPEND CMAKE_PREFIX_PATH "${DEPS_INSTALL_PATH}")
-    set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} PARENT_SCOPE)
+list(APPEND CMAKE_PREFIX_PATH "${DEPS_INSTALL_PATH}")
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} PARENT_SCOPE)
 
+if (SUPERBUILD)
     build_target(mavlink)
     build_target(jsoncpp)
     build_target(tinyxml2)
@@ -33,8 +33,8 @@ if (SUPERBUILD)
 
 endif()
 
+build_target(libevents)
+
 if (ENABLE_CPPTRACE)
-    list(APPEND CMAKE_PREFIX_PATH "${DEPS_INSTALL_PATH}")
-    set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} PARENT_SCOPE)
     build_target(cpptrace)
 endif()

@@ -21,6 +21,7 @@ target_sources(mavsdk
     crc32.cpp
     system.cpp
     system_impl.cpp
+    file_cache.cpp
     flight_mode.cpp
     fs_utils.cpp
     inflate_lzma.cpp
@@ -30,6 +31,7 @@ target_sources(mavsdk
     mavlink_channels.cpp
     mavlink_command_receiver.cpp
     mavlink_command_sender.cpp
+    mavlink_component_metadata.cpp
     mavlink_ftp_client.cpp
     mavlink_ftp_server.cpp
     mavlink_mission_transfer_client.cpp
@@ -178,6 +180,7 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/callback_list_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/call_every_handler_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/cli_arg_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/file_cache_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/locked_queue_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/geometry_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/math_conversions_test.cpp
@@ -185,6 +188,7 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_time_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_channels_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_component_metadata_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_mission_transfer_client_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_mission_transfer_server_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_statustext_handler_test.cpp

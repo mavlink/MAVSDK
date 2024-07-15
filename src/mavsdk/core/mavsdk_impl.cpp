@@ -619,7 +619,7 @@ Mavsdk::ConnectionHandle
 MavsdkImpl::add_connection(const std::shared_ptr<Connection>& new_connection)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
-    auto handle = Mavsdk::ConnectionHandle{_connections_handle_id++};
+    auto handle = _connections_handle_factory.create();
     _connections.emplace_back(ConnectionEntry{new_connection, handle});
 
     return handle;
