@@ -57,14 +57,14 @@ void LogStreaming::unsubscribe_log_streaming_raw(LogStreamingRawHandle handle)
 
 bool operator==(const LogStreaming::LogStreamingRaw& lhs, const LogStreaming::LogStreamingRaw& rhs)
 {
-    return (rhs.data == lhs.data);
+    return (rhs.data_base64 == lhs.data_base64);
 }
 
 std::ostream& operator<<(std::ostream& str, LogStreaming::LogStreamingRaw const& log_streaming_raw)
 {
     str << std::setprecision(15);
     str << "log_streaming_raw:" << '\n' << "{\n";
-    str << "    data: " << log_streaming_raw.data << '\n';
+    str << "    data_base64: " << log_streaming_raw.data_base64 << '\n';
     str << '}';
     return str;
 }

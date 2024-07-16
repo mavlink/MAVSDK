@@ -92,7 +92,7 @@ int main(int argc, char** argv)
     auto last_time = std::chrono::steady_clock::now();
 
     log_streaming.subscribe_log_streaming_raw([&](LogStreaming::LogStreamingRaw raw) {
-        const auto bytes = mavsdk::base64_decode(raw.data);
+        const auto bytes = mavsdk::base64_decode(raw.data_base64);
         file.write(reinterpret_cast<const char*>(bytes.data()), bytes.size());
         bytes_written += bytes.size();
         bytes_written_since_last += bytes.size();
