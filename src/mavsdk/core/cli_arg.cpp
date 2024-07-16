@@ -72,7 +72,7 @@ bool CliArg::parse_udp(const std::string_view rest)
     }
 
     protocol = Udp{};
-    auto p = std::get<Udp>(protocol);
+    auto& p = std::get<Udp>(protocol);
     p.host = rest.substr(0, pos);
     if (p.host.empty()) {
         p.host = "0.0.0.0";
@@ -100,7 +100,7 @@ bool CliArg::parse_udpin(const std::string_view rest)
     }
 
     protocol = Udp{};
-    auto p = std::get<Udp>(protocol);
+    auto& p = std::get<Udp>(protocol);
     p.host = rest.substr(0, pos);
     p.mode = Udp::Mode::In;
     p.host = rest.substr(0, pos);
@@ -123,7 +123,7 @@ bool CliArg::parse_udpout(const std::string_view rest)
     }
 
     protocol = Udp{};
-    auto p = std::get<Udp>(protocol);
+    auto& p = std::get<Udp>(protocol);
     p.host = rest.substr(0, pos);
     p.mode = Udp::Mode::Out;
 
@@ -150,7 +150,7 @@ bool CliArg::parse_tcp(const std::string_view rest)
     }
 
     protocol = Tcp{};
-    auto p = std::get<Tcp>(protocol);
+    auto& p = std::get<Tcp>(protocol);
     p.host = rest.substr(0, pos);
     if (p.host.empty()) {
         p.host = "0.0.0.0";
@@ -178,7 +178,7 @@ bool CliArg::parse_tcpin(const std::string_view rest)
     }
 
     protocol = Tcp{};
-    auto p = std::get<Tcp>(protocol);
+    auto& p = std::get<Tcp>(protocol);
     p.host = rest.substr(0, pos);
     p.mode = Tcp::Mode::In;
 
@@ -199,7 +199,7 @@ bool CliArg::parse_tcpout(const std::string_view rest)
     }
 
     protocol = Tcp{};
-    auto p = std::get<Tcp>(protocol);
+    auto& p = std::get<Tcp>(protocol);
     p.host = rest.substr(0, pos);
     p.mode = Tcp::Mode::Out;
 
@@ -231,7 +231,7 @@ std::optional<int> CliArg::port_from_str(std::string_view str)
 bool CliArg::parse_serial(const std::string_view rest, bool flow_control_enabled)
 {
     protocol = Serial{};
-    auto p = std::get<Serial>(protocol);
+    auto& p = std::get<Serial>(protocol);
     p.flow_control_enabled = flow_control_enabled;
 
     const std::string delimiter = ":";
