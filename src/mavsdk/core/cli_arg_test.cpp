@@ -346,6 +346,7 @@ TEST(CliArg, SerialWindowsComport)
 
     EXPECT_TRUE(ca.parse("serial://COM13:57600"));
     auto serial = std::get_if<CliArg::Serial>(&ca.protocol);
+    ASSERT_TRUE(serial);
     EXPECT_STREQ(serial->path.c_str(), "COM13");
     EXPECT_EQ(serial->baudrate, 57600);
     EXPECT_EQ(serial->flow_control_enabled, false);
