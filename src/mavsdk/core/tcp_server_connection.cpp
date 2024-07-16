@@ -2,7 +2,6 @@
 #include "log.h"
 
 #include <cassert>
-#include <sys/select.h>
 #include <fcntl.h>
 
 #ifdef WINDOWS
@@ -11,6 +10,7 @@
 #endif
 #else
 #include <netinet/in.h>
+#include <sys/select.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <errno.h>
