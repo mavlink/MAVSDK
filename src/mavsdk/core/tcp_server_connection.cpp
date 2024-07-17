@@ -212,15 +212,21 @@ void TcpServerConnection::receive()
                 return;
             }
         }
+#else
+        if (recv_len < 0) {
+            // On macOS we presumably see the same thing, and have to try again.
+            if (errno == EAGAIN) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+                continue;
+            }
+
+            LogErr() << "recv failed: " << GET_ERROR(errno);
+            return;
+        }
 #endif
 
         if (recv_len == 0) {
             continue;
-        }
-
-        if (recv_len < 0) {
-            LogErr() << "recv failed: " << GET_ERROR(errno);
-            return;
         }
 
         _mavlink_receiver->set_new_datagram(buffer.data(), static_cast<int>(recv_len));
