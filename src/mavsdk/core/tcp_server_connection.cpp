@@ -8,6 +8,9 @@
 #ifndef MINGW
 #pragma comment(lib, "Ws2_32.lib") // Without this, Ws2_32.lib is not included in static library.
 #endif
+#include <Windows.h>
+#include <Winsock2.h>
+#include <ws2tcpip.h>
 #else
 #include <netinet/in.h>
 #include <sys/select.h>
@@ -122,7 +125,8 @@ bool TcpServerConnection::send_message(const mavlink_message_t& message)
     auto flags = MSG_NOSIGNAL;
 #endif
 
-    const auto send_len = send(_client_socket_fd, buffer, buffer_len, flags);
+    const auto send_len =
+        send(_client_socket_fd, reinterpret_cast<const char*>(buffer), buffer_len, flags);
 
     if (send_len != buffer_len) {
         LogErr() << "send failure: " << GET_ERROR(errno);
@@ -133,9 +137,18 @@ bool TcpServerConnection::send_message(const mavlink_message_t& message)
 
 void TcpServerConnection::accept_client()
 {
+#ifdef WINDOWS
+    // Set server socket to non-blocking
+    u_long iMode = 1;
+    int iResult = ioctlsocket(_server_socket_fd, FIONBIO, &iMode);
+    if (iResult != 0) {
+        LogErr() << "ioctlsocket failed with error: " << WSAGetLastError();
+    }
+#else
     // Set server socket to non-blocking
     int flags = fcntl(_server_socket_fd, F_GETFL, 0);
     fcntl(_server_socket_fd, F_SETFL, flags | O_NONBLOCK);
+#endif
 
     while (!_should_exit) {
         fd_set readfds;
@@ -182,8 +195,24 @@ void TcpServerConnection::receive()
 {
     std::array<char, 2048> buffer{};
 
-    while (!_should_exit) {
+    bool dataReceived = false;
+    while (!dataReceived && !_should_exit) {
         const auto recv_len = recv(_client_socket_fd, buffer.data(), buffer.size(), 0);
+
+#ifdef WINDOWS
+        if (recv_len == SOCKET_ERROR) {
+            // On Windows, on the first try, select says there is something
+            // but recv doesn't succeed yet, and we just need to try again.
+            if (WSAGetLastError() == WSAEWOULDBLOCK) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+                continue;
+            }
+            // And at the end, we get an abort that we can silently ignore.
+            if (WSAGetLastError() == WSAECONNABORTED) {
+                return;
+            }
+        }
+#endif
 
         if (recv_len == 0) {
             continue;
