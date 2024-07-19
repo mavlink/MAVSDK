@@ -1781,8 +1781,6 @@ Telemetry::FlightMode TelemetryImpl::telemetry_flight_mode_from_flight_mode(Flig
             return Telemetry::FlightMode::Rattitude;
         case FlightMode::Acro:
             return Telemetry::FlightMode::Acro;
-        case FlightMode::Stabilized:
-            return Telemetry::FlightMode::Stabilized;
 
         case FlightMode::QStabilize:
             return Telemetry::FlightMode::QStabilize;
