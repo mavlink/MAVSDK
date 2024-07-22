@@ -250,7 +250,7 @@ TEST(SystemTest, FtpDownloadStopAndTryAgain)
             temp_dir_downloaded.string(),
             false,
             [&prom, &got_half](Ftp::Result result, Ftp::ProgressData progress_data) {
-                if (progress_data.bytes_transferred > 500) {
+                if (progress_data.bytes_transferred > 200) {
                     got_half = true;
                 }
                 if (result != Ftp::Result::Next) {

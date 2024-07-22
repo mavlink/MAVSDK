@@ -52,7 +52,7 @@ void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
             }
         });
 
-        ConnectionResult ret = mavsdk.add_udp_connection();
+        ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
         ASSERT_EQ(ret, ConnectionResult::Success);
 
         auto status = future_result.wait_for(std::chrono::seconds(2));

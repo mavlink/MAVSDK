@@ -28,7 +28,7 @@ TEST(SitlTestMultiple, SystemMultipleComponents)
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
     // For both Autopilot and Camera
-    ASSERT_EQ(mavsdk.add_udp_connection(), ConnectionResult::Success);
+    ASSERT_EQ(mavsdk.add_any_connection("udpin://0.0.0.0:14540"), ConnectionResult::Success);
 
     // FIXME: As components send Heartbeats at 1Hz,
     // lets wait until atleast 2 of them gets discovered.

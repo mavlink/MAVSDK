@@ -18,7 +18,7 @@ TEST(HardwareTest, CalibrationGyro)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
@@ -47,7 +47,7 @@ TEST(HardwareTest, CalibrationAccelerometer)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
@@ -76,7 +76,7 @@ TEST(HardwareTest, CalibrationMagnetometer)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
@@ -105,7 +105,7 @@ TEST(HardwareTest, CalibrationLevelHorizon)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
@@ -134,7 +134,7 @@ TEST(HardwareTest, CalibrationGimbalAccelerometer)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
@@ -163,7 +163,7 @@ TEST(HardwareTest, CalibrationGyroWithTelemetry)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
@@ -206,7 +206,7 @@ TEST(HardwareTest, CalibrationGyroCancelled)
 {
     Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
-    ConnectionResult ret = mavsdk.add_udp_connection();
+    ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
 
     // Wait for system to connect via heartbeat.
