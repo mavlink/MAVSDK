@@ -27,16 +27,16 @@ void SocketHolder::reset(int fd) noexcept
 void SocketHolder::close() noexcept
 {
     if (!empty()) {
-#ifndef WINDOWS
+#if defined(WINDOWS)
+        shutdown(_fd, SD_BOTH);
+        closesocket(_fd);
+        WSACleanup();
+#else
         // This should interrupt a recv/recvfrom call.
         shutdown(_fd, SHUT_RDWR);
 
         // But on Mac, closing is also needed to stop blocking recv/recvfrom.
         ::close(_fd);
-#else
-        shutdown(_fd, SD_BOTH);
-        closesocket(_fd);
-        WSACleanup();
 #endif
     }
     _fd = invalid_socket_fd;
