@@ -1,5 +1,7 @@
 #pragma once
 
+#include "socket_holder.h"
+
 #include <atomic>
 #include <mutex>
 #include <memory>
@@ -43,7 +45,7 @@ private:
     int _remote_port_number;
 
     std::mutex _mutex = {};
-    int _socket_fd = -1;
+    SocketHolder _socket_fd;
 
     std::unique_ptr<std::thread> _recv_thread{};
     std::atomic_bool _should_exit;

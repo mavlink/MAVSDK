@@ -1,6 +1,7 @@
 #pragma once
 
 #include "connection.h"
+#include "socket_holder.h"
 
 #include <atomic>
 #include <string>
@@ -28,8 +29,8 @@ private:
     Connection::ReceiverCallback _receiver_callback;
     std::string _local_ip;
     int _local_port;
-    int _server_socket_fd{-1};
-    int _client_socket_fd{-1};
+    SocketHolder _server_socket_fd;
+    SocketHolder _client_socket_fd;
     std::unique_ptr<std::thread> _accept_receive_thread;
     std::atomic<bool> _should_exit{false};
 };
