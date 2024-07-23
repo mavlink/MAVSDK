@@ -7,9 +7,7 @@
 
 namespace mavsdk {
 
-SocketHolder::SocketHolder(int fd) noexcept :
-    _fd{fd}
-{}
+SocketHolder::SocketHolder(int fd) noexcept : _fd{fd} {}
 
 SocketHolder::~SocketHolder() noexcept
 {
@@ -51,5 +49,5 @@ int SocketHolder::get() const noexcept
 {
     return _fd;
 }
-    
+
 } // namespace mavsdk
