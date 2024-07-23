@@ -34,5 +34,5 @@ private:
 
     int _fd = invalid_socket_fd;
 };
-    
+
 } // namespace mavsdk
