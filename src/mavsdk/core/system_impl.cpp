@@ -534,7 +534,7 @@ void SystemImpl::set_connected()
 
     if (enable_needed) {
         _mavsdk_impl.notify_on_discover();
-        
+
         if (has_autopilot()) {
             send_autopilot_version_request();
         }
