@@ -67,8 +67,10 @@ ConnectionResult TcpServerConnection::start()
     server_addr.sin_addr.s_addr = INADDR_ANY;
     server_addr.sin_port = htons(_local_port);
 
-    if (bind(_server_socket_fd.get(), reinterpret_cast<sockaddr*>(&server_addr), sizeof(server_addr)) <
-        0) {
+    if (bind(
+            _server_socket_fd.get(),
+            reinterpret_cast<sockaddr*>(&server_addr),
+            sizeof(server_addr)) < 0) {
         LogErr() << "bind error: " << GET_ERROR(errno);
         return ConnectionResult::SocketError;
     }
@@ -151,7 +153,8 @@ void TcpServerConnection::accept_client()
         timeout.tv_sec = 1;
         timeout.tv_usec = 0;
 
-        const int activity = select(_server_socket_fd.get() + 1, &readfds, nullptr, nullptr, &timeout);
+        const int activity =
+            select(_server_socket_fd.get() + 1, &readfds, nullptr, nullptr, &timeout);
 
         if (activity < 0 && errno != EINTR) {
             LogErr() << "select error: " << GET_ERROR(errno);
@@ -168,7 +171,9 @@ void TcpServerConnection::accept_client()
             socklen_t client_addr_len = sizeof(client_addr);
 
             _client_socket_fd.reset(accept(
-                _server_socket_fd.get(), reinterpret_cast<sockaddr*>(&client_addr), &client_addr_len));
+                _server_socket_fd.get(),
+                reinterpret_cast<sockaddr*>(&client_addr),
+                &client_addr_len));
             if (_client_socket_fd.empty()) {
                 if (_should_exit) {
                     return;
