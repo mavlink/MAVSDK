@@ -531,9 +531,9 @@ void SystemImpl::set_connected()
         // If not yet connected there is nothing to do/
     }
 
-    _mavsdk_impl.notify_on_discover();
-
     if (enable_needed) {
+        _mavsdk_impl.notify_on_discover();
+        
         if (has_autopilot()) {
             send_autopilot_version_request();
         }
