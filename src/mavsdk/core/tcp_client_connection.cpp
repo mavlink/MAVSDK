@@ -199,7 +199,7 @@ void TcpClientConnection::receive()
         }
 
         if (recv_len < 0) {
-            // This happens on desctruction when close(_socket_fd.get()) is called,
+            // This happens on destruction when close(_socket_fd.get()) is called,
             // therefore be quiet.
             // LogErr() << "recvfrom error: " << GET_ERROR(errno);
             // Something went wrong, we should try to re-connect in next iteration.
