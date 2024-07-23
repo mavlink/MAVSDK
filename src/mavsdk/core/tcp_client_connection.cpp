@@ -92,8 +92,10 @@ ConnectionResult TcpClientConnection::setup_port()
 
     memcpy(&remote_addr.sin_addr, hp->h_addr, hp->h_length);
 
-    if (connect(_socket_fd.get(), reinterpret_cast<sockaddr*>(&remote_addr), sizeof(struct sockaddr_in)) <
-        0) {
+    if (connect(
+            _socket_fd.get(),
+            reinterpret_cast<sockaddr*>(&remote_addr),
+            sizeof(struct sockaddr_in)) < 0) {
         LogErr() << "connect error: " << GET_ERROR(errno);
         _is_ok = false;
         return ConnectionResult::SocketConnectionError;
