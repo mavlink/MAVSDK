@@ -10,6 +10,8 @@ list(APPEND CMAKE_ARGS
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
     "-DCMAKE_CXX_STANDARD=17"
+    "-DBUILD_TESTING=OFF"
+    "-DABSL_BUILD_TESTING=OFF"
     "-DABSL_PROPAGATE_CXX_STD=ON"
     )
 
@@ -29,7 +31,7 @@ endforeach()
 ExternalProject_add(
     absl
     GIT_REPOSITORY https://github.com/abseil/abseil-cpp.git
-    GIT_TAG 20240116.1
+    GIT_TAG cd75cb4ae32c46c84cef9a9c78b42174f22ed0ac
     PREFIX absl
     PATCH_COMMAND git checkout . && git apply ${PROJECT_SOURCE_DIR}/rpi-no-crypto.patch
     CMAKE_ARGS "${CMAKE_ARGS}"
