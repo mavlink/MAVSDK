@@ -7,14 +7,14 @@
 
 namespace mavsdk {
 
-SocketHolder::SocketHolder(int fd) noexcept : _fd{fd} {}
+SocketHolder::SocketHolder(DescriptorType fd) noexcept : _fd{fd} {}
 
 SocketHolder::~SocketHolder() noexcept
 {
     close();
 }
 
-void SocketHolder::reset(int fd) noexcept
+void SocketHolder::reset(DescriptorType fd) noexcept
 {
     if (_fd != fd) {
         close();
@@ -45,7 +45,7 @@ bool SocketHolder::empty() const noexcept
     return _fd == invalid_socket_fd;
 }
 
-int SocketHolder::get() const noexcept
+SocketHolder::DescriptorType SocketHolder::get() const noexcept
 {
     return _fd;
 }
