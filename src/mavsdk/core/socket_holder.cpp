@@ -36,8 +36,8 @@ void SocketHolder::close() noexcept
         // But on Mac, closing is also needed to stop blocking recv/recvfrom.
         ::close(_fd);
 #endif
+        _fd = invalid_socket_fd;
     }
-    _fd = invalid_socket_fd;
 }
 
 bool SocketHolder::empty() const noexcept
