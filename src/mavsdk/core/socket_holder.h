@@ -23,7 +23,7 @@ public:
     int get() const noexcept;
 
 #if defined(WINDOWS)
-    static constexpr int invalid_socket_fd = INVALID_SOCKET;
+    static constexpr int invalid_socket_fd = static_cast<int>(INVALID_SOCKET);
 #else
     static constexpr int invalid_socket_fd = -1;
 #endif
