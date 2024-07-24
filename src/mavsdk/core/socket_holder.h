@@ -8,31 +8,33 @@ namespace mavsdk {
 
 class SocketHolder {
 public:
+#if defined(WINDOWS)
+    using DescriptorType = SOCKET;
+    static constexpr DescriptorType invalid_socket_fd = INVALID_SOCKET;
+#else
+    using DescriptorType = int;
+    static constexpr DescriptorType invalid_socket_fd = -1;
+#endif
+
     SocketHolder() noexcept = default;
-    explicit SocketHolder(int socket_fd) noexcept;
+    explicit SocketHolder(DescriptorType socket_fd) noexcept;
 
     SocketHolder(SocketHolder&&) noexcept = default;
     SocketHolder& operator=(SocketHolder&&) noexcept = default;
 
     ~SocketHolder() noexcept;
 
-    void reset(int fd) noexcept;
+    void reset(DescriptorType fd) noexcept;
     void close() noexcept;
 
     bool empty() const noexcept;
-    int get() const noexcept;
-
-#if defined(WINDOWS)
-    static constexpr int invalid_socket_fd = static_cast<int>(INVALID_SOCKET);
-#else
-    static constexpr int invalid_socket_fd = -1;
-#endif
+    DescriptorType get() const noexcept;
 
 private:
     SocketHolder(const SocketHolder&) = delete;
     SocketHolder& operator=(const SocketHolder&) = delete;
 
-    int _fd = invalid_socket_fd;
+    DescriptorType _fd = invalid_socket_fd;
 };
 
 } // namespace mavsdk
