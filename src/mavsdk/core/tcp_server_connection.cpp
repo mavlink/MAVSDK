@@ -18,7 +18,6 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <netdb.h>
-#include <unistd.h> // for close()
 #endif
 
 #ifndef WINDOWS
@@ -57,8 +56,8 @@ ConnectionResult TcpServerConnection::start()
     }
 #endif
 
-    _server_socket_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if (_server_socket_fd < 0) {
+    _server_socket_fd.reset(socket(AF_INET, SOCK_STREAM, 0));
+    if (_server_socket_fd.empty()) {
         LogErr() << "socket error: " << GET_ERROR(errno);
         return ConnectionResult::SocketError;
     }
@@ -68,13 +67,15 @@ ConnectionResult TcpServerConnection::start()
     server_addr.sin_addr.s_addr = INADDR_ANY;
     server_addr.sin_port = htons(_local_port);
 
-    if (bind(_server_socket_fd, reinterpret_cast<sockaddr*>(&server_addr), sizeof(server_addr)) <
-        0) {
+    if (bind(
+            _server_socket_fd.get(),
+            reinterpret_cast<sockaddr*>(&server_addr),
+            sizeof(server_addr)) < 0) {
         LogErr() << "bind error: " << GET_ERROR(errno);
         return ConnectionResult::SocketError;
     }
 
-    if (listen(_server_socket_fd, 3) < 0) {
+    if (listen(_server_socket_fd.get(), 3) < 0) {
         LogErr() << "listen error: " << GET_ERROR(errno);
         return ConnectionResult::SocketError;
     }
@@ -89,16 +90,8 @@ ConnectionResult TcpServerConnection::stop()
 {
     _should_exit = true;
 
-#ifndef WINDOWS
-    shutdown(_client_socket_fd, SHUT_RDWR);
-    close(_client_socket_fd);
-    close(_server_socket_fd);
-#else
-    shutdown(_client_socket_fd, SD_BOTH);
-    closesocket(_client_socket_fd);
-    closesocket(_server_socket_fd);
-    WSACleanup();
-#endif
+    _client_socket_fd.close();
+    _server_socket_fd.close();
 
     if (_accept_receive_thread && _accept_receive_thread->joinable()) {
         _accept_receive_thread->join();
@@ -126,7 +119,7 @@ bool TcpServerConnection::send_message(const mavlink_message_t& message)
 #endif
 
     const auto send_len =
-        send(_client_socket_fd, reinterpret_cast<const char*>(buffer), buffer_len, flags);
+        send(_client_socket_fd.get(), reinterpret_cast<const char*>(buffer), buffer_len, flags);
 
     if (send_len != buffer_len) {
         LogErr() << "send failure: " << GET_ERROR(errno);
@@ -140,27 +133,28 @@ void TcpServerConnection::accept_client()
 #ifdef WINDOWS
     // Set server socket to non-blocking
     u_long iMode = 1;
-    int iResult = ioctlsocket(_server_socket_fd, FIONBIO, &iMode);
+    int iResult = ioctlsocket(_server_socket_fd.get(), FIONBIO, &iMode);
     if (iResult != 0) {
         LogErr() << "ioctlsocket failed with error: " << WSAGetLastError();
     }
 #else
     // Set server socket to non-blocking
-    int flags = fcntl(_server_socket_fd, F_GETFL, 0);
-    fcntl(_server_socket_fd, F_SETFL, flags | O_NONBLOCK);
+    int flags = fcntl(_server_socket_fd.get(), F_GETFL, 0);
+    fcntl(_server_socket_fd.get(), F_SETFL, flags | O_NONBLOCK);
 #endif
 
     while (!_should_exit) {
         fd_set readfds;
         FD_ZERO(&readfds);
-        FD_SET(_server_socket_fd, &readfds);
+        FD_SET(_server_socket_fd.get(), &readfds);
 
         // Set timeout to 1 second
         timeval timeout;
         timeout.tv_sec = 1;
         timeout.tv_usec = 0;
 
-        const int activity = select(_server_socket_fd + 1, &readfds, nullptr, nullptr, &timeout);
+        const int activity =
+            select(_server_socket_fd.get() + 1, &readfds, nullptr, nullptr, &timeout);
 
         if (activity < 0 && errno != EINTR) {
             LogErr() << "select error: " << GET_ERROR(errno);
@@ -172,13 +166,15 @@ void TcpServerConnection::accept_client()
             continue;
         }
 
-        if (FD_ISSET(_server_socket_fd, &readfds)) {
+        if (FD_ISSET(_server_socket_fd.get(), &readfds)) {
             sockaddr_in client_addr{};
             socklen_t client_addr_len = sizeof(client_addr);
 
-            _client_socket_fd = accept(
-                _server_socket_fd, reinterpret_cast<sockaddr*>(&client_addr), &client_addr_len);
-            if (_client_socket_fd < 0) {
+            _client_socket_fd.reset(accept(
+                _server_socket_fd.get(),
+                reinterpret_cast<sockaddr*>(&client_addr),
+                &client_addr_len));
+            if (_client_socket_fd.empty()) {
                 if (_should_exit) {
                     return;
                 }
@@ -197,7 +193,7 @@ void TcpServerConnection::receive()
 
     bool dataReceived = false;
     while (!dataReceived && !_should_exit) {
-        const auto recv_len = recv(_client_socket_fd, buffer.data(), buffer.size(), 0);
+        const auto recv_len = recv(_client_socket_fd.get(), buffer.data(), buffer.size(), 0);
 
 #ifdef WINDOWS
         if (recv_len == SOCKET_ERROR) {
