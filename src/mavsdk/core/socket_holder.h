@@ -19,9 +19,6 @@ public:
     SocketHolder() noexcept = default;
     explicit SocketHolder(DescriptorType socket_fd) noexcept;
 
-    SocketHolder(SocketHolder&&) noexcept = default;
-    SocketHolder& operator=(SocketHolder&&) noexcept = default;
-
     ~SocketHolder() noexcept;
 
     void reset(DescriptorType fd) noexcept;
