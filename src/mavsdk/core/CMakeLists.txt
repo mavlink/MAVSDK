@@ -51,6 +51,7 @@ target_sources(mavsdk
     server_component_impl.cpp
     server_plugin_impl_base.cpp
     tcp_connection.cpp
+    socket_holder.cpp
     timeout_handler.cpp
     udp_connection.cpp
     log.cpp

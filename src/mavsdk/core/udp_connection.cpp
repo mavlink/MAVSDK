@@ -13,7 +13,6 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <errno.h>
-#include <unistd.h> // for close()
 #endif
 
 #include <algorithm>
@@ -69,9 +68,9 @@ ConnectionResult UdpConnection::setup_port()
     }
 #endif
 
-    _socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
+    _socket_fd.reset(socket(AF_INET, SOCK_DGRAM, 0));
 
-    if (_socket_fd < 0) {
+    if (_socket_fd.empty()) {
         LogErr() << "socket error" << GET_ERROR(errno);
         return ConnectionResult::SocketError;
     }
@@ -81,7 +80,7 @@ ConnectionResult UdpConnection::setup_port()
     inet_pton(AF_INET, _local_ip.c_str(), &(addr.sin_addr));
     addr.sin_port = htons(_local_port_number);
 
-    if (bind(_socket_fd, reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) != 0) {
+    if (bind(_socket_fd.get(), reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) != 0) {
         LogErr() << "bind error: " << GET_ERROR(errno);
         return ConnectionResult::BindError;
     }
@@ -98,31 +97,12 @@ ConnectionResult UdpConnection::stop()
 {
     _should_exit = true;
 
-#if !defined(WINDOWS)
-    // This should interrupt a recv/recvfrom call.
-    shutdown(_socket_fd, SHUT_RDWR);
-
-#if defined(APPLE)
-    // But on Mac, closing is also needed to stop blocking recv/recvfrom.
-    close(_socket_fd);
-#endif
-#else
-    shutdown(_socket_fd, SD_BOTH);
-
-    closesocket(_socket_fd);
-
-    WSACleanup();
-#endif
+    _socket_fd.close();
 
     if (_recv_thread) {
         _recv_thread->join();
         _recv_thread.reset();
     }
-
-#if !defined(WINDOWS) & !defined(APPLE)
-    // On Linux we can close later to avoid thread sanitizer from complaining.
-    close(_socket_fd);
-#endif
 
     // We need to stop this after stopping the receive thread, otherwise
     // it can happen that we interfere with the parsing of a message.
@@ -157,7 +137,7 @@ bool UdpConnection::send_message(const mavlink_message_t& message)
         uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
 
         const auto send_len = sendto(
-            _socket_fd,
+            _socket_fd.get(),
             reinterpret_cast<char*>(buffer),
             buffer_len,
             0,
@@ -212,7 +192,7 @@ void UdpConnection::receive()
         struct sockaddr_in src_addr = {};
         socklen_t src_addr_len = sizeof(src_addr);
         const auto recv_len = recvfrom(
-            _socket_fd,
+            _socket_fd.get(),
             buffer,
             sizeof(buffer),
             0,
@@ -226,7 +206,7 @@ void UdpConnection::receive()
         }
 
         if (recv_len < 0) {
-            // This happens on destruction when close(_socket_fd) is called,
+            // This happens on destruction when _socket_fd.close() is called,
             // therefore be quiet.
             // LogErr() << "recvfrom error: " << GET_ERROR(errno);
             continue;
