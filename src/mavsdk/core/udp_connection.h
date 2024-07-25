@@ -7,7 +7,9 @@
 #include <atomic>
 #include <vector>
 #include <cstdint>
+
 #include "connection.h"
+#include "socket_holder.h"
 
 namespace mavsdk {
 
@@ -54,7 +56,7 @@ private:
     };
     std::vector<Remote> _remotes{};
 
-    int _socket_fd{-1};
+    SocketHolder _socket_fd;
     std::unique_ptr<std::thread> _recv_thread{};
     std::atomic_bool _should_exit{false};
 };

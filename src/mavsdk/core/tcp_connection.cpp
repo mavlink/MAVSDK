@@ -11,7 +11,6 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <netdb.h>
-#include <unistd.h> // for close()
 #endif
 
 #include <cassert>
@@ -70,9 +69,9 @@ ConnectionResult TcpConnection::setup_port()
     }
 #endif
 
-    _socket_fd = socket(AF_INET, SOCK_STREAM, 0);
+    _socket_fd.reset(socket(AF_INET, SOCK_STREAM, 0));
 
-    if (_socket_fd < 0) {
+    if (_socket_fd.empty()) {
         LogErr() << "socket error" << GET_ERROR(errno);
         _is_ok = false;
         return ConnectionResult::SocketError;
@@ -92,8 +91,10 @@ ConnectionResult TcpConnection::setup_port()
 
     memcpy(&remote_addr.sin_addr, hp->h_addr, hp->h_length);
 
-    if (connect(_socket_fd, reinterpret_cast<sockaddr*>(&remote_addr), sizeof(struct sockaddr_in)) <
-        0) {
+    if (connect(
+            _socket_fd.get(),
+            reinterpret_cast<sockaddr*>(&remote_addr),
+            sizeof(struct sockaddr_in)) < 0) {
         LogErr() << "connect error: " << GET_ERROR(errno);
         _is_ok = false;
         return ConnectionResult::SocketConnectionError;
@@ -112,19 +113,7 @@ ConnectionResult TcpConnection::stop()
 {
     _should_exit = true;
 
-#ifndef WINDOWS
-    // This should interrupt a recv/recvfrom call.
-    shutdown(_socket_fd, SHUT_RDWR);
-
-    // But on Mac, closing is also needed to stop blocking recv/recvfrom.
-    close(_socket_fd);
-#else
-    shutdown(_socket_fd, SD_BOTH);
-
-    closesocket(_socket_fd);
-
-    WSACleanup();
-#endif
+    _socket_fd.close();
 
     if (_recv_thread) {
         _recv_thread->join();
@@ -174,7 +163,7 @@ bool TcpConnection::send_message(const mavlink_message_t& message)
 #endif
 
     const auto send_len = sendto(
-        _socket_fd,
+        _socket_fd.get(),
         reinterpret_cast<char*>(buffer),
         buffer_len,
         flags,
@@ -201,7 +190,7 @@ void TcpConnection::receive()
             setup_port();
         }
 
-        const auto recv_len = recv(_socket_fd, buffer, sizeof(buffer), 0);
+        const auto recv_len = recv(_socket_fd.get(), buffer, sizeof(buffer), 0);
 
         if (recv_len == 0) {
             // This can happen when shutdown is called on the socket,
@@ -211,7 +200,7 @@ void TcpConnection::receive()
         }
 
         if (recv_len < 0) {
-            // This happens on desctruction when close(_socket_fd) is called,
+            // This happens on destruction when close(_socket_fd.get()) is called,
             // therefore be quiet.
             // LogErr() << "recvfrom error: " << GET_ERROR(errno);
             // Something went wrong, we should try to re-connect in next iteration.
