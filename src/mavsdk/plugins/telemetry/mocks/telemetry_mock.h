@@ -52,15 +52,6 @@ public:
         Telemetry::AttitudeEulerHandle(Telemetry::AttitudeEulerCallback)){};
     MOCK_CONST_METHOD1(unsubscribe_attitude_euler, void(Telemetry::AttitudeEulerHandle)){};
     MOCK_CONST_METHOD1(
-        subscribe_camera_attitude_quaternion,
-        Telemetry::AttitudeQuaternionHandle(Telemetry::AttitudeQuaternionCallback)){};
-    MOCK_CONST_METHOD1(
-        unsubscribe_camera_attitude_quaternion, void(Telemetry::AttitudeQuaternionHandle)){};
-    MOCK_CONST_METHOD1(
-        subscribe_camera_attitude_euler,
-        Telemetry::AttitudeEulerHandle(Telemetry::AttitudeEulerCallback)){};
-    MOCK_CONST_METHOD1(unsubscribe_camera_attitude_euler, void(Telemetry::AttitudeEulerHandle)){};
-    MOCK_CONST_METHOD1(
         subscribe_velocity_ned, Telemetry::VelocityNedHandle(Telemetry::VelocityNedCallback)){};
     MOCK_CONST_METHOD1(unsubscribe_velocity_ned, void(Telemetry::VelocityNedHandle)){};
     MOCK_CONST_METHOD1(
@@ -125,7 +116,6 @@ public:
     MOCK_METHOD1(set_rate_landed_state, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_attitude_quaternion, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_attitude_euler, Telemetry::Result(double)){};
-    MOCK_METHOD1(set_rate_camera_attitude, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_velocity_ned, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_gps_info, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_raw_gps, Telemetry::Result(double)){};
@@ -153,7 +143,6 @@ public:
     MOCK_CONST_METHOD2(
         set_rate_attitude_quaternion_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_attitude_euler_async, void(double, Telemetry::ResultCallback)){};
-    MOCK_CONST_METHOD2(set_rate_camera_attitude_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_velocity_ned_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_gps_info_async, void(double, Telemetry::ResultCallback)){};
     MOCK_CONST_METHOD2(set_rate_battery_async, void(double, Telemetry::ResultCallback)){};

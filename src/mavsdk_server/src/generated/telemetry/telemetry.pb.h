@@ -106,12 +106,6 @@ extern BatteryDefaultTypeInternal _Battery_default_instance_;
 class BatteryResponse;
 struct BatteryResponseDefaultTypeInternal;
 extern BatteryResponseDefaultTypeInternal _BatteryResponse_default_instance_;
-class CameraAttitudeEulerResponse;
-struct CameraAttitudeEulerResponseDefaultTypeInternal;
-extern CameraAttitudeEulerResponseDefaultTypeInternal _CameraAttitudeEulerResponse_default_instance_;
-class CameraAttitudeQuaternionResponse;
-struct CameraAttitudeQuaternionResponseDefaultTypeInternal;
-extern CameraAttitudeQuaternionResponseDefaultTypeInternal _CameraAttitudeQuaternionResponse_default_instance_;
 class Covariance;
 struct CovarianceDefaultTypeInternal;
 extern CovarianceDefaultTypeInternal _Covariance_default_instance_;
@@ -280,18 +274,6 @@ extern SetRateBatteryRequestDefaultTypeInternal _SetRateBatteryRequest_default_i
 class SetRateBatteryResponse;
 struct SetRateBatteryResponseDefaultTypeInternal;
 extern SetRateBatteryResponseDefaultTypeInternal _SetRateBatteryResponse_default_instance_;
-class SetRateCameraAttitudeQuaternionRequest;
-struct SetRateCameraAttitudeQuaternionRequestDefaultTypeInternal;
-extern SetRateCameraAttitudeQuaternionRequestDefaultTypeInternal _SetRateCameraAttitudeQuaternionRequest_default_instance_;
-class SetRateCameraAttitudeQuaternionResponse;
-struct SetRateCameraAttitudeQuaternionResponseDefaultTypeInternal;
-extern SetRateCameraAttitudeQuaternionResponseDefaultTypeInternal _SetRateCameraAttitudeQuaternionResponse_default_instance_;
-class SetRateCameraAttitudeRequest;
-struct SetRateCameraAttitudeRequestDefaultTypeInternal;
-extern SetRateCameraAttitudeRequestDefaultTypeInternal _SetRateCameraAttitudeRequest_default_instance_;
-class SetRateCameraAttitudeResponse;
-struct SetRateCameraAttitudeResponseDefaultTypeInternal;
-extern SetRateCameraAttitudeResponseDefaultTypeInternal _SetRateCameraAttitudeResponse_default_instance_;
 class SetRateDistanceSensorRequest;
 struct SetRateDistanceSensorRequestDefaultTypeInternal;
 extern SetRateDistanceSensorRequestDefaultTypeInternal _SetRateDistanceSensorRequest_default_instance_;
@@ -427,12 +409,6 @@ extern SubscribeAttitudeQuaternionRequestDefaultTypeInternal _SubscribeAttitudeQ
 class SubscribeBatteryRequest;
 struct SubscribeBatteryRequestDefaultTypeInternal;
 extern SubscribeBatteryRequestDefaultTypeInternal _SubscribeBatteryRequest_default_instance_;
-class SubscribeCameraAttitudeEulerRequest;
-struct SubscribeCameraAttitudeEulerRequestDefaultTypeInternal;
-extern SubscribeCameraAttitudeEulerRequestDefaultTypeInternal _SubscribeCameraAttitudeEulerRequest_default_instance_;
-class SubscribeCameraAttitudeQuaternionRequest;
-struct SubscribeCameraAttitudeQuaternionRequestDefaultTypeInternal;
-extern SubscribeCameraAttitudeQuaternionRequestDefaultTypeInternal _SubscribeCameraAttitudeQuaternionRequest_default_instance_;
 class SubscribeDistanceSensorRequest;
 struct SubscribeDistanceSensorRequestDefaultTypeInternal;
 extern SubscribeDistanceSensorRequestDefaultTypeInternal _SubscribeDistanceSensorRequest_default_instance_;
@@ -1037,7 +1013,7 @@ class VelocityNed final :
                &_VelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    143;
+    135;
 
   friend void swap(VelocityNed& a, VelocityNed& b) {
     a.Swap(&b);
@@ -1236,7 +1212,7 @@ class VelocityBody final :
                &_VelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    137;
+    129;
 
   friend void swap(VelocityBody& a, VelocityBody& b) {
     a.Swap(&b);
@@ -1435,7 +1411,7 @@ class UnixEpochTimeResponse final :
                &_UnixEpochTimeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    59;
+    55;
 
   friend void swap(UnixEpochTimeResponse& a, UnixEpochTimeResponse& b) {
     a.Swap(&b);
@@ -1610,7 +1586,7 @@ class TelemetryResult final :
                &_TelemetryResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    153;
+    145;
 
   friend void swap(TelemetryResult& a, TelemetryResult& b) {
     a.Swap(&b);
@@ -1964,7 +1940,7 @@ class SubscribeVelocityNedRequest final :
                &_SubscribeVelocityNedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    18;
 
   friend void swap(SubscribeVelocityNedRequest& a, SubscribeVelocityNedRequest& b) {
     a.Swap(&b);
@@ -2100,7 +2076,7 @@ class SubscribeUnixEpochTimeRequest final :
                &_SubscribeUnixEpochTimeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    58;
+    54;
 
   friend void swap(SubscribeUnixEpochTimeRequest& a, SubscribeUnixEpochTimeRequest& b) {
     a.Swap(&b);
@@ -2236,7 +2212,7 @@ class SubscribeStatusTextRequest final :
                &_SubscribeStatusTextRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    36;
+    32;
 
   friend void swap(SubscribeStatusTextRequest& a, SubscribeStatusTextRequest& b) {
     a.Swap(&b);
@@ -2372,7 +2348,7 @@ class SubscribeScaledPressureRequest final :
                &_SubscribeScaledPressureRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    62;
+    58;
 
   friend void swap(SubscribeScaledPressureRequest& a, SubscribeScaledPressureRequest& b) {
     a.Swap(&b);
@@ -2508,7 +2484,7 @@ class SubscribeScaledImuRequest final :
                &_SubscribeScaledImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    52;
+    48;
 
   friend void swap(SubscribeScaledImuRequest& a, SubscribeScaledImuRequest& b) {
     a.Swap(&b);
@@ -2644,7 +2620,7 @@ class SubscribeRcStatusRequest final :
                &_SubscribeRcStatusRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    34;
+    30;
 
   friend void swap(SubscribeRcStatusRequest& a, SubscribeRcStatusRequest& b) {
     a.Swap(&b);
@@ -2780,7 +2756,7 @@ class SubscribeRawImuRequest final :
                &_SubscribeRawImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    54;
+    50;
 
   friend void swap(SubscribeRawImuRequest& a, SubscribeRawImuRequest& b) {
     a.Swap(&b);
@@ -2916,7 +2892,7 @@ class SubscribeRawGpsRequest final :
                &_SubscribeRawGpsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    26;
+    22;
 
   friend void swap(SubscribeRawGpsRequest& a, SubscribeRawGpsRequest& b) {
     a.Swap(&b);
@@ -3052,7 +3028,7 @@ class SubscribePositionVelocityNedRequest final :
                &_SubscribePositionVelocityNedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    44;
+    40;
 
   friend void swap(SubscribePositionVelocityNedRequest& a, SubscribePositionVelocityNedRequest& b) {
     a.Swap(&b);
@@ -3324,7 +3300,7 @@ class SubscribeOdometryRequest final :
                &_SubscribeOdometryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    42;
+    38;
 
   friend void swap(SubscribeOdometryRequest& a, SubscribeOdometryRequest& b) {
     a.Swap(&b);
@@ -3732,7 +3708,7 @@ class SubscribeImuRequest final :
                &_SubscribeImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    50;
+    46;
 
   friend void swap(SubscribeImuRequest& a, SubscribeImuRequest& b) {
     a.Swap(&b);
@@ -4004,7 +3980,7 @@ class SubscribeHealthRequest final :
                &_SubscribeHealthRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    32;
+    28;
 
   friend void swap(SubscribeHealthRequest& a, SubscribeHealthRequest& b) {
     a.Swap(&b);
@@ -4140,7 +4116,7 @@ class SubscribeHealthAllOkRequest final :
                &_SubscribeHealthAllOkRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    56;
+    52;
 
   friend void swap(SubscribeHealthAllOkRequest& a, SubscribeHealthAllOkRequest& b) {
     a.Swap(&b);
@@ -4276,7 +4252,7 @@ class SubscribeHeadingRequest final :
                &_SubscribeHeadingRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    64;
+    60;
 
   friend void swap(SubscribeHeadingRequest& a, SubscribeHeadingRequest& b) {
     a.Swap(&b);
@@ -4412,7 +4388,7 @@ class SubscribeGroundTruthRequest final :
                &_SubscribeGroundTruthRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    46;
+    42;
 
   friend void swap(SubscribeGroundTruthRequest& a, SubscribeGroundTruthRequest& b) {
     a.Swap(&b);
@@ -4548,7 +4524,7 @@ class SubscribeGpsInfoRequest final :
                &_SubscribeGpsInfoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    20;
 
   friend void swap(SubscribeGpsInfoRequest& a, SubscribeGpsInfoRequest& b) {
     a.Swap(&b);
@@ -4684,7 +4660,7 @@ class SubscribeFlightModeRequest final :
                &_SubscribeFlightModeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    30;
+    26;
 
   friend void swap(SubscribeFlightModeRequest& a, SubscribeFlightModeRequest& b) {
     a.Swap(&b);
@@ -4820,7 +4796,7 @@ class SubscribeFixedwingMetricsRequest final :
                &_SubscribeFixedwingMetricsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    48;
+    44;
 
   friend void swap(SubscribeFixedwingMetricsRequest& a, SubscribeFixedwingMetricsRequest& b) {
     a.Swap(&b);
@@ -4956,7 +4932,7 @@ class SubscribeDistanceSensorRequest final :
                &_SubscribeDistanceSensorRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    60;
+    56;
 
   friend void swap(SubscribeDistanceSensorRequest& a, SubscribeDistanceSensorRequest& b) {
     a.Swap(&b);
@@ -5012,278 +4988,6 @@ class SubscribeDistanceSensorRequest final :
   // accessors -------------------------------------------------------
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SubscribeDistanceSensorRequest)
- private:
-  class _Internal;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-
-        inline explicit constexpr Impl_(
-            ::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena);
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena, const Impl_& from);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
-};// -------------------------------------------------------------------
-
-class SubscribeCameraAttitudeQuaternionRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest) */ {
- public:
-  inline SubscribeCameraAttitudeQuaternionRequest() : SubscribeCameraAttitudeQuaternionRequest(nullptr) {}
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR SubscribeCameraAttitudeQuaternionRequest(::google::protobuf::internal::ConstantInitialized);
-
-  inline SubscribeCameraAttitudeQuaternionRequest(const SubscribeCameraAttitudeQuaternionRequest& from)
-      : SubscribeCameraAttitudeQuaternionRequest(nullptr, from) {}
-  SubscribeCameraAttitudeQuaternionRequest(SubscribeCameraAttitudeQuaternionRequest&& from) noexcept
-    : SubscribeCameraAttitudeQuaternionRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline SubscribeCameraAttitudeQuaternionRequest& operator=(const SubscribeCameraAttitudeQuaternionRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline SubscribeCameraAttitudeQuaternionRequest& operator=(SubscribeCameraAttitudeQuaternionRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetArena() == from.GetArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const SubscribeCameraAttitudeQuaternionRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const SubscribeCameraAttitudeQuaternionRequest* internal_default_instance() {
-    return reinterpret_cast<const SubscribeCameraAttitudeQuaternionRequest*>(
-               &_SubscribeCameraAttitudeQuaternionRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    18;
-
-  friend void swap(SubscribeCameraAttitudeQuaternionRequest& a, SubscribeCameraAttitudeQuaternionRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(SubscribeCameraAttitudeQuaternionRequest* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() != nullptr &&
-        GetArena() == other->GetArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() == other->GetArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(SubscribeCameraAttitudeQuaternionRequest* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  SubscribeCameraAttitudeQuaternionRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<SubscribeCameraAttitudeQuaternionRequest>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const SubscribeCameraAttitudeQuaternionRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const SubscribeCameraAttitudeQuaternionRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-  public:
-
-  private:
-  friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest";
-  }
-  protected:
-  explicit SubscribeCameraAttitudeQuaternionRequest(::google::protobuf::Arena* arena);
-  SubscribeCameraAttitudeQuaternionRequest(::google::protobuf::Arena* arena, const SubscribeCameraAttitudeQuaternionRequest& from);
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest)
- private:
-  class _Internal;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-
-        inline explicit constexpr Impl_(
-            ::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena);
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena, const Impl_& from);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
-};// -------------------------------------------------------------------
-
-class SubscribeCameraAttitudeEulerRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest) */ {
- public:
-  inline SubscribeCameraAttitudeEulerRequest() : SubscribeCameraAttitudeEulerRequest(nullptr) {}
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR SubscribeCameraAttitudeEulerRequest(::google::protobuf::internal::ConstantInitialized);
-
-  inline SubscribeCameraAttitudeEulerRequest(const SubscribeCameraAttitudeEulerRequest& from)
-      : SubscribeCameraAttitudeEulerRequest(nullptr, from) {}
-  SubscribeCameraAttitudeEulerRequest(SubscribeCameraAttitudeEulerRequest&& from) noexcept
-    : SubscribeCameraAttitudeEulerRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline SubscribeCameraAttitudeEulerRequest& operator=(const SubscribeCameraAttitudeEulerRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline SubscribeCameraAttitudeEulerRequest& operator=(SubscribeCameraAttitudeEulerRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetArena() == from.GetArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const SubscribeCameraAttitudeEulerRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const SubscribeCameraAttitudeEulerRequest* internal_default_instance() {
-    return reinterpret_cast<const SubscribeCameraAttitudeEulerRequest*>(
-               &_SubscribeCameraAttitudeEulerRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    20;
-
-  friend void swap(SubscribeCameraAttitudeEulerRequest& a, SubscribeCameraAttitudeEulerRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(SubscribeCameraAttitudeEulerRequest* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() != nullptr &&
-        GetArena() == other->GetArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() == other->GetArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(SubscribeCameraAttitudeEulerRequest* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  SubscribeCameraAttitudeEulerRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<SubscribeCameraAttitudeEulerRequest>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const SubscribeCameraAttitudeEulerRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const SubscribeCameraAttitudeEulerRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-  public:
-
-  private:
-  friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest";
-  }
-  protected:
-  explicit SubscribeCameraAttitudeEulerRequest(::google::protobuf::Arena* arena);
-  SubscribeCameraAttitudeEulerRequest(::google::protobuf::Arena* arena, const SubscribeCameraAttitudeEulerRequest& from);
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest)
  private:
   class _Internal;
 
@@ -5364,7 +5068,7 @@ class SubscribeBatteryRequest final :
                &_SubscribeBatteryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    28;
+    24;
 
   friend void swap(SubscribeBatteryRequest& a, SubscribeBatteryRequest& b) {
     a.Swap(&b);
@@ -6044,7 +5748,7 @@ class SubscribeAltitudeRequest final :
                &_SubscribeAltitudeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    66;
+    62;
 
   friend void swap(SubscribeAltitudeRequest& a, SubscribeAltitudeRequest& b) {
     a.Swap(&b);
@@ -6180,7 +5884,7 @@ class SubscribeActuatorOutputStatusRequest final :
                &_SubscribeActuatorOutputStatusRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    40;
+    36;
 
   friend void swap(SubscribeActuatorOutputStatusRequest& a, SubscribeActuatorOutputStatusRequest& b) {
     a.Swap(&b);
@@ -6316,7 +6020,7 @@ class SubscribeActuatorControlTargetRequest final :
                &_SubscribeActuatorControlTargetRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    38;
+    34;
 
   friend void swap(SubscribeActuatorControlTargetRequest& a, SubscribeActuatorControlTargetRequest& b) {
     a.Swap(&b);
@@ -6453,7 +6157,7 @@ class StatusText final :
                &_StatusText_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    133;
+    125;
 
   friend void swap(StatusText& a, StatusText& b) {
     a.Swap(&b);
@@ -6646,7 +6350,7 @@ class SetRateVtolStateRequest final :
                &_SetRateVtolStateRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    76;
+    72;
 
   friend void swap(SetRateVtolStateRequest& a, SetRateVtolStateRequest& b) {
     a.Swap(&b);
@@ -6821,7 +6525,7 @@ class SetRateVelocityNedRequest final :
                &_SetRateVelocityNedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    88;
+    80;
 
   friend void swap(SetRateVelocityNedRequest& a, SetRateVelocityNedRequest& b) {
     a.Swap(&b);
@@ -6996,7 +6700,7 @@ class SetRateUnixEpochTimeRequest final :
                &_SetRateUnixEpochTimeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    115;
+    107;
 
   friend void swap(SetRateUnixEpochTimeRequest& a, SetRateUnixEpochTimeRequest& b) {
     a.Swap(&b);
@@ -7171,7 +6875,7 @@ class SetRateScaledImuRequest final :
                &_SetRateScaledImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    111;
+    103;
 
   friend void swap(SetRateScaledImuRequest& a, SetRateScaledImuRequest& b) {
     a.Swap(&b);
@@ -7346,7 +7050,7 @@ class SetRateRcStatusRequest final :
                &_SetRateRcStatusRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    95;
+    87;
 
   friend void swap(SetRateRcStatusRequest& a, SetRateRcStatusRequest& b) {
     a.Swap(&b);
@@ -7521,7 +7225,7 @@ class SetRateRawImuRequest final :
                &_SetRateRawImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    113;
+    105;
 
   friend void swap(SetRateRawImuRequest& a, SetRateRawImuRequest& b) {
     a.Swap(&b);
@@ -7696,7 +7400,7 @@ class SetRateRawGpsRequest final :
                &_SetRateRawGpsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    92;
+    84;
 
   friend void swap(SetRateRawGpsRequest& a, SetRateRawGpsRequest& b) {
     a.Swap(&b);
@@ -7871,7 +7575,7 @@ class SetRatePositionVelocityNedRequest final :
                &_SetRatePositionVelocityNedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    103;
+    95;
 
   friend void swap(SetRatePositionVelocityNedRequest& a, SetRatePositionVelocityNedRequest& b) {
     a.Swap(&b);
@@ -8046,7 +7750,7 @@ class SetRatePositionRequest final :
                &_SetRatePositionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    68;
+    64;
 
   friend void swap(SetRatePositionRequest& a, SetRatePositionRequest& b) {
     a.Swap(&b);
@@ -8221,7 +7925,7 @@ class SetRateOdometryRequest final :
                &_SetRateOdometryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    101;
+    93;
 
   friend void swap(SetRateOdometryRequest& a, SetRateOdometryRequest& b) {
     a.Swap(&b);
@@ -8396,7 +8100,7 @@ class SetRateLandedStateRequest final :
                &_SetRateLandedStateRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    74;
+    70;
 
   friend void swap(SetRateLandedStateRequest& a, SetRateLandedStateRequest& b) {
     a.Swap(&b);
@@ -8571,7 +8275,7 @@ class SetRateInAirRequest final :
                &_SetRateInAirRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    72;
+    68;
 
   friend void swap(SetRateInAirRequest& a, SetRateInAirRequest& b) {
     a.Swap(&b);
@@ -8746,7 +8450,7 @@ class SetRateImuRequest final :
                &_SetRateImuRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    109;
+    101;
 
   friend void swap(SetRateImuRequest& a, SetRateImuRequest& b) {
     a.Swap(&b);
@@ -8921,7 +8625,7 @@ class SetRateHomeRequest final :
                &_SetRateHomeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    70;
+    66;
 
   friend void swap(SetRateHomeRequest& a, SetRateHomeRequest& b) {
     a.Swap(&b);
@@ -9096,7 +8800,7 @@ class SetRateGroundTruthRequest final :
                &_SetRateGroundTruthRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    105;
+    97;
 
   friend void swap(SetRateGroundTruthRequest& a, SetRateGroundTruthRequest& b) {
     a.Swap(&b);
@@ -9271,7 +8975,7 @@ class SetRateGpsInfoRequest final :
                &_SetRateGpsInfoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    90;
+    82;
 
   friend void swap(SetRateGpsInfoRequest& a, SetRateGpsInfoRequest& b) {
     a.Swap(&b);
@@ -9446,7 +9150,7 @@ class SetRateFixedwingMetricsRequest final :
                &_SetRateFixedwingMetricsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    107;
+    99;
 
   friend void swap(SetRateFixedwingMetricsRequest& a, SetRateFixedwingMetricsRequest& b) {
     a.Swap(&b);
@@ -9621,7 +9325,7 @@ class SetRateDistanceSensorRequest final :
                &_SetRateDistanceSensorRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    117;
+    109;
 
   friend void swap(SetRateDistanceSensorRequest& a, SetRateDistanceSensorRequest& b) {
     a.Swap(&b);
@@ -9737,356 +9441,6 @@ class SetRateDistanceSensorRequest final :
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
 };// -------------------------------------------------------------------
 
-class SetRateCameraAttitudeRequest final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRateCameraAttitudeRequest) */ {
- public:
-  inline SetRateCameraAttitudeRequest() : SetRateCameraAttitudeRequest(nullptr) {}
-  ~SetRateCameraAttitudeRequest() override;
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR SetRateCameraAttitudeRequest(::google::protobuf::internal::ConstantInitialized);
-
-  inline SetRateCameraAttitudeRequest(const SetRateCameraAttitudeRequest& from)
-      : SetRateCameraAttitudeRequest(nullptr, from) {}
-  SetRateCameraAttitudeRequest(SetRateCameraAttitudeRequest&& from) noexcept
-    : SetRateCameraAttitudeRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline SetRateCameraAttitudeRequest& operator=(const SetRateCameraAttitudeRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline SetRateCameraAttitudeRequest& operator=(SetRateCameraAttitudeRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetArena() == from.GetArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const SetRateCameraAttitudeRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const SetRateCameraAttitudeRequest* internal_default_instance() {
-    return reinterpret_cast<const SetRateCameraAttitudeRequest*>(
-               &_SetRateCameraAttitudeRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    86;
-
-  friend void swap(SetRateCameraAttitudeRequest& a, SetRateCameraAttitudeRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(SetRateCameraAttitudeRequest* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() != nullptr &&
-        GetArena() == other->GetArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() == other->GetArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(SetRateCameraAttitudeRequest* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  SetRateCameraAttitudeRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<SetRateCameraAttitudeRequest>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const SetRateCameraAttitudeRequest& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const SetRateCameraAttitudeRequest& from) {
-    SetRateCameraAttitudeRequest::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  ::size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
-  void SharedCtor(::google::protobuf::Arena* arena);
-  void SharedDtor();
-  void InternalSwap(SetRateCameraAttitudeRequest* other);
-
-  private:
-  friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.telemetry.SetRateCameraAttitudeRequest";
-  }
-  protected:
-  explicit SetRateCameraAttitudeRequest(::google::protobuf::Arena* arena);
-  SetRateCameraAttitudeRequest(::google::protobuf::Arena* arena, const SetRateCameraAttitudeRequest& from);
-  public:
-
-  static const ClassData _class_data_;
-  const ::google::protobuf::Message::ClassData*GetClassData() const final;
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kRateHzFieldNumber = 1,
-  };
-  // double rate_hz = 1;
-  void clear_rate_hz() ;
-  double rate_hz() const;
-  void set_rate_hz(double value);
-
-  private:
-  double _internal_rate_hz() const;
-  void _internal_set_rate_hz(double value);
-
-  public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SetRateCameraAttitudeRequest)
- private:
-  class _Internal;
-
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
-      0, 2>
-      _table_;
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-
-        inline explicit constexpr Impl_(
-            ::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena);
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena, const Impl_& from);
-    double rate_hz_;
-    mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
-};// -------------------------------------------------------------------
-
-class SetRateCameraAttitudeQuaternionRequest final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionRequest) */ {
- public:
-  inline SetRateCameraAttitudeQuaternionRequest() : SetRateCameraAttitudeQuaternionRequest(nullptr) {}
-  ~SetRateCameraAttitudeQuaternionRequest() override;
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR SetRateCameraAttitudeQuaternionRequest(::google::protobuf::internal::ConstantInitialized);
-
-  inline SetRateCameraAttitudeQuaternionRequest(const SetRateCameraAttitudeQuaternionRequest& from)
-      : SetRateCameraAttitudeQuaternionRequest(nullptr, from) {}
-  SetRateCameraAttitudeQuaternionRequest(SetRateCameraAttitudeQuaternionRequest&& from) noexcept
-    : SetRateCameraAttitudeQuaternionRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline SetRateCameraAttitudeQuaternionRequest& operator=(const SetRateCameraAttitudeQuaternionRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline SetRateCameraAttitudeQuaternionRequest& operator=(SetRateCameraAttitudeQuaternionRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetArena() == from.GetArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const SetRateCameraAttitudeQuaternionRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const SetRateCameraAttitudeQuaternionRequest* internal_default_instance() {
-    return reinterpret_cast<const SetRateCameraAttitudeQuaternionRequest*>(
-               &_SetRateCameraAttitudeQuaternionRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    84;
-
-  friend void swap(SetRateCameraAttitudeQuaternionRequest& a, SetRateCameraAttitudeQuaternionRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(SetRateCameraAttitudeQuaternionRequest* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() != nullptr &&
-        GetArena() == other->GetArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() == other->GetArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(SetRateCameraAttitudeQuaternionRequest* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  SetRateCameraAttitudeQuaternionRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<SetRateCameraAttitudeQuaternionRequest>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const SetRateCameraAttitudeQuaternionRequest& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const SetRateCameraAttitudeQuaternionRequest& from) {
-    SetRateCameraAttitudeQuaternionRequest::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  ::size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
-  void SharedCtor(::google::protobuf::Arena* arena);
-  void SharedDtor();
-  void InternalSwap(SetRateCameraAttitudeQuaternionRequest* other);
-
-  private:
-  friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionRequest";
-  }
-  protected:
-  explicit SetRateCameraAttitudeQuaternionRequest(::google::protobuf::Arena* arena);
-  SetRateCameraAttitudeQuaternionRequest(::google::protobuf::Arena* arena, const SetRateCameraAttitudeQuaternionRequest& from);
-  public:
-
-  static const ClassData _class_data_;
-  const ::google::protobuf::Message::ClassData*GetClassData() const final;
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kRateHzFieldNumber = 1,
-  };
-  // double rate_hz = 1;
-  void clear_rate_hz() ;
-  double rate_hz() const;
-  void set_rate_hz(double value);
-
-  private:
-  double _internal_rate_hz() const;
-  void _internal_set_rate_hz(double value);
-
-  public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionRequest)
- private:
-  class _Internal;
-
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
-      0, 2>
-      _table_;
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-
-        inline explicit constexpr Impl_(
-            ::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena);
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena, const Impl_& from);
-    double rate_hz_;
-    mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
-};// -------------------------------------------------------------------
-
 class SetRateBatteryRequest final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRateBatteryRequest) */ {
  public:
@@ -10146,7 +9500,7 @@ class SetRateBatteryRequest final :
                &_SetRateBatteryRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    93;
+    85;
 
   friend void swap(SetRateBatteryRequest& a, SetRateBatteryRequest& b) {
     a.Swap(&b);
@@ -10321,7 +9675,7 @@ class SetRateAttitudeQuaternionRequest final :
                &_SetRateAttitudeQuaternionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    80;
+    76;
 
   friend void swap(SetRateAttitudeQuaternionRequest& a, SetRateAttitudeQuaternionRequest& b) {
     a.Swap(&b);
@@ -10496,7 +9850,7 @@ class SetRateAttitudeEulerRequest final :
                &_SetRateAttitudeEulerRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    78;
+    74;
 
   friend void swap(SetRateAttitudeEulerRequest& a, SetRateAttitudeEulerRequest& b) {
     a.Swap(&b);
@@ -10671,7 +10025,7 @@ class SetRateAttitudeAngularVelocityBodyRequest final :
                &_SetRateAttitudeAngularVelocityBodyRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    82;
+    78;
 
   friend void swap(SetRateAttitudeAngularVelocityBodyRequest& a, SetRateAttitudeAngularVelocityBodyRequest& b) {
     a.Swap(&b);
@@ -10846,7 +10200,7 @@ class SetRateAltitudeRequest final :
                &_SetRateAltitudeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    121;
+    113;
 
   friend void swap(SetRateAltitudeRequest& a, SetRateAltitudeRequest& b) {
     a.Swap(&b);
@@ -11021,7 +10375,7 @@ class SetRateActuatorOutputStatusRequest final :
                &_SetRateActuatorOutputStatusRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    99;
+    91;
 
   friend void swap(SetRateActuatorOutputStatusRequest& a, SetRateActuatorOutputStatusRequest& b) {
     a.Swap(&b);
@@ -11196,7 +10550,7 @@ class SetRateActuatorControlTargetRequest final :
                &_SetRateActuatorControlTargetRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    97;
+    89;
 
   friend void swap(SetRateActuatorControlTargetRequest& a, SetRateActuatorControlTargetRequest& b) {
     a.Swap(&b);
@@ -11371,7 +10725,7 @@ class ScaledPressure final :
                &_ScaledPressure_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    141;
+    133;
 
   friend void swap(ScaledPressure& a, ScaledPressure& b) {
     a.Swap(&b);
@@ -11594,7 +10948,7 @@ class RcStatus final :
                &_RcStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    132;
+    124;
 
   friend void swap(RcStatus& a, RcStatus& b) {
     a.Swap(&b);
@@ -11793,7 +11147,7 @@ class RawGps final :
                &_RawGps_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    129;
+    121;
 
   friend void swap(RawGps& a, RawGps& b) {
     a.Swap(&b);
@@ -12124,7 +11478,7 @@ class Quaternion final :
                &_Quaternion_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    125;
+    117;
 
   friend void swap(Quaternion& a, Quaternion& b) {
     a.Swap(&b);
@@ -12347,7 +11701,7 @@ class PositionNed final :
                &_PositionNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    142;
+    134;
 
   friend void swap(PositionNed& a, PositionNed& b) {
     a.Swap(&b);
@@ -12546,7 +11900,7 @@ class PositionBody final :
                &_PositionBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    138;
+    130;
 
   friend void swap(PositionBody& a, PositionBody& b) {
     a.Swap(&b);
@@ -12745,7 +12099,7 @@ class Position final :
                &_Position_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    123;
+    115;
 
   friend void swap(Position& a, Position& b) {
     a.Swap(&b);
@@ -12956,7 +12310,7 @@ class MagneticFieldFrd final :
                &_MagneticFieldFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    149;
+    141;
 
   friend void swap(MagneticFieldFrd& a, MagneticFieldFrd& b) {
     a.Swap(&b);
@@ -13505,7 +12859,7 @@ class HealthAllOkResponse final :
                &_HealthAllOkResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    57;
+    53;
 
   friend void swap(HealthAllOkResponse& a, HealthAllOkResponse& b) {
     a.Swap(&b);
@@ -13680,7 +13034,7 @@ class Health final :
                &_Health_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    131;
+    123;
 
   friend void swap(Health& a, Health& b) {
     a.Swap(&b);
@@ -13927,7 +13281,7 @@ class Heading final :
                &_Heading_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    124;
+    116;
 
   friend void swap(Heading& a, Heading& b) {
     a.Swap(&b);
@@ -14102,7 +13456,7 @@ class GroundTruth final :
                &_GroundTruth_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    145;
+    137;
 
   friend void swap(GroundTruth& a, GroundTruth& b) {
     a.Swap(&b);
@@ -14301,7 +13655,7 @@ class GpsInfo final :
                &_GpsInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    128;
+    120;
 
   friend void swap(GpsInfo& a, GpsInfo& b) {
     a.Swap(&b);
@@ -14488,7 +13842,7 @@ class GpsGlobalOrigin final :
                &_GpsGlobalOrigin_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    151;
+    143;
 
   friend void swap(GpsGlobalOrigin& a, GpsGlobalOrigin& b) {
     a.Swap(&b);
@@ -14686,7 +14040,7 @@ class GetGpsGlobalOriginRequest final :
                &_GetGpsGlobalOriginRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    119;
+    111;
 
   friend void swap(GetGpsGlobalOriginRequest& a, GetGpsGlobalOriginRequest& b) {
     a.Swap(&b);
@@ -14823,7 +14177,7 @@ class FlightModeResponse final :
                &_FlightModeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    31;
+    27;
 
   friend void swap(FlightModeResponse& a, FlightModeResponse& b) {
     a.Swap(&b);
@@ -14998,7 +14352,7 @@ class FixedwingMetrics final :
                &_FixedwingMetrics_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    146;
+    138;
 
   friend void swap(FixedwingMetrics& a, FixedwingMetrics& b) {
     a.Swap(&b);
@@ -15197,7 +14551,7 @@ class EulerAngle final :
                &_EulerAngle_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    126;
+    118;
 
   friend void swap(EulerAngle& a, EulerAngle& b) {
     a.Swap(&b);
@@ -15408,7 +14762,7 @@ class Covariance final :
                &_Covariance_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    136;
+    128;
 
   friend void swap(Covariance& a, Covariance& b) {
     a.Swap(&b);
@@ -15591,7 +14945,7 @@ class Battery final :
                &_Battery_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    130;
+    122;
 
   friend void swap(Battery& a, Battery& b) {
     a.Swap(&b);
@@ -16001,7 +15355,7 @@ class AngularVelocityFrd final :
                &_AngularVelocityFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    148;
+    140;
 
   friend void swap(AngularVelocityFrd& a, AngularVelocityFrd& b) {
     a.Swap(&b);
@@ -16200,7 +15554,7 @@ class AngularVelocityBody final :
                &_AngularVelocityBody_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    127;
+    119;
 
   friend void swap(AngularVelocityBody& a, AngularVelocityBody& b) {
     a.Swap(&b);
@@ -16399,7 +15753,7 @@ class Altitude final :
                &_Altitude_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    152;
+    144;
 
   friend void swap(Altitude& a, Altitude& b) {
     a.Swap(&b);
@@ -16634,7 +15988,7 @@ class ActuatorOutputStatus final :
                &_ActuatorOutputStatus_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    135;
+    127;
 
   friend void swap(ActuatorOutputStatus& a, ActuatorOutputStatus& b) {
     a.Swap(&b);
@@ -16829,7 +16183,7 @@ class ActuatorControlTarget final :
                &_ActuatorControlTarget_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    134;
+    126;
 
   friend void swap(ActuatorControlTarget& a, ActuatorControlTarget& b) {
     a.Swap(&b);
@@ -17024,7 +16378,7 @@ class AccelerationFrd final :
                &_AccelerationFrd_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    147;
+    139;
 
   friend void swap(AccelerationFrd& a, AccelerationFrd& b) {
     a.Swap(&b);
@@ -17223,7 +16577,7 @@ class VelocityNedResponse final :
                &_VelocityNedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    19;
 
   friend void swap(VelocityNedResponse& a, VelocityNedResponse& b) {
     a.Swap(&b);
@@ -17404,7 +16758,7 @@ class StatusTextResponse final :
                &_StatusTextResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    37;
+    33;
 
   friend void swap(StatusTextResponse& a, StatusTextResponse& b) {
     a.Swap(&b);
@@ -17585,7 +16939,7 @@ class SetRateVtolStateResponse final :
                &_SetRateVtolStateResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    77;
+    73;
 
   friend void swap(SetRateVtolStateResponse& a, SetRateVtolStateResponse& b) {
     a.Swap(&b);
@@ -17766,7 +17120,7 @@ class SetRateVelocityNedResponse final :
                &_SetRateVelocityNedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    89;
+    81;
 
   friend void swap(SetRateVelocityNedResponse& a, SetRateVelocityNedResponse& b) {
     a.Swap(&b);
@@ -17947,7 +17301,7 @@ class SetRateUnixEpochTimeResponse final :
                &_SetRateUnixEpochTimeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    116;
+    108;
 
   friend void swap(SetRateUnixEpochTimeResponse& a, SetRateUnixEpochTimeResponse& b) {
     a.Swap(&b);
@@ -18128,7 +17482,7 @@ class SetRateScaledImuResponse final :
                &_SetRateScaledImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    112;
+    104;
 
   friend void swap(SetRateScaledImuResponse& a, SetRateScaledImuResponse& b) {
     a.Swap(&b);
@@ -18309,7 +17663,7 @@ class SetRateRcStatusResponse final :
                &_SetRateRcStatusResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    96;
+    88;
 
   friend void swap(SetRateRcStatusResponse& a, SetRateRcStatusResponse& b) {
     a.Swap(&b);
@@ -18490,7 +17844,7 @@ class SetRateRawImuResponse final :
                &_SetRateRawImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    114;
+    106;
 
   friend void swap(SetRateRawImuResponse& a, SetRateRawImuResponse& b) {
     a.Swap(&b);
@@ -18671,7 +18025,7 @@ class SetRatePositionVelocityNedResponse final :
                &_SetRatePositionVelocityNedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    104;
+    96;
 
   friend void swap(SetRatePositionVelocityNedResponse& a, SetRatePositionVelocityNedResponse& b) {
     a.Swap(&b);
@@ -18852,7 +18206,7 @@ class SetRatePositionResponse final :
                &_SetRatePositionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    69;
+    65;
 
   friend void swap(SetRatePositionResponse& a, SetRatePositionResponse& b) {
     a.Swap(&b);
@@ -19033,7 +18387,7 @@ class SetRateOdometryResponse final :
                &_SetRateOdometryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    102;
+    94;
 
   friend void swap(SetRateOdometryResponse& a, SetRateOdometryResponse& b) {
     a.Swap(&b);
@@ -19214,7 +18568,7 @@ class SetRateLandedStateResponse final :
                &_SetRateLandedStateResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    75;
+    71;
 
   friend void swap(SetRateLandedStateResponse& a, SetRateLandedStateResponse& b) {
     a.Swap(&b);
@@ -19395,7 +18749,7 @@ class SetRateInAirResponse final :
                &_SetRateInAirResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    73;
+    69;
 
   friend void swap(SetRateInAirResponse& a, SetRateInAirResponse& b) {
     a.Swap(&b);
@@ -19576,7 +18930,7 @@ class SetRateImuResponse final :
                &_SetRateImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    110;
+    102;
 
   friend void swap(SetRateImuResponse& a, SetRateImuResponse& b) {
     a.Swap(&b);
@@ -19757,7 +19111,7 @@ class SetRateHomeResponse final :
                &_SetRateHomeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    71;
+    67;
 
   friend void swap(SetRateHomeResponse& a, SetRateHomeResponse& b) {
     a.Swap(&b);
@@ -19938,7 +19292,7 @@ class SetRateGroundTruthResponse final :
                &_SetRateGroundTruthResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    106;
+    98;
 
   friend void swap(SetRateGroundTruthResponse& a, SetRateGroundTruthResponse& b) {
     a.Swap(&b);
@@ -20119,7 +19473,7 @@ class SetRateGpsInfoResponse final :
                &_SetRateGpsInfoResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    91;
+    83;
 
   friend void swap(SetRateGpsInfoResponse& a, SetRateGpsInfoResponse& b) {
     a.Swap(&b);
@@ -20300,7 +19654,7 @@ class SetRateFixedwingMetricsResponse final :
                &_SetRateFixedwingMetricsResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    108;
+    100;
 
   friend void swap(SetRateFixedwingMetricsResponse& a, SetRateFixedwingMetricsResponse& b) {
     a.Swap(&b);
@@ -20481,7 +19835,7 @@ class SetRateDistanceSensorResponse final :
                &_SetRateDistanceSensorResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    118;
+    110;
 
   friend void swap(SetRateDistanceSensorResponse& a, SetRateDistanceSensorResponse& b) {
     a.Swap(&b);
@@ -20603,368 +19957,6 @@ class SetRateDistanceSensorResponse final :
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
 };// -------------------------------------------------------------------
 
-class SetRateCameraAttitudeResponse final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRateCameraAttitudeResponse) */ {
- public:
-  inline SetRateCameraAttitudeResponse() : SetRateCameraAttitudeResponse(nullptr) {}
-  ~SetRateCameraAttitudeResponse() override;
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR SetRateCameraAttitudeResponse(::google::protobuf::internal::ConstantInitialized);
-
-  inline SetRateCameraAttitudeResponse(const SetRateCameraAttitudeResponse& from)
-      : SetRateCameraAttitudeResponse(nullptr, from) {}
-  SetRateCameraAttitudeResponse(SetRateCameraAttitudeResponse&& from) noexcept
-    : SetRateCameraAttitudeResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline SetRateCameraAttitudeResponse& operator=(const SetRateCameraAttitudeResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline SetRateCameraAttitudeResponse& operator=(SetRateCameraAttitudeResponse&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetArena() == from.GetArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const SetRateCameraAttitudeResponse& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const SetRateCameraAttitudeResponse* internal_default_instance() {
-    return reinterpret_cast<const SetRateCameraAttitudeResponse*>(
-               &_SetRateCameraAttitudeResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    87;
-
-  friend void swap(SetRateCameraAttitudeResponse& a, SetRateCameraAttitudeResponse& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(SetRateCameraAttitudeResponse* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() != nullptr &&
-        GetArena() == other->GetArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() == other->GetArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(SetRateCameraAttitudeResponse* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  SetRateCameraAttitudeResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<SetRateCameraAttitudeResponse>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const SetRateCameraAttitudeResponse& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const SetRateCameraAttitudeResponse& from) {
-    SetRateCameraAttitudeResponse::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  ::size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
-  void SharedCtor(::google::protobuf::Arena* arena);
-  void SharedDtor();
-  void InternalSwap(SetRateCameraAttitudeResponse* other);
-
-  private:
-  friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.telemetry.SetRateCameraAttitudeResponse";
-  }
-  protected:
-  explicit SetRateCameraAttitudeResponse(::google::protobuf::Arena* arena);
-  SetRateCameraAttitudeResponse(::google::protobuf::Arena* arena, const SetRateCameraAttitudeResponse& from);
-  public:
-
-  static const ClassData _class_data_;
-  const ::google::protobuf::Message::ClassData*GetClassData() const final;
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kTelemetryResultFieldNumber = 1,
-  };
-  // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
-  bool has_telemetry_result() const;
-  void clear_telemetry_result() ;
-  const ::mavsdk::rpc::telemetry::TelemetryResult& telemetry_result() const;
-  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry::TelemetryResult* release_telemetry_result();
-  ::mavsdk::rpc::telemetry::TelemetryResult* mutable_telemetry_result();
-  void set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* value);
-  void unsafe_arena_set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* value);
-  ::mavsdk::rpc::telemetry::TelemetryResult* unsafe_arena_release_telemetry_result();
-
-  private:
-  const ::mavsdk::rpc::telemetry::TelemetryResult& _internal_telemetry_result() const;
-  ::mavsdk::rpc::telemetry::TelemetryResult* _internal_mutable_telemetry_result();
-
-  public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SetRateCameraAttitudeResponse)
- private:
-  class _Internal;
-
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 1,
-      0, 2>
-      _table_;
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-
-        inline explicit constexpr Impl_(
-            ::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena);
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena, const Impl_& from);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    ::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
-};// -------------------------------------------------------------------
-
-class SetRateCameraAttitudeQuaternionResponse final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionResponse) */ {
- public:
-  inline SetRateCameraAttitudeQuaternionResponse() : SetRateCameraAttitudeQuaternionResponse(nullptr) {}
-  ~SetRateCameraAttitudeQuaternionResponse() override;
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR SetRateCameraAttitudeQuaternionResponse(::google::protobuf::internal::ConstantInitialized);
-
-  inline SetRateCameraAttitudeQuaternionResponse(const SetRateCameraAttitudeQuaternionResponse& from)
-      : SetRateCameraAttitudeQuaternionResponse(nullptr, from) {}
-  SetRateCameraAttitudeQuaternionResponse(SetRateCameraAttitudeQuaternionResponse&& from) noexcept
-    : SetRateCameraAttitudeQuaternionResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline SetRateCameraAttitudeQuaternionResponse& operator=(const SetRateCameraAttitudeQuaternionResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline SetRateCameraAttitudeQuaternionResponse& operator=(SetRateCameraAttitudeQuaternionResponse&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetArena() == from.GetArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const SetRateCameraAttitudeQuaternionResponse& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const SetRateCameraAttitudeQuaternionResponse* internal_default_instance() {
-    return reinterpret_cast<const SetRateCameraAttitudeQuaternionResponse*>(
-               &_SetRateCameraAttitudeQuaternionResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    85;
-
-  friend void swap(SetRateCameraAttitudeQuaternionResponse& a, SetRateCameraAttitudeQuaternionResponse& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(SetRateCameraAttitudeQuaternionResponse* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() != nullptr &&
-        GetArena() == other->GetArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() == other->GetArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(SetRateCameraAttitudeQuaternionResponse* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  SetRateCameraAttitudeQuaternionResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<SetRateCameraAttitudeQuaternionResponse>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const SetRateCameraAttitudeQuaternionResponse& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const SetRateCameraAttitudeQuaternionResponse& from) {
-    SetRateCameraAttitudeQuaternionResponse::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  ::size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
-  void SharedCtor(::google::protobuf::Arena* arena);
-  void SharedDtor();
-  void InternalSwap(SetRateCameraAttitudeQuaternionResponse* other);
-
-  private:
-  friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionResponse";
-  }
-  protected:
-  explicit SetRateCameraAttitudeQuaternionResponse(::google::protobuf::Arena* arena);
-  SetRateCameraAttitudeQuaternionResponse(::google::protobuf::Arena* arena, const SetRateCameraAttitudeQuaternionResponse& from);
-  public:
-
-  static const ClassData _class_data_;
-  const ::google::protobuf::Message::ClassData*GetClassData() const final;
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kTelemetryResultFieldNumber = 1,
-  };
-  // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
-  bool has_telemetry_result() const;
-  void clear_telemetry_result() ;
-  const ::mavsdk::rpc::telemetry::TelemetryResult& telemetry_result() const;
-  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry::TelemetryResult* release_telemetry_result();
-  ::mavsdk::rpc::telemetry::TelemetryResult* mutable_telemetry_result();
-  void set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* value);
-  void unsafe_arena_set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* value);
-  ::mavsdk::rpc::telemetry::TelemetryResult* unsafe_arena_release_telemetry_result();
-
-  private:
-  const ::mavsdk::rpc::telemetry::TelemetryResult& _internal_telemetry_result() const;
-  ::mavsdk::rpc::telemetry::TelemetryResult* _internal_mutable_telemetry_result();
-
-  public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionResponse)
- private:
-  class _Internal;
-
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 1,
-      0, 2>
-      _table_;
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-
-        inline explicit constexpr Impl_(
-            ::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena);
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena, const Impl_& from);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    ::mavsdk::rpc::telemetry::TelemetryResult* telemetry_result_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
-};// -------------------------------------------------------------------
-
 class SetRateBatteryResponse final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SetRateBatteryResponse) */ {
  public:
@@ -21024,7 +20016,7 @@ class SetRateBatteryResponse final :
                &_SetRateBatteryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    94;
+    86;
 
   friend void swap(SetRateBatteryResponse& a, SetRateBatteryResponse& b) {
     a.Swap(&b);
@@ -21205,7 +20197,7 @@ class SetRateAttitudeQuaternionResponse final :
                &_SetRateAttitudeQuaternionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    81;
+    77;
 
   friend void swap(SetRateAttitudeQuaternionResponse& a, SetRateAttitudeQuaternionResponse& b) {
     a.Swap(&b);
@@ -21386,7 +20378,7 @@ class SetRateAttitudeEulerResponse final :
                &_SetRateAttitudeEulerResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    79;
+    75;
 
   friend void swap(SetRateAttitudeEulerResponse& a, SetRateAttitudeEulerResponse& b) {
     a.Swap(&b);
@@ -21567,7 +20559,7 @@ class SetRateAttitudeAngularVelocityBodyResponse final :
                &_SetRateAttitudeAngularVelocityBodyResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    83;
+    79;
 
   friend void swap(SetRateAttitudeAngularVelocityBodyResponse& a, SetRateAttitudeAngularVelocityBodyResponse& b) {
     a.Swap(&b);
@@ -21748,7 +20740,7 @@ class SetRateAltitudeResponse final :
                &_SetRateAltitudeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    122;
+    114;
 
   friend void swap(SetRateAltitudeResponse& a, SetRateAltitudeResponse& b) {
     a.Swap(&b);
@@ -21929,7 +20921,7 @@ class SetRateActuatorOutputStatusResponse final :
                &_SetRateActuatorOutputStatusResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    100;
+    92;
 
   friend void swap(SetRateActuatorOutputStatusResponse& a, SetRateActuatorOutputStatusResponse& b) {
     a.Swap(&b);
@@ -22110,7 +21102,7 @@ class SetRateActuatorControlTargetResponse final :
                &_SetRateActuatorControlTargetResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    98;
+    90;
 
   friend void swap(SetRateActuatorControlTargetResponse& a, SetRateActuatorControlTargetResponse& b) {
     a.Swap(&b);
@@ -22291,7 +21283,7 @@ class ScaledPressureResponse final :
                &_ScaledPressureResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    63;
+    59;
 
   friend void swap(ScaledPressureResponse& a, ScaledPressureResponse& b) {
     a.Swap(&b);
@@ -22472,7 +21464,7 @@ class RcStatusResponse final :
                &_RcStatusResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    35;
+    31;
 
   friend void swap(RcStatusResponse& a, RcStatusResponse& b) {
     a.Swap(&b);
@@ -22653,7 +21645,7 @@ class RawGpsResponse final :
                &_RawGpsResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    23;
 
   friend void swap(RawGpsResponse& a, RawGpsResponse& b) {
     a.Swap(&b);
@@ -22834,7 +21826,7 @@ class PositionVelocityNed final :
                &_PositionVelocityNed_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    144;
+    136;
 
   friend void swap(PositionVelocityNed& a, PositionVelocityNed& b) {
     a.Swap(&b);
@@ -23213,7 +22205,7 @@ class Odometry final :
                &_Odometry_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    139;
+    131;
 
   friend void swap(Odometry& a, Odometry& b) {
     a.Swap(&b);
@@ -23537,7 +22529,7 @@ class Imu final :
                &_Imu_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    150;
+    142;
 
   friend void swap(Imu& a, Imu& b) {
     a.Swap(&b);
@@ -23957,7 +22949,7 @@ class HealthResponse final :
                &_HealthResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    33;
+    29;
 
   friend void swap(HealthResponse& a, HealthResponse& b) {
     a.Swap(&b);
@@ -24138,7 +23130,7 @@ class HeadingResponse final :
                &_HeadingResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    65;
+    61;
 
   friend void swap(HeadingResponse& a, HeadingResponse& b) {
     a.Swap(&b);
@@ -24319,7 +23311,7 @@ class GroundTruthResponse final :
                &_GroundTruthResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    47;
+    43;
 
   friend void swap(GroundTruthResponse& a, GroundTruthResponse& b) {
     a.Swap(&b);
@@ -24500,7 +23492,7 @@ class GpsInfoResponse final :
                &_GpsInfoResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    21;
 
   friend void swap(GpsInfoResponse& a, GpsInfoResponse& b) {
     a.Swap(&b);
@@ -24681,7 +23673,7 @@ class GetGpsGlobalOriginResponse final :
                &_GetGpsGlobalOriginResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    120;
+    112;
 
   friend void swap(GetGpsGlobalOriginResponse& a, GetGpsGlobalOriginResponse& b) {
     a.Swap(&b);
@@ -24879,7 +23871,7 @@ class FixedwingMetricsResponse final :
                &_FixedwingMetricsResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    49;
+    45;
 
   friend void swap(FixedwingMetricsResponse& a, FixedwingMetricsResponse& b) {
     a.Swap(&b);
@@ -25060,7 +24052,7 @@ class DistanceSensor final :
                &_DistanceSensor_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    140;
+    132;
 
   friend void swap(DistanceSensor& a, DistanceSensor& b) {
     a.Swap(&b);
@@ -25218,368 +24210,6 @@ class DistanceSensor final :
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
 };// -------------------------------------------------------------------
 
-class CameraAttitudeQuaternionResponse final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse) */ {
- public:
-  inline CameraAttitudeQuaternionResponse() : CameraAttitudeQuaternionResponse(nullptr) {}
-  ~CameraAttitudeQuaternionResponse() override;
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR CameraAttitudeQuaternionResponse(::google::protobuf::internal::ConstantInitialized);
-
-  inline CameraAttitudeQuaternionResponse(const CameraAttitudeQuaternionResponse& from)
-      : CameraAttitudeQuaternionResponse(nullptr, from) {}
-  CameraAttitudeQuaternionResponse(CameraAttitudeQuaternionResponse&& from) noexcept
-    : CameraAttitudeQuaternionResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline CameraAttitudeQuaternionResponse& operator=(const CameraAttitudeQuaternionResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline CameraAttitudeQuaternionResponse& operator=(CameraAttitudeQuaternionResponse&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetArena() == from.GetArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const CameraAttitudeQuaternionResponse& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const CameraAttitudeQuaternionResponse* internal_default_instance() {
-    return reinterpret_cast<const CameraAttitudeQuaternionResponse*>(
-               &_CameraAttitudeQuaternionResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    19;
-
-  friend void swap(CameraAttitudeQuaternionResponse& a, CameraAttitudeQuaternionResponse& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(CameraAttitudeQuaternionResponse* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() != nullptr &&
-        GetArena() == other->GetArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() == other->GetArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(CameraAttitudeQuaternionResponse* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  CameraAttitudeQuaternionResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CameraAttitudeQuaternionResponse>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const CameraAttitudeQuaternionResponse& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const CameraAttitudeQuaternionResponse& from) {
-    CameraAttitudeQuaternionResponse::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  ::size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
-  void SharedCtor(::google::protobuf::Arena* arena);
-  void SharedDtor();
-  void InternalSwap(CameraAttitudeQuaternionResponse* other);
-
-  private:
-  friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse";
-  }
-  protected:
-  explicit CameraAttitudeQuaternionResponse(::google::protobuf::Arena* arena);
-  CameraAttitudeQuaternionResponse(::google::protobuf::Arena* arena, const CameraAttitudeQuaternionResponse& from);
-  public:
-
-  static const ClassData _class_data_;
-  const ::google::protobuf::Message::ClassData*GetClassData() const final;
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kAttitudeQuaternionFieldNumber = 1,
-  };
-  // .mavsdk.rpc.telemetry.Quaternion attitude_quaternion = 1;
-  bool has_attitude_quaternion() const;
-  void clear_attitude_quaternion() ;
-  const ::mavsdk::rpc::telemetry::Quaternion& attitude_quaternion() const;
-  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry::Quaternion* release_attitude_quaternion();
-  ::mavsdk::rpc::telemetry::Quaternion* mutable_attitude_quaternion();
-  void set_allocated_attitude_quaternion(::mavsdk::rpc::telemetry::Quaternion* value);
-  void unsafe_arena_set_allocated_attitude_quaternion(::mavsdk::rpc::telemetry::Quaternion* value);
-  ::mavsdk::rpc::telemetry::Quaternion* unsafe_arena_release_attitude_quaternion();
-
-  private:
-  const ::mavsdk::rpc::telemetry::Quaternion& _internal_attitude_quaternion() const;
-  ::mavsdk::rpc::telemetry::Quaternion* _internal_mutable_attitude_quaternion();
-
-  public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
- private:
-  class _Internal;
-
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 1,
-      0, 2>
-      _table_;
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-
-        inline explicit constexpr Impl_(
-            ::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena);
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena, const Impl_& from);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    ::mavsdk::rpc::telemetry::Quaternion* attitude_quaternion_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
-};// -------------------------------------------------------------------
-
-class CameraAttitudeEulerResponse final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse) */ {
- public:
-  inline CameraAttitudeEulerResponse() : CameraAttitudeEulerResponse(nullptr) {}
-  ~CameraAttitudeEulerResponse() override;
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR CameraAttitudeEulerResponse(::google::protobuf::internal::ConstantInitialized);
-
-  inline CameraAttitudeEulerResponse(const CameraAttitudeEulerResponse& from)
-      : CameraAttitudeEulerResponse(nullptr, from) {}
-  CameraAttitudeEulerResponse(CameraAttitudeEulerResponse&& from) noexcept
-    : CameraAttitudeEulerResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline CameraAttitudeEulerResponse& operator=(const CameraAttitudeEulerResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline CameraAttitudeEulerResponse& operator=(CameraAttitudeEulerResponse&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetArena() == from.GetArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const CameraAttitudeEulerResponse& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const CameraAttitudeEulerResponse* internal_default_instance() {
-    return reinterpret_cast<const CameraAttitudeEulerResponse*>(
-               &_CameraAttitudeEulerResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    21;
-
-  friend void swap(CameraAttitudeEulerResponse& a, CameraAttitudeEulerResponse& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(CameraAttitudeEulerResponse* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() != nullptr &&
-        GetArena() == other->GetArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() == other->GetArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(CameraAttitudeEulerResponse* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  CameraAttitudeEulerResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CameraAttitudeEulerResponse>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const CameraAttitudeEulerResponse& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const CameraAttitudeEulerResponse& from) {
-    CameraAttitudeEulerResponse::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  ::size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
-  void SharedCtor(::google::protobuf::Arena* arena);
-  void SharedDtor();
-  void InternalSwap(CameraAttitudeEulerResponse* other);
-
-  private:
-  friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.telemetry.CameraAttitudeEulerResponse";
-  }
-  protected:
-  explicit CameraAttitudeEulerResponse(::google::protobuf::Arena* arena);
-  CameraAttitudeEulerResponse(::google::protobuf::Arena* arena, const CameraAttitudeEulerResponse& from);
-  public:
-
-  static const ClassData _class_data_;
-  const ::google::protobuf::Message::ClassData*GetClassData() const final;
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kAttitudeEulerFieldNumber = 1,
-  };
-  // .mavsdk.rpc.telemetry.EulerAngle attitude_euler = 1;
-  bool has_attitude_euler() const;
-  void clear_attitude_euler() ;
-  const ::mavsdk::rpc::telemetry::EulerAngle& attitude_euler() const;
-  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry::EulerAngle* release_attitude_euler();
-  ::mavsdk::rpc::telemetry::EulerAngle* mutable_attitude_euler();
-  void set_allocated_attitude_euler(::mavsdk::rpc::telemetry::EulerAngle* value);
-  void unsafe_arena_set_allocated_attitude_euler(::mavsdk::rpc::telemetry::EulerAngle* value);
-  ::mavsdk::rpc::telemetry::EulerAngle* unsafe_arena_release_attitude_euler();
-
-  private:
-  const ::mavsdk::rpc::telemetry::EulerAngle& _internal_attitude_euler() const;
-  ::mavsdk::rpc::telemetry::EulerAngle* _internal_mutable_attitude_euler();
-
-  public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
- private:
-  class _Internal;
-
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 1,
-      0, 2>
-      _table_;
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-
-        inline explicit constexpr Impl_(
-            ::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena);
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena, const Impl_& from);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    ::mavsdk::rpc::telemetry::EulerAngle* attitude_euler_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
-};// -------------------------------------------------------------------
-
 class BatteryResponse final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.BatteryResponse) */ {
  public:
@@ -25639,7 +24269,7 @@ class BatteryResponse final :
                &_BatteryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    29;
+    25;
 
   friend void swap(BatteryResponse& a, BatteryResponse& b) {
     a.Swap(&b);
@@ -26363,7 +24993,7 @@ class AltitudeResponse final :
                &_AltitudeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    67;
+    63;
 
   friend void swap(AltitudeResponse& a, AltitudeResponse& b) {
     a.Swap(&b);
@@ -26544,7 +25174,7 @@ class ActuatorOutputStatusResponse final :
                &_ActuatorOutputStatusResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    41;
+    37;
 
   friend void swap(ActuatorOutputStatusResponse& a, ActuatorOutputStatusResponse& b) {
     a.Swap(&b);
@@ -26725,7 +25355,7 @@ class ActuatorControlTargetResponse final :
                &_ActuatorControlTargetResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    39;
+    35;
 
   friend void swap(ActuatorControlTargetResponse& a, ActuatorControlTargetResponse& b) {
     a.Swap(&b);
@@ -26906,7 +25536,7 @@ class ScaledImuResponse final :
                &_ScaledImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    53;
+    49;
 
   friend void swap(ScaledImuResponse& a, ScaledImuResponse& b) {
     a.Swap(&b);
@@ -27087,7 +25717,7 @@ class RawImuResponse final :
                &_RawImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    55;
+    51;
 
   friend void swap(RawImuResponse& a, RawImuResponse& b) {
     a.Swap(&b);
@@ -27268,7 +25898,7 @@ class PositionVelocityNedResponse final :
                &_PositionVelocityNedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    45;
+    41;
 
   friend void swap(PositionVelocityNedResponse& a, PositionVelocityNedResponse& b) {
     a.Swap(&b);
@@ -27449,7 +26079,7 @@ class OdometryResponse final :
                &_OdometryResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    43;
+    39;
 
   friend void swap(OdometryResponse& a, OdometryResponse& b) {
     a.Swap(&b);
@@ -27630,7 +26260,7 @@ class ImuResponse final :
                &_ImuResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    51;
+    47;
 
   friend void swap(ImuResponse& a, ImuResponse& b) {
     a.Swap(&b);
@@ -27811,7 +26441,7 @@ class DistanceSensorResponse final :
                &_DistanceSensorResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    61;
+    57;
 
   friend void swap(DistanceSensorResponse& a, DistanceSensorResponse& b) {
     a.Swap(&b);
@@ -28587,214 +27217,6 @@ inline void AttitudeAngularVelocityBodyResponse::set_allocated_attitude_angular_
 
   _impl_.attitude_angular_velocity_body_ = reinterpret_cast<::mavsdk::rpc::telemetry::AngularVelocityBody*>(value);
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.AttitudeAngularVelocityBodyResponse.attitude_angular_velocity_body)
-}
-
-// -------------------------------------------------------------------
-
-// SubscribeCameraAttitudeQuaternionRequest
-
-// -------------------------------------------------------------------
-
-// CameraAttitudeQuaternionResponse
-
-// .mavsdk.rpc.telemetry.Quaternion attitude_quaternion = 1;
-inline bool CameraAttitudeQuaternionResponse::has_attitude_quaternion() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.attitude_quaternion_ != nullptr);
-  return value;
-}
-inline void CameraAttitudeQuaternionResponse::clear_attitude_quaternion() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (_impl_.attitude_quaternion_ != nullptr) _impl_.attitude_quaternion_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
-}
-inline const ::mavsdk::rpc::telemetry::Quaternion& CameraAttitudeQuaternionResponse::_internal_attitude_quaternion() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  const ::mavsdk::rpc::telemetry::Quaternion* p = _impl_.attitude_quaternion_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry::Quaternion&>(::mavsdk::rpc::telemetry::_Quaternion_default_instance_);
-}
-inline const ::mavsdk::rpc::telemetry::Quaternion& CameraAttitudeQuaternionResponse::attitude_quaternion() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse.attitude_quaternion)
-  return _internal_attitude_quaternion();
-}
-inline void CameraAttitudeQuaternionResponse::unsafe_arena_set_allocated_attitude_quaternion(::mavsdk::rpc::telemetry::Quaternion* value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.attitude_quaternion_);
-  }
-  _impl_.attitude_quaternion_ = reinterpret_cast<::mavsdk::rpc::telemetry::Quaternion*>(value);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse.attitude_quaternion)
-}
-inline ::mavsdk::rpc::telemetry::Quaternion* CameraAttitudeQuaternionResponse::release_attitude_quaternion() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::telemetry::Quaternion* released = _impl_.attitude_quaternion_;
-  _impl_.attitude_quaternion_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-  if (GetArena() == nullptr) {
-    delete old;
-  }
-#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArena() != nullptr) {
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return released;
-}
-inline ::mavsdk::rpc::telemetry::Quaternion* CameraAttitudeQuaternionResponse::unsafe_arena_release_attitude_quaternion() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse.attitude_quaternion)
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::telemetry::Quaternion* temp = _impl_.attitude_quaternion_;
-  _impl_.attitude_quaternion_ = nullptr;
-  return temp;
-}
-inline ::mavsdk::rpc::telemetry::Quaternion* CameraAttitudeQuaternionResponse::_internal_mutable_attitude_quaternion() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_._has_bits_[0] |= 0x00000001u;
-  if (_impl_.attitude_quaternion_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::Quaternion>(GetArena());
-    _impl_.attitude_quaternion_ = reinterpret_cast<::mavsdk::rpc::telemetry::Quaternion*>(p);
-  }
-  return _impl_.attitude_quaternion_;
-}
-inline ::mavsdk::rpc::telemetry::Quaternion* CameraAttitudeQuaternionResponse::mutable_attitude_quaternion() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::mavsdk::rpc::telemetry::Quaternion* _msg = _internal_mutable_attitude_quaternion();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse.attitude_quaternion)
-  return _msg;
-}
-inline void CameraAttitudeQuaternionResponse::set_allocated_attitude_quaternion(::mavsdk::rpc::telemetry::Quaternion* value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (message_arena == nullptr) {
-    delete reinterpret_cast<::mavsdk::rpc::telemetry::Quaternion*>(_impl_.attitude_quaternion_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::telemetry::Quaternion*>(value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-
-  _impl_.attitude_quaternion_ = reinterpret_cast<::mavsdk::rpc::telemetry::Quaternion*>(value);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse.attitude_quaternion)
-}
-
-// -------------------------------------------------------------------
-
-// SubscribeCameraAttitudeEulerRequest
-
-// -------------------------------------------------------------------
-
-// CameraAttitudeEulerResponse
-
-// .mavsdk.rpc.telemetry.EulerAngle attitude_euler = 1;
-inline bool CameraAttitudeEulerResponse::has_attitude_euler() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.attitude_euler_ != nullptr);
-  return value;
-}
-inline void CameraAttitudeEulerResponse::clear_attitude_euler() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (_impl_.attitude_euler_ != nullptr) _impl_.attitude_euler_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
-}
-inline const ::mavsdk::rpc::telemetry::EulerAngle& CameraAttitudeEulerResponse::_internal_attitude_euler() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  const ::mavsdk::rpc::telemetry::EulerAngle* p = _impl_.attitude_euler_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry::EulerAngle&>(::mavsdk::rpc::telemetry::_EulerAngle_default_instance_);
-}
-inline const ::mavsdk::rpc::telemetry::EulerAngle& CameraAttitudeEulerResponse::attitude_euler() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse.attitude_euler)
-  return _internal_attitude_euler();
-}
-inline void CameraAttitudeEulerResponse::unsafe_arena_set_allocated_attitude_euler(::mavsdk::rpc::telemetry::EulerAngle* value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.attitude_euler_);
-  }
-  _impl_.attitude_euler_ = reinterpret_cast<::mavsdk::rpc::telemetry::EulerAngle*>(value);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse.attitude_euler)
-}
-inline ::mavsdk::rpc::telemetry::EulerAngle* CameraAttitudeEulerResponse::release_attitude_euler() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::telemetry::EulerAngle* released = _impl_.attitude_euler_;
-  _impl_.attitude_euler_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-  if (GetArena() == nullptr) {
-    delete old;
-  }
-#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArena() != nullptr) {
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return released;
-}
-inline ::mavsdk::rpc::telemetry::EulerAngle* CameraAttitudeEulerResponse::unsafe_arena_release_attitude_euler() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse.attitude_euler)
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::telemetry::EulerAngle* temp = _impl_.attitude_euler_;
-  _impl_.attitude_euler_ = nullptr;
-  return temp;
-}
-inline ::mavsdk::rpc::telemetry::EulerAngle* CameraAttitudeEulerResponse::_internal_mutable_attitude_euler() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_._has_bits_[0] |= 0x00000001u;
-  if (_impl_.attitude_euler_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::EulerAngle>(GetArena());
-    _impl_.attitude_euler_ = reinterpret_cast<::mavsdk::rpc::telemetry::EulerAngle*>(p);
-  }
-  return _impl_.attitude_euler_;
-}
-inline ::mavsdk::rpc::telemetry::EulerAngle* CameraAttitudeEulerResponse::mutable_attitude_euler() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::mavsdk::rpc::telemetry::EulerAngle* _msg = _internal_mutable_attitude_euler();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse.attitude_euler)
-  return _msg;
-}
-inline void CameraAttitudeEulerResponse::set_allocated_attitude_euler(::mavsdk::rpc::telemetry::EulerAngle* value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (message_arena == nullptr) {
-    delete reinterpret_cast<::mavsdk::rpc::telemetry::EulerAngle*>(_impl_.attitude_euler_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::telemetry::EulerAngle*>(value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-
-  _impl_.attitude_euler_ = reinterpret_cast<::mavsdk::rpc::telemetry::EulerAngle*>(value);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse.attitude_euler)
 }
 
 // -------------------------------------------------------------------
@@ -31984,260 +30406,6 @@ inline void SetRateAttitudeAngularVelocityBodyResponse::set_allocated_telemetry_
 
   _impl_.telemetry_result_ = reinterpret_cast<::mavsdk::rpc::telemetry::TelemetryResult*>(value);
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.SetRateAttitudeAngularVelocityBodyResponse.telemetry_result)
-}
-
-// -------------------------------------------------------------------
-
-// SetRateCameraAttitudeQuaternionRequest
-
-// double rate_hz = 1;
-inline void SetRateCameraAttitudeQuaternionRequest::clear_rate_hz() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.rate_hz_ = 0;
-}
-inline double SetRateCameraAttitudeQuaternionRequest::rate_hz() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionRequest.rate_hz)
-  return _internal_rate_hz();
-}
-inline void SetRateCameraAttitudeQuaternionRequest::set_rate_hz(double value) {
-  _internal_set_rate_hz(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionRequest.rate_hz)
-}
-inline double SetRateCameraAttitudeQuaternionRequest::_internal_rate_hz() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.rate_hz_;
-}
-inline void SetRateCameraAttitudeQuaternionRequest::_internal_set_rate_hz(double value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.rate_hz_ = value;
-}
-
-// -------------------------------------------------------------------
-
-// SetRateCameraAttitudeQuaternionResponse
-
-// .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
-inline bool SetRateCameraAttitudeQuaternionResponse::has_telemetry_result() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.telemetry_result_ != nullptr);
-  return value;
-}
-inline void SetRateCameraAttitudeQuaternionResponse::clear_telemetry_result() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (_impl_.telemetry_result_ != nullptr) _impl_.telemetry_result_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
-}
-inline const ::mavsdk::rpc::telemetry::TelemetryResult& SetRateCameraAttitudeQuaternionResponse::_internal_telemetry_result() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  const ::mavsdk::rpc::telemetry::TelemetryResult* p = _impl_.telemetry_result_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry::TelemetryResult&>(::mavsdk::rpc::telemetry::_TelemetryResult_default_instance_);
-}
-inline const ::mavsdk::rpc::telemetry::TelemetryResult& SetRateCameraAttitudeQuaternionResponse::telemetry_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionResponse.telemetry_result)
-  return _internal_telemetry_result();
-}
-inline void SetRateCameraAttitudeQuaternionResponse::unsafe_arena_set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.telemetry_result_);
-  }
-  _impl_.telemetry_result_ = reinterpret_cast<::mavsdk::rpc::telemetry::TelemetryResult*>(value);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionResponse.telemetry_result)
-}
-inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateCameraAttitudeQuaternionResponse::release_telemetry_result() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::telemetry::TelemetryResult* released = _impl_.telemetry_result_;
-  _impl_.telemetry_result_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-  if (GetArena() == nullptr) {
-    delete old;
-  }
-#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArena() != nullptr) {
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return released;
-}
-inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateCameraAttitudeQuaternionResponse::unsafe_arena_release_telemetry_result() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionResponse.telemetry_result)
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::telemetry::TelemetryResult* temp = _impl_.telemetry_result_;
-  _impl_.telemetry_result_ = nullptr;
-  return temp;
-}
-inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateCameraAttitudeQuaternionResponse::_internal_mutable_telemetry_result() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_._has_bits_[0] |= 0x00000001u;
-  if (_impl_.telemetry_result_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::TelemetryResult>(GetArena());
-    _impl_.telemetry_result_ = reinterpret_cast<::mavsdk::rpc::telemetry::TelemetryResult*>(p);
-  }
-  return _impl_.telemetry_result_;
-}
-inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateCameraAttitudeQuaternionResponse::mutable_telemetry_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::mavsdk::rpc::telemetry::TelemetryResult* _msg = _internal_mutable_telemetry_result();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionResponse.telemetry_result)
-  return _msg;
-}
-inline void SetRateCameraAttitudeQuaternionResponse::set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (message_arena == nullptr) {
-    delete reinterpret_cast<::mavsdk::rpc::telemetry::TelemetryResult*>(_impl_.telemetry_result_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::telemetry::TelemetryResult*>(value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-
-  _impl_.telemetry_result_ = reinterpret_cast<::mavsdk::rpc::telemetry::TelemetryResult*>(value);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionResponse.telemetry_result)
-}
-
-// -------------------------------------------------------------------
-
-// SetRateCameraAttitudeRequest
-
-// double rate_hz = 1;
-inline void SetRateCameraAttitudeRequest::clear_rate_hz() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.rate_hz_ = 0;
-}
-inline double SetRateCameraAttitudeRequest::rate_hz() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SetRateCameraAttitudeRequest.rate_hz)
-  return _internal_rate_hz();
-}
-inline void SetRateCameraAttitudeRequest::set_rate_hz(double value) {
-  _internal_set_rate_hz(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.SetRateCameraAttitudeRequest.rate_hz)
-}
-inline double SetRateCameraAttitudeRequest::_internal_rate_hz() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.rate_hz_;
-}
-inline void SetRateCameraAttitudeRequest::_internal_set_rate_hz(double value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.rate_hz_ = value;
-}
-
-// -------------------------------------------------------------------
-
-// SetRateCameraAttitudeResponse
-
-// .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
-inline bool SetRateCameraAttitudeResponse::has_telemetry_result() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.telemetry_result_ != nullptr);
-  return value;
-}
-inline void SetRateCameraAttitudeResponse::clear_telemetry_result() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (_impl_.telemetry_result_ != nullptr) _impl_.telemetry_result_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
-}
-inline const ::mavsdk::rpc::telemetry::TelemetryResult& SetRateCameraAttitudeResponse::_internal_telemetry_result() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  const ::mavsdk::rpc::telemetry::TelemetryResult* p = _impl_.telemetry_result_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry::TelemetryResult&>(::mavsdk::rpc::telemetry::_TelemetryResult_default_instance_);
-}
-inline const ::mavsdk::rpc::telemetry::TelemetryResult& SetRateCameraAttitudeResponse::telemetry_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.SetRateCameraAttitudeResponse.telemetry_result)
-  return _internal_telemetry_result();
-}
-inline void SetRateCameraAttitudeResponse::unsafe_arena_set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.telemetry_result_);
-  }
-  _impl_.telemetry_result_ = reinterpret_cast<::mavsdk::rpc::telemetry::TelemetryResult*>(value);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry.SetRateCameraAttitudeResponse.telemetry_result)
-}
-inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateCameraAttitudeResponse::release_telemetry_result() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::telemetry::TelemetryResult* released = _impl_.telemetry_result_;
-  _impl_.telemetry_result_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-  if (GetArena() == nullptr) {
-    delete old;
-  }
-#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArena() != nullptr) {
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return released;
-}
-inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateCameraAttitudeResponse::unsafe_arena_release_telemetry_result() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.SetRateCameraAttitudeResponse.telemetry_result)
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::telemetry::TelemetryResult* temp = _impl_.telemetry_result_;
-  _impl_.telemetry_result_ = nullptr;
-  return temp;
-}
-inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateCameraAttitudeResponse::_internal_mutable_telemetry_result() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_._has_bits_[0] |= 0x00000001u;
-  if (_impl_.telemetry_result_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::telemetry::TelemetryResult>(GetArena());
-    _impl_.telemetry_result_ = reinterpret_cast<::mavsdk::rpc::telemetry::TelemetryResult*>(p);
-  }
-  return _impl_.telemetry_result_;
-}
-inline ::mavsdk::rpc::telemetry::TelemetryResult* SetRateCameraAttitudeResponse::mutable_telemetry_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::mavsdk::rpc::telemetry::TelemetryResult* _msg = _internal_mutable_telemetry_result();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.SetRateCameraAttitudeResponse.telemetry_result)
-  return _msg;
-}
-inline void SetRateCameraAttitudeResponse::set_allocated_telemetry_result(::mavsdk::rpc::telemetry::TelemetryResult* value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (message_arena == nullptr) {
-    delete reinterpret_cast<::mavsdk::rpc::telemetry::TelemetryResult*>(_impl_.telemetry_result_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::telemetry::TelemetryResult*>(value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-
-  _impl_.telemetry_result_ = reinterpret_cast<::mavsdk::rpc::telemetry::TelemetryResult*>(value);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.SetRateCameraAttitudeResponse.telemetry_result)
 }
 
 // -------------------------------------------------------------------
