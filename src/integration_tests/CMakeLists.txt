@@ -23,7 +23,6 @@ add_executable(integration_tests_runner
     connection.cpp
     follow_me.cpp
     geofence.cpp
-    gimbal.cpp
     info.cpp
     offboard_attitude.cpp
     #logging.cpp # Not fully implemented

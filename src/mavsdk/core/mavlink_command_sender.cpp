@@ -81,8 +81,9 @@ void MavlinkCommandSender::queue_command_async(
     const CommandInt& command, const CommandResultCallback& callback)
 {
     if (_command_debugging) {
-        LogDebug() << "COMMAND_INT " << (int)(command.command) << " to send to "
-                   << (int)(command.target_system_id) << ", " << (int)(command.target_component_id);
+        LogDebug() << "COMMAND_INT " << static_cast<int>(command.command) << " to send to "
+                   << static_cast<int>(command.target_system_id) << ", "
+                   << static_cast<int>(command.target_component_id);
     }
 
     CommandIdentification identification = identification_from_command(command);
@@ -109,8 +110,9 @@ void MavlinkCommandSender::queue_command_async(
     const CommandLong& command, const CommandResultCallback& callback)
 {
     if (_command_debugging) {
-        LogDebug() << "COMMAND_LONG " << (int)(command.command) << " to send to "
-                   << (int)(command.target_system_id) << ", " << (int)(command.target_component_id);
+        LogDebug() << "COMMAND_LONG " << static_cast<int>(command.command) << " to send to "
+                   << static_cast<int>(command.target_system_id) << ", "
+                   << static_cast<int>(command.target_component_id);
     }
 
     CommandIdentification identification = identification_from_command(command);
@@ -134,7 +136,7 @@ void MavlinkCommandSender::queue_command_async(
     _work_queue.push_back(new_work);
 }
 
-void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
+void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
 {
     mavlink_command_ack_t command_ack;
     mavlink_msg_command_ack_decode(&message, &command_ack);
@@ -156,7 +158,7 @@ void MavlinkCommandSender::receive_command_ack(mavlink_message_t message)
     LockedQueue<Work>::Guard work_queue_guard(_work_queue);
 
     for (auto it = _work_queue.begin(); it != _work_queue.end(); ++it) {
-        auto work = *it;
+        const auto& work = *it;
 
         if (!work) {
             LogErr() << "No work available! (should not happen #1)";
@@ -302,7 +304,7 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
     LockedQueue<Work>::Guard work_queue_guard(_work_queue);
 
     for (auto it = _work_queue.begin(); it != _work_queue.end(); ++it) {
-        auto work = *it;
+        const auto& work = *it;
 
         if (!work) {
             LogErr() << "No work available! (should not happen #2)";
@@ -343,7 +345,26 @@ void MavlinkCommandSender::receive_timeout(const CommandIdentification& identifi
             }
         } else {
             // We have tried retransmitting, giving up now.
-            LogErr() << "Retrying failed (" << work->identification.command << ")";
+            if (work->identification.command == 512) {
+                uint8_t target_sysid;
+                uint8_t target_compid;
+                if (auto command_int = std::get_if<CommandInt>(&work->command)) {
+                    target_sysid = command_int->target_system_id;
+                    target_compid = command_int->target_component_id;
+                } else if (auto command_long = std::get_if<CommandLong>(&work->command)) {
+                    target_sysid = command_long->target_system_id;
+                    target_compid = command_long->target_component_id;
+                } else {
+                    LogErr() << "No command, that's awkward";
+                    continue;
+                }
+                LogErr() << "Retrying failed for REQUEST_MESSAGE command for message: "
+                         << work->identification.maybe_param1 << ", to ("
+                         << std::to_string(target_sysid) << "/" << std::to_string(target_compid)
+                         << ")";
+            } else {
+                LogErr() << "Retrying failed for command: " << work->identification.command << ")";
+            }
 
             temp_callback = work->callback;
             temp_result = {Result::Timeout, NAN};
@@ -418,7 +439,7 @@ void MavlinkCommandSender::do_work()
 }
 
 void MavlinkCommandSender::call_callback(
-    const CommandResultCallback& callback, Result result, float progress)
+    const CommandResultCallback& callback, Result result, float progress) const
 {
     if (!callback) {
         return;
@@ -431,7 +452,7 @@ void MavlinkCommandSender::call_callback(
         [temp_callback, result, progress]() { temp_callback(result, progress); });
 }
 
-bool MavlinkCommandSender::send_mavlink_message(const Command& command)
+bool MavlinkCommandSender::send_mavlink_message(const Command& command) const
 {
     if (auto command_int = std::get_if<CommandInt>(&command)) {
         return _system_impl.queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
