@@ -84,18 +84,6 @@ void TelemetryImpl::init()
         this);
 
     _system_impl->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_MOUNT_ORIENTATION,
-        [this](const mavlink_message_t& message) { process_mount_orientation(message); },
-        this);
-
-    _system_impl->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_GIMBAL_DEVICE_ATTITUDE_STATUS,
-        [this](const mavlink_message_t& message) {
-            process_gimbal_device_attitude_status(message);
-        },
-        this);
-
-    _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_GPS_RAW_INT,
         [this](const mavlink_message_t& message) { process_gps_raw_int(message); },
         this);
@@ -302,12 +290,6 @@ Telemetry::Result TelemetryImpl::set_rate_attitude_euler(double rate_hz)
         _system_impl->set_msg_rate(MAVLINK_MSG_ID_ATTITUDE, rate_hz));
 }
 
-Telemetry::Result TelemetryImpl::set_rate_camera_attitude(double rate_hz)
-{
-    return telemetry_result_from_command_result(
-        _system_impl->set_msg_rate(MAVLINK_MSG_ID_MOUNT_ORIENTATION, rate_hz));
-}
-
 Telemetry::Result TelemetryImpl::set_rate_velocity_ned(double rate_hz)
 {
     _velocity_ned_rate_hz = rate_hz;
@@ -488,17 +470,6 @@ void TelemetryImpl::set_rate_attitude_euler_async(
 {
     _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_ATTITUDE,
-        rate_hz,
-        [callback](MavlinkCommandSender::Result command_result, float) {
-            command_result_callback(command_result, callback);
-        });
-}
-
-void TelemetryImpl::set_rate_camera_attitude_async(
-    double rate_hz, Telemetry::ResultCallback callback)
-{
-    _system_impl->set_msg_rate_async(
-        MAVLINK_MSG_ID_MOUNT_ORIENTATION,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
             command_result_callback(command_result, callback);
@@ -853,63 +824,6 @@ void TelemetryImpl::process_altitude(const mavlink_message_t& message)
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _altitude_subscriptions.queue(
         altitude(), [this](const auto& func) { _system_impl->call_user_callback(func); });
-}
-
-void TelemetryImpl::process_mount_orientation(const mavlink_message_t& message)
-{
-    // TODO: remove this one once we move all the way to gimbal v2 protocol
-    mavlink_mount_orientation_t mount_orientation;
-    mavlink_msg_mount_orientation_decode(&message, &mount_orientation);
-
-    Telemetry::EulerAngle euler_angle;
-    euler_angle.roll_deg = mount_orientation.roll;
-    euler_angle.pitch_deg = mount_orientation.pitch;
-    euler_angle.yaw_deg = mount_orientation.yaw_absolute;
-
-    set_camera_attitude_euler_angle(euler_angle);
-
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
-    _camera_attitude_quaternion_subscriptions.queue(
-        camera_attitude_quaternion(),
-        [this](const auto& func) { _system_impl->call_user_callback(func); });
-
-    _camera_attitude_euler_angle_subscriptions.queue(
-        camera_attitude_euler(),
-        [this](const auto& func) { _system_impl->call_user_callback(func); });
-}
-
-void TelemetryImpl::process_gimbal_device_attitude_status(const mavlink_message_t& message)
-{
-    // We accept both MOUNT_ORIENTATION and GIMBAL_DEVICE_ATTITUDE_STATUS for now,
-    // in order to support both gimbal v1 and v2 protocols.
-
-    mavlink_gimbal_device_attitude_status_t attitude_status;
-    mavlink_msg_gimbal_device_attitude_status_decode(&message, &attitude_status);
-
-    Quaternion quaternion;
-    quaternion.w = attitude_status.q[0];
-    quaternion.x = attitude_status.q[1];
-    quaternion.y = attitude_status.q[2];
-    quaternion.z = attitude_status.q[3];
-
-    EulerAngle euler_angle = to_euler_angle_from_quaternion(quaternion);
-
-    auto telemetry_euler_angle = Telemetry::EulerAngle{};
-    telemetry_euler_angle.timestamp_us = attitude_status.time_boot_ms * 1000;
-    telemetry_euler_angle.roll_deg = euler_angle.roll_deg;
-    telemetry_euler_angle.pitch_deg = euler_angle.pitch_deg;
-    telemetry_euler_angle.yaw_deg = euler_angle.yaw_deg;
-
-    set_camera_attitude_euler_angle(telemetry_euler_angle);
-
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
-    _camera_attitude_quaternion_subscriptions.queue(
-        camera_attitude_quaternion(),
-        [this](const auto& func) { _system_impl->call_user_callback(func); });
-
-    _camera_attitude_euler_angle_subscriptions.queue(
-        camera_attitude_euler(),
-        [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_imu_reading_ned(const mavlink_message_t& message)
@@ -2136,40 +2050,6 @@ void TelemetryImpl::set_fixedwing_metrics(Telemetry::FixedwingMetrics fixedwing_
     _fixedwing_metrics = fixedwing_metrics;
 }
 
-Telemetry::Quaternion TelemetryImpl::camera_attitude_quaternion() const
-{
-    std::lock_guard<std::mutex> lock(_camera_attitude_euler_angle_mutex);
-
-    auto euler_angle = EulerAngle{};
-    euler_angle.roll_deg = _camera_attitude_euler_angle.roll_deg;
-    euler_angle.pitch_deg = _camera_attitude_euler_angle.pitch_deg;
-    euler_angle.yaw_deg = _camera_attitude_euler_angle.yaw_deg;
-
-    auto quaternion = to_quaternion_from_euler_angle(euler_angle);
-
-    auto telemetry_quaternion = Telemetry::Quaternion{};
-    telemetry_quaternion.w = quaternion.w;
-    telemetry_quaternion.x = quaternion.x;
-    telemetry_quaternion.y = quaternion.y;
-    telemetry_quaternion.z = quaternion.z;
-    telemetry_quaternion.timestamp_us = _camera_attitude_euler_angle.timestamp_us;
-
-    return telemetry_quaternion;
-}
-
-Telemetry::EulerAngle TelemetryImpl::camera_attitude_euler() const
-{
-    std::lock_guard<std::mutex> lock(_camera_attitude_euler_angle_mutex);
-
-    return _camera_attitude_euler_angle;
-}
-
-void TelemetryImpl::set_camera_attitude_euler_angle(Telemetry::EulerAngle euler_angle)
-{
-    std::lock_guard<std::mutex> lock(_camera_attitude_euler_angle_mutex);
-    _camera_attitude_euler_angle = euler_angle;
-}
-
 Telemetry::VelocityNed TelemetryImpl::velocity_ned() const
 {
     std::lock_guard<std::mutex> lock(_velocity_ned_mutex);
@@ -2586,33 +2466,6 @@ void TelemetryImpl::unsubscribe_ground_truth(Telemetry::GroundTruthHandle handle
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _ground_truth_subscriptions.unsubscribe(handle);
-}
-
-Telemetry::AttitudeQuaternionHandle TelemetryImpl::subscribe_camera_attitude_quaternion(
-    const Telemetry::AttitudeQuaternionCallback& callback)
-{
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
-    return _camera_attitude_quaternion_subscriptions.subscribe(callback);
-}
-
-void TelemetryImpl::unsubscribe_camera_attitude_quaternion(
-    Telemetry::AttitudeQuaternionHandle handle)
-{
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
-    _camera_attitude_quaternion_subscriptions.unsubscribe(handle);
-}
-
-Telemetry::AttitudeEulerHandle
-TelemetryImpl::subscribe_camera_attitude_euler(const Telemetry::AttitudeEulerCallback& callback)
-{
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
-    return _camera_attitude_euler_angle_subscriptions.subscribe(callback);
-}
-
-void TelemetryImpl::unsubscribe_camera_attitude_euler(Telemetry::AttitudeEulerHandle handle)
-{
-    std::lock_guard<std::mutex> lock(_subscription_mutex);
-    _camera_attitude_euler_angle_subscriptions.unsubscribe(handle);
 }
 
 Telemetry::VelocityNedHandle

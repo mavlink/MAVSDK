@@ -1,7 +1,6 @@
 #pragma once
 
 #include "plugins/gimbal/gimbal.h"
-#include "gimbal_protocol_base.h"
 #include "plugin_impl_base.h"
 #include "system.h"
 #include "callback_list.h"
@@ -69,20 +68,23 @@ public:
 private:
     void request_gimbal_information();
 
-    void receive_attitude_update(Gimbal::Attitude attitude);
-    void receive_control_status_update(Gimbal::ControlStatus control_status);
-
-    TimeoutHandler::Cookie _protocol_cookie{};
-
-    void wait_for_protocol();
-    void wait_for_protocol_async(std::function<void()> callback);
-    void receive_protocol_timeout();
     void process_gimbal_manager_information(const mavlink_message_t& message);
+    void process_gimbal_manager_status(const mavlink_message_t& message);
+    void process_gimbal_device_attitude_status(const mavlink_message_t& message);
+    void process_attitude(const mavlink_message_t& message);
 
     std::mutex _mutex{};
-    std::unique_ptr<GimbalProtocolBase> _gimbal_protocol{nullptr};
     CallbackList<Gimbal::ControlStatus> _control_subscriptions{};
     CallbackList<Gimbal::Attitude> _attitude_subscriptions{};
+
+    uint8_t _gimbal_device_id{0};
+    uint8_t _gimbal_manager_sysid{0};
+    uint8_t _gimbal_manager_compid{0};
+
+    Gimbal::GimbalMode _gimbal_mode{Gimbal::GimbalMode::YawFollow};
+    Gimbal::ControlStatus _control_status{Gimbal::ControlMode::None, 0, 0, 0, 0};
+    Gimbal::Attitude _attitude{};
+    float _vehicle_yaw_rad{NAN};
 };
 
 } // namespace mavsdk

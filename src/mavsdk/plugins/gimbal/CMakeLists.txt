@@ -2,8 +2,6 @@ target_sources(mavsdk
     PRIVATE
     gimbal.cpp
     gimbal_impl.cpp
-    gimbal_protocol_v1.cpp
-    gimbal_protocol_v2.cpp
 )
 
 target_include_directories(mavsdk PUBLIC

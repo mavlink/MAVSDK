@@ -414,30 +414,6 @@ struct SubscribeDistanceSensorRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeDistanceSensorRequestDefaultTypeInternal _SubscribeDistanceSensorRequest_default_instance_;
       template <typename>
-PROTOBUF_CONSTEXPR SubscribeCameraAttitudeQuaternionRequest::SubscribeCameraAttitudeQuaternionRequest(::_pbi::ConstantInitialized) {}
-struct SubscribeCameraAttitudeQuaternionRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SubscribeCameraAttitudeQuaternionRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~SubscribeCameraAttitudeQuaternionRequestDefaultTypeInternal() {}
-  union {
-    SubscribeCameraAttitudeQuaternionRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeCameraAttitudeQuaternionRequestDefaultTypeInternal _SubscribeCameraAttitudeQuaternionRequest_default_instance_;
-      template <typename>
-PROTOBUF_CONSTEXPR SubscribeCameraAttitudeEulerRequest::SubscribeCameraAttitudeEulerRequest(::_pbi::ConstantInitialized) {}
-struct SubscribeCameraAttitudeEulerRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SubscribeCameraAttitudeEulerRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~SubscribeCameraAttitudeEulerRequestDefaultTypeInternal() {}
-  union {
-    SubscribeCameraAttitudeEulerRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeCameraAttitudeEulerRequestDefaultTypeInternal _SubscribeCameraAttitudeEulerRequest_default_instance_;
-      template <typename>
 PROTOBUF_CONSTEXPR SubscribeBatteryRequest::SubscribeBatteryRequest(::_pbi::ConstantInitialized) {}
 struct SubscribeBatteryRequestDefaultTypeInternal {
   PROTOBUF_CONSTEXPR SubscribeBatteryRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -897,44 +873,6 @@ struct SetRateDistanceSensorRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRateDistanceSensorRequestDefaultTypeInternal _SetRateDistanceSensorRequest_default_instance_;
-
-inline constexpr SetRateCameraAttitudeRequest::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : rate_hz_{0},
-        _cached_size_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR SetRateCameraAttitudeRequest::SetRateCameraAttitudeRequest(::_pbi::ConstantInitialized)
-    : _impl_(::_pbi::ConstantInitialized()) {}
-struct SetRateCameraAttitudeRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetRateCameraAttitudeRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~SetRateCameraAttitudeRequestDefaultTypeInternal() {}
-  union {
-    SetRateCameraAttitudeRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRateCameraAttitudeRequestDefaultTypeInternal _SetRateCameraAttitudeRequest_default_instance_;
-
-inline constexpr SetRateCameraAttitudeQuaternionRequest::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : rate_hz_{0},
-        _cached_size_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR SetRateCameraAttitudeQuaternionRequest::SetRateCameraAttitudeQuaternionRequest(::_pbi::ConstantInitialized)
-    : _impl_(::_pbi::ConstantInitialized()) {}
-struct SetRateCameraAttitudeQuaternionRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetRateCameraAttitudeQuaternionRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~SetRateCameraAttitudeQuaternionRequestDefaultTypeInternal() {}
-  union {
-    SetRateCameraAttitudeQuaternionRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRateCameraAttitudeQuaternionRequestDefaultTypeInternal _SetRateCameraAttitudeQuaternionRequest_default_instance_;
 
 inline constexpr SetRateBatteryRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -2040,44 +1978,6 @@ struct SetRateDistanceSensorResponseDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRateDistanceSensorResponseDefaultTypeInternal _SetRateDistanceSensorResponse_default_instance_;
 
-inline constexpr SetRateCameraAttitudeResponse::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        telemetry_result_{nullptr} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR SetRateCameraAttitudeResponse::SetRateCameraAttitudeResponse(::_pbi::ConstantInitialized)
-    : _impl_(::_pbi::ConstantInitialized()) {}
-struct SetRateCameraAttitudeResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetRateCameraAttitudeResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~SetRateCameraAttitudeResponseDefaultTypeInternal() {}
-  union {
-    SetRateCameraAttitudeResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRateCameraAttitudeResponseDefaultTypeInternal _SetRateCameraAttitudeResponse_default_instance_;
-
-inline constexpr SetRateCameraAttitudeQuaternionResponse::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        telemetry_result_{nullptr} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR SetRateCameraAttitudeQuaternionResponse::SetRateCameraAttitudeQuaternionResponse(::_pbi::ConstantInitialized)
-    : _impl_(::_pbi::ConstantInitialized()) {}
-struct SetRateCameraAttitudeQuaternionResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetRateCameraAttitudeQuaternionResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~SetRateCameraAttitudeQuaternionResponseDefaultTypeInternal() {}
-  union {
-    SetRateCameraAttitudeQuaternionResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRateCameraAttitudeQuaternionResponseDefaultTypeInternal _SetRateCameraAttitudeQuaternionResponse_default_instance_;
-
 inline constexpr SetRateBatteryResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -2513,44 +2413,6 @@ struct DistanceSensorDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DistanceSensorDefaultTypeInternal _DistanceSensor_default_instance_;
 
-inline constexpr CameraAttitudeQuaternionResponse::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        attitude_quaternion_{nullptr} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR CameraAttitudeQuaternionResponse::CameraAttitudeQuaternionResponse(::_pbi::ConstantInitialized)
-    : _impl_(::_pbi::ConstantInitialized()) {}
-struct CameraAttitudeQuaternionResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR CameraAttitudeQuaternionResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~CameraAttitudeQuaternionResponseDefaultTypeInternal() {}
-  union {
-    CameraAttitudeQuaternionResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CameraAttitudeQuaternionResponseDefaultTypeInternal _CameraAttitudeQuaternionResponse_default_instance_;
-
-inline constexpr CameraAttitudeEulerResponse::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        attitude_euler_{nullptr} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR CameraAttitudeEulerResponse::CameraAttitudeEulerResponse(::_pbi::ConstantInitialized)
-    : _impl_(::_pbi::ConstantInitialized()) {}
-struct CameraAttitudeEulerResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR CameraAttitudeEulerResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~CameraAttitudeEulerResponseDefaultTypeInternal() {}
-  union {
-    CameraAttitudeEulerResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 CameraAttitudeEulerResponseDefaultTypeInternal _CameraAttitudeEulerResponse_default_instance_;
-
 inline constexpr BatteryResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -2800,7 +2662,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 }  // namespace telemetry
 }  // namespace rpc
 }  // namespace mavsdk
-static ::_pb::Metadata file_level_metadata_telemetry_2ftelemetry_2eproto[154];
+static ::_pb::Metadata file_level_metadata_telemetry_2ftelemetry_2eproto[146];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_telemetry_2ftelemetry_2eproto[7];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_telemetry_2ftelemetry_2eproto = nullptr;
@@ -2963,42 +2825,6 @@ const ::uint32_t TableStruct_telemetry_2ftelemetry_2eproto::offsets[] PROTOBUF_S
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse, _impl_.attitude_angular_velocity_body_),
-    0,
-    ~0u,  // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest, _internal_metadata_),
-    ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
-    ~0u,  // no _weak_field_map_
-    ~0u,  // no _inlined_string_donated_
-    ~0u,  // no _split_
-    ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse, _internal_metadata_),
-    ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
-    ~0u,  // no _weak_field_map_
-    ~0u,  // no _inlined_string_donated_
-    ~0u,  // no _split_
-    ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse, _impl_.attitude_quaternion_),
-    0,
-    ~0u,  // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest, _internal_metadata_),
-    ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
-    ~0u,  // no _weak_field_map_
-    ~0u,  // no _inlined_string_donated_
-    ~0u,  // no _split_
-    ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse, _internal_metadata_),
-    ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
-    ~0u,  // no _weak_field_map_
-    ~0u,  // no _inlined_string_donated_
-    ~0u,  // no _split_
-    ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse, _impl_.attitude_euler_),
     0,
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest, _internal_metadata_),
@@ -3562,44 +3388,6 @@ const ::uint32_t TableStruct_telemetry_2ftelemetry_2eproto::offsets[] PROTOBUF_S
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateAttitudeAngularVelocityBodyResponse, _impl_.telemetry_result_),
-    0,
-    ~0u,  // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateCameraAttitudeQuaternionRequest, _internal_metadata_),
-    ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
-    ~0u,  // no _weak_field_map_
-    ~0u,  // no _inlined_string_donated_
-    ~0u,  // no _split_
-    ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateCameraAttitudeQuaternionRequest, _impl_.rate_hz_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateCameraAttitudeQuaternionResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateCameraAttitudeQuaternionResponse, _internal_metadata_),
-    ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
-    ~0u,  // no _weak_field_map_
-    ~0u,  // no _inlined_string_donated_
-    ~0u,  // no _split_
-    ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateCameraAttitudeQuaternionResponse, _impl_.telemetry_result_),
-    0,
-    ~0u,  // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest, _internal_metadata_),
-    ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
-    ~0u,  // no _weak_field_map_
-    ~0u,  // no _inlined_string_donated_
-    ~0u,  // no _split_
-    ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest, _impl_.rate_hz_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse, _internal_metadata_),
-    ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
-    ~0u,  // no _weak_field_map_
-    ~0u,  // no _inlined_string_donated_
-    ~0u,  // no _split_
-    ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse, _impl_.telemetry_result_),
     0,
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry::SetRateVelocityNedRequest, _internal_metadata_),
@@ -4343,142 +4131,134 @@ static const ::_pbi::MigrationSchema
         {130, 139, -1, sizeof(::mavsdk::rpc::telemetry::AttitudeEulerResponse)},
         {140, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeAttitudeAngularVelocityBodyRequest)},
         {148, 157, -1, sizeof(::mavsdk::rpc::telemetry::AttitudeAngularVelocityBodyResponse)},
-        {158, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeCameraAttitudeQuaternionRequest)},
-        {166, 175, -1, sizeof(::mavsdk::rpc::telemetry::CameraAttitudeQuaternionResponse)},
-        {176, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeCameraAttitudeEulerRequest)},
-        {184, 193, -1, sizeof(::mavsdk::rpc::telemetry::CameraAttitudeEulerResponse)},
-        {194, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest)},
-        {202, 211, -1, sizeof(::mavsdk::rpc::telemetry::VelocityNedResponse)},
-        {212, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest)},
-        {220, 229, -1, sizeof(::mavsdk::rpc::telemetry::GpsInfoResponse)},
-        {230, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeRawGpsRequest)},
-        {238, 247, -1, sizeof(::mavsdk::rpc::telemetry::RawGpsResponse)},
-        {248, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeBatteryRequest)},
-        {256, 265, -1, sizeof(::mavsdk::rpc::telemetry::BatteryResponse)},
-        {266, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeFlightModeRequest)},
-        {274, -1, -1, sizeof(::mavsdk::rpc::telemetry::FlightModeResponse)},
-        {283, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeHealthRequest)},
-        {291, 300, -1, sizeof(::mavsdk::rpc::telemetry::HealthResponse)},
-        {301, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeRcStatusRequest)},
-        {309, 318, -1, sizeof(::mavsdk::rpc::telemetry::RcStatusResponse)},
-        {319, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeStatusTextRequest)},
-        {327, 336, -1, sizeof(::mavsdk::rpc::telemetry::StatusTextResponse)},
-        {337, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest)},
-        {345, 354, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorControlTargetResponse)},
-        {355, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest)},
-        {363, 372, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse)},
-        {373, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeOdometryRequest)},
-        {381, 390, -1, sizeof(::mavsdk::rpc::telemetry::OdometryResponse)},
-        {391, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest)},
-        {399, 408, -1, sizeof(::mavsdk::rpc::telemetry::PositionVelocityNedResponse)},
-        {409, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest)},
-        {417, 426, -1, sizeof(::mavsdk::rpc::telemetry::GroundTruthResponse)},
-        {427, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest)},
-        {435, 444, -1, sizeof(::mavsdk::rpc::telemetry::FixedwingMetricsResponse)},
-        {445, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeImuRequest)},
-        {453, 462, -1, sizeof(::mavsdk::rpc::telemetry::ImuResponse)},
-        {463, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeScaledImuRequest)},
-        {471, 480, -1, sizeof(::mavsdk::rpc::telemetry::ScaledImuResponse)},
-        {481, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeRawImuRequest)},
-        {489, 498, -1, sizeof(::mavsdk::rpc::telemetry::RawImuResponse)},
-        {499, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest)},
-        {507, -1, -1, sizeof(::mavsdk::rpc::telemetry::HealthAllOkResponse)},
-        {516, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest)},
-        {524, -1, -1, sizeof(::mavsdk::rpc::telemetry::UnixEpochTimeResponse)},
-        {533, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest)},
-        {541, 550, -1, sizeof(::mavsdk::rpc::telemetry::DistanceSensorResponse)},
-        {551, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest)},
-        {559, 568, -1, sizeof(::mavsdk::rpc::telemetry::ScaledPressureResponse)},
-        {569, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeHeadingRequest)},
-        {577, 586, -1, sizeof(::mavsdk::rpc::telemetry::HeadingResponse)},
-        {587, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeAltitudeRequest)},
-        {595, 604, -1, sizeof(::mavsdk::rpc::telemetry::AltitudeResponse)},
-        {605, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionRequest)},
-        {614, 623, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionResponse)},
-        {624, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateHomeRequest)},
-        {633, 642, -1, sizeof(::mavsdk::rpc::telemetry::SetRateHomeResponse)},
-        {643, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateInAirRequest)},
-        {652, 661, -1, sizeof(::mavsdk::rpc::telemetry::SetRateInAirResponse)},
-        {662, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateLandedStateRequest)},
-        {671, 680, -1, sizeof(::mavsdk::rpc::telemetry::SetRateLandedStateResponse)},
-        {681, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVtolStateRequest)},
-        {690, 699, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVtolStateResponse)},
-        {700, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeEulerRequest)},
-        {709, 718, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeEulerResponse)},
-        {719, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeQuaternionRequest)},
-        {728, 737, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeQuaternionResponse)},
-        {738, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeAngularVelocityBodyRequest)},
-        {747, 756, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeAngularVelocityBodyResponse)},
-        {757, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeQuaternionRequest)},
-        {766, 775, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeQuaternionResponse)},
-        {776, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeRequest)},
-        {785, 794, -1, sizeof(::mavsdk::rpc::telemetry::SetRateCameraAttitudeResponse)},
-        {795, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVelocityNedRequest)},
-        {804, 813, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVelocityNedResponse)},
-        {814, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGpsInfoRequest)},
-        {823, 832, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGpsInfoResponse)},
-        {833, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRawGpsRequest)},
-        {842, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateBatteryRequest)},
-        {851, 860, -1, sizeof(::mavsdk::rpc::telemetry::SetRateBatteryResponse)},
-        {861, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRcStatusRequest)},
-        {870, 879, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRcStatusResponse)},
-        {880, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest)},
-        {889, 898, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse)},
-        {899, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest)},
-        {908, 917, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse)},
-        {918, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateOdometryRequest)},
-        {927, 936, -1, sizeof(::mavsdk::rpc::telemetry::SetRateOdometryResponse)},
-        {937, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest)},
-        {946, 955, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse)},
-        {956, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGroundTruthRequest)},
-        {965, 974, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGroundTruthResponse)},
-        {975, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest)},
-        {984, 993, -1, sizeof(::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse)},
-        {994, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateImuRequest)},
-        {1003, 1012, -1, sizeof(::mavsdk::rpc::telemetry::SetRateImuResponse)},
-        {1013, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateScaledImuRequest)},
-        {1022, 1031, -1, sizeof(::mavsdk::rpc::telemetry::SetRateScaledImuResponse)},
-        {1032, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRawImuRequest)},
-        {1041, 1050, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRawImuResponse)},
-        {1051, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest)},
-        {1060, 1069, -1, sizeof(::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse)},
-        {1070, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest)},
-        {1079, 1088, -1, sizeof(::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse)},
-        {1089, -1, -1, sizeof(::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest)},
-        {1097, 1107, -1, sizeof(::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse)},
-        {1109, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAltitudeRequest)},
-        {1118, 1127, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAltitudeResponse)},
-        {1128, -1, -1, sizeof(::mavsdk::rpc::telemetry::Position)},
-        {1140, -1, -1, sizeof(::mavsdk::rpc::telemetry::Heading)},
-        {1149, -1, -1, sizeof(::mavsdk::rpc::telemetry::Quaternion)},
-        {1162, -1, -1, sizeof(::mavsdk::rpc::telemetry::EulerAngle)},
-        {1174, -1, -1, sizeof(::mavsdk::rpc::telemetry::AngularVelocityBody)},
-        {1185, -1, -1, sizeof(::mavsdk::rpc::telemetry::GpsInfo)},
-        {1195, -1, -1, sizeof(::mavsdk::rpc::telemetry::RawGps)},
-        {1217, -1, -1, sizeof(::mavsdk::rpc::telemetry::Battery)},
-        {1231, -1, -1, sizeof(::mavsdk::rpc::telemetry::Health)},
-        {1246, -1, -1, sizeof(::mavsdk::rpc::telemetry::RcStatus)},
-        {1257, -1, -1, sizeof(::mavsdk::rpc::telemetry::StatusText)},
-        {1267, -1, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorControlTarget)},
-        {1277, -1, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorOutputStatus)},
-        {1287, -1, -1, sizeof(::mavsdk::rpc::telemetry::Covariance)},
-        {1296, -1, -1, sizeof(::mavsdk::rpc::telemetry::VelocityBody)},
-        {1307, -1, -1, sizeof(::mavsdk::rpc::telemetry::PositionBody)},
-        {1318, 1335, -1, sizeof(::mavsdk::rpc::telemetry::Odometry)},
-        {1344, 1356, -1, sizeof(::mavsdk::rpc::telemetry::DistanceSensor)},
-        {1360, -1, -1, sizeof(::mavsdk::rpc::telemetry::ScaledPressure)},
-        {1373, -1, -1, sizeof(::mavsdk::rpc::telemetry::PositionNed)},
-        {1384, -1, -1, sizeof(::mavsdk::rpc::telemetry::VelocityNed)},
-        {1395, 1405, -1, sizeof(::mavsdk::rpc::telemetry::PositionVelocityNed)},
-        {1407, -1, -1, sizeof(::mavsdk::rpc::telemetry::GroundTruth)},
-        {1418, -1, -1, sizeof(::mavsdk::rpc::telemetry::FixedwingMetrics)},
-        {1429, -1, -1, sizeof(::mavsdk::rpc::telemetry::AccelerationFrd)},
-        {1440, -1, -1, sizeof(::mavsdk::rpc::telemetry::AngularVelocityFrd)},
-        {1451, -1, -1, sizeof(::mavsdk::rpc::telemetry::MagneticFieldFrd)},
-        {1462, 1475, -1, sizeof(::mavsdk::rpc::telemetry::Imu)},
-        {1480, -1, -1, sizeof(::mavsdk::rpc::telemetry::GpsGlobalOrigin)},
-        {1491, -1, -1, sizeof(::mavsdk::rpc::telemetry::Altitude)},
-        {1505, -1, -1, sizeof(::mavsdk::rpc::telemetry::TelemetryResult)},
+        {158, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeVelocityNedRequest)},
+        {166, 175, -1, sizeof(::mavsdk::rpc::telemetry::VelocityNedResponse)},
+        {176, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeGpsInfoRequest)},
+        {184, 193, -1, sizeof(::mavsdk::rpc::telemetry::GpsInfoResponse)},
+        {194, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeRawGpsRequest)},
+        {202, 211, -1, sizeof(::mavsdk::rpc::telemetry::RawGpsResponse)},
+        {212, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeBatteryRequest)},
+        {220, 229, -1, sizeof(::mavsdk::rpc::telemetry::BatteryResponse)},
+        {230, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeFlightModeRequest)},
+        {238, -1, -1, sizeof(::mavsdk::rpc::telemetry::FlightModeResponse)},
+        {247, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeHealthRequest)},
+        {255, 264, -1, sizeof(::mavsdk::rpc::telemetry::HealthResponse)},
+        {265, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeRcStatusRequest)},
+        {273, 282, -1, sizeof(::mavsdk::rpc::telemetry::RcStatusResponse)},
+        {283, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeStatusTextRequest)},
+        {291, 300, -1, sizeof(::mavsdk::rpc::telemetry::StatusTextResponse)},
+        {301, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeActuatorControlTargetRequest)},
+        {309, 318, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorControlTargetResponse)},
+        {319, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeActuatorOutputStatusRequest)},
+        {327, 336, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorOutputStatusResponse)},
+        {337, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeOdometryRequest)},
+        {345, 354, -1, sizeof(::mavsdk::rpc::telemetry::OdometryResponse)},
+        {355, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribePositionVelocityNedRequest)},
+        {363, 372, -1, sizeof(::mavsdk::rpc::telemetry::PositionVelocityNedResponse)},
+        {373, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeGroundTruthRequest)},
+        {381, 390, -1, sizeof(::mavsdk::rpc::telemetry::GroundTruthResponse)},
+        {391, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeFixedwingMetricsRequest)},
+        {399, 408, -1, sizeof(::mavsdk::rpc::telemetry::FixedwingMetricsResponse)},
+        {409, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeImuRequest)},
+        {417, 426, -1, sizeof(::mavsdk::rpc::telemetry::ImuResponse)},
+        {427, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeScaledImuRequest)},
+        {435, 444, -1, sizeof(::mavsdk::rpc::telemetry::ScaledImuResponse)},
+        {445, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeRawImuRequest)},
+        {453, 462, -1, sizeof(::mavsdk::rpc::telemetry::RawImuResponse)},
+        {463, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeHealthAllOkRequest)},
+        {471, -1, -1, sizeof(::mavsdk::rpc::telemetry::HealthAllOkResponse)},
+        {480, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeUnixEpochTimeRequest)},
+        {488, -1, -1, sizeof(::mavsdk::rpc::telemetry::UnixEpochTimeResponse)},
+        {497, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeDistanceSensorRequest)},
+        {505, 514, -1, sizeof(::mavsdk::rpc::telemetry::DistanceSensorResponse)},
+        {515, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeScaledPressureRequest)},
+        {523, 532, -1, sizeof(::mavsdk::rpc::telemetry::ScaledPressureResponse)},
+        {533, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeHeadingRequest)},
+        {541, 550, -1, sizeof(::mavsdk::rpc::telemetry::HeadingResponse)},
+        {551, -1, -1, sizeof(::mavsdk::rpc::telemetry::SubscribeAltitudeRequest)},
+        {559, 568, -1, sizeof(::mavsdk::rpc::telemetry::AltitudeResponse)},
+        {569, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionRequest)},
+        {578, 587, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionResponse)},
+        {588, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateHomeRequest)},
+        {597, 606, -1, sizeof(::mavsdk::rpc::telemetry::SetRateHomeResponse)},
+        {607, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateInAirRequest)},
+        {616, 625, -1, sizeof(::mavsdk::rpc::telemetry::SetRateInAirResponse)},
+        {626, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateLandedStateRequest)},
+        {635, 644, -1, sizeof(::mavsdk::rpc::telemetry::SetRateLandedStateResponse)},
+        {645, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVtolStateRequest)},
+        {654, 663, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVtolStateResponse)},
+        {664, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeEulerRequest)},
+        {673, 682, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeEulerResponse)},
+        {683, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeQuaternionRequest)},
+        {692, 701, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeQuaternionResponse)},
+        {702, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeAngularVelocityBodyRequest)},
+        {711, 720, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAttitudeAngularVelocityBodyResponse)},
+        {721, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVelocityNedRequest)},
+        {730, 739, -1, sizeof(::mavsdk::rpc::telemetry::SetRateVelocityNedResponse)},
+        {740, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGpsInfoRequest)},
+        {749, 758, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGpsInfoResponse)},
+        {759, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRawGpsRequest)},
+        {768, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateBatteryRequest)},
+        {777, 786, -1, sizeof(::mavsdk::rpc::telemetry::SetRateBatteryResponse)},
+        {787, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRcStatusRequest)},
+        {796, 805, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRcStatusResponse)},
+        {806, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorControlTargetRequest)},
+        {815, 824, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorControlTargetResponse)},
+        {825, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusRequest)},
+        {834, 843, -1, sizeof(::mavsdk::rpc::telemetry::SetRateActuatorOutputStatusResponse)},
+        {844, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateOdometryRequest)},
+        {853, 862, -1, sizeof(::mavsdk::rpc::telemetry::SetRateOdometryResponse)},
+        {863, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionVelocityNedRequest)},
+        {872, 881, -1, sizeof(::mavsdk::rpc::telemetry::SetRatePositionVelocityNedResponse)},
+        {882, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGroundTruthRequest)},
+        {891, 900, -1, sizeof(::mavsdk::rpc::telemetry::SetRateGroundTruthResponse)},
+        {901, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateFixedwingMetricsRequest)},
+        {910, 919, -1, sizeof(::mavsdk::rpc::telemetry::SetRateFixedwingMetricsResponse)},
+        {920, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateImuRequest)},
+        {929, 938, -1, sizeof(::mavsdk::rpc::telemetry::SetRateImuResponse)},
+        {939, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateScaledImuRequest)},
+        {948, 957, -1, sizeof(::mavsdk::rpc::telemetry::SetRateScaledImuResponse)},
+        {958, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRawImuRequest)},
+        {967, 976, -1, sizeof(::mavsdk::rpc::telemetry::SetRateRawImuResponse)},
+        {977, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateUnixEpochTimeRequest)},
+        {986, 995, -1, sizeof(::mavsdk::rpc::telemetry::SetRateUnixEpochTimeResponse)},
+        {996, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest)},
+        {1005, 1014, -1, sizeof(::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse)},
+        {1015, -1, -1, sizeof(::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest)},
+        {1023, 1033, -1, sizeof(::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse)},
+        {1035, -1, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAltitudeRequest)},
+        {1044, 1053, -1, sizeof(::mavsdk::rpc::telemetry::SetRateAltitudeResponse)},
+        {1054, -1, -1, sizeof(::mavsdk::rpc::telemetry::Position)},
+        {1066, -1, -1, sizeof(::mavsdk::rpc::telemetry::Heading)},
+        {1075, -1, -1, sizeof(::mavsdk::rpc::telemetry::Quaternion)},
+        {1088, -1, -1, sizeof(::mavsdk::rpc::telemetry::EulerAngle)},
+        {1100, -1, -1, sizeof(::mavsdk::rpc::telemetry::AngularVelocityBody)},
+        {1111, -1, -1, sizeof(::mavsdk::rpc::telemetry::GpsInfo)},
+        {1121, -1, -1, sizeof(::mavsdk::rpc::telemetry::RawGps)},
+        {1143, -1, -1, sizeof(::mavsdk::rpc::telemetry::Battery)},
+        {1157, -1, -1, sizeof(::mavsdk::rpc::telemetry::Health)},
+        {1172, -1, -1, sizeof(::mavsdk::rpc::telemetry::RcStatus)},
+        {1183, -1, -1, sizeof(::mavsdk::rpc::telemetry::StatusText)},
+        {1193, -1, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorControlTarget)},
+        {1203, -1, -1, sizeof(::mavsdk::rpc::telemetry::ActuatorOutputStatus)},
+        {1213, -1, -1, sizeof(::mavsdk::rpc::telemetry::Covariance)},
+        {1222, -1, -1, sizeof(::mavsdk::rpc::telemetry::VelocityBody)},
+        {1233, -1, -1, sizeof(::mavsdk::rpc::telemetry::PositionBody)},
+        {1244, 1261, -1, sizeof(::mavsdk::rpc::telemetry::Odometry)},
+        {1270, 1282, -1, sizeof(::mavsdk::rpc::telemetry::DistanceSensor)},
+        {1286, -1, -1, sizeof(::mavsdk::rpc::telemetry::ScaledPressure)},
+        {1299, -1, -1, sizeof(::mavsdk::rpc::telemetry::PositionNed)},
+        {1310, -1, -1, sizeof(::mavsdk::rpc::telemetry::VelocityNed)},
+        {1321, 1331, -1, sizeof(::mavsdk::rpc::telemetry::PositionVelocityNed)},
+        {1333, -1, -1, sizeof(::mavsdk::rpc::telemetry::GroundTruth)},
+        {1344, -1, -1, sizeof(::mavsdk::rpc::telemetry::FixedwingMetrics)},
+        {1355, -1, -1, sizeof(::mavsdk::rpc::telemetry::AccelerationFrd)},
+        {1366, -1, -1, sizeof(::mavsdk::rpc::telemetry::AngularVelocityFrd)},
+        {1377, -1, -1, sizeof(::mavsdk::rpc::telemetry::MagneticFieldFrd)},
+        {1388, 1401, -1, sizeof(::mavsdk::rpc::telemetry::Imu)},
+        {1406, -1, -1, sizeof(::mavsdk::rpc::telemetry::GpsGlobalOrigin)},
+        {1417, -1, -1, sizeof(::mavsdk::rpc::telemetry::Altitude)},
+        {1431, -1, -1, sizeof(::mavsdk::rpc::telemetry::TelemetryResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -4500,10 +4280,6 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::telemetry::_AttitudeEulerResponse_default_instance_._instance,
     &::mavsdk::rpc::telemetry::_SubscribeAttitudeAngularVelocityBodyRequest_default_instance_._instance,
     &::mavsdk::rpc::telemetry::_AttitudeAngularVelocityBodyResponse_default_instance_._instance,
-    &::mavsdk::rpc::telemetry::_SubscribeCameraAttitudeQuaternionRequest_default_instance_._instance,
-    &::mavsdk::rpc::telemetry::_CameraAttitudeQuaternionResponse_default_instance_._instance,
-    &::mavsdk::rpc::telemetry::_SubscribeCameraAttitudeEulerRequest_default_instance_._instance,
-    &::mavsdk::rpc::telemetry::_CameraAttitudeEulerResponse_default_instance_._instance,
     &::mavsdk::rpc::telemetry::_SubscribeVelocityNedRequest_default_instance_._instance,
     &::mavsdk::rpc::telemetry::_VelocityNedResponse_default_instance_._instance,
     &::mavsdk::rpc::telemetry::_SubscribeGpsInfoRequest_default_instance_._instance,
@@ -4566,10 +4342,6 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::telemetry::_SetRateAttitudeQuaternionResponse_default_instance_._instance,
     &::mavsdk::rpc::telemetry::_SetRateAttitudeAngularVelocityBodyRequest_default_instance_._instance,
     &::mavsdk::rpc::telemetry::_SetRateAttitudeAngularVelocityBodyResponse_default_instance_._instance,
-    &::mavsdk::rpc::telemetry::_SetRateCameraAttitudeQuaternionRequest_default_instance_._instance,
-    &::mavsdk::rpc::telemetry::_SetRateCameraAttitudeQuaternionResponse_default_instance_._instance,
-    &::mavsdk::rpc::telemetry::_SetRateCameraAttitudeRequest_default_instance_._instance,
-    &::mavsdk::rpc::telemetry::_SetRateCameraAttitudeResponse_default_instance_._instance,
     &::mavsdk::rpc::telemetry::_SetRateVelocityNedRequest_default_instance_._instance,
     &::mavsdk::rpc::telemetry::_SetRateVelocityNedResponse_default_instance_._instance,
     &::mavsdk::rpc::telemetry::_SetRateGpsInfoRequest_default_instance_._instance,
@@ -4663,503 +4435,477 @@ const char descriptor_table_protodef_telemetry_2ftelemetry_2eproto[] PROTOBUF_SE
     "uest\"x\n#AttitudeAngularVelocityBodyRespo"
     "nse\022Q\n\036attitude_angular_velocity_body\030\001 "
     "\001(\0132).mavsdk.rpc.telemetry.AngularVeloci"
-    "tyBody\"*\n(SubscribeCameraAttitudeQuatern"
-    "ionRequest\"a\n CameraAttitudeQuaternionRe"
-    "sponse\022=\n\023attitude_quaternion\030\001 \001(\0132 .ma"
-    "vsdk.rpc.telemetry.Quaternion\"%\n#Subscri"
-    "beCameraAttitudeEulerRequest\"W\n\033CameraAt"
-    "titudeEulerResponse\0228\n\016attitude_euler\030\001 "
-    "\001(\0132 .mavsdk.rpc.telemetry.EulerAngle\"\035\n"
-    "\033SubscribeVelocityNedRequest\"N\n\023Velocity"
-    "NedResponse\0227\n\014velocity_ned\030\001 \001(\0132!.mavs"
-    "dk.rpc.telemetry.VelocityNed\"\031\n\027Subscrib"
-    "eGpsInfoRequest\"B\n\017GpsInfoResponse\022/\n\010gp"
-    "s_info\030\001 \001(\0132\035.mavsdk.rpc.telemetry.GpsI"
-    "nfo\"\030\n\026SubscribeRawGpsRequest\"\?\n\016RawGpsR"
-    "esponse\022-\n\007raw_gps\030\001 \001(\0132\034.mavsdk.rpc.te"
-    "lemetry.RawGps\"\031\n\027SubscribeBatteryReques"
-    "t\"A\n\017BatteryResponse\022.\n\007battery\030\001 \001(\0132\035."
-    "mavsdk.rpc.telemetry.Battery\"\034\n\032Subscrib"
-    "eFlightModeRequest\"K\n\022FlightModeResponse"
-    "\0225\n\013flight_mode\030\001 \001(\0162 .mavsdk.rpc.telem"
-    "etry.FlightMode\"\030\n\026SubscribeHealthReques"
-    "t\">\n\016HealthResponse\022,\n\006health\030\001 \001(\0132\034.ma"
-    "vsdk.rpc.telemetry.Health\"\032\n\030SubscribeRc"
-    "StatusRequest\"E\n\020RcStatusResponse\0221\n\trc_"
-    "status\030\001 \001(\0132\036.mavsdk.rpc.telemetry.RcSt"
-    "atus\"\034\n\032SubscribeStatusTextRequest\"K\n\022St"
-    "atusTextResponse\0225\n\013status_text\030\001 \001(\0132 ."
-    "mavsdk.rpc.telemetry.StatusText\"\'\n%Subsc"
-    "ribeActuatorControlTargetRequest\"m\n\035Actu"
-    "atorControlTargetResponse\022L\n\027actuator_co"
-    "ntrol_target\030\001 \001(\0132+.mavsdk.rpc.telemetr"
-    "y.ActuatorControlTarget\"&\n$SubscribeActu"
-    "atorOutputStatusRequest\"j\n\034ActuatorOutpu"
-    "tStatusResponse\022J\n\026actuator_output_statu"
-    "s\030\001 \001(\0132*.mavsdk.rpc.telemetry.ActuatorO"
-    "utputStatus\"\032\n\030SubscribeOdometryRequest\""
-    "D\n\020OdometryResponse\0220\n\010odometry\030\001 \001(\0132\036."
-    "mavsdk.rpc.telemetry.Odometry\"%\n#Subscri"
-    "bePositionVelocityNedRequest\"g\n\033Position"
-    "VelocityNedResponse\022H\n\025position_velocity"
-    "_ned\030\001 \001(\0132).mavsdk.rpc.telemetry.Positi"
-    "onVelocityNed\"\035\n\033SubscribeGroundTruthReq"
-    "uest\"N\n\023GroundTruthResponse\0227\n\014ground_tr"
-    "uth\030\001 \001(\0132!.mavsdk.rpc.telemetry.GroundT"
-    "ruth\"\"\n SubscribeFixedwingMetricsRequest"
-    "\"]\n\030FixedwingMetricsResponse\022A\n\021fixedwin"
-    "g_metrics\030\001 \001(\0132&.mavsdk.rpc.telemetry.F"
-    "ixedwingMetrics\"\025\n\023SubscribeImuRequest\"5"
-    "\n\013ImuResponse\022&\n\003imu\030\001 \001(\0132\031.mavsdk.rpc."
-    "telemetry.Imu\"\033\n\031SubscribeScaledImuReque"
-    "st\";\n\021ScaledImuResponse\022&\n\003imu\030\001 \001(\0132\031.m"
-    "avsdk.rpc.telemetry.Imu\"\030\n\026SubscribeRawI"
-    "muRequest\"8\n\016RawImuResponse\022&\n\003imu\030\001 \001(\013"
-    "2\031.mavsdk.rpc.telemetry.Imu\"\035\n\033Subscribe"
-    "HealthAllOkRequest\"/\n\023HealthAllOkRespons"
-    "e\022\030\n\020is_health_all_ok\030\001 \001(\010\"\037\n\035Subscribe"
-    "UnixEpochTimeRequest\"(\n\025UnixEpochTimeRes"
-    "ponse\022\017\n\007time_us\030\001 \001(\004\" \n\036SubscribeDista"
-    "nceSensorRequest\"W\n\026DistanceSensorRespon"
-    "se\022=\n\017distance_sensor\030\001 \001(\0132$.mavsdk.rpc"
-    ".telemetry.DistanceSensor\" \n\036SubscribeSc"
-    "aledPressureRequest\"W\n\026ScaledPressureRes"
-    "ponse\022=\n\017scaled_pressure\030\001 \001(\0132$.mavsdk."
-    "rpc.telemetry.ScaledPressure\"\031\n\027Subscrib"
-    "eHeadingRequest\"E\n\017HeadingResponse\0222\n\013he"
-    "ading_deg\030\001 \001(\0132\035.mavsdk.rpc.telemetry.H"
-    "eading\"\032\n\030SubscribeAltitudeRequest\"D\n\020Al"
-    "titudeResponse\0220\n\010altitude\030\001 \001(\0132\036.mavsd"
-    "k.rpc.telemetry.Altitude\")\n\026SetRatePosit"
-    "ionRequest\022\017\n\007rate_hz\030\001 \001(\001\"Z\n\027SetRatePo"
-    "sitionResponse\022\?\n\020telemetry_result\030\001 \001(\013"
-    "2%.mavsdk.rpc.telemetry.TelemetryResult\""
-    "%\n\022SetRateHomeRequest\022\017\n\007rate_hz\030\001 \001(\001\"V"
-    "\n\023SetRateHomeResponse\022\?\n\020telemetry_resul"
-    "t\030\001 \001(\0132%.mavsdk.rpc.telemetry.Telemetry"
-    "Result\"&\n\023SetRateInAirRequest\022\017\n\007rate_hz"
-    "\030\001 \001(\001\"W\n\024SetRateInAirResponse\022\?\n\020teleme"
-    "try_result\030\001 \001(\0132%.mavsdk.rpc.telemetry."
-    "TelemetryResult\",\n\031SetRateLandedStateReq"
-    "uest\022\017\n\007rate_hz\030\001 \001(\001\"]\n\032SetRateLandedSt"
-    "ateResponse\022\?\n\020telemetry_result\030\001 \001(\0132%."
-    "mavsdk.rpc.telemetry.TelemetryResult\"*\n\027"
-    "SetRateVtolStateRequest\022\017\n\007rate_hz\030\001 \001(\001"
-    "\"[\n\030SetRateVtolStateResponse\022\?\n\020telemetr"
-    "y_result\030\001 \001(\0132%.mavsdk.rpc.telemetry.Te"
-    "lemetryResult\".\n\033SetRateAttitudeEulerReq"
-    "uest\022\017\n\007rate_hz\030\001 \001(\001\"_\n\034SetRateAttitude"
-    "EulerResponse\022\?\n\020telemetry_result\030\001 \001(\0132"
-    "%.mavsdk.rpc.telemetry.TelemetryResult\"3"
-    "\n SetRateAttitudeQuaternionRequest\022\017\n\007ra"
-    "te_hz\030\001 \001(\001\"d\n!SetRateAttitudeQuaternion"
-    "Response\022\?\n\020telemetry_result\030\001 \001(\0132%.mav"
-    "sdk.rpc.telemetry.TelemetryResult\"<\n)Set"
-    "RateAttitudeAngularVelocityBodyRequest\022\017"
-    "\n\007rate_hz\030\001 \001(\001\"m\n*SetRateAttitudeAngula"
-    "rVelocityBodyResponse\022\?\n\020telemetry_resul"
-    "t\030\001 \001(\0132%.mavsdk.rpc.telemetry.Telemetry"
-    "Result\"9\n&SetRateCameraAttitudeQuaternio"
-    "nRequest\022\017\n\007rate_hz\030\001 \001(\001\"j\n\'SetRateCame"
-    "raAttitudeQuaternionResponse\022\?\n\020telemetr"
-    "y_result\030\001 \001(\0132%.mavsdk.rpc.telemetry.Te"
-    "lemetryResult\"/\n\034SetRateCameraAttitudeRe"
-    "quest\022\017\n\007rate_hz\030\001 \001(\001\"`\n\035SetRateCameraA"
-    "ttitudeResponse\022\?\n\020telemetry_result\030\001 \001("
-    "\0132%.mavsdk.rpc.telemetry.TelemetryResult"
-    "\",\n\031SetRateVelocityNedRequest\022\017\n\007rate_hz"
-    "\030\001 \001(\001\"]\n\032SetRateVelocityNedResponse\022\?\n\020"
-    "telemetry_result\030\001 \001(\0132%.mavsdk.rpc.tele"
-    "metry.TelemetryResult\"(\n\025SetRateGpsInfoR"
-    "equest\022\017\n\007rate_hz\030\001 \001(\001\"Y\n\026SetRateGpsInf"
-    "oResponse\022\?\n\020telemetry_result\030\001 \001(\0132%.ma"
-    "vsdk.rpc.telemetry.TelemetryResult\"\'\n\024Se"
-    "tRateRawGpsRequest\022\017\n\007rate_hz\030\001 \001(\001\"(\n\025S"
-    "etRateBatteryRequest\022\017\n\007rate_hz\030\001 \001(\001\"Y\n"
-    "\026SetRateBatteryResponse\022\?\n\020telemetry_res"
+    "tyBody\"\035\n\033SubscribeVelocityNedRequest\"N\n"
+    "\023VelocityNedResponse\0227\n\014velocity_ned\030\001 \001"
+    "(\0132!.mavsdk.rpc.telemetry.VelocityNed\"\031\n"
+    "\027SubscribeGpsInfoRequest\"B\n\017GpsInfoRespo"
+    "nse\022/\n\010gps_info\030\001 \001(\0132\035.mavsdk.rpc.telem"
+    "etry.GpsInfo\"\030\n\026SubscribeRawGpsRequest\"\?"
+    "\n\016RawGpsResponse\022-\n\007raw_gps\030\001 \001(\0132\034.mavs"
+    "dk.rpc.telemetry.RawGps\"\031\n\027SubscribeBatt"
+    "eryRequest\"A\n\017BatteryResponse\022.\n\007battery"
+    "\030\001 \001(\0132\035.mavsdk.rpc.telemetry.Battery\"\034\n"
+    "\032SubscribeFlightModeRequest\"K\n\022FlightMod"
+    "eResponse\0225\n\013flight_mode\030\001 \001(\0162 .mavsdk."
+    "rpc.telemetry.FlightMode\"\030\n\026SubscribeHea"
+    "lthRequest\">\n\016HealthResponse\022,\n\006health\030\001"
+    " \001(\0132\034.mavsdk.rpc.telemetry.Health\"\032\n\030Su"
+    "bscribeRcStatusRequest\"E\n\020RcStatusRespon"
+    "se\0221\n\trc_status\030\001 \001(\0132\036.mavsdk.rpc.telem"
+    "etry.RcStatus\"\034\n\032SubscribeStatusTextRequ"
+    "est\"K\n\022StatusTextResponse\0225\n\013status_text"
+    "\030\001 \001(\0132 .mavsdk.rpc.telemetry.StatusText"
+    "\"\'\n%SubscribeActuatorControlTargetReques"
+    "t\"m\n\035ActuatorControlTargetResponse\022L\n\027ac"
+    "tuator_control_target\030\001 \001(\0132+.mavsdk.rpc"
+    ".telemetry.ActuatorControlTarget\"&\n$Subs"
+    "cribeActuatorOutputStatusRequest\"j\n\034Actu"
+    "atorOutputStatusResponse\022J\n\026actuator_out"
+    "put_status\030\001 \001(\0132*.mavsdk.rpc.telemetry."
+    "ActuatorOutputStatus\"\032\n\030SubscribeOdometr"
+    "yRequest\"D\n\020OdometryResponse\0220\n\010odometry"
+    "\030\001 \001(\0132\036.mavsdk.rpc.telemetry.Odometry\"%"
+    "\n#SubscribePositionVelocityNedRequest\"g\n"
+    "\033PositionVelocityNedResponse\022H\n\025position"
+    "_velocity_ned\030\001 \001(\0132).mavsdk.rpc.telemet"
+    "ry.PositionVelocityNed\"\035\n\033SubscribeGroun"
+    "dTruthRequest\"N\n\023GroundTruthResponse\0227\n\014"
+    "ground_truth\030\001 \001(\0132!.mavsdk.rpc.telemetr"
+    "y.GroundTruth\"\"\n SubscribeFixedwingMetri"
+    "csRequest\"]\n\030FixedwingMetricsResponse\022A\n"
+    "\021fixedwing_metrics\030\001 \001(\0132&.mavsdk.rpc.te"
+    "lemetry.FixedwingMetrics\"\025\n\023SubscribeImu"
+    "Request\"5\n\013ImuResponse\022&\n\003imu\030\001 \001(\0132\031.ma"
+    "vsdk.rpc.telemetry.Imu\"\033\n\031SubscribeScale"
+    "dImuRequest\";\n\021ScaledImuResponse\022&\n\003imu\030"
+    "\001 \001(\0132\031.mavsdk.rpc.telemetry.Imu\"\030\n\026Subs"
+    "cribeRawImuRequest\"8\n\016RawImuResponse\022&\n\003"
+    "imu\030\001 \001(\0132\031.mavsdk.rpc.telemetry.Imu\"\035\n\033"
+    "SubscribeHealthAllOkRequest\"/\n\023HealthAll"
+    "OkResponse\022\030\n\020is_health_all_ok\030\001 \001(\010\"\037\n\035"
+    "SubscribeUnixEpochTimeRequest\"(\n\025UnixEpo"
+    "chTimeResponse\022\017\n\007time_us\030\001 \001(\004\" \n\036Subsc"
+    "ribeDistanceSensorRequest\"W\n\026DistanceSen"
+    "sorResponse\022=\n\017distance_sensor\030\001 \001(\0132$.m"
+    "avsdk.rpc.telemetry.DistanceSensor\" \n\036Su"
+    "bscribeScaledPressureRequest\"W\n\026ScaledPr"
+    "essureResponse\022=\n\017scaled_pressure\030\001 \001(\0132"
+    "$.mavsdk.rpc.telemetry.ScaledPressure\"\031\n"
+    "\027SubscribeHeadingRequest\"E\n\017HeadingRespo"
+    "nse\0222\n\013heading_deg\030\001 \001(\0132\035.mavsdk.rpc.te"
+    "lemetry.Heading\"\032\n\030SubscribeAltitudeRequ"
+    "est\"D\n\020AltitudeResponse\0220\n\010altitude\030\001 \001("
+    "\0132\036.mavsdk.rpc.telemetry.Altitude\")\n\026Set"
+    "RatePositionRequest\022\017\n\007rate_hz\030\001 \001(\001\"Z\n\027"
+    "SetRatePositionResponse\022\?\n\020telemetry_res"
     "ult\030\001 \001(\0132%.mavsdk.rpc.telemetry.Telemet"
-    "ryResult\")\n\026SetRateRcStatusRequest\022\017\n\007ra"
-    "te_hz\030\001 \001(\001\"Z\n\027SetRateRcStatusResponse\022\?"
-    "\n\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc.te"
-    "lemetry.TelemetryResult\"6\n#SetRateActuat"
-    "orControlTargetRequest\022\017\n\007rate_hz\030\001 \001(\001\""
-    "g\n$SetRateActuatorControlTargetResponse\022"
+    "ryResult\"%\n\022SetRateHomeRequest\022\017\n\007rate_h"
+    "z\030\001 \001(\001\"V\n\023SetRateHomeResponse\022\?\n\020teleme"
+    "try_result\030\001 \001(\0132%.mavsdk.rpc.telemetry."
+    "TelemetryResult\"&\n\023SetRateInAirRequest\022\017"
+    "\n\007rate_hz\030\001 \001(\001\"W\n\024SetRateInAirResponse\022"
     "\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc.t"
-    "elemetry.TelemetryResult\"5\n\"SetRateActua"
-    "torOutputStatusRequest\022\017\n\007rate_hz\030\001 \001(\001\""
-    "f\n#SetRateActuatorOutputStatusResponse\022\?"
-    "\n\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc.te"
-    "lemetry.TelemetryResult\")\n\026SetRateOdomet"
-    "ryRequest\022\017\n\007rate_hz\030\001 \001(\001\"Z\n\027SetRateOdo"
-    "metryResponse\022\?\n\020telemetry_result\030\001 \001(\0132"
-    "%.mavsdk.rpc.telemetry.TelemetryResult\"4"
-    "\n!SetRatePositionVelocityNedRequest\022\017\n\007r"
-    "ate_hz\030\001 \001(\001\"e\n\"SetRatePositionVelocityN"
-    "edResponse\022\?\n\020telemetry_result\030\001 \001(\0132%.m"
-    "avsdk.rpc.telemetry.TelemetryResult\",\n\031S"
-    "etRateGroundTruthRequest\022\017\n\007rate_hz\030\001 \001("
-    "\001\"]\n\032SetRateGroundTruthResponse\022\?\n\020telem"
-    "etry_result\030\001 \001(\0132%.mavsdk.rpc.telemetry"
-    ".TelemetryResult\"1\n\036SetRateFixedwingMetr"
-    "icsRequest\022\017\n\007rate_hz\030\001 \001(\001\"b\n\037SetRateFi"
-    "xedwingMetricsResponse\022\?\n\020telemetry_resu"
+    "elemetry.TelemetryResult\",\n\031SetRateLande"
+    "dStateRequest\022\017\n\007rate_hz\030\001 \001(\001\"]\n\032SetRat"
+    "eLandedStateResponse\022\?\n\020telemetry_result"
+    "\030\001 \001(\0132%.mavsdk.rpc.telemetry.TelemetryR"
+    "esult\"*\n\027SetRateVtolStateRequest\022\017\n\007rate"
+    "_hz\030\001 \001(\001\"[\n\030SetRateVtolStateResponse\022\?\n"
+    "\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc.tel"
+    "emetry.TelemetryResult\".\n\033SetRateAttitud"
+    "eEulerRequest\022\017\n\007rate_hz\030\001 \001(\001\"_\n\034SetRat"
+    "eAttitudeEulerResponse\022\?\n\020telemetry_resu"
     "lt\030\001 \001(\0132%.mavsdk.rpc.telemetry.Telemetr"
-    "yResult\"$\n\021SetRateImuRequest\022\017\n\007rate_hz\030"
-    "\001 \001(\001\"U\n\022SetRateImuResponse\022\?\n\020telemetry"
-    "_result\030\001 \001(\0132%.mavsdk.rpc.telemetry.Tel"
-    "emetryResult\"*\n\027SetRateScaledImuRequest\022"
-    "\017\n\007rate_hz\030\001 \001(\001\"[\n\030SetRateScaledImuResp"
-    "onse\022\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk."
-    "rpc.telemetry.TelemetryResult\"\'\n\024SetRate"
-    "RawImuRequest\022\017\n\007rate_hz\030\001 \001(\001\"X\n\025SetRat"
-    "eRawImuResponse\022\?\n\020telemetry_result\030\001 \001("
+    "yResult\"3\n SetRateAttitudeQuaternionRequ"
+    "est\022\017\n\007rate_hz\030\001 \001(\001\"d\n!SetRateAttitudeQ"
+    "uaternionResponse\022\?\n\020telemetry_result\030\001 "
+    "\001(\0132%.mavsdk.rpc.telemetry.TelemetryResu"
+    "lt\"<\n)SetRateAttitudeAngularVelocityBody"
+    "Request\022\017\n\007rate_hz\030\001 \001(\001\"m\n*SetRateAttit"
+    "udeAngularVelocityBodyResponse\022\?\n\020teleme"
+    "try_result\030\001 \001(\0132%.mavsdk.rpc.telemetry."
+    "TelemetryResult\",\n\031SetRateVelocityNedReq"
+    "uest\022\017\n\007rate_hz\030\001 \001(\001\"]\n\032SetRateVelocity"
+    "NedResponse\022\?\n\020telemetry_result\030\001 \001(\0132%."
+    "mavsdk.rpc.telemetry.TelemetryResult\"(\n\025"
+    "SetRateGpsInfoRequest\022\017\n\007rate_hz\030\001 \001(\001\"Y"
+    "\n\026SetRateGpsInfoResponse\022\?\n\020telemetry_re"
+    "sult\030\001 \001(\0132%.mavsdk.rpc.telemetry.Teleme"
+    "tryResult\"\'\n\024SetRateRawGpsRequest\022\017\n\007rat"
+    "e_hz\030\001 \001(\001\"(\n\025SetRateBatteryRequest\022\017\n\007r"
+    "ate_hz\030\001 \001(\001\"Y\n\026SetRateBatteryResponse\022\?"
+    "\n\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc.te"
+    "lemetry.TelemetryResult\")\n\026SetRateRcStat"
+    "usRequest\022\017\n\007rate_hz\030\001 \001(\001\"Z\n\027SetRateRcS"
+    "tatusResponse\022\?\n\020telemetry_result\030\001 \001(\0132"
+    "%.mavsdk.rpc.telemetry.TelemetryResult\"6"
+    "\n#SetRateActuatorControlTargetRequest\022\017\n"
+    "\007rate_hz\030\001 \001(\001\"g\n$SetRateActuatorControl"
+    "TargetResponse\022\?\n\020telemetry_result\030\001 \001(\013"
+    "2%.mavsdk.rpc.telemetry.TelemetryResult\""
+    "5\n\"SetRateActuatorOutputStatusRequest\022\017\n"
+    "\007rate_hz\030\001 \001(\001\"f\n#SetRateActuatorOutputS"
+    "tatusResponse\022\?\n\020telemetry_result\030\001 \001(\0132"
+    "%.mavsdk.rpc.telemetry.TelemetryResult\")"
+    "\n\026SetRateOdometryRequest\022\017\n\007rate_hz\030\001 \001("
+    "\001\"Z\n\027SetRateOdometryResponse\022\?\n\020telemetr"
+    "y_result\030\001 \001(\0132%.mavsdk.rpc.telemetry.Te"
+    "lemetryResult\"4\n!SetRatePositionVelocity"
+    "NedRequest\022\017\n\007rate_hz\030\001 \001(\001\"e\n\"SetRatePo"
+    "sitionVelocityNedResponse\022\?\n\020telemetry_r"
+    "esult\030\001 \001(\0132%.mavsdk.rpc.telemetry.Telem"
+    "etryResult\",\n\031SetRateGroundTruthRequest\022"
+    "\017\n\007rate_hz\030\001 \001(\001\"]\n\032SetRateGroundTruthRe"
+    "sponse\022\?\n\020telemetry_result\030\001 \001(\0132%.mavsd"
+    "k.rpc.telemetry.TelemetryResult\"1\n\036SetRa"
+    "teFixedwingMetricsRequest\022\017\n\007rate_hz\030\001 \001"
+    "(\001\"b\n\037SetRateFixedwingMetricsResponse\022\?\n"
+    "\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc.tel"
+    "emetry.TelemetryResult\"$\n\021SetRateImuRequ"
+    "est\022\017\n\007rate_hz\030\001 \001(\001\"U\n\022SetRateImuRespon"
+    "se\022\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk.rp"
+    "c.telemetry.TelemetryResult\"*\n\027SetRateSc"
+    "aledImuRequest\022\017\n\007rate_hz\030\001 \001(\001\"[\n\030SetRa"
+    "teScaledImuResponse\022\?\n\020telemetry_result\030"
+    "\001 \001(\0132%.mavsdk.rpc.telemetry.TelemetryRe"
+    "sult\"\'\n\024SetRateRawImuRequest\022\017\n\007rate_hz\030"
+    "\001 \001(\001\"X\n\025SetRateRawImuResponse\022\?\n\020teleme"
+    "try_result\030\001 \001(\0132%.mavsdk.rpc.telemetry."
+    "TelemetryResult\".\n\033SetRateUnixEpochTimeR"
+    "equest\022\017\n\007rate_hz\030\001 \001(\001\"_\n\034SetRateUnixEp"
+    "ochTimeResponse\022\?\n\020telemetry_result\030\001 \001("
     "\0132%.mavsdk.rpc.telemetry.TelemetryResult"
-    "\".\n\033SetRateUnixEpochTimeRequest\022\017\n\007rate_"
-    "hz\030\001 \001(\001\"_\n\034SetRateUnixEpochTimeResponse"
-    "\022\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk.rpc."
-    "telemetry.TelemetryResult\"/\n\034SetRateDist"
-    "anceSensorRequest\022\017\n\007rate_hz\030\001 \001(\001\"`\n\035Se"
-    "tRateDistanceSensorResponse\022\?\n\020telemetry"
-    "_result\030\001 \001(\0132%.mavsdk.rpc.telemetry.Tel"
-    "emetryResult\"\033\n\031GetGpsGlobalOriginReques"
-    "t\"\237\001\n\032GetGpsGlobalOriginResponse\022\?\n\020tele"
-    "metry_result\030\001 \001(\0132%.mavsdk.rpc.telemetr"
-    "y.TelemetryResult\022@\n\021gps_global_origin\030\002"
-    " \001(\0132%.mavsdk.rpc.telemetry.GpsGlobalOri"
-    "gin\")\n\026SetRateAltitudeRequest\022\017\n\007rate_hz"
-    "\030\001 \001(\001\"Z\n\027SetRateAltitudeResponse\022\?\n\020tel"
-    "emetry_result\030\001 \001(\0132%.mavsdk.rpc.telemet"
-    "ry.TelemetryResult\"\225\001\n\010Position\022\035\n\014latit"
-    "ude_deg\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rlongitude_deg\030"
-    "\002 \001(\001B\007\202\265\030\003NaN\022$\n\023absolute_altitude_m\030\003 "
-    "\001(\002B\007\202\265\030\003NaN\022$\n\023relative_altitude_m\030\004 \001("
-    "\002B\007\202\265\030\003NaN\"\'\n\007Heading\022\034\n\013heading_deg\030\001 \001"
-    "(\001B\007\202\265\030\003NaN\"r\n\nQuaternion\022\022\n\001w\030\001 \001(\002B\007\202\265"
-    "\030\003NaN\022\022\n\001x\030\002 \001(\002B\007\202\265\030\003NaN\022\022\n\001y\030\003 \001(\002B\007\202\265"
-    "\030\003NaN\022\022\n\001z\030\004 \001(\002B\007\202\265\030\003NaN\022\024\n\014timestamp_u"
-    "s\030\005 \001(\004\"s\n\nEulerAngle\022\031\n\010roll_deg\030\001 \001(\002B"
-    "\007\202\265\030\003NaN\022\032\n\tpitch_deg\030\002 \001(\002B\007\202\265\030\003NaN\022\030\n\007"
-    "yaw_deg\030\003 \001(\002B\007\202\265\030\003NaN\022\024\n\014timestamp_us\030\004"
-    " \001(\004\"l\n\023AngularVelocityBody\022\033\n\nroll_rad_"
-    "s\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013pitch_rad_s\030\002 \001(\002B\007\202"
-    "\265\030\003NaN\022\032\n\tyaw_rad_s\030\003 \001(\002B\007\202\265\030\003NaN\"Y\n\007Gp"
-    "sInfo\022\035\n\016num_satellites\030\001 \001(\005B\005\202\265\030\0010\022/\n\010"
-    "fix_type\030\002 \001(\0162\035.mavsdk.rpc.telemetry.Fi"
-    "xType\"\337\002\n\006RawGps\022\024\n\014timestamp_us\030\001 \001(\004\022\024"
-    "\n\014latitude_deg\030\002 \001(\001\022\025\n\rlongitude_deg\030\003 "
-    "\001(\001\022\033\n\023absolute_altitude_m\030\004 \001(\002\022\014\n\004hdop"
-    "\030\005 \001(\002\022\014\n\004vdop\030\006 \001(\002\022\024\n\014velocity_m_s\030\007 \001"
-    "(\002\022\017\n\007cog_deg\030\010 \001(\002\022\034\n\024altitude_ellipsoi"
-    "d_m\030\t \001(\002\022 \n\030horizontal_uncertainty_m\030\n "
-    "\001(\002\022\036\n\026vertical_uncertainty_m\030\013 \001(\002\022 \n\030v"
-    "elocity_uncertainty_m_s\030\014 \001(\002\022\037\n\027heading"
-    "_uncertainty_deg\030\r \001(\002\022\017\n\007yaw_deg\030\016 \001(\002\""
-    "\312\001\n\007Battery\022\021\n\002id\030\001 \001(\rB\005\202\265\030\0010\022!\n\020temper"
-    "ature_degc\030\002 \001(\002B\007\202\265\030\003NaN\022\032\n\tvoltage_v\030\003"
-    " \001(\002B\007\202\265\030\003NaN\022\"\n\021current_battery_a\030\004 \001(\002"
-    "B\007\202\265\030\003NaN\022%\n\024capacity_consumed_ah\030\005 \001(\002B"
-    "\007\202\265\030\003NaN\022\"\n\021remaining_percent\030\006 \001(\002B\007\202\265\030"
-    "\003NaN\"\271\002\n\006Health\022.\n\033is_gyrometer_calibrat"
-    "ion_ok\030\001 \001(\010B\t\202\265\030\005false\0222\n\037is_accelerome"
-    "ter_calibration_ok\030\002 \001(\010B\t\202\265\030\005false\0221\n\036i"
-    "s_magnetometer_calibration_ok\030\003 \001(\010B\t\202\265\030"
-    "\005false\022\'\n\024is_local_position_ok\030\005 \001(\010B\t\202\265"
-    "\030\005false\022(\n\025is_global_position_ok\030\006 \001(\010B\t"
-    "\202\265\030\005false\022&\n\023is_home_position_ok\030\007 \001(\010B\t"
-    "\202\265\030\005false\022\035\n\nis_armable\030\010 \001(\010B\t\202\265\030\005false"
-    "\"|\n\010RcStatus\022%\n\022was_available_once\030\001 \001(\010"
-    "B\t\202\265\030\005false\022\037\n\014is_available\030\002 \001(\010B\t\202\265\030\005f"
-    "alse\022(\n\027signal_strength_percent\030\003 \001(\002B\007\202"
-    "\265\030\003NaN\"N\n\nStatusText\0222\n\004type\030\001 \001(\0162$.mav"
-    "sdk.rpc.telemetry.StatusTextType\022\014\n\004text"
-    "\030\002 \001(\t\"\?\n\025ActuatorControlTarget\022\024\n\005group"
-    "\030\001 \001(\005B\005\202\265\030\0010\022\020\n\010controls\030\002 \003(\002\"\?\n\024Actua"
-    "torOutputStatus\022\025\n\006active\030\001 \001(\rB\005\202\265\030\0010\022\020"
-    "\n\010actuator\030\002 \003(\002\"\'\n\nCovariance\022\031\n\021covari"
-    "ance_matrix\030\001 \003(\002\";\n\014VelocityBody\022\r\n\005x_m"
-    "_s\030\001 \001(\002\022\r\n\005y_m_s\030\002 \001(\002\022\r\n\005z_m_s\030\003 \001(\002\"5"
-    "\n\014PositionBody\022\013\n\003x_m\030\001 \001(\002\022\013\n\003y_m\030\002 \001(\002"
-    "\022\013\n\003z_m\030\003 \001(\002\"\354\004\n\010Odometry\022\021\n\ttime_usec\030"
-    "\001 \001(\004\0229\n\010frame_id\030\002 \001(\0162\'.mavsdk.rpc.tel"
-    "emetry.Odometry.MavFrame\022\?\n\016child_frame_"
-    "id\030\003 \001(\0162\'.mavsdk.rpc.telemetry.Odometry"
-    ".MavFrame\0229\n\rposition_body\030\004 \001(\0132\".mavsd"
-    "k.rpc.telemetry.PositionBody\022+\n\001q\030\005 \001(\0132"
-    " .mavsdk.rpc.telemetry.Quaternion\0229\n\rvel"
-    "ocity_body\030\006 \001(\0132\".mavsdk.rpc.telemetry."
-    "VelocityBody\022H\n\025angular_velocity_body\030\007 "
-    "\001(\0132).mavsdk.rpc.telemetry.AngularVeloci"
-    "tyBody\0229\n\017pose_covariance\030\010 \001(\0132 .mavsdk"
-    ".rpc.telemetry.Covariance\022=\n\023velocity_co"
-    "variance\030\t \001(\0132 .mavsdk.rpc.telemetry.Co"
-    "variance\"j\n\010MavFrame\022\023\n\017MAV_FRAME_UNDEF\020"
-    "\000\022\026\n\022MAV_FRAME_BODY_NED\020\010\022\030\n\024MAV_FRAME_V"
-    "ISION_NED\020\020\022\027\n\023MAV_FRAME_ESTIM_NED\020\022\"\266\001\n"
-    "\016DistanceSensor\022#\n\022minimum_distance_m\030\001 "
-    "\001(\002B\007\202\265\030\003NaN\022#\n\022maximum_distance_m\030\002 \001(\002"
-    "B\007\202\265\030\003NaN\022#\n\022current_distance_m\030\003 \001(\002B\007\202"
-    "\265\030\003NaN\0225\n\013orientation\030\004 \001(\0132 .mavsdk.rpc"
-    ".telemetry.EulerAngle\"\260\001\n\016ScaledPressure"
-    "\022\024\n\014timestamp_us\030\001 \001(\004\022\035\n\025absolute_press"
-    "ure_hpa\030\002 \001(\002\022!\n\031differential_pressure_h"
-    "pa\030\003 \001(\002\022\027\n\017temperature_deg\030\004 \001(\002\022-\n%dif"
-    "ferential_pressure_temperature_deg\030\005 \001(\002"
-    "\"Y\n\013PositionNed\022\030\n\007north_m\030\001 \001(\002B\007\202\265\030\003Na"
-    "N\022\027\n\006east_m\030\002 \001(\002B\007\202\265\030\003NaN\022\027\n\006down_m\030\003 \001"
-    "(\002B\007\202\265\030\003NaN\"D\n\013VelocityNed\022\021\n\tnorth_m_s\030"
-    "\001 \001(\002\022\020\n\010east_m_s\030\002 \001(\002\022\020\n\010down_m_s\030\003 \001("
-    "\002\"\177\n\023PositionVelocityNed\0223\n\010position\030\001 \001"
-    "(\0132!.mavsdk.rpc.telemetry.PositionNed\0223\n"
-    "\010velocity\030\002 \001(\0132!.mavsdk.rpc.telemetry.V"
-    "elocityNed\"r\n\013GroundTruth\022\035\n\014latitude_de"
-    "g\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rlongitude_deg\030\002 \001(\001B"
-    "\007\202\265\030\003NaN\022$\n\023absolute_altitude_m\030\003 \001(\002B\007\202"
-    "\265\030\003NaN\"x\n\020FixedwingMetrics\022\035\n\014airspeed_m"
-    "_s\030\001 \001(\002B\007\202\265\030\003NaN\022$\n\023throttle_percentage"
-    "\030\002 \001(\002B\007\202\265\030\003NaN\022\037\n\016climb_rate_m_s\030\003 \001(\002B"
-    "\007\202\265\030\003NaN\"i\n\017AccelerationFrd\022\035\n\014forward_m"
-    "_s2\030\001 \001(\002B\007\202\265\030\003NaN\022\033\n\nright_m_s2\030\002 \001(\002B\007"
-    "\202\265\030\003NaN\022\032\n\tdown_m_s2\030\003 \001(\002B\007\202\265\030\003NaN\"o\n\022A"
-    "ngularVelocityFrd\022\036\n\rforward_rad_s\030\001 \001(\002"
-    "B\007\202\265\030\003NaN\022\034\n\013right_rad_s\030\002 \001(\002B\007\202\265\030\003NaN\022"
-    "\033\n\ndown_rad_s\030\003 \001(\002B\007\202\265\030\003NaN\"m\n\020Magnetic"
-    "FieldFrd\022\036\n\rforward_gauss\030\001 \001(\002B\007\202\265\030\003NaN"
-    "\022\034\n\013right_gauss\030\002 \001(\002B\007\202\265\030\003NaN\022\033\n\ndown_g"
-    "auss\030\003 \001(\002B\007\202\265\030\003NaN\"\213\002\n\003Imu\022\?\n\020accelerat"
-    "ion_frd\030\001 \001(\0132%.mavsdk.rpc.telemetry.Acc"
-    "elerationFrd\022F\n\024angular_velocity_frd\030\002 \001"
-    "(\0132(.mavsdk.rpc.telemetry.AngularVelocit"
-    "yFrd\022B\n\022magnetic_field_frd\030\003 \001(\0132&.mavsd"
-    "k.rpc.telemetry.MagneticFieldFrd\022!\n\020temp"
-    "erature_degc\030\004 \001(\002B\007\202\265\030\003NaN\022\024\n\014timestamp"
-    "_us\030\005 \001(\004\"m\n\017GpsGlobalOrigin\022\035\n\014latitude"
-    "_deg\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rlongitude_deg\030\002 \001"
-    "(\001B\007\202\265\030\003NaN\022\033\n\naltitude_m\030\003 \001(\002B\007\202\265\030\003NaN"
-    "\"\346\001\n\010Altitude\022%\n\024altitude_monotonic_m\030\001 "
-    "\001(\002B\007\202\265\030\003NaN\022 \n\017altitude_amsl_m\030\002 \001(\002B\007\202"
-    "\265\030\003NaN\022!\n\020altitude_local_m\030\003 \001(\002B\007\202\265\030\003Na"
-    "N\022$\n\023altitude_relative_m\030\004 \001(\002B\007\202\265\030\003NaN\022"
-    "#\n\022altitude_terrain_m\030\005 \001(\002B\007\202\265\030\003NaN\022#\n\022"
-    "bottom_clearance_m\030\006 \001(\002B\007\202\265\030\003NaN\"\241\002\n\017Te"
-    "lemetryResult\022<\n\006result\030\001 \001(\0162,.mavsdk.r"
-    "pc.telemetry.TelemetryResult.Result\022\022\n\nr"
-    "esult_str\030\002 \001(\t\"\273\001\n\006Result\022\022\n\016RESULT_UNK"
-    "NOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_"
-    "SYSTEM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\017\n"
-    "\013RESULT_BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIED\020"
-    "\005\022\022\n\016RESULT_TIMEOUT\020\006\022\026\n\022RESULT_UNSUPPOR"
-    "TED\020\007*\244\001\n\007FixType\022\023\n\017FIX_TYPE_NO_GPS\020\000\022\023"
-    "\n\017FIX_TYPE_NO_FIX\020\001\022\023\n\017FIX_TYPE_FIX_2D\020\002"
-    "\022\023\n\017FIX_TYPE_FIX_3D\020\003\022\025\n\021FIX_TYPE_FIX_DG"
-    "PS\020\004\022\026\n\022FIX_TYPE_RTK_FLOAT\020\005\022\026\n\022FIX_TYPE"
-    "_RTK_FIXED\020\006*\206\003\n\nFlightMode\022\027\n\023FLIGHT_MO"
-    "DE_UNKNOWN\020\000\022\025\n\021FLIGHT_MODE_READY\020\001\022\027\n\023F"
-    "LIGHT_MODE_TAKEOFF\020\002\022\024\n\020FLIGHT_MODE_HOLD"
-    "\020\003\022\027\n\023FLIGHT_MODE_MISSION\020\004\022 \n\034FLIGHT_MO"
-    "DE_RETURN_TO_LAUNCH\020\005\022\024\n\020FLIGHT_MODE_LAN"
-    "D\020\006\022\030\n\024FLIGHT_MODE_OFFBOARD\020\007\022\031\n\025FLIGHT_"
-    "MODE_FOLLOW_ME\020\010\022\026\n\022FLIGHT_MODE_MANUAL\020\t"
-    "\022\026\n\022FLIGHT_MODE_ALTCTL\020\n\022\026\n\022FLIGHT_MODE_"
-    "POSCTL\020\013\022\024\n\020FLIGHT_MODE_ACRO\020\014\022\032\n\026FLIGHT"
-    "_MODE_STABILIZED\020\r\022\031\n\025FLIGHT_MODE_RATTIT"
-    "UDE\020\016*\371\001\n\016StatusTextType\022\032\n\026STATUS_TEXT_"
-    "TYPE_DEBUG\020\000\022\031\n\025STATUS_TEXT_TYPE_INFO\020\001\022"
-    "\033\n\027STATUS_TEXT_TYPE_NOTICE\020\002\022\034\n\030STATUS_T"
-    "EXT_TYPE_WARNING\020\003\022\032\n\026STATUS_TEXT_TYPE_E"
-    "RROR\020\004\022\035\n\031STATUS_TEXT_TYPE_CRITICAL\020\005\022\032\n"
-    "\026STATUS_TEXT_TYPE_ALERT\020\006\022\036\n\032STATUS_TEXT"
-    "_TYPE_EMERGENCY\020\007*\223\001\n\013LandedState\022\030\n\024LAN"
-    "DED_STATE_UNKNOWN\020\000\022\032\n\026LANDED_STATE_ON_G"
-    "ROUND\020\001\022\027\n\023LANDED_STATE_IN_AIR\020\002\022\033\n\027LAND"
-    "ED_STATE_TAKING_OFF\020\003\022\030\n\024LANDED_STATE_LA"
-    "NDING\020\004*\215\001\n\tVtolState\022\030\n\024VTOL_STATE_UNDE"
-    "FINED\020\000\022\037\n\033VTOL_STATE_TRANSITION_TO_FW\020\001"
-    "\022\037\n\033VTOL_STATE_TRANSITION_TO_MC\020\002\022\021\n\rVTO"
-    "L_STATE_MC\020\003\022\021\n\rVTOL_STATE_FW\020\0042\2019\n\020Tele"
-    "metryService\022o\n\021SubscribePosition\022..mavs"
-    "dk.rpc.telemetry.SubscribePositionReques"
-    "t\032&.mavsdk.rpc.telemetry.PositionRespons"
-    "e\"\0000\001\022c\n\rSubscribeHome\022*.mavsdk.rpc.tele"
-    "metry.SubscribeHomeRequest\032\".mavsdk.rpc."
-    "telemetry.HomeResponse\"\0000\001\022f\n\016SubscribeI"
-    "nAir\022+.mavsdk.rpc.telemetry.SubscribeInA"
-    "irRequest\032#.mavsdk.rpc.telemetry.InAirRe"
-    "sponse\"\0000\001\022x\n\024SubscribeLandedState\0221.mav"
-    "sdk.rpc.telemetry.SubscribeLandedStateRe"
-    "quest\032).mavsdk.rpc.telemetry.LandedState"
-    "Response\"\0000\001\022f\n\016SubscribeArmed\022+.mavsdk."
-    "rpc.telemetry.SubscribeArmedRequest\032#.ma"
-    "vsdk.rpc.telemetry.ArmedResponse\"\0000\001\022r\n\022"
-    "SubscribeVtolState\022/.mavsdk.rpc.telemetr"
-    "y.SubscribeVtolStateRequest\032\'.mavsdk.rpc"
-    ".telemetry.VtolStateResponse\"\0000\001\022\215\001\n\033Sub"
-    "scribeAttitudeQuaternion\0228.mavsdk.rpc.te"
-    "lemetry.SubscribeAttitudeQuaternionReque"
-    "st\0320.mavsdk.rpc.telemetry.AttitudeQuater"
-    "nionResponse\"\0000\001\022~\n\026SubscribeAttitudeEul"
-    "er\0223.mavsdk.rpc.telemetry.SubscribeAttit"
-    "udeEulerRequest\032+.mavsdk.rpc.telemetry.A"
-    "ttitudeEulerResponse\"\0000\001\022\250\001\n$SubscribeAt"
-    "titudeAngularVelocityBody\022A.mavsdk.rpc.t"
-    "elemetry.SubscribeAttitudeAngularVelocit"
-    "yBodyRequest\0329.mavsdk.rpc.telemetry.Atti"
-    "tudeAngularVelocityBodyResponse\"\0000\001\022\237\001\n!"
-    "SubscribeCameraAttitudeQuaternion\022>.mavs"
-    "dk.rpc.telemetry.SubscribeCameraAttitude"
-    "QuaternionRequest\0326.mavsdk.rpc.telemetry"
-    ".CameraAttitudeQuaternionResponse\"\0000\001\022\220\001"
-    "\n\034SubscribeCameraAttitudeEuler\0229.mavsdk."
-    "rpc.telemetry.SubscribeCameraAttitudeEul"
-    "erRequest\0321.mavsdk.rpc.telemetry.CameraA"
-    "ttitudeEulerResponse\"\0000\001\022x\n\024SubscribeVel"
-    "ocityNed\0221.mavsdk.rpc.telemetry.Subscrib"
-    "eVelocityNedRequest\032).mavsdk.rpc.telemet"
-    "ry.VelocityNedResponse\"\0000\001\022l\n\020SubscribeG"
-    "psInfo\022-.mavsdk.rpc.telemetry.SubscribeG"
-    "psInfoRequest\032%.mavsdk.rpc.telemetry.Gps"
-    "InfoResponse\"\0000\001\022i\n\017SubscribeRawGps\022,.ma"
-    "vsdk.rpc.telemetry.SubscribeRawGpsReques"
-    "t\032$.mavsdk.rpc.telemetry.RawGpsResponse\""
-    "\0000\001\022l\n\020SubscribeBattery\022-.mavsdk.rpc.tel"
-    "emetry.SubscribeBatteryRequest\032%.mavsdk."
-    "rpc.telemetry.BatteryResponse\"\0000\001\022u\n\023Sub"
-    "scribeFlightMode\0220.mavsdk.rpc.telemetry."
-    "SubscribeFlightModeRequest\032(.mavsdk.rpc."
-    "telemetry.FlightModeResponse\"\0000\001\022i\n\017Subs"
-    "cribeHealth\022,.mavsdk.rpc.telemetry.Subsc"
-    "ribeHealthRequest\032$.mavsdk.rpc.telemetry"
-    ".HealthResponse\"\0000\001\022o\n\021SubscribeRcStatus"
-    "\022..mavsdk.rpc.telemetry.SubscribeRcStatu"
-    "sRequest\032&.mavsdk.rpc.telemetry.RcStatus"
-    "Response\"\0000\001\022u\n\023SubscribeStatusText\0220.ma"
-    "vsdk.rpc.telemetry.SubscribeStatusTextRe"
-    "quest\032(.mavsdk.rpc.telemetry.StatusTextR"
-    "esponse\"\0000\001\022\226\001\n\036SubscribeActuatorControl"
-    "Target\022;.mavsdk.rpc.telemetry.SubscribeA"
-    "ctuatorControlTargetRequest\0323.mavsdk.rpc"
-    ".telemetry.ActuatorControlTargetResponse"
-    "\"\0000\001\022\223\001\n\035SubscribeActuatorOutputStatus\022:"
-    ".mavsdk.rpc.telemetry.SubscribeActuatorO"
-    "utputStatusRequest\0322.mavsdk.rpc.telemetr"
-    "y.ActuatorOutputStatusResponse\"\0000\001\022o\n\021Su"
-    "bscribeOdometry\022..mavsdk.rpc.telemetry.S"
-    "ubscribeOdometryRequest\032&.mavsdk.rpc.tel"
-    "emetry.OdometryResponse\"\0000\001\022\220\001\n\034Subscrib"
-    "ePositionVelocityNed\0229.mavsdk.rpc.teleme"
-    "try.SubscribePositionVelocityNedRequest\032"
-    "1.mavsdk.rpc.telemetry.PositionVelocityN"
-    "edResponse\"\0000\001\022x\n\024SubscribeGroundTruth\0221"
-    ".mavsdk.rpc.telemetry.SubscribeGroundTru"
-    "thRequest\032).mavsdk.rpc.telemetry.GroundT"
-    "ruthResponse\"\0000\001\022\207\001\n\031SubscribeFixedwingM"
-    "etrics\0226.mavsdk.rpc.telemetry.SubscribeF"
-    "ixedwingMetricsRequest\032..mavsdk.rpc.tele"
-    "metry.FixedwingMetricsResponse\"\0000\001\022`\n\014Su"
-    "bscribeImu\022).mavsdk.rpc.telemetry.Subscr"
-    "ibeImuRequest\032!.mavsdk.rpc.telemetry.Imu"
-    "Response\"\0000\001\022r\n\022SubscribeScaledImu\022/.mav"
-    "sdk.rpc.telemetry.SubscribeScaledImuRequ"
-    "est\032\'.mavsdk.rpc.telemetry.ScaledImuResp"
-    "onse\"\0000\001\022i\n\017SubscribeRawImu\022,.mavsdk.rpc"
-    ".telemetry.SubscribeRawImuRequest\032$.mavs"
-    "dk.rpc.telemetry.RawImuResponse\"\0000\001\022x\n\024S"
-    "ubscribeHealthAllOk\0221.mavsdk.rpc.telemet"
-    "ry.SubscribeHealthAllOkRequest\032).mavsdk."
-    "rpc.telemetry.HealthAllOkResponse\"\0000\001\022~\n"
-    "\026SubscribeUnixEpochTime\0223.mavsdk.rpc.tel"
-    "emetry.SubscribeUnixEpochTimeRequest\032+.m"
-    "avsdk.rpc.telemetry.UnixEpochTimeRespons"
-    "e\"\0000\001\022\201\001\n\027SubscribeDistanceSensor\0224.mavs"
-    "dk.rpc.telemetry.SubscribeDistanceSensor"
-    "Request\032,.mavsdk.rpc.telemetry.DistanceS"
-    "ensorResponse\"\0000\001\022\201\001\n\027SubscribeScaledPre"
-    "ssure\0224.mavsdk.rpc.telemetry.SubscribeSc"
-    "aledPressureRequest\032,.mavsdk.rpc.telemet"
-    "ry.ScaledPressureResponse\"\0000\001\022l\n\020Subscri"
-    "beHeading\022-.mavsdk.rpc.telemetry.Subscri"
-    "beHeadingRequest\032%.mavsdk.rpc.telemetry."
-    "HeadingResponse\"\0000\001\022o\n\021SubscribeAltitude"
-    "\022..mavsdk.rpc.telemetry.SubscribeAltitud"
-    "eRequest\032&.mavsdk.rpc.telemetry.Altitude"
-    "Response\"\0000\001\022p\n\017SetRatePosition\022,.mavsdk"
-    ".rpc.telemetry.SetRatePositionRequest\032-."
-    "mavsdk.rpc.telemetry.SetRatePositionResp"
-    "onse\"\000\022d\n\013SetRateHome\022(.mavsdk.rpc.telem"
-    "etry.SetRateHomeRequest\032).mavsdk.rpc.tel"
-    "emetry.SetRateHomeResponse\"\000\022g\n\014SetRateI"
-    "nAir\022).mavsdk.rpc.telemetry.SetRateInAir"
-    "Request\032*.mavsdk.rpc.telemetry.SetRateIn"
-    "AirResponse\"\000\022y\n\022SetRateLandedState\022/.ma"
-    "vsdk.rpc.telemetry.SetRateLandedStateReq"
-    "uest\0320.mavsdk.rpc.telemetry.SetRateLande"
-    "dStateResponse\"\000\022s\n\020SetRateVtolState\022-.m"
-    "avsdk.rpc.telemetry.SetRateVtolStateRequ"
-    "est\032..mavsdk.rpc.telemetry.SetRateVtolSt"
-    "ateResponse\"\000\022\216\001\n\031SetRateAttitudeQuatern"
-    "ion\0226.mavsdk.rpc.telemetry.SetRateAttitu"
-    "deQuaternionRequest\0327.mavsdk.rpc.telemet"
-    "ry.SetRateAttitudeQuaternionResponse\"\000\022\177"
-    "\n\024SetRateAttitudeEuler\0221.mavsdk.rpc.tele"
-    "metry.SetRateAttitudeEulerRequest\0322.mavs"
-    "dk.rpc.telemetry.SetRateAttitudeEulerRes"
-    "ponse\"\000\022\202\001\n\025SetRateCameraAttitude\0222.mavs"
-    "dk.rpc.telemetry.SetRateCameraAttitudeRe"
-    "quest\0323.mavsdk.rpc.telemetry.SetRateCame"
-    "raAttitudeResponse\"\000\022y\n\022SetRateVelocityN"
-    "ed\022/.mavsdk.rpc.telemetry.SetRateVelocit"
-    "yNedRequest\0320.mavsdk.rpc.telemetry.SetRa"
-    "teVelocityNedResponse\"\000\022m\n\016SetRateGpsInf"
-    "o\022+.mavsdk.rpc.telemetry.SetRateGpsInfoR"
-    "equest\032,.mavsdk.rpc.telemetry.SetRateGps"
-    "InfoResponse\"\000\022m\n\016SetRateBattery\022+.mavsd"
-    "k.rpc.telemetry.SetRateBatteryRequest\032,."
-    "mavsdk.rpc.telemetry.SetRateBatteryRespo"
-    "nse\"\000\022p\n\017SetRateRcStatus\022,.mavsdk.rpc.te"
-    "lemetry.SetRateRcStatusRequest\032-.mavsdk."
-    "rpc.telemetry.SetRateRcStatusResponse\"\000\022"
-    "\227\001\n\034SetRateActuatorControlTarget\0229.mavsd"
-    "k.rpc.telemetry.SetRateActuatorControlTa"
-    "rgetRequest\032:.mavsdk.rpc.telemetry.SetRa"
-    "teActuatorControlTargetResponse\"\000\022\224\001\n\033Se"
-    "tRateActuatorOutputStatus\0228.mavsdk.rpc.t"
-    "elemetry.SetRateActuatorOutputStatusRequ"
-    "est\0329.mavsdk.rpc.telemetry.SetRateActuat"
-    "orOutputStatusResponse\"\000\022p\n\017SetRateOdome"
-    "try\022,.mavsdk.rpc.telemetry.SetRateOdomet"
-    "ryRequest\032-.mavsdk.rpc.telemetry.SetRate"
-    "OdometryResponse\"\000\022\221\001\n\032SetRatePositionVe"
-    "locityNed\0227.mavsdk.rpc.telemetry.SetRate"
-    "PositionVelocityNedRequest\0328.mavsdk.rpc."
-    "telemetry.SetRatePositionVelocityNedResp"
-    "onse\"\000\022y\n\022SetRateGroundTruth\022/.mavsdk.rp"
-    "c.telemetry.SetRateGroundTruthRequest\0320."
-    "mavsdk.rpc.telemetry.SetRateGroundTruthR"
-    "esponse\"\000\022\210\001\n\027SetRateFixedwingMetrics\0224."
-    "mavsdk.rpc.telemetry.SetRateFixedwingMet"
-    "ricsRequest\0325.mavsdk.rpc.telemetry.SetRa"
-    "teFixedwingMetricsResponse\"\000\022a\n\nSetRateI"
-    "mu\022\'.mavsdk.rpc.telemetry.SetRateImuRequ"
-    "est\032(.mavsdk.rpc.telemetry.SetRateImuRes"
-    "ponse\"\000\022s\n\020SetRateScaledImu\022-.mavsdk.rpc"
-    ".telemetry.SetRateScaledImuRequest\032..mav"
-    "sdk.rpc.telemetry.SetRateScaledImuRespon"
-    "se\"\000\022j\n\rSetRateRawImu\022*.mavsdk.rpc.telem"
-    "etry.SetRateRawImuRequest\032+.mavsdk.rpc.t"
-    "elemetry.SetRateRawImuResponse\"\000\022\177\n\024SetR"
-    "ateUnixEpochTime\0221.mavsdk.rpc.telemetry."
-    "SetRateUnixEpochTimeRequest\0322.mavsdk.rpc"
-    ".telemetry.SetRateUnixEpochTimeResponse\""
-    "\000\022\202\001\n\025SetRateDistanceSensor\0222.mavsdk.rpc"
-    ".telemetry.SetRateDistanceSensorRequest\032"
-    "3.mavsdk.rpc.telemetry.SetRateDistanceSe"
-    "nsorResponse\"\000\022p\n\017SetRateAltitude\022,.mavs"
-    "dk.rpc.telemetry.SetRateAltitudeRequest\032"
-    "-.mavsdk.rpc.telemetry.SetRateAltitudeRe"
-    "sponse\"\000\022y\n\022GetGpsGlobalOrigin\022/.mavsdk."
-    "rpc.telemetry.GetGpsGlobalOriginRequest\032"
-    "0.mavsdk.rpc.telemetry.GetGpsGlobalOrigi"
-    "nResponse\"\000B%\n\023io.mavsdk.telemetryB\016Tele"
-    "metryProtob\006proto3"
+    "\"/\n\034SetRateDistanceSensorRequest\022\017\n\007rate"
+    "_hz\030\001 \001(\001\"`\n\035SetRateDistanceSensorRespon"
+    "se\022\?\n\020telemetry_result\030\001 \001(\0132%.mavsdk.rp"
+    "c.telemetry.TelemetryResult\"\033\n\031GetGpsGlo"
+    "balOriginRequest\"\237\001\n\032GetGpsGlobalOriginR"
+    "esponse\022\?\n\020telemetry_result\030\001 \001(\0132%.mavs"
+    "dk.rpc.telemetry.TelemetryResult\022@\n\021gps_"
+    "global_origin\030\002 \001(\0132%.mavsdk.rpc.telemet"
+    "ry.GpsGlobalOrigin\")\n\026SetRateAltitudeReq"
+    "uest\022\017\n\007rate_hz\030\001 \001(\001\"Z\n\027SetRateAltitude"
+    "Response\022\?\n\020telemetry_result\030\001 \001(\0132%.mav"
+    "sdk.rpc.telemetry.TelemetryResult\"\225\001\n\010Po"
+    "sition\022\035\n\014latitude_deg\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n"
+    "\rlongitude_deg\030\002 \001(\001B\007\202\265\030\003NaN\022$\n\023absolut"
+    "e_altitude_m\030\003 \001(\002B\007\202\265\030\003NaN\022$\n\023relative_"
+    "altitude_m\030\004 \001(\002B\007\202\265\030\003NaN\"\'\n\007Heading\022\034\n\013"
+    "heading_deg\030\001 \001(\001B\007\202\265\030\003NaN\"r\n\nQuaternion"
+    "\022\022\n\001w\030\001 \001(\002B\007\202\265\030\003NaN\022\022\n\001x\030\002 \001(\002B\007\202\265\030\003NaN"
+    "\022\022\n\001y\030\003 \001(\002B\007\202\265\030\003NaN\022\022\n\001z\030\004 \001(\002B\007\202\265\030\003NaN"
+    "\022\024\n\014timestamp_us\030\005 \001(\004\"s\n\nEulerAngle\022\031\n\010"
+    "roll_deg\030\001 \001(\002B\007\202\265\030\003NaN\022\032\n\tpitch_deg\030\002 \001"
+    "(\002B\007\202\265\030\003NaN\022\030\n\007yaw_deg\030\003 \001(\002B\007\202\265\030\003NaN\022\024\n"
+    "\014timestamp_us\030\004 \001(\004\"l\n\023AngularVelocityBo"
+    "dy\022\033\n\nroll_rad_s\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013pitch"
+    "_rad_s\030\002 \001(\002B\007\202\265\030\003NaN\022\032\n\tyaw_rad_s\030\003 \001(\002"
+    "B\007\202\265\030\003NaN\"Y\n\007GpsInfo\022\035\n\016num_satellites\030\001"
+    " \001(\005B\005\202\265\030\0010\022/\n\010fix_type\030\002 \001(\0162\035.mavsdk.r"
+    "pc.telemetry.FixType\"\337\002\n\006RawGps\022\024\n\014times"
+    "tamp_us\030\001 \001(\004\022\024\n\014latitude_deg\030\002 \001(\001\022\025\n\rl"
+    "ongitude_deg\030\003 \001(\001\022\033\n\023absolute_altitude_"
+    "m\030\004 \001(\002\022\014\n\004hdop\030\005 \001(\002\022\014\n\004vdop\030\006 \001(\002\022\024\n\014v"
+    "elocity_m_s\030\007 \001(\002\022\017\n\007cog_deg\030\010 \001(\002\022\034\n\024al"
+    "titude_ellipsoid_m\030\t \001(\002\022 \n\030horizontal_u"
+    "ncertainty_m\030\n \001(\002\022\036\n\026vertical_uncertain"
+    "ty_m\030\013 \001(\002\022 \n\030velocity_uncertainty_m_s\030\014"
+    " \001(\002\022\037\n\027heading_uncertainty_deg\030\r \001(\002\022\017\n"
+    "\007yaw_deg\030\016 \001(\002\"\312\001\n\007Battery\022\021\n\002id\030\001 \001(\rB\005"
+    "\202\265\030\0010\022!\n\020temperature_degc\030\002 \001(\002B\007\202\265\030\003NaN"
+    "\022\032\n\tvoltage_v\030\003 \001(\002B\007\202\265\030\003NaN\022\"\n\021current_"
+    "battery_a\030\004 \001(\002B\007\202\265\030\003NaN\022%\n\024capacity_con"
+    "sumed_ah\030\005 \001(\002B\007\202\265\030\003NaN\022\"\n\021remaining_per"
+    "cent\030\006 \001(\002B\007\202\265\030\003NaN\"\271\002\n\006Health\022.\n\033is_gyr"
+    "ometer_calibration_ok\030\001 \001(\010B\t\202\265\030\005false\0222"
+    "\n\037is_accelerometer_calibration_ok\030\002 \001(\010B"
+    "\t\202\265\030\005false\0221\n\036is_magnetometer_calibratio"
+    "n_ok\030\003 \001(\010B\t\202\265\030\005false\022\'\n\024is_local_positi"
+    "on_ok\030\005 \001(\010B\t\202\265\030\005false\022(\n\025is_global_posi"
+    "tion_ok\030\006 \001(\010B\t\202\265\030\005false\022&\n\023is_home_posi"
+    "tion_ok\030\007 \001(\010B\t\202\265\030\005false\022\035\n\nis_armable\030\010"
+    " \001(\010B\t\202\265\030\005false\"|\n\010RcStatus\022%\n\022was_avail"
+    "able_once\030\001 \001(\010B\t\202\265\030\005false\022\037\n\014is_availab"
+    "le\030\002 \001(\010B\t\202\265\030\005false\022(\n\027signal_strength_p"
+    "ercent\030\003 \001(\002B\007\202\265\030\003NaN\"N\n\nStatusText\0222\n\004t"
+    "ype\030\001 \001(\0162$.mavsdk.rpc.telemetry.StatusT"
+    "extType\022\014\n\004text\030\002 \001(\t\"\?\n\025ActuatorControl"
+    "Target\022\024\n\005group\030\001 \001(\005B\005\202\265\030\0010\022\020\n\010controls"
+    "\030\002 \003(\002\"\?\n\024ActuatorOutputStatus\022\025\n\006active"
+    "\030\001 \001(\rB\005\202\265\030\0010\022\020\n\010actuator\030\002 \003(\002\"\'\n\nCovar"
+    "iance\022\031\n\021covariance_matrix\030\001 \003(\002\";\n\014Velo"
+    "cityBody\022\r\n\005x_m_s\030\001 \001(\002\022\r\n\005y_m_s\030\002 \001(\002\022\r"
+    "\n\005z_m_s\030\003 \001(\002\"5\n\014PositionBody\022\013\n\003x_m\030\001 \001"
+    "(\002\022\013\n\003y_m\030\002 \001(\002\022\013\n\003z_m\030\003 \001(\002\"\354\004\n\010Odometr"
+    "y\022\021\n\ttime_usec\030\001 \001(\004\0229\n\010frame_id\030\002 \001(\0162\'"
+    ".mavsdk.rpc.telemetry.Odometry.MavFrame\022"
+    "\?\n\016child_frame_id\030\003 \001(\0162\'.mavsdk.rpc.tel"
+    "emetry.Odometry.MavFrame\0229\n\rposition_bod"
+    "y\030\004 \001(\0132\".mavsdk.rpc.telemetry.PositionB"
+    "ody\022+\n\001q\030\005 \001(\0132 .mavsdk.rpc.telemetry.Qu"
+    "aternion\0229\n\rvelocity_body\030\006 \001(\0132\".mavsdk"
+    ".rpc.telemetry.VelocityBody\022H\n\025angular_v"
+    "elocity_body\030\007 \001(\0132).mavsdk.rpc.telemetr"
+    "y.AngularVelocityBody\0229\n\017pose_covariance"
+    "\030\010 \001(\0132 .mavsdk.rpc.telemetry.Covariance"
+    "\022=\n\023velocity_covariance\030\t \001(\0132 .mavsdk.r"
+    "pc.telemetry.Covariance\"j\n\010MavFrame\022\023\n\017M"
+    "AV_FRAME_UNDEF\020\000\022\026\n\022MAV_FRAME_BODY_NED\020\010"
+    "\022\030\n\024MAV_FRAME_VISION_NED\020\020\022\027\n\023MAV_FRAME_"
+    "ESTIM_NED\020\022\"\266\001\n\016DistanceSensor\022#\n\022minimu"
+    "m_distance_m\030\001 \001(\002B\007\202\265\030\003NaN\022#\n\022maximum_d"
+    "istance_m\030\002 \001(\002B\007\202\265\030\003NaN\022#\n\022current_dist"
+    "ance_m\030\003 \001(\002B\007\202\265\030\003NaN\0225\n\013orientation\030\004 \001"
+    "(\0132 .mavsdk.rpc.telemetry.EulerAngle\"\260\001\n"
+    "\016ScaledPressure\022\024\n\014timestamp_us\030\001 \001(\004\022\035\n"
+    "\025absolute_pressure_hpa\030\002 \001(\002\022!\n\031differen"
+    "tial_pressure_hpa\030\003 \001(\002\022\027\n\017temperature_d"
+    "eg\030\004 \001(\002\022-\n%differential_pressure_temper"
+    "ature_deg\030\005 \001(\002\"Y\n\013PositionNed\022\030\n\007north_"
+    "m\030\001 \001(\002B\007\202\265\030\003NaN\022\027\n\006east_m\030\002 \001(\002B\007\202\265\030\003Na"
+    "N\022\027\n\006down_m\030\003 \001(\002B\007\202\265\030\003NaN\"D\n\013VelocityNe"
+    "d\022\021\n\tnorth_m_s\030\001 \001(\002\022\020\n\010east_m_s\030\002 \001(\002\022\020"
+    "\n\010down_m_s\030\003 \001(\002\"\177\n\023PositionVelocityNed\022"
+    "3\n\010position\030\001 \001(\0132!.mavsdk.rpc.telemetry"
+    ".PositionNed\0223\n\010velocity\030\002 \001(\0132!.mavsdk."
+    "rpc.telemetry.VelocityNed\"r\n\013GroundTruth"
+    "\022\035\n\014latitude_deg\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rlongi"
+    "tude_deg\030\002 \001(\001B\007\202\265\030\003NaN\022$\n\023absolute_alti"
+    "tude_m\030\003 \001(\002B\007\202\265\030\003NaN\"x\n\020FixedwingMetric"
+    "s\022\035\n\014airspeed_m_s\030\001 \001(\002B\007\202\265\030\003NaN\022$\n\023thro"
+    "ttle_percentage\030\002 \001(\002B\007\202\265\030\003NaN\022\037\n\016climb_"
+    "rate_m_s\030\003 \001(\002B\007\202\265\030\003NaN\"i\n\017AccelerationF"
+    "rd\022\035\n\014forward_m_s2\030\001 \001(\002B\007\202\265\030\003NaN\022\033\n\nrig"
+    "ht_m_s2\030\002 \001(\002B\007\202\265\030\003NaN\022\032\n\tdown_m_s2\030\003 \001("
+    "\002B\007\202\265\030\003NaN\"o\n\022AngularVelocityFrd\022\036\n\rforw"
+    "ard_rad_s\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013right_rad_s\030"
+    "\002 \001(\002B\007\202\265\030\003NaN\022\033\n\ndown_rad_s\030\003 \001(\002B\007\202\265\030\003"
+    "NaN\"m\n\020MagneticFieldFrd\022\036\n\rforward_gauss"
+    "\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013right_gauss\030\002 \001(\002B\007\202\265"
+    "\030\003NaN\022\033\n\ndown_gauss\030\003 \001(\002B\007\202\265\030\003NaN\"\213\002\n\003I"
+    "mu\022\?\n\020acceleration_frd\030\001 \001(\0132%.mavsdk.rp"
+    "c.telemetry.AccelerationFrd\022F\n\024angular_v"
+    "elocity_frd\030\002 \001(\0132(.mavsdk.rpc.telemetry"
+    ".AngularVelocityFrd\022B\n\022magnetic_field_fr"
+    "d\030\003 \001(\0132&.mavsdk.rpc.telemetry.MagneticF"
+    "ieldFrd\022!\n\020temperature_degc\030\004 \001(\002B\007\202\265\030\003N"
+    "aN\022\024\n\014timestamp_us\030\005 \001(\004\"m\n\017GpsGlobalOri"
+    "gin\022\035\n\014latitude_deg\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rlo"
+    "ngitude_deg\030\002 \001(\001B\007\202\265\030\003NaN\022\033\n\naltitude_m"
+    "\030\003 \001(\002B\007\202\265\030\003NaN\"\346\001\n\010Altitude\022%\n\024altitude"
+    "_monotonic_m\030\001 \001(\002B\007\202\265\030\003NaN\022 \n\017altitude_"
+    "amsl_m\030\002 \001(\002B\007\202\265\030\003NaN\022!\n\020altitude_local_"
+    "m\030\003 \001(\002B\007\202\265\030\003NaN\022$\n\023altitude_relative_m\030"
+    "\004 \001(\002B\007\202\265\030\003NaN\022#\n\022altitude_terrain_m\030\005 \001"
+    "(\002B\007\202\265\030\003NaN\022#\n\022bottom_clearance_m\030\006 \001(\002B"
+    "\007\202\265\030\003NaN\"\241\002\n\017TelemetryResult\022<\n\006result\030\001"
+    " \001(\0162,.mavsdk.rpc.telemetry.TelemetryRes"
+    "ult.Result\022\022\n\nresult_str\030\002 \001(\t\"\273\001\n\006Resul"
+    "t\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020"
+    "\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CONNEC"
+    "TION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004\022\031\n\025RESULT_"
+    "COMMAND_DENIED\020\005\022\022\n\016RESULT_TIMEOUT\020\006\022\026\n\022"
+    "RESULT_UNSUPPORTED\020\007*\244\001\n\007FixType\022\023\n\017FIX_"
+    "TYPE_NO_GPS\020\000\022\023\n\017FIX_TYPE_NO_FIX\020\001\022\023\n\017FI"
+    "X_TYPE_FIX_2D\020\002\022\023\n\017FIX_TYPE_FIX_3D\020\003\022\025\n\021"
+    "FIX_TYPE_FIX_DGPS\020\004\022\026\n\022FIX_TYPE_RTK_FLOA"
+    "T\020\005\022\026\n\022FIX_TYPE_RTK_FIXED\020\006*\206\003\n\nFlightMo"
+    "de\022\027\n\023FLIGHT_MODE_UNKNOWN\020\000\022\025\n\021FLIGHT_MO"
+    "DE_READY\020\001\022\027\n\023FLIGHT_MODE_TAKEOFF\020\002\022\024\n\020F"
+    "LIGHT_MODE_HOLD\020\003\022\027\n\023FLIGHT_MODE_MISSION"
+    "\020\004\022 \n\034FLIGHT_MODE_RETURN_TO_LAUNCH\020\005\022\024\n\020"
+    "FLIGHT_MODE_LAND\020\006\022\030\n\024FLIGHT_MODE_OFFBOA"
+    "RD\020\007\022\031\n\025FLIGHT_MODE_FOLLOW_ME\020\010\022\026\n\022FLIGH"
+    "T_MODE_MANUAL\020\t\022\026\n\022FLIGHT_MODE_ALTCTL\020\n\022"
+    "\026\n\022FLIGHT_MODE_POSCTL\020\013\022\024\n\020FLIGHT_MODE_A"
+    "CRO\020\014\022\032\n\026FLIGHT_MODE_STABILIZED\020\r\022\031\n\025FLI"
+    "GHT_MODE_RATTITUDE\020\016*\371\001\n\016StatusTextType\022"
+    "\032\n\026STATUS_TEXT_TYPE_DEBUG\020\000\022\031\n\025STATUS_TE"
+    "XT_TYPE_INFO\020\001\022\033\n\027STATUS_TEXT_TYPE_NOTIC"
+    "E\020\002\022\034\n\030STATUS_TEXT_TYPE_WARNING\020\003\022\032\n\026STA"
+    "TUS_TEXT_TYPE_ERROR\020\004\022\035\n\031STATUS_TEXT_TYP"
+    "E_CRITICAL\020\005\022\032\n\026STATUS_TEXT_TYPE_ALERT\020\006"
+    "\022\036\n\032STATUS_TEXT_TYPE_EMERGENCY\020\007*\223\001\n\013Lan"
+    "dedState\022\030\n\024LANDED_STATE_UNKNOWN\020\000\022\032\n\026LA"
+    "NDED_STATE_ON_GROUND\020\001\022\027\n\023LANDED_STATE_I"
+    "N_AIR\020\002\022\033\n\027LANDED_STATE_TAKING_OFF\020\003\022\030\n\024"
+    "LANDED_STATE_LANDING\020\004*\215\001\n\tVtolState\022\030\n\024"
+    "VTOL_STATE_UNDEFINED\020\000\022\037\n\033VTOL_STATE_TRA"
+    "NSITION_TO_FW\020\001\022\037\n\033VTOL_STATE_TRANSITION"
+    "_TO_MC\020\002\022\021\n\rVTOL_STATE_MC\020\003\022\021\n\rVTOL_STAT"
+    "E_FW\020\0042\3075\n\020TelemetryService\022o\n\021Subscribe"
+    "Position\022..mavsdk.rpc.telemetry.Subscrib"
+    "ePositionRequest\032&.mavsdk.rpc.telemetry."
+    "PositionResponse\"\0000\001\022c\n\rSubscribeHome\022*."
+    "mavsdk.rpc.telemetry.SubscribeHomeReques"
+    "t\032\".mavsdk.rpc.telemetry.HomeResponse\"\0000"
+    "\001\022f\n\016SubscribeInAir\022+.mavsdk.rpc.telemet"
+    "ry.SubscribeInAirRequest\032#.mavsdk.rpc.te"
+    "lemetry.InAirResponse\"\0000\001\022x\n\024SubscribeLa"
+    "ndedState\0221.mavsdk.rpc.telemetry.Subscri"
+    "beLandedStateRequest\032).mavsdk.rpc.teleme"
+    "try.LandedStateResponse\"\0000\001\022f\n\016Subscribe"
+    "Armed\022+.mavsdk.rpc.telemetry.SubscribeAr"
+    "medRequest\032#.mavsdk.rpc.telemetry.ArmedR"
+    "esponse\"\0000\001\022r\n\022SubscribeVtolState\022/.mavs"
+    "dk.rpc.telemetry.SubscribeVtolStateReque"
+    "st\032\'.mavsdk.rpc.telemetry.VtolStateRespo"
+    "nse\"\0000\001\022\215\001\n\033SubscribeAttitudeQuaternion\022"
+    "8.mavsdk.rpc.telemetry.SubscribeAttitude"
+    "QuaternionRequest\0320.mavsdk.rpc.telemetry"
+    ".AttitudeQuaternionResponse\"\0000\001\022~\n\026Subsc"
+    "ribeAttitudeEuler\0223.mavsdk.rpc.telemetry"
+    ".SubscribeAttitudeEulerRequest\032+.mavsdk."
+    "rpc.telemetry.AttitudeEulerResponse\"\0000\001\022"
+    "\250\001\n$SubscribeAttitudeAngularVelocityBody"
+    "\022A.mavsdk.rpc.telemetry.SubscribeAttitud"
+    "eAngularVelocityBodyRequest\0329.mavsdk.rpc"
+    ".telemetry.AttitudeAngularVelocityBodyRe"
+    "sponse\"\0000\001\022x\n\024SubscribeVelocityNed\0221.mav"
+    "sdk.rpc.telemetry.SubscribeVelocityNedRe"
+    "quest\032).mavsdk.rpc.telemetry.VelocityNed"
+    "Response\"\0000\001\022l\n\020SubscribeGpsInfo\022-.mavsd"
+    "k.rpc.telemetry.SubscribeGpsInfoRequest\032"
+    "%.mavsdk.rpc.telemetry.GpsInfoResponse\"\000"
+    "0\001\022i\n\017SubscribeRawGps\022,.mavsdk.rpc.telem"
+    "etry.SubscribeRawGpsRequest\032$.mavsdk.rpc"
+    ".telemetry.RawGpsResponse\"\0000\001\022l\n\020Subscri"
+    "beBattery\022-.mavsdk.rpc.telemetry.Subscri"
+    "beBatteryRequest\032%.mavsdk.rpc.telemetry."
+    "BatteryResponse\"\0000\001\022u\n\023SubscribeFlightMo"
+    "de\0220.mavsdk.rpc.telemetry.SubscribeFligh"
+    "tModeRequest\032(.mavsdk.rpc.telemetry.Flig"
+    "htModeResponse\"\0000\001\022i\n\017SubscribeHealth\022,."
+    "mavsdk.rpc.telemetry.SubscribeHealthRequ"
+    "est\032$.mavsdk.rpc.telemetry.HealthRespons"
+    "e\"\0000\001\022o\n\021SubscribeRcStatus\022..mavsdk.rpc."
+    "telemetry.SubscribeRcStatusRequest\032&.mav"
+    "sdk.rpc.telemetry.RcStatusResponse\"\0000\001\022u"
+    "\n\023SubscribeStatusText\0220.mavsdk.rpc.telem"
+    "etry.SubscribeStatusTextRequest\032(.mavsdk"
+    ".rpc.telemetry.StatusTextResponse\"\0000\001\022\226\001"
+    "\n\036SubscribeActuatorControlTarget\022;.mavsd"
+    "k.rpc.telemetry.SubscribeActuatorControl"
+    "TargetRequest\0323.mavsdk.rpc.telemetry.Act"
+    "uatorControlTargetResponse\"\0000\001\022\223\001\n\035Subsc"
+    "ribeActuatorOutputStatus\022:.mavsdk.rpc.te"
+    "lemetry.SubscribeActuatorOutputStatusReq"
+    "uest\0322.mavsdk.rpc.telemetry.ActuatorOutp"
+    "utStatusResponse\"\0000\001\022o\n\021SubscribeOdometr"
+    "y\022..mavsdk.rpc.telemetry.SubscribeOdomet"
+    "ryRequest\032&.mavsdk.rpc.telemetry.Odometr"
+    "yResponse\"\0000\001\022\220\001\n\034SubscribePositionVeloc"
+    "ityNed\0229.mavsdk.rpc.telemetry.SubscribeP"
+    "ositionVelocityNedRequest\0321.mavsdk.rpc.t"
+    "elemetry.PositionVelocityNedResponse\"\0000\001"
+    "\022x\n\024SubscribeGroundTruth\0221.mavsdk.rpc.te"
+    "lemetry.SubscribeGroundTruthRequest\032).ma"
+    "vsdk.rpc.telemetry.GroundTruthResponse\"\000"
+    "0\001\022\207\001\n\031SubscribeFixedwingMetrics\0226.mavsd"
+    "k.rpc.telemetry.SubscribeFixedwingMetric"
+    "sRequest\032..mavsdk.rpc.telemetry.Fixedwin"
+    "gMetricsResponse\"\0000\001\022`\n\014SubscribeImu\022).m"
+    "avsdk.rpc.telemetry.SubscribeImuRequest\032"
+    "!.mavsdk.rpc.telemetry.ImuResponse\"\0000\001\022r"
+    "\n\022SubscribeScaledImu\022/.mavsdk.rpc.teleme"
+    "try.SubscribeScaledImuRequest\032\'.mavsdk.r"
+    "pc.telemetry.ScaledImuResponse\"\0000\001\022i\n\017Su"
+    "bscribeRawImu\022,.mavsdk.rpc.telemetry.Sub"
+    "scribeRawImuRequest\032$.mavsdk.rpc.telemet"
+    "ry.RawImuResponse\"\0000\001\022x\n\024SubscribeHealth"
+    "AllOk\0221.mavsdk.rpc.telemetry.SubscribeHe"
+    "althAllOkRequest\032).mavsdk.rpc.telemetry."
+    "HealthAllOkResponse\"\0000\001\022~\n\026SubscribeUnix"
+    "EpochTime\0223.mavsdk.rpc.telemetry.Subscri"
+    "beUnixEpochTimeRequest\032+.mavsdk.rpc.tele"
+    "metry.UnixEpochTimeResponse\"\0000\001\022\201\001\n\027Subs"
+    "cribeDistanceSensor\0224.mavsdk.rpc.telemet"
+    "ry.SubscribeDistanceSensorRequest\032,.mavs"
+    "dk.rpc.telemetry.DistanceSensorResponse\""
+    "\0000\001\022\201\001\n\027SubscribeScaledPressure\0224.mavsdk"
+    ".rpc.telemetry.SubscribeScaledPressureRe"
+    "quest\032,.mavsdk.rpc.telemetry.ScaledPress"
+    "ureResponse\"\0000\001\022l\n\020SubscribeHeading\022-.ma"
+    "vsdk.rpc.telemetry.SubscribeHeadingReque"
+    "st\032%.mavsdk.rpc.telemetry.HeadingRespons"
+    "e\"\0000\001\022o\n\021SubscribeAltitude\022..mavsdk.rpc."
+    "telemetry.SubscribeAltitudeRequest\032&.mav"
+    "sdk.rpc.telemetry.AltitudeResponse\"\0000\001\022p"
+    "\n\017SetRatePosition\022,.mavsdk.rpc.telemetry"
+    ".SetRatePositionRequest\032-.mavsdk.rpc.tel"
+    "emetry.SetRatePositionResponse\"\000\022d\n\013SetR"
+    "ateHome\022(.mavsdk.rpc.telemetry.SetRateHo"
+    "meRequest\032).mavsdk.rpc.telemetry.SetRate"
+    "HomeResponse\"\000\022g\n\014SetRateInAir\022).mavsdk."
+    "rpc.telemetry.SetRateInAirRequest\032*.mavs"
+    "dk.rpc.telemetry.SetRateInAirResponse\"\000\022"
+    "y\n\022SetRateLandedState\022/.mavsdk.rpc.telem"
+    "etry.SetRateLandedStateRequest\0320.mavsdk."
+    "rpc.telemetry.SetRateLandedStateResponse"
+    "\"\000\022s\n\020SetRateVtolState\022-.mavsdk.rpc.tele"
+    "metry.SetRateVtolStateRequest\032..mavsdk.r"
+    "pc.telemetry.SetRateVtolStateResponse\"\000\022"
+    "\216\001\n\031SetRateAttitudeQuaternion\0226.mavsdk.r"
+    "pc.telemetry.SetRateAttitudeQuaternionRe"
+    "quest\0327.mavsdk.rpc.telemetry.SetRateAtti"
+    "tudeQuaternionResponse\"\000\022\177\n\024SetRateAttit"
+    "udeEuler\0221.mavsdk.rpc.telemetry.SetRateA"
+    "ttitudeEulerRequest\0322.mavsdk.rpc.telemet"
+    "ry.SetRateAttitudeEulerResponse\"\000\022y\n\022Set"
+    "RateVelocityNed\022/.mavsdk.rpc.telemetry.S"
+    "etRateVelocityNedRequest\0320.mavsdk.rpc.te"
+    "lemetry.SetRateVelocityNedResponse\"\000\022m\n\016"
+    "SetRateGpsInfo\022+.mavsdk.rpc.telemetry.Se"
+    "tRateGpsInfoRequest\032,.mavsdk.rpc.telemet"
+    "ry.SetRateGpsInfoResponse\"\000\022m\n\016SetRateBa"
+    "ttery\022+.mavsdk.rpc.telemetry.SetRateBatt"
+    "eryRequest\032,.mavsdk.rpc.telemetry.SetRat"
+    "eBatteryResponse\"\000\022p\n\017SetRateRcStatus\022,."
+    "mavsdk.rpc.telemetry.SetRateRcStatusRequ"
+    "est\032-.mavsdk.rpc.telemetry.SetRateRcStat"
+    "usResponse\"\000\022\227\001\n\034SetRateActuatorControlT"
+    "arget\0229.mavsdk.rpc.telemetry.SetRateActu"
+    "atorControlTargetRequest\032:.mavsdk.rpc.te"
+    "lemetry.SetRateActuatorControlTargetResp"
+    "onse\"\000\022\224\001\n\033SetRateActuatorOutputStatus\0228"
+    ".mavsdk.rpc.telemetry.SetRateActuatorOut"
+    "putStatusRequest\0329.mavsdk.rpc.telemetry."
+    "SetRateActuatorOutputStatusResponse\"\000\022p\n"
+    "\017SetRateOdometry\022,.mavsdk.rpc.telemetry."
+    "SetRateOdometryRequest\032-.mavsdk.rpc.tele"
+    "metry.SetRateOdometryResponse\"\000\022\221\001\n\032SetR"
+    "atePositionVelocityNed\0227.mavsdk.rpc.tele"
+    "metry.SetRatePositionVelocityNedRequest\032"
+    "8.mavsdk.rpc.telemetry.SetRatePositionVe"
+    "locityNedResponse\"\000\022y\n\022SetRateGroundTrut"
+    "h\022/.mavsdk.rpc.telemetry.SetRateGroundTr"
+    "uthRequest\0320.mavsdk.rpc.telemetry.SetRat"
+    "eGroundTruthResponse\"\000\022\210\001\n\027SetRateFixedw"
+    "ingMetrics\0224.mavsdk.rpc.telemetry.SetRat"
+    "eFixedwingMetricsRequest\0325.mavsdk.rpc.te"
+    "lemetry.SetRateFixedwingMetricsResponse\""
+    "\000\022a\n\nSetRateImu\022\'.mavsdk.rpc.telemetry.S"
+    "etRateImuRequest\032(.mavsdk.rpc.telemetry."
+    "SetRateImuResponse\"\000\022s\n\020SetRateScaledImu"
+    "\022-.mavsdk.rpc.telemetry.SetRateScaledImu"
+    "Request\032..mavsdk.rpc.telemetry.SetRateSc"
+    "aledImuResponse\"\000\022j\n\rSetRateRawImu\022*.mav"
+    "sdk.rpc.telemetry.SetRateRawImuRequest\032+"
+    ".mavsdk.rpc.telemetry.SetRateRawImuRespo"
+    "nse\"\000\022\177\n\024SetRateUnixEpochTime\0221.mavsdk.r"
+    "pc.telemetry.SetRateUnixEpochTimeRequest"
+    "\0322.mavsdk.rpc.telemetry.SetRateUnixEpoch"
+    "TimeResponse\"\000\022\202\001\n\025SetRateDistanceSensor"
+    "\0222.mavsdk.rpc.telemetry.SetRateDistanceS"
+    "ensorRequest\0323.mavsdk.rpc.telemetry.SetR"
+    "ateDistanceSensorResponse\"\000\022p\n\017SetRateAl"
+    "titude\022,.mavsdk.rpc.telemetry.SetRateAlt"
+    "itudeRequest\032-.mavsdk.rpc.telemetry.SetR"
+    "ateAltitudeResponse\"\000\022y\n\022GetGpsGlobalOri"
+    "gin\022/.mavsdk.rpc.telemetry.GetGpsGlobalO"
+    "riginRequest\0320.mavsdk.rpc.telemetry.GetG"
+    "psGlobalOriginResponse\"\000B%\n\023io.mavsdk.te"
+    "lemetryB\016TelemetryProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_telemetry_2ftelemetry_2eproto_deps[1] =
     {
@@ -5169,13 +4915,13 @@ static ::absl::once_flag descriptor_table_telemetry_2ftelemetry_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_telemetry_2ftelemetry_2eproto = {
     false,
     false,
-    20858,
+    19831,
     descriptor_table_protodef_telemetry_2ftelemetry_2eproto,
     "telemetry/telemetry.proto",
     &descriptor_table_telemetry_2ftelemetry_2eproto_once,
     descriptor_table_telemetry_2ftelemetry_2eproto_deps,
     1,
-    154,
+    146,
     schemas,
     file_default_instances,
     TableStruct_telemetry_2ftelemetry_2eproto::offsets,
@@ -7327,490 +7073,6 @@ void AttitudeAngularVelocityBodyResponse::InternalSwap(AttitudeAngularVelocityBo
 }
 // ===================================================================
 
-class SubscribeCameraAttitudeQuaternionRequest::_Internal {
- public:
-};
-
-SubscribeCameraAttitudeQuaternionRequest::SubscribeCameraAttitudeQuaternionRequest(::google::protobuf::Arena* arena)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest)
-}
-SubscribeCameraAttitudeQuaternionRequest::SubscribeCameraAttitudeQuaternionRequest(
-    ::google::protobuf::Arena* arena,
-    const SubscribeCameraAttitudeQuaternionRequest& from)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
-  SubscribeCameraAttitudeQuaternionRequest* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeCameraAttitudeQuaternionRequest)
-}
-
-
-
-
-
-
-
-
-
-::google::protobuf::Metadata SubscribeCameraAttitudeQuaternionRequest::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[18]);
-}
-// ===================================================================
-
-class CameraAttitudeQuaternionResponse::_Internal {
- public:
-  using HasBits = decltype(std::declval<CameraAttitudeQuaternionResponse>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-    8 * PROTOBUF_FIELD_OFFSET(CameraAttitudeQuaternionResponse, _impl_._has_bits_);
-  static const ::mavsdk::rpc::telemetry::Quaternion& attitude_quaternion(const CameraAttitudeQuaternionResponse* msg);
-  static void set_has_attitude_quaternion(HasBits* has_bits) {
-    (*has_bits)[0] |= 1u;
-  }
-};
-
-const ::mavsdk::rpc::telemetry::Quaternion& CameraAttitudeQuaternionResponse::_Internal::attitude_quaternion(const CameraAttitudeQuaternionResponse* msg) {
-  return *msg->_impl_.attitude_quaternion_;
-}
-CameraAttitudeQuaternionResponse::CameraAttitudeQuaternionResponse(::google::protobuf::Arena* arena)
-    : ::google::protobuf::Message(arena) {
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
-}
-inline PROTOBUF_NDEBUG_INLINE CameraAttitudeQuaternionResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0} {}
-
-CameraAttitudeQuaternionResponse::CameraAttitudeQuaternionResponse(
-    ::google::protobuf::Arena* arena,
-    const CameraAttitudeQuaternionResponse& from)
-    : ::google::protobuf::Message(arena) {
-  CameraAttitudeQuaternionResponse* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
-  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.attitude_quaternion_ = (cached_has_bits & 0x00000001u)
-                ? CreateMaybeMessage<::mavsdk::rpc::telemetry::Quaternion>(arena, *from._impl_.attitude_quaternion_)
-                : nullptr;
-
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
-}
-inline PROTOBUF_NDEBUG_INLINE CameraAttitudeQuaternionResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : _cached_size_{0} {}
-
-inline void CameraAttitudeQuaternionResponse::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.attitude_quaternion_ = {};
-}
-CameraAttitudeQuaternionResponse::~CameraAttitudeQuaternionResponse() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
-  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  SharedDtor();
-}
-inline void CameraAttitudeQuaternionResponse::SharedDtor() {
-  ABSL_DCHECK(GetArena() == nullptr);
-  delete _impl_.attitude_quaternion_;
-  _impl_.~Impl_();
-}
-
-PROTOBUF_NOINLINE void CameraAttitudeQuaternionResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(_impl_.attitude_quaternion_ != nullptr);
-    _impl_.attitude_quaternion_->Clear();
-  }
-  _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-const char* CameraAttitudeQuaternionResponse::_InternalParse(
-    const char* ptr, ::_pbi::ParseContext* ctx) {
-  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
-  return ptr;
-}
-
-
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 1, 0, 2> CameraAttitudeQuaternionResponse::_table_ = {
-  {
-    PROTOBUF_FIELD_OFFSET(CameraAttitudeQuaternionResponse, _impl_._has_bits_),
-    0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
-    1,  // num_aux_entries
-    offsetof(decltype(_table_), aux_entries),
-    &_CameraAttitudeQuaternionResponse_default_instance_._instance,
-    ::_pbi::TcParser::GenericFallback,  // fallback
-  }, {{
-    // .mavsdk.rpc.telemetry.Quaternion attitude_quaternion = 1;
-    {::_pbi::TcParser::FastMtS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(CameraAttitudeQuaternionResponse, _impl_.attitude_quaternion_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // .mavsdk.rpc.telemetry.Quaternion attitude_quaternion = 1;
-    {PROTOBUF_FIELD_OFFSET(CameraAttitudeQuaternionResponse, _impl_.attitude_quaternion_), _Internal::kHasBitsOffset + 0, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-  }}, {{
-    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry::Quaternion>()},
-  }}, {{
-  }},
-};
-
-::uint8_t* CameraAttitudeQuaternionResponse::_InternalSerialize(
-    ::uint8_t* target,
-    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  // .mavsdk.rpc.telemetry.Quaternion attitude_quaternion = 1;
-  if (cached_has_bits & 0x00000001u) {
-    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        1, _Internal::attitude_quaternion(this),
-        _Internal::attitude_quaternion(this).GetCachedSize(), target, stream);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target =
-        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
-  return target;
-}
-
-::size_t CameraAttitudeQuaternionResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
-  ::size_t total_size = 0;
-
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.Quaternion attitude_quaternion = 1;
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    total_size +=
-        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.attitude_quaternion_);
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
-}
-
-const ::google::protobuf::Message::ClassData CameraAttitudeQuaternionResponse::_class_data_ = {
-    CameraAttitudeQuaternionResponse::MergeImpl,
-    nullptr,  // OnDemandRegisterArenaDtor
-};
-const ::google::protobuf::Message::ClassData* CameraAttitudeQuaternionResponse::GetClassData() const {
-  return &_class_data_;
-}
-
-void CameraAttitudeQuaternionResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
-  auto* const _this = static_cast<CameraAttitudeQuaternionResponse*>(&to_msg);
-  auto& from = static_cast<const CameraAttitudeQuaternionResponse&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_internal_mutable_attitude_quaternion()->::mavsdk::rpc::telemetry::Quaternion::MergeFrom(
-        from._internal_attitude_quaternion());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void CameraAttitudeQuaternionResponse::CopyFrom(const CameraAttitudeQuaternionResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry.CameraAttitudeQuaternionResponse)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-PROTOBUF_NOINLINE bool CameraAttitudeQuaternionResponse::IsInitialized() const {
-  return true;
-}
-
-::_pbi::CachedSize* CameraAttitudeQuaternionResponse::AccessCachedSize() const {
-  return &_impl_._cached_size_;
-}
-void CameraAttitudeQuaternionResponse::InternalSwap(CameraAttitudeQuaternionResponse* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  swap(_impl_.attitude_quaternion_, other->_impl_.attitude_quaternion_);
-}
-
-::google::protobuf::Metadata CameraAttitudeQuaternionResponse::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[19]);
-}
-// ===================================================================
-
-class SubscribeCameraAttitudeEulerRequest::_Internal {
- public:
-};
-
-SubscribeCameraAttitudeEulerRequest::SubscribeCameraAttitudeEulerRequest(::google::protobuf::Arena* arena)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest)
-}
-SubscribeCameraAttitudeEulerRequest::SubscribeCameraAttitudeEulerRequest(
-    ::google::protobuf::Arena* arena,
-    const SubscribeCameraAttitudeEulerRequest& from)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
-  SubscribeCameraAttitudeEulerRequest* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SubscribeCameraAttitudeEulerRequest)
-}
-
-
-
-
-
-
-
-
-
-::google::protobuf::Metadata SubscribeCameraAttitudeEulerRequest::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[20]);
-}
-// ===================================================================
-
-class CameraAttitudeEulerResponse::_Internal {
- public:
-  using HasBits = decltype(std::declval<CameraAttitudeEulerResponse>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-    8 * PROTOBUF_FIELD_OFFSET(CameraAttitudeEulerResponse, _impl_._has_bits_);
-  static const ::mavsdk::rpc::telemetry::EulerAngle& attitude_euler(const CameraAttitudeEulerResponse* msg);
-  static void set_has_attitude_euler(HasBits* has_bits) {
-    (*has_bits)[0] |= 1u;
-  }
-};
-
-const ::mavsdk::rpc::telemetry::EulerAngle& CameraAttitudeEulerResponse::_Internal::attitude_euler(const CameraAttitudeEulerResponse* msg) {
-  return *msg->_impl_.attitude_euler_;
-}
-CameraAttitudeEulerResponse::CameraAttitudeEulerResponse(::google::protobuf::Arena* arena)
-    : ::google::protobuf::Message(arena) {
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
-}
-inline PROTOBUF_NDEBUG_INLINE CameraAttitudeEulerResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0} {}
-
-CameraAttitudeEulerResponse::CameraAttitudeEulerResponse(
-    ::google::protobuf::Arena* arena,
-    const CameraAttitudeEulerResponse& from)
-    : ::google::protobuf::Message(arena) {
-  CameraAttitudeEulerResponse* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
-  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.attitude_euler_ = (cached_has_bits & 0x00000001u)
-                ? CreateMaybeMessage<::mavsdk::rpc::telemetry::EulerAngle>(arena, *from._impl_.attitude_euler_)
-                : nullptr;
-
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
-}
-inline PROTOBUF_NDEBUG_INLINE CameraAttitudeEulerResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : _cached_size_{0} {}
-
-inline void CameraAttitudeEulerResponse::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.attitude_euler_ = {};
-}
-CameraAttitudeEulerResponse::~CameraAttitudeEulerResponse() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
-  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  SharedDtor();
-}
-inline void CameraAttitudeEulerResponse::SharedDtor() {
-  ABSL_DCHECK(GetArena() == nullptr);
-  delete _impl_.attitude_euler_;
-  _impl_.~Impl_();
-}
-
-PROTOBUF_NOINLINE void CameraAttitudeEulerResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(_impl_.attitude_euler_ != nullptr);
-    _impl_.attitude_euler_->Clear();
-  }
-  _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-const char* CameraAttitudeEulerResponse::_InternalParse(
-    const char* ptr, ::_pbi::ParseContext* ctx) {
-  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
-  return ptr;
-}
-
-
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 1, 0, 2> CameraAttitudeEulerResponse::_table_ = {
-  {
-    PROTOBUF_FIELD_OFFSET(CameraAttitudeEulerResponse, _impl_._has_bits_),
-    0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
-    1,  // num_aux_entries
-    offsetof(decltype(_table_), aux_entries),
-    &_CameraAttitudeEulerResponse_default_instance_._instance,
-    ::_pbi::TcParser::GenericFallback,  // fallback
-  }, {{
-    // .mavsdk.rpc.telemetry.EulerAngle attitude_euler = 1;
-    {::_pbi::TcParser::FastMtS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(CameraAttitudeEulerResponse, _impl_.attitude_euler_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // .mavsdk.rpc.telemetry.EulerAngle attitude_euler = 1;
-    {PROTOBUF_FIELD_OFFSET(CameraAttitudeEulerResponse, _impl_.attitude_euler_), _Internal::kHasBitsOffset + 0, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-  }}, {{
-    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry::EulerAngle>()},
-  }}, {{
-  }},
-};
-
-::uint8_t* CameraAttitudeEulerResponse::_InternalSerialize(
-    ::uint8_t* target,
-    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  // .mavsdk.rpc.telemetry.EulerAngle attitude_euler = 1;
-  if (cached_has_bits & 0x00000001u) {
-    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        1, _Internal::attitude_euler(this),
-        _Internal::attitude_euler(this).GetCachedSize(), target, stream);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target =
-        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
-  return target;
-}
-
-::size_t CameraAttitudeEulerResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
-  ::size_t total_size = 0;
-
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.EulerAngle attitude_euler = 1;
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    total_size +=
-        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.attitude_euler_);
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
-}
-
-const ::google::protobuf::Message::ClassData CameraAttitudeEulerResponse::_class_data_ = {
-    CameraAttitudeEulerResponse::MergeImpl,
-    nullptr,  // OnDemandRegisterArenaDtor
-};
-const ::google::protobuf::Message::ClassData* CameraAttitudeEulerResponse::GetClassData() const {
-  return &_class_data_;
-}
-
-void CameraAttitudeEulerResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
-  auto* const _this = static_cast<CameraAttitudeEulerResponse*>(&to_msg);
-  auto& from = static_cast<const CameraAttitudeEulerResponse&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_internal_mutable_attitude_euler()->::mavsdk::rpc::telemetry::EulerAngle::MergeFrom(
-        from._internal_attitude_euler());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void CameraAttitudeEulerResponse::CopyFrom(const CameraAttitudeEulerResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry.CameraAttitudeEulerResponse)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-PROTOBUF_NOINLINE bool CameraAttitudeEulerResponse::IsInitialized() const {
-  return true;
-}
-
-::_pbi::CachedSize* CameraAttitudeEulerResponse::AccessCachedSize() const {
-  return &_impl_._cached_size_;
-}
-void CameraAttitudeEulerResponse::InternalSwap(CameraAttitudeEulerResponse* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  swap(_impl_.attitude_euler_, other->_impl_.attitude_euler_);
-}
-
-::google::protobuf::Metadata CameraAttitudeEulerResponse::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[21]);
-}
-// ===================================================================
-
 class SubscribeVelocityNedRequest::_Internal {
  public:
 };
@@ -7842,7 +7104,7 @@ SubscribeVelocityNedRequest::SubscribeVelocityNedRequest(
 ::google::protobuf::Metadata SubscribeVelocityNedRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[22]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[18]);
 }
 // ===================================================================
 
@@ -8049,7 +7311,7 @@ void VelocityNedResponse::InternalSwap(VelocityNedResponse* PROTOBUF_RESTRICT ot
 ::google::protobuf::Metadata VelocityNedResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[23]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[19]);
 }
 // ===================================================================
 
@@ -8084,7 +7346,7 @@ SubscribeGpsInfoRequest::SubscribeGpsInfoRequest(
 ::google::protobuf::Metadata SubscribeGpsInfoRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[24]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[20]);
 }
 // ===================================================================
 
@@ -8291,7 +7553,7 @@ void GpsInfoResponse::InternalSwap(GpsInfoResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata GpsInfoResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[25]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[21]);
 }
 // ===================================================================
 
@@ -8326,7 +7588,7 @@ SubscribeRawGpsRequest::SubscribeRawGpsRequest(
 ::google::protobuf::Metadata SubscribeRawGpsRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[26]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[22]);
 }
 // ===================================================================
 
@@ -8533,7 +7795,7 @@ void RawGpsResponse::InternalSwap(RawGpsResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata RawGpsResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[27]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[23]);
 }
 // ===================================================================
 
@@ -8568,7 +7830,7 @@ SubscribeBatteryRequest::SubscribeBatteryRequest(
 ::google::protobuf::Metadata SubscribeBatteryRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[28]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[24]);
 }
 // ===================================================================
 
@@ -8775,7 +8037,7 @@ void BatteryResponse::InternalSwap(BatteryResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata BatteryResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[29]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[25]);
 }
 // ===================================================================
 
@@ -8810,7 +8072,7 @@ SubscribeFlightModeRequest::SubscribeFlightModeRequest(
 ::google::protobuf::Metadata SubscribeFlightModeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[30]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[26]);
 }
 // ===================================================================
 
@@ -8980,7 +8242,7 @@ void FlightModeResponse::InternalSwap(FlightModeResponse* PROTOBUF_RESTRICT othe
 ::google::protobuf::Metadata FlightModeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[31]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[27]);
 }
 // ===================================================================
 
@@ -9015,7 +8277,7 @@ SubscribeHealthRequest::SubscribeHealthRequest(
 ::google::protobuf::Metadata SubscribeHealthRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[32]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[28]);
 }
 // ===================================================================
 
@@ -9222,7 +8484,7 @@ void HealthResponse::InternalSwap(HealthResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata HealthResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[33]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[29]);
 }
 // ===================================================================
 
@@ -9257,7 +8519,7 @@ SubscribeRcStatusRequest::SubscribeRcStatusRequest(
 ::google::protobuf::Metadata SubscribeRcStatusRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[34]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[30]);
 }
 // ===================================================================
 
@@ -9464,7 +8726,7 @@ void RcStatusResponse::InternalSwap(RcStatusResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata RcStatusResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[35]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[31]);
 }
 // ===================================================================
 
@@ -9499,7 +8761,7 @@ SubscribeStatusTextRequest::SubscribeStatusTextRequest(
 ::google::protobuf::Metadata SubscribeStatusTextRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[36]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[32]);
 }
 // ===================================================================
 
@@ -9706,7 +8968,7 @@ void StatusTextResponse::InternalSwap(StatusTextResponse* PROTOBUF_RESTRICT othe
 ::google::protobuf::Metadata StatusTextResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[37]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[33]);
 }
 // ===================================================================
 
@@ -9741,7 +9003,7 @@ SubscribeActuatorControlTargetRequest::SubscribeActuatorControlTargetRequest(
 ::google::protobuf::Metadata SubscribeActuatorControlTargetRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[38]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[34]);
 }
 // ===================================================================
 
@@ -9948,7 +9210,7 @@ void ActuatorControlTargetResponse::InternalSwap(ActuatorControlTargetResponse* 
 ::google::protobuf::Metadata ActuatorControlTargetResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[39]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[35]);
 }
 // ===================================================================
 
@@ -9983,7 +9245,7 @@ SubscribeActuatorOutputStatusRequest::SubscribeActuatorOutputStatusRequest(
 ::google::protobuf::Metadata SubscribeActuatorOutputStatusRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[40]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[36]);
 }
 // ===================================================================
 
@@ -10190,7 +9452,7 @@ void ActuatorOutputStatusResponse::InternalSwap(ActuatorOutputStatusResponse* PR
 ::google::protobuf::Metadata ActuatorOutputStatusResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[41]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[37]);
 }
 // ===================================================================
 
@@ -10225,7 +9487,7 @@ SubscribeOdometryRequest::SubscribeOdometryRequest(
 ::google::protobuf::Metadata SubscribeOdometryRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[42]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[38]);
 }
 // ===================================================================
 
@@ -10432,7 +9694,7 @@ void OdometryResponse::InternalSwap(OdometryResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata OdometryResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[43]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[39]);
 }
 // ===================================================================
 
@@ -10467,7 +9729,7 @@ SubscribePositionVelocityNedRequest::SubscribePositionVelocityNedRequest(
 ::google::protobuf::Metadata SubscribePositionVelocityNedRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[44]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[40]);
 }
 // ===================================================================
 
@@ -10674,7 +9936,7 @@ void PositionVelocityNedResponse::InternalSwap(PositionVelocityNedResponse* PROT
 ::google::protobuf::Metadata PositionVelocityNedResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[45]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[41]);
 }
 // ===================================================================
 
@@ -10709,7 +9971,7 @@ SubscribeGroundTruthRequest::SubscribeGroundTruthRequest(
 ::google::protobuf::Metadata SubscribeGroundTruthRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[46]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[42]);
 }
 // ===================================================================
 
@@ -10916,7 +10178,7 @@ void GroundTruthResponse::InternalSwap(GroundTruthResponse* PROTOBUF_RESTRICT ot
 ::google::protobuf::Metadata GroundTruthResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[47]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[43]);
 }
 // ===================================================================
 
@@ -10951,7 +10213,7 @@ SubscribeFixedwingMetricsRequest::SubscribeFixedwingMetricsRequest(
 ::google::protobuf::Metadata SubscribeFixedwingMetricsRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[48]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[44]);
 }
 // ===================================================================
 
@@ -11158,7 +10420,7 @@ void FixedwingMetricsResponse::InternalSwap(FixedwingMetricsResponse* PROTOBUF_R
 ::google::protobuf::Metadata FixedwingMetricsResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[49]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[45]);
 }
 // ===================================================================
 
@@ -11193,7 +10455,7 @@ SubscribeImuRequest::SubscribeImuRequest(
 ::google::protobuf::Metadata SubscribeImuRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[50]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[46]);
 }
 // ===================================================================
 
@@ -11400,7 +10662,7 @@ void ImuResponse::InternalSwap(ImuResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata ImuResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[51]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[47]);
 }
 // ===================================================================
 
@@ -11435,7 +10697,7 @@ SubscribeScaledImuRequest::SubscribeScaledImuRequest(
 ::google::protobuf::Metadata SubscribeScaledImuRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[52]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[48]);
 }
 // ===================================================================
 
@@ -11642,7 +10904,7 @@ void ScaledImuResponse::InternalSwap(ScaledImuResponse* PROTOBUF_RESTRICT other)
 ::google::protobuf::Metadata ScaledImuResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[53]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[49]);
 }
 // ===================================================================
 
@@ -11677,7 +10939,7 @@ SubscribeRawImuRequest::SubscribeRawImuRequest(
 ::google::protobuf::Metadata SubscribeRawImuRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[54]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[50]);
 }
 // ===================================================================
 
@@ -11884,7 +11146,7 @@ void RawImuResponse::InternalSwap(RawImuResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata RawImuResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[55]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[51]);
 }
 // ===================================================================
 
@@ -11919,7 +11181,7 @@ SubscribeHealthAllOkRequest::SubscribeHealthAllOkRequest(
 ::google::protobuf::Metadata SubscribeHealthAllOkRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[56]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[52]);
 }
 // ===================================================================
 
@@ -12088,7 +11350,7 @@ void HealthAllOkResponse::InternalSwap(HealthAllOkResponse* PROTOBUF_RESTRICT ot
 ::google::protobuf::Metadata HealthAllOkResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[57]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[53]);
 }
 // ===================================================================
 
@@ -12123,7 +11385,7 @@ SubscribeUnixEpochTimeRequest::SubscribeUnixEpochTimeRequest(
 ::google::protobuf::Metadata SubscribeUnixEpochTimeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[58]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[54]);
 }
 // ===================================================================
 
@@ -12293,7 +11555,7 @@ void UnixEpochTimeResponse::InternalSwap(UnixEpochTimeResponse* PROTOBUF_RESTRIC
 ::google::protobuf::Metadata UnixEpochTimeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[59]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[55]);
 }
 // ===================================================================
 
@@ -12328,7 +11590,7 @@ SubscribeDistanceSensorRequest::SubscribeDistanceSensorRequest(
 ::google::protobuf::Metadata SubscribeDistanceSensorRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[60]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[56]);
 }
 // ===================================================================
 
@@ -12535,7 +11797,7 @@ void DistanceSensorResponse::InternalSwap(DistanceSensorResponse* PROTOBUF_RESTR
 ::google::protobuf::Metadata DistanceSensorResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[61]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[57]);
 }
 // ===================================================================
 
@@ -12570,7 +11832,7 @@ SubscribeScaledPressureRequest::SubscribeScaledPressureRequest(
 ::google::protobuf::Metadata SubscribeScaledPressureRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[62]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[58]);
 }
 // ===================================================================
 
@@ -12777,7 +12039,7 @@ void ScaledPressureResponse::InternalSwap(ScaledPressureResponse* PROTOBUF_RESTR
 ::google::protobuf::Metadata ScaledPressureResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[63]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[59]);
 }
 // ===================================================================
 
@@ -12812,7 +12074,7 @@ SubscribeHeadingRequest::SubscribeHeadingRequest(
 ::google::protobuf::Metadata SubscribeHeadingRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[64]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[60]);
 }
 // ===================================================================
 
@@ -13019,7 +12281,7 @@ void HeadingResponse::InternalSwap(HeadingResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata HeadingResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[65]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[61]);
 }
 // ===================================================================
 
@@ -13054,7 +12316,7 @@ SubscribeAltitudeRequest::SubscribeAltitudeRequest(
 ::google::protobuf::Metadata SubscribeAltitudeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[66]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[62]);
 }
 // ===================================================================
 
@@ -13261,7 +12523,7 @@ void AltitudeResponse::InternalSwap(AltitudeResponse* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata AltitudeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[67]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[63]);
 }
 // ===================================================================
 
@@ -13445,7 +12707,7 @@ void SetRatePositionRequest::InternalSwap(SetRatePositionRequest* PROTOBUF_RESTR
 ::google::protobuf::Metadata SetRatePositionRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[68]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[64]);
 }
 // ===================================================================
 
@@ -13652,7 +12914,7 @@ void SetRatePositionResponse::InternalSwap(SetRatePositionResponse* PROTOBUF_RES
 ::google::protobuf::Metadata SetRatePositionResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[69]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[65]);
 }
 // ===================================================================
 
@@ -13836,7 +13098,7 @@ void SetRateHomeRequest::InternalSwap(SetRateHomeRequest* PROTOBUF_RESTRICT othe
 ::google::protobuf::Metadata SetRateHomeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[70]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[66]);
 }
 // ===================================================================
 
@@ -14043,7 +13305,7 @@ void SetRateHomeResponse::InternalSwap(SetRateHomeResponse* PROTOBUF_RESTRICT ot
 ::google::protobuf::Metadata SetRateHomeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[71]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[67]);
 }
 // ===================================================================
 
@@ -14227,7 +13489,7 @@ void SetRateInAirRequest::InternalSwap(SetRateInAirRequest* PROTOBUF_RESTRICT ot
 ::google::protobuf::Metadata SetRateInAirRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[72]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[68]);
 }
 // ===================================================================
 
@@ -14434,7 +13696,7 @@ void SetRateInAirResponse::InternalSwap(SetRateInAirResponse* PROTOBUF_RESTRICT 
 ::google::protobuf::Metadata SetRateInAirResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[73]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[69]);
 }
 // ===================================================================
 
@@ -14618,7 +13880,7 @@ void SetRateLandedStateRequest::InternalSwap(SetRateLandedStateRequest* PROTOBUF
 ::google::protobuf::Metadata SetRateLandedStateRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[74]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[70]);
 }
 // ===================================================================
 
@@ -14825,7 +14087,7 @@ void SetRateLandedStateResponse::InternalSwap(SetRateLandedStateResponse* PROTOB
 ::google::protobuf::Metadata SetRateLandedStateResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[75]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[71]);
 }
 // ===================================================================
 
@@ -15009,7 +14271,7 @@ void SetRateVtolStateRequest::InternalSwap(SetRateVtolStateRequest* PROTOBUF_RES
 ::google::protobuf::Metadata SetRateVtolStateRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[76]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[72]);
 }
 // ===================================================================
 
@@ -15216,7 +14478,7 @@ void SetRateVtolStateResponse::InternalSwap(SetRateVtolStateResponse* PROTOBUF_R
 ::google::protobuf::Metadata SetRateVtolStateResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[77]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[73]);
 }
 // ===================================================================
 
@@ -15400,7 +14662,7 @@ void SetRateAttitudeEulerRequest::InternalSwap(SetRateAttitudeEulerRequest* PROT
 ::google::protobuf::Metadata SetRateAttitudeEulerRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[78]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[74]);
 }
 // ===================================================================
 
@@ -15607,7 +14869,7 @@ void SetRateAttitudeEulerResponse::InternalSwap(SetRateAttitudeEulerResponse* PR
 ::google::protobuf::Metadata SetRateAttitudeEulerResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[79]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[75]);
 }
 // ===================================================================
 
@@ -15791,7 +15053,7 @@ void SetRateAttitudeQuaternionRequest::InternalSwap(SetRateAttitudeQuaternionReq
 ::google::protobuf::Metadata SetRateAttitudeQuaternionRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[80]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[76]);
 }
 // ===================================================================
 
@@ -15998,7 +15260,7 @@ void SetRateAttitudeQuaternionResponse::InternalSwap(SetRateAttitudeQuaternionRe
 ::google::protobuf::Metadata SetRateAttitudeQuaternionResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[81]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[77]);
 }
 // ===================================================================
 
@@ -16182,7 +15444,7 @@ void SetRateAttitudeAngularVelocityBodyRequest::InternalSwap(SetRateAttitudeAngu
 ::google::protobuf::Metadata SetRateAttitudeAngularVelocityBodyRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[82]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[78]);
 }
 // ===================================================================
 
@@ -16389,789 +15651,7 @@ void SetRateAttitudeAngularVelocityBodyResponse::InternalSwap(SetRateAttitudeAng
 ::google::protobuf::Metadata SetRateAttitudeAngularVelocityBodyResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[83]);
-}
-// ===================================================================
-
-class SetRateCameraAttitudeQuaternionRequest::_Internal {
- public:
-};
-
-SetRateCameraAttitudeQuaternionRequest::SetRateCameraAttitudeQuaternionRequest(::google::protobuf::Arena* arena)
-    : ::google::protobuf::Message(arena) {
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionRequest)
-}
-SetRateCameraAttitudeQuaternionRequest::SetRateCameraAttitudeQuaternionRequest(
-    ::google::protobuf::Arena* arena, const SetRateCameraAttitudeQuaternionRequest& from)
-    : SetRateCameraAttitudeQuaternionRequest(arena) {
-  MergeFrom(from);
-}
-inline PROTOBUF_NDEBUG_INLINE SetRateCameraAttitudeQuaternionRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : _cached_size_{0} {}
-
-inline void SetRateCameraAttitudeQuaternionRequest::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.rate_hz_ = {};
-}
-SetRateCameraAttitudeQuaternionRequest::~SetRateCameraAttitudeQuaternionRequest() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionRequest)
-  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  SharedDtor();
-}
-inline void SetRateCameraAttitudeQuaternionRequest::SharedDtor() {
-  ABSL_DCHECK(GetArena() == nullptr);
-  _impl_.~Impl_();
-}
-
-PROTOBUF_NOINLINE void SetRateCameraAttitudeQuaternionRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionRequest)
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.rate_hz_ = 0;
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-const char* SetRateCameraAttitudeQuaternionRequest::_InternalParse(
-    const char* ptr, ::_pbi::ParseContext* ctx) {
-  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
-  return ptr;
-}
-
-
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 0, 2> SetRateCameraAttitudeQuaternionRequest::_table_ = {
-  {
-    0,  // no _has_bits_
-    0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
-    &_SetRateCameraAttitudeQuaternionRequest_default_instance_._instance,
-    ::_pbi::TcParser::GenericFallback,  // fallback
-  }, {{
-    // double rate_hz = 1;
-    {::_pbi::TcParser::FastF64S1,
-     {9, 63, 0, PROTOBUF_FIELD_OFFSET(SetRateCameraAttitudeQuaternionRequest, _impl_.rate_hz_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // double rate_hz = 1;
-    {PROTOBUF_FIELD_OFFSET(SetRateCameraAttitudeQuaternionRequest, _impl_.rate_hz_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
-  }},
-  // no aux_entries
-  {{
-  }},
-};
-
-::uint8_t* SetRateCameraAttitudeQuaternionRequest::_InternalSerialize(
-    ::uint8_t* target,
-    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionRequest)
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  // double rate_hz = 1;
-  static_assert(sizeof(::uint64_t) == sizeof(double),
-                "Code assumes ::uint64_t and double are the same size.");
-  double tmp_rate_hz = this->_internal_rate_hz();
-  ::uint64_t raw_rate_hz;
-  memcpy(&raw_rate_hz, &tmp_rate_hz, sizeof(tmp_rate_hz));
-  if (raw_rate_hz != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-        1, this->_internal_rate_hz(), target);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target =
-        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionRequest)
-  return target;
-}
-
-::size_t SetRateCameraAttitudeQuaternionRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionRequest)
-  ::size_t total_size = 0;
-
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // double rate_hz = 1;
-  static_assert(sizeof(::uint64_t) == sizeof(double),
-                "Code assumes ::uint64_t and double are the same size.");
-  double tmp_rate_hz = this->_internal_rate_hz();
-  ::uint64_t raw_rate_hz;
-  memcpy(&raw_rate_hz, &tmp_rate_hz, sizeof(tmp_rate_hz));
-  if (raw_rate_hz != 0) {
-    total_size += 9;
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
-}
-
-const ::google::protobuf::Message::ClassData SetRateCameraAttitudeQuaternionRequest::_class_data_ = {
-    SetRateCameraAttitudeQuaternionRequest::MergeImpl,
-    nullptr,  // OnDemandRegisterArenaDtor
-};
-const ::google::protobuf::Message::ClassData* SetRateCameraAttitudeQuaternionRequest::GetClassData() const {
-  return &_class_data_;
-}
-
-void SetRateCameraAttitudeQuaternionRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
-  auto* const _this = static_cast<SetRateCameraAttitudeQuaternionRequest*>(&to_msg);
-  auto& from = static_cast<const SetRateCameraAttitudeQuaternionRequest&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionRequest)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  static_assert(sizeof(::uint64_t) == sizeof(double),
-                "Code assumes ::uint64_t and double are the same size.");
-  double tmp_rate_hz = from._internal_rate_hz();
-  ::uint64_t raw_rate_hz;
-  memcpy(&raw_rate_hz, &tmp_rate_hz, sizeof(tmp_rate_hz));
-  if (raw_rate_hz != 0) {
-    _this->_internal_set_rate_hz(from._internal_rate_hz());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void SetRateCameraAttitudeQuaternionRequest::CopyFrom(const SetRateCameraAttitudeQuaternionRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionRequest)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-PROTOBUF_NOINLINE bool SetRateCameraAttitudeQuaternionRequest::IsInitialized() const {
-  return true;
-}
-
-::_pbi::CachedSize* SetRateCameraAttitudeQuaternionRequest::AccessCachedSize() const {
-  return &_impl_._cached_size_;
-}
-void SetRateCameraAttitudeQuaternionRequest::InternalSwap(SetRateCameraAttitudeQuaternionRequest* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-        swap(_impl_.rate_hz_, other->_impl_.rate_hz_);
-}
-
-::google::protobuf::Metadata SetRateCameraAttitudeQuaternionRequest::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[84]);
-}
-// ===================================================================
-
-class SetRateCameraAttitudeQuaternionResponse::_Internal {
- public:
-  using HasBits = decltype(std::declval<SetRateCameraAttitudeQuaternionResponse>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-    8 * PROTOBUF_FIELD_OFFSET(SetRateCameraAttitudeQuaternionResponse, _impl_._has_bits_);
-  static const ::mavsdk::rpc::telemetry::TelemetryResult& telemetry_result(const SetRateCameraAttitudeQuaternionResponse* msg);
-  static void set_has_telemetry_result(HasBits* has_bits) {
-    (*has_bits)[0] |= 1u;
-  }
-};
-
-const ::mavsdk::rpc::telemetry::TelemetryResult& SetRateCameraAttitudeQuaternionResponse::_Internal::telemetry_result(const SetRateCameraAttitudeQuaternionResponse* msg) {
-  return *msg->_impl_.telemetry_result_;
-}
-SetRateCameraAttitudeQuaternionResponse::SetRateCameraAttitudeQuaternionResponse(::google::protobuf::Arena* arena)
-    : ::google::protobuf::Message(arena) {
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionResponse)
-}
-inline PROTOBUF_NDEBUG_INLINE SetRateCameraAttitudeQuaternionResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0} {}
-
-SetRateCameraAttitudeQuaternionResponse::SetRateCameraAttitudeQuaternionResponse(
-    ::google::protobuf::Arena* arena,
-    const SetRateCameraAttitudeQuaternionResponse& from)
-    : ::google::protobuf::Message(arena) {
-  SetRateCameraAttitudeQuaternionResponse* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
-  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.telemetry_result_ = (cached_has_bits & 0x00000001u)
-                ? CreateMaybeMessage<::mavsdk::rpc::telemetry::TelemetryResult>(arena, *from._impl_.telemetry_result_)
-                : nullptr;
-
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionResponse)
-}
-inline PROTOBUF_NDEBUG_INLINE SetRateCameraAttitudeQuaternionResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : _cached_size_{0} {}
-
-inline void SetRateCameraAttitudeQuaternionResponse::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.telemetry_result_ = {};
-}
-SetRateCameraAttitudeQuaternionResponse::~SetRateCameraAttitudeQuaternionResponse() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionResponse)
-  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  SharedDtor();
-}
-inline void SetRateCameraAttitudeQuaternionResponse::SharedDtor() {
-  ABSL_DCHECK(GetArena() == nullptr);
-  delete _impl_.telemetry_result_;
-  _impl_.~Impl_();
-}
-
-PROTOBUF_NOINLINE void SetRateCameraAttitudeQuaternionResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionResponse)
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(_impl_.telemetry_result_ != nullptr);
-    _impl_.telemetry_result_->Clear();
-  }
-  _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-const char* SetRateCameraAttitudeQuaternionResponse::_InternalParse(
-    const char* ptr, ::_pbi::ParseContext* ctx) {
-  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
-  return ptr;
-}
-
-
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetRateCameraAttitudeQuaternionResponse::_table_ = {
-  {
-    PROTOBUF_FIELD_OFFSET(SetRateCameraAttitudeQuaternionResponse, _impl_._has_bits_),
-    0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
-    1,  // num_aux_entries
-    offsetof(decltype(_table_), aux_entries),
-    &_SetRateCameraAttitudeQuaternionResponse_default_instance_._instance,
-    ::_pbi::TcParser::GenericFallback,  // fallback
-  }, {{
-    // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
-    {::_pbi::TcParser::FastMtS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetRateCameraAttitudeQuaternionResponse, _impl_.telemetry_result_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
-    {PROTOBUF_FIELD_OFFSET(SetRateCameraAttitudeQuaternionResponse, _impl_.telemetry_result_), _Internal::kHasBitsOffset + 0, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-  }}, {{
-    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry::TelemetryResult>()},
-  }}, {{
-  }},
-};
-
-::uint8_t* SetRateCameraAttitudeQuaternionResponse::_InternalSerialize(
-    ::uint8_t* target,
-    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionResponse)
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
-  if (cached_has_bits & 0x00000001u) {
-    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        1, _Internal::telemetry_result(this),
-        _Internal::telemetry_result(this).GetCachedSize(), target, stream);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target =
-        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionResponse)
-  return target;
-}
-
-::size_t SetRateCameraAttitudeQuaternionResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionResponse)
-  ::size_t total_size = 0;
-
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    total_size +=
-        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.telemetry_result_);
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
-}
-
-const ::google::protobuf::Message::ClassData SetRateCameraAttitudeQuaternionResponse::_class_data_ = {
-    SetRateCameraAttitudeQuaternionResponse::MergeImpl,
-    nullptr,  // OnDemandRegisterArenaDtor
-};
-const ::google::protobuf::Message::ClassData* SetRateCameraAttitudeQuaternionResponse::GetClassData() const {
-  return &_class_data_;
-}
-
-void SetRateCameraAttitudeQuaternionResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
-  auto* const _this = static_cast<SetRateCameraAttitudeQuaternionResponse*>(&to_msg);
-  auto& from = static_cast<const SetRateCameraAttitudeQuaternionResponse&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionResponse)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_internal_mutable_telemetry_result()->::mavsdk::rpc::telemetry::TelemetryResult::MergeFrom(
-        from._internal_telemetry_result());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void SetRateCameraAttitudeQuaternionResponse::CopyFrom(const SetRateCameraAttitudeQuaternionResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeQuaternionResponse)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-PROTOBUF_NOINLINE bool SetRateCameraAttitudeQuaternionResponse::IsInitialized() const {
-  return true;
-}
-
-::_pbi::CachedSize* SetRateCameraAttitudeQuaternionResponse::AccessCachedSize() const {
-  return &_impl_._cached_size_;
-}
-void SetRateCameraAttitudeQuaternionResponse::InternalSwap(SetRateCameraAttitudeQuaternionResponse* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  swap(_impl_.telemetry_result_, other->_impl_.telemetry_result_);
-}
-
-::google::protobuf::Metadata SetRateCameraAttitudeQuaternionResponse::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[85]);
-}
-// ===================================================================
-
-class SetRateCameraAttitudeRequest::_Internal {
- public:
-};
-
-SetRateCameraAttitudeRequest::SetRateCameraAttitudeRequest(::google::protobuf::Arena* arena)
-    : ::google::protobuf::Message(arena) {
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.SetRateCameraAttitudeRequest)
-}
-SetRateCameraAttitudeRequest::SetRateCameraAttitudeRequest(
-    ::google::protobuf::Arena* arena, const SetRateCameraAttitudeRequest& from)
-    : SetRateCameraAttitudeRequest(arena) {
-  MergeFrom(from);
-}
-inline PROTOBUF_NDEBUG_INLINE SetRateCameraAttitudeRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : _cached_size_{0} {}
-
-inline void SetRateCameraAttitudeRequest::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.rate_hz_ = {};
-}
-SetRateCameraAttitudeRequest::~SetRateCameraAttitudeRequest() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry.SetRateCameraAttitudeRequest)
-  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  SharedDtor();
-}
-inline void SetRateCameraAttitudeRequest::SharedDtor() {
-  ABSL_DCHECK(GetArena() == nullptr);
-  _impl_.~Impl_();
-}
-
-PROTOBUF_NOINLINE void SetRateCameraAttitudeRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeRequest)
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.rate_hz_ = 0;
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-const char* SetRateCameraAttitudeRequest::_InternalParse(
-    const char* ptr, ::_pbi::ParseContext* ctx) {
-  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
-  return ptr;
-}
-
-
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 0, 2> SetRateCameraAttitudeRequest::_table_ = {
-  {
-    0,  // no _has_bits_
-    0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
-    &_SetRateCameraAttitudeRequest_default_instance_._instance,
-    ::_pbi::TcParser::GenericFallback,  // fallback
-  }, {{
-    // double rate_hz = 1;
-    {::_pbi::TcParser::FastF64S1,
-     {9, 63, 0, PROTOBUF_FIELD_OFFSET(SetRateCameraAttitudeRequest, _impl_.rate_hz_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // double rate_hz = 1;
-    {PROTOBUF_FIELD_OFFSET(SetRateCameraAttitudeRequest, _impl_.rate_hz_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
-  }},
-  // no aux_entries
-  {{
-  }},
-};
-
-::uint8_t* SetRateCameraAttitudeRequest::_InternalSerialize(
-    ::uint8_t* target,
-    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeRequest)
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  // double rate_hz = 1;
-  static_assert(sizeof(::uint64_t) == sizeof(double),
-                "Code assumes ::uint64_t and double are the same size.");
-  double tmp_rate_hz = this->_internal_rate_hz();
-  ::uint64_t raw_rate_hz;
-  memcpy(&raw_rate_hz, &tmp_rate_hz, sizeof(tmp_rate_hz));
-  if (raw_rate_hz != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-        1, this->_internal_rate_hz(), target);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target =
-        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SetRateCameraAttitudeRequest)
-  return target;
-}
-
-::size_t SetRateCameraAttitudeRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeRequest)
-  ::size_t total_size = 0;
-
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // double rate_hz = 1;
-  static_assert(sizeof(::uint64_t) == sizeof(double),
-                "Code assumes ::uint64_t and double are the same size.");
-  double tmp_rate_hz = this->_internal_rate_hz();
-  ::uint64_t raw_rate_hz;
-  memcpy(&raw_rate_hz, &tmp_rate_hz, sizeof(tmp_rate_hz));
-  if (raw_rate_hz != 0) {
-    total_size += 9;
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
-}
-
-const ::google::protobuf::Message::ClassData SetRateCameraAttitudeRequest::_class_data_ = {
-    SetRateCameraAttitudeRequest::MergeImpl,
-    nullptr,  // OnDemandRegisterArenaDtor
-};
-const ::google::protobuf::Message::ClassData* SetRateCameraAttitudeRequest::GetClassData() const {
-  return &_class_data_;
-}
-
-void SetRateCameraAttitudeRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
-  auto* const _this = static_cast<SetRateCameraAttitudeRequest*>(&to_msg);
-  auto& from = static_cast<const SetRateCameraAttitudeRequest&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeRequest)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  static_assert(sizeof(::uint64_t) == sizeof(double),
-                "Code assumes ::uint64_t and double are the same size.");
-  double tmp_rate_hz = from._internal_rate_hz();
-  ::uint64_t raw_rate_hz;
-  memcpy(&raw_rate_hz, &tmp_rate_hz, sizeof(tmp_rate_hz));
-  if (raw_rate_hz != 0) {
-    _this->_internal_set_rate_hz(from._internal_rate_hz());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void SetRateCameraAttitudeRequest::CopyFrom(const SetRateCameraAttitudeRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeRequest)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-PROTOBUF_NOINLINE bool SetRateCameraAttitudeRequest::IsInitialized() const {
-  return true;
-}
-
-::_pbi::CachedSize* SetRateCameraAttitudeRequest::AccessCachedSize() const {
-  return &_impl_._cached_size_;
-}
-void SetRateCameraAttitudeRequest::InternalSwap(SetRateCameraAttitudeRequest* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-        swap(_impl_.rate_hz_, other->_impl_.rate_hz_);
-}
-
-::google::protobuf::Metadata SetRateCameraAttitudeRequest::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[86]);
-}
-// ===================================================================
-
-class SetRateCameraAttitudeResponse::_Internal {
- public:
-  using HasBits = decltype(std::declval<SetRateCameraAttitudeResponse>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-    8 * PROTOBUF_FIELD_OFFSET(SetRateCameraAttitudeResponse, _impl_._has_bits_);
-  static const ::mavsdk::rpc::telemetry::TelemetryResult& telemetry_result(const SetRateCameraAttitudeResponse* msg);
-  static void set_has_telemetry_result(HasBits* has_bits) {
-    (*has_bits)[0] |= 1u;
-  }
-};
-
-const ::mavsdk::rpc::telemetry::TelemetryResult& SetRateCameraAttitudeResponse::_Internal::telemetry_result(const SetRateCameraAttitudeResponse* msg) {
-  return *msg->_impl_.telemetry_result_;
-}
-SetRateCameraAttitudeResponse::SetRateCameraAttitudeResponse(::google::protobuf::Arena* arena)
-    : ::google::protobuf::Message(arena) {
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry.SetRateCameraAttitudeResponse)
-}
-inline PROTOBUF_NDEBUG_INLINE SetRateCameraAttitudeResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0} {}
-
-SetRateCameraAttitudeResponse::SetRateCameraAttitudeResponse(
-    ::google::protobuf::Arena* arena,
-    const SetRateCameraAttitudeResponse& from)
-    : ::google::protobuf::Message(arena) {
-  SetRateCameraAttitudeResponse* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
-  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.telemetry_result_ = (cached_has_bits & 0x00000001u)
-                ? CreateMaybeMessage<::mavsdk::rpc::telemetry::TelemetryResult>(arena, *from._impl_.telemetry_result_)
-                : nullptr;
-
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry.SetRateCameraAttitudeResponse)
-}
-inline PROTOBUF_NDEBUG_INLINE SetRateCameraAttitudeResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : _cached_size_{0} {}
-
-inline void SetRateCameraAttitudeResponse::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.telemetry_result_ = {};
-}
-SetRateCameraAttitudeResponse::~SetRateCameraAttitudeResponse() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry.SetRateCameraAttitudeResponse)
-  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  SharedDtor();
-}
-inline void SetRateCameraAttitudeResponse::SharedDtor() {
-  ABSL_DCHECK(GetArena() == nullptr);
-  delete _impl_.telemetry_result_;
-  _impl_.~Impl_();
-}
-
-PROTOBUF_NOINLINE void SetRateCameraAttitudeResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeResponse)
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(_impl_.telemetry_result_ != nullptr);
-    _impl_.telemetry_result_->Clear();
-  }
-  _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-const char* SetRateCameraAttitudeResponse::_InternalParse(
-    const char* ptr, ::_pbi::ParseContext* ctx) {
-  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
-  return ptr;
-}
-
-
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetRateCameraAttitudeResponse::_table_ = {
-  {
-    PROTOBUF_FIELD_OFFSET(SetRateCameraAttitudeResponse, _impl_._has_bits_),
-    0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
-    1,  // num_aux_entries
-    offsetof(decltype(_table_), aux_entries),
-    &_SetRateCameraAttitudeResponse_default_instance_._instance,
-    ::_pbi::TcParser::GenericFallback,  // fallback
-  }, {{
-    // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
-    {::_pbi::TcParser::FastMtS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetRateCameraAttitudeResponse, _impl_.telemetry_result_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
-    {PROTOBUF_FIELD_OFFSET(SetRateCameraAttitudeResponse, _impl_.telemetry_result_), _Internal::kHasBitsOffset + 0, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-  }}, {{
-    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry::TelemetryResult>()},
-  }}, {{
-  }},
-};
-
-::uint8_t* SetRateCameraAttitudeResponse::_InternalSerialize(
-    ::uint8_t* target,
-    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeResponse)
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
-  if (cached_has_bits & 0x00000001u) {
-    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        1, _Internal::telemetry_result(this),
-        _Internal::telemetry_result(this).GetCachedSize(), target, stream);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target =
-        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry.SetRateCameraAttitudeResponse)
-  return target;
-}
-
-::size_t SetRateCameraAttitudeResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeResponse)
-  ::size_t total_size = 0;
-
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.telemetry.TelemetryResult telemetry_result = 1;
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    total_size +=
-        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.telemetry_result_);
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
-}
-
-const ::google::protobuf::Message::ClassData SetRateCameraAttitudeResponse::_class_data_ = {
-    SetRateCameraAttitudeResponse::MergeImpl,
-    nullptr,  // OnDemandRegisterArenaDtor
-};
-const ::google::protobuf::Message::ClassData* SetRateCameraAttitudeResponse::GetClassData() const {
-  return &_class_data_;
-}
-
-void SetRateCameraAttitudeResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
-  auto* const _this = static_cast<SetRateCameraAttitudeResponse*>(&to_msg);
-  auto& from = static_cast<const SetRateCameraAttitudeResponse&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeResponse)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_internal_mutable_telemetry_result()->::mavsdk::rpc::telemetry::TelemetryResult::MergeFrom(
-        from._internal_telemetry_result());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void SetRateCameraAttitudeResponse::CopyFrom(const SetRateCameraAttitudeResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry.SetRateCameraAttitudeResponse)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-PROTOBUF_NOINLINE bool SetRateCameraAttitudeResponse::IsInitialized() const {
-  return true;
-}
-
-::_pbi::CachedSize* SetRateCameraAttitudeResponse::AccessCachedSize() const {
-  return &_impl_._cached_size_;
-}
-void SetRateCameraAttitudeResponse::InternalSwap(SetRateCameraAttitudeResponse* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  swap(_impl_.telemetry_result_, other->_impl_.telemetry_result_);
-}
-
-::google::protobuf::Metadata SetRateCameraAttitudeResponse::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[87]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[79]);
 }
 // ===================================================================
 
@@ -17355,7 +15835,7 @@ void SetRateVelocityNedRequest::InternalSwap(SetRateVelocityNedRequest* PROTOBUF
 ::google::protobuf::Metadata SetRateVelocityNedRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[88]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[80]);
 }
 // ===================================================================
 
@@ -17562,7 +16042,7 @@ void SetRateVelocityNedResponse::InternalSwap(SetRateVelocityNedResponse* PROTOB
 ::google::protobuf::Metadata SetRateVelocityNedResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[89]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[81]);
 }
 // ===================================================================
 
@@ -17746,7 +16226,7 @@ void SetRateGpsInfoRequest::InternalSwap(SetRateGpsInfoRequest* PROTOBUF_RESTRIC
 ::google::protobuf::Metadata SetRateGpsInfoRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[90]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[82]);
 }
 // ===================================================================
 
@@ -17953,7 +16433,7 @@ void SetRateGpsInfoResponse::InternalSwap(SetRateGpsInfoResponse* PROTOBUF_RESTR
 ::google::protobuf::Metadata SetRateGpsInfoResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[91]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[83]);
 }
 // ===================================================================
 
@@ -18137,7 +16617,7 @@ void SetRateRawGpsRequest::InternalSwap(SetRateRawGpsRequest* PROTOBUF_RESTRICT 
 ::google::protobuf::Metadata SetRateRawGpsRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[92]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[84]);
 }
 // ===================================================================
 
@@ -18321,7 +16801,7 @@ void SetRateBatteryRequest::InternalSwap(SetRateBatteryRequest* PROTOBUF_RESTRIC
 ::google::protobuf::Metadata SetRateBatteryRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[93]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[85]);
 }
 // ===================================================================
 
@@ -18528,7 +17008,7 @@ void SetRateBatteryResponse::InternalSwap(SetRateBatteryResponse* PROTOBUF_RESTR
 ::google::protobuf::Metadata SetRateBatteryResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[94]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[86]);
 }
 // ===================================================================
 
@@ -18712,7 +17192,7 @@ void SetRateRcStatusRequest::InternalSwap(SetRateRcStatusRequest* PROTOBUF_RESTR
 ::google::protobuf::Metadata SetRateRcStatusRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[95]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[87]);
 }
 // ===================================================================
 
@@ -18919,7 +17399,7 @@ void SetRateRcStatusResponse::InternalSwap(SetRateRcStatusResponse* PROTOBUF_RES
 ::google::protobuf::Metadata SetRateRcStatusResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[96]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[88]);
 }
 // ===================================================================
 
@@ -19103,7 +17583,7 @@ void SetRateActuatorControlTargetRequest::InternalSwap(SetRateActuatorControlTar
 ::google::protobuf::Metadata SetRateActuatorControlTargetRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[97]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[89]);
 }
 // ===================================================================
 
@@ -19310,7 +17790,7 @@ void SetRateActuatorControlTargetResponse::InternalSwap(SetRateActuatorControlTa
 ::google::protobuf::Metadata SetRateActuatorControlTargetResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[98]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[90]);
 }
 // ===================================================================
 
@@ -19494,7 +17974,7 @@ void SetRateActuatorOutputStatusRequest::InternalSwap(SetRateActuatorOutputStatu
 ::google::protobuf::Metadata SetRateActuatorOutputStatusRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[99]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[91]);
 }
 // ===================================================================
 
@@ -19701,7 +18181,7 @@ void SetRateActuatorOutputStatusResponse::InternalSwap(SetRateActuatorOutputStat
 ::google::protobuf::Metadata SetRateActuatorOutputStatusResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[100]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[92]);
 }
 // ===================================================================
 
@@ -19885,7 +18365,7 @@ void SetRateOdometryRequest::InternalSwap(SetRateOdometryRequest* PROTOBUF_RESTR
 ::google::protobuf::Metadata SetRateOdometryRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[101]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[93]);
 }
 // ===================================================================
 
@@ -20092,7 +18572,7 @@ void SetRateOdometryResponse::InternalSwap(SetRateOdometryResponse* PROTOBUF_RES
 ::google::protobuf::Metadata SetRateOdometryResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[102]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[94]);
 }
 // ===================================================================
 
@@ -20276,7 +18756,7 @@ void SetRatePositionVelocityNedRequest::InternalSwap(SetRatePositionVelocityNedR
 ::google::protobuf::Metadata SetRatePositionVelocityNedRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[103]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[95]);
 }
 // ===================================================================
 
@@ -20483,7 +18963,7 @@ void SetRatePositionVelocityNedResponse::InternalSwap(SetRatePositionVelocityNed
 ::google::protobuf::Metadata SetRatePositionVelocityNedResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[104]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[96]);
 }
 // ===================================================================
 
@@ -20667,7 +19147,7 @@ void SetRateGroundTruthRequest::InternalSwap(SetRateGroundTruthRequest* PROTOBUF
 ::google::protobuf::Metadata SetRateGroundTruthRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[105]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[97]);
 }
 // ===================================================================
 
@@ -20874,7 +19354,7 @@ void SetRateGroundTruthResponse::InternalSwap(SetRateGroundTruthResponse* PROTOB
 ::google::protobuf::Metadata SetRateGroundTruthResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[106]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[98]);
 }
 // ===================================================================
 
@@ -21058,7 +19538,7 @@ void SetRateFixedwingMetricsRequest::InternalSwap(SetRateFixedwingMetricsRequest
 ::google::protobuf::Metadata SetRateFixedwingMetricsRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[107]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[99]);
 }
 // ===================================================================
 
@@ -21265,7 +19745,7 @@ void SetRateFixedwingMetricsResponse::InternalSwap(SetRateFixedwingMetricsRespon
 ::google::protobuf::Metadata SetRateFixedwingMetricsResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[108]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[100]);
 }
 // ===================================================================
 
@@ -21449,7 +19929,7 @@ void SetRateImuRequest::InternalSwap(SetRateImuRequest* PROTOBUF_RESTRICT other)
 ::google::protobuf::Metadata SetRateImuRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[109]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[101]);
 }
 // ===================================================================
 
@@ -21656,7 +20136,7 @@ void SetRateImuResponse::InternalSwap(SetRateImuResponse* PROTOBUF_RESTRICT othe
 ::google::protobuf::Metadata SetRateImuResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[110]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[102]);
 }
 // ===================================================================
 
@@ -21840,7 +20320,7 @@ void SetRateScaledImuRequest::InternalSwap(SetRateScaledImuRequest* PROTOBUF_RES
 ::google::protobuf::Metadata SetRateScaledImuRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[111]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[103]);
 }
 // ===================================================================
 
@@ -22047,7 +20527,7 @@ void SetRateScaledImuResponse::InternalSwap(SetRateScaledImuResponse* PROTOBUF_R
 ::google::protobuf::Metadata SetRateScaledImuResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[112]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[104]);
 }
 // ===================================================================
 
@@ -22231,7 +20711,7 @@ void SetRateRawImuRequest::InternalSwap(SetRateRawImuRequest* PROTOBUF_RESTRICT 
 ::google::protobuf::Metadata SetRateRawImuRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[113]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[105]);
 }
 // ===================================================================
 
@@ -22438,7 +20918,7 @@ void SetRateRawImuResponse::InternalSwap(SetRateRawImuResponse* PROTOBUF_RESTRIC
 ::google::protobuf::Metadata SetRateRawImuResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[114]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[106]);
 }
 // ===================================================================
 
@@ -22622,7 +21102,7 @@ void SetRateUnixEpochTimeRequest::InternalSwap(SetRateUnixEpochTimeRequest* PROT
 ::google::protobuf::Metadata SetRateUnixEpochTimeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[115]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[107]);
 }
 // ===================================================================
 
@@ -22829,7 +21309,7 @@ void SetRateUnixEpochTimeResponse::InternalSwap(SetRateUnixEpochTimeResponse* PR
 ::google::protobuf::Metadata SetRateUnixEpochTimeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[116]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[108]);
 }
 // ===================================================================
 
@@ -23013,7 +21493,7 @@ void SetRateDistanceSensorRequest::InternalSwap(SetRateDistanceSensorRequest* PR
 ::google::protobuf::Metadata SetRateDistanceSensorRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[117]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[109]);
 }
 // ===================================================================
 
@@ -23220,7 +21700,7 @@ void SetRateDistanceSensorResponse::InternalSwap(SetRateDistanceSensorResponse* 
 ::google::protobuf::Metadata SetRateDistanceSensorResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[118]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[110]);
 }
 // ===================================================================
 
@@ -23255,7 +21735,7 @@ GetGpsGlobalOriginRequest::GetGpsGlobalOriginRequest(
 ::google::protobuf::Metadata GetGpsGlobalOriginRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[119]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[111]);
 }
 // ===================================================================
 
@@ -23518,7 +21998,7 @@ void GetGpsGlobalOriginResponse::InternalSwap(GetGpsGlobalOriginResponse* PROTOB
 ::google::protobuf::Metadata GetGpsGlobalOriginResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[120]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[112]);
 }
 // ===================================================================
 
@@ -23702,7 +22182,7 @@ void SetRateAltitudeRequest::InternalSwap(SetRateAltitudeRequest* PROTOBUF_RESTR
 ::google::protobuf::Metadata SetRateAltitudeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[121]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[113]);
 }
 // ===================================================================
 
@@ -23909,7 +22389,7 @@ void SetRateAltitudeResponse::InternalSwap(SetRateAltitudeResponse* PROTOBUF_RES
 ::google::protobuf::Metadata SetRateAltitudeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[122]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[114]);
 }
 // ===================================================================
 
@@ -24213,7 +22693,7 @@ void Position::InternalSwap(Position* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata Position::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[123]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[115]);
 }
 // ===================================================================
 
@@ -24397,7 +22877,7 @@ void Heading::InternalSwap(Heading* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata Heading::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[124]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[116]);
 }
 // ===================================================================
 
@@ -24726,7 +23206,7 @@ void Quaternion::InternalSwap(Quaternion* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata Quaternion::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[125]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[117]);
 }
 // ===================================================================
 
@@ -25016,7 +23496,7 @@ void EulerAngle::InternalSwap(EulerAngle* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata EulerAngle::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[126]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[118]);
 }
 // ===================================================================
 
@@ -25285,7 +23765,7 @@ void AngularVelocityBody::InternalSwap(AngularVelocityBody* PROTOBUF_RESTRICT ot
 ::google::protobuf::Metadata AngularVelocityBody::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[127]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[119]);
 }
 // ===================================================================
 
@@ -25489,7 +23969,7 @@ void GpsInfo::InternalSwap(GpsInfo* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata GpsInfo::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[128]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[120]);
 }
 // ===================================================================
 
@@ -26141,7 +24621,7 @@ void RawGps::InternalSwap(RawGps* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata RawGps::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[129]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[121]);
 }
 // ===================================================================
 
@@ -26505,7 +24985,7 @@ void Battery::InternalSwap(Battery* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata Battery::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[130]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[122]);
 }
 // ===================================================================
 
@@ -26813,7 +25293,7 @@ void Health::InternalSwap(Health* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata Health::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[131]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[123]);
 }
 // ===================================================================
 
@@ -27052,7 +25532,7 @@ void RcStatus::InternalSwap(RcStatus* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata RcStatus::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[132]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[124]);
 }
 // ===================================================================
 
@@ -27268,7 +25748,7 @@ void StatusText::InternalSwap(StatusText* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata StatusText::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[133]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[125]);
 }
 // ===================================================================
 
@@ -27479,7 +25959,7 @@ void ActuatorControlTarget::InternalSwap(ActuatorControlTarget* PROTOBUF_RESTRIC
 ::google::protobuf::Metadata ActuatorControlTarget::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[134]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[126]);
 }
 // ===================================================================
 
@@ -27690,7 +26170,7 @@ void ActuatorOutputStatus::InternalSwap(ActuatorOutputStatus* PROTOBUF_RESTRICT 
 ::google::protobuf::Metadata ActuatorOutputStatus::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[135]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[127]);
 }
 // ===================================================================
 
@@ -27875,7 +26355,7 @@ void Covariance::InternalSwap(Covariance* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata Covariance::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[136]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[128]);
 }
 // ===================================================================
 
@@ -28144,7 +26624,7 @@ void VelocityBody::InternalSwap(VelocityBody* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata VelocityBody::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[137]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[129]);
 }
 // ===================================================================
 
@@ -28413,7 +26893,7 @@ void PositionBody::InternalSwap(PositionBody* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata PositionBody::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[138]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[130]);
 }
 // ===================================================================
 
@@ -28915,7 +27395,7 @@ void Odometry::InternalSwap(Odometry* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata Odometry::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[139]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[131]);
 }
 // ===================================================================
 
@@ -29250,7 +27730,7 @@ void DistanceSensor::InternalSwap(DistanceSensor* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata DistanceSensor::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[140]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[132]);
 }
 // ===================================================================
 
@@ -29579,7 +28059,7 @@ void ScaledPressure::InternalSwap(ScaledPressure* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata ScaledPressure::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[141]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[133]);
 }
 // ===================================================================
 
@@ -29848,7 +28328,7 @@ void PositionNed::InternalSwap(PositionNed* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata PositionNed::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[142]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[134]);
 }
 // ===================================================================
 
@@ -30117,7 +28597,7 @@ void VelocityNed::InternalSwap(VelocityNed* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata VelocityNed::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[143]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[135]);
 }
 // ===================================================================
 
@@ -30380,7 +28860,7 @@ void PositionVelocityNed::InternalSwap(PositionVelocityNed* PROTOBUF_RESTRICT ot
 ::google::protobuf::Metadata PositionVelocityNed::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[144]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[136]);
 }
 // ===================================================================
 
@@ -30649,7 +29129,7 @@ void GroundTruth::InternalSwap(GroundTruth* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata GroundTruth::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[145]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[137]);
 }
 // ===================================================================
 
@@ -30918,7 +29398,7 @@ void FixedwingMetrics::InternalSwap(FixedwingMetrics* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata FixedwingMetrics::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[146]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[138]);
 }
 // ===================================================================
 
@@ -31187,7 +29667,7 @@ void AccelerationFrd::InternalSwap(AccelerationFrd* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata AccelerationFrd::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[147]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[139]);
 }
 // ===================================================================
 
@@ -31456,7 +29936,7 @@ void AngularVelocityFrd::InternalSwap(AngularVelocityFrd* PROTOBUF_RESTRICT othe
 ::google::protobuf::Metadata AngularVelocityFrd::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[148]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[140]);
 }
 // ===================================================================
 
@@ -31725,7 +30205,7 @@ void MagneticFieldFrd::InternalSwap(MagneticFieldFrd* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata MagneticFieldFrd::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[149]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[141]);
 }
 // ===================================================================
 
@@ -32098,7 +30578,7 @@ void Imu::InternalSwap(Imu* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata Imu::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[150]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[142]);
 }
 // ===================================================================
 
@@ -32367,7 +30847,7 @@ void GpsGlobalOrigin::InternalSwap(GpsGlobalOrigin* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata GpsGlobalOrigin::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[151]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[143]);
 }
 // ===================================================================
 
@@ -32745,7 +31225,7 @@ void Altitude::InternalSwap(Altitude* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata Altitude::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[152]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[144]);
 }
 // ===================================================================
 
@@ -32961,7 +31441,7 @@ void TelemetryResult::InternalSwap(TelemetryResult* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata TelemetryResult::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_telemetry_2ftelemetry_2eproto_getter, &descriptor_table_telemetry_2ftelemetry_2eproto_once,
-      file_level_metadata_telemetry_2ftelemetry_2eproto[153]);
+      file_level_metadata_telemetry_2ftelemetry_2eproto[145]);
 }
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace telemetry

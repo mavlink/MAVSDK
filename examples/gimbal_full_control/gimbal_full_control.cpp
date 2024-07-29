@@ -8,7 +8,6 @@
 #include <cstdint>
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/gimbal/gimbal.h>
-#include <mavsdk/plugins/telemetry/telemetry.h>
 #include <iostream>
 #include <future>
 #include <memory>
@@ -50,20 +49,11 @@ int main(int argc, char** argv)
     }
 
     // Instantiate plugins.
-    auto telemetry = Telemetry{system.value()};
     auto gimbal = Gimbal{system.value()};
 
-    // We want to listen to the camera/gimbal angle of the drone at 5 Hz.
-    const Telemetry::Result set_rate_result = telemetry.set_rate_camera_attitude(5.0);
-    if (set_rate_result != Telemetry::Result::Success) {
-        std::cerr << "Setting rate failed:" << set_rate_result << '\n';
-        return 1;
-    }
-
-    // Set up callback to monitor camera/gimbal angle
-    telemetry.subscribe_camera_attitude_euler([](Telemetry::EulerAngle angle) {
-        std::cout << "Gimbal angle pitch: " << angle.pitch_deg << " deg, yaw: " << angle.yaw_deg
-                  << " deg, roll: " << angle.roll_deg << " deg\n";
+    gimbal.subscribe_attitude([](Gimbal::Attitude attitude) {
+        std::cout << "Gimbal angle pitch: " << attitude.euler_angle_forward.pitch_deg
+                  << " deg, yaw: " << attitude.euler_angle_forward.yaw_deg << " deg\n";
     });
 
     std::cout << "Start controlling gimbal...\n";
