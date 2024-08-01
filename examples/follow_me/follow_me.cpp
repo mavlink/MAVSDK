@@ -125,6 +125,7 @@ int main(int argc, char** argv)
         FollowMe::TargetLocation target_location{};
         target_location.latitude_deg = lat;
         target_location.longitude_deg = lon;
+        target_location.absolute_altitude_m = 488.0;
         follow_me.set_target_location(target_location);
     });
 
