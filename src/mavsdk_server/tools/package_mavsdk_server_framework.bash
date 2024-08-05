@@ -23,6 +23,9 @@ fi
 echo "Running lipo for simulator"
 mkdir -p ${IOS_SIM_FAT_BACKEND_DIR}
 cp -a ${IOS_SIM_X64_BACKEND_DIR}/mavsdk_server.framework ${IOS_SIM_FAT_BACKEND_DIR}
+file ${IOS_SIM_X64_BACKEND_DIR}/mavsdk_server.framework/mavsdk_server
+file ${IOS_SIM_ARM64_BACKEND_DIR}/mavsdk_server.framework/mavsdk_server
+
 xcrun lipo -create -output ${IOS_SIM_FAT_BACKEND_DIR}/mavsdk_server.framework/mavsdk_server \
     ${IOS_SIM_X64_BACKEND_DIR}/mavsdk_server.framework/mavsdk_server \
     ${IOS_SIM_ARM64_BACKEND_DIR}/mavsdk_server.framework/mavsdk_server
@@ -37,6 +40,12 @@ xcrun codesign --verbose --sign - ${IOS_SIM_FAT_BACKEND_DIR}/mavsdk_server.frame
 echo "Running lipo for macos"
 mkdir -p ${MACOS_FAT_BACKEND_DIR}
 cp -a ${MACOS_X64_BACKEND_DIR}/mavsdk_server.framework ${MACOS_FAT_BACKEND_DIR}
+# Fix up symlinks that seem to break when github artifacts unzips the archives
+ln -s -f ${MACOS_X64_BACKEND_DIR}/mavsdk_server.framework/Versions/Current/mavsdk_server ${MACOS_X64_BACKEND_DIR}/mavsdk_server.framework/mavsdk_server
+ln -s -f ${MACOS_ARM64_BACKEND_DIR}/mavsdk_server.framework/Versions/Current/mavsdk_server ${MACOS_ARM64_BACKEND_DIR}/mavsdk_server.framework/mavsdk_server
+file ${MACOS_X64_BACKEND_DIR}/mavsdk_server.framework/mavsdk_server
+file ${MACOS_ARM64_BACKEND_DIR}/mavsdk_server.framework/mavsdk_server
+
 xcrun lipo -create -output ${MACOS_FAT_BACKEND_DIR}/mavsdk_server.framework/mavsdk_server \
     ${MACOS_X64_BACKEND_DIR}/mavsdk_server.framework/mavsdk_server \
     ${MACOS_ARM64_BACKEND_DIR}/mavsdk_server.framework/mavsdk_server
