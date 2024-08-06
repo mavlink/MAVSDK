@@ -11,6 +11,8 @@
 #include <iostream>
 #include <future>
 #include <memory>
+#include <mutex>
+#include <vector>
 #include <thread>
 
 using namespace mavsdk;
@@ -51,6 +53,26 @@ int main(int argc, char** argv)
     // Instantiate plugins.
     auto gimbal = Gimbal{system.value()};
 
+    auto prom = std::promise<int32_t>();
+    auto fut = prom.get_future();
+    std::once_flag once_flag;
+    // Wait for a gimbal.
+    gimbal.subscribe_gimbal_list([&prom, &once_flag](const Gimbal::GimbalList& gimbal_list) {
+        std::cout << "Found a gimbal: " << gimbal_list.gimbals.back().model_name << " by "
+                  << gimbal_list.gimbals.back().vendor_name << '\n';
+        std::call_once(once_flag, [&prom, &gimbal_list]() {
+            prom.set_value(gimbal_list.gimbals.back().gimbal_id);
+        });
+    });
+
+    if (fut.wait_for(std::chrono::seconds(3)) == std::future_status::timeout) {
+        std::cerr << "Could not find a gimbal, exiting...";
+        return 1;
+    }
+
+    const int32_t gimbal_id = fut.get();
+    std::cout << "Use gimbal ID: " << gimbal_id << '\n';
+
     // Set up callback to monitor camera/gimbal angle
     gimbal.subscribe_attitude([](Gimbal::Attitude attitude) {
         std::cout << "Gimbal angle pitch: " << attitude.euler_angle_forward.pitch_deg
@@ -62,88 +84,80 @@ int main(int argc, char** argv)
     });
 
     std::cout << "Start controlling gimbal...\n";
-    Gimbal::Result gimbal_result = gimbal.take_control(Gimbal::ControlMode::Primary);
+    Gimbal::Result gimbal_result = gimbal.take_control(gimbal_id, Gimbal::ControlMode::Primary);
     if (gimbal_result != Gimbal::Result::Success) {
         std::cerr << "Could not take gimbal control: " << gimbal_result << '\n';
         return 1;
     }
 
-    std::cout << "Set yaw mode to lock to a specific direction...\n";
-    gimbal_result = gimbal.set_mode(Gimbal::GimbalMode::YawLock);
-    if (gimbal_result != Gimbal::Result::Success) {
-        std::cerr << "Could not set to lock mode: " << gimbal_result << '\n';
-        return 1;
-    }
+    std::cout << "Use yaw mode to lock to a specific direction...\n";
 
     std::cout << "Look North...\n";
-    gimbal.set_pitch_and_yaw(0.0f, 0.0f);
+    gimbal.set_angles(0, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
     sleep_for(seconds(2));
 
     std::cout << "Look East...\n";
-    gimbal.set_pitch_and_yaw(0.0f, 90.0f);
+    gimbal.set_angles(0, 0.0f, 0.0f, 90.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
     sleep_for(seconds(2));
 
     std::cout << "Look South...\n";
-    gimbal.set_pitch_and_yaw(0.0f, 180.0f);
+    gimbal.set_angles(0, 0.0f, 0.0f, 180.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
     sleep_for(seconds(2));
 
     std::cout << "Look West...\n";
-    gimbal.set_pitch_and_yaw(0.0f, -90.0f);
+    gimbal.set_angles(0, 0.0f, 0.0f, -90.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
     sleep_for(seconds(2));
 
-    std::cout << "Set yaw mode to follow...\n";
-    gimbal_result = gimbal.set_mode(Gimbal::GimbalMode::YawFollow);
-    if (gimbal_result != Gimbal::Result::Success) {
-        std::cerr << "Could not set to follow mode: " << gimbal_result << '\n';
-        return 1;
-    }
+    std::cout << "Now use follow mode...\n";
 
     std::cout << "And center first...\n";
-    gimbal.set_pitch_and_yaw(0.0f, 0.0f);
+    gimbal.set_angles(0, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
     sleep_for(seconds(2));
 
     std::cout << "Tilt gimbal down...\n";
-    gimbal.set_pitch_and_yaw(-90.0f, 0.0f);
+    gimbal.set_angles(0, 0.0f, -90.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
     sleep_for(seconds(2));
 
     std::cout << "Tilt gimbal back up...\n";
-    gimbal.set_pitch_and_yaw(0.0f, 0.0f);
+    gimbal.set_angles(0, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
     sleep_for(seconds(2));
 
     std::cout << "Slowly tilt up ...\n";
-    gimbal.set_pitch_rate_and_yaw_rate(10.0f, 0.0f);
+    gimbal.set_angular_rates(
+        0, 0.0f, 10.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
     sleep_for(seconds(4));
 
     std::cout << "Back to horizontal...\n";
-    gimbal.set_pitch_and_yaw(0.0f, 0.0f);
+    gimbal.set_angles(0, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
     sleep_for(seconds(2));
 
     std::cout << "Pan to the right...\n";
-    gimbal.set_pitch_and_yaw(0.0f, 90.0f);
+    gimbal.set_angles(0, 0.0f, 0.0f, 90.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
     sleep_for(seconds(2));
 
     std::cout << "Back to the center...\n";
-    gimbal.set_pitch_and_yaw(0.0f, 0.0f);
+    gimbal.set_angles(0, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
     sleep_for(seconds(2));
 
     std::cout << "Pan slowly to the left...\n";
-    gimbal.set_pitch_rate_and_yaw_rate(0.0f, -10.0f);
+    gimbal.set_angular_rates(
+        0, 0.0f, 0.0f, -10.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
     sleep_for(seconds(4));
 
     std::cout << "Back to the center...\n";
-    gimbal.set_pitch_and_yaw(0.0f, 0.0f);
+    gimbal.set_angles(0, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
     sleep_for(seconds(2));
 
     std::cout << "Set ROI (region of interested) location...\n";
-    gimbal.set_roi_location(47.39743832, 8.5463316, 488.0f);
+    gimbal.set_roi_location(0, 47.39743832, 8.5463316, 488.0f);
     sleep_for(seconds(3));
 
     std::cout << "Back to the center...\n";
-    gimbal.set_pitch_and_yaw(0.0f, 0.0f);
+    gimbal.set_angles(0, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
     sleep_for(seconds(2));
 
     std::cout << "Stop controlling gimbal...\n";
-    gimbal_result = gimbal.release_control();
+    gimbal_result = gimbal.release_control(0);
     if (gimbal_result != Gimbal::Result::Success) {
         std::cerr << "Could not take gimbal control: " << gimbal_result << '\n';
         return 1;

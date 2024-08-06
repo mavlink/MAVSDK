@@ -90,6 +90,23 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Gimbal::ControlMode const& control_mode);
 
     /**
+     * @brief
+     */
+    enum class SendMode {
+        Once, /**< @brief Send command exactly once with quality of service (use for sporadic
+                 commands slower than 1 Hz). */
+        Stream, /**< @brief Stream setpoint without quality of service (use for setpoints faster
+                   than 1 Hz).. */
+    };
+
+    /**
+     * @brief Stream operator to print information about a `Gimbal::SendMode`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Gimbal::SendMode const& send_mode);
+
+    /**
      * @brief Quaternion type.
      *
      * All rotations and axis systems follow the right-hand rule.
@@ -181,6 +198,7 @@ public:
      * @brief Gimbal attitude type
      */
     struct Attitude {
+        int32_t gimbal_id{}; /**< @brief Gimbal ID */
         EulerAngle euler_angle_forward{}; /**< @brief Euler angle relative to forward */
         Quaternion quaternion_forward{}; /**< @brief Quaternion relative to forward */
         EulerAngle euler_angle_north{}; /**< @brief Euler angle relative to North */
@@ -204,9 +222,58 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Gimbal::Attitude const& attitude);
 
     /**
+     * @brief Gimbal list item
+     */
+    struct GimbalItem {
+        int32_t gimbal_id{}; /**< @brief ID to address it, starting at 1 (0 means all gimbals) */
+        std::string vendor_name{}; /**< @brief Vendor name */
+        std::string model_name{}; /**< @brief Model name */
+        std::string custom_name{}; /**< @brief Custom name name */
+        int32_t gimbal_manager_component_id{}; /**< @brief MAVLink component of gimbal manager, for
+                                                  debugging purposes */
+        int32_t gimbal_device_id{}; /**< @brief MAVLink component of gimbal device */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Gimbal::GimbalItem` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Gimbal::GimbalItem& lhs, const Gimbal::GimbalItem& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Gimbal::GimbalItem`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Gimbal::GimbalItem const& gimbal_item);
+
+    /**
+     * @brief Gimbal list
+     */
+    struct GimbalList {
+        std::vector<GimbalItem> gimbals{}; /**< @brief Gimbal item. */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Gimbal::GimbalList` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Gimbal::GimbalList& lhs, const Gimbal::GimbalList& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Gimbal::GimbalList`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Gimbal::GimbalList const& gimbal_list);
+
+    /**
      * @brief Control status
      */
     struct ControlStatus {
+        int32_t gimbal_id{}; /**< @brief Gimbal ID */
         ControlMode control_mode{}; /**< @brief Control mode (none, primary or secondary) */
         int32_t sysid_primary_control{}; /**< @brief Sysid of the component that has primary control
                                             over the gimbal (0 if no one is in control) */
@@ -243,6 +310,7 @@ public:
         Timeout, /**< @brief Command timed out. */
         Unsupported, /**< @brief Functionality not supported. */
         NoSystem, /**< @brief No system connected. */
+        InvalidArgument, /**< @brief Invalid argument. */
     };
 
     /**
@@ -264,10 +332,18 @@ public:
      * Will return when the command is accepted, however, it might
      * take the gimbal longer to actually be set to the new angles.
      *
+     * Note that the roll angle needs to be set to 0 when send_mode is Once.
+     *
      * This function is non-blocking. See 'set_angles' for the blocking counterpart.
      */
-    void
-    set_angles_async(float roll_deg, float pitch_deg, float yaw_deg, const ResultCallback callback);
+    void set_angles_async(
+        int32_t gimbal_id,
+        float roll_deg,
+        float pitch_deg,
+        float yaw_deg,
+        GimbalMode gimbal_mode,
+        SendMode send_mode,
+        const ResultCallback callback);
 
     /**
      * @brief Set gimbal roll, pitch and yaw angles.
@@ -276,86 +352,60 @@ public:
      * Will return when the command is accepted, however, it might
      * take the gimbal longer to actually be set to the new angles.
      *
+     * Note that the roll angle needs to be set to 0 when send_mode is Once.
+     *
      * This function is blocking. See 'set_angles_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
-    Result set_angles(float roll_deg, float pitch_deg, float yaw_deg) const;
+    Result set_angles(
+        int32_t gimbal_id,
+        float roll_deg,
+        float pitch_deg,
+        float yaw_deg,
+        GimbalMode gimbal_mode,
+        SendMode send_mode) const;
 
     /**
-     * @brief Set gimbal pitch and yaw angles.
+     * @brief Set gimbal angular rates.
      *
-     * This sets the desired pitch and yaw angles of a gimbal.
-     * Will return when the command is accepted, however, it might
-     * take the gimbal longer to actually be set to the new angles.
-     *
-     * This function is non-blocking. See 'set_pitch_and_yaw' for the blocking counterpart.
-     */
-    void set_pitch_and_yaw_async(float pitch_deg, float yaw_deg, const ResultCallback callback);
-
-    /**
-     * @brief Set gimbal pitch and yaw angles.
-     *
-     * This sets the desired pitch and yaw angles of a gimbal.
-     * Will return when the command is accepted, however, it might
-     * take the gimbal longer to actually be set to the new angles.
-     *
-     * This function is blocking. See 'set_pitch_and_yaw_async' for the non-blocking counterpart.
-     *
-     * @return Result of request.
-     */
-    Result set_pitch_and_yaw(float pitch_deg, float yaw_deg) const;
-
-    /**
-     * @brief Set gimbal angular rates around pitch and yaw axes.
-     *
-     * This sets the desired angular rates around pitch and yaw axes of a gimbal.
+     * This sets the desired angular rates around roll, pitch and yaw axes of a gimbal.
      * Will return when the command is accepted, however, it might
      * take the gimbal longer to actually reach the angular rate.
      *
-     * This function is non-blocking. See 'set_pitch_rate_and_yaw_rate' for the blocking
-     * counterpart.
+     * Note that the roll angle needs to be set to 0 when send_mode is Once.
+     *
+     * This function is non-blocking. See 'set_angular_rates' for the blocking counterpart.
      */
-    void set_pitch_rate_and_yaw_rate_async(
-        float pitch_rate_deg_s, float yaw_rate_deg_s, const ResultCallback callback);
+    void set_angular_rates_async(
+        int32_t gimbal_id,
+        float roll_rate_deg_s,
+        float pitch_rate_deg_s,
+        float yaw_rate_deg_s,
+        GimbalMode gimbal_mode,
+        SendMode send_mode,
+        const ResultCallback callback);
 
     /**
-     * @brief Set gimbal angular rates around pitch and yaw axes.
+     * @brief Set gimbal angular rates.
      *
-     * This sets the desired angular rates around pitch and yaw axes of a gimbal.
+     * This sets the desired angular rates around roll, pitch and yaw axes of a gimbal.
      * Will return when the command is accepted, however, it might
      * take the gimbal longer to actually reach the angular rate.
      *
-     * This function is blocking. See 'set_pitch_rate_and_yaw_rate_async' for the non-blocking
-     * counterpart.
+     * Note that the roll angle needs to be set to 0 when send_mode is Once.
+     *
+     * This function is blocking. See 'set_angular_rates_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
-    Result set_pitch_rate_and_yaw_rate(float pitch_rate_deg_s, float yaw_rate_deg_s) const;
-
-    /**
-     * @brief Set gimbal mode.
-     *
-     * This sets the desired yaw mode of a gimbal.
-     * Will return when the command is accepted. However, it might
-     * take the gimbal longer to actually be set to the new angles.
-     *
-     * This function is non-blocking. See 'set_mode' for the blocking counterpart.
-     */
-    void set_mode_async(GimbalMode gimbal_mode, const ResultCallback callback);
-
-    /**
-     * @brief Set gimbal mode.
-     *
-     * This sets the desired yaw mode of a gimbal.
-     * Will return when the command is accepted. However, it might
-     * take the gimbal longer to actually be set to the new angles.
-     *
-     * This function is blocking. See 'set_mode_async' for the non-blocking counterpart.
-     *
-     * @return Result of request.
-     */
-    Result set_mode(GimbalMode gimbal_mode) const;
+    Result set_angular_rates(
+        int32_t gimbal_id,
+        float roll_rate_deg_s,
+        float pitch_rate_deg_s,
+        float yaw_rate_deg_s,
+        GimbalMode gimbal_mode,
+        SendMode send_mode) const;
 
     /**
      * @brief Set gimbal region of interest (ROI).
@@ -369,7 +419,11 @@ public:
      * This function is non-blocking. See 'set_roi_location' for the blocking counterpart.
      */
     void set_roi_location_async(
-        double latitude_deg, double longitude_deg, float altitude_m, const ResultCallback callback);
+        int32_t gimbal_id,
+        double latitude_deg,
+        double longitude_deg,
+        float altitude_m,
+        const ResultCallback callback);
 
     /**
      * @brief Set gimbal region of interest (ROI).
@@ -384,7 +438,8 @@ public:
      *
      * @return Result of request.
      */
-    Result set_roi_location(double latitude_deg, double longitude_deg, float altitude_m) const;
+    Result set_roi_location(
+        int32_t gimbal_id, double latitude_deg, double longitude_deg, float altitude_m) const;
 
     /**
      * @brief Take control.
@@ -399,7 +454,8 @@ public:
      *
      * This function is non-blocking. See 'take_control' for the blocking counterpart.
      */
-    void take_control_async(ControlMode control_mode, const ResultCallback callback);
+    void
+    take_control_async(int32_t gimbal_id, ControlMode control_mode, const ResultCallback callback);
 
     /**
      * @brief Take control.
@@ -416,7 +472,7 @@ public:
      *
      * @return Result of request.
      */
-    Result take_control(ControlMode control_mode) const;
+    Result take_control(int32_t gimbal_id, ControlMode control_mode) const;
 
     /**
      * @brief Release control.
@@ -425,7 +481,7 @@ public:
      *
      * This function is non-blocking. See 'release_control' for the blocking counterpart.
      */
-    void release_control_async(const ResultCallback callback);
+    void release_control_async(int32_t gimbal_id, const ResultCallback callback);
 
     /**
      * @brief Release control.
@@ -436,17 +492,47 @@ public:
      *
      * @return Result of request.
      */
-    Result release_control() const;
+    Result release_control(int32_t gimbal_id) const;
 
     /**
-     * @brief Callback type for subscribe_control.
+     * @brief Callback type for subscribe_gimbal_list.
      */
-    using ControlCallback = std::function<void(ControlStatus)>;
+    using GimbalListCallback = std::function<void(GimbalList)>;
 
     /**
-     * @brief Handle type for subscribe_control.
+     * @brief Handle type for subscribe_gimbal_list.
      */
-    using ControlHandle = Handle<ControlStatus>;
+    using GimbalListHandle = Handle<GimbalList>;
+
+    /**
+     * @brief Subscribe to list of gimbals.
+     *
+     * This allows to find out what gimbals are connected to the system.
+     * Based on the gimbal ID, we can then address a specific gimbal.
+     */
+    GimbalListHandle subscribe_gimbal_list(const GimbalListCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_gimbal_list
+     */
+    void unsubscribe_gimbal_list(GimbalListHandle handle);
+
+    /**
+     * @brief Poll for 'GimbalList' (blocking).
+     *
+     * @return One GimbalList update.
+     */
+    GimbalList gimbal_list() const;
+
+    /**
+     * @brief Callback type for subscribe_control_status.
+     */
+    using ControlStatusCallback = std::function<void(ControlStatus)>;
+
+    /**
+     * @brief Handle type for subscribe_control_status.
+     */
+    using ControlStatusHandle = Handle<ControlStatus>;
 
     /**
      * @brief Subscribe to control status updates.
@@ -455,19 +541,21 @@ public:
      * no control over the gimbal. Also, it gives the system and component ids
      * of the other components in control (if any).
      */
-    ControlHandle subscribe_control(const ControlCallback& callback);
+    ControlStatusHandle subscribe_control_status(const ControlStatusCallback& callback);
 
     /**
-     * @brief Unsubscribe from subscribe_control
+     * @brief Unsubscribe from subscribe_control_status
      */
-    void unsubscribe_control(ControlHandle handle);
+    void unsubscribe_control_status(ControlStatusHandle handle);
 
     /**
-     * @brief Poll for 'ControlStatus' (blocking).
+     * @brief Get control status for specific gimbal.
      *
-     * @return One ControlStatus update.
+     * This function is blocking.
+     *
+     * @return Result of request.
      */
-    ControlStatus control() const;
+    std::pair<Result, Gimbal::ControlStatus> get_control_status(int32_t gimbal_id) const;
 
     /**
      * @brief Callback type for subscribe_attitude.
@@ -492,11 +580,13 @@ public:
     void unsubscribe_attitude(AttitudeHandle handle);
 
     /**
-     * @brief Poll for 'Attitude' (blocking).
+     * @brief Get attitude for specific gimbal.
      *
-     * @return One Attitude update.
+     * This function is blocking.
+     *
+     * @return Result of request.
      */
-    Attitude attitude() const;
+    std::pair<Result, Gimbal::Attitude> get_attitude(int32_t gimbal_id) const;
 
     /**
      * @brief Copy constructor.
