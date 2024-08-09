@@ -84,7 +84,7 @@ int main(int argc, char** argv)
     }
     std::cout << "System is ready\n";
 
-    for (unsigned i = 0; i << 10; ++i) {
+    for (unsigned i = 0; i < 10; ++i) {
         manual_control.set_manual_control_input(0.f, 0.f, 0.5f, 0.f);
     }
 
@@ -94,7 +94,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    for (unsigned i = 0; i << 10; ++i) {
+    for (unsigned i = 0; i < 10; ++i) {
         manual_control.set_manual_control_input(0.f, 0.f, 0.5f, 0.f);
     }
 
