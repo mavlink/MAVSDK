@@ -2521,11 +2521,9 @@ std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> TelemetryImpl::get_gps_
 
 void TelemetryImpl::check_calibration()
 {
-    if (_system_impl->has_autopilot()) {
-        if (_system_impl->autopilot() == Autopilot::ArduPilot) {
-            // We need to ask for the home position from ArduPilot
-            request_home_position_async();
-        }
+    if (_system_impl->has_autopilot() && _system_impl->autopilot() == Autopilot::ArduPilot) {
+        // We need to ask for the home position from ArduPilot
+        request_home_position_async();
     }
 }
 
