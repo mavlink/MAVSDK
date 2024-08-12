@@ -258,27 +258,6 @@ private:
     void process_distance_sensor(const mavlink_message_t& message);
     void process_scaled_pressure(const mavlink_message_t& message);
     void process_altitude(const mavlink_message_t& message);
-    void receive_param_cal_gyro(MavlinkParameterClient::Result result, int value);
-    void receive_param_cal_accel(MavlinkParameterClient::Result result, int value);
-    void receive_param_cal_mag(MavlinkParameterClient::Result result, int value);
-
-    // Ardupilot sensor offset callbacks.
-    void receive_param_cal_gyro_offset_x(MavlinkParameterClient::Result result, float value);
-    void receive_param_cal_gyro_offset_y(MavlinkParameterClient::Result result, float value);
-    void receive_param_cal_gyro_offset_z(MavlinkParameterClient::Result result, float value);
-    void receive_param_cal_accel_offset_x(MavlinkParameterClient::Result result, float value);
-    void receive_param_cal_accel_offset_y(MavlinkParameterClient::Result result, float value);
-    void receive_param_cal_accel_offset_z(MavlinkParameterClient::Result result, float value);
-    void receive_param_cal_mag_offset_x(MavlinkParameterClient::Result result, float value);
-    void receive_param_cal_mag_offset_y(MavlinkParameterClient::Result result, float value);
-    void receive_param_cal_mag_offset_z(MavlinkParameterClient::Result result, float value);
-
-    void process_parameter_update(const std::string& name);
-    void receive_param_hitl(MavlinkParameterClient::Result result, int value);
-
-    void receive_rc_channels_timeout();
-    void receive_gps_raw_timeout();
-    void receive_unix_epoch_timeout();
 
     void receive_statustext(const MavlinkStatustextHandler::Statustext&);
 
@@ -393,8 +372,6 @@ private:
 
     mutable std::mutex _request_home_position_mutex{};
 
-    std::atomic<bool> _hitl_enabled{false};
-
     std::mutex _subscription_mutex{};
     CallbackList<Telemetry::PositionVelocityNed> _position_velocity_ned_subscriptions{};
     CallbackList<Telemetry::Position> _position_subscriptions{};
@@ -434,52 +411,11 @@ private:
     double _velocity_ned_rate_hz{0.0};
     double _position_rate_hz{-1.0};
 
-    TimeoutHandler::Cookie _rc_channels_timeout_cookie{};
-    TimeoutHandler::Cookie _gps_raw_timeout_cookie{};
-    TimeoutHandler::Cookie _unix_epoch_timeout_cookie{};
-
     // Battery info can be extracted from SYS_STATUS or from BATTERY_STATUS.
     // If no BATTERY_STATUS messages are received, use info from SYS_STATUS.
     bool _has_bat_status{false};
 
-    CallEveryHandler::Cookie _calibration_cookie{};
     CallEveryHandler::Cookie _homepos_cookie{};
-
-    std::atomic<bool> _has_received_hitl_param{false};
-
-    std::atomic<bool> _has_received_gyro_calibration{false};
-    std::atomic<bool> _has_received_accel_calibration{false};
-    std::atomic<bool> _has_received_mag_calibration{false};
-
-    std::mutex _ap_calibration_mutex{};
-    struct ArdupilotCalibration {
-        struct OffsetStatus {
-            std::optional<float> x{};
-            std::optional<float> y{};
-            std::optional<float> z{};
-
-            [[nodiscard]] bool received_all() const
-            {
-                return x.has_value() && y.has_value() && z.has_value();
-            }
-            [[nodiscard]] bool calibrated() const
-            {
-                return received_all() && ((x.value() != 0) && (y.value() != 0) && (z.value() != 0));
-            }
-        };
-
-        OffsetStatus mag_offset;
-        OffsetStatus accel_offset;
-        OffsetStatus gyro_offset;
-
-    } _ap_calibration{};
-
-    enum class SysStatusUsed {
-        Unknown,
-        Yes,
-        No,
-    };
-    std::atomic<SysStatusUsed> _sys_status_used_for_position{SysStatusUsed::Unknown};
 
     Telemetry::EulerAngle extractOrientation(mavlink_distance_sensor_t distance_sensor_msg);
 
