@@ -36,7 +36,10 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    // We identify ourselves as a battery component MAV_COMP_ID_BATTERY.
+    // To match the autopilot we use sysid 1 which is the default, so likely
+    // matching. If other sysids are used, we'd have to adapt this.
+    Mavsdk mavsdk{Mavsdk::Configuration{1, 180, false}};
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
 
     if (connection_result != ConnectionResult::Success) {
