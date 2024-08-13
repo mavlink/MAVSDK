@@ -74,8 +74,7 @@ MavlinkParameterClient::set_param(const std::string& name, const ParamValue& val
 {
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
-    set_param_async(
-        name, value, [&prom](Result result) { prom.set_value(result); }, this);
+    set_param_async(name, value, [&prom](Result result) { prom.set_value(result); }, this);
     return res.get();
 }
 
@@ -173,8 +172,7 @@ MavlinkParameterClient::set_param_int(const std::string& name, int32_t value)
 {
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
-    set_param_int_async(
-        name, value, [&prom](Result result) { prom.set_value(result); }, this);
+    set_param_int_async(name, value, [&prom](Result result) { prom.set_value(result); }, this);
     return res.get();
 }
 
@@ -192,8 +190,7 @@ MavlinkParameterClient::set_param_float(const std::string& name, float value)
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
 
-    set_param_float_async(
-        name, value, [&prom](Result result) { prom.set_value(result); }, this);
+    set_param_float_async(name, value, [&prom](Result result) { prom.set_value(result); }, this);
 
     return res.get();
 }
@@ -229,8 +226,7 @@ MavlinkParameterClient::set_param_custom(const std::string& name, const std::str
 {
     auto prom = std::promise<Result>();
     auto res = prom.get_future();
-    set_param_custom_async(
-        name, value, [&prom](Result result) { prom.set_value(result); }, this);
+    set_param_custom_async(name, value, [&prom](Result result) { prom.set_value(result); }, this);
     return res.get();
 }
 

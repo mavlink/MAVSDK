@@ -48,8 +48,8 @@ public:
     void init() override;
     void deinit() override;
 
-    void enable() override{};
-    void disable() override{};
+    void enable() override {};
+    void disable() override {};
 
     std::pair<LogFiles::Result, std::vector<LogFiles::Entry>> get_entries();
     void get_entries_async(LogFiles::GetEntriesCallback callback);
