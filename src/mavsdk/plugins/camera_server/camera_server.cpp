@@ -347,7 +347,9 @@ bool operator==(const CameraServer::Information& lhs, const CameraServer::Inform
            (rhs.vertical_resolution_px == lhs.vertical_resolution_px) &&
            (rhs.lens_id == lhs.lens_id) &&
            (rhs.definition_file_version == lhs.definition_file_version) &&
-           (rhs.definition_file_uri == lhs.definition_file_uri);
+           (rhs.definition_file_uri == lhs.definition_file_uri) &&
+           (rhs.image_in_video_mode_supported == lhs.image_in_video_mode_supported) &&
+           (rhs.video_in_image_mode_supported == lhs.video_in_image_mode_supported);
 }
 
 std::ostream& operator<<(std::ostream& str, CameraServer::Information const& information)
@@ -365,6 +367,10 @@ std::ostream& operator<<(std::ostream& str, CameraServer::Information const& inf
     str << "    lens_id: " << information.lens_id << '\n';
     str << "    definition_file_version: " << information.definition_file_version << '\n';
     str << "    definition_file_uri: " << information.definition_file_uri << '\n';
+    str << "    image_in_video_mode_supported: " << information.image_in_video_mode_supported
+        << '\n';
+    str << "    video_in_image_mode_supported: " << information.video_in_image_mode_supported
+        << '\n';
     str << '}';
     return str;
 }
