@@ -173,8 +173,8 @@ void MavlinkCommandSender::receive_command_ack(const mavlink_message_t& message)
             if (_command_debugging) {
                 LogDebug() << "Command ack for " << command_ack.command
                            << " (from: " << std::to_string(message.sysid) << "/"
-                           << std::to_string(message.compid) << ")"
-                           << " does not match command " << work->identification.command
+                           << std::to_string(message.compid) << ")" << " does not match command "
+                           << work->identification.command
                            << " (to: " << std::to_string(work->identification.target_system_id)
                            << "/" << std::to_string(work->identification.target_component_id) << ")"
                            << " after "

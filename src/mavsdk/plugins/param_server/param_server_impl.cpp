@@ -46,9 +46,7 @@ ParamServer::Result ParamServerImpl::provide_param_int(std::string name, int32_t
     _server_component_impl->mavlink_parameter_server().provide_server_param_int(name, value);
     _server_component_impl->mavlink_parameter_server().subscribe_param_int_changed(
         name,
-        [name, this](int32_t new_value) {
-            _changed_param_int_callbacks({name, new_value});
-        },
+        [name, this](int32_t new_value) { _changed_param_int_callbacks({name, new_value}); },
         this);
     return ParamServer::Result::Success;
 }
@@ -73,9 +71,7 @@ ParamServer::Result ParamServerImpl::provide_param_float(std::string name, float
     _server_component_impl->mavlink_parameter_server().provide_server_param_float(name, value);
     _server_component_impl->mavlink_parameter_server().subscribe_param_float_changed(
         name,
-        [name, this](float new_value) {
-            _changed_param_float_callbacks({name, new_value});
-        },
+        [name, this](float new_value) { _changed_param_float_callbacks({name, new_value}); },
         this);
     return ParamServer::Result::Success;
 }
@@ -102,9 +98,7 @@ ParamServerImpl::provide_param_custom(std::string name, const std::string& value
     _server_component_impl->mavlink_parameter_server().provide_server_param_custom(name, value);
     _server_component_impl->mavlink_parameter_server().subscribe_param_custom_changed(
         name,
-        [name, this](std::string new_value) {
-            _changed_param_custom_callbacks({name, new_value});
-        },
+        [name, this](std::string new_value) { _changed_param_custom_callbacks({name, new_value}); },
         this);
     return ParamServer::Result::Success;
 }

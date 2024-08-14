@@ -155,8 +155,7 @@ upload_file(Ftp& ftp, const std::string& local_file_path, const std::string& rem
                 int percentage = progress.total_bytes > 0 ?
                                      progress.bytes_transferred * 100 / progress.total_bytes :
                                      0;
-                std::cerr << "\rUploading "
-                          << "[" << std::setw(3) << percentage << "%] "
+                std::cerr << "\rUploading " << "[" << std::setw(3) << percentage << "%] "
                           << progress.bytes_transferred << " of " << progress.total_bytes;
                 if (progress.bytes_transferred == progress.total_bytes) {
                     std::cerr << '\n';

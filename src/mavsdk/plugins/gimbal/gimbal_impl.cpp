@@ -284,8 +284,7 @@ void GimbalImpl::process_gimbal_device_attitude_status(const mavlink_message_t& 
 
     if (attitude_status.gimbal_device_id > 6) {
         LogWarn() << "Ignoring gimbal device attitude status with invalid gimbal_device_id "
-                  << attitude_status.gimbal_device_id << " from (" << message.sysid << "/"
-                  << ")";
+                  << attitude_status.gimbal_device_id << " from (" << message.sysid << "/" << ")";
         return;
     }
 

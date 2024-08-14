@@ -1,0 +1,21 @@
+#
+# Formatting helper for MAVSDK based on Ubuntu 24.04's clang-format-18
+#
+# Author: Julian Oes <julian@oes.ch>
+#
+
+FROM ubuntu:24.04
+MAINTAINER Julian Oes <julian@oes.ch>
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update \
+    && apt-get -y --quiet --no-install-recommends install \
+        git \
+        clang-format-18 \
+        colordiff \
+    && apt-get -y autoremove \
+    && apt-get clean autoclean \
+    && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+WORKDIR "/home/user/MAVSDK"

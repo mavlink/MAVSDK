@@ -330,10 +330,10 @@ void print_position_velocity_ned(Telemetry::PositionVelocityNed position_velocit
 void print_altitude(Telemetry::Altitude altitude)
 {
     std::cout << "altitude_monotonic: " << altitude.altitude_monotonic_m << "m, "
-              << "altitude_local" << altitude.altitude_local_m << "m, "
-              << "altitude_amsl" << altitude.altitude_amsl_m << "m, "
-              << "altitude_relative" << altitude.altitude_relative_m << "m, "
-              << "altitude_terrain" << altitude.altitude_terrain_m << "m" << std::endl;
+              << "altitude_local" << altitude.altitude_local_m << "m, " << "altitude_amsl"
+              << altitude.altitude_amsl_m << "m, " << "altitude_relative"
+              << altitude.altitude_relative_m << "m, " << "altitude_terrain"
+              << altitude.altitude_terrain_m << "m" << std::endl;
 
     _received_altitude = true;
 }
