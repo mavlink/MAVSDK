@@ -12,7 +12,8 @@ if (SUPERBUILD AND HUNTER_ENABLED)
 endif()
 
 if (NOT MAVLINK_DIALECT)
-    set(MAVLINK_DIALECT "common")
+    # set(MAVLINK_DIALECT "common")
+    set(MAVLINK_DIALECT "ardupilotmega")
 endif()
 
 execute_process(
