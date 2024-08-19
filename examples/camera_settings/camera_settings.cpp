@@ -25,7 +25,7 @@ void usage(std::string bin_name)
               << " For TCP : tcp://[server_host][:server_port]\n"
               << " For UDP : udp://[bind_host][:bind_port]\n"
               << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
-              << "For example, to connect to the simulator use URL: udp://:14540\n";
+              << "For example, to connect to the simulator use URL: udpin://:14540\n";
 }
 
 struct CurrentSettings {

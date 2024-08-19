@@ -154,7 +154,7 @@ int main(int argc, char** argv)
     // to communicate with the autopilot server plugins.
     mavsdk::Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
-    auto result = mavsdk.add_any_connection("udp://:14551");
+    auto result = mavsdk.add_any_connection("udpin://:14551");
     if (result == mavsdk::ConnectionResult::Success) {
         std::cout << "Connected!" << std::endl;
     }
