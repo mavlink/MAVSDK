@@ -433,7 +433,7 @@ jobs:
             architecture: 'arm64'
     steps:
       - name: Install Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - uses: actions/checkout@v4
@@ -504,7 +504,7 @@ jobs:
             runner: macos-14
     steps:
       - name: Install Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           architecture: 'x64'
