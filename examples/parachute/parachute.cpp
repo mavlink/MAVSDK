@@ -25,7 +25,7 @@ static void usage(const std::string& bin_name)
               << " For TCP : tcp://[server_host][:server_port]\n"
               << " For UDP : udp://[bind_host][:bind_port]\n"
               << " For Serial : serial:///path/to/serial/dev[:baudrate]\n"
-              << "For example, to connect to the simulator use URL: udp://:14540\n";
+              << "For example, to connect to the simulator use URL: udpin://0.0.0.0:14540\n";
 }
 
 static void process_command_long(const mavlink_message_t& message, uint8_t our_sysid)
