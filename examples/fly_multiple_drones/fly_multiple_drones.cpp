@@ -3,7 +3,7 @@
 // separate plan file. Also saves the telemetry information to csv files
 //
 // Run with:
-// ./fly_multiple_drones udpin://:14540 udpin://:14541 test1.plan test2.plan
+// ./fly_multiple_drones udpin://0.0.0.0:14540 udpin://0.0.0.0:14541 test1.plan test2.plan
 //
 //
 // How to Start Multiple Instances (for jMAVSim)
@@ -33,12 +33,12 @@
 // 2. Build the executable
 // 3. (a) Create a Mission in QGroundControl and save them to a file (.plan), or
 //    (b) Use a pre-created sample mission plan.
-// 4. Run the executable by passing the connection urls (ex. udpin://:14540) and
+// 4. Run the executable by passing the connection urls (ex. udpin://0.0.0.0:14540) and
 //    path of QGC mission plan as arguments Example: If you have test1.plan and
 //    test2.plan in "../../../plugins/mission/" and you are running two drones
-//    in udpin://:14540 and udpin://:14541 then you run the example as:
+//    in udpin://0.0.0.0:14540 and udpin://0.0.0.0:14541 then you run the example as:
 //
-//   ./fly_multiple_drones udpin://:14540 udpin://:14541 test1.plan test2.plan
+//   ./fly_multiple_drones udpin://0.0.0.0:14540 udpin://0.0.0.0:14541 test1.plan test2.plan
 //
 //
 // Note: The mission needs to end with RTL or land, otherwise it will get stuck
