@@ -37,12 +37,14 @@ private:
         uint8_t target_component{0};
         RequestMessageCallback callback{};
         uint32_t param2{0};
-        std::size_t retries{0};
+        unsigned retries{0};
         TimeoutHandler::Cookie timeout_cookie{};
         std::optional<MavlinkCommandSender::Result> maybe_result{};
     };
 
-    void send_request(uint32_t message_id, uint8_t target_component);
+    void send_request(WorkItem& item);
+    void send_request_using_new_command(WorkItem& item);
+    bool try_sending_request_using_old_command(WorkItem& item);
     void handle_any_message(const mavlink_message_t& message);
     void handle_command_result(uint32_t message_id, MavlinkCommandSender::Result result);
     void handle_timeout(uint32_t message_id, uint8_t target_component);

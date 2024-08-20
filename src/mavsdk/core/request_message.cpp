@@ -2,6 +2,8 @@
 #include "log.h"
 #include "request_message.h"
 #include "system_impl.h"
+#include <cstdint>
+#include <string>
 
 namespace mavsdk {
 
@@ -50,22 +52,131 @@ void RequestMessage::request(
         this);
 
     // And send off command
-    send_request(message_id, target_component);
+    send_request(_work_items.back());
 }
 
-void RequestMessage::send_request(uint32_t message_id, uint8_t target_component)
+void RequestMessage::send_request(WorkItem& item)
 {
+    // Every second time, starting with first retry, we try the old request commands.
+    // If no old commands exist, we of course just send the new one again.
+    if (item.retries % 2 != 0) {
+        if (!try_sending_request_using_old_command(item)) {
+            send_request_using_new_command(item);
+        }
+    } else {
+        send_request_using_new_command(item);
+    }
+}
+
+void RequestMessage::send_request_using_new_command(WorkItem& item)
+{
+    if (item.retries > 0) {
+        LogWarn() << "Request message " << item.message_id
+                  << " again using REQUEST_MESSAGE (retries: " << item.retries << ")";
+    } else {
+        LogDebug() << "Request message " << item.message_id << " using REQUEST_MESSAGE";
+    }
+
     MavlinkCommandSender::CommandLong command_request_message{};
     command_request_message.command = MAV_CMD_REQUEST_MESSAGE;
     command_request_message.target_system_id = _system_impl.get_system_id();
-    command_request_message.target_component_id = target_component;
-    command_request_message.params.maybe_param1 = {static_cast<float>(message_id)};
+    command_request_message.target_component_id = item.target_component;
+    command_request_message.params.maybe_param1 = {static_cast<float>(item.message_id)};
     _command_sender.queue_command_async(
-        command_request_message, [this, message_id](MavlinkCommandSender::Result result, float) {
+        command_request_message,
+        [this, message_id = item.message_id](MavlinkCommandSender::Result result, float) {
             if (result != MavlinkCommandSender::Result::InProgress) {
                 handle_command_result(message_id, result);
             }
         });
+}
+
+bool RequestMessage::try_sending_request_using_old_command(WorkItem& item)
+{
+    MavlinkCommandSender::CommandLong command_request_message{};
+    command_request_message.target_system_id = _system_impl.get_system_id();
+    command_request_message.target_component_id = item.target_component;
+
+    std::string command_name;
+
+    switch (item.message_id) {
+        case MAVLINK_MSG_ID_AUTOPILOT_VERSION:
+            command_request_message.command = MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES;
+            command_request_message.params.maybe_param1 = {1.f};
+            command_name = "REQUEST_AUTOPILOT_CAPABILITIES";
+            break;
+
+        case MAVLINK_MSG_ID_CAMERA_INFORMATION:
+            command_request_message.command = MAV_CMD_REQUEST_CAMERA_INFORMATION;
+            command_request_message.params.maybe_param1 = {1.0f};
+            command_name = "REQUEST_CAMERA_INFORMATION";
+            break;
+
+        case MAVLINK_MSG_ID_CAMERA_SETTINGS:
+            command_request_message.command = MAV_CMD_REQUEST_CAMERA_SETTINGS;
+            command_request_message.params.maybe_param1 = {1.0f};
+            command_name = "REQUEST_CAMERA_SETTINGS";
+
+            break;
+
+        case MAVLINK_MSG_ID_STORAGE_INFORMATION:
+            command_request_message.command = MAV_CMD_REQUEST_STORAGE_INFORMATION;
+            command_request_message.params.maybe_param1 = {
+                static_cast<float>(item.param2)}; // storage ID
+            command_request_message.params.maybe_param2 = {1.0f};
+            command_name = "REQUEST_STORAGE_INFORMATION";
+            break;
+
+        case MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS:
+            command_request_message.command = MAV_CMD_REQUEST_CAMERA_CAPTURE_STATUS;
+            command_request_message.params.maybe_param1 = {1.0f};
+            command_name = "REQUEST_CAMERA_CAPTURE_STATUS";
+            break;
+
+        case MAVLINK_MSG_ID_FLIGHT_INFORMATION:
+            command_request_message.command = MAV_CMD_REQUEST_FLIGHT_INFORMATION;
+            command_request_message.params.maybe_param1 = {1.0f};
+            command_name = "REQUEST_FLIGHT_INFORMATION";
+            break;
+
+        case MAVLINK_MSG_ID_VIDEO_STREAM_STATUS:
+            command_request_message.command = MAV_CMD_REQUEST_VIDEO_STREAM_STATUS;
+            command_request_message.params.maybe_param1 = {
+                static_cast<float>(item.param2)}; // stream ID
+            command_name = "REQUEST_VIDEO_STREAM_STATUS";
+            break;
+
+        case MAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION:
+            command_request_message.command = MAV_CMD_REQUEST_VIDEO_STREAM_INFORMATION;
+            command_request_message.params.maybe_param1 = {
+                static_cast<float>(item.param2)}; // stream ID
+            command_name = "REQUEST_VIDEO_STREAM_INFORMATION";
+            break;
+
+        case MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED:
+            command_request_message.command = MAV_CMD_REQUEST_CAMERA_IMAGE_CAPTURE;
+            command_request_message.params.maybe_param1 = {
+                static_cast<float>(item.param2)}; // sequence number
+            command_name = "REQUEST_CAMERA_IMAGE_CAPTURE";
+            break;
+
+        default:
+            // No alternative command for this message.
+            return false;
+    }
+
+    LogWarn() << "Request message " << item.message_id << " again using " << command_name
+              << " (retries: " << item.retries << ")";
+
+    _command_sender.queue_command_async(
+        command_request_message,
+        [this, message_id = item.message_id](MavlinkCommandSender::Result result, float) {
+            if (result != MavlinkCommandSender::Result::InProgress) {
+                handle_command_result(message_id, result);
+            }
+        });
+
+    return true;
 }
 
 void RequestMessage::handle_any_message(const mavlink_message_t& message)
@@ -75,7 +186,7 @@ void RequestMessage::handle_any_message(const mavlink_message_t& message)
     for (auto it = _work_items.begin(); it != _work_items.end(); ++it) {
         // Check if we're waiting for this message.
         // TODO: check if params are correct.
-        if (it->message_id != message.msgid) {
+        if (it->message_id != message.msgid && it->target_component == message.compid) {
             continue;
         }
 
@@ -159,11 +270,11 @@ void RequestMessage::handle_timeout(uint32_t message_id, uint8_t target_componen
 
     for (auto it = _work_items.begin(); it != _work_items.end(); ++it) {
         // Check if we're waiting for this result
-        if (it->message_id != message_id) {
+        if (it->message_id != message_id || it->target_component != target_component) {
             continue;
         }
 
-        if (it->retries > 2) {
+        if (++it->retries > 3) {
             // We have already retried, let's give up.
             auto temp_callback = it->callback;
             _message_handler.unregister_one(it->message_id, this);
@@ -171,11 +282,9 @@ void RequestMessage::handle_timeout(uint32_t message_id, uint8_t target_componen
             lock.unlock();
             temp_callback(MavlinkCommandSender::Result::Timeout, {});
             return;
-        } else {
-            send_request(message_id, target_component);
-            LogWarn() << "Requesting message again (retries: " << it->retries << ")";
-            it->retries += 1;
         }
+
+        send_request(*it);
     }
 }
 
