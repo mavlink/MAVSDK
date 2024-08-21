@@ -24,7 +24,7 @@ if(CCACHE AND CCACHE_PROGRAM AND NOT DEFINED ENV{CCACHE_DISABLE})
     endif()
 endif()
 
-option(BUILD_TESTS "Build tests" ON)
+option(BUILD_TESTING "Build tests" ON)
 option(CMAKE_POSITION_INDEPENDENT_CODE "Position independent code" ON)
 
 include(cmake/compiler_flags.cmake)
@@ -43,9 +43,9 @@ hunter_add_package(lzma)
 find_package(CURL REQUIRED)
 find_package(LibLZMA REQUIRED)
 
-if(BUILD_TESTS AND (IOS OR ANDROID))
-    message(STATUS "Building for iOS or Android: forcing BUILD_TESTS to FALSE...")
-    set(BUILD_TESTS OFF)
+if(BUILD_TESTING AND (IOS OR ANDROID))
+    message(STATUS "Building for iOS or Android: forcing BUILD_TESTING to FALSE...")
+    set(BUILD_TESTING OFF)
 endif()
 
 if(ANDROID)
@@ -70,7 +70,7 @@ add_subdirectory(mavsdk)
 
 include(cmake/static_analyzers.cmake)
 
-if(BUILD_TESTS)
+if(BUILD_TESTING)
     enable_testing()
 
     add_subdirectory(integration_tests)

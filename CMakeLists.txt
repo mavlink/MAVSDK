@@ -6,6 +6,7 @@ option(BUILD_MAVSDK_SERVER "Build mavsdk_server" OFF)
 option(BUILD_WITH_PROTO_REFLECTION "Build mavsdk_server with proto reflection" OFF)
 option(BUILD_SHARED_LIBS "Build core as shared libraries instead of static ones" ON)
 option(MAVLINK_DIALECT "MAVLink dialect. Default: common" "common")
+option(BUILD_TESTING "Build tests" ON)
 
 if (SUPERBUILD AND HUNTER_ENABLED)
     message(FATAL_ERROR "Cannot SUPERBUILD while HUNTER_ENABLED. Set -DSUPERBUILD=OFF when using Hunter")

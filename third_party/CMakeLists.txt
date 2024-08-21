@@ -7,7 +7,7 @@ include(cmake/build_target.cmake)
 list(APPEND CMAKE_PREFIX_PATH "${DEPS_INSTALL_PATH}")
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} PARENT_SCOPE)
 
-if (SUPERBUILD)
+if(SUPERBUILD)
     build_target(mavlink)
     build_target(jsoncpp)
     build_target(tinyxml2)
@@ -29,12 +29,14 @@ if (SUPERBUILD)
         build_target(grpc)
     endif()
 
-    build_target(gtest)
+    if(BUILD_TESTING)
+        build_target(gtest)
+    endif()
 
 endif()
 
 build_target(libevents)
 
-if (ENABLE_CPPTRACE)
+if(ENABLE_CPPTRACE)
     build_target(cpptrace)
 endif()
