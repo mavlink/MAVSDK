@@ -102,6 +102,7 @@ public:
     Telemetry::FlightMode flight_mode() const;
     Telemetry::Health health() const;
     bool health_all_ok() const;
+    Telemetry::SysStatusSensors sys_status_sensors() const;
     Telemetry::RcStatus rc_status() const;
     Telemetry::ActuatorControlTarget actuator_control_target() const;
     Telemetry::ActuatorOutputStatus actuator_output_status() const;
@@ -234,6 +235,7 @@ private:
     void set_scaled_pressure(Telemetry::ScaledPressure& scaled_pressure);
     void set_heading(Telemetry::Heading heading);
     void set_altitude(Telemetry::Altitude altitude);
+    void set_sys_status_sensors(const mavlink_sys_status_t& sys_status);
 
     void process_position_velocity_ned(const mavlink_message_t& message);
     void process_global_position_int(const mavlink_message_t& message);
@@ -339,6 +341,9 @@ private:
 
     mutable std::mutex _health_mutex{};
     Telemetry::Health _health{};
+
+    mutable std::mutex _sys_status_sensors_mutex{};
+    Telemetry::SysStatusSensors _sys_status_sensors{};
 
     mutable std::mutex _vtol_state_mutex{};
     Telemetry::VtolState _vtol_state{Telemetry::VtolState::Undefined};

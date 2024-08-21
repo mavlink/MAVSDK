@@ -432,6 +432,15 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Telemetry::Health const& health);
 
     /**
+     * @brief SysStatusSensors type.
+     */
+    struct SysStatusSensors {
+        uint32_t present{0}; /**< Bitmap showing which onboard controllers and sensors are present */
+        uint32_t enabled{0}; /**< Bitmap showing which onboard controllers and sensors are enabled */
+        uint32_t health{0}; /**< Bitmap showing which onboard controllers and sensors have an error */
+    };
+
+    /**
      * @brief Remote control status type.
      */
     struct RcStatus {
@@ -1427,6 +1436,8 @@ public:
      * @return One Health update.
      */
     Health health() const;
+
+    SysStatusSensors sys_status_sensors() const;
 
     /**
      * @brief Callback type for subscribe_rc_status.

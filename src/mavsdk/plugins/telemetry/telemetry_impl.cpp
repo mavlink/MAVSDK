@@ -1051,6 +1051,7 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
 
     set_health_local_position(local_position_ok);
     set_health_global_position(global_position_ok);
+    set_sys_status_sensors(sys_status);
 
     set_rc_status({rc_ok}, std::nullopt);
 
@@ -1062,6 +1063,14 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
     set_health_armable(armable);
     _health_all_ok_subscriptions.queue(
         health_all_ok(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+}
+
+void TelemetryImpl::set_sys_status_sensors(const mavlink_sys_status_t& sys_status)
+{
+    std::lock_guard<std::mutex> lock(_sys_status_sensors_mutex);
+    _sys_status_sensors.present = sys_status.onboard_control_sensors_present;
+    _sys_status_sensors.enabled = sys_status.onboard_control_sensors_enabled;
+    _sys_status_sensors.health = sys_status.onboard_control_sensors_health;
 }
 
 bool TelemetryImpl::sys_status_present_enabled_health(
@@ -1894,6 +1903,12 @@ bool TelemetryImpl::health_all_ok() const
     } else {
         return false;
     }
+}
+
+Telemetry::SysStatusSensors TelemetryImpl::sys_status_sensors() const
+{
+    std::lock_guard<std::mutex> lock(_sys_status_sensors_mutex);
+    return _sys_status_sensors;
 }
 
 Telemetry::RcStatus TelemetryImpl::rc_status() const
