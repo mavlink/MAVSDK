@@ -435,9 +435,12 @@ public:
      * @brief SysStatusSensors type.
      */
     struct SysStatusSensors {
-        uint32_t present{0}; /**< Bitmap showing which onboard controllers and sensors are present */
-        uint32_t enabled{0}; /**< Bitmap showing which onboard controllers and sensors are enabled */
-        uint32_t health{0}; /**< Bitmap showing which onboard controllers and sensors have an error */
+        uint32_t present{
+            0}; /**< Bitmap showing which onboard controllers and sensors are present */
+        uint32_t enabled{
+            0}; /**< Bitmap showing which onboard controllers and sensors are enabled */
+        uint32_t health{
+            0}; /**< Bitmap showing which onboard controllers and sensors have an error */
     };
 
     /**
