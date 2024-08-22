@@ -96,15 +96,20 @@ jobs:
         run: |
           rm -rf ./build/release/third_party/absl
           rm -rf ./build/release/third_party/cares
+          rm -rf ./build/release/third_party/cpptrace
           rm -rf ./build/release/third_party/curl
           rm -rf ./build/release/third_party/grpc
+          rm -rf ./build/release/third_party/gtest
           rm -rf ./build/release/third_party/jsoncpp
+          rm -rf ./build/release/third_party/libevents
+          rm -rf ./build/release/third_party/liblzma
           rm -rf ./build/release/third_party/mavlink
           rm -rf ./build/release/third_party/openssl
           rm -rf ./build/release/third_party/protobuf
           rm -rf ./build/release/third_party/re2
           rm -rf ./build/release/third_party/tinyxml2
           rm -rf ./build/release/third_party/zlib
+          rm -rf ./build/release/third_party/zlib-ng
       - name: build
         run: cmake --build build/release -j2
       - name: install
