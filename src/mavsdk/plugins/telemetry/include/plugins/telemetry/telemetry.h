@@ -1440,6 +1440,11 @@ public:
      */
     Health health() const;
 
+    /**
+     * @brief Poll for 'sys_status_sensors' (blocking).
+     *
+     * @return One SysStatusSensors update.
+     */
     SysStatusSensors sys_status_sensors() const;
 
     /**
