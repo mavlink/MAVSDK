@@ -80,7 +80,6 @@ private:
 
     void process_mission_current(const mavlink_message_t& message);
     void process_mission_item_reached(const mavlink_message_t& message);
-    void process_gimbal_manager_information(const mavlink_message_t& message);
     void receive_protocol_timeout();
     void wait_for_protocol();
     void wait_for_protocol_async(std::function<void()> callback);
@@ -99,18 +98,12 @@ private:
         Mission::ResultCallback callback, MavlinkCommandSender::Result result);
     static Mission::Result command_result_to_mission_result(MavlinkCommandSender::Result result);
 
-    // FIXME: make static
     std::pair<Mission::Result, Mission::MissionPlan> convert_to_result_and_mission_items(
         MavlinkMissionTransferClient::Result result,
         const std::vector<MavlinkMissionTransferClient::ItemInt>& int_items);
 
     static Mission::Result convert_result(MavlinkMissionTransferClient::Result result);
 
-    void add_gimbal_items_v1(
-        std::vector<MavlinkMissionTransferClient::ItemInt>& int_items,
-        unsigned item_i,
-        float pitch_deg,
-        float yaw_deg);
     void add_gimbal_items_v2(
         std::vector<MavlinkMissionTransferClient::ItemInt>& int_items,
         unsigned item_i,
@@ -139,14 +132,6 @@ private:
     TimeoutHandler::Cookie _timeout_cookie{};
 
     bool _enable_return_to_launch_after_mission{false};
-
-    // FIXME: This is hardcoded for now because it is urgently needed for 3DR with Yuneec H520.
-    //        Ultimate it needs a setter.
-    bool _enable_absolute_gimbal_yaw_angle{true};
-
-    TimeoutHandler::Cookie _gimbal_protocol_cookie{};
-    enum class GimbalProtocol { Unknown, V1, V2 };
-    std::atomic<GimbalProtocol> _gimbal_protocol{GimbalProtocol::Unknown};
 };
 
 } // namespace mavsdk
