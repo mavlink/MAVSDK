@@ -196,18 +196,24 @@ void TelemetryImpl::enable()
 void TelemetryImpl::disable()
 {
     _system_impl->remove_call_every(_homepos_cookie);
+    {
+        std::lock_guard<std::mutex> lock(_health_mutex);
+        _health.is_home_position_ok = false;
+    }
 }
 
 void TelemetryImpl::request_home_position_again()
 {
     {
-        std::lock_guard<std::mutex> lock(_request_home_position_mutex);
+        std::lock_guard<std::mutex> lock(_health_mutex);
         if (_health.is_home_position_ok) {
             _system_impl->remove_call_every(_homepos_cookie);
             return;
         }
+
+        _system_impl->mavlink_request_message().request(
+            MAVLINK_MSG_ID_HOME_POSITION, MAV_COMP_ID_AUTOPILOT1, nullptr);
     }
-    request_home_position_async();
 }
 
 Telemetry::Result TelemetryImpl::set_rate_position_velocity_ned(double rate_hz)
@@ -2471,15 +2477,6 @@ void TelemetryImpl::unsubscribe_altitude(Telemetry::AltitudeHandle handle)
     _altitude_subscriptions.unsubscribe(handle);
 }
 
-void TelemetryImpl::request_home_position_async()
-{
-    MavlinkCommandSender::CommandLong command_request_message{};
-    command_request_message.command = MAV_CMD_REQUEST_MESSAGE;
-    command_request_message.target_component_id = MAV_COMP_ID_AUTOPILOT1;
-    command_request_message.params.maybe_param1 = static_cast<float>(MAVLINK_MSG_ID_HOME_POSITION);
-    _system_impl->send_command_async(command_request_message, nullptr);
-}
-
 void TelemetryImpl::get_gps_global_origin_async(
     const Telemetry::GetGpsGlobalOriginCallback callback)
 {
@@ -2517,14 +2514,6 @@ std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> TelemetryImpl::get_gps_
             prom.set_value(std::make_pair(result, gps_global_origin));
         });
     return fut.get();
-}
-
-void TelemetryImpl::check_calibration()
-{
-    if (_system_impl->has_autopilot() && _system_impl->autopilot() == Autopilot::ArduPilot) {
-        // We need to ask for the home position from ArduPilot
-        request_home_position_async();
-    }
 }
 
 } // namespace mavsdk

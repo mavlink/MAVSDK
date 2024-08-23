@@ -261,9 +261,7 @@ private:
 
     void receive_statustext(const MavlinkStatustextHandler::Statustext&);
 
-    void request_home_position_async();
     void request_home_position_again();
-    void check_calibration();
 
     static bool sys_status_present_enabled_health(
         const mavlink_sys_status_t& sys_status, MAV_SYS_STATUS_SENSOR flag);
@@ -369,8 +367,6 @@ private:
 
     mutable std::mutex _altitude_mutex{};
     Telemetry::Altitude _altitude{};
-
-    mutable std::mutex _request_home_position_mutex{};
 
     std::mutex _subscription_mutex{};
     CallbackList<Telemetry::PositionVelocityNed> _position_velocity_ned_subscriptions{};
