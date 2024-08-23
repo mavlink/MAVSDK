@@ -218,21 +218,12 @@ private:
     MavlinkCommandSender::CommandLong make_command_take_photo(float interval_s, float no_of_photos);
     MavlinkCommandSender::CommandLong make_command_stop_photo();
 
-    MavlinkCommandSender::CommandLong make_command_request_camera_info();
     MavlinkCommandSender::CommandLong make_command_set_camera_mode(float mavlink_mode);
-    MavlinkCommandSender::CommandLong make_command_request_camera_settings();
-    MavlinkCommandSender::CommandLong make_command_request_camera_capture_status();
-    MavlinkCommandSender::CommandLong make_command_request_camera_image_captured(size_t photo_id);
-    MavlinkCommandSender::CommandLong make_command_request_storage_info();
-
     MavlinkCommandSender::CommandLong make_command_start_video(float capture_status_rate_hz);
     MavlinkCommandSender::CommandLong make_command_stop_video();
 
     MavlinkCommandSender::CommandLong make_command_start_video_streaming(int32_t stream_id);
     MavlinkCommandSender::CommandLong make_command_stop_video_streaming(int32_t stream_id);
-
-    MavlinkCommandSender::CommandLong make_command_request_video_stream_info();
-    MavlinkCommandSender::CommandLong make_command_request_video_stream_status();
 
     MavlinkCommandSender::CommandLong make_command_zoom_in();
     MavlinkCommandSender::CommandLong make_command_zoom_out();
