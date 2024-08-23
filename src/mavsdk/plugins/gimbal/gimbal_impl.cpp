@@ -86,12 +86,8 @@ void GimbalImpl::request_gimbal_manager_information(uint8_t target_component_id)
                    << std::to_string(target_component_id);
     }
 
-    MavlinkCommandSender::CommandLong command{};
-    command.command = MAV_CMD_REQUEST_MESSAGE;
-    command.params.maybe_param1 = {static_cast<float>(MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION)};
-    command.target_system_id = _system_impl->get_system_id();
-    command.target_component_id = target_component_id;
-    _system_impl->send_command_async(command, nullptr);
+    _system_impl->mavlink_request_message().request(
+        MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION, target_component_id, nullptr);
 }
 
 void GimbalImpl::request_gimbal_device_information(uint8_t target_component_id) const
@@ -102,12 +98,8 @@ void GimbalImpl::request_gimbal_device_information(uint8_t target_component_id) 
                    << std::to_string(target_component_id);
     }
 
-    MavlinkCommandSender::CommandLong command{};
-    command.command = MAV_CMD_REQUEST_MESSAGE;
-    command.params.maybe_param1 = {static_cast<float>(MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION)};
-    command.target_system_id = _system_impl->get_system_id();
-    command.target_component_id = target_component_id;
-    _system_impl->send_command_async(command, nullptr);
+    _system_impl->mavlink_request_message().request(
+        MAVLINK_MSG_ID_GIMBAL_DEVICE_INFORMATION, target_component_id, nullptr);
 }
 
 void GimbalImpl::process_heartbeat(const mavlink_message_t& message)
