@@ -24,10 +24,6 @@ void MavlinkRequestMessage::request(
     MavlinkRequestMessageCallback callback,
     uint32_t param2)
 {
-    if (!callback) {
-        LogWarn() << "Can't request message without callback";
-        return;
-    }
     std::unique_lock<std::mutex> lock(_mutex);
 
     // Cleanup previous requests.
@@ -40,7 +36,9 @@ void MavlinkRequestMessage::request(
     for (auto& item : _work_items) {
         if (item.message_id == message_id && item.param2 == param2) {
             lock.unlock();
-            callback(MavlinkCommandSender::Result::Busy, {});
+            if (callback) {
+                callback(MavlinkCommandSender::Result::Busy, {});
+            }
             return;
         }
     }
@@ -205,7 +203,9 @@ void MavlinkRequestMessage::handle_any_message(const mavlink_message_t& message)
         _deferred_message_cleanup.push_back(message.msgid);
         lock.unlock();
 
-        temp_callback(MavlinkCommandSender::Result::Success, message);
+        if (temp_callback) {
+            temp_callback(MavlinkCommandSender::Result::Success, message);
+        }
         return;
     }
 }
@@ -257,7 +257,9 @@ void MavlinkRequestMessage::handle_command_result(
                 _message_handler.unregister_one(it->message_id, this);
                 _work_items.erase(it);
                 lock.unlock();
-                temp_callback(result, {});
+                if (temp_callback) {
+                    temp_callback(result, {});
+                }
                 return;
             }
 
@@ -284,7 +286,9 @@ void MavlinkRequestMessage::handle_timeout(uint32_t message_id, uint8_t target_c
             _message_handler.unregister_one(it->message_id, this);
             _work_items.erase(it);
             lock.unlock();
-            temp_callback(MavlinkCommandSender::Result::Timeout, {});
+            if (temp_callback) {
+                temp_callback(MavlinkCommandSender::Result::Timeout, {});
+            }
             return;
         }
 
