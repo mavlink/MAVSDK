@@ -2483,7 +2483,7 @@ void TelemetryImpl::request_home_position_async()
 void TelemetryImpl::get_gps_global_origin_async(
     const Telemetry::GetGpsGlobalOriginCallback callback)
 {
-    _system_impl->request_message().request(
+    _system_impl->mavlink_request_message().request(
         MAVLINK_MSG_ID_GPS_GLOBAL_ORIGIN,
         MAV_COMP_ID_AUTOPILOT1,
         [this, callback](MavlinkCommandSender::Result result, const mavlink_message_t& message) {

@@ -13,29 +13,29 @@ namespace mavsdk {
 
 class SystemImpl;
 
-class RequestMessage {
+class MavlinkRequestMessage {
 public:
-    RequestMessage(
+    MavlinkRequestMessage(
         SystemImpl& system_impl,
         MavlinkCommandSender& command_sender,
         MavlinkMessageHandler& message_handler,
         TimeoutHandler& timeout_handler);
-    RequestMessage() = delete;
+    MavlinkRequestMessage() = delete;
 
-    using RequestMessageCallback =
+    using MavlinkRequestMessageCallback =
         std::function<void(MavlinkCommandSender::Result, const mavlink_message_t&)>;
 
     void request(
         uint32_t message_id,
         uint8_t target_component,
-        RequestMessageCallback callback,
+        MavlinkRequestMessageCallback callback,
         uint32_t param2 = 0);
 
 private:
     struct WorkItem {
         uint32_t message_id{0};
         uint8_t target_component{0};
-        RequestMessageCallback callback{};
+        MavlinkRequestMessageCallback callback{};
         uint32_t param2{0};
         unsigned retries{0};
         TimeoutHandler::Cookie timeout_cookie{};

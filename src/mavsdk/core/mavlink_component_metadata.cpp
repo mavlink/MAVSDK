@@ -61,7 +61,7 @@ void MavlinkComponentMetadata::request_component(uint32_t compid)
     const std::lock_guard lg{_mavlink_components_mutex};
     if (_mavlink_components.find(compid) == _mavlink_components.end()) {
         _mavlink_components[compid] = MavlinkComponent{};
-        _system_impl.request_message().request(
+        _system_impl.mavlink_request_message().request(
             MAVLINK_MSG_ID_COMPONENT_METADATA, compid, [this](auto&& result, auto&& message) {
                 receive_component_metadata(result, message);
             });

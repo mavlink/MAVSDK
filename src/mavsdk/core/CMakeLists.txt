@@ -42,6 +42,7 @@ target_sources(mavsdk
     mavlink_parameter_subscription.cpp
     mavlink_parameter_helper.cpp
     mavlink_receiver.cpp
+    mavlink_request_message.cpp
     mavlink_request_message_handler.cpp
     mavlink_statustext_handler.cpp
     mavlink_message_handler.cpp
@@ -60,7 +61,6 @@ target_sources(mavsdk
     log.cpp
     cli_arg.cpp
     geometry.cpp
-    request_message.cpp
     mavsdk_time.cpp
     timesync.cpp
 )

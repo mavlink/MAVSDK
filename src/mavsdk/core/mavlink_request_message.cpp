@@ -1,13 +1,13 @@
 
 #include "log.h"
-#include "request_message.h"
+#include "mavlink_request_message.h"
 #include "system_impl.h"
 #include <cstdint>
 #include <string>
 
 namespace mavsdk {
 
-RequestMessage::RequestMessage(
+MavlinkRequestMessage::MavlinkRequestMessage(
     SystemImpl& system_impl,
     MavlinkCommandSender& command_sender,
     MavlinkMessageHandler& message_handler,
@@ -18,8 +18,11 @@ RequestMessage::RequestMessage(
     _timeout_handler(timeout_handler)
 {}
 
-void RequestMessage::request(
-    uint32_t message_id, uint8_t target_component, RequestMessageCallback callback, uint32_t param2)
+void MavlinkRequestMessage::request(
+    uint32_t message_id,
+    uint8_t target_component,
+    MavlinkRequestMessageCallback callback,
+    uint32_t param2)
 {
     if (!callback) {
         LogWarn() << "Can't request message without callback";
@@ -55,7 +58,7 @@ void RequestMessage::request(
     send_request(_work_items.back());
 }
 
-void RequestMessage::send_request(WorkItem& item)
+void MavlinkRequestMessage::send_request(WorkItem& item)
 {
     // Every second time, starting with first retry, we try the old request commands.
     // If no old commands exist, we of course just send the new one again.
@@ -68,7 +71,7 @@ void RequestMessage::send_request(WorkItem& item)
     }
 }
 
-void RequestMessage::send_request_using_new_command(WorkItem& item)
+void MavlinkRequestMessage::send_request_using_new_command(WorkItem& item)
 {
     if (item.retries > 0) {
         LogWarn() << "Request message " << item.message_id
@@ -91,7 +94,7 @@ void RequestMessage::send_request_using_new_command(WorkItem& item)
         });
 }
 
-bool RequestMessage::try_sending_request_using_old_command(WorkItem& item)
+bool MavlinkRequestMessage::try_sending_request_using_old_command(WorkItem& item)
 {
     MavlinkCommandSender::CommandLong command_request_message{};
     command_request_message.target_system_id = _system_impl.get_system_id();
@@ -179,7 +182,7 @@ bool RequestMessage::try_sending_request_using_old_command(WorkItem& item)
     return true;
 }
 
-void RequestMessage::handle_any_message(const mavlink_message_t& message)
+void MavlinkRequestMessage::handle_any_message(const mavlink_message_t& message)
 {
     std::unique_lock<std::mutex> lock(_mutex);
 
@@ -207,7 +210,8 @@ void RequestMessage::handle_any_message(const mavlink_message_t& message)
     }
 }
 
-void RequestMessage::handle_command_result(uint32_t message_id, MavlinkCommandSender::Result result)
+void MavlinkRequestMessage::handle_command_result(
+    uint32_t message_id, MavlinkCommandSender::Result result)
 {
     std::unique_lock<std::mutex> lock(_mutex);
 
@@ -264,7 +268,7 @@ void RequestMessage::handle_command_result(uint32_t message_id, MavlinkCommandSe
     }
 }
 
-void RequestMessage::handle_timeout(uint32_t message_id, uint8_t target_component)
+void MavlinkRequestMessage::handle_timeout(uint32_t message_id, uint8_t target_component)
 {
     std::unique_lock<std::mutex> lock(_mutex);
 

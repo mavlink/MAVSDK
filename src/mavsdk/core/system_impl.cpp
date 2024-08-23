@@ -6,7 +6,6 @@
 #include "plugin_impl_base.h"
 #include "px4_custom_mode.h"
 #include "ardupilot_custom_mode.h"
-#include "request_message.h"
 #include "callback_list.tpp"
 #include "unused.h"
 #include <cassert>
@@ -32,7 +31,7 @@ SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
         _mavsdk_impl.timeout_handler,
         [this]() { return timeout_s(); },
         [this]() { return autopilot(); }),
-    _request_message(
+    _mavlink_request_message(
         *this, _command_sender, _mavlink_message_handler, _mavsdk_impl.timeout_handler),
     _mavlink_ftp_client(*this),
     _mavlink_component_metadata(*this)
