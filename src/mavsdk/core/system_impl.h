@@ -306,8 +306,6 @@ private:
     void set_connected();
     void set_disconnected();
 
-    void receive_autopilot_version_request_ack(MavlinkCommandSender::Result result);
-
     static std::string component_name(uint8_t component_id);
     static System::ComponentType component_type(uint8_t component_id);
 
@@ -413,8 +411,6 @@ private:
 
     std::mutex _mavlink_ftp_files_mutex{};
     std::unordered_map<std::string, std::string> _mavlink_ftp_files{};
-
-    bool _old_message_520_supported{true};
 };
 
 } // namespace mavsdk
