@@ -31,8 +31,30 @@ public:
     void update_component_id(uint16_t msg_id, uint8_t cmp_id, const void* cookie);
 
 private:
+    void register_one_impl(
+        uint16_t msg_id,
+        std::optional<uint8_t> maybe_component_id,
+        const Callback& callback,
+        const void* cookie);
+
+    void unregister_impl(std::optional<uint16_t> maybe_msg_id, const void* cookie);
+
+    void check_register_later();
+    void check_unregister_later();
+
     std::mutex _mutex{};
     std::vector<Entry> _table{};
+
+    std::mutex _register_later_mutex{};
+    std::vector<Entry> _register_later_table{};
+
+    struct UnregisterEntry {
+        std::optional<uint16_t> maybe_msg_id;
+        const void* cookie;
+    };
+
+    std::mutex _unregister_later_mutex{};
+    std::vector<UnregisterEntry> _unregister_later_table{};
 
     bool _debugging{false};
 };
