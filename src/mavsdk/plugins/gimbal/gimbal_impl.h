@@ -83,6 +83,8 @@ private:
     std::unique_ptr<GimbalProtocolBase> _gimbal_protocol{nullptr};
     CallbackList<Gimbal::ControlStatus> _control_subscriptions{};
     CallbackList<Gimbal::Attitude> _attitude_subscriptions{};
+
+    CallEveryHandler::Cookie _request_gimbal_information_cookie{};
 };
 
 } // namespace mavsdk
