@@ -54,7 +54,8 @@ void GimbalImpl::enable()
         }
     }
 
-    request_gimbal_information();
+    _request_gimbal_information_cookie =
+        _system_impl->add_call_every([this]() { request_gimbal_information(); }, 3.0);
 }
 
 void GimbalImpl::disable()
@@ -75,6 +76,9 @@ void GimbalImpl::receive_protocol_timeout()
 {
     // We did not receive a GIMBAL_MANAGER_INFORMATION in time, so we have to
     // assume Version2 is not available.
+
+    _system_impl->remove_call_every(_request_gimbal_information_cookie);
+
     LogWarn() << "Falling back to Gimbal Version 1";
     std::lock_guard<std::mutex> lock(_mutex);
     _gimbal_protocol.reset(new GimbalProtocolV1(*_system_impl));
@@ -93,6 +97,8 @@ void GimbalImpl::process_gimbal_manager_information(const mavlink_message_t& mes
                << " was discovered";
 
     _protocol_cookie = {};
+
+    _system_impl->remove_call_every(_request_gimbal_information_cookie);
 
     // We need to schedule the construction for later because it wants
     // to register more message subscriptions which blocks.
@@ -282,20 +288,17 @@ Gimbal::Attitude GimbalImpl::attitude()
 
 void GimbalImpl::wait_for_protocol()
 {
-    unsigned counter = 0;
     while (true) {
         {
-            std::lock_guard<std::mutex> lock(_mutex);
-            if (_gimbal_protocol != nullptr) {
-                break;
+            // Try to get lock, if we can't, just keep trying.
+            std::unique_lock<std::mutex> lock(_mutex, std::try_to_lock);
+            if (lock.owns_lock()) {
+                if (_gimbal_protocol != nullptr) {
+                    break;
+                }
             }
         }
-        // Request gimbal information every 3 seconds again
-        if (counter % 30 == 0) {
-            request_gimbal_information();
-        }
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        ++counter;
     }
 }
 
