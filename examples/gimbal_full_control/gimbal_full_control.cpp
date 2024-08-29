@@ -84,7 +84,8 @@ int main(int argc, char** argv)
     }
 
     std::cout << "Set yaw mode to lock to a specific direction...\n";
-    gimbal_result = gimbal.set_angles(gimbal_id, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
+    gimbal_result = gimbal.set_angles(
+        gimbal_id, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
     if (gimbal_result != Gimbal::Result::Success) {
         std::cerr << "Could not set to lock mode: " << gimbal_result << '\n';
         return 1;
@@ -92,28 +93,36 @@ int main(int argc, char** argv)
 
     std::cout << "Test SetAngles...\n";
     std::cout << "Roll=0 Pitch=0 Yaw=0\n";
-    gimbal.set_angles(gimbal_id, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
     sleep_for(seconds(5));
     std::cout << "Roll=-30 Pitch=0 Yaw=0\n";
-    gimbal.set_angles(gimbal_id, -30.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id, -30.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
     sleep_for(seconds(5));
     std::cout << "Roll=30 Pitch=0 Yaw=0\n";
-    gimbal.set_angles(gimbal_id, 30.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id, 30.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
     sleep_for(seconds(5));
     std::cout << "Roll=0 Pitch=-30 Yaw=0\n";
-    gimbal.set_angles(gimbal_id, 0.0f, -30.0f, 0.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id, 0.0f, -30.0f, 0.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
     sleep_for(seconds(5));
     std::cout << "Roll=0 Pitch=30 Yaw=0\n";
-    gimbal.set_angles(gimbal_id, 0.0f, 30.0f, 0.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id, 0.0f, 30.0f, 0.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
     sleep_for(seconds(5));
     std::cout << "Roll=0 Pitch=0 Yaw=-30\n";
-    gimbal.set_angles(gimbal_id, 0.0f, 0.0f, -30.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id, 0.0f, 0.0f, -30.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
     sleep_for(seconds(5));
     std::cout << "Roll=0 Pitch=0 Yaw=30\n";
-    gimbal.set_angles(gimbal_id, 0.0f, 0.0f, 30.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id, 0.0f, 0.0f, 30.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
     sleep_for(seconds(5));
     std::cout << "Roll=0 Pitch=0 Yaw=0\n";
-    gimbal.set_angles(gimbal_id, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
     sleep_for(seconds(5));
 
     std::cout << "Stop controlling gimbal...\n";
