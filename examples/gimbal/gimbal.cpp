@@ -93,7 +93,7 @@ int main(int argc, char** argv)
 
     // Fetch the gimbal attitude
     auto [result, attitude] = gimbal.get_attitude(gimbal_id);
-    gimbal.
+
     std::cout << "Use yaw mode to lock to a specific direction...\n";
 
     std::cout << "Look North...\n";
