@@ -1,7 +1,7 @@
 #include <cmath>
 #include <utility>
 #include "mavlink_address.h"
-#include "mavsdk_math.h"
+#include "math_utils.h"
 #include "offboard_impl.h"
 #include "mavsdk_impl.h"
 #include "px4_custom_mode.h"

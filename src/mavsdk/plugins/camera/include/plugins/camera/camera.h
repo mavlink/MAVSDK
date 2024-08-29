@@ -96,6 +96,28 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Camera::PhotosRange const& photos_range);
 
     /**
+     * @brief
+     */
+    struct ModeInfo {
+        int32_t camera_id{}; /**< @brief Camera ID */
+        Mode mode{}; /**< @brief Camera mode */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Camera::ModeInfo` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Camera::ModeInfo& lhs, const Camera::ModeInfo& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Camera::ModeInfo`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Camera::ModeInfo const& mode_info);
+
+    /**
      * @brief Possible results returned for camera commands
      */
     enum class Result {
@@ -109,6 +131,9 @@ public:
         WrongArgument, /**< @brief Command has wrong argument(s). */
         NoSystem, /**< @brief No system connected. */
         ProtocolUnsupported, /**< @brief Definition file protocol not supported. */
+        SettingsUnavailable, /**< @brief Settings not available. */
+        SettingsLoading, /**< @brief Settings not available yet. */
+        CameraIdInvalid, /**< @brief Camera with camera ID not found. */
     };
 
     /**
@@ -298,6 +323,7 @@ public:
             std::ostream& str,
             Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum);
 
+        int32_t camera_id{}; /**< @brief Camera ID */
         VideoStreamSettings settings{}; /**< @brief Video stream settings */
         VideoStreamStatus status{}; /**< @brief Current status of video streaming */
         VideoStreamSpectrum spectrum{}; /**< @brief Light-spectrum of the video stream */
@@ -361,6 +387,7 @@ public:
         friend std::ostream&
         operator<<(std::ostream& str, Camera::Status::StorageType const& storage_type);
 
+        int32_t camera_id{}; /**< @brief Camera ID */
         bool video_on{}; /**< @brief Whether video recording is currently in process */
         bool photo_interval_on{}; /**< @brief Whether a photo interval is currently in process */
         float used_storage_mib{}; /**< @brief Used storage (in MiB) */
@@ -441,6 +468,7 @@ public:
      * @brief Type to represent a setting with a list of options to choose from.
      */
     struct SettingOptions {
+        int32_t camera_id{}; /**< @brief Camera ID */
         std::string setting_id{}; /**< @brief Name of the setting (machine readable) */
         std::string
             setting_description{}; /**< @brief Description of the setting (human readable) */
@@ -492,32 +520,37 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Camera::Information const& information);
 
     /**
+     * @brief Camera list
+     */
+    struct CameraList {
+        std::vector<Information> cameras{}; /**< @brief Camera items. */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Camera::CameraList` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Camera::CameraList& lhs, const Camera::CameraList& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Camera::CameraList`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Camera::CameraList const& camera_list);
+
+    /**
      * @brief Callback type for asynchronous Camera calls.
      */
     using ResultCallback = std::function<void(Result)>;
-
-    /**
-     * @brief Prepare the camera plugin (e.g. download the camera definition, etc).
-     *
-     * This function is non-blocking. See 'prepare' for the blocking counterpart.
-     */
-    void prepare_async(const ResultCallback callback);
-
-    /**
-     * @brief Prepare the camera plugin (e.g. download the camera definition, etc).
-     *
-     * This function is blocking. See 'prepare_async' for the non-blocking counterpart.
-     *
-     * @return Result of request.
-     */
-    Result prepare() const;
 
     /**
      * @brief Take one photo.
      *
      * This function is non-blocking. See 'take_photo' for the blocking counterpart.
      */
-    void take_photo_async(const ResultCallback callback);
+    void take_photo_async(int32_t camera_id, const ResultCallback callback);
 
     /**
      * @brief Take one photo.
@@ -526,14 +559,15 @@ public:
      *
      * @return Result of request.
      */
-    Result take_photo() const;
+    Result take_photo(int32_t camera_id) const;
 
     /**
      * @brief Start photo timelapse with a given interval.
      *
      * This function is non-blocking. See 'start_photo_interval' for the blocking counterpart.
      */
-    void start_photo_interval_async(float interval_s, const ResultCallback callback);
+    void
+    start_photo_interval_async(int32_t camera_id, float interval_s, const ResultCallback callback);
 
     /**
      * @brief Start photo timelapse with a given interval.
@@ -542,14 +576,14 @@ public:
      *
      * @return Result of request.
      */
-    Result start_photo_interval(float interval_s) const;
+    Result start_photo_interval(int32_t camera_id, float interval_s) const;
 
     /**
      * @brief Stop a running photo timelapse.
      *
      * This function is non-blocking. See 'stop_photo_interval' for the blocking counterpart.
      */
-    void stop_photo_interval_async(const ResultCallback callback);
+    void stop_photo_interval_async(int32_t camera_id, const ResultCallback callback);
 
     /**
      * @brief Stop a running photo timelapse.
@@ -558,14 +592,14 @@ public:
      *
      * @return Result of request.
      */
-    Result stop_photo_interval() const;
+    Result stop_photo_interval(int32_t camera_id) const;
 
     /**
      * @brief Start a video recording.
      *
      * This function is non-blocking. See 'start_video' for the blocking counterpart.
      */
-    void start_video_async(const ResultCallback callback);
+    void start_video_async(int32_t camera_id, const ResultCallback callback);
 
     /**
      * @brief Start a video recording.
@@ -574,14 +608,14 @@ public:
      *
      * @return Result of request.
      */
-    Result start_video() const;
+    Result start_video(int32_t camera_id) const;
 
     /**
      * @brief Stop a running video recording.
      *
      * This function is non-blocking. See 'stop_video' for the blocking counterpart.
      */
-    void stop_video_async(const ResultCallback callback);
+    void stop_video_async(int32_t camera_id, const ResultCallback callback);
 
     /**
      * @brief Stop a running video recording.
@@ -590,7 +624,7 @@ public:
      *
      * @return Result of request.
      */
-    Result stop_video() const;
+    Result stop_video(int32_t camera_id) const;
 
     /**
      * @brief Start video streaming.
@@ -599,7 +633,7 @@ public:
      *
      * @return Result of request.
      */
-    Result start_video_streaming(int32_t stream_id) const;
+    Result start_video_streaming(int32_t camera_id, int32_t stream_id) const;
 
     /**
      * @brief Stop current video streaming.
@@ -608,14 +642,14 @@ public:
      *
      * @return Result of request.
      */
-    Result stop_video_streaming(int32_t stream_id) const;
+    Result stop_video_streaming(int32_t camera_id, int32_t stream_id) const;
 
     /**
      * @brief Set camera mode.
      *
      * This function is non-blocking. See 'set_mode' for the blocking counterpart.
      */
-    void set_mode_async(Mode mode, const ResultCallback callback);
+    void set_mode_async(int32_t camera_id, Mode mode, const ResultCallback callback);
 
     /**
      * @brief Set camera mode.
@@ -624,7 +658,7 @@ public:
      *
      * @return Result of request.
      */
-    Result set_mode(Mode mode) const;
+    Result set_mode(int32_t camera_id, Mode mode) const;
 
     /**
      * @brief Callback type for list_photos_async.
@@ -636,7 +670,8 @@ public:
      *
      * This function is non-blocking. See 'list_photos' for the blocking counterpart.
      */
-    void list_photos_async(PhotosRange photos_range, const ListPhotosCallback callback);
+    void list_photos_async(
+        int32_t camera_id, PhotosRange photos_range, const ListPhotosCallback callback);
 
     /**
      * @brief List photos available on the camera.
@@ -645,17 +680,48 @@ public:
      *
      * @return Result of request.
      */
-    std::pair<Result, std::vector<Camera::CaptureInfo>> list_photos(PhotosRange photos_range) const;
+    std::pair<Result, std::vector<Camera::CaptureInfo>>
+    list_photos(int32_t camera_id, PhotosRange photos_range) const;
+
+    /**
+     * @brief Callback type for subscribe_camera_list.
+     */
+    using CameraListCallback = std::function<void(CameraList)>;
+
+    /**
+     * @brief Handle type for subscribe_camera_list.
+     */
+    using CameraListHandle = Handle<CameraList>;
+
+    /**
+     * @brief Subscribe to list of cameras.
+     *
+     * This allows to find out what cameras are connected to the system.
+     * Based on the camera ID, we can then address a specific camera.
+     */
+    CameraListHandle subscribe_camera_list(const CameraListCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_camera_list
+     */
+    void unsubscribe_camera_list(CameraListHandle handle);
+
+    /**
+     * @brief Poll for 'CameraList' (blocking).
+     *
+     * @return One CameraList update.
+     */
+    CameraList camera_list() const;
 
     /**
      * @brief Callback type for subscribe_mode.
      */
-    using ModeCallback = std::function<void(Mode)>;
+    using ModeCallback = std::function<void(ModeInfo)>;
 
     /**
      * @brief Handle type for subscribe_mode.
      */
-    using ModeHandle = Handle<Mode>;
+    using ModeHandle = Handle<ModeInfo>;
 
     /**
      * @brief Subscribe to camera mode updates.
@@ -668,38 +734,13 @@ public:
     void unsubscribe_mode(ModeHandle handle);
 
     /**
-     * @brief Poll for 'Mode' (blocking).
+     * @brief Get camera mode.
      *
-     * @return One Mode update.
-     */
-    Mode mode() const;
-
-    /**
-     * @brief Callback type for subscribe_information.
-     */
-    using InformationCallback = std::function<void(Information)>;
-
-    /**
-     * @brief Handle type for subscribe_information.
-     */
-    using InformationHandle = Handle<Information>;
-
-    /**
-     * @brief Subscribe to camera information updates.
-     */
-    InformationHandle subscribe_information(const InformationCallback& callback);
-
-    /**
-     * @brief Unsubscribe from subscribe_information
-     */
-    void unsubscribe_information(InformationHandle handle);
-
-    /**
-     * @brief Poll for 'Information' (blocking).
+     * This function is blocking.
      *
-     * @return One Information update.
+     * @return Result of request.
      */
-    Information information() const;
+    Camera::Mode get_mode(int32_t camera_id) const;
 
     /**
      * @brief Callback type for subscribe_video_stream_info.
@@ -722,11 +763,13 @@ public:
     void unsubscribe_video_stream_info(VideoStreamInfoHandle handle);
 
     /**
-     * @brief Poll for 'VideoStreamInfo' (blocking).
+     * @brief Get video stream info.
      *
-     * @return One VideoStreamInfo update.
+     * This function is blocking.
+     *
+     * @return Result of request.
      */
-    VideoStreamInfo video_stream_info() const;
+    Camera::VideoStreamInfo get_video_stream_info(int32_t camera_id) const;
 
     /**
      * @brief Callback type for subscribe_capture_info.
@@ -769,11 +812,13 @@ public:
     void unsubscribe_status(StatusHandle handle);
 
     /**
-     * @brief Poll for 'Status' (blocking).
+     * @brief Get camera status.
      *
-     * @return One Status update.
+     * This function is blocking.
+     *
+     * @return Result of request.
      */
-    Status status() const;
+    Camera::Status get_status(int32_t camera_id) const;
 
     /**
      * @brief Callback type for subscribe_current_settings.
@@ -794,6 +839,15 @@ public:
      * @brief Unsubscribe from subscribe_current_settings
      */
     void unsubscribe_current_settings(CurrentSettingsHandle handle);
+
+    /**
+     * @brief Get current settings.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, std::vector<Camera::Setting>> get_current_settings(int32_t camera_id) const;
 
     /**
      * @brief Callback type for subscribe_possible_setting_options.
@@ -817,11 +871,14 @@ public:
     void unsubscribe_possible_setting_options(PossibleSettingOptionsHandle handle);
 
     /**
-     * @brief Poll for 'std::vector<SettingOptions>' (blocking).
+     * @brief Get possible setting options.
      *
-     * @return One std::vector<SettingOptions> update.
+     * This function is blocking.
+     *
+     * @return Result of request.
      */
-    std::vector<SettingOptions> possible_setting_options() const;
+    std::pair<Result, std::vector<Camera::SettingOptions>>
+    get_possible_setting_options(int32_t camera_id) const;
 
     /**
      * @brief Set a setting to some value.
@@ -830,7 +887,7 @@ public:
      *
      * This function is non-blocking. See 'set_setting' for the blocking counterpart.
      */
-    void set_setting_async(Setting setting, const ResultCallback callback);
+    void set_setting_async(int32_t camera_id, Setting setting, const ResultCallback callback);
 
     /**
      * @brief Set a setting to some value.
@@ -841,7 +898,7 @@ public:
      *
      * @return Result of request.
      */
-    Result set_setting(Setting setting) const;
+    Result set_setting(int32_t camera_id, Setting setting) const;
 
     /**
      * @brief Callback type for get_setting_async.
@@ -855,7 +912,7 @@ public:
      *
      * This function is non-blocking. See 'get_setting' for the blocking counterpart.
      */
-    void get_setting_async(Setting setting, const GetSettingCallback callback);
+    void get_setting_async(int32_t camera_id, Setting setting, const GetSettingCallback callback);
 
     /**
      * @brief Get a setting.
@@ -866,7 +923,7 @@ public:
      *
      * @return Result of request.
      */
-    std::pair<Result, Camera::Setting> get_setting(Setting setting) const;
+    std::pair<Result, Camera::Setting> get_setting(int32_t camera_id, Setting setting) const;
 
     /**
      * @brief Format storage (e.g. SD card) in camera.
@@ -875,7 +932,7 @@ public:
      *
      * This function is non-blocking. See 'format_storage' for the blocking counterpart.
      */
-    void format_storage_async(int32_t storage_id, const ResultCallback callback);
+    void format_storage_async(int32_t camera_id, int32_t storage_id, const ResultCallback callback);
 
     /**
      * @brief Format storage (e.g. SD card) in camera.
@@ -886,18 +943,7 @@ public:
      *
      * @return Result of request.
      */
-    Result format_storage(int32_t storage_id) const;
-
-    /**
-     * @brief Select current camera .
-     *
-     * Bind the plugin instance to a specific camera_id
-     *
-     * This function is blocking.
-     *
-     * @return Result of request.
-     */
-    Result select_camera(int32_t camera_id) const;
+    Result format_storage(int32_t camera_id, int32_t storage_id) const;
 
     /**
      * @brief Reset all settings in camera.
@@ -906,7 +952,7 @@ public:
      *
      * This function is non-blocking. See 'reset_settings' for the blocking counterpart.
      */
-    void reset_settings_async(const ResultCallback callback);
+    void reset_settings_async(int32_t camera_id, const ResultCallback callback);
 
     /**
      * @brief Reset all settings in camera.
@@ -917,14 +963,14 @@ public:
      *
      * @return Result of request.
      */
-    Result reset_settings() const;
+    Result reset_settings(int32_t camera_id) const;
 
     /**
      * @brief Start zooming in.
      *
      * This function is non-blocking. See 'zoom_in_start' for the blocking counterpart.
      */
-    void zoom_in_start_async(const ResultCallback callback);
+    void zoom_in_start_async(int32_t camera_id, const ResultCallback callback);
 
     /**
      * @brief Start zooming in.
@@ -933,14 +979,14 @@ public:
      *
      * @return Result of request.
      */
-    Result zoom_in_start() const;
+    Result zoom_in_start(int32_t camera_id) const;
 
     /**
      * @brief Start zooming out.
      *
      * This function is non-blocking. See 'zoom_out_start' for the blocking counterpart.
      */
-    void zoom_out_start_async(const ResultCallback callback);
+    void zoom_out_start_async(int32_t camera_id, const ResultCallback callback);
 
     /**
      * @brief Start zooming out.
@@ -949,14 +995,14 @@ public:
      *
      * @return Result of request.
      */
-    Result zoom_out_start() const;
+    Result zoom_out_start(int32_t camera_id) const;
 
     /**
      * @brief Stop zooming.
      *
      * This function is non-blocking. See 'zoom_stop' for the blocking counterpart.
      */
-    void zoom_stop_async(const ResultCallback callback);
+    void zoom_stop_async(int32_t camera_id, const ResultCallback callback);
 
     /**
      * @brief Stop zooming.
@@ -965,14 +1011,14 @@ public:
      *
      * @return Result of request.
      */
-    Result zoom_stop() const;
+    Result zoom_stop(int32_t camera_id) const;
 
     /**
      * @brief Zoom to value as proportion of full camera range (percentage between 0.0 and 100.0).
      *
      * This function is non-blocking. See 'zoom_range' for the blocking counterpart.
      */
-    void zoom_range_async(float range, const ResultCallback callback);
+    void zoom_range_async(int32_t camera_id, float range, const ResultCallback callback);
 
     /**
      * @brief Zoom to value as proportion of full camera range (percentage between 0.0 and 100.0).
@@ -981,15 +1027,19 @@ public:
      *
      * @return Result of request.
      */
-    Result zoom_range(float range) const;
+    Result zoom_range(int32_t camera_id, float range) const;
 
     /**
      * @brief Track point.
      *
      * This function is non-blocking. See 'track_point' for the blocking counterpart.
      */
-    void
-    track_point_async(float point_x, float point_y, float radius, const ResultCallback callback);
+    void track_point_async(
+        int32_t camera_id,
+        float point_x,
+        float point_y,
+        float radius,
+        const ResultCallback callback);
 
     /**
      * @brief Track point.
@@ -998,7 +1048,7 @@ public:
      *
      * @return Result of request.
      */
-    Result track_point(float point_x, float point_y, float radius) const;
+    Result track_point(int32_t camera_id, float point_x, float point_y, float radius) const;
 
     /**
      * @brief Track rectangle.
@@ -1006,6 +1056,7 @@ public:
      * This function is non-blocking. See 'track_rectangle' for the blocking counterpart.
      */
     void track_rectangle_async(
+        int32_t camera_id,
         float top_left_x,
         float top_left_y,
         float bottom_right_x,
@@ -1020,14 +1071,18 @@ public:
      * @return Result of request.
      */
     Result track_rectangle(
-        float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y) const;
+        int32_t camera_id,
+        float top_left_x,
+        float top_left_y,
+        float bottom_right_x,
+        float bottom_right_y) const;
 
     /**
      * @brief Stop tracking.
      *
      * This function is non-blocking. See 'track_stop' for the blocking counterpart.
      */
-    void track_stop_async(const ResultCallback callback);
+    void track_stop_async(int32_t camera_id, const ResultCallback callback);
 
     /**
      * @brief Stop tracking.
@@ -1036,14 +1091,14 @@ public:
      *
      * @return Result of request.
      */
-    Result track_stop() const;
+    Result track_stop(int32_t camera_id) const;
 
     /**
      * @brief Start focusing in.
      *
      * This function is non-blocking. See 'focus_in_start' for the blocking counterpart.
      */
-    void focus_in_start_async(const ResultCallback callback);
+    void focus_in_start_async(int32_t camera_id, const ResultCallback callback);
 
     /**
      * @brief Start focusing in.
@@ -1052,14 +1107,14 @@ public:
      *
      * @return Result of request.
      */
-    Result focus_in_start() const;
+    Result focus_in_start(int32_t camera_id) const;
 
     /**
      * @brief Start focusing out.
      *
      * This function is non-blocking. See 'focus_out_start' for the blocking counterpart.
      */
-    void focus_out_start_async(const ResultCallback callback);
+    void focus_out_start_async(int32_t camera_id, const ResultCallback callback);
 
     /**
      * @brief Start focusing out.
@@ -1068,14 +1123,14 @@ public:
      *
      * @return Result of request.
      */
-    Result focus_out_start() const;
+    Result focus_out_start(int32_t camera_id) const;
 
     /**
      * @brief Stop focus.
      *
      * This function is non-blocking. See 'focus_stop' for the blocking counterpart.
      */
-    void focus_stop_async(const ResultCallback callback);
+    void focus_stop_async(int32_t camera_id, const ResultCallback callback);
 
     /**
      * @brief Stop focus.
@@ -1084,14 +1139,14 @@ public:
      *
      * @return Result of request.
      */
-    Result focus_stop() const;
+    Result focus_stop(int32_t camera_id) const;
 
     /**
      * @brief Focus with range value of full range (value between 0.0 and 100.0).
      *
      * This function is non-blocking. See 'focus_range' for the blocking counterpart.
      */
-    void focus_range_async(float range, const ResultCallback callback);
+    void focus_range_async(int32_t camera_id, float range, const ResultCallback callback);
 
     /**
      * @brief Focus with range value of full range (value between 0.0 and 100.0).
@@ -1100,7 +1155,7 @@ public:
      *
      * @return Result of request.
      */
-    Result focus_range(float range) const;
+    Result focus_range(int32_t camera_id, float range) const;
 
     /**
      * @brief Copy constructor.

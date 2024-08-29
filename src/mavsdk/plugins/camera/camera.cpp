@@ -9,6 +9,8 @@
 
 namespace mavsdk {
 
+using ModeInfo = Camera::ModeInfo;
+
 using Position = Camera::Position;
 using Quaternion = Camera::Quaternion;
 using EulerAngle = Camera::EulerAngle;
@@ -20,6 +22,7 @@ using Option = Camera::Option;
 using Setting = Camera::Setting;
 using SettingOptions = Camera::SettingOptions;
 using Information = Camera::Information;
+using CameraList = Camera::CameraList;
 
 Camera::Camera(System& system) : PluginBase(), _impl{std::make_unique<CameraImpl>(system)} {}
 
@@ -30,95 +33,102 @@ Camera::Camera(std::shared_ptr<System> system) :
 
 Camera::~Camera() {}
 
-void Camera::prepare_async(const ResultCallback callback)
+void Camera::take_photo_async(int32_t camera_id, const ResultCallback callback)
 {
-    _impl->prepare_async(callback);
+    _impl->take_photo_async(camera_id, callback);
 }
 
-Camera::Result Camera::prepare() const
+Camera::Result Camera::take_photo(int32_t camera_id) const
 {
-    return _impl->prepare();
+    return _impl->take_photo(camera_id);
 }
 
-void Camera::take_photo_async(const ResultCallback callback)
+void Camera::start_photo_interval_async(
+    int32_t camera_id, float interval_s, const ResultCallback callback)
 {
-    _impl->take_photo_async(callback);
+    _impl->start_photo_interval_async(camera_id, interval_s, callback);
 }
 
-Camera::Result Camera::take_photo() const
+Camera::Result Camera::start_photo_interval(int32_t camera_id, float interval_s) const
 {
-    return _impl->take_photo();
+    return _impl->start_photo_interval(camera_id, interval_s);
 }
 
-void Camera::start_photo_interval_async(float interval_s, const ResultCallback callback)
+void Camera::stop_photo_interval_async(int32_t camera_id, const ResultCallback callback)
 {
-    _impl->start_photo_interval_async(interval_s, callback);
+    _impl->stop_photo_interval_async(camera_id, callback);
 }
 
-Camera::Result Camera::start_photo_interval(float interval_s) const
+Camera::Result Camera::stop_photo_interval(int32_t camera_id) const
 {
-    return _impl->start_photo_interval(interval_s);
+    return _impl->stop_photo_interval(camera_id);
 }
 
-void Camera::stop_photo_interval_async(const ResultCallback callback)
+void Camera::start_video_async(int32_t camera_id, const ResultCallback callback)
 {
-    _impl->stop_photo_interval_async(callback);
+    _impl->start_video_async(camera_id, callback);
 }
 
-Camera::Result Camera::stop_photo_interval() const
+Camera::Result Camera::start_video(int32_t camera_id) const
 {
-    return _impl->stop_photo_interval();
+    return _impl->start_video(camera_id);
 }
 
-void Camera::start_video_async(const ResultCallback callback)
+void Camera::stop_video_async(int32_t camera_id, const ResultCallback callback)
 {
-    _impl->start_video_async(callback);
+    _impl->stop_video_async(camera_id, callback);
 }
 
-Camera::Result Camera::start_video() const
+Camera::Result Camera::stop_video(int32_t camera_id) const
 {
-    return _impl->start_video();
+    return _impl->stop_video(camera_id);
 }
 
-void Camera::stop_video_async(const ResultCallback callback)
+Camera::Result Camera::start_video_streaming(int32_t camera_id, int32_t stream_id) const
 {
-    _impl->stop_video_async(callback);
+    return _impl->start_video_streaming(camera_id, stream_id);
 }
 
-Camera::Result Camera::stop_video() const
+Camera::Result Camera::stop_video_streaming(int32_t camera_id, int32_t stream_id) const
 {
-    return _impl->stop_video();
+    return _impl->stop_video_streaming(camera_id, stream_id);
 }
 
-Camera::Result Camera::start_video_streaming(int32_t stream_id) const
+void Camera::set_mode_async(int32_t camera_id, Mode mode, const ResultCallback callback)
 {
-    return _impl->start_video_streaming(stream_id);
+    _impl->set_mode_async(camera_id, mode, callback);
 }
 
-Camera::Result Camera::stop_video_streaming(int32_t stream_id) const
+Camera::Result Camera::set_mode(int32_t camera_id, Mode mode) const
 {
-    return _impl->stop_video_streaming(stream_id);
+    return _impl->set_mode(camera_id, mode);
 }
 
-void Camera::set_mode_async(Mode mode, const ResultCallback callback)
+void Camera::list_photos_async(
+    int32_t camera_id, PhotosRange photos_range, const ListPhotosCallback callback)
 {
-    _impl->set_mode_async(mode, callback);
-}
-
-Camera::Result Camera::set_mode(Mode mode) const
-{
-    return _impl->set_mode(mode);
-}
-
-void Camera::list_photos_async(PhotosRange photos_range, const ListPhotosCallback callback)
-{
-    _impl->list_photos_async(photos_range, callback);
+    _impl->list_photos_async(camera_id, photos_range, callback);
 }
 
 std::pair<Camera::Result, std::vector<Camera::CaptureInfo>>
-Camera::list_photos(PhotosRange photos_range) const
+Camera::list_photos(int32_t camera_id, PhotosRange photos_range) const
 {
-    return _impl->list_photos(photos_range);
+    return _impl->list_photos(camera_id, photos_range);
+}
+
+Camera::CameraListHandle Camera::subscribe_camera_list(const CameraListCallback& callback)
+{
+    return _impl->subscribe_camera_list(callback);
+}
+
+void Camera::unsubscribe_camera_list(CameraListHandle handle)
+{
+    _impl->unsubscribe_camera_list(handle);
+}
+
+Camera::CameraList Camera::camera_list() const
+{
+    return _impl->camera_list();
 }
 
 Camera::ModeHandle Camera::subscribe_mode(const ModeCallback& callback)
@@ -131,24 +141,9 @@ void Camera::unsubscribe_mode(ModeHandle handle)
     _impl->unsubscribe_mode(handle);
 }
 
-Camera::Mode Camera::mode() const
+Camera::Mode Camera::get_mode(int32_t camera_id) const
 {
-    return _impl->mode();
-}
-
-Camera::InformationHandle Camera::subscribe_information(const InformationCallback& callback)
-{
-    return _impl->subscribe_information(callback);
-}
-
-void Camera::unsubscribe_information(InformationHandle handle)
-{
-    _impl->unsubscribe_information(handle);
-}
-
-Camera::Information Camera::information() const
-{
-    return _impl->information();
+    return _impl->get_mode(camera_id);
 }
 
 Camera::VideoStreamInfoHandle
@@ -162,9 +157,9 @@ void Camera::unsubscribe_video_stream_info(VideoStreamInfoHandle handle)
     _impl->unsubscribe_video_stream_info(handle);
 }
 
-Camera::VideoStreamInfo Camera::video_stream_info() const
+Camera::VideoStreamInfo Camera::get_video_stream_info(int32_t camera_id) const
 {
-    return _impl->video_stream_info();
+    return _impl->get_video_stream_info(camera_id);
 }
 
 Camera::CaptureInfoHandle Camera::subscribe_capture_info(const CaptureInfoCallback& callback)
@@ -187,9 +182,9 @@ void Camera::unsubscribe_status(StatusHandle handle)
     _impl->unsubscribe_status(handle);
 }
 
-Camera::Status Camera::status() const
+Camera::Status Camera::get_status(int32_t camera_id) const
 {
-    return _impl->status();
+    return _impl->get_status(camera_id);
 }
 
 Camera::CurrentSettingsHandle
@@ -203,6 +198,12 @@ void Camera::unsubscribe_current_settings(CurrentSettingsHandle handle)
     _impl->unsubscribe_current_settings(handle);
 }
 
+std::pair<Camera::Result, std::vector<Camera::Setting>>
+Camera::get_current_settings(int32_t camera_id) const
+{
+    return _impl->get_current_settings(camera_id);
+}
+
 Camera::PossibleSettingOptionsHandle
 Camera::subscribe_possible_setting_options(const PossibleSettingOptionsCallback& callback)
 {
@@ -214,171 +215,193 @@ void Camera::unsubscribe_possible_setting_options(PossibleSettingOptionsHandle h
     _impl->unsubscribe_possible_setting_options(handle);
 }
 
-std::vector<Camera::SettingOptions> Camera::possible_setting_options() const
+std::pair<Camera::Result, std::vector<Camera::SettingOptions>>
+Camera::get_possible_setting_options(int32_t camera_id) const
 {
-    return _impl->possible_setting_options();
+    return _impl->get_possible_setting_options(camera_id);
 }
 
-void Camera::set_setting_async(Setting setting, const ResultCallback callback)
+void Camera::set_setting_async(int32_t camera_id, Setting setting, const ResultCallback callback)
 {
-    _impl->set_setting_async(setting, callback);
+    _impl->set_setting_async(camera_id, setting, callback);
 }
 
-Camera::Result Camera::set_setting(Setting setting) const
+Camera::Result Camera::set_setting(int32_t camera_id, Setting setting) const
 {
-    return _impl->set_setting(setting);
+    return _impl->set_setting(camera_id, setting);
 }
 
-void Camera::get_setting_async(Setting setting, const GetSettingCallback callback)
+void Camera::get_setting_async(
+    int32_t camera_id, Setting setting, const GetSettingCallback callback)
 {
-    _impl->get_setting_async(setting, callback);
+    _impl->get_setting_async(camera_id, setting, callback);
 }
 
-std::pair<Camera::Result, Camera::Setting> Camera::get_setting(Setting setting) const
+std::pair<Camera::Result, Camera::Setting>
+Camera::get_setting(int32_t camera_id, Setting setting) const
 {
-    return _impl->get_setting(setting);
+    return _impl->get_setting(camera_id, setting);
 }
 
-void Camera::format_storage_async(int32_t storage_id, const ResultCallback callback)
+void Camera::format_storage_async(
+    int32_t camera_id, int32_t storage_id, const ResultCallback callback)
 {
-    _impl->format_storage_async(storage_id, callback);
+    _impl->format_storage_async(camera_id, storage_id, callback);
 }
 
-Camera::Result Camera::format_storage(int32_t storage_id) const
+Camera::Result Camera::format_storage(int32_t camera_id, int32_t storage_id) const
 {
-    return _impl->format_storage(storage_id);
+    return _impl->format_storage(camera_id, storage_id);
 }
 
-Camera::Result Camera::select_camera(int32_t camera_id) const
+void Camera::reset_settings_async(int32_t camera_id, const ResultCallback callback)
 {
-    return _impl->select_camera(camera_id);
+    _impl->reset_settings_async(camera_id, callback);
 }
 
-void Camera::reset_settings_async(const ResultCallback callback)
+Camera::Result Camera::reset_settings(int32_t camera_id) const
 {
-    _impl->reset_settings_async(callback);
+    return _impl->reset_settings(camera_id);
 }
 
-Camera::Result Camera::reset_settings() const
+void Camera::zoom_in_start_async(int32_t camera_id, const ResultCallback callback)
 {
-    return _impl->reset_settings();
+    _impl->zoom_in_start_async(camera_id, callback);
 }
 
-void Camera::zoom_in_start_async(const ResultCallback callback)
+Camera::Result Camera::zoom_in_start(int32_t camera_id) const
 {
-    _impl->zoom_in_start_async(callback);
+    return _impl->zoom_in_start(camera_id);
 }
 
-Camera::Result Camera::zoom_in_start() const
+void Camera::zoom_out_start_async(int32_t camera_id, const ResultCallback callback)
 {
-    return _impl->zoom_in_start();
+    _impl->zoom_out_start_async(camera_id, callback);
 }
 
-void Camera::zoom_out_start_async(const ResultCallback callback)
+Camera::Result Camera::zoom_out_start(int32_t camera_id) const
 {
-    _impl->zoom_out_start_async(callback);
+    return _impl->zoom_out_start(camera_id);
 }
 
-Camera::Result Camera::zoom_out_start() const
+void Camera::zoom_stop_async(int32_t camera_id, const ResultCallback callback)
 {
-    return _impl->zoom_out_start();
+    _impl->zoom_stop_async(camera_id, callback);
 }
 
-void Camera::zoom_stop_async(const ResultCallback callback)
+Camera::Result Camera::zoom_stop(int32_t camera_id) const
 {
-    _impl->zoom_stop_async(callback);
+    return _impl->zoom_stop(camera_id);
 }
 
-Camera::Result Camera::zoom_stop() const
+void Camera::zoom_range_async(int32_t camera_id, float range, const ResultCallback callback)
 {
-    return _impl->zoom_stop();
+    _impl->zoom_range_async(camera_id, range, callback);
 }
 
-void Camera::zoom_range_async(float range, const ResultCallback callback)
+Camera::Result Camera::zoom_range(int32_t camera_id, float range) const
 {
-    _impl->zoom_range_async(range, callback);
-}
-
-Camera::Result Camera::zoom_range(float range) const
-{
-    return _impl->zoom_range(range);
+    return _impl->zoom_range(camera_id, range);
 }
 
 void Camera::track_point_async(
-    float point_x, float point_y, float radius, const ResultCallback callback)
+    int32_t camera_id, float point_x, float point_y, float radius, const ResultCallback callback)
 {
-    _impl->track_point_async(point_x, point_y, radius, callback);
+    _impl->track_point_async(camera_id, point_x, point_y, radius, callback);
 }
 
-Camera::Result Camera::track_point(float point_x, float point_y, float radius) const
+Camera::Result
+Camera::track_point(int32_t camera_id, float point_x, float point_y, float radius) const
 {
-    return _impl->track_point(point_x, point_y, radius);
+    return _impl->track_point(camera_id, point_x, point_y, radius);
 }
 
 void Camera::track_rectangle_async(
+    int32_t camera_id,
     float top_left_x,
     float top_left_y,
     float bottom_right_x,
     float bottom_right_y,
     const ResultCallback callback)
 {
-    _impl->track_rectangle_async(top_left_x, top_left_y, bottom_right_x, bottom_right_y, callback);
+    _impl->track_rectangle_async(
+        camera_id, top_left_x, top_left_y, bottom_right_x, bottom_right_y, callback);
 }
 
 Camera::Result Camera::track_rectangle(
-    float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y) const
+    int32_t camera_id,
+    float top_left_x,
+    float top_left_y,
+    float bottom_right_x,
+    float bottom_right_y) const
 {
-    return _impl->track_rectangle(top_left_x, top_left_y, bottom_right_x, bottom_right_y);
+    return _impl->track_rectangle(
+        camera_id, top_left_x, top_left_y, bottom_right_x, bottom_right_y);
 }
 
-void Camera::track_stop_async(const ResultCallback callback)
+void Camera::track_stop_async(int32_t camera_id, const ResultCallback callback)
 {
-    _impl->track_stop_async(callback);
+    _impl->track_stop_async(camera_id, callback);
 }
 
-Camera::Result Camera::track_stop() const
+Camera::Result Camera::track_stop(int32_t camera_id) const
 {
-    return _impl->track_stop();
+    return _impl->track_stop(camera_id);
 }
 
-void Camera::focus_in_start_async(const ResultCallback callback)
+void Camera::focus_in_start_async(int32_t camera_id, const ResultCallback callback)
 {
-    _impl->focus_in_start_async(callback);
+    _impl->focus_in_start_async(camera_id, callback);
 }
 
-Camera::Result Camera::focus_in_start() const
+Camera::Result Camera::focus_in_start(int32_t camera_id) const
 {
-    return _impl->focus_in_start();
+    return _impl->focus_in_start(camera_id);
 }
 
-void Camera::focus_out_start_async(const ResultCallback callback)
+void Camera::focus_out_start_async(int32_t camera_id, const ResultCallback callback)
 {
-    _impl->focus_out_start_async(callback);
+    _impl->focus_out_start_async(camera_id, callback);
 }
 
-Camera::Result Camera::focus_out_start() const
+Camera::Result Camera::focus_out_start(int32_t camera_id) const
 {
-    return _impl->focus_out_start();
+    return _impl->focus_out_start(camera_id);
 }
 
-void Camera::focus_stop_async(const ResultCallback callback)
+void Camera::focus_stop_async(int32_t camera_id, const ResultCallback callback)
 {
-    _impl->focus_stop_async(callback);
+    _impl->focus_stop_async(camera_id, callback);
 }
 
-Camera::Result Camera::focus_stop() const
+Camera::Result Camera::focus_stop(int32_t camera_id) const
 {
-    return _impl->focus_stop();
+    return _impl->focus_stop(camera_id);
 }
 
-void Camera::focus_range_async(float range, const ResultCallback callback)
+void Camera::focus_range_async(int32_t camera_id, float range, const ResultCallback callback)
 {
-    _impl->focus_range_async(range, callback);
+    _impl->focus_range_async(camera_id, range, callback);
 }
 
-Camera::Result Camera::focus_range(float range) const
+Camera::Result Camera::focus_range(int32_t camera_id, float range) const
 {
-    return _impl->focus_range(range);
+    return _impl->focus_range(camera_id, range);
+}
+
+bool operator==(const Camera::ModeInfo& lhs, const Camera::ModeInfo& rhs)
+{
+    return (rhs.camera_id == lhs.camera_id) && (rhs.mode == lhs.mode);
+}
+
+std::ostream& operator<<(std::ostream& str, Camera::ModeInfo const& mode_info)
+{
+    str << std::setprecision(15);
+    str << "mode_info:" << '\n' << "{\n";
+    str << "    camera_id: " << mode_info.camera_id << '\n';
+    str << "    mode: " << mode_info.mode << '\n';
+    str << '}';
+    return str;
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::Result const& result)
@@ -404,6 +427,12 @@ std::ostream& operator<<(std::ostream& str, Camera::Result const& result)
             return str << "No System";
         case Camera::Result::ProtocolUnsupported:
             return str << "Protocol Unsupported";
+        case Camera::Result::SettingsUnavailable:
+            return str << "Settings Unavailable";
+        case Camera::Result::SettingsLoading:
+            return str << "Settings Loading";
+        case Camera::Result::CameraIdInvalid:
+            return str << "Camera Id Invalid";
         default:
             return str << "Unknown";
     }
@@ -554,14 +583,15 @@ std::ostream& operator<<(
 }
 bool operator==(const Camera::VideoStreamInfo& lhs, const Camera::VideoStreamInfo& rhs)
 {
-    return (rhs.settings == lhs.settings) && (rhs.status == lhs.status) &&
-           (rhs.spectrum == lhs.spectrum);
+    return (rhs.camera_id == lhs.camera_id) && (rhs.settings == lhs.settings) &&
+           (rhs.status == lhs.status) && (rhs.spectrum == lhs.spectrum);
 }
 
 std::ostream& operator<<(std::ostream& str, Camera::VideoStreamInfo const& video_stream_info)
 {
     str << std::setprecision(15);
     str << "video_stream_info:" << '\n' << "{\n";
+    str << "    camera_id: " << video_stream_info.camera_id << '\n';
     str << "    settings: " << video_stream_info.settings << '\n';
     str << "    status: " << video_stream_info.status << '\n';
     str << "    spectrum: " << video_stream_info.spectrum << '\n';
@@ -606,7 +636,8 @@ std::ostream& operator<<(std::ostream& str, Camera::Status::StorageType const& s
 }
 bool operator==(const Camera::Status& lhs, const Camera::Status& rhs)
 {
-    return (rhs.video_on == lhs.video_on) && (rhs.photo_interval_on == lhs.photo_interval_on) &&
+    return (rhs.camera_id == lhs.camera_id) && (rhs.video_on == lhs.video_on) &&
+           (rhs.photo_interval_on == lhs.photo_interval_on) &&
            ((std::isnan(rhs.used_storage_mib) && std::isnan(lhs.used_storage_mib)) ||
             rhs.used_storage_mib == lhs.used_storage_mib) &&
            ((std::isnan(rhs.available_storage_mib) && std::isnan(lhs.available_storage_mib)) ||
@@ -624,6 +655,7 @@ std::ostream& operator<<(std::ostream& str, Camera::Status const& status)
 {
     str << std::setprecision(15);
     str << "status:" << '\n' << "{\n";
+    str << "    camera_id: " << status.camera_id << '\n';
     str << "    video_on: " << status.video_on << '\n';
     str << "    photo_interval_on: " << status.photo_interval_on << '\n';
     str << "    used_storage_mib: " << status.used_storage_mib << '\n';
@@ -674,7 +706,7 @@ std::ostream& operator<<(std::ostream& str, Camera::Setting const& setting)
 
 bool operator==(const Camera::SettingOptions& lhs, const Camera::SettingOptions& rhs)
 {
-    return (rhs.setting_id == lhs.setting_id) &&
+    return (rhs.camera_id == lhs.camera_id) && (rhs.setting_id == lhs.setting_id) &&
            (rhs.setting_description == lhs.setting_description) && (rhs.options == lhs.options) &&
            (rhs.is_range == lhs.is_range);
 }
@@ -683,6 +715,7 @@ std::ostream& operator<<(std::ostream& str, Camera::SettingOptions const& settin
 {
     str << std::setprecision(15);
     str << "setting_options:" << '\n' << "{\n";
+    str << "    camera_id: " << setting_options.camera_id << '\n';
     str << "    setting_id: " << setting_options.setting_id << '\n';
     str << "    setting_description: " << setting_options.setting_description << '\n';
     str << "    options: [";
@@ -720,6 +753,24 @@ std::ostream& operator<<(std::ostream& str, Camera::Information const& informati
     str << "    vertical_sensor_size_mm: " << information.vertical_sensor_size_mm << '\n';
     str << "    horizontal_resolution_px: " << information.horizontal_resolution_px << '\n';
     str << "    vertical_resolution_px: " << information.vertical_resolution_px << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Camera::CameraList& lhs, const Camera::CameraList& rhs)
+{
+    return (rhs.cameras == lhs.cameras);
+}
+
+std::ostream& operator<<(std::ostream& str, Camera::CameraList const& camera_list)
+{
+    str << std::setprecision(15);
+    str << "camera_list:" << '\n' << "{\n";
+    str << "    cameras: [";
+    for (auto it = camera_list.cameras.begin(); it != camera_list.cameras.end(); ++it) {
+        str << *it;
+        str << (it + 1 != camera_list.cameras.end() ? ", " : "]\n");
+    }
     str << '}';
     return str;
 }

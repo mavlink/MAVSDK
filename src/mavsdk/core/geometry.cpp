@@ -1,5 +1,5 @@
 #include "geometry.h"
-#include "mavsdk_math.h"
+#include "math_utils.h"
 #include <cmath>
 
 namespace mavsdk::geometry {
