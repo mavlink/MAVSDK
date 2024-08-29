@@ -97,33 +97,60 @@ int main(int argc, char** argv)
     std::cout << "Use yaw mode to lock to a specific direction...\n";
 
     std::cout << "Look North...\n";
-    gimbal.set_angles(gimbal_id, 0.0f, 0.0f, -attitude.euler_angle_north.yaw_deg, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id,
+        0.0f,
+        0.0f,
+        -attitude.euler_angle_north.yaw_deg,
+        Gimbal::GimbalMode::YawLock,
+        Gimbal::SendMode::Once);
     sleep_for(seconds(5));
 
     std::cout << "Look East...\n";
-    gimbal.set_angles(gimbal_id, 0.0f, 0.0f, -attitude.euler_angle_north.yaw_deg + 90.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id,
+        0.0f,
+        0.0f,
+        -attitude.euler_angle_north.yaw_deg + 90.0f,
+        Gimbal::GimbalMode::YawLock,
+        Gimbal::SendMode::Once);
     sleep_for(seconds(5));
 
     std::cout << "Look South...\n";
-    gimbal.set_angles(gimbal_id, 0.0f, 0.0f, -attitude.euler_angle_north.yaw_deg + 180.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id,
+        0.0f,
+        0.0f,
+        -attitude.euler_angle_north.yaw_deg + 180.0f,
+        Gimbal::GimbalMode::YawLock,
+        Gimbal::SendMode::Once);
     sleep_for(seconds(5));
 
     std::cout << "Look West...\n";
-    gimbal.set_angles(gimbal_id, 0.0f, 0.0f, -attitude.euler_angle_north.yaw_deg -90.0f, Gimbal::GimbalMode::YawLock, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id,
+        0.0f,
+        0.0f,
+        -attitude.euler_angle_north.yaw_deg - 90.0f,
+        Gimbal::GimbalMode::YawLock,
+        Gimbal::SendMode::Once);
     sleep_for(seconds(5));
 
     std::cout << "Now use follow mode...\n";
 
     std::cout << "And center first...\n";
-    gimbal.set_angles(gimbal_id, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
     sleep_for(seconds(5));
 
     std::cout << "Tilt gimbal down...\n";
-    gimbal.set_angles(gimbal_id, 0.0f, -90.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id, 0.0f, -90.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
     sleep_for(seconds(5));
 
     std::cout << "Tilt gimbal back up...\n";
-    gimbal.set_angles(gimbal_id, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
     sleep_for(seconds(5));
 
     std::cout << "Slowly tilt up ...\n";
@@ -132,15 +159,18 @@ int main(int argc, char** argv)
     sleep_for(seconds(5));
 
     std::cout << "Back to horizontal...\n";
-    gimbal.set_angles(gimbal_id, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
     sleep_for(seconds(5));
 
     std::cout << "Pan to the right...\n";
-    gimbal.set_angles(gimbal_id, 0.0f, 0.0f, 90.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id, 0.0f, 0.0f, 90.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
     sleep_for(seconds(5));
 
     std::cout << "Back to the center...\n";
-    gimbal.set_angles(gimbal_id, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
     sleep_for(seconds(5));
 
     std::cout << "Pan slowly to the left...\n";
@@ -149,7 +179,8 @@ int main(int argc, char** argv)
     sleep_for(seconds(5));
 
     std::cout << "Back to the center...\n";
-    gimbal.set_angles(gimbal_id, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
+    gimbal.set_angles(
+        gimbal_id, 0.0f, 0.0f, 0.0f, Gimbal::GimbalMode::YawFollow, Gimbal::SendMode::Once);
     sleep_for(seconds(5));
 
     std::cout << "Set ROI (region of interested) location...\n";
