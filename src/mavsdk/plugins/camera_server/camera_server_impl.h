@@ -193,6 +193,12 @@ private:
     std::optional<mavlink_command_ack_t>
     process_set_message_interval(const MavlinkCommandReceiver::CommandLong& command);
 
+    std::optional<mavlink_command_ack_t>
+    process_request_message(const MavlinkCommandReceiver::CommandLong& command);
+
+    std::optional<mavlink_command_ack_t>
+    send_camera_information(const MavlinkCommandReceiver::CommandLong& command);
+
     void send_capture_status();
 
     bool _is_information_set{};

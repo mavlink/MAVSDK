@@ -166,11 +166,13 @@ TEST(SystemTest, ComponentInformationConnect)
 #endif
 
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
-    ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
 
     Mavsdk mavsdk_companion{Mavsdk::Configuration{ComponentType::CompanionComputer}};
     ASSERT_EQ(
-        mavsdk_companion.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
+        mavsdk_companion.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
     // Wait for companion system to connect
     auto prom = std::promise<std::shared_ptr<System>>();

@@ -72,8 +72,22 @@ int main(int argc, char** argv)
     // Instantiate plugins.
     auto camera = Camera{system};
 
+    // Wait for camera to be discovered.
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+    // We expect to find one camera.
+    if (camera.camera_list().cameras.size() == 0) {
+        std::cerr << "No camera found, exiting.\n";
+        return 1;
+    }
+
+    if (camera.camera_list().cameras.size() > 1) {
+        std::cout << "More than one camera found, using first one discovered.\n";
+    }
+    const auto component_id = camera.camera_list().cameras[0].component_id;
+
     // Zoom in
-    auto result = camera.zoom_range(2.0f);
+    auto result = camera.zoom_range(component_id, 2.0f);
     if (result != Camera::Result::Success) {
         std::cerr << "Zooming failed: " << result << '\n';
         return 1;
@@ -83,7 +97,7 @@ int main(int argc, char** argv)
     sleep_for(seconds(4));
 
     // Now try continuous zooming in.
-    result = camera.zoom_in_start();
+    result = camera.zoom_in_start(component_id);
     if (result != Camera::Result::Success) {
         std::cerr << "Zooming in failed: " << result << '\n';
         return 1;
@@ -92,7 +106,7 @@ int main(int argc, char** argv)
     sleep_for(seconds(1));
 
     // Now try stopping.
-    result = camera.zoom_stop();
+    result = camera.zoom_stop(component_id);
     if (result != Camera::Result::Success) {
         std::cerr << "Stop zooming failed: " << result << '\n';
         return 1;
@@ -101,7 +115,7 @@ int main(int argc, char** argv)
     sleep_for(seconds(1));
 
     // And back out.
-    result = camera.zoom_out_start();
+    result = camera.zoom_out_start(component_id);
     if (result != Camera::Result::Success) {
         std::cerr << "Zooming out failed: " << result << '\n';
         return 1;
@@ -110,7 +124,7 @@ int main(int argc, char** argv)
     sleep_for(seconds(1));
 
     // Stop again.
-    result = camera.zoom_stop();
+    result = camera.zoom_stop(component_id);
     if (result != Camera::Result::Success) {
         std::cerr << "Stop zooming failed: " << result << '\n';
         return 1;
@@ -119,7 +133,7 @@ int main(int argc, char** argv)
     sleep_for(seconds(1));
 
     // Zoom back out
-    result = camera.zoom_range(1.0f);
+    result = camera.zoom_range(component_id, 1.0f);
     if (result != Camera::Result::Success) {
         std::cerr << "Zooming failed: " << result << '\n';
         return 1;

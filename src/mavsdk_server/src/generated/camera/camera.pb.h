@@ -61,6 +61,12 @@ extern const ::google::protobuf::internal::DescriptorTable
 namespace mavsdk {
 namespace rpc {
 namespace camera {
+class CameraList;
+struct CameraListDefaultTypeInternal;
+extern CameraListDefaultTypeInternal _CameraList_default_instance_;
+class CameraListResponse;
+struct CameraListResponseDefaultTypeInternal;
+extern CameraListResponseDefaultTypeInternal _CameraListResponse_default_instance_;
 class CameraResult;
 struct CameraResultDefaultTypeInternal;
 extern CameraResultDefaultTypeInternal _CameraResult_default_instance_;
@@ -73,6 +79,9 @@ extern CaptureInfoResponseDefaultTypeInternal _CaptureInfoResponse_default_insta
 class CurrentSettingsResponse;
 struct CurrentSettingsResponseDefaultTypeInternal;
 extern CurrentSettingsResponseDefaultTypeInternal _CurrentSettingsResponse_default_instance_;
+class CurrentSettingsUpdate;
+struct CurrentSettingsUpdateDefaultTypeInternal;
+extern CurrentSettingsUpdateDefaultTypeInternal _CurrentSettingsUpdate_default_instance_;
 class EulerAngle;
 struct EulerAngleDefaultTypeInternal;
 extern EulerAngleDefaultTypeInternal _EulerAngle_default_instance_;
@@ -106,18 +115,45 @@ extern FormatStorageRequestDefaultTypeInternal _FormatStorageRequest_default_ins
 class FormatStorageResponse;
 struct FormatStorageResponseDefaultTypeInternal;
 extern FormatStorageResponseDefaultTypeInternal _FormatStorageResponse_default_instance_;
+class GetCurrentSettingsRequest;
+struct GetCurrentSettingsRequestDefaultTypeInternal;
+extern GetCurrentSettingsRequestDefaultTypeInternal _GetCurrentSettingsRequest_default_instance_;
+class GetCurrentSettingsResponse;
+struct GetCurrentSettingsResponseDefaultTypeInternal;
+extern GetCurrentSettingsResponseDefaultTypeInternal _GetCurrentSettingsResponse_default_instance_;
+class GetModeRequest;
+struct GetModeRequestDefaultTypeInternal;
+extern GetModeRequestDefaultTypeInternal _GetModeRequest_default_instance_;
+class GetModeResponse;
+struct GetModeResponseDefaultTypeInternal;
+extern GetModeResponseDefaultTypeInternal _GetModeResponse_default_instance_;
+class GetPossibleSettingOptionsRequest;
+struct GetPossibleSettingOptionsRequestDefaultTypeInternal;
+extern GetPossibleSettingOptionsRequestDefaultTypeInternal _GetPossibleSettingOptionsRequest_default_instance_;
+class GetPossibleSettingOptionsResponse;
+struct GetPossibleSettingOptionsResponseDefaultTypeInternal;
+extern GetPossibleSettingOptionsResponseDefaultTypeInternal _GetPossibleSettingOptionsResponse_default_instance_;
 class GetSettingRequest;
 struct GetSettingRequestDefaultTypeInternal;
 extern GetSettingRequestDefaultTypeInternal _GetSettingRequest_default_instance_;
 class GetSettingResponse;
 struct GetSettingResponseDefaultTypeInternal;
 extern GetSettingResponseDefaultTypeInternal _GetSettingResponse_default_instance_;
+class GetStorageRequest;
+struct GetStorageRequestDefaultTypeInternal;
+extern GetStorageRequestDefaultTypeInternal _GetStorageRequest_default_instance_;
+class GetStorageResponse;
+struct GetStorageResponseDefaultTypeInternal;
+extern GetStorageResponseDefaultTypeInternal _GetStorageResponse_default_instance_;
+class GetVideoStreamInfoRequest;
+struct GetVideoStreamInfoRequestDefaultTypeInternal;
+extern GetVideoStreamInfoRequestDefaultTypeInternal _GetVideoStreamInfoRequest_default_instance_;
+class GetVideoStreamInfoResponse;
+struct GetVideoStreamInfoResponseDefaultTypeInternal;
+extern GetVideoStreamInfoResponseDefaultTypeInternal _GetVideoStreamInfoResponse_default_instance_;
 class Information;
 struct InformationDefaultTypeInternal;
 extern InformationDefaultTypeInternal _Information_default_instance_;
-class InformationResponse;
-struct InformationResponseDefaultTypeInternal;
-extern InformationResponseDefaultTypeInternal _InformationResponse_default_instance_;
 class ListPhotosRequest;
 struct ListPhotosRequestDefaultTypeInternal;
 extern ListPhotosRequestDefaultTypeInternal _ListPhotosRequest_default_instance_;
@@ -127,6 +163,9 @@ extern ListPhotosResponseDefaultTypeInternal _ListPhotosResponse_default_instanc
 class ModeResponse;
 struct ModeResponseDefaultTypeInternal;
 extern ModeResponseDefaultTypeInternal _ModeResponse_default_instance_;
+class ModeUpdate;
+struct ModeUpdateDefaultTypeInternal;
+extern ModeUpdateDefaultTypeInternal _ModeUpdate_default_instance_;
 class Option;
 struct OptionDefaultTypeInternal;
 extern OptionDefaultTypeInternal _Option_default_instance_;
@@ -136,12 +175,9 @@ extern PositionDefaultTypeInternal _Position_default_instance_;
 class PossibleSettingOptionsResponse;
 struct PossibleSettingOptionsResponseDefaultTypeInternal;
 extern PossibleSettingOptionsResponseDefaultTypeInternal _PossibleSettingOptionsResponse_default_instance_;
-class PrepareRequest;
-struct PrepareRequestDefaultTypeInternal;
-extern PrepareRequestDefaultTypeInternal _PrepareRequest_default_instance_;
-class PrepareResponse;
-struct PrepareResponseDefaultTypeInternal;
-extern PrepareResponseDefaultTypeInternal _PrepareResponse_default_instance_;
+class PossibleSettingOptionsUpdate;
+struct PossibleSettingOptionsUpdateDefaultTypeInternal;
+extern PossibleSettingOptionsUpdateDefaultTypeInternal _PossibleSettingOptionsUpdate_default_instance_;
 class Quaternion;
 struct QuaternionDefaultTypeInternal;
 extern QuaternionDefaultTypeInternal _Quaternion_default_instance_;
@@ -151,12 +187,6 @@ extern ResetSettingsRequestDefaultTypeInternal _ResetSettingsRequest_default_ins
 class ResetSettingsResponse;
 struct ResetSettingsResponseDefaultTypeInternal;
 extern ResetSettingsResponseDefaultTypeInternal _ResetSettingsResponse_default_instance_;
-class SelectCameraRequest;
-struct SelectCameraRequestDefaultTypeInternal;
-extern SelectCameraRequestDefaultTypeInternal _SelectCameraRequest_default_instance_;
-class SelectCameraResponse;
-struct SelectCameraResponseDefaultTypeInternal;
-extern SelectCameraResponseDefaultTypeInternal _SelectCameraResponse_default_instance_;
 class SetModeRequest;
 struct SetModeRequestDefaultTypeInternal;
 extern SetModeRequestDefaultTypeInternal _SetModeRequest_default_instance_;
@@ -193,12 +223,6 @@ extern StartVideoStreamingRequestDefaultTypeInternal _StartVideoStreamingRequest
 class StartVideoStreamingResponse;
 struct StartVideoStreamingResponseDefaultTypeInternal;
 extern StartVideoStreamingResponseDefaultTypeInternal _StartVideoStreamingResponse_default_instance_;
-class Status;
-struct StatusDefaultTypeInternal;
-extern StatusDefaultTypeInternal _Status_default_instance_;
-class StatusResponse;
-struct StatusResponseDefaultTypeInternal;
-extern StatusResponseDefaultTypeInternal _StatusResponse_default_instance_;
 class StopPhotoIntervalRequest;
 struct StopPhotoIntervalRequestDefaultTypeInternal;
 extern StopPhotoIntervalRequestDefaultTypeInternal _StopPhotoIntervalRequest_default_instance_;
@@ -217,24 +241,33 @@ extern StopVideoStreamingRequestDefaultTypeInternal _StopVideoStreamingRequest_d
 class StopVideoStreamingResponse;
 struct StopVideoStreamingResponseDefaultTypeInternal;
 extern StopVideoStreamingResponseDefaultTypeInternal _StopVideoStreamingResponse_default_instance_;
+class Storage;
+struct StorageDefaultTypeInternal;
+extern StorageDefaultTypeInternal _Storage_default_instance_;
+class StorageResponse;
+struct StorageResponseDefaultTypeInternal;
+extern StorageResponseDefaultTypeInternal _StorageResponse_default_instance_;
+class StorageUpdate;
+struct StorageUpdateDefaultTypeInternal;
+extern StorageUpdateDefaultTypeInternal _StorageUpdate_default_instance_;
+class SubscribeCameraListRequest;
+struct SubscribeCameraListRequestDefaultTypeInternal;
+extern SubscribeCameraListRequestDefaultTypeInternal _SubscribeCameraListRequest_default_instance_;
 class SubscribeCaptureInfoRequest;
 struct SubscribeCaptureInfoRequestDefaultTypeInternal;
 extern SubscribeCaptureInfoRequestDefaultTypeInternal _SubscribeCaptureInfoRequest_default_instance_;
 class SubscribeCurrentSettingsRequest;
 struct SubscribeCurrentSettingsRequestDefaultTypeInternal;
 extern SubscribeCurrentSettingsRequestDefaultTypeInternal _SubscribeCurrentSettingsRequest_default_instance_;
-class SubscribeInformationRequest;
-struct SubscribeInformationRequestDefaultTypeInternal;
-extern SubscribeInformationRequestDefaultTypeInternal _SubscribeInformationRequest_default_instance_;
 class SubscribeModeRequest;
 struct SubscribeModeRequestDefaultTypeInternal;
 extern SubscribeModeRequestDefaultTypeInternal _SubscribeModeRequest_default_instance_;
 class SubscribePossibleSettingOptionsRequest;
 struct SubscribePossibleSettingOptionsRequestDefaultTypeInternal;
 extern SubscribePossibleSettingOptionsRequestDefaultTypeInternal _SubscribePossibleSettingOptionsRequest_default_instance_;
-class SubscribeStatusRequest;
-struct SubscribeStatusRequestDefaultTypeInternal;
-extern SubscribeStatusRequestDefaultTypeInternal _SubscribeStatusRequest_default_instance_;
+class SubscribeStorageRequest;
+struct SubscribeStorageRequestDefaultTypeInternal;
+extern SubscribeStorageRequestDefaultTypeInternal _SubscribeStorageRequest_default_instance_;
 class SubscribeVideoStreamInfoRequest;
 struct SubscribeVideoStreamInfoRequestDefaultTypeInternal;
 extern SubscribeVideoStreamInfoRequestDefaultTypeInternal _SubscribeVideoStreamInfoRequest_default_instance_;
@@ -271,6 +304,9 @@ extern VideoStreamInfoResponseDefaultTypeInternal _VideoStreamInfoResponse_defau
 class VideoStreamSettings;
 struct VideoStreamSettingsDefaultTypeInternal;
 extern VideoStreamSettingsDefaultTypeInternal _VideoStreamSettings_default_instance_;
+class VideoStreamUpdate;
+struct VideoStreamUpdateDefaultTypeInternal;
+extern VideoStreamUpdateDefaultTypeInternal _VideoStreamUpdate_default_instance_;
 class ZoomInStartRequest;
 struct ZoomInStartRequestDefaultTypeInternal;
 extern ZoomInStartRequestDefaultTypeInternal _ZoomInStartRequest_default_instance_;
@@ -306,47 +342,6 @@ namespace protobuf {
 namespace mavsdk {
 namespace rpc {
 namespace camera {
-enum CameraResult_Result : int {
-  CameraResult_Result_RESULT_UNKNOWN = 0,
-  CameraResult_Result_RESULT_SUCCESS = 1,
-  CameraResult_Result_RESULT_IN_PROGRESS = 2,
-  CameraResult_Result_RESULT_BUSY = 3,
-  CameraResult_Result_RESULT_DENIED = 4,
-  CameraResult_Result_RESULT_ERROR = 5,
-  CameraResult_Result_RESULT_TIMEOUT = 6,
-  CameraResult_Result_RESULT_WRONG_ARGUMENT = 7,
-  CameraResult_Result_RESULT_NO_SYSTEM = 8,
-  CameraResult_Result_RESULT_PROTOCOL_UNSUPPORTED = 9,
-  CameraResult_Result_CameraResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
-      std::numeric_limits<::int32_t>::min(),
-  CameraResult_Result_CameraResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
-      std::numeric_limits<::int32_t>::max(),
-};
-
-bool CameraResult_Result_IsValid(int value);
-extern const uint32_t CameraResult_Result_internal_data_[];
-constexpr CameraResult_Result CameraResult_Result_Result_MIN = static_cast<CameraResult_Result>(0);
-constexpr CameraResult_Result CameraResult_Result_Result_MAX = static_cast<CameraResult_Result>(9);
-constexpr int CameraResult_Result_Result_ARRAYSIZE = 9 + 1;
-const ::google::protobuf::EnumDescriptor*
-CameraResult_Result_descriptor();
-template <typename T>
-const std::string& CameraResult_Result_Name(T value) {
-  static_assert(std::is_same<T, CameraResult_Result>::value ||
-                    std::is_integral<T>::value,
-                "Incorrect type passed to Result_Name().");
-  return CameraResult_Result_Name(static_cast<CameraResult_Result>(value));
-}
-template <>
-inline const std::string& CameraResult_Result_Name(CameraResult_Result value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<CameraResult_Result_descriptor,
-                                                 0, 9>(
-      static_cast<int>(value));
-}
-inline bool CameraResult_Result_Parse(absl::string_view name, CameraResult_Result* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<CameraResult_Result>(
-      CameraResult_Result_descriptor(), name, value);
-}
 enum VideoStreamInfo_VideoStreamStatus : int {
   VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING = 0,
   VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_IN_PROGRESS = 1,
@@ -414,71 +409,115 @@ inline bool VideoStreamInfo_VideoStreamSpectrum_Parse(absl::string_view name, Vi
   return ::google::protobuf::internal::ParseNamedEnum<VideoStreamInfo_VideoStreamSpectrum>(
       VideoStreamInfo_VideoStreamSpectrum_descriptor(), name, value);
 }
-enum Status_StorageStatus : int {
-  Status_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE = 0,
-  Status_StorageStatus_STORAGE_STATUS_UNFORMATTED = 1,
-  Status_StorageStatus_STORAGE_STATUS_FORMATTED = 2,
-  Status_StorageStatus_STORAGE_STATUS_NOT_SUPPORTED = 3,
-  Status_StorageStatus_Status_StorageStatus_INT_MIN_SENTINEL_DO_NOT_USE_ =
+enum Storage_StorageStatus : int {
+  Storage_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE = 0,
+  Storage_StorageStatus_STORAGE_STATUS_UNFORMATTED = 1,
+  Storage_StorageStatus_STORAGE_STATUS_FORMATTED = 2,
+  Storage_StorageStatus_STORAGE_STATUS_NOT_SUPPORTED = 3,
+  Storage_StorageStatus_Storage_StorageStatus_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
-  Status_StorageStatus_Status_StorageStatus_INT_MAX_SENTINEL_DO_NOT_USE_ =
+  Storage_StorageStatus_Storage_StorageStatus_INT_MAX_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::max(),
 };
 
-bool Status_StorageStatus_IsValid(int value);
-extern const uint32_t Status_StorageStatus_internal_data_[];
-constexpr Status_StorageStatus Status_StorageStatus_StorageStatus_MIN = static_cast<Status_StorageStatus>(0);
-constexpr Status_StorageStatus Status_StorageStatus_StorageStatus_MAX = static_cast<Status_StorageStatus>(3);
-constexpr int Status_StorageStatus_StorageStatus_ARRAYSIZE = 3 + 1;
+bool Storage_StorageStatus_IsValid(int value);
+extern const uint32_t Storage_StorageStatus_internal_data_[];
+constexpr Storage_StorageStatus Storage_StorageStatus_StorageStatus_MIN = static_cast<Storage_StorageStatus>(0);
+constexpr Storage_StorageStatus Storage_StorageStatus_StorageStatus_MAX = static_cast<Storage_StorageStatus>(3);
+constexpr int Storage_StorageStatus_StorageStatus_ARRAYSIZE = 3 + 1;
 const ::google::protobuf::EnumDescriptor*
-Status_StorageStatus_descriptor();
+Storage_StorageStatus_descriptor();
 template <typename T>
-const std::string& Status_StorageStatus_Name(T value) {
-  static_assert(std::is_same<T, Status_StorageStatus>::value ||
+const std::string& Storage_StorageStatus_Name(T value) {
+  static_assert(std::is_same<T, Storage_StorageStatus>::value ||
                     std::is_integral<T>::value,
                 "Incorrect type passed to StorageStatus_Name().");
-  return Status_StorageStatus_Name(static_cast<Status_StorageStatus>(value));
+  return Storage_StorageStatus_Name(static_cast<Storage_StorageStatus>(value));
 }
 template <>
-inline const std::string& Status_StorageStatus_Name(Status_StorageStatus value) {
-  return ::google::protobuf::internal::NameOfDenseEnum<Status_StorageStatus_descriptor,
+inline const std::string& Storage_StorageStatus_Name(Storage_StorageStatus value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<Storage_StorageStatus_descriptor,
                                                  0, 3>(
       static_cast<int>(value));
 }
-inline bool Status_StorageStatus_Parse(absl::string_view name, Status_StorageStatus* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<Status_StorageStatus>(
-      Status_StorageStatus_descriptor(), name, value);
+inline bool Storage_StorageStatus_Parse(absl::string_view name, Storage_StorageStatus* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<Storage_StorageStatus>(
+      Storage_StorageStatus_descriptor(), name, value);
 }
-enum Status_StorageType : int {
-  Status_StorageType_STORAGE_TYPE_UNKNOWN = 0,
-  Status_StorageType_STORAGE_TYPE_USB_STICK = 1,
-  Status_StorageType_STORAGE_TYPE_SD = 2,
-  Status_StorageType_STORAGE_TYPE_MICROSD = 3,
-  Status_StorageType_STORAGE_TYPE_HD = 7,
-  Status_StorageType_STORAGE_TYPE_OTHER = 254,
-  Status_StorageType_Status_StorageType_INT_MIN_SENTINEL_DO_NOT_USE_ =
+enum Storage_StorageType : int {
+  Storage_StorageType_STORAGE_TYPE_UNKNOWN = 0,
+  Storage_StorageType_STORAGE_TYPE_USB_STICK = 1,
+  Storage_StorageType_STORAGE_TYPE_SD = 2,
+  Storage_StorageType_STORAGE_TYPE_MICROSD = 3,
+  Storage_StorageType_STORAGE_TYPE_HD = 7,
+  Storage_StorageType_STORAGE_TYPE_OTHER = 254,
+  Storage_StorageType_Storage_StorageType_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
-  Status_StorageType_Status_StorageType_INT_MAX_SENTINEL_DO_NOT_USE_ =
+  Storage_StorageType_Storage_StorageType_INT_MAX_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::max(),
 };
 
-bool Status_StorageType_IsValid(int value);
-extern const uint32_t Status_StorageType_internal_data_[];
-constexpr Status_StorageType Status_StorageType_StorageType_MIN = static_cast<Status_StorageType>(0);
-constexpr Status_StorageType Status_StorageType_StorageType_MAX = static_cast<Status_StorageType>(254);
-constexpr int Status_StorageType_StorageType_ARRAYSIZE = 254 + 1;
+bool Storage_StorageType_IsValid(int value);
+extern const uint32_t Storage_StorageType_internal_data_[];
+constexpr Storage_StorageType Storage_StorageType_StorageType_MIN = static_cast<Storage_StorageType>(0);
+constexpr Storage_StorageType Storage_StorageType_StorageType_MAX = static_cast<Storage_StorageType>(254);
+constexpr int Storage_StorageType_StorageType_ARRAYSIZE = 254 + 1;
 const ::google::protobuf::EnumDescriptor*
-Status_StorageType_descriptor();
+Storage_StorageType_descriptor();
 template <typename T>
-const std::string& Status_StorageType_Name(T value) {
-  static_assert(std::is_same<T, Status_StorageType>::value ||
+const std::string& Storage_StorageType_Name(T value) {
+  static_assert(std::is_same<T, Storage_StorageType>::value ||
                     std::is_integral<T>::value,
                 "Incorrect type passed to StorageType_Name().");
-  return ::google::protobuf::internal::NameOfEnum(Status_StorageType_descriptor(), value);
+  return ::google::protobuf::internal::NameOfEnum(Storage_StorageType_descriptor(), value);
 }
-inline bool Status_StorageType_Parse(absl::string_view name, Status_StorageType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<Status_StorageType>(
-      Status_StorageType_descriptor(), name, value);
+inline bool Storage_StorageType_Parse(absl::string_view name, Storage_StorageType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<Storage_StorageType>(
+      Storage_StorageType_descriptor(), name, value);
+}
+enum CameraResult_Result : int {
+  CameraResult_Result_RESULT_UNKNOWN = 0,
+  CameraResult_Result_RESULT_SUCCESS = 1,
+  CameraResult_Result_RESULT_IN_PROGRESS = 2,
+  CameraResult_Result_RESULT_BUSY = 3,
+  CameraResult_Result_RESULT_DENIED = 4,
+  CameraResult_Result_RESULT_ERROR = 5,
+  CameraResult_Result_RESULT_TIMEOUT = 6,
+  CameraResult_Result_RESULT_WRONG_ARGUMENT = 7,
+  CameraResult_Result_RESULT_NO_SYSTEM = 8,
+  CameraResult_Result_RESULT_PROTOCOL_UNSUPPORTED = 9,
+  CameraResult_Result_RESULT_UNAVAILABLE = 10,
+  CameraResult_Result_RESULT_CAMERA_ID_INVALID = 11,
+  CameraResult_Result_RESULT_ACTION_UNSUPPORTED = 12,
+  CameraResult_Result_CameraResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  CameraResult_Result_CameraResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool CameraResult_Result_IsValid(int value);
+extern const uint32_t CameraResult_Result_internal_data_[];
+constexpr CameraResult_Result CameraResult_Result_Result_MIN = static_cast<CameraResult_Result>(0);
+constexpr CameraResult_Result CameraResult_Result_Result_MAX = static_cast<CameraResult_Result>(12);
+constexpr int CameraResult_Result_Result_ARRAYSIZE = 12 + 1;
+const ::google::protobuf::EnumDescriptor*
+CameraResult_Result_descriptor();
+template <typename T>
+const std::string& CameraResult_Result_Name(T value) {
+  static_assert(std::is_same<T, CameraResult_Result>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to Result_Name().");
+  return CameraResult_Result_Name(static_cast<CameraResult_Result>(value));
+}
+template <>
+inline const std::string& CameraResult_Result_Name(CameraResult_Result value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<CameraResult_Result_descriptor,
+                                                 0, 12>(
+      static_cast<int>(value));
+}
+inline bool CameraResult_Result_Parse(absl::string_view name, CameraResult_Result* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<CameraResult_Result>(
+      CameraResult_Result_descriptor(), name, value);
 }
 enum Mode : int {
   MODE_UNKNOWN = 0,
@@ -554,9 +593,10 @@ inline bool PhotosRange_Parse(absl::string_view name, PhotosRange* value) {
 // -------------------------------------------------------------------
 
 class ZoomStopRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.ZoomStopRequest) */ {
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.ZoomStopRequest) */ {
  public:
   inline ZoomStopRequest() : ZoomStopRequest(nullptr) {}
+  ~ZoomStopRequest() override;
   template<typename = void>
   explicit PROTOBUF_CONSTEXPR ZoomStopRequest(::google::protobuf::internal::ConstantInitialized);
 
@@ -611,7 +651,7 @@ class ZoomStopRequest final :
                &_ZoomStopRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    48;
+    65;
 
   friend void swap(ZoomStopRequest& a, ZoomStopRequest& b) {
     a.Swap(&b);
@@ -640,15 +680,29 @@ class ZoomStopRequest final :
   ZoomStopRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<ZoomStopRequest>(arena);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const ZoomStopRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ZoomStopRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const ZoomStopRequest& from) {
+    ZoomStopRequest::MergeImpl(*this, from);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const ZoomStopRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(ZoomStopRequest* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
@@ -660,16 +714,37 @@ class ZoomStopRequest final :
   ZoomStopRequest(::google::protobuf::Arena* arena, const ZoomStopRequest& from);
   public:
 
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
   ::google::protobuf::Metadata GetMetadata() const final;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kComponentIdFieldNumber = 1,
+  };
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.ZoomStopRequest)
  private:
   class _Internal;
 
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
   template <typename T>
@@ -684,8 +759,11 @@ class ZoomStopRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
@@ -748,7 +826,7 @@ class ZoomRangeRequest final :
                &_ZoomRangeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    50;
+    67;
 
   friend void swap(ZoomRangeRequest& a, ZoomRangeRequest& b) {
     a.Swap(&b);
@@ -821,9 +899,20 @@ class ZoomRangeRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kRangeFieldNumber = 1,
+    kComponentIdFieldNumber = 1,
+    kRangeFieldNumber = 2,
   };
-  // float range = 1;
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // float range = 2;
   void clear_range() ;
   float range() const;
   void set_range(float value);
@@ -839,7 +928,7 @@ class ZoomRangeRequest final :
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
+      1, 2, 0,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -856,6 +945,7 @@ class ZoomRangeRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
     float range_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -865,9 +955,10 @@ class ZoomRangeRequest final :
 };// -------------------------------------------------------------------
 
 class ZoomOutStartRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.ZoomOutStartRequest) */ {
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.ZoomOutStartRequest) */ {
  public:
   inline ZoomOutStartRequest() : ZoomOutStartRequest(nullptr) {}
+  ~ZoomOutStartRequest() override;
   template<typename = void>
   explicit PROTOBUF_CONSTEXPR ZoomOutStartRequest(::google::protobuf::internal::ConstantInitialized);
 
@@ -922,7 +1013,7 @@ class ZoomOutStartRequest final :
                &_ZoomOutStartRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    46;
+    63;
 
   friend void swap(ZoomOutStartRequest& a, ZoomOutStartRequest& b) {
     a.Swap(&b);
@@ -951,15 +1042,29 @@ class ZoomOutStartRequest final :
   ZoomOutStartRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<ZoomOutStartRequest>(arena);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const ZoomOutStartRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ZoomOutStartRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const ZoomOutStartRequest& from) {
+    ZoomOutStartRequest::MergeImpl(*this, from);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const ZoomOutStartRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(ZoomOutStartRequest* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
@@ -971,16 +1076,37 @@ class ZoomOutStartRequest final :
   ZoomOutStartRequest(::google::protobuf::Arena* arena, const ZoomOutStartRequest& from);
   public:
 
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
   ::google::protobuf::Metadata GetMetadata() const final;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kComponentIdFieldNumber = 1,
+  };
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.ZoomOutStartRequest)
  private:
   class _Internal;
 
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
   template <typename T>
@@ -995,15 +1121,19 @@ class ZoomOutStartRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
 class ZoomInStartRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.ZoomInStartRequest) */ {
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.ZoomInStartRequest) */ {
  public:
   inline ZoomInStartRequest() : ZoomInStartRequest(nullptr) {}
+  ~ZoomInStartRequest() override;
   template<typename = void>
   explicit PROTOBUF_CONSTEXPR ZoomInStartRequest(::google::protobuf::internal::ConstantInitialized);
 
@@ -1058,7 +1188,7 @@ class ZoomInStartRequest final :
                &_ZoomInStartRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    44;
+    61;
 
   friend void swap(ZoomInStartRequest& a, ZoomInStartRequest& b) {
     a.Swap(&b);
@@ -1087,15 +1217,29 @@ class ZoomInStartRequest final :
   ZoomInStartRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<ZoomInStartRequest>(arena);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const ZoomInStartRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ZoomInStartRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const ZoomInStartRequest& from) {
+    ZoomInStartRequest::MergeImpl(*this, from);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const ZoomInStartRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(ZoomInStartRequest* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
@@ -1107,16 +1251,37 @@ class ZoomInStartRequest final :
   ZoomInStartRequest(::google::protobuf::Arena* arena, const ZoomInStartRequest& from);
   public:
 
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
   ::google::protobuf::Metadata GetMetadata() const final;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kComponentIdFieldNumber = 1,
+  };
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.ZoomInStartRequest)
  private:
   class _Internal;
 
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
   template <typename T>
@@ -1131,8 +1296,11 @@ class ZoomInStartRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
@@ -1195,7 +1363,7 @@ class VideoStreamSettings final :
                &_VideoStreamSettings_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    71;
+    3;
 
   friend void swap(VideoStreamSettings& a, VideoStreamSettings& b) {
     a.Swap(&b);
@@ -1390,9 +1558,10 @@ class VideoStreamSettings final :
 };// -------------------------------------------------------------------
 
 class TrackStopRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.TrackStopRequest) */ {
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.TrackStopRequest) */ {
  public:
   inline TrackStopRequest() : TrackStopRequest(nullptr) {}
+  ~TrackStopRequest() override;
   template<typename = void>
   explicit PROTOBUF_CONSTEXPR TrackStopRequest(::google::protobuf::internal::ConstantInitialized);
 
@@ -1447,7 +1616,7 @@ class TrackStopRequest final :
                &_TrackStopRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    56;
+    73;
 
   friend void swap(TrackStopRequest& a, TrackStopRequest& b) {
     a.Swap(&b);
@@ -1476,15 +1645,29 @@ class TrackStopRequest final :
   TrackStopRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<TrackStopRequest>(arena);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const TrackStopRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TrackStopRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const TrackStopRequest& from) {
+    TrackStopRequest::MergeImpl(*this, from);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const TrackStopRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(TrackStopRequest* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
@@ -1496,16 +1679,37 @@ class TrackStopRequest final :
   TrackStopRequest(::google::protobuf::Arena* arena, const TrackStopRequest& from);
   public:
 
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
   ::google::protobuf::Metadata GetMetadata() const final;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kComponentIdFieldNumber = 1,
+  };
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.TrackStopRequest)
  private:
   class _Internal;
 
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
   template <typename T>
@@ -1520,8 +1724,11 @@ class TrackStopRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
@@ -1584,7 +1791,7 @@ class TrackRectangleRequest final :
                &_TrackRectangleRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    54;
+    71;
 
   friend void swap(TrackRectangleRequest& a, TrackRectangleRequest& b) {
     a.Swap(&b);
@@ -1657,12 +1864,23 @@ class TrackRectangleRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kTopLeftXFieldNumber = 1,
-    kTopLeftYFieldNumber = 2,
-    kBottomRightXFieldNumber = 3,
-    kBottomRightYFieldNumber = 4,
+    kComponentIdFieldNumber = 1,
+    kTopLeftXFieldNumber = 2,
+    kTopLeftYFieldNumber = 3,
+    kBottomRightXFieldNumber = 4,
+    kBottomRightYFieldNumber = 5,
   };
-  // float top_left_x = 1;
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // float top_left_x = 2;
   void clear_top_left_x() ;
   float top_left_x() const;
   void set_top_left_x(float value);
@@ -1672,7 +1890,7 @@ class TrackRectangleRequest final :
   void _internal_set_top_left_x(float value);
 
   public:
-  // float top_left_y = 2;
+  // float top_left_y = 3;
   void clear_top_left_y() ;
   float top_left_y() const;
   void set_top_left_y(float value);
@@ -1682,7 +1900,7 @@ class TrackRectangleRequest final :
   void _internal_set_top_left_y(float value);
 
   public:
-  // float bottom_right_x = 3;
+  // float bottom_right_x = 4;
   void clear_bottom_right_x() ;
   float bottom_right_x() const;
   void set_bottom_right_x(float value);
@@ -1692,7 +1910,7 @@ class TrackRectangleRequest final :
   void _internal_set_bottom_right_x(float value);
 
   public:
-  // float bottom_right_y = 4;
+  // float bottom_right_y = 5;
   void clear_bottom_right_y() ;
   float bottom_right_y() const;
   void set_bottom_right_y(float value);
@@ -1708,7 +1926,7 @@ class TrackRectangleRequest final :
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 4, 0,
+      3, 5, 0,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -1725,6 +1943,7 @@ class TrackRectangleRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
     float top_left_x_;
     float top_left_y_;
     float bottom_right_x_;
@@ -1795,7 +2014,7 @@ class TrackPointRequest final :
                &_TrackPointRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    52;
+    69;
 
   friend void swap(TrackPointRequest& a, TrackPointRequest& b) {
     a.Swap(&b);
@@ -1868,11 +2087,22 @@ class TrackPointRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPointXFieldNumber = 1,
-    kPointYFieldNumber = 2,
-    kRadiusFieldNumber = 3,
+    kComponentIdFieldNumber = 1,
+    kPointXFieldNumber = 2,
+    kPointYFieldNumber = 3,
+    kRadiusFieldNumber = 4,
   };
-  // float point_x = 1;
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // float point_x = 2;
   void clear_point_x() ;
   float point_x() const;
   void set_point_x(float value);
@@ -1882,7 +2112,7 @@ class TrackPointRequest final :
   void _internal_set_point_x(float value);
 
   public:
-  // float point_y = 2;
+  // float point_y = 3;
   void clear_point_y() ;
   float point_y() const;
   void set_point_y(float value);
@@ -1892,7 +2122,7 @@ class TrackPointRequest final :
   void _internal_set_point_y(float value);
 
   public:
-  // float radius = 3;
+  // float radius = 4;
   void clear_radius() ;
   float radius() const;
   void set_radius(float value);
@@ -1908,7 +2138,7 @@ class TrackPointRequest final :
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 0,
+      2, 4, 0,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -1925,6 +2155,7 @@ class TrackPointRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
     float point_x_;
     float point_y_;
     float radius_;
@@ -1936,9 +2167,10 @@ class TrackPointRequest final :
 };// -------------------------------------------------------------------
 
 class TakePhotoRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.TakePhotoRequest) */ {
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.TakePhotoRequest) */ {
  public:
   inline TakePhotoRequest() : TakePhotoRequest(nullptr) {}
+  ~TakePhotoRequest() override;
   template<typename = void>
   explicit PROTOBUF_CONSTEXPR TakePhotoRequest(::google::protobuf::internal::ConstantInitialized);
 
@@ -1993,7 +2225,7 @@ class TakePhotoRequest final :
                &_TakePhotoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    5;
 
   friend void swap(TakePhotoRequest& a, TakePhotoRequest& b) {
     a.Swap(&b);
@@ -2022,15 +2254,29 @@ class TakePhotoRequest final :
   TakePhotoRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<TakePhotoRequest>(arena);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const TakePhotoRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TakePhotoRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const TakePhotoRequest& from) {
+    TakePhotoRequest::MergeImpl(*this, from);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const TakePhotoRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(TakePhotoRequest* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
@@ -2042,16 +2288,37 @@ class TakePhotoRequest final :
   TakePhotoRequest(::google::protobuf::Arena* arena, const TakePhotoRequest& from);
   public:
 
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
   ::google::protobuf::Metadata GetMetadata() const final;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kComponentIdFieldNumber = 1,
+  };
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.TakePhotoRequest)
  private:
   class _Internal;
 
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
   template <typename T>
@@ -2066,8 +2333,11 @@ class TakePhotoRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
@@ -2129,7 +2399,7 @@ class SubscribeVideoStreamInfoRequest final :
                &_SubscribeVideoStreamInfoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    29;
 
   friend void swap(SubscribeVideoStreamInfoRequest& a, SubscribeVideoStreamInfoRequest& b) {
     a.Swap(&b);
@@ -2207,25 +2477,25 @@ class SubscribeVideoStreamInfoRequest final :
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
-class SubscribeStatusRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.SubscribeStatusRequest) */ {
+class SubscribeStorageRequest final :
+    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.SubscribeStorageRequest) */ {
  public:
-  inline SubscribeStatusRequest() : SubscribeStatusRequest(nullptr) {}
+  inline SubscribeStorageRequest() : SubscribeStorageRequest(nullptr) {}
   template<typename = void>
-  explicit PROTOBUF_CONSTEXPR SubscribeStatusRequest(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR SubscribeStorageRequest(::google::protobuf::internal::ConstantInitialized);
 
-  inline SubscribeStatusRequest(const SubscribeStatusRequest& from)
-      : SubscribeStatusRequest(nullptr, from) {}
-  SubscribeStatusRequest(SubscribeStatusRequest&& from) noexcept
-    : SubscribeStatusRequest() {
+  inline SubscribeStorageRequest(const SubscribeStorageRequest& from)
+      : SubscribeStorageRequest(nullptr, from) {}
+  SubscribeStorageRequest(SubscribeStorageRequest&& from) noexcept
+    : SubscribeStorageRequest() {
     *this = ::std::move(from);
   }
 
-  inline SubscribeStatusRequest& operator=(const SubscribeStatusRequest& from) {
+  inline SubscribeStorageRequest& operator=(const SubscribeStorageRequest& from) {
     CopyFrom(from);
     return *this;
   }
-  inline SubscribeStatusRequest& operator=(SubscribeStatusRequest&& from) noexcept {
+  inline SubscribeStorageRequest& operator=(SubscribeStorageRequest&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -2257,20 +2527,20 @@ class SubscribeStatusRequest final :
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const SubscribeStatusRequest& default_instance() {
+  static const SubscribeStorageRequest& default_instance() {
     return *internal_default_instance();
   }
-  static inline const SubscribeStatusRequest* internal_default_instance() {
-    return reinterpret_cast<const SubscribeStatusRequest*>(
-               &_SubscribeStatusRequest_default_instance_);
+  static inline const SubscribeStorageRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeStorageRequest*>(
+               &_SubscribeStorageRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    28;
+    35;
 
-  friend void swap(SubscribeStatusRequest& a, SubscribeStatusRequest& b) {
+  friend void swap(SubscribeStorageRequest& a, SubscribeStorageRequest& b) {
     a.Swap(&b);
   }
-  inline void Swap(SubscribeStatusRequest* other) {
+  inline void Swap(SubscribeStorageRequest* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr &&
@@ -2283,7 +2553,7 @@ class SubscribeStatusRequest final :
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(SubscribeStatusRequest* other) {
+  void UnsafeArenaSwap(SubscribeStorageRequest* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -2291,15 +2561,15 @@ class SubscribeStatusRequest final :
 
   // implements Message ----------------------------------------------
 
-  SubscribeStatusRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<SubscribeStatusRequest>(arena);
+  SubscribeStorageRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<SubscribeStorageRequest>(arena);
   }
   using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const SubscribeStatusRequest& from) {
+  inline void CopyFrom(const SubscribeStorageRequest& from) {
     ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
   }
   using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const SubscribeStatusRequest& from) {
+  void MergeFrom(const SubscribeStorageRequest& from) {
     ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
   }
   public:
@@ -2307,11 +2577,11 @@ class SubscribeStatusRequest final :
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.camera.SubscribeStatusRequest";
+    return "mavsdk.rpc.camera.SubscribeStorageRequest";
   }
   protected:
-  explicit SubscribeStatusRequest(::google::protobuf::Arena* arena);
-  SubscribeStatusRequest(::google::protobuf::Arena* arena, const SubscribeStatusRequest& from);
+  explicit SubscribeStorageRequest(::google::protobuf::Arena* arena);
+  SubscribeStorageRequest(::google::protobuf::Arena* arena, const SubscribeStorageRequest& from);
   public:
 
   ::google::protobuf::Metadata GetMetadata() const final;
@@ -2320,7 +2590,7 @@ class SubscribeStatusRequest final :
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.SubscribeStatusRequest)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.SubscribeStorageRequest)
  private:
   class _Internal;
 
@@ -2401,7 +2671,7 @@ class SubscribePossibleSettingOptionsRequest final :
                &_SubscribePossibleSettingOptionsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    32;
+    41;
 
   friend void swap(SubscribePossibleSettingOptionsRequest& a, SubscribePossibleSettingOptionsRequest& b) {
     a.Swap(&b);
@@ -2537,7 +2807,7 @@ class SubscribeModeRequest final :
                &_SubscribeModeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    26;
 
   friend void swap(SubscribeModeRequest& a, SubscribeModeRequest& b) {
     a.Swap(&b);
@@ -2593,142 +2863,6 @@ class SubscribeModeRequest final :
   // accessors -------------------------------------------------------
 
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.SubscribeModeRequest)
- private:
-  class _Internal;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-
-        inline explicit constexpr Impl_(
-            ::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena);
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena, const Impl_& from);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_camera_2fcamera_2eproto;
-};// -------------------------------------------------------------------
-
-class SubscribeInformationRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.SubscribeInformationRequest) */ {
- public:
-  inline SubscribeInformationRequest() : SubscribeInformationRequest(nullptr) {}
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR SubscribeInformationRequest(::google::protobuf::internal::ConstantInitialized);
-
-  inline SubscribeInformationRequest(const SubscribeInformationRequest& from)
-      : SubscribeInformationRequest(nullptr, from) {}
-  SubscribeInformationRequest(SubscribeInformationRequest&& from) noexcept
-    : SubscribeInformationRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline SubscribeInformationRequest& operator=(const SubscribeInformationRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline SubscribeInformationRequest& operator=(SubscribeInformationRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetArena() == from.GetArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const SubscribeInformationRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const SubscribeInformationRequest* internal_default_instance() {
-    return reinterpret_cast<const SubscribeInformationRequest*>(
-               &_SubscribeInformationRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    20;
-
-  friend void swap(SubscribeInformationRequest& a, SubscribeInformationRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(SubscribeInformationRequest* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() != nullptr &&
-        GetArena() == other->GetArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() == other->GetArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(SubscribeInformationRequest* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  SubscribeInformationRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<SubscribeInformationRequest>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const SubscribeInformationRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const SubscribeInformationRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-  public:
-
-  private:
-  friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.camera.SubscribeInformationRequest";
-  }
-  protected:
-  explicit SubscribeInformationRequest(::google::protobuf::Arena* arena);
-  SubscribeInformationRequest(::google::protobuf::Arena* arena, const SubscribeInformationRequest& from);
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.SubscribeInformationRequest)
  private:
   class _Internal;
 
@@ -2809,7 +2943,7 @@ class SubscribeCurrentSettingsRequest final :
                &_SubscribeCurrentSettingsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    30;
+    38;
 
   friend void swap(SubscribeCurrentSettingsRequest& a, SubscribeCurrentSettingsRequest& b) {
     a.Swap(&b);
@@ -2945,7 +3079,7 @@ class SubscribeCaptureInfoRequest final :
                &_SubscribeCaptureInfoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    26;
+    31;
 
   friend void swap(SubscribeCaptureInfoRequest& a, SubscribeCaptureInfoRequest& b) {
     a.Swap(&b);
@@ -3023,6 +3157,489 @@ class SubscribeCaptureInfoRequest final :
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
+class SubscribeCameraListRequest final :
+    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.SubscribeCameraListRequest) */ {
+ public:
+  inline SubscribeCameraListRequest() : SubscribeCameraListRequest(nullptr) {}
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeCameraListRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline SubscribeCameraListRequest(const SubscribeCameraListRequest& from)
+      : SubscribeCameraListRequest(nullptr, from) {}
+  SubscribeCameraListRequest(SubscribeCameraListRequest&& from) noexcept
+    : SubscribeCameraListRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline SubscribeCameraListRequest& operator=(const SubscribeCameraListRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeCameraListRequest& operator=(SubscribeCameraListRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeCameraListRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeCameraListRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeCameraListRequest*>(
+               &_SubscribeCameraListRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    23;
+
+  friend void swap(SubscribeCameraListRequest& a, SubscribeCameraListRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SubscribeCameraListRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeCameraListRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubscribeCameraListRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<SubscribeCameraListRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeCameraListRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeCameraListRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+  public:
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.SubscribeCameraListRequest";
+  }
+  protected:
+  explicit SubscribeCameraListRequest(::google::protobuf::Arena* arena);
+  SubscribeCameraListRequest(::google::protobuf::Arena* arena, const SubscribeCameraListRequest& from);
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.SubscribeCameraListRequest)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
+class Storage final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.Storage) */ {
+ public:
+  inline Storage() : Storage(nullptr) {}
+  ~Storage() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR Storage(::google::protobuf::internal::ConstantInitialized);
+
+  inline Storage(const Storage& from)
+      : Storage(nullptr, from) {}
+  Storage(Storage&& from) noexcept
+    : Storage() {
+    *this = ::std::move(from);
+  }
+
+  inline Storage& operator=(const Storage& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Storage& operator=(Storage&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const Storage& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const Storage* internal_default_instance() {
+    return reinterpret_cast<const Storage*>(
+               &_Storage_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    33;
+
+  friend void swap(Storage& a, Storage& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(Storage* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Storage* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  Storage* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<Storage>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const Storage& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const Storage& from) {
+    Storage::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(Storage* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.Storage";
+  }
+  protected:
+  explicit Storage(::google::protobuf::Arena* arena);
+  Storage(::google::protobuf::Arena* arena, const Storage& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  using StorageStatus = Storage_StorageStatus;
+  static constexpr StorageStatus STORAGE_STATUS_NOT_AVAILABLE = Storage_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE;
+  static constexpr StorageStatus STORAGE_STATUS_UNFORMATTED = Storage_StorageStatus_STORAGE_STATUS_UNFORMATTED;
+  static constexpr StorageStatus STORAGE_STATUS_FORMATTED = Storage_StorageStatus_STORAGE_STATUS_FORMATTED;
+  static constexpr StorageStatus STORAGE_STATUS_NOT_SUPPORTED = Storage_StorageStatus_STORAGE_STATUS_NOT_SUPPORTED;
+  static inline bool StorageStatus_IsValid(int value) {
+    return Storage_StorageStatus_IsValid(value);
+  }
+  static constexpr StorageStatus StorageStatus_MIN = Storage_StorageStatus_StorageStatus_MIN;
+  static constexpr StorageStatus StorageStatus_MAX = Storage_StorageStatus_StorageStatus_MAX;
+  static constexpr int StorageStatus_ARRAYSIZE = Storage_StorageStatus_StorageStatus_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor* StorageStatus_descriptor() {
+    return Storage_StorageStatus_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& StorageStatus_Name(T value) {
+    return Storage_StorageStatus_Name(value);
+  }
+  static inline bool StorageStatus_Parse(absl::string_view name, StorageStatus* value) {
+    return Storage_StorageStatus_Parse(name, value);
+  }
+
+  using StorageType = Storage_StorageType;
+  static constexpr StorageType STORAGE_TYPE_UNKNOWN = Storage_StorageType_STORAGE_TYPE_UNKNOWN;
+  static constexpr StorageType STORAGE_TYPE_USB_STICK = Storage_StorageType_STORAGE_TYPE_USB_STICK;
+  static constexpr StorageType STORAGE_TYPE_SD = Storage_StorageType_STORAGE_TYPE_SD;
+  static constexpr StorageType STORAGE_TYPE_MICROSD = Storage_StorageType_STORAGE_TYPE_MICROSD;
+  static constexpr StorageType STORAGE_TYPE_HD = Storage_StorageType_STORAGE_TYPE_HD;
+  static constexpr StorageType STORAGE_TYPE_OTHER = Storage_StorageType_STORAGE_TYPE_OTHER;
+  static inline bool StorageType_IsValid(int value) {
+    return Storage_StorageType_IsValid(value);
+  }
+  static constexpr StorageType StorageType_MIN = Storage_StorageType_StorageType_MIN;
+  static constexpr StorageType StorageType_MAX = Storage_StorageType_StorageType_MAX;
+  static constexpr int StorageType_ARRAYSIZE = Storage_StorageType_StorageType_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor* StorageType_descriptor() {
+    return Storage_StorageType_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& StorageType_Name(T value) {
+    return Storage_StorageType_Name(value);
+  }
+  static inline bool StorageType_Parse(absl::string_view name, StorageType* value) {
+    return Storage_StorageType_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMediaFolderNameFieldNumber = 8,
+    kComponentIdFieldNumber = 1,
+    kVideoOnFieldNumber = 2,
+    kPhotoIntervalOnFieldNumber = 3,
+    kUsedStorageMibFieldNumber = 4,
+    kAvailableStorageMibFieldNumber = 5,
+    kTotalStorageMibFieldNumber = 6,
+    kRecordingTimeSFieldNumber = 7,
+    kStorageStatusFieldNumber = 9,
+    kStorageIdFieldNumber = 10,
+    kStorageTypeFieldNumber = 11,
+  };
+  // string media_folder_name = 8;
+  void clear_media_folder_name() ;
+  const std::string& media_folder_name() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_media_folder_name(Arg_&& arg, Args_... args);
+  std::string* mutable_media_folder_name();
+  PROTOBUF_NODISCARD std::string* release_media_folder_name();
+  void set_allocated_media_folder_name(std::string* value);
+
+  private:
+  const std::string& _internal_media_folder_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_media_folder_name(
+      const std::string& value);
+  std::string* _internal_mutable_media_folder_name();
+
+  public:
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // bool video_on = 2;
+  void clear_video_on() ;
+  bool video_on() const;
+  void set_video_on(bool value);
+
+  private:
+  bool _internal_video_on() const;
+  void _internal_set_video_on(bool value);
+
+  public:
+  // bool photo_interval_on = 3;
+  void clear_photo_interval_on() ;
+  bool photo_interval_on() const;
+  void set_photo_interval_on(bool value);
+
+  private:
+  bool _internal_photo_interval_on() const;
+  void _internal_set_photo_interval_on(bool value);
+
+  public:
+  // float used_storage_mib = 4;
+  void clear_used_storage_mib() ;
+  float used_storage_mib() const;
+  void set_used_storage_mib(float value);
+
+  private:
+  float _internal_used_storage_mib() const;
+  void _internal_set_used_storage_mib(float value);
+
+  public:
+  // float available_storage_mib = 5;
+  void clear_available_storage_mib() ;
+  float available_storage_mib() const;
+  void set_available_storage_mib(float value);
+
+  private:
+  float _internal_available_storage_mib() const;
+  void _internal_set_available_storage_mib(float value);
+
+  public:
+  // float total_storage_mib = 6;
+  void clear_total_storage_mib() ;
+  float total_storage_mib() const;
+  void set_total_storage_mib(float value);
+
+  private:
+  float _internal_total_storage_mib() const;
+  void _internal_set_total_storage_mib(float value);
+
+  public:
+  // float recording_time_s = 7;
+  void clear_recording_time_s() ;
+  float recording_time_s() const;
+  void set_recording_time_s(float value);
+
+  private:
+  float _internal_recording_time_s() const;
+  void _internal_set_recording_time_s(float value);
+
+  public:
+  // .mavsdk.rpc.camera.Storage.StorageStatus storage_status = 9;
+  void clear_storage_status() ;
+  ::mavsdk::rpc::camera::Storage_StorageStatus storage_status() const;
+  void set_storage_status(::mavsdk::rpc::camera::Storage_StorageStatus value);
+
+  private:
+  ::mavsdk::rpc::camera::Storage_StorageStatus _internal_storage_status() const;
+  void _internal_set_storage_status(::mavsdk::rpc::camera::Storage_StorageStatus value);
+
+  public:
+  // uint32 storage_id = 10;
+  void clear_storage_id() ;
+  ::uint32_t storage_id() const;
+  void set_storage_id(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_storage_id() const;
+  void _internal_set_storage_id(::uint32_t value);
+
+  public:
+  // .mavsdk.rpc.camera.Storage.StorageType storage_type = 11;
+  void clear_storage_type() ;
+  ::mavsdk::rpc::camera::Storage_StorageType storage_type() const;
+  void set_storage_type(::mavsdk::rpc::camera::Storage_StorageType value);
+
+  private:
+  ::mavsdk::rpc::camera::Storage_StorageType _internal_storage_type() const;
+  void _internal_set_storage_type(::mavsdk::rpc::camera::Storage_StorageType value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.Storage)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      4, 11, 0,
+      59, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::ArenaStringPtr media_folder_name_;
+    ::int32_t component_id_;
+    bool video_on_;
+    bool photo_interval_on_;
+    float used_storage_mib_;
+    float available_storage_mib_;
+    float total_storage_mib_;
+    float recording_time_s_;
+    int storage_status_;
+    ::uint32_t storage_id_;
+    int storage_type_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
 class StopVideoStreamingRequest final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.StopVideoStreamingRequest) */ {
  public:
@@ -3082,7 +3699,7 @@ class StopVideoStreamingRequest final :
                &_StopVideoStreamingRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    17;
 
   friend void swap(StopVideoStreamingRequest& a, StopVideoStreamingRequest& b) {
     a.Swap(&b);
@@ -3155,9 +3772,20 @@ class StopVideoStreamingRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kStreamIdFieldNumber = 1,
+    kComponentIdFieldNumber = 1,
+    kStreamIdFieldNumber = 2,
   };
-  // int32 stream_id = 1;
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // int32 stream_id = 2;
   void clear_stream_id() ;
   ::int32_t stream_id() const;
   void set_stream_id(::int32_t value);
@@ -3173,7 +3801,7 @@ class StopVideoStreamingRequest final :
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
+      1, 2, 0,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -3190,6 +3818,7 @@ class StopVideoStreamingRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
     ::int32_t stream_id_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -3199,9 +3828,10 @@ class StopVideoStreamingRequest final :
 };// -------------------------------------------------------------------
 
 class StopVideoRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.StopVideoRequest) */ {
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.StopVideoRequest) */ {
  public:
   inline StopVideoRequest() : StopVideoRequest(nullptr) {}
+  ~StopVideoRequest() override;
   template<typename = void>
   explicit PROTOBUF_CONSTEXPR StopVideoRequest(::google::protobuf::internal::ConstantInitialized);
 
@@ -3256,7 +3886,7 @@ class StopVideoRequest final :
                &_StopVideoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    13;
 
   friend void swap(StopVideoRequest& a, StopVideoRequest& b) {
     a.Swap(&b);
@@ -3285,15 +3915,29 @@ class StopVideoRequest final :
   StopVideoRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<StopVideoRequest>(arena);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const StopVideoRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const StopVideoRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const StopVideoRequest& from) {
+    StopVideoRequest::MergeImpl(*this, from);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const StopVideoRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(StopVideoRequest* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
@@ -3305,16 +3949,37 @@ class StopVideoRequest final :
   StopVideoRequest(::google::protobuf::Arena* arena, const StopVideoRequest& from);
   public:
 
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
   ::google::protobuf::Metadata GetMetadata() const final;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kComponentIdFieldNumber = 1,
+  };
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.StopVideoRequest)
  private:
   class _Internal;
 
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
   template <typename T>
@@ -3329,15 +3994,19 @@ class StopVideoRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
 class StopPhotoIntervalRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.StopPhotoIntervalRequest) */ {
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.StopPhotoIntervalRequest) */ {
  public:
   inline StopPhotoIntervalRequest() : StopPhotoIntervalRequest(nullptr) {}
+  ~StopPhotoIntervalRequest() override;
   template<typename = void>
   explicit PROTOBUF_CONSTEXPR StopPhotoIntervalRequest(::google::protobuf::internal::ConstantInitialized);
 
@@ -3392,7 +4061,7 @@ class StopPhotoIntervalRequest final :
                &_StopPhotoIntervalRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    9;
 
   friend void swap(StopPhotoIntervalRequest& a, StopPhotoIntervalRequest& b) {
     a.Swap(&b);
@@ -3421,148 +4090,11 @@ class StopPhotoIntervalRequest final :
   StopPhotoIntervalRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<StopPhotoIntervalRequest>(arena);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const StopPhotoIntervalRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const StopPhotoIntervalRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-  public:
-
-  private:
-  friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.camera.StopPhotoIntervalRequest";
-  }
-  protected:
-  explicit StopPhotoIntervalRequest(::google::protobuf::Arena* arena);
-  StopPhotoIntervalRequest(::google::protobuf::Arena* arena, const StopPhotoIntervalRequest& from);
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.StopPhotoIntervalRequest)
- private:
-  class _Internal;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-
-        inline explicit constexpr Impl_(
-            ::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena);
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena, const Impl_& from);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_camera_2fcamera_2eproto;
-};// -------------------------------------------------------------------
-
-class Status final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.Status) */ {
- public:
-  inline Status() : Status(nullptr) {}
-  ~Status() override;
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR Status(::google::protobuf::internal::ConstantInitialized);
-
-  inline Status(const Status& from)
-      : Status(nullptr, from) {}
-  Status(Status&& from) noexcept
-    : Status() {
-    *this = ::std::move(from);
-  }
-
-  inline Status& operator=(const Status& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline Status& operator=(Status&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetArena() == from.GetArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const Status& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const Status* internal_default_instance() {
-    return reinterpret_cast<const Status*>(
-               &_Status_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    73;
-
-  friend void swap(Status& a, Status& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(Status* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() != nullptr &&
-        GetArena() == other->GetArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() == other->GetArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(Status* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  Status* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<Status>(arena);
-  }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const Status& from);
+  void CopyFrom(const StopPhotoIntervalRequest& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const Status& from) {
-    Status::MergeImpl(*this, from);
+  void MergeFrom( const StopPhotoIntervalRequest& from) {
+    StopPhotoIntervalRequest::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
@@ -3580,16 +4112,16 @@ class Status final :
   ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
   void SharedCtor(::google::protobuf::Arena* arena);
   void SharedDtor();
-  void InternalSwap(Status* other);
+  void InternalSwap(StopPhotoIntervalRequest* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.camera.Status";
+    return "mavsdk.rpc.camera.StopPhotoIntervalRequest";
   }
   protected:
-  explicit Status(::google::protobuf::Arena* arena);
-  Status(::google::protobuf::Arena* arena, const Status& from);
+  explicit StopPhotoIntervalRequest(::google::protobuf::Arena* arena);
+  StopPhotoIntervalRequest(::google::protobuf::Arena* arena, const StopPhotoIntervalRequest& from);
   public:
 
   static const ClassData _class_data_;
@@ -3599,180 +4131,29 @@ class Status final :
 
   // nested types ----------------------------------------------------
 
-  using StorageStatus = Status_StorageStatus;
-  static constexpr StorageStatus STORAGE_STATUS_NOT_AVAILABLE = Status_StorageStatus_STORAGE_STATUS_NOT_AVAILABLE;
-  static constexpr StorageStatus STORAGE_STATUS_UNFORMATTED = Status_StorageStatus_STORAGE_STATUS_UNFORMATTED;
-  static constexpr StorageStatus STORAGE_STATUS_FORMATTED = Status_StorageStatus_STORAGE_STATUS_FORMATTED;
-  static constexpr StorageStatus STORAGE_STATUS_NOT_SUPPORTED = Status_StorageStatus_STORAGE_STATUS_NOT_SUPPORTED;
-  static inline bool StorageStatus_IsValid(int value) {
-    return Status_StorageStatus_IsValid(value);
-  }
-  static constexpr StorageStatus StorageStatus_MIN = Status_StorageStatus_StorageStatus_MIN;
-  static constexpr StorageStatus StorageStatus_MAX = Status_StorageStatus_StorageStatus_MAX;
-  static constexpr int StorageStatus_ARRAYSIZE = Status_StorageStatus_StorageStatus_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor* StorageStatus_descriptor() {
-    return Status_StorageStatus_descriptor();
-  }
-  template <typename T>
-  static inline const std::string& StorageStatus_Name(T value) {
-    return Status_StorageStatus_Name(value);
-  }
-  static inline bool StorageStatus_Parse(absl::string_view name, StorageStatus* value) {
-    return Status_StorageStatus_Parse(name, value);
-  }
-
-  using StorageType = Status_StorageType;
-  static constexpr StorageType STORAGE_TYPE_UNKNOWN = Status_StorageType_STORAGE_TYPE_UNKNOWN;
-  static constexpr StorageType STORAGE_TYPE_USB_STICK = Status_StorageType_STORAGE_TYPE_USB_STICK;
-  static constexpr StorageType STORAGE_TYPE_SD = Status_StorageType_STORAGE_TYPE_SD;
-  static constexpr StorageType STORAGE_TYPE_MICROSD = Status_StorageType_STORAGE_TYPE_MICROSD;
-  static constexpr StorageType STORAGE_TYPE_HD = Status_StorageType_STORAGE_TYPE_HD;
-  static constexpr StorageType STORAGE_TYPE_OTHER = Status_StorageType_STORAGE_TYPE_OTHER;
-  static inline bool StorageType_IsValid(int value) {
-    return Status_StorageType_IsValid(value);
-  }
-  static constexpr StorageType StorageType_MIN = Status_StorageType_StorageType_MIN;
-  static constexpr StorageType StorageType_MAX = Status_StorageType_StorageType_MAX;
-  static constexpr int StorageType_ARRAYSIZE = Status_StorageType_StorageType_ARRAYSIZE;
-  static inline const ::google::protobuf::EnumDescriptor* StorageType_descriptor() {
-    return Status_StorageType_descriptor();
-  }
-  template <typename T>
-  static inline const std::string& StorageType_Name(T value) {
-    return Status_StorageType_Name(value);
-  }
-  static inline bool StorageType_Parse(absl::string_view name, StorageType* value) {
-    return Status_StorageType_Parse(name, value);
-  }
-
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMediaFolderNameFieldNumber = 7,
-    kVideoOnFieldNumber = 1,
-    kPhotoIntervalOnFieldNumber = 2,
-    kUsedStorageMibFieldNumber = 3,
-    kAvailableStorageMibFieldNumber = 4,
-    kTotalStorageMibFieldNumber = 5,
-    kRecordingTimeSFieldNumber = 6,
-    kStorageStatusFieldNumber = 8,
-    kStorageIdFieldNumber = 9,
-    kStorageTypeFieldNumber = 10,
+    kComponentIdFieldNumber = 1,
   };
-  // string media_folder_name = 7;
-  void clear_media_folder_name() ;
-  const std::string& media_folder_name() const;
-  template <typename Arg_ = const std::string&, typename... Args_>
-  void set_media_folder_name(Arg_&& arg, Args_... args);
-  std::string* mutable_media_folder_name();
-  PROTOBUF_NODISCARD std::string* release_media_folder_name();
-  void set_allocated_media_folder_name(std::string* value);
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
 
   private:
-  const std::string& _internal_media_folder_name() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_media_folder_name(
-      const std::string& value);
-  std::string* _internal_mutable_media_folder_name();
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
 
   public:
-  // bool video_on = 1;
-  void clear_video_on() ;
-  bool video_on() const;
-  void set_video_on(bool value);
-
-  private:
-  bool _internal_video_on() const;
-  void _internal_set_video_on(bool value);
-
-  public:
-  // bool photo_interval_on = 2;
-  void clear_photo_interval_on() ;
-  bool photo_interval_on() const;
-  void set_photo_interval_on(bool value);
-
-  private:
-  bool _internal_photo_interval_on() const;
-  void _internal_set_photo_interval_on(bool value);
-
-  public:
-  // float used_storage_mib = 3;
-  void clear_used_storage_mib() ;
-  float used_storage_mib() const;
-  void set_used_storage_mib(float value);
-
-  private:
-  float _internal_used_storage_mib() const;
-  void _internal_set_used_storage_mib(float value);
-
-  public:
-  // float available_storage_mib = 4;
-  void clear_available_storage_mib() ;
-  float available_storage_mib() const;
-  void set_available_storage_mib(float value);
-
-  private:
-  float _internal_available_storage_mib() const;
-  void _internal_set_available_storage_mib(float value);
-
-  public:
-  // float total_storage_mib = 5;
-  void clear_total_storage_mib() ;
-  float total_storage_mib() const;
-  void set_total_storage_mib(float value);
-
-  private:
-  float _internal_total_storage_mib() const;
-  void _internal_set_total_storage_mib(float value);
-
-  public:
-  // float recording_time_s = 6;
-  void clear_recording_time_s() ;
-  float recording_time_s() const;
-  void set_recording_time_s(float value);
-
-  private:
-  float _internal_recording_time_s() const;
-  void _internal_set_recording_time_s(float value);
-
-  public:
-  // .mavsdk.rpc.camera.Status.StorageStatus storage_status = 8;
-  void clear_storage_status() ;
-  ::mavsdk::rpc::camera::Status_StorageStatus storage_status() const;
-  void set_storage_status(::mavsdk::rpc::camera::Status_StorageStatus value);
-
-  private:
-  ::mavsdk::rpc::camera::Status_StorageStatus _internal_storage_status() const;
-  void _internal_set_storage_status(::mavsdk::rpc::camera::Status_StorageStatus value);
-
-  public:
-  // uint32 storage_id = 9;
-  void clear_storage_id() ;
-  ::uint32_t storage_id() const;
-  void set_storage_id(::uint32_t value);
-
-  private:
-  ::uint32_t _internal_storage_id() const;
-  void _internal_set_storage_id(::uint32_t value);
-
-  public:
-  // .mavsdk.rpc.camera.Status.StorageType storage_type = 10;
-  void clear_storage_type() ;
-  ::mavsdk::rpc::camera::Status_StorageType storage_type() const;
-  void set_storage_type(::mavsdk::rpc::camera::Status_StorageType value);
-
-  private:
-  ::mavsdk::rpc::camera::Status_StorageType _internal_storage_type() const;
-  void _internal_set_storage_type(::mavsdk::rpc::camera::Status_StorageType value);
-
-  public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.Status)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.StopPhotoIntervalRequest)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      4, 10, 0,
-      58, 2>
+      0, 1, 0,
+      0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
@@ -3788,16 +4169,7 @@ class Status final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
-    ::google::protobuf::internal::ArenaStringPtr media_folder_name_;
-    bool video_on_;
-    bool photo_interval_on_;
-    float used_storage_mib_;
-    float available_storage_mib_;
-    float total_storage_mib_;
-    float recording_time_s_;
-    int storage_status_;
-    ::uint32_t storage_id_;
-    int storage_type_;
+    ::int32_t component_id_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -3864,7 +4236,7 @@ class StartVideoStreamingRequest final :
                &_StartVideoStreamingRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    15;
 
   friend void swap(StartVideoStreamingRequest& a, StartVideoStreamingRequest& b) {
     a.Swap(&b);
@@ -3937,9 +4309,20 @@ class StartVideoStreamingRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kStreamIdFieldNumber = 1,
+    kComponentIdFieldNumber = 1,
+    kStreamIdFieldNumber = 2,
   };
-  // int32 stream_id = 1;
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // int32 stream_id = 2;
   void clear_stream_id() ;
   ::int32_t stream_id() const;
   void set_stream_id(::int32_t value);
@@ -3955,7 +4338,7 @@ class StartVideoStreamingRequest final :
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
+      1, 2, 0,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -3972,6 +4355,7 @@ class StartVideoStreamingRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
     ::int32_t stream_id_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -3981,9 +4365,10 @@ class StartVideoStreamingRequest final :
 };// -------------------------------------------------------------------
 
 class StartVideoRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.StartVideoRequest) */ {
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.StartVideoRequest) */ {
  public:
   inline StartVideoRequest() : StartVideoRequest(nullptr) {}
+  ~StartVideoRequest() override;
   template<typename = void>
   explicit PROTOBUF_CONSTEXPR StartVideoRequest(::google::protobuf::internal::ConstantInitialized);
 
@@ -4038,7 +4423,7 @@ class StartVideoRequest final :
                &_StartVideoRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    11;
 
   friend void swap(StartVideoRequest& a, StartVideoRequest& b) {
     a.Swap(&b);
@@ -4067,15 +4452,29 @@ class StartVideoRequest final :
   StartVideoRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<StartVideoRequest>(arena);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const StartVideoRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const StartVideoRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const StartVideoRequest& from) {
+    StartVideoRequest::MergeImpl(*this, from);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const StartVideoRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(StartVideoRequest* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
@@ -4087,16 +4486,37 @@ class StartVideoRequest final :
   StartVideoRequest(::google::protobuf::Arena* arena, const StartVideoRequest& from);
   public:
 
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
   ::google::protobuf::Metadata GetMetadata() const final;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kComponentIdFieldNumber = 1,
+  };
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.StartVideoRequest)
  private:
   class _Internal;
 
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
   template <typename T>
@@ -4111,8 +4531,11 @@ class StartVideoRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
@@ -4175,7 +4598,7 @@ class StartPhotoIntervalRequest final :
                &_StartPhotoIntervalRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    7;
 
   friend void swap(StartPhotoIntervalRequest& a, StartPhotoIntervalRequest& b) {
     a.Swap(&b);
@@ -4248,9 +4671,20 @@ class StartPhotoIntervalRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kIntervalSFieldNumber = 1,
+    kComponentIdFieldNumber = 1,
+    kIntervalSFieldNumber = 2,
   };
-  // float interval_s = 1;
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // float interval_s = 2;
   void clear_interval_s() ;
   float interval_s() const;
   void set_interval_s(float value);
@@ -4266,7 +4700,7 @@ class StartPhotoIntervalRequest final :
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
+      1, 2, 0,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -4283,6 +4717,7 @@ class StartPhotoIntervalRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
     float interval_s_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -4350,7 +4785,7 @@ class SetModeRequest final :
                &_SetModeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    19;
 
   friend void swap(SetModeRequest& a, SetModeRequest& b) {
     a.Swap(&b);
@@ -4423,9 +4858,20 @@ class SetModeRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kModeFieldNumber = 1,
+    kComponentIdFieldNumber = 1,
+    kModeFieldNumber = 2,
   };
-  // .mavsdk.rpc.camera.Mode mode = 1;
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // .mavsdk.rpc.camera.Mode mode = 2;
   void clear_mode() ;
   ::mavsdk::rpc::camera::Mode mode() const;
   void set_mode(::mavsdk::rpc::camera::Mode value);
@@ -4441,7 +4887,7 @@ class SetModeRequest final :
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
+      1, 2, 0,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -4458,6 +4904,7 @@ class SetModeRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
     int mode_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -4466,185 +4913,11 @@ class SetModeRequest final :
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
-class SelectCameraRequest final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.SelectCameraRequest) */ {
- public:
-  inline SelectCameraRequest() : SelectCameraRequest(nullptr) {}
-  ~SelectCameraRequest() override;
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR SelectCameraRequest(::google::protobuf::internal::ConstantInitialized);
-
-  inline SelectCameraRequest(const SelectCameraRequest& from)
-      : SelectCameraRequest(nullptr, from) {}
-  SelectCameraRequest(SelectCameraRequest&& from) noexcept
-    : SelectCameraRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline SelectCameraRequest& operator=(const SelectCameraRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline SelectCameraRequest& operator=(SelectCameraRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetArena() == from.GetArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const SelectCameraRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const SelectCameraRequest* internal_default_instance() {
-    return reinterpret_cast<const SelectCameraRequest*>(
-               &_SelectCameraRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    41;
-
-  friend void swap(SelectCameraRequest& a, SelectCameraRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(SelectCameraRequest* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() != nullptr &&
-        GetArena() == other->GetArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() == other->GetArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(SelectCameraRequest* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  SelectCameraRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<SelectCameraRequest>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const SelectCameraRequest& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const SelectCameraRequest& from) {
-    SelectCameraRequest::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  ::size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
-  void SharedCtor(::google::protobuf::Arena* arena);
-  void SharedDtor();
-  void InternalSwap(SelectCameraRequest* other);
-
-  private:
-  friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.camera.SelectCameraRequest";
-  }
-  protected:
-  explicit SelectCameraRequest(::google::protobuf::Arena* arena);
-  SelectCameraRequest(::google::protobuf::Arena* arena, const SelectCameraRequest& from);
-  public:
-
-  static const ClassData _class_data_;
-  const ::google::protobuf::Message::ClassData*GetClassData() const final;
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kCameraIdFieldNumber = 1,
-  };
-  // int32 camera_id = 1;
-  void clear_camera_id() ;
-  ::int32_t camera_id() const;
-  void set_camera_id(::int32_t value);
-
-  private:
-  ::int32_t _internal_camera_id() const;
-  void _internal_set_camera_id(::int32_t value);
-
-  public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.SelectCameraRequest)
- private:
-  class _Internal;
-
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
-      0, 2>
-      _table_;
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-
-        inline explicit constexpr Impl_(
-            ::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena);
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena, const Impl_& from);
-    ::int32_t camera_id_;
-    mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_camera_2fcamera_2eproto;
-};// -------------------------------------------------------------------
-
 class ResetSettingsRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.ResetSettingsRequest) */ {
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.ResetSettingsRequest) */ {
  public:
   inline ResetSettingsRequest() : ResetSettingsRequest(nullptr) {}
+  ~ResetSettingsRequest() override;
   template<typename = void>
   explicit PROTOBUF_CONSTEXPR ResetSettingsRequest(::google::protobuf::internal::ConstantInitialized);
 
@@ -4699,7 +4972,7 @@ class ResetSettingsRequest final :
                &_ResetSettingsRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    42;
+    59;
 
   friend void swap(ResetSettingsRequest& a, ResetSettingsRequest& b) {
     a.Swap(&b);
@@ -4728,15 +5001,29 @@ class ResetSettingsRequest final :
   ResetSettingsRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<ResetSettingsRequest>(arena);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const ResetSettingsRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ResetSettingsRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const ResetSettingsRequest& from) {
+    ResetSettingsRequest::MergeImpl(*this, from);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const ResetSettingsRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(ResetSettingsRequest* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
@@ -4748,16 +5035,37 @@ class ResetSettingsRequest final :
   ResetSettingsRequest(::google::protobuf::Arena* arena, const ResetSettingsRequest& from);
   public:
 
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
   ::google::protobuf::Metadata GetMetadata() const final;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kComponentIdFieldNumber = 1,
+  };
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.ResetSettingsRequest)
  private:
   class _Internal;
 
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
   template <typename T>
@@ -4772,8 +5080,11 @@ class ResetSettingsRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
@@ -4836,7 +5147,7 @@ class Quaternion final :
                &_Quaternion_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    68;
+    85;
 
   friend void swap(Quaternion& a, Quaternion& b) {
     a.Swap(&b);
@@ -4988,142 +5299,6 @@ class Quaternion final :
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
-class PrepareRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.PrepareRequest) */ {
- public:
-  inline PrepareRequest() : PrepareRequest(nullptr) {}
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR PrepareRequest(::google::protobuf::internal::ConstantInitialized);
-
-  inline PrepareRequest(const PrepareRequest& from)
-      : PrepareRequest(nullptr, from) {}
-  PrepareRequest(PrepareRequest&& from) noexcept
-    : PrepareRequest() {
-    *this = ::std::move(from);
-  }
-
-  inline PrepareRequest& operator=(const PrepareRequest& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline PrepareRequest& operator=(PrepareRequest&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetArena() == from.GetArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const PrepareRequest& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const PrepareRequest* internal_default_instance() {
-    return reinterpret_cast<const PrepareRequest*>(
-               &_PrepareRequest_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    0;
-
-  friend void swap(PrepareRequest& a, PrepareRequest& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(PrepareRequest* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() != nullptr &&
-        GetArena() == other->GetArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() == other->GetArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(PrepareRequest* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  PrepareRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<PrepareRequest>(arena);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const PrepareRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-  }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const PrepareRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
-  public:
-
-  private:
-  friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.camera.PrepareRequest";
-  }
-  protected:
-  explicit PrepareRequest(::google::protobuf::Arena* arena);
-  PrepareRequest(::google::protobuf::Arena* arena, const PrepareRequest& from);
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.PrepareRequest)
- private:
-  class _Internal;
-
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-
-        inline explicit constexpr Impl_(
-            ::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena);
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena, const Impl_& from);
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  friend struct ::TableStruct_camera_2fcamera_2eproto;
-};// -------------------------------------------------------------------
-
 class Position final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.Position) */ {
  public:
@@ -5183,7 +5358,7 @@ class Position final :
                &_Position_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    67;
+    84;
 
   friend void swap(Position& a, Position& b) {
     a.Swap(&b);
@@ -5394,7 +5569,7 @@ class Option final :
                &_Option_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    74;
+    0;
 
   friend void swap(Option& a, Option& b) {
     a.Swap(&b);
@@ -5534,26 +5709,26 @@ class Option final :
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
-class ModeResponse final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.ModeResponse) */ {
+class ModeUpdate final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.ModeUpdate) */ {
  public:
-  inline ModeResponse() : ModeResponse(nullptr) {}
-  ~ModeResponse() override;
+  inline ModeUpdate() : ModeUpdate(nullptr) {}
+  ~ModeUpdate() override;
   template<typename = void>
-  explicit PROTOBUF_CONSTEXPR ModeResponse(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR ModeUpdate(::google::protobuf::internal::ConstantInitialized);
 
-  inline ModeResponse(const ModeResponse& from)
-      : ModeResponse(nullptr, from) {}
-  ModeResponse(ModeResponse&& from) noexcept
-    : ModeResponse() {
+  inline ModeUpdate(const ModeUpdate& from)
+      : ModeUpdate(nullptr, from) {}
+  ModeUpdate(ModeUpdate&& from) noexcept
+    : ModeUpdate() {
     *this = ::std::move(from);
   }
 
-  inline ModeResponse& operator=(const ModeResponse& from) {
+  inline ModeUpdate& operator=(const ModeUpdate& from) {
     CopyFrom(from);
     return *this;
   }
-  inline ModeResponse& operator=(ModeResponse&& from) noexcept {
+  inline ModeUpdate& operator=(ModeUpdate&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -5585,20 +5760,20 @@ class ModeResponse final :
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const ModeResponse& default_instance() {
+  static const ModeUpdate& default_instance() {
     return *internal_default_instance();
   }
-  static inline const ModeResponse* internal_default_instance() {
-    return reinterpret_cast<const ModeResponse*>(
-               &_ModeResponse_default_instance_);
+  static inline const ModeUpdate* internal_default_instance() {
+    return reinterpret_cast<const ModeUpdate*>(
+               &_ModeUpdate_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    25;
 
-  friend void swap(ModeResponse& a, ModeResponse& b) {
+  friend void swap(ModeUpdate& a, ModeUpdate& b) {
     a.Swap(&b);
   }
-  inline void Swap(ModeResponse* other) {
+  inline void Swap(ModeUpdate* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr &&
@@ -5611,7 +5786,7 @@ class ModeResponse final :
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(ModeResponse* other) {
+  void UnsafeArenaSwap(ModeUpdate* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -5619,14 +5794,14 @@ class ModeResponse final :
 
   // implements Message ----------------------------------------------
 
-  ModeResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<ModeResponse>(arena);
+  ModeUpdate* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<ModeUpdate>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const ModeResponse& from);
+  void CopyFrom(const ModeUpdate& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const ModeResponse& from) {
-    ModeResponse::MergeImpl(*this, from);
+  void MergeFrom( const ModeUpdate& from) {
+    ModeUpdate::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
@@ -5644,16 +5819,16 @@ class ModeResponse final :
   ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
   void SharedCtor(::google::protobuf::Arena* arena);
   void SharedDtor();
-  void InternalSwap(ModeResponse* other);
+  void InternalSwap(ModeUpdate* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.camera.ModeResponse";
+    return "mavsdk.rpc.camera.ModeUpdate";
   }
   protected:
-  explicit ModeResponse(::google::protobuf::Arena* arena);
-  ModeResponse(::google::protobuf::Arena* arena, const ModeResponse& from);
+  explicit ModeUpdate(::google::protobuf::Arena* arena);
+  ModeUpdate(::google::protobuf::Arena* arena, const ModeUpdate& from);
   public:
 
   static const ClassData _class_data_;
@@ -5666,9 +5841,20 @@ class ModeResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kModeFieldNumber = 1,
+    kComponentIdFieldNumber = 1,
+    kModeFieldNumber = 2,
   };
-  // .mavsdk.rpc.camera.Mode mode = 1;
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // .mavsdk.rpc.camera.Mode mode = 2;
   void clear_mode() ;
   ::mavsdk::rpc::camera::Mode mode() const;
   void set_mode(::mavsdk::rpc::camera::Mode value);
@@ -5678,13 +5864,13 @@ class ModeResponse final :
   void _internal_set_mode(::mavsdk::rpc::camera::Mode value);
 
   public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.ModeResponse)
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.ModeUpdate)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
+      1, 2, 0,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -5701,6 +5887,7 @@ class ModeResponse final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
     int mode_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -5768,7 +5955,7 @@ class ListPhotosRequest final :
                &_ListPhotosRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    21;
 
   friend void swap(ListPhotosRequest& a, ListPhotosRequest& b) {
     a.Swap(&b);
@@ -5841,9 +6028,20 @@ class ListPhotosRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPhotosRangeFieldNumber = 1,
+    kComponentIdFieldNumber = 1,
+    kPhotosRangeFieldNumber = 2,
   };
-  // .mavsdk.rpc.camera.PhotosRange photos_range = 1;
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // .mavsdk.rpc.camera.PhotosRange photos_range = 2;
   void clear_photos_range() ;
   ::mavsdk::rpc::camera::PhotosRange photos_range() const;
   void set_photos_range(::mavsdk::rpc::camera::PhotosRange value);
@@ -5859,7 +6057,7 @@ class ListPhotosRequest final :
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
+      1, 2, 0,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -5876,6 +6074,7 @@ class ListPhotosRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
     int photos_range_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -5943,7 +6142,7 @@ class Information final :
                &_Information_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    77;
+    88;
 
   friend void swap(Information& a, Information& b) {
     a.Swap(&b);
@@ -6016,15 +6215,16 @@ class Information final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kVendorNameFieldNumber = 1,
-    kModelNameFieldNumber = 2,
-    kFocalLengthMmFieldNumber = 3,
-    kHorizontalSensorSizeMmFieldNumber = 4,
-    kVerticalSensorSizeMmFieldNumber = 5,
-    kHorizontalResolutionPxFieldNumber = 6,
-    kVerticalResolutionPxFieldNumber = 7,
+    kVendorNameFieldNumber = 2,
+    kModelNameFieldNumber = 3,
+    kComponentIdFieldNumber = 1,
+    kFocalLengthMmFieldNumber = 4,
+    kHorizontalSensorSizeMmFieldNumber = 5,
+    kVerticalSensorSizeMmFieldNumber = 6,
+    kHorizontalResolutionPxFieldNumber = 7,
+    kVerticalResolutionPxFieldNumber = 8,
   };
-  // string vendor_name = 1;
+  // string vendor_name = 2;
   void clear_vendor_name() ;
   const std::string& vendor_name() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -6040,7 +6240,7 @@ class Information final :
   std::string* _internal_mutable_vendor_name();
 
   public:
-  // string model_name = 2;
+  // string model_name = 3;
   void clear_model_name() ;
   const std::string& model_name() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -6056,7 +6256,17 @@ class Information final :
   std::string* _internal_mutable_model_name();
 
   public:
-  // float focal_length_mm = 3;
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // float focal_length_mm = 4;
   void clear_focal_length_mm() ;
   float focal_length_mm() const;
   void set_focal_length_mm(float value);
@@ -6066,7 +6276,7 @@ class Information final :
   void _internal_set_focal_length_mm(float value);
 
   public:
-  // float horizontal_sensor_size_mm = 4;
+  // float horizontal_sensor_size_mm = 5;
   void clear_horizontal_sensor_size_mm() ;
   float horizontal_sensor_size_mm() const;
   void set_horizontal_sensor_size_mm(float value);
@@ -6076,7 +6286,7 @@ class Information final :
   void _internal_set_horizontal_sensor_size_mm(float value);
 
   public:
-  // float vertical_sensor_size_mm = 5;
+  // float vertical_sensor_size_mm = 6;
   void clear_vertical_sensor_size_mm() ;
   float vertical_sensor_size_mm() const;
   void set_vertical_sensor_size_mm(float value);
@@ -6086,7 +6296,7 @@ class Information final :
   void _internal_set_vertical_sensor_size_mm(float value);
 
   public:
-  // uint32 horizontal_resolution_px = 6;
+  // uint32 horizontal_resolution_px = 7;
   void clear_horizontal_resolution_px() ;
   ::uint32_t horizontal_resolution_px() const;
   void set_horizontal_resolution_px(::uint32_t value);
@@ -6096,7 +6306,7 @@ class Information final :
   void _internal_set_horizontal_resolution_px(::uint32_t value);
 
   public:
-  // uint32 vertical_resolution_px = 7;
+  // uint32 vertical_resolution_px = 8;
   void clear_vertical_resolution_px() ;
   ::uint32_t vertical_resolution_px() const;
   void set_vertical_resolution_px(::uint32_t value);
@@ -6112,8 +6322,8 @@ class Information final :
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      3, 7, 0,
-      59, 2>
+      3, 8, 0,
+      67, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
@@ -6131,11 +6341,887 @@ class Information final :
                               ::google::protobuf::Arena* arena, const Impl_& from);
     ::google::protobuf::internal::ArenaStringPtr vendor_name_;
     ::google::protobuf::internal::ArenaStringPtr model_name_;
+    ::int32_t component_id_;
     float focal_length_mm_;
     float horizontal_sensor_size_mm_;
     float vertical_sensor_size_mm_;
     ::uint32_t horizontal_resolution_px_;
     ::uint32_t vertical_resolution_px_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
+class GetVideoStreamInfoRequest final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.GetVideoStreamInfoRequest) */ {
+ public:
+  inline GetVideoStreamInfoRequest() : GetVideoStreamInfoRequest(nullptr) {}
+  ~GetVideoStreamInfoRequest() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR GetVideoStreamInfoRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline GetVideoStreamInfoRequest(const GetVideoStreamInfoRequest& from)
+      : GetVideoStreamInfoRequest(nullptr, from) {}
+  GetVideoStreamInfoRequest(GetVideoStreamInfoRequest&& from) noexcept
+    : GetVideoStreamInfoRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline GetVideoStreamInfoRequest& operator=(const GetVideoStreamInfoRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetVideoStreamInfoRequest& operator=(GetVideoStreamInfoRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetVideoStreamInfoRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetVideoStreamInfoRequest* internal_default_instance() {
+    return reinterpret_cast<const GetVideoStreamInfoRequest*>(
+               &_GetVideoStreamInfoRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    47;
+
+  friend void swap(GetVideoStreamInfoRequest& a, GetVideoStreamInfoRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(GetVideoStreamInfoRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetVideoStreamInfoRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetVideoStreamInfoRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<GetVideoStreamInfoRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GetVideoStreamInfoRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const GetVideoStreamInfoRequest& from) {
+    GetVideoStreamInfoRequest::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(GetVideoStreamInfoRequest* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.GetVideoStreamInfoRequest";
+  }
+  protected:
+  explicit GetVideoStreamInfoRequest(::google::protobuf::Arena* arena);
+  GetVideoStreamInfoRequest(::google::protobuf::Arena* arena, const GetVideoStreamInfoRequest& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kComponentIdFieldNumber = 1,
+  };
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.GetVideoStreamInfoRequest)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
+class GetStorageRequest final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.GetStorageRequest) */ {
+ public:
+  inline GetStorageRequest() : GetStorageRequest(nullptr) {}
+  ~GetStorageRequest() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR GetStorageRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline GetStorageRequest(const GetStorageRequest& from)
+      : GetStorageRequest(nullptr, from) {}
+  GetStorageRequest(GetStorageRequest&& from) noexcept
+    : GetStorageRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline GetStorageRequest& operator=(const GetStorageRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetStorageRequest& operator=(GetStorageRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetStorageRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetStorageRequest* internal_default_instance() {
+    return reinterpret_cast<const GetStorageRequest*>(
+               &_GetStorageRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    49;
+
+  friend void swap(GetStorageRequest& a, GetStorageRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(GetStorageRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetStorageRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetStorageRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<GetStorageRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GetStorageRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const GetStorageRequest& from) {
+    GetStorageRequest::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(GetStorageRequest* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.GetStorageRequest";
+  }
+  protected:
+  explicit GetStorageRequest(::google::protobuf::Arena* arena);
+  GetStorageRequest(::google::protobuf::Arena* arena, const GetStorageRequest& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kComponentIdFieldNumber = 1,
+  };
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.GetStorageRequest)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
+class GetPossibleSettingOptionsRequest final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.GetPossibleSettingOptionsRequest) */ {
+ public:
+  inline GetPossibleSettingOptionsRequest() : GetPossibleSettingOptionsRequest(nullptr) {}
+  ~GetPossibleSettingOptionsRequest() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR GetPossibleSettingOptionsRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline GetPossibleSettingOptionsRequest(const GetPossibleSettingOptionsRequest& from)
+      : GetPossibleSettingOptionsRequest(nullptr, from) {}
+  GetPossibleSettingOptionsRequest(GetPossibleSettingOptionsRequest&& from) noexcept
+    : GetPossibleSettingOptionsRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline GetPossibleSettingOptionsRequest& operator=(const GetPossibleSettingOptionsRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetPossibleSettingOptionsRequest& operator=(GetPossibleSettingOptionsRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetPossibleSettingOptionsRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetPossibleSettingOptionsRequest* internal_default_instance() {
+    return reinterpret_cast<const GetPossibleSettingOptionsRequest*>(
+               &_GetPossibleSettingOptionsRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    53;
+
+  friend void swap(GetPossibleSettingOptionsRequest& a, GetPossibleSettingOptionsRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(GetPossibleSettingOptionsRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetPossibleSettingOptionsRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetPossibleSettingOptionsRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<GetPossibleSettingOptionsRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GetPossibleSettingOptionsRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const GetPossibleSettingOptionsRequest& from) {
+    GetPossibleSettingOptionsRequest::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(GetPossibleSettingOptionsRequest* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.GetPossibleSettingOptionsRequest";
+  }
+  protected:
+  explicit GetPossibleSettingOptionsRequest(::google::protobuf::Arena* arena);
+  GetPossibleSettingOptionsRequest(::google::protobuf::Arena* arena, const GetPossibleSettingOptionsRequest& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kComponentIdFieldNumber = 1,
+  };
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.GetPossibleSettingOptionsRequest)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
+class GetModeRequest final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.GetModeRequest) */ {
+ public:
+  inline GetModeRequest() : GetModeRequest(nullptr) {}
+  ~GetModeRequest() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR GetModeRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline GetModeRequest(const GetModeRequest& from)
+      : GetModeRequest(nullptr, from) {}
+  GetModeRequest(GetModeRequest&& from) noexcept
+    : GetModeRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline GetModeRequest& operator=(const GetModeRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetModeRequest& operator=(GetModeRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetModeRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetModeRequest* internal_default_instance() {
+    return reinterpret_cast<const GetModeRequest*>(
+               &_GetModeRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    45;
+
+  friend void swap(GetModeRequest& a, GetModeRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(GetModeRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetModeRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetModeRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<GetModeRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GetModeRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const GetModeRequest& from) {
+    GetModeRequest::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(GetModeRequest* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.GetModeRequest";
+  }
+  protected:
+  explicit GetModeRequest(::google::protobuf::Arena* arena);
+  GetModeRequest(::google::protobuf::Arena* arena, const GetModeRequest& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kComponentIdFieldNumber = 1,
+  };
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.GetModeRequest)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
+class GetCurrentSettingsRequest final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.GetCurrentSettingsRequest) */ {
+ public:
+  inline GetCurrentSettingsRequest() : GetCurrentSettingsRequest(nullptr) {}
+  ~GetCurrentSettingsRequest() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR GetCurrentSettingsRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline GetCurrentSettingsRequest(const GetCurrentSettingsRequest& from)
+      : GetCurrentSettingsRequest(nullptr, from) {}
+  GetCurrentSettingsRequest(GetCurrentSettingsRequest&& from) noexcept
+    : GetCurrentSettingsRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline GetCurrentSettingsRequest& operator=(const GetCurrentSettingsRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetCurrentSettingsRequest& operator=(GetCurrentSettingsRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetCurrentSettingsRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetCurrentSettingsRequest* internal_default_instance() {
+    return reinterpret_cast<const GetCurrentSettingsRequest*>(
+               &_GetCurrentSettingsRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    51;
+
+  friend void swap(GetCurrentSettingsRequest& a, GetCurrentSettingsRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(GetCurrentSettingsRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetCurrentSettingsRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetCurrentSettingsRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<GetCurrentSettingsRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GetCurrentSettingsRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const GetCurrentSettingsRequest& from) {
+    GetCurrentSettingsRequest::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(GetCurrentSettingsRequest* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.GetCurrentSettingsRequest";
+  }
+  protected:
+  explicit GetCurrentSettingsRequest(::google::protobuf::Arena* arena);
+  GetCurrentSettingsRequest(::google::protobuf::Arena* arena, const GetCurrentSettingsRequest& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kComponentIdFieldNumber = 1,
+  };
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.GetCurrentSettingsRequest)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -6202,7 +7288,7 @@ class FormatStorageRequest final :
                &_FormatStorageRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    38;
+    57;
 
   friend void swap(FormatStorageRequest& a, FormatStorageRequest& b) {
     a.Swap(&b);
@@ -6275,9 +7361,20 @@ class FormatStorageRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kStorageIdFieldNumber = 1,
+    kComponentIdFieldNumber = 1,
+    kStorageIdFieldNumber = 2,
   };
-  // int32 storage_id = 1;
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // int32 storage_id = 2;
   void clear_storage_id() ;
   ::int32_t storage_id() const;
   void set_storage_id(::int32_t value);
@@ -6293,7 +7390,7 @@ class FormatStorageRequest final :
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
+      1, 2, 0,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -6310,6 +7407,7 @@ class FormatStorageRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
     ::int32_t storage_id_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -6319,9 +7417,10 @@ class FormatStorageRequest final :
 };// -------------------------------------------------------------------
 
 class FocusStopRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.FocusStopRequest) */ {
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.FocusStopRequest) */ {
  public:
   inline FocusStopRequest() : FocusStopRequest(nullptr) {}
+  ~FocusStopRequest() override;
   template<typename = void>
   explicit PROTOBUF_CONSTEXPR FocusStopRequest(::google::protobuf::internal::ConstantInitialized);
 
@@ -6376,7 +7475,7 @@ class FocusStopRequest final :
                &_FocusStopRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    62;
+    79;
 
   friend void swap(FocusStopRequest& a, FocusStopRequest& b) {
     a.Swap(&b);
@@ -6405,15 +7504,29 @@ class FocusStopRequest final :
   FocusStopRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<FocusStopRequest>(arena);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const FocusStopRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const FocusStopRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const FocusStopRequest& from) {
+    FocusStopRequest::MergeImpl(*this, from);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const FocusStopRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(FocusStopRequest* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
@@ -6425,16 +7538,37 @@ class FocusStopRequest final :
   FocusStopRequest(::google::protobuf::Arena* arena, const FocusStopRequest& from);
   public:
 
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
   ::google::protobuf::Metadata GetMetadata() const final;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kComponentIdFieldNumber = 1,
+  };
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.FocusStopRequest)
  private:
   class _Internal;
 
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
   template <typename T>
@@ -6449,8 +7583,11 @@ class FocusStopRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
@@ -6513,7 +7650,7 @@ class FocusRangeRequest final :
                &_FocusRangeRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    64;
+    81;
 
   friend void swap(FocusRangeRequest& a, FocusRangeRequest& b) {
     a.Swap(&b);
@@ -6586,9 +7723,20 @@ class FocusRangeRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kRangeFieldNumber = 1,
+    kComponentIdFieldNumber = 1,
+    kRangeFieldNumber = 2,
   };
-  // float range = 1;
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // float range = 2;
   void clear_range() ;
   float range() const;
   void set_range(float value);
@@ -6604,7 +7752,7 @@ class FocusRangeRequest final :
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 0,
+      1, 2, 0,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -6621,6 +7769,7 @@ class FocusRangeRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
     float range_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -6630,9 +7779,10 @@ class FocusRangeRequest final :
 };// -------------------------------------------------------------------
 
 class FocusOutStartRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.FocusOutStartRequest) */ {
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.FocusOutStartRequest) */ {
  public:
   inline FocusOutStartRequest() : FocusOutStartRequest(nullptr) {}
+  ~FocusOutStartRequest() override;
   template<typename = void>
   explicit PROTOBUF_CONSTEXPR FocusOutStartRequest(::google::protobuf::internal::ConstantInitialized);
 
@@ -6687,7 +7837,7 @@ class FocusOutStartRequest final :
                &_FocusOutStartRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    60;
+    77;
 
   friend void swap(FocusOutStartRequest& a, FocusOutStartRequest& b) {
     a.Swap(&b);
@@ -6716,15 +7866,29 @@ class FocusOutStartRequest final :
   FocusOutStartRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<FocusOutStartRequest>(arena);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const FocusOutStartRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const FocusOutStartRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const FocusOutStartRequest& from) {
+    FocusOutStartRequest::MergeImpl(*this, from);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const FocusOutStartRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(FocusOutStartRequest* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
@@ -6736,16 +7900,37 @@ class FocusOutStartRequest final :
   FocusOutStartRequest(::google::protobuf::Arena* arena, const FocusOutStartRequest& from);
   public:
 
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
   ::google::protobuf::Metadata GetMetadata() const final;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kComponentIdFieldNumber = 1,
+  };
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.FocusOutStartRequest)
  private:
   class _Internal;
 
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
   template <typename T>
@@ -6760,15 +7945,19 @@ class FocusOutStartRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
 class FocusInStartRequest final :
-    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.FocusInStartRequest) */ {
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.FocusInStartRequest) */ {
  public:
   inline FocusInStartRequest() : FocusInStartRequest(nullptr) {}
+  ~FocusInStartRequest() override;
   template<typename = void>
   explicit PROTOBUF_CONSTEXPR FocusInStartRequest(::google::protobuf::internal::ConstantInitialized);
 
@@ -6823,7 +8012,7 @@ class FocusInStartRequest final :
                &_FocusInStartRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    58;
+    75;
 
   friend void swap(FocusInStartRequest& a, FocusInStartRequest& b) {
     a.Swap(&b);
@@ -6852,15 +8041,29 @@ class FocusInStartRequest final :
   FocusInStartRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
     return CreateMaybeMessage<FocusInStartRequest>(arena);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-  inline void CopyFrom(const FocusInStartRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const FocusInStartRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const FocusInStartRequest& from) {
+    FocusInStartRequest::MergeImpl(*this, from);
   }
-  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-  void MergeFrom(const FocusInStartRequest& from) {
-    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
   public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(FocusInStartRequest* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
@@ -6872,16 +8075,37 @@ class FocusInStartRequest final :
   FocusInStartRequest(::google::protobuf::Arena* arena, const FocusInStartRequest& from);
   public:
 
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
   ::google::protobuf::Metadata GetMetadata() const final;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
+  enum : int {
+    kComponentIdFieldNumber = 1,
+  };
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.FocusInStartRequest)
  private:
   class _Internal;
 
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
   template <typename T>
@@ -6896,8 +8120,11 @@ class FocusInStartRequest final :
                               ::google::protobuf::Arena* arena);
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
+    ::int32_t component_id_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
@@ -6960,7 +8187,7 @@ class EulerAngle final :
                &_EulerAngle_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    69;
+    86;
 
   friend void swap(EulerAngle& a, EulerAngle& b) {
     a.Swap(&b);
@@ -7159,7 +8386,7 @@ class CameraResult final :
                &_CameraResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    66;
+    83;
 
   friend void swap(CameraResult& a, CameraResult& b) {
     a.Swap(&b);
@@ -7240,6 +8467,9 @@ class CameraResult final :
   static constexpr Result RESULT_WRONG_ARGUMENT = CameraResult_Result_RESULT_WRONG_ARGUMENT;
   static constexpr Result RESULT_NO_SYSTEM = CameraResult_Result_RESULT_NO_SYSTEM;
   static constexpr Result RESULT_PROTOCOL_UNSUPPORTED = CameraResult_Result_RESULT_PROTOCOL_UNSUPPORTED;
+  static constexpr Result RESULT_UNAVAILABLE = CameraResult_Result_RESULT_UNAVAILABLE;
+  static constexpr Result RESULT_CAMERA_ID_INVALID = CameraResult_Result_RESULT_CAMERA_ID_INVALID;
+  static constexpr Result RESULT_ACTION_UNSUPPORTED = CameraResult_Result_RESULT_ACTION_UNSUPPORTED;
   static inline bool Result_IsValid(int value) {
     return CameraResult_Result_IsValid(value);
   }
@@ -7380,7 +8610,7 @@ class ZoomStopResponse final :
                &_ZoomStopResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    49;
+    66;
 
   friend void swap(ZoomStopResponse& a, ZoomStopResponse& b) {
     a.Swap(&b);
@@ -7561,7 +8791,7 @@ class ZoomRangeResponse final :
                &_ZoomRangeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    51;
+    68;
 
   friend void swap(ZoomRangeResponse& a, ZoomRangeResponse& b) {
     a.Swap(&b);
@@ -7742,7 +8972,7 @@ class ZoomOutStartResponse final :
                &_ZoomOutStartResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    47;
+    64;
 
   friend void swap(ZoomOutStartResponse& a, ZoomOutStartResponse& b) {
     a.Swap(&b);
@@ -7923,7 +9153,7 @@ class ZoomInStartResponse final :
                &_ZoomInStartResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    45;
+    62;
 
   friend void swap(ZoomInStartResponse& a, ZoomInStartResponse& b) {
     a.Swap(&b);
@@ -8104,7 +9334,7 @@ class VideoStreamInfo final :
                &_VideoStreamInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    72;
+    4;
 
   friend void swap(VideoStreamInfo& a, VideoStreamInfo& b) {
     a.Swap(&b);
@@ -8218,11 +9448,12 @@ class VideoStreamInfo final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kSettingsFieldNumber = 1,
-    kStatusFieldNumber = 2,
-    kSpectrumFieldNumber = 3,
+    kSettingsFieldNumber = 2,
+    kStreamIdFieldNumber = 1,
+    kStatusFieldNumber = 3,
+    kSpectrumFieldNumber = 4,
   };
-  // .mavsdk.rpc.camera.VideoStreamSettings settings = 1;
+  // .mavsdk.rpc.camera.VideoStreamSettings settings = 2;
   bool has_settings() const;
   void clear_settings() ;
   const ::mavsdk::rpc::camera::VideoStreamSettings& settings() const;
@@ -8237,7 +9468,17 @@ class VideoStreamInfo final :
   ::mavsdk::rpc::camera::VideoStreamSettings* _internal_mutable_settings();
 
   public:
-  // .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamStatus status = 2;
+  // int32 stream_id = 1;
+  void clear_stream_id() ;
+  ::int32_t stream_id() const;
+  void set_stream_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_stream_id() const;
+  void _internal_set_stream_id(::int32_t value);
+
+  public:
+  // .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamStatus status = 3;
   void clear_status() ;
   ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus status() const;
   void set_status(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus value);
@@ -8247,7 +9488,7 @@ class VideoStreamInfo final :
   void _internal_set_status(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus value);
 
   public:
-  // .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamSpectrum spectrum = 3;
+  // .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamSpectrum spectrum = 4;
   void clear_spectrum() ;
   ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum spectrum() const;
   void set_spectrum(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum value);
@@ -8263,7 +9504,7 @@ class VideoStreamInfo final :
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 1,
+      2, 4, 1,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -8283,6 +9524,7 @@ class VideoStreamInfo final :
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     ::mavsdk::rpc::camera::VideoStreamSettings* settings_;
+    ::int32_t stream_id_;
     int status_;
     int spectrum_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -8350,7 +9592,7 @@ class TrackStopResponse final :
                &_TrackStopResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    57;
+    74;
 
   friend void swap(TrackStopResponse& a, TrackStopResponse& b) {
     a.Swap(&b);
@@ -8531,7 +9773,7 @@ class TrackRectangleResponse final :
                &_TrackRectangleResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    55;
+    72;
 
   friend void swap(TrackRectangleResponse& a, TrackRectangleResponse& b) {
     a.Swap(&b);
@@ -8712,7 +9954,7 @@ class TrackPointResponse final :
                &_TrackPointResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    53;
+    70;
 
   friend void swap(TrackPointResponse& a, TrackPointResponse& b) {
     a.Swap(&b);
@@ -8893,7 +10135,7 @@ class TakePhotoResponse final :
                &_TakePhotoResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    6;
 
   friend void swap(TakePhotoResponse& a, TakePhotoResponse& b) {
     a.Swap(&b);
@@ -9015,6 +10257,199 @@ class TakePhotoResponse final :
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
+class StorageUpdate final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.StorageUpdate) */ {
+ public:
+  inline StorageUpdate() : StorageUpdate(nullptr) {}
+  ~StorageUpdate() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR StorageUpdate(::google::protobuf::internal::ConstantInitialized);
+
+  inline StorageUpdate(const StorageUpdate& from)
+      : StorageUpdate(nullptr, from) {}
+  StorageUpdate(StorageUpdate&& from) noexcept
+    : StorageUpdate() {
+    *this = ::std::move(from);
+  }
+
+  inline StorageUpdate& operator=(const StorageUpdate& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline StorageUpdate& operator=(StorageUpdate&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const StorageUpdate& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const StorageUpdate* internal_default_instance() {
+    return reinterpret_cast<const StorageUpdate*>(
+               &_StorageUpdate_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    34;
+
+  friend void swap(StorageUpdate& a, StorageUpdate& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(StorageUpdate* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(StorageUpdate* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  StorageUpdate* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<StorageUpdate>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const StorageUpdate& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const StorageUpdate& from) {
+    StorageUpdate::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(StorageUpdate* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.StorageUpdate";
+  }
+  protected:
+  explicit StorageUpdate(::google::protobuf::Arena* arena);
+  StorageUpdate(::google::protobuf::Arena* arena, const StorageUpdate& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kStorageFieldNumber = 2,
+    kComponentIdFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera.Storage storage = 2;
+  bool has_storage() const;
+  void clear_storage() ;
+  const ::mavsdk::rpc::camera::Storage& storage() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera::Storage* release_storage();
+  ::mavsdk::rpc::camera::Storage* mutable_storage();
+  void set_allocated_storage(::mavsdk::rpc::camera::Storage* value);
+  void unsafe_arena_set_allocated_storage(::mavsdk::rpc::camera::Storage* value);
+  ::mavsdk::rpc::camera::Storage* unsafe_arena_release_storage();
+
+  private:
+  const ::mavsdk::rpc::camera::Storage& _internal_storage() const;
+  ::mavsdk::rpc::camera::Storage* _internal_mutable_storage();
+
+  public:
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.StorageUpdate)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 1,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera::Storage* storage_;
+    ::int32_t component_id_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
 class StopVideoStreamingResponse final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.StopVideoStreamingResponse) */ {
  public:
@@ -9074,7 +10509,7 @@ class StopVideoStreamingResponse final :
                &_StopVideoStreamingResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    18;
 
   friend void swap(StopVideoStreamingResponse& a, StopVideoStreamingResponse& b) {
     a.Swap(&b);
@@ -9255,7 +10690,7 @@ class StopVideoResponse final :
                &_StopVideoResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    14;
 
   friend void swap(StopVideoResponse& a, StopVideoResponse& b) {
     a.Swap(&b);
@@ -9436,7 +10871,7 @@ class StopPhotoIntervalResponse final :
                &_StopPhotoIntervalResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    10;
 
   friend void swap(StopPhotoIntervalResponse& a, StopPhotoIntervalResponse& b) {
     a.Swap(&b);
@@ -9558,187 +10993,6 @@ class StopPhotoIntervalResponse final :
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
-class StatusResponse final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.StatusResponse) */ {
- public:
-  inline StatusResponse() : StatusResponse(nullptr) {}
-  ~StatusResponse() override;
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR StatusResponse(::google::protobuf::internal::ConstantInitialized);
-
-  inline StatusResponse(const StatusResponse& from)
-      : StatusResponse(nullptr, from) {}
-  StatusResponse(StatusResponse&& from) noexcept
-    : StatusResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline StatusResponse& operator=(const StatusResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline StatusResponse& operator=(StatusResponse&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetArena() == from.GetArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const StatusResponse& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const StatusResponse* internal_default_instance() {
-    return reinterpret_cast<const StatusResponse*>(
-               &_StatusResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    29;
-
-  friend void swap(StatusResponse& a, StatusResponse& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(StatusResponse* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() != nullptr &&
-        GetArena() == other->GetArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() == other->GetArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(StatusResponse* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  StatusResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<StatusResponse>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const StatusResponse& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const StatusResponse& from) {
-    StatusResponse::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  ::size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
-  void SharedCtor(::google::protobuf::Arena* arena);
-  void SharedDtor();
-  void InternalSwap(StatusResponse* other);
-
-  private:
-  friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.camera.StatusResponse";
-  }
-  protected:
-  explicit StatusResponse(::google::protobuf::Arena* arena);
-  StatusResponse(::google::protobuf::Arena* arena, const StatusResponse& from);
-  public:
-
-  static const ClassData _class_data_;
-  const ::google::protobuf::Message::ClassData*GetClassData() const final;
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kCameraStatusFieldNumber = 1,
-  };
-  // .mavsdk.rpc.camera.Status camera_status = 1;
-  bool has_camera_status() const;
-  void clear_camera_status() ;
-  const ::mavsdk::rpc::camera::Status& camera_status() const;
-  PROTOBUF_NODISCARD ::mavsdk::rpc::camera::Status* release_camera_status();
-  ::mavsdk::rpc::camera::Status* mutable_camera_status();
-  void set_allocated_camera_status(::mavsdk::rpc::camera::Status* value);
-  void unsafe_arena_set_allocated_camera_status(::mavsdk::rpc::camera::Status* value);
-  ::mavsdk::rpc::camera::Status* unsafe_arena_release_camera_status();
-
-  private:
-  const ::mavsdk::rpc::camera::Status& _internal_camera_status() const;
-  ::mavsdk::rpc::camera::Status* _internal_mutable_camera_status();
-
-  public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.StatusResponse)
- private:
-  class _Internal;
-
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 1,
-      0, 2>
-      _table_;
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-
-        inline explicit constexpr Impl_(
-            ::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena);
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena, const Impl_& from);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    ::mavsdk::rpc::camera::Status* camera_status_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_camera_2fcamera_2eproto;
-};// -------------------------------------------------------------------
-
 class StartVideoStreamingResponse final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.StartVideoStreamingResponse) */ {
  public:
@@ -9798,7 +11052,7 @@ class StartVideoStreamingResponse final :
                &_StartVideoStreamingResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    16;
 
   friend void swap(StartVideoStreamingResponse& a, StartVideoStreamingResponse& b) {
     a.Swap(&b);
@@ -9979,7 +11233,7 @@ class StartVideoResponse final :
                &_StartVideoResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    12;
 
   friend void swap(StartVideoResponse& a, StartVideoResponse& b) {
     a.Swap(&b);
@@ -10160,7 +11414,7 @@ class StartPhotoIntervalResponse final :
                &_StartPhotoIntervalResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    8;
 
   friend void swap(StartPhotoIntervalResponse& a, StartPhotoIntervalResponse& b) {
     a.Swap(&b);
@@ -10341,7 +11595,7 @@ class SettingOptions final :
                &_SettingOptions_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    76;
+    2;
 
   friend void swap(SettingOptions& a, SettingOptions& b) {
     a.Swap(&b);
@@ -10414,12 +11668,13 @@ class SettingOptions final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kOptionsFieldNumber = 3,
-    kSettingIdFieldNumber = 1,
-    kSettingDescriptionFieldNumber = 2,
-    kIsRangeFieldNumber = 4,
+    kOptionsFieldNumber = 4,
+    kSettingIdFieldNumber = 2,
+    kSettingDescriptionFieldNumber = 3,
+    kComponentIdFieldNumber = 1,
+    kIsRangeFieldNumber = 5,
   };
-  // repeated .mavsdk.rpc.camera.Option options = 3;
+  // repeated .mavsdk.rpc.camera.Option options = 4;
   int options_size() const;
   private:
   int _internal_options_size() const;
@@ -10437,7 +11692,7 @@ class SettingOptions final :
   ::mavsdk::rpc::camera::Option* add_options();
   const ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera::Option >&
       options() const;
-  // string setting_id = 1;
+  // string setting_id = 2;
   void clear_setting_id() ;
   const std::string& setting_id() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -10453,7 +11708,7 @@ class SettingOptions final :
   std::string* _internal_mutable_setting_id();
 
   public:
-  // string setting_description = 2;
+  // string setting_description = 3;
   void clear_setting_description() ;
   const std::string& setting_description() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -10469,7 +11724,17 @@ class SettingOptions final :
   std::string* _internal_mutable_setting_description();
 
   public:
-  // bool is_range = 4;
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // bool is_range = 5;
   void clear_is_range() ;
   bool is_range() const;
   void set_is_range(bool value);
@@ -10485,7 +11750,7 @@ class SettingOptions final :
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 4, 1,
+      3, 5, 1,
       70, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -10505,6 +11770,7 @@ class SettingOptions final :
     ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera::Option > options_;
     ::google::protobuf::internal::ArenaStringPtr setting_id_;
     ::google::protobuf::internal::ArenaStringPtr setting_description_;
+    ::int32_t component_id_;
     bool is_range_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
@@ -10572,7 +11838,7 @@ class Setting final :
                &_Setting_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    75;
+    1;
 
   friend void swap(Setting& a, Setting& b) {
     a.Swap(&b);
@@ -10801,7 +12067,7 @@ class SetSettingResponse final :
                &_SetSettingResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    35;
+    44;
 
   friend void swap(SetSettingResponse& a, SetSettingResponse& b) {
     a.Swap(&b);
@@ -10982,7 +12248,7 @@ class SetModeResponse final :
                &_SetModeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    20;
 
   friend void swap(SetModeResponse& a, SetModeResponse& b) {
     a.Swap(&b);
@@ -11104,187 +12370,6 @@ class SetModeResponse final :
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
-class SelectCameraResponse final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.SelectCameraResponse) */ {
- public:
-  inline SelectCameraResponse() : SelectCameraResponse(nullptr) {}
-  ~SelectCameraResponse() override;
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR SelectCameraResponse(::google::protobuf::internal::ConstantInitialized);
-
-  inline SelectCameraResponse(const SelectCameraResponse& from)
-      : SelectCameraResponse(nullptr, from) {}
-  SelectCameraResponse(SelectCameraResponse&& from) noexcept
-    : SelectCameraResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline SelectCameraResponse& operator=(const SelectCameraResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline SelectCameraResponse& operator=(SelectCameraResponse&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetArena() == from.GetArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
-  }
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
-      ABSL_ATTRIBUTE_LIFETIME_BOUND {
-    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::google::protobuf::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::google::protobuf::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const SelectCameraResponse& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const SelectCameraResponse* internal_default_instance() {
-    return reinterpret_cast<const SelectCameraResponse*>(
-               &_SelectCameraResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    40;
-
-  friend void swap(SelectCameraResponse& a, SelectCameraResponse& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(SelectCameraResponse* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() != nullptr &&
-        GetArena() == other->GetArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetArena() == other->GetArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::google::protobuf::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(SelectCameraResponse* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetArena() == other->GetArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  SelectCameraResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<SelectCameraResponse>(arena);
-  }
-  using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const SelectCameraResponse& from);
-  using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const SelectCameraResponse& from) {
-    SelectCameraResponse::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  ::size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
-
-  private:
-  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
-  void SharedCtor(::google::protobuf::Arena* arena);
-  void SharedDtor();
-  void InternalSwap(SelectCameraResponse* other);
-
-  private:
-  friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.camera.SelectCameraResponse";
-  }
-  protected:
-  explicit SelectCameraResponse(::google::protobuf::Arena* arena);
-  SelectCameraResponse(::google::protobuf::Arena* arena, const SelectCameraResponse& from);
-  public:
-
-  static const ClassData _class_data_;
-  const ::google::protobuf::Message::ClassData*GetClassData() const final;
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kCameraResultFieldNumber = 1,
-  };
-  // .mavsdk.rpc.camera.CameraResult camera_result = 1;
-  bool has_camera_result() const;
-  void clear_camera_result() ;
-  const ::mavsdk::rpc::camera::CameraResult& camera_result() const;
-  PROTOBUF_NODISCARD ::mavsdk::rpc::camera::CameraResult* release_camera_result();
-  ::mavsdk::rpc::camera::CameraResult* mutable_camera_result();
-  void set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value);
-  void unsafe_arena_set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value);
-  ::mavsdk::rpc::camera::CameraResult* unsafe_arena_release_camera_result();
-
-  private:
-  const ::mavsdk::rpc::camera::CameraResult& _internal_camera_result() const;
-  ::mavsdk::rpc::camera::CameraResult* _internal_mutable_camera_result();
-
-  public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.SelectCameraResponse)
- private:
-  class _Internal;
-
-  friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 1,
-      0, 2>
-      _table_;
-  friend class ::google::protobuf::MessageLite;
-  friend class ::google::protobuf::Arena;
-  template <typename T>
-  friend class ::google::protobuf::Arena::InternalHelper;
-  using InternalArenaConstructable_ = void;
-  using DestructorSkippable_ = void;
-  struct Impl_ {
-
-        inline explicit constexpr Impl_(
-            ::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena);
-        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
-                              ::google::protobuf::Arena* arena, const Impl_& from);
-    ::google::protobuf::internal::HasBits<1> _has_bits_;
-    mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    ::mavsdk::rpc::camera::CameraResult* camera_result_;
-    PROTOBUF_TSAN_DECLARE_MEMBER
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_camera_2fcamera_2eproto;
-};// -------------------------------------------------------------------
-
 class ResetSettingsResponse final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.ResetSettingsResponse) */ {
  public:
@@ -11344,7 +12429,7 @@ class ResetSettingsResponse final :
                &_ResetSettingsResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    43;
+    60;
 
   friend void swap(ResetSettingsResponse& a, ResetSettingsResponse& b) {
     a.Swap(&b);
@@ -11466,26 +12551,26 @@ class ResetSettingsResponse final :
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
-class PrepareResponse final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.PrepareResponse) */ {
+class ModeResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.ModeResponse) */ {
  public:
-  inline PrepareResponse() : PrepareResponse(nullptr) {}
-  ~PrepareResponse() override;
+  inline ModeResponse() : ModeResponse(nullptr) {}
+  ~ModeResponse() override;
   template<typename = void>
-  explicit PROTOBUF_CONSTEXPR PrepareResponse(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR ModeResponse(::google::protobuf::internal::ConstantInitialized);
 
-  inline PrepareResponse(const PrepareResponse& from)
-      : PrepareResponse(nullptr, from) {}
-  PrepareResponse(PrepareResponse&& from) noexcept
-    : PrepareResponse() {
+  inline ModeResponse(const ModeResponse& from)
+      : ModeResponse(nullptr, from) {}
+  ModeResponse(ModeResponse&& from) noexcept
+    : ModeResponse() {
     *this = ::std::move(from);
   }
 
-  inline PrepareResponse& operator=(const PrepareResponse& from) {
+  inline ModeResponse& operator=(const ModeResponse& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PrepareResponse& operator=(PrepareResponse&& from) noexcept {
+  inline ModeResponse& operator=(ModeResponse&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -11517,20 +12602,20 @@ class PrepareResponse final :
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const PrepareResponse& default_instance() {
+  static const ModeResponse& default_instance() {
     return *internal_default_instance();
   }
-  static inline const PrepareResponse* internal_default_instance() {
-    return reinterpret_cast<const PrepareResponse*>(
-               &_PrepareResponse_default_instance_);
+  static inline const ModeResponse* internal_default_instance() {
+    return reinterpret_cast<const ModeResponse*>(
+               &_ModeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    27;
 
-  friend void swap(PrepareResponse& a, PrepareResponse& b) {
+  friend void swap(ModeResponse& a, ModeResponse& b) {
     a.Swap(&b);
   }
-  inline void Swap(PrepareResponse* other) {
+  inline void Swap(ModeResponse* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr &&
@@ -11543,7 +12628,7 @@ class PrepareResponse final :
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PrepareResponse* other) {
+  void UnsafeArenaSwap(ModeResponse* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -11551,14 +12636,14 @@ class PrepareResponse final :
 
   // implements Message ----------------------------------------------
 
-  PrepareResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<PrepareResponse>(arena);
+  ModeResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<ModeResponse>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const PrepareResponse& from);
+  void CopyFrom(const ModeResponse& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const PrepareResponse& from) {
-    PrepareResponse::MergeImpl(*this, from);
+  void MergeFrom( const ModeResponse& from) {
+    ModeResponse::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
@@ -11576,16 +12661,197 @@ class PrepareResponse final :
   ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
   void SharedCtor(::google::protobuf::Arena* arena);
   void SharedDtor();
-  void InternalSwap(PrepareResponse* other);
+  void InternalSwap(ModeResponse* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.camera.PrepareResponse";
+    return "mavsdk.rpc.camera.ModeResponse";
   }
   protected:
-  explicit PrepareResponse(::google::protobuf::Arena* arena);
-  PrepareResponse(::google::protobuf::Arena* arena, const PrepareResponse& from);
+  explicit ModeResponse(::google::protobuf::Arena* arena);
+  ModeResponse(::google::protobuf::Arena* arena, const ModeResponse& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kUpdateFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera.ModeUpdate update = 1;
+  bool has_update() const;
+  void clear_update() ;
+  const ::mavsdk::rpc::camera::ModeUpdate& update() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera::ModeUpdate* release_update();
+  ::mavsdk::rpc::camera::ModeUpdate* mutable_update();
+  void set_allocated_update(::mavsdk::rpc::camera::ModeUpdate* value);
+  void unsafe_arena_set_allocated_update(::mavsdk::rpc::camera::ModeUpdate* value);
+  ::mavsdk::rpc::camera::ModeUpdate* unsafe_arena_release_update();
+
+  private:
+  const ::mavsdk::rpc::camera::ModeUpdate& _internal_update() const;
+  ::mavsdk::rpc::camera::ModeUpdate* _internal_mutable_update();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.ModeResponse)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera::ModeUpdate* update_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
+class GetStorageResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.GetStorageResponse) */ {
+ public:
+  inline GetStorageResponse() : GetStorageResponse(nullptr) {}
+  ~GetStorageResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR GetStorageResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline GetStorageResponse(const GetStorageResponse& from)
+      : GetStorageResponse(nullptr, from) {}
+  GetStorageResponse(GetStorageResponse&& from) noexcept
+    : GetStorageResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline GetStorageResponse& operator=(const GetStorageResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetStorageResponse& operator=(GetStorageResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetStorageResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetStorageResponse* internal_default_instance() {
+    return reinterpret_cast<const GetStorageResponse*>(
+               &_GetStorageResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    50;
+
+  friend void swap(GetStorageResponse& a, GetStorageResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(GetStorageResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetStorageResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetStorageResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<GetStorageResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GetStorageResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const GetStorageResponse& from) {
+    GetStorageResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(GetStorageResponse* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.GetStorageResponse";
+  }
+  protected:
+  explicit GetStorageResponse(::google::protobuf::Arena* arena);
+  GetStorageResponse(::google::protobuf::Arena* arena, const GetStorageResponse& from);
   public:
 
   static const ClassData _class_data_;
@@ -11599,6 +12865,7 @@ class PrepareResponse final :
 
   enum : int {
     kCameraResultFieldNumber = 1,
+    kStorageFieldNumber = 2,
   };
   // .mavsdk.rpc.camera.CameraResult camera_result = 1;
   bool has_camera_result() const;
@@ -11615,13 +12882,28 @@ class PrepareResponse final :
   ::mavsdk::rpc::camera::CameraResult* _internal_mutable_camera_result();
 
   public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.PrepareResponse)
+  // .mavsdk.rpc.camera.Storage storage = 2;
+  bool has_storage() const;
+  void clear_storage() ;
+  const ::mavsdk::rpc::camera::Storage& storage() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera::Storage* release_storage();
+  ::mavsdk::rpc::camera::Storage* mutable_storage();
+  void set_allocated_storage(::mavsdk::rpc::camera::Storage* value);
+  void unsafe_arena_set_allocated_storage(::mavsdk::rpc::camera::Storage* value);
+  ::mavsdk::rpc::camera::Storage* unsafe_arena_release_storage();
+
+  private:
+  const ::mavsdk::rpc::camera::Storage& _internal_storage() const;
+  ::mavsdk::rpc::camera::Storage* _internal_mutable_storage();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.GetStorageResponse)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 1,
+      1, 2, 2,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -11641,32 +12923,33 @@ class PrepareResponse final :
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     ::mavsdk::rpc::camera::CameraResult* camera_result_;
+    ::mavsdk::rpc::camera::Storage* storage_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
-class InformationResponse final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.InformationResponse) */ {
+class GetModeResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.GetModeResponse) */ {
  public:
-  inline InformationResponse() : InformationResponse(nullptr) {}
-  ~InformationResponse() override;
+  inline GetModeResponse() : GetModeResponse(nullptr) {}
+  ~GetModeResponse() override;
   template<typename = void>
-  explicit PROTOBUF_CONSTEXPR InformationResponse(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR GetModeResponse(::google::protobuf::internal::ConstantInitialized);
 
-  inline InformationResponse(const InformationResponse& from)
-      : InformationResponse(nullptr, from) {}
-  InformationResponse(InformationResponse&& from) noexcept
-    : InformationResponse() {
+  inline GetModeResponse(const GetModeResponse& from)
+      : GetModeResponse(nullptr, from) {}
+  GetModeResponse(GetModeResponse&& from) noexcept
+    : GetModeResponse() {
     *this = ::std::move(from);
   }
 
-  inline InformationResponse& operator=(const InformationResponse& from) {
+  inline GetModeResponse& operator=(const GetModeResponse& from) {
     CopyFrom(from);
     return *this;
   }
-  inline InformationResponse& operator=(InformationResponse&& from) noexcept {
+  inline GetModeResponse& operator=(GetModeResponse&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -11698,20 +12981,20 @@ class InformationResponse final :
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const InformationResponse& default_instance() {
+  static const GetModeResponse& default_instance() {
     return *internal_default_instance();
   }
-  static inline const InformationResponse* internal_default_instance() {
-    return reinterpret_cast<const InformationResponse*>(
-               &_InformationResponse_default_instance_);
+  static inline const GetModeResponse* internal_default_instance() {
+    return reinterpret_cast<const GetModeResponse*>(
+               &_GetModeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    46;
 
-  friend void swap(InformationResponse& a, InformationResponse& b) {
+  friend void swap(GetModeResponse& a, GetModeResponse& b) {
     a.Swap(&b);
   }
-  inline void Swap(InformationResponse* other) {
+  inline void Swap(GetModeResponse* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr &&
@@ -11724,7 +13007,7 @@ class InformationResponse final :
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(InformationResponse* other) {
+  void UnsafeArenaSwap(GetModeResponse* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -11732,14 +13015,14 @@ class InformationResponse final :
 
   // implements Message ----------------------------------------------
 
-  InformationResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<InformationResponse>(arena);
+  GetModeResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<GetModeResponse>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const InformationResponse& from);
+  void CopyFrom(const GetModeResponse& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const InformationResponse& from) {
-    InformationResponse::MergeImpl(*this, from);
+  void MergeFrom( const GetModeResponse& from) {
+    GetModeResponse::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
@@ -11757,16 +13040,16 @@ class InformationResponse final :
   ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
   void SharedCtor(::google::protobuf::Arena* arena);
   void SharedDtor();
-  void InternalSwap(InformationResponse* other);
+  void InternalSwap(GetModeResponse* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.camera.InformationResponse";
+    return "mavsdk.rpc.camera.GetModeResponse";
   }
   protected:
-  explicit InformationResponse(::google::protobuf::Arena* arena);
-  InformationResponse(::google::protobuf::Arena* arena, const InformationResponse& from);
+  explicit GetModeResponse(::google::protobuf::Arena* arena);
+  GetModeResponse(::google::protobuf::Arena* arena, const GetModeResponse& from);
   public:
 
   static const ClassData _class_data_;
@@ -11779,30 +13062,41 @@ class InformationResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kInformationFieldNumber = 1,
+    kCameraResultFieldNumber = 1,
+    kModeFieldNumber = 2,
   };
-  // .mavsdk.rpc.camera.Information information = 1;
-  bool has_information() const;
-  void clear_information() ;
-  const ::mavsdk::rpc::camera::Information& information() const;
-  PROTOBUF_NODISCARD ::mavsdk::rpc::camera::Information* release_information();
-  ::mavsdk::rpc::camera::Information* mutable_information();
-  void set_allocated_information(::mavsdk::rpc::camera::Information* value);
-  void unsafe_arena_set_allocated_information(::mavsdk::rpc::camera::Information* value);
-  ::mavsdk::rpc::camera::Information* unsafe_arena_release_information();
+  // .mavsdk.rpc.camera.CameraResult camera_result = 1;
+  bool has_camera_result() const;
+  void clear_camera_result() ;
+  const ::mavsdk::rpc::camera::CameraResult& camera_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera::CameraResult* release_camera_result();
+  ::mavsdk::rpc::camera::CameraResult* mutable_camera_result();
+  void set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value);
+  void unsafe_arena_set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value);
+  ::mavsdk::rpc::camera::CameraResult* unsafe_arena_release_camera_result();
 
   private:
-  const ::mavsdk::rpc::camera::Information& _internal_information() const;
-  ::mavsdk::rpc::camera::Information* _internal_mutable_information();
+  const ::mavsdk::rpc::camera::CameraResult& _internal_camera_result() const;
+  ::mavsdk::rpc::camera::CameraResult* _internal_mutable_camera_result();
 
   public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.InformationResponse)
+  // .mavsdk.rpc.camera.Mode mode = 2;
+  void clear_mode() ;
+  ::mavsdk::rpc::camera::Mode mode() const;
+  void set_mode(::mavsdk::rpc::camera::Mode value);
+
+  private:
+  ::mavsdk::rpc::camera::Mode _internal_mode() const;
+  void _internal_set_mode(::mavsdk::rpc::camera::Mode value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.GetModeResponse)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 1,
+      1, 2, 1,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -11821,7 +13115,8 @@ class InformationResponse final :
                               ::google::protobuf::Arena* arena, const Impl_& from);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    ::mavsdk::rpc::camera::Information* information_;
+    ::mavsdk::rpc::camera::CameraResult* camera_result_;
+    int mode_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -11887,7 +13182,7 @@ class FormatStorageResponse final :
                &_FormatStorageResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    39;
+    58;
 
   friend void swap(FormatStorageResponse& a, FormatStorageResponse& b) {
     a.Swap(&b);
@@ -12068,7 +13363,7 @@ class FocusStopResponse final :
                &_FocusStopResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    63;
+    80;
 
   friend void swap(FocusStopResponse& a, FocusStopResponse& b) {
     a.Swap(&b);
@@ -12249,7 +13544,7 @@ class FocusRangeResponse final :
                &_FocusRangeResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    65;
+    82;
 
   friend void swap(FocusRangeResponse& a, FocusRangeResponse& b) {
     a.Swap(&b);
@@ -12430,7 +13725,7 @@ class FocusOutStartResponse final :
                &_FocusOutStartResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    61;
+    78;
 
   friend void swap(FocusOutStartResponse& a, FocusOutStartResponse& b) {
     a.Swap(&b);
@@ -12611,7 +13906,7 @@ class FocusInStartResponse final :
                &_FocusInStartResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    59;
+    76;
 
   friend void swap(FocusInStartResponse& a, FocusInStartResponse& b) {
     a.Swap(&b);
@@ -12792,7 +14087,7 @@ class CaptureInfo final :
                &_CaptureInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    70;
+    87;
 
   friend void swap(CaptureInfo& a, CaptureInfo& b) {
     a.Swap(&b);
@@ -12865,15 +14160,16 @@ class CaptureInfo final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kFileUrlFieldNumber = 7,
-    kPositionFieldNumber = 1,
-    kAttitudeQuaternionFieldNumber = 2,
-    kAttitudeEulerAngleFieldNumber = 3,
-    kTimeUtcUsFieldNumber = 4,
-    kIsSuccessFieldNumber = 5,
-    kIndexFieldNumber = 6,
+    kFileUrlFieldNumber = 8,
+    kPositionFieldNumber = 2,
+    kAttitudeQuaternionFieldNumber = 3,
+    kAttitudeEulerAngleFieldNumber = 4,
+    kComponentIdFieldNumber = 1,
+    kIsSuccessFieldNumber = 6,
+    kTimeUtcUsFieldNumber = 5,
+    kIndexFieldNumber = 7,
   };
-  // string file_url = 7;
+  // string file_url = 8;
   void clear_file_url() ;
   const std::string& file_url() const;
   template <typename Arg_ = const std::string&, typename... Args_>
@@ -12889,7 +14185,7 @@ class CaptureInfo final :
   std::string* _internal_mutable_file_url();
 
   public:
-  // .mavsdk.rpc.camera.Position position = 1;
+  // .mavsdk.rpc.camera.Position position = 2;
   bool has_position() const;
   void clear_position() ;
   const ::mavsdk::rpc::camera::Position& position() const;
@@ -12904,7 +14200,7 @@ class CaptureInfo final :
   ::mavsdk::rpc::camera::Position* _internal_mutable_position();
 
   public:
-  // .mavsdk.rpc.camera.Quaternion attitude_quaternion = 2;
+  // .mavsdk.rpc.camera.Quaternion attitude_quaternion = 3;
   bool has_attitude_quaternion() const;
   void clear_attitude_quaternion() ;
   const ::mavsdk::rpc::camera::Quaternion& attitude_quaternion() const;
@@ -12919,7 +14215,7 @@ class CaptureInfo final :
   ::mavsdk::rpc::camera::Quaternion* _internal_mutable_attitude_quaternion();
 
   public:
-  // .mavsdk.rpc.camera.EulerAngle attitude_euler_angle = 3;
+  // .mavsdk.rpc.camera.EulerAngle attitude_euler_angle = 4;
   bool has_attitude_euler_angle() const;
   void clear_attitude_euler_angle() ;
   const ::mavsdk::rpc::camera::EulerAngle& attitude_euler_angle() const;
@@ -12934,17 +14230,17 @@ class CaptureInfo final :
   ::mavsdk::rpc::camera::EulerAngle* _internal_mutable_attitude_euler_angle();
 
   public:
-  // uint64 time_utc_us = 4;
-  void clear_time_utc_us() ;
-  ::uint64_t time_utc_us() const;
-  void set_time_utc_us(::uint64_t value);
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
 
   private:
-  ::uint64_t _internal_time_utc_us() const;
-  void _internal_set_time_utc_us(::uint64_t value);
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
 
   public:
-  // bool is_success = 5;
+  // bool is_success = 6;
   void clear_is_success() ;
   bool is_success() const;
   void set_is_success(bool value);
@@ -12954,7 +14250,17 @@ class CaptureInfo final :
   void _internal_set_is_success(bool value);
 
   public:
-  // int32 index = 6;
+  // uint64 time_utc_us = 5;
+  void clear_time_utc_us() ;
+  ::uint64_t time_utc_us() const;
+  void set_time_utc_us(::uint64_t value);
+
+  private:
+  ::uint64_t _internal_time_utc_us() const;
+  void _internal_set_time_utc_us(::uint64_t value);
+
+  public:
+  // int32 index = 7;
   void clear_index() ;
   ::int32_t index() const;
   void set_index(::int32_t value);
@@ -12970,8 +14276,8 @@ class CaptureInfo final :
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      3, 7, 3,
-      46, 2>
+      3, 8, 3,
+      54, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
@@ -12993,8 +14299,9 @@ class CaptureInfo final :
     ::mavsdk::rpc::camera::Position* position_;
     ::mavsdk::rpc::camera::Quaternion* attitude_quaternion_;
     ::mavsdk::rpc::camera::EulerAngle* attitude_euler_angle_;
-    ::uint64_t time_utc_us_;
+    ::int32_t component_id_;
     bool is_success_;
+    ::uint64_t time_utc_us_;
     ::int32_t index_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -13002,26 +14309,26 @@ class CaptureInfo final :
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
-class VideoStreamInfoResponse final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.VideoStreamInfoResponse) */ {
+class CameraList final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.CameraList) */ {
  public:
-  inline VideoStreamInfoResponse() : VideoStreamInfoResponse(nullptr) {}
-  ~VideoStreamInfoResponse() override;
+  inline CameraList() : CameraList(nullptr) {}
+  ~CameraList() override;
   template<typename = void>
-  explicit PROTOBUF_CONSTEXPR VideoStreamInfoResponse(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR CameraList(::google::protobuf::internal::ConstantInitialized);
 
-  inline VideoStreamInfoResponse(const VideoStreamInfoResponse& from)
-      : VideoStreamInfoResponse(nullptr, from) {}
-  VideoStreamInfoResponse(VideoStreamInfoResponse&& from) noexcept
-    : VideoStreamInfoResponse() {
+  inline CameraList(const CameraList& from)
+      : CameraList(nullptr, from) {}
+  CameraList(CameraList&& from) noexcept
+    : CameraList() {
     *this = ::std::move(from);
   }
 
-  inline VideoStreamInfoResponse& operator=(const VideoStreamInfoResponse& from) {
+  inline CameraList& operator=(const CameraList& from) {
     CopyFrom(from);
     return *this;
   }
-  inline VideoStreamInfoResponse& operator=(VideoStreamInfoResponse&& from) noexcept {
+  inline CameraList& operator=(CameraList&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -13053,20 +14360,20 @@ class VideoStreamInfoResponse final :
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const VideoStreamInfoResponse& default_instance() {
+  static const CameraList& default_instance() {
     return *internal_default_instance();
   }
-  static inline const VideoStreamInfoResponse* internal_default_instance() {
-    return reinterpret_cast<const VideoStreamInfoResponse*>(
-               &_VideoStreamInfoResponse_default_instance_);
+  static inline const CameraList* internal_default_instance() {
+    return reinterpret_cast<const CameraList*>(
+               &_CameraList_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    89;
 
-  friend void swap(VideoStreamInfoResponse& a, VideoStreamInfoResponse& b) {
+  friend void swap(CameraList& a, CameraList& b) {
     a.Swap(&b);
   }
-  inline void Swap(VideoStreamInfoResponse* other) {
+  inline void Swap(CameraList* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr &&
@@ -13079,7 +14386,7 @@ class VideoStreamInfoResponse final :
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(VideoStreamInfoResponse* other) {
+  void UnsafeArenaSwap(CameraList* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -13087,14 +14394,14 @@ class VideoStreamInfoResponse final :
 
   // implements Message ----------------------------------------------
 
-  VideoStreamInfoResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<VideoStreamInfoResponse>(arena);
+  CameraList* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<CameraList>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const VideoStreamInfoResponse& from);
+  void CopyFrom(const CameraList& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const VideoStreamInfoResponse& from) {
-    VideoStreamInfoResponse::MergeImpl(*this, from);
+  void MergeFrom( const CameraList& from) {
+    CameraList::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
@@ -13112,16 +14419,16 @@ class VideoStreamInfoResponse final :
   ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
   void SharedCtor(::google::protobuf::Arena* arena);
   void SharedDtor();
-  void InternalSwap(VideoStreamInfoResponse* other);
+  void InternalSwap(CameraList* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.camera.VideoStreamInfoResponse";
+    return "mavsdk.rpc.camera.CameraList";
   }
   protected:
-  explicit VideoStreamInfoResponse(::google::protobuf::Arena* arena);
-  VideoStreamInfoResponse(::google::protobuf::Arena* arena, const VideoStreamInfoResponse& from);
+  explicit CameraList(::google::protobuf::Arena* arena);
+  CameraList(::google::protobuf::Arena* arena, const CameraList& from);
   public:
 
   static const ClassData _class_data_;
@@ -13134,9 +14441,193 @@ class VideoStreamInfoResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kVideoStreamInfoFieldNumber = 1,
+    kCamerasFieldNumber = 1,
   };
-  // .mavsdk.rpc.camera.VideoStreamInfo video_stream_info = 1;
+  // repeated .mavsdk.rpc.camera.Information cameras = 1;
+  int cameras_size() const;
+  private:
+  int _internal_cameras_size() const;
+
+  public:
+  void clear_cameras() ;
+  ::mavsdk::rpc::camera::Information* mutable_cameras(int index);
+  ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera::Information >*
+      mutable_cameras();
+  private:
+  const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Information>& _internal_cameras() const;
+  ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Information>* _internal_mutable_cameras();
+  public:
+  const ::mavsdk::rpc::camera::Information& cameras(int index) const;
+  ::mavsdk::rpc::camera::Information* add_cameras();
+  const ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera::Information >&
+      cameras() const;
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.CameraList)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera::Information > cameras_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
+class VideoStreamUpdate final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.VideoStreamUpdate) */ {
+ public:
+  inline VideoStreamUpdate() : VideoStreamUpdate(nullptr) {}
+  ~VideoStreamUpdate() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR VideoStreamUpdate(::google::protobuf::internal::ConstantInitialized);
+
+  inline VideoStreamUpdate(const VideoStreamUpdate& from)
+      : VideoStreamUpdate(nullptr, from) {}
+  VideoStreamUpdate(VideoStreamUpdate&& from) noexcept
+    : VideoStreamUpdate() {
+    *this = ::std::move(from);
+  }
+
+  inline VideoStreamUpdate& operator=(const VideoStreamUpdate& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline VideoStreamUpdate& operator=(VideoStreamUpdate&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const VideoStreamUpdate& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const VideoStreamUpdate* internal_default_instance() {
+    return reinterpret_cast<const VideoStreamUpdate*>(
+               &_VideoStreamUpdate_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    28;
+
+  friend void swap(VideoStreamUpdate& a, VideoStreamUpdate& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(VideoStreamUpdate* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(VideoStreamUpdate* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  VideoStreamUpdate* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<VideoStreamUpdate>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const VideoStreamUpdate& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const VideoStreamUpdate& from) {
+    VideoStreamUpdate::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(VideoStreamUpdate* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.VideoStreamUpdate";
+  }
+  protected:
+  explicit VideoStreamUpdate(::google::protobuf::Arena* arena);
+  VideoStreamUpdate(::google::protobuf::Arena* arena, const VideoStreamUpdate& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kVideoStreamInfoFieldNumber = 2,
+    kComponentIdFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera.VideoStreamInfo video_stream_info = 2;
   bool has_video_stream_info() const;
   void clear_video_stream_info() ;
   const ::mavsdk::rpc::camera::VideoStreamInfo& video_stream_info() const;
@@ -13151,7 +14642,199 @@ class VideoStreamInfoResponse final :
   ::mavsdk::rpc::camera::VideoStreamInfo* _internal_mutable_video_stream_info();
 
   public:
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.VideoStreamInfoResponse)
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.VideoStreamUpdate)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 1,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera::VideoStreamInfo* video_stream_info_;
+    ::int32_t component_id_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
+class StorageResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.StorageResponse) */ {
+ public:
+  inline StorageResponse() : StorageResponse(nullptr) {}
+  ~StorageResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR StorageResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline StorageResponse(const StorageResponse& from)
+      : StorageResponse(nullptr, from) {}
+  StorageResponse(StorageResponse&& from) noexcept
+    : StorageResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline StorageResponse& operator=(const StorageResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline StorageResponse& operator=(StorageResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const StorageResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const StorageResponse* internal_default_instance() {
+    return reinterpret_cast<const StorageResponse*>(
+               &_StorageResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    36;
+
+  friend void swap(StorageResponse& a, StorageResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(StorageResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(StorageResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  StorageResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<StorageResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const StorageResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const StorageResponse& from) {
+    StorageResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(StorageResponse* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.StorageResponse";
+  }
+  protected:
+  explicit StorageResponse(::google::protobuf::Arena* arena);
+  StorageResponse(::google::protobuf::Arena* arena, const StorageResponse& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kUpdateFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera.StorageUpdate update = 1;
+  bool has_update() const;
+  void clear_update() ;
+  const ::mavsdk::rpc::camera::StorageUpdate& update() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera::StorageUpdate* release_update();
+  ::mavsdk::rpc::camera::StorageUpdate* mutable_update();
+  void set_allocated_update(::mavsdk::rpc::camera::StorageUpdate* value);
+  void unsafe_arena_set_allocated_update(::mavsdk::rpc::camera::StorageUpdate* value);
+  ::mavsdk::rpc::camera::StorageUpdate* unsafe_arena_release_update();
+
+  private:
+  const ::mavsdk::rpc::camera::StorageUpdate& _internal_update() const;
+  ::mavsdk::rpc::camera::StorageUpdate* _internal_mutable_update();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.StorageResponse)
  private:
   class _Internal;
 
@@ -13176,7 +14859,7 @@ class VideoStreamInfoResponse final :
                               ::google::protobuf::Arena* arena, const Impl_& from);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    ::mavsdk::rpc::camera::VideoStreamInfo* video_stream_info_;
+    ::mavsdk::rpc::camera::StorageUpdate* update_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -13242,7 +14925,7 @@ class SetSettingRequest final :
                &_SetSettingRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    34;
+    43;
 
   friend void swap(SetSettingRequest& a, SetSettingRequest& b) {
     a.Swap(&b);
@@ -13315,9 +14998,10 @@ class SetSettingRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kSettingFieldNumber = 1,
+    kSettingFieldNumber = 2,
+    kComponentIdFieldNumber = 1,
   };
-  // .mavsdk.rpc.camera.Setting setting = 1;
+  // .mavsdk.rpc.camera.Setting setting = 2;
   bool has_setting() const;
   void clear_setting() ;
   const ::mavsdk::rpc::camera::Setting& setting() const;
@@ -13332,13 +15016,23 @@ class SetSettingRequest final :
   ::mavsdk::rpc::camera::Setting* _internal_mutable_setting();
 
   public:
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.SetSettingRequest)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 1,
+      1, 2, 1,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -13358,32 +15052,33 @@ class SetSettingRequest final :
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     ::mavsdk::rpc::camera::Setting* setting_;
+    ::int32_t component_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
-class PossibleSettingOptionsResponse final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.PossibleSettingOptionsResponse) */ {
+class PossibleSettingOptionsUpdate final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.PossibleSettingOptionsUpdate) */ {
  public:
-  inline PossibleSettingOptionsResponse() : PossibleSettingOptionsResponse(nullptr) {}
-  ~PossibleSettingOptionsResponse() override;
+  inline PossibleSettingOptionsUpdate() : PossibleSettingOptionsUpdate(nullptr) {}
+  ~PossibleSettingOptionsUpdate() override;
   template<typename = void>
-  explicit PROTOBUF_CONSTEXPR PossibleSettingOptionsResponse(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR PossibleSettingOptionsUpdate(::google::protobuf::internal::ConstantInitialized);
 
-  inline PossibleSettingOptionsResponse(const PossibleSettingOptionsResponse& from)
-      : PossibleSettingOptionsResponse(nullptr, from) {}
-  PossibleSettingOptionsResponse(PossibleSettingOptionsResponse&& from) noexcept
-    : PossibleSettingOptionsResponse() {
+  inline PossibleSettingOptionsUpdate(const PossibleSettingOptionsUpdate& from)
+      : PossibleSettingOptionsUpdate(nullptr, from) {}
+  PossibleSettingOptionsUpdate(PossibleSettingOptionsUpdate&& from) noexcept
+    : PossibleSettingOptionsUpdate() {
     *this = ::std::move(from);
   }
 
-  inline PossibleSettingOptionsResponse& operator=(const PossibleSettingOptionsResponse& from) {
+  inline PossibleSettingOptionsUpdate& operator=(const PossibleSettingOptionsUpdate& from) {
     CopyFrom(from);
     return *this;
   }
-  inline PossibleSettingOptionsResponse& operator=(PossibleSettingOptionsResponse&& from) noexcept {
+  inline PossibleSettingOptionsUpdate& operator=(PossibleSettingOptionsUpdate&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -13415,20 +15110,20 @@ class PossibleSettingOptionsResponse final :
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const PossibleSettingOptionsResponse& default_instance() {
+  static const PossibleSettingOptionsUpdate& default_instance() {
     return *internal_default_instance();
   }
-  static inline const PossibleSettingOptionsResponse* internal_default_instance() {
-    return reinterpret_cast<const PossibleSettingOptionsResponse*>(
-               &_PossibleSettingOptionsResponse_default_instance_);
+  static inline const PossibleSettingOptionsUpdate* internal_default_instance() {
+    return reinterpret_cast<const PossibleSettingOptionsUpdate*>(
+               &_PossibleSettingOptionsUpdate_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    33;
+    40;
 
-  friend void swap(PossibleSettingOptionsResponse& a, PossibleSettingOptionsResponse& b) {
+  friend void swap(PossibleSettingOptionsUpdate& a, PossibleSettingOptionsUpdate& b) {
     a.Swap(&b);
   }
-  inline void Swap(PossibleSettingOptionsResponse* other) {
+  inline void Swap(PossibleSettingOptionsUpdate* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr &&
@@ -13441,7 +15136,7 @@ class PossibleSettingOptionsResponse final :
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(PossibleSettingOptionsResponse* other) {
+  void UnsafeArenaSwap(PossibleSettingOptionsUpdate* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -13449,14 +15144,14 @@ class PossibleSettingOptionsResponse final :
 
   // implements Message ----------------------------------------------
 
-  PossibleSettingOptionsResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<PossibleSettingOptionsResponse>(arena);
+  PossibleSettingOptionsUpdate* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PossibleSettingOptionsUpdate>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const PossibleSettingOptionsResponse& from);
+  void CopyFrom(const PossibleSettingOptionsUpdate& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const PossibleSettingOptionsResponse& from) {
-    PossibleSettingOptionsResponse::MergeImpl(*this, from);
+  void MergeFrom( const PossibleSettingOptionsUpdate& from) {
+    PossibleSettingOptionsUpdate::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
@@ -13474,16 +15169,16 @@ class PossibleSettingOptionsResponse final :
   ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
   void SharedCtor(::google::protobuf::Arena* arena);
   void SharedDtor();
-  void InternalSwap(PossibleSettingOptionsResponse* other);
+  void InternalSwap(PossibleSettingOptionsUpdate* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.camera.PossibleSettingOptionsResponse";
+    return "mavsdk.rpc.camera.PossibleSettingOptionsUpdate";
   }
   protected:
-  explicit PossibleSettingOptionsResponse(::google::protobuf::Arena* arena);
-  PossibleSettingOptionsResponse(::google::protobuf::Arena* arena, const PossibleSettingOptionsResponse& from);
+  explicit PossibleSettingOptionsUpdate(::google::protobuf::Arena* arena);
+  PossibleSettingOptionsUpdate(::google::protobuf::Arena* arena, const PossibleSettingOptionsUpdate& from);
   public:
 
   static const ClassData _class_data_;
@@ -13496,9 +15191,10 @@ class PossibleSettingOptionsResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kSettingOptionsFieldNumber = 1,
+    kSettingOptionsFieldNumber = 2,
+    kComponentIdFieldNumber = 1,
   };
-  // repeated .mavsdk.rpc.camera.SettingOptions setting_options = 1;
+  // repeated .mavsdk.rpc.camera.SettingOptions setting_options = 2;
   int setting_options_size() const;
   private:
   int _internal_setting_options_size() const;
@@ -13516,13 +15212,23 @@ class PossibleSettingOptionsResponse final :
   ::mavsdk::rpc::camera::SettingOptions* add_setting_options();
   const ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera::SettingOptions >&
       setting_options() const;
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.PossibleSettingOptionsUpdate)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 1,
+      1, 2, 1,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -13540,6 +15246,7 @@ class PossibleSettingOptionsResponse final :
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
     ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera::SettingOptions > setting_options_;
+    ::int32_t component_id_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -13606,7 +15313,7 @@ class ListPhotosResponse final :
                &_ListPhotosResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    22;
 
   friend void swap(ListPhotosResponse& a, ListPhotosResponse& b) {
     a.Swap(&b);
@@ -13748,6 +15455,204 @@ class ListPhotosResponse final :
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
+class GetVideoStreamInfoResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.GetVideoStreamInfoResponse) */ {
+ public:
+  inline GetVideoStreamInfoResponse() : GetVideoStreamInfoResponse(nullptr) {}
+  ~GetVideoStreamInfoResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR GetVideoStreamInfoResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline GetVideoStreamInfoResponse(const GetVideoStreamInfoResponse& from)
+      : GetVideoStreamInfoResponse(nullptr, from) {}
+  GetVideoStreamInfoResponse(GetVideoStreamInfoResponse&& from) noexcept
+    : GetVideoStreamInfoResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline GetVideoStreamInfoResponse& operator=(const GetVideoStreamInfoResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetVideoStreamInfoResponse& operator=(GetVideoStreamInfoResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetVideoStreamInfoResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetVideoStreamInfoResponse* internal_default_instance() {
+    return reinterpret_cast<const GetVideoStreamInfoResponse*>(
+               &_GetVideoStreamInfoResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    48;
+
+  friend void swap(GetVideoStreamInfoResponse& a, GetVideoStreamInfoResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(GetVideoStreamInfoResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetVideoStreamInfoResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetVideoStreamInfoResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<GetVideoStreamInfoResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GetVideoStreamInfoResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const GetVideoStreamInfoResponse& from) {
+    GetVideoStreamInfoResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(GetVideoStreamInfoResponse* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.GetVideoStreamInfoResponse";
+  }
+  protected:
+  explicit GetVideoStreamInfoResponse(::google::protobuf::Arena* arena);
+  GetVideoStreamInfoResponse(::google::protobuf::Arena* arena, const GetVideoStreamInfoResponse& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCameraResultFieldNumber = 1,
+    kVideoStreamInfoFieldNumber = 2,
+  };
+  // .mavsdk.rpc.camera.CameraResult camera_result = 1;
+  bool has_camera_result() const;
+  void clear_camera_result() ;
+  const ::mavsdk::rpc::camera::CameraResult& camera_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera::CameraResult* release_camera_result();
+  ::mavsdk::rpc::camera::CameraResult* mutable_camera_result();
+  void set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value);
+  void unsafe_arena_set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value);
+  ::mavsdk::rpc::camera::CameraResult* unsafe_arena_release_camera_result();
+
+  private:
+  const ::mavsdk::rpc::camera::CameraResult& _internal_camera_result() const;
+  ::mavsdk::rpc::camera::CameraResult* _internal_mutable_camera_result();
+
+  public:
+  // .mavsdk.rpc.camera.VideoStreamInfo video_stream_info = 2;
+  bool has_video_stream_info() const;
+  void clear_video_stream_info() ;
+  const ::mavsdk::rpc::camera::VideoStreamInfo& video_stream_info() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera::VideoStreamInfo* release_video_stream_info();
+  ::mavsdk::rpc::camera::VideoStreamInfo* mutable_video_stream_info();
+  void set_allocated_video_stream_info(::mavsdk::rpc::camera::VideoStreamInfo* value);
+  void unsafe_arena_set_allocated_video_stream_info(::mavsdk::rpc::camera::VideoStreamInfo* value);
+  ::mavsdk::rpc::camera::VideoStreamInfo* unsafe_arena_release_video_stream_info();
+
+  private:
+  const ::mavsdk::rpc::camera::VideoStreamInfo& _internal_video_stream_info() const;
+  ::mavsdk::rpc::camera::VideoStreamInfo* _internal_mutable_video_stream_info();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.GetVideoStreamInfoResponse)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 2,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera::CameraResult* camera_result_;
+    ::mavsdk::rpc::camera::VideoStreamInfo* video_stream_info_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
 class GetSettingResponse final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.GetSettingResponse) */ {
  public:
@@ -13807,7 +15712,7 @@ class GetSettingResponse final :
                &_GetSettingResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    37;
+    56;
 
   friend void swap(GetSettingResponse& a, GetSettingResponse& b) {
     a.Swap(&b);
@@ -14005,7 +15910,7 @@ class GetSettingRequest final :
                &_GetSettingRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    36;
+    55;
 
   friend void swap(GetSettingRequest& a, GetSettingRequest& b) {
     a.Swap(&b);
@@ -14078,9 +15983,10 @@ class GetSettingRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kSettingFieldNumber = 1,
+    kSettingFieldNumber = 2,
+    kComponentIdFieldNumber = 1,
   };
-  // .mavsdk.rpc.camera.Setting setting = 1;
+  // .mavsdk.rpc.camera.Setting setting = 2;
   bool has_setting() const;
   void clear_setting() ;
   const ::mavsdk::rpc::camera::Setting& setting() const;
@@ -14095,13 +16001,23 @@ class GetSettingRequest final :
   ::mavsdk::rpc::camera::Setting* _internal_mutable_setting();
 
   public:
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.GetSettingRequest)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 1,
+      1, 2, 1,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -14121,32 +16037,33 @@ class GetSettingRequest final :
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     ::mavsdk::rpc::camera::Setting* setting_;
+    ::int32_t component_id_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_camera_2fcamera_2eproto;
 };// -------------------------------------------------------------------
 
-class CurrentSettingsResponse final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.CurrentSettingsResponse) */ {
+class GetPossibleSettingOptionsResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.GetPossibleSettingOptionsResponse) */ {
  public:
-  inline CurrentSettingsResponse() : CurrentSettingsResponse(nullptr) {}
-  ~CurrentSettingsResponse() override;
+  inline GetPossibleSettingOptionsResponse() : GetPossibleSettingOptionsResponse(nullptr) {}
+  ~GetPossibleSettingOptionsResponse() override;
   template<typename = void>
-  explicit PROTOBUF_CONSTEXPR CurrentSettingsResponse(::google::protobuf::internal::ConstantInitialized);
+  explicit PROTOBUF_CONSTEXPR GetPossibleSettingOptionsResponse(::google::protobuf::internal::ConstantInitialized);
 
-  inline CurrentSettingsResponse(const CurrentSettingsResponse& from)
-      : CurrentSettingsResponse(nullptr, from) {}
-  CurrentSettingsResponse(CurrentSettingsResponse&& from) noexcept
-    : CurrentSettingsResponse() {
+  inline GetPossibleSettingOptionsResponse(const GetPossibleSettingOptionsResponse& from)
+      : GetPossibleSettingOptionsResponse(nullptr, from) {}
+  GetPossibleSettingOptionsResponse(GetPossibleSettingOptionsResponse&& from) noexcept
+    : GetPossibleSettingOptionsResponse() {
     *this = ::std::move(from);
   }
 
-  inline CurrentSettingsResponse& operator=(const CurrentSettingsResponse& from) {
+  inline GetPossibleSettingOptionsResponse& operator=(const GetPossibleSettingOptionsResponse& from) {
     CopyFrom(from);
     return *this;
   }
-  inline CurrentSettingsResponse& operator=(CurrentSettingsResponse&& from) noexcept {
+  inline GetPossibleSettingOptionsResponse& operator=(GetPossibleSettingOptionsResponse&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
   #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -14178,20 +16095,20 @@ class CurrentSettingsResponse final :
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const CurrentSettingsResponse& default_instance() {
+  static const GetPossibleSettingOptionsResponse& default_instance() {
     return *internal_default_instance();
   }
-  static inline const CurrentSettingsResponse* internal_default_instance() {
-    return reinterpret_cast<const CurrentSettingsResponse*>(
-               &_CurrentSettingsResponse_default_instance_);
+  static inline const GetPossibleSettingOptionsResponse* internal_default_instance() {
+    return reinterpret_cast<const GetPossibleSettingOptionsResponse*>(
+               &_GetPossibleSettingOptionsResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    31;
+    54;
 
-  friend void swap(CurrentSettingsResponse& a, CurrentSettingsResponse& b) {
+  friend void swap(GetPossibleSettingOptionsResponse& a, GetPossibleSettingOptionsResponse& b) {
     a.Swap(&b);
   }
-  inline void Swap(CurrentSettingsResponse* other) {
+  inline void Swap(GetPossibleSettingOptionsResponse* other) {
     if (other == this) return;
   #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr &&
@@ -14204,7 +16121,7 @@ class CurrentSettingsResponse final :
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(CurrentSettingsResponse* other) {
+  void UnsafeArenaSwap(GetPossibleSettingOptionsResponse* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -14212,14 +16129,14 @@ class CurrentSettingsResponse final :
 
   // implements Message ----------------------------------------------
 
-  CurrentSettingsResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<CurrentSettingsResponse>(arena);
+  GetPossibleSettingOptionsResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<GetPossibleSettingOptionsResponse>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const CurrentSettingsResponse& from);
+  void CopyFrom(const GetPossibleSettingOptionsResponse& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom( const CurrentSettingsResponse& from) {
-    CurrentSettingsResponse::MergeImpl(*this, from);
+  void MergeFrom( const GetPossibleSettingOptionsResponse& from) {
+    GetPossibleSettingOptionsResponse::MergeImpl(*this, from);
   }
   private:
   static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
@@ -14237,16 +16154,16 @@ class CurrentSettingsResponse final :
   ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
   void SharedCtor(::google::protobuf::Arena* arena);
   void SharedDtor();
-  void InternalSwap(CurrentSettingsResponse* other);
+  void InternalSwap(GetPossibleSettingOptionsResponse* other);
 
   private:
   friend class ::google::protobuf::internal::AnyMetadata;
   static ::absl::string_view FullMessageName() {
-    return "mavsdk.rpc.camera.CurrentSettingsResponse";
+    return "mavsdk.rpc.camera.GetPossibleSettingOptionsResponse";
   }
   protected:
-  explicit CurrentSettingsResponse(::google::protobuf::Arena* arena);
-  CurrentSettingsResponse(::google::protobuf::Arena* arena, const CurrentSettingsResponse& from);
+  explicit GetPossibleSettingOptionsResponse(::google::protobuf::Arena* arena);
+  GetPossibleSettingOptionsResponse(::google::protobuf::Arena* arena, const GetPossibleSettingOptionsResponse& from);
   public:
 
   static const ClassData _class_data_;
@@ -14259,9 +16176,211 @@ class CurrentSettingsResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kCurrentSettingsFieldNumber = 1,
+    kSettingOptionsFieldNumber = 2,
+    kCameraResultFieldNumber = 1,
   };
-  // repeated .mavsdk.rpc.camera.Setting current_settings = 1;
+  // repeated .mavsdk.rpc.camera.SettingOptions setting_options = 2;
+  int setting_options_size() const;
+  private:
+  int _internal_setting_options_size() const;
+
+  public:
+  void clear_setting_options() ;
+  ::mavsdk::rpc::camera::SettingOptions* mutable_setting_options(int index);
+  ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera::SettingOptions >*
+      mutable_setting_options();
+  private:
+  const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::SettingOptions>& _internal_setting_options() const;
+  ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::SettingOptions>* _internal_mutable_setting_options();
+  public:
+  const ::mavsdk::rpc::camera::SettingOptions& setting_options(int index) const;
+  ::mavsdk::rpc::camera::SettingOptions* add_setting_options();
+  const ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera::SettingOptions >&
+      setting_options() const;
+  // .mavsdk.rpc.camera.CameraResult camera_result = 1;
+  bool has_camera_result() const;
+  void clear_camera_result() ;
+  const ::mavsdk::rpc::camera::CameraResult& camera_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera::CameraResult* release_camera_result();
+  ::mavsdk::rpc::camera::CameraResult* mutable_camera_result();
+  void set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value);
+  void unsafe_arena_set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value);
+  ::mavsdk::rpc::camera::CameraResult* unsafe_arena_release_camera_result();
+
+  private:
+  const ::mavsdk::rpc::camera::CameraResult& _internal_camera_result() const;
+  ::mavsdk::rpc::camera::CameraResult* _internal_mutable_camera_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.GetPossibleSettingOptionsResponse)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 2,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera::SettingOptions > setting_options_;
+    ::mavsdk::rpc::camera::CameraResult* camera_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
+class GetCurrentSettingsResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.GetCurrentSettingsResponse) */ {
+ public:
+  inline GetCurrentSettingsResponse() : GetCurrentSettingsResponse(nullptr) {}
+  ~GetCurrentSettingsResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR GetCurrentSettingsResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline GetCurrentSettingsResponse(const GetCurrentSettingsResponse& from)
+      : GetCurrentSettingsResponse(nullptr, from) {}
+  GetCurrentSettingsResponse(GetCurrentSettingsResponse&& from) noexcept
+    : GetCurrentSettingsResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline GetCurrentSettingsResponse& operator=(const GetCurrentSettingsResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetCurrentSettingsResponse& operator=(GetCurrentSettingsResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetCurrentSettingsResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetCurrentSettingsResponse* internal_default_instance() {
+    return reinterpret_cast<const GetCurrentSettingsResponse*>(
+               &_GetCurrentSettingsResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    52;
+
+  friend void swap(GetCurrentSettingsResponse& a, GetCurrentSettingsResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(GetCurrentSettingsResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GetCurrentSettingsResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  GetCurrentSettingsResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<GetCurrentSettingsResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GetCurrentSettingsResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const GetCurrentSettingsResponse& from) {
+    GetCurrentSettingsResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(GetCurrentSettingsResponse* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.GetCurrentSettingsResponse";
+  }
+  protected:
+  explicit GetCurrentSettingsResponse(::google::protobuf::Arena* arena);
+  GetCurrentSettingsResponse(::google::protobuf::Arena* arena, const GetCurrentSettingsResponse& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCurrentSettingsFieldNumber = 2,
+    kCameraResultFieldNumber = 1,
+  };
+  // repeated .mavsdk.rpc.camera.Setting current_settings = 2;
   int current_settings_size() const;
   private:
   int _internal_current_settings_size() const;
@@ -14279,13 +16398,224 @@ class CurrentSettingsResponse final :
   ::mavsdk::rpc::camera::Setting* add_current_settings();
   const ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera::Setting >&
       current_settings() const;
-  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.CurrentSettingsResponse)
+  // .mavsdk.rpc.camera.CameraResult camera_result = 1;
+  bool has_camera_result() const;
+  void clear_camera_result() ;
+  const ::mavsdk::rpc::camera::CameraResult& camera_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera::CameraResult* release_camera_result();
+  ::mavsdk::rpc::camera::CameraResult* mutable_camera_result();
+  void set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value);
+  void unsafe_arena_set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value);
+  ::mavsdk::rpc::camera::CameraResult* unsafe_arena_release_camera_result();
+
+  private:
+  const ::mavsdk::rpc::camera::CameraResult& _internal_camera_result() const;
+  ::mavsdk::rpc::camera::CameraResult* _internal_mutable_camera_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.GetCurrentSettingsResponse)
  private:
   class _Internal;
 
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      0, 1, 1,
+      1, 2, 2,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera::Setting > current_settings_;
+    ::mavsdk::rpc::camera::CameraResult* camera_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
+class CurrentSettingsUpdate final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.CurrentSettingsUpdate) */ {
+ public:
+  inline CurrentSettingsUpdate() : CurrentSettingsUpdate(nullptr) {}
+  ~CurrentSettingsUpdate() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR CurrentSettingsUpdate(::google::protobuf::internal::ConstantInitialized);
+
+  inline CurrentSettingsUpdate(const CurrentSettingsUpdate& from)
+      : CurrentSettingsUpdate(nullptr, from) {}
+  CurrentSettingsUpdate(CurrentSettingsUpdate&& from) noexcept
+    : CurrentSettingsUpdate() {
+    *this = ::std::move(from);
+  }
+
+  inline CurrentSettingsUpdate& operator=(const CurrentSettingsUpdate& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CurrentSettingsUpdate& operator=(CurrentSettingsUpdate&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CurrentSettingsUpdate& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CurrentSettingsUpdate* internal_default_instance() {
+    return reinterpret_cast<const CurrentSettingsUpdate*>(
+               &_CurrentSettingsUpdate_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    37;
+
+  friend void swap(CurrentSettingsUpdate& a, CurrentSettingsUpdate& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CurrentSettingsUpdate* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CurrentSettingsUpdate* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CurrentSettingsUpdate* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<CurrentSettingsUpdate>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CurrentSettingsUpdate& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const CurrentSettingsUpdate& from) {
+    CurrentSettingsUpdate::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(CurrentSettingsUpdate* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.CurrentSettingsUpdate";
+  }
+  protected:
+  explicit CurrentSettingsUpdate(::google::protobuf::Arena* arena);
+  CurrentSettingsUpdate(::google::protobuf::Arena* arena, const CurrentSettingsUpdate& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCurrentSettingsFieldNumber = 2,
+    kComponentIdFieldNumber = 1,
+  };
+  // repeated .mavsdk.rpc.camera.Setting current_settings = 2;
+  int current_settings_size() const;
+  private:
+  int _internal_current_settings_size() const;
+
+  public:
+  void clear_current_settings() ;
+  ::mavsdk::rpc::camera::Setting* mutable_current_settings(int index);
+  ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera::Setting >*
+      mutable_current_settings();
+  private:
+  const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Setting>& _internal_current_settings() const;
+  ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Setting>* _internal_mutable_current_settings();
+  public:
+  const ::mavsdk::rpc::camera::Setting& current_settings(int index) const;
+  ::mavsdk::rpc::camera::Setting* add_current_settings();
+  const ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera::Setting >&
+      current_settings() const;
+  // int32 component_id = 1;
+  void clear_component_id() ;
+  ::int32_t component_id() const;
+  void set_component_id(::int32_t value);
+
+  private:
+  ::int32_t _internal_component_id() const;
+  void _internal_set_component_id(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.CurrentSettingsUpdate)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 1,
       0, 2>
       _table_;
   friend class ::google::protobuf::MessageLite;
@@ -14303,6 +16633,7 @@ class CurrentSettingsResponse final :
         inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                               ::google::protobuf::Arena* arena, const Impl_& from);
     ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::camera::Setting > current_settings_;
+    ::int32_t component_id_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -14369,7 +16700,7 @@ class CaptureInfoResponse final :
                &_CaptureInfoResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    32;
 
   friend void swap(CaptureInfoResponse& a, CaptureInfoResponse& b) {
     a.Swap(&b);
@@ -14489,6 +16820,730 @@ class CaptureInfoResponse final :
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
+class CameraListResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.CameraListResponse) */ {
+ public:
+  inline CameraListResponse() : CameraListResponse(nullptr) {}
+  ~CameraListResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR CameraListResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline CameraListResponse(const CameraListResponse& from)
+      : CameraListResponse(nullptr, from) {}
+  CameraListResponse(CameraListResponse&& from) noexcept
+    : CameraListResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline CameraListResponse& operator=(const CameraListResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CameraListResponse& operator=(CameraListResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CameraListResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CameraListResponse* internal_default_instance() {
+    return reinterpret_cast<const CameraListResponse*>(
+               &_CameraListResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    24;
+
+  friend void swap(CameraListResponse& a, CameraListResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CameraListResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CameraListResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CameraListResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<CameraListResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CameraListResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const CameraListResponse& from) {
+    CameraListResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(CameraListResponse* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.CameraListResponse";
+  }
+  protected:
+  explicit CameraListResponse(::google::protobuf::Arena* arena);
+  CameraListResponse(::google::protobuf::Arena* arena, const CameraListResponse& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kCameraListFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera.CameraList camera_list = 1;
+  bool has_camera_list() const;
+  void clear_camera_list() ;
+  const ::mavsdk::rpc::camera::CameraList& camera_list() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera::CameraList* release_camera_list();
+  ::mavsdk::rpc::camera::CameraList* mutable_camera_list();
+  void set_allocated_camera_list(::mavsdk::rpc::camera::CameraList* value);
+  void unsafe_arena_set_allocated_camera_list(::mavsdk::rpc::camera::CameraList* value);
+  ::mavsdk::rpc::camera::CameraList* unsafe_arena_release_camera_list();
+
+  private:
+  const ::mavsdk::rpc::camera::CameraList& _internal_camera_list() const;
+  ::mavsdk::rpc::camera::CameraList* _internal_mutable_camera_list();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.CameraListResponse)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera::CameraList* camera_list_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
+class VideoStreamInfoResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.VideoStreamInfoResponse) */ {
+ public:
+  inline VideoStreamInfoResponse() : VideoStreamInfoResponse(nullptr) {}
+  ~VideoStreamInfoResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR VideoStreamInfoResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline VideoStreamInfoResponse(const VideoStreamInfoResponse& from)
+      : VideoStreamInfoResponse(nullptr, from) {}
+  VideoStreamInfoResponse(VideoStreamInfoResponse&& from) noexcept
+    : VideoStreamInfoResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline VideoStreamInfoResponse& operator=(const VideoStreamInfoResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline VideoStreamInfoResponse& operator=(VideoStreamInfoResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const VideoStreamInfoResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const VideoStreamInfoResponse* internal_default_instance() {
+    return reinterpret_cast<const VideoStreamInfoResponse*>(
+               &_VideoStreamInfoResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    30;
+
+  friend void swap(VideoStreamInfoResponse& a, VideoStreamInfoResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(VideoStreamInfoResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(VideoStreamInfoResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  VideoStreamInfoResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<VideoStreamInfoResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const VideoStreamInfoResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const VideoStreamInfoResponse& from) {
+    VideoStreamInfoResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(VideoStreamInfoResponse* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.VideoStreamInfoResponse";
+  }
+  protected:
+  explicit VideoStreamInfoResponse(::google::protobuf::Arena* arena);
+  VideoStreamInfoResponse(::google::protobuf::Arena* arena, const VideoStreamInfoResponse& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kUpdateFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera.VideoStreamUpdate update = 1;
+  bool has_update() const;
+  void clear_update() ;
+  const ::mavsdk::rpc::camera::VideoStreamUpdate& update() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera::VideoStreamUpdate* release_update();
+  ::mavsdk::rpc::camera::VideoStreamUpdate* mutable_update();
+  void set_allocated_update(::mavsdk::rpc::camera::VideoStreamUpdate* value);
+  void unsafe_arena_set_allocated_update(::mavsdk::rpc::camera::VideoStreamUpdate* value);
+  ::mavsdk::rpc::camera::VideoStreamUpdate* unsafe_arena_release_update();
+
+  private:
+  const ::mavsdk::rpc::camera::VideoStreamUpdate& _internal_update() const;
+  ::mavsdk::rpc::camera::VideoStreamUpdate* _internal_mutable_update();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.VideoStreamInfoResponse)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera::VideoStreamUpdate* update_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
+class PossibleSettingOptionsResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.PossibleSettingOptionsResponse) */ {
+ public:
+  inline PossibleSettingOptionsResponse() : PossibleSettingOptionsResponse(nullptr) {}
+  ~PossibleSettingOptionsResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR PossibleSettingOptionsResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline PossibleSettingOptionsResponse(const PossibleSettingOptionsResponse& from)
+      : PossibleSettingOptionsResponse(nullptr, from) {}
+  PossibleSettingOptionsResponse(PossibleSettingOptionsResponse&& from) noexcept
+    : PossibleSettingOptionsResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline PossibleSettingOptionsResponse& operator=(const PossibleSettingOptionsResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PossibleSettingOptionsResponse& operator=(PossibleSettingOptionsResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PossibleSettingOptionsResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PossibleSettingOptionsResponse* internal_default_instance() {
+    return reinterpret_cast<const PossibleSettingOptionsResponse*>(
+               &_PossibleSettingOptionsResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    42;
+
+  friend void swap(PossibleSettingOptionsResponse& a, PossibleSettingOptionsResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(PossibleSettingOptionsResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PossibleSettingOptionsResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PossibleSettingOptionsResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<PossibleSettingOptionsResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const PossibleSettingOptionsResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const PossibleSettingOptionsResponse& from) {
+    PossibleSettingOptionsResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(PossibleSettingOptionsResponse* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.PossibleSettingOptionsResponse";
+  }
+  protected:
+  explicit PossibleSettingOptionsResponse(::google::protobuf::Arena* arena);
+  PossibleSettingOptionsResponse(::google::protobuf::Arena* arena, const PossibleSettingOptionsResponse& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kUpdateFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera.PossibleSettingOptionsUpdate update = 1;
+  bool has_update() const;
+  void clear_update() ;
+  const ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate& update() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate* release_update();
+  ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate* mutable_update();
+  void set_allocated_update(::mavsdk::rpc::camera::PossibleSettingOptionsUpdate* value);
+  void unsafe_arena_set_allocated_update(::mavsdk::rpc::camera::PossibleSettingOptionsUpdate* value);
+  ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate* unsafe_arena_release_update();
+
+  private:
+  const ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate& _internal_update() const;
+  ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate* _internal_mutable_update();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.PossibleSettingOptionsResponse)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate* update_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
+};// -------------------------------------------------------------------
+
+class CurrentSettingsResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.camera.CurrentSettingsResponse) */ {
+ public:
+  inline CurrentSettingsResponse() : CurrentSettingsResponse(nullptr) {}
+  ~CurrentSettingsResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR CurrentSettingsResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline CurrentSettingsResponse(const CurrentSettingsResponse& from)
+      : CurrentSettingsResponse(nullptr, from) {}
+  CurrentSettingsResponse(CurrentSettingsResponse&& from) noexcept
+    : CurrentSettingsResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline CurrentSettingsResponse& operator=(const CurrentSettingsResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CurrentSettingsResponse& operator=(CurrentSettingsResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CurrentSettingsResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CurrentSettingsResponse* internal_default_instance() {
+    return reinterpret_cast<const CurrentSettingsResponse*>(
+               &_CurrentSettingsResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    39;
+
+  friend void swap(CurrentSettingsResponse& a, CurrentSettingsResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(CurrentSettingsResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CurrentSettingsResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CurrentSettingsResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<CurrentSettingsResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CurrentSettingsResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const CurrentSettingsResponse& from) {
+    CurrentSettingsResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(CurrentSettingsResponse* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.camera.CurrentSettingsResponse";
+  }
+  protected:
+  explicit CurrentSettingsResponse(::google::protobuf::Arena* arena);
+  CurrentSettingsResponse(::google::protobuf::Arena* arena, const CurrentSettingsResponse& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kUpdateFieldNumber = 1,
+  };
+  // .mavsdk.rpc.camera.CurrentSettingsUpdate update = 1;
+  bool has_update() const;
+  void clear_update() ;
+  const ::mavsdk::rpc::camera::CurrentSettingsUpdate& update() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::camera::CurrentSettingsUpdate* release_update();
+  ::mavsdk::rpc::camera::CurrentSettingsUpdate* mutable_update();
+  void set_allocated_update(::mavsdk::rpc::camera::CurrentSettingsUpdate* value);
+  void unsafe_arena_set_allocated_update(::mavsdk::rpc::camera::CurrentSettingsUpdate* value);
+  ::mavsdk::rpc::camera::CurrentSettingsUpdate* unsafe_arena_release_update();
+
+  private:
+  const ::mavsdk::rpc::camera::CurrentSettingsUpdate& _internal_update() const;
+  ::mavsdk::rpc::camera::CurrentSettingsUpdate* _internal_mutable_update();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.camera.CurrentSettingsResponse)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::camera::CurrentSettingsUpdate* update_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_camera_2fcamera_2eproto;
 };
 
 // ===================================================================
@@ -14505,51 +17560,263 @@ class CaptureInfoResponse final :
 #endif  // __GNUC__
 // -------------------------------------------------------------------
 
-// PrepareRequest
+// Option
+
+// string option_id = 1;
+inline void Option::clear_option_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.option_id_.ClearToEmpty();
+}
+inline const std::string& Option::option_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Option.option_id)
+  return _internal_option_id();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void Option::set_option_id(Arg_&& arg,
+                                                     Args_... args) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.option_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Option.option_id)
+}
+inline std::string* Option::mutable_option_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_option_id();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.Option.option_id)
+  return _s;
+}
+inline const std::string& Option::_internal_option_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.option_id_.Get();
+}
+inline void Option::_internal_set_option_id(const std::string& value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.option_id_.Set(value, GetArena());
+}
+inline std::string* Option::_internal_mutable_option_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  return _impl_.option_id_.Mutable( GetArena());
+}
+inline std::string* Option::release_option_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.Option.option_id)
+  return _impl_.option_id_.Release();
+}
+inline void Option::set_allocated_option_id(std::string* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.option_id_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.option_id_.IsDefault()) {
+          _impl_.option_id_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Option.option_id)
+}
+
+// string option_description = 2;
+inline void Option::clear_option_description() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.option_description_.ClearToEmpty();
+}
+inline const std::string& Option::option_description() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Option.option_description)
+  return _internal_option_description();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void Option::set_option_description(Arg_&& arg,
+                                                     Args_... args) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.option_description_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Option.option_description)
+}
+inline std::string* Option::mutable_option_description() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_option_description();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.Option.option_description)
+  return _s;
+}
+inline const std::string& Option::_internal_option_description() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.option_description_.Get();
+}
+inline void Option::_internal_set_option_description(const std::string& value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.option_description_.Set(value, GetArena());
+}
+inline std::string* Option::_internal_mutable_option_description() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  return _impl_.option_description_.Mutable( GetArena());
+}
+inline std::string* Option::release_option_description() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.Option.option_description)
+  return _impl_.option_description_.Release();
+}
+inline void Option::set_allocated_option_description(std::string* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.option_description_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.option_description_.IsDefault()) {
+          _impl_.option_description_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Option.option_description)
+}
 
 // -------------------------------------------------------------------
 
-// PrepareResponse
+// Setting
 
-// .mavsdk.rpc.camera.CameraResult camera_result = 1;
-inline bool PrepareResponse::has_camera_result() const {
+// string setting_id = 1;
+inline void Setting::clear_setting_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.setting_id_.ClearToEmpty();
+}
+inline const std::string& Setting::setting_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Setting.setting_id)
+  return _internal_setting_id();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void Setting::set_setting_id(Arg_&& arg,
+                                                     Args_... args) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.setting_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Setting.setting_id)
+}
+inline std::string* Setting::mutable_setting_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_setting_id();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.Setting.setting_id)
+  return _s;
+}
+inline const std::string& Setting::_internal_setting_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.setting_id_.Get();
+}
+inline void Setting::_internal_set_setting_id(const std::string& value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.setting_id_.Set(value, GetArena());
+}
+inline std::string* Setting::_internal_mutable_setting_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  return _impl_.setting_id_.Mutable( GetArena());
+}
+inline std::string* Setting::release_setting_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.Setting.setting_id)
+  return _impl_.setting_id_.Release();
+}
+inline void Setting::set_allocated_setting_id(std::string* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.setting_id_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.setting_id_.IsDefault()) {
+          _impl_.setting_id_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Setting.setting_id)
+}
+
+// string setting_description = 2;
+inline void Setting::clear_setting_description() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.setting_description_.ClearToEmpty();
+}
+inline const std::string& Setting::setting_description() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Setting.setting_description)
+  return _internal_setting_description();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void Setting::set_setting_description(Arg_&& arg,
+                                                     Args_... args) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.setting_description_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Setting.setting_description)
+}
+inline std::string* Setting::mutable_setting_description() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_setting_description();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.Setting.setting_description)
+  return _s;
+}
+inline const std::string& Setting::_internal_setting_description() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.setting_description_.Get();
+}
+inline void Setting::_internal_set_setting_description(const std::string& value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.setting_description_.Set(value, GetArena());
+}
+inline std::string* Setting::_internal_mutable_setting_description() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  return _impl_.setting_description_.Mutable( GetArena());
+}
+inline std::string* Setting::release_setting_description() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.Setting.setting_description)
+  return _impl_.setting_description_.Release();
+}
+inline void Setting::set_allocated_setting_description(std::string* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.setting_description_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.setting_description_.IsDefault()) {
+          _impl_.setting_description_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Setting.setting_description)
+}
+
+// .mavsdk.rpc.camera.Option option = 3;
+inline bool Setting::has_option() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.camera_result_ != nullptr);
+  PROTOBUF_ASSUME(!value || _impl_.option_ != nullptr);
   return value;
 }
-inline void PrepareResponse::clear_camera_result() {
+inline void Setting::clear_option() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (_impl_.camera_result_ != nullptr) _impl_.camera_result_->Clear();
+  if (_impl_.option_ != nullptr) _impl_.option_->Clear();
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::camera::CameraResult& PrepareResponse::_internal_camera_result() const {
+inline const ::mavsdk::rpc::camera::Option& Setting::_internal_option() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  const ::mavsdk::rpc::camera::CameraResult* p = _impl_.camera_result_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::CameraResult&>(::mavsdk::rpc::camera::_CameraResult_default_instance_);
+  const ::mavsdk::rpc::camera::Option* p = _impl_.option_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::Option&>(::mavsdk::rpc::camera::_Option_default_instance_);
 }
-inline const ::mavsdk::rpc::camera::CameraResult& PrepareResponse::camera_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.PrepareResponse.camera_result)
-  return _internal_camera_result();
+inline const ::mavsdk::rpc::camera::Option& Setting::option() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Setting.option)
+  return _internal_option();
 }
-inline void PrepareResponse::unsafe_arena_set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value) {
+inline void Setting::unsafe_arena_set_allocated_option(::mavsdk::rpc::camera::Option* value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_result_);
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.option_);
   }
-  _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value);
+  _impl_.option_ = reinterpret_cast<::mavsdk::rpc::camera::Option*>(value);
   if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
   } else {
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.PrepareResponse.camera_result)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.Setting.option)
 }
-inline ::mavsdk::rpc::camera::CameraResult* PrepareResponse::release_camera_result() {
+inline ::mavsdk::rpc::camera::Option* Setting::release_option() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
 
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::camera::CameraResult* released = _impl_.camera_result_;
-  _impl_.camera_result_ = nullptr;
+  ::mavsdk::rpc::camera::Option* released = _impl_.option_;
+  _impl_.option_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
   released = ::google::protobuf::internal::DuplicateIfNonNull(released);
@@ -14563,38 +17830,38 @@ inline ::mavsdk::rpc::camera::CameraResult* PrepareResponse::release_camera_resu
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return released;
 }
-inline ::mavsdk::rpc::camera::CameraResult* PrepareResponse::unsafe_arena_release_camera_result() {
+inline ::mavsdk::rpc::camera::Option* Setting::unsafe_arena_release_option() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.PrepareResponse.camera_result)
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.Setting.option)
 
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::camera::CameraResult* temp = _impl_.camera_result_;
-  _impl_.camera_result_ = nullptr;
+  ::mavsdk::rpc::camera::Option* temp = _impl_.option_;
+  _impl_.option_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::camera::CameraResult* PrepareResponse::_internal_mutable_camera_result() {
+inline ::mavsdk::rpc::camera::Option* Setting::_internal_mutable_option() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_._has_bits_[0] |= 0x00000001u;
-  if (_impl_.camera_result_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::CameraResult>(GetArena());
-    _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(p);
+  if (_impl_.option_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::Option>(GetArena());
+    _impl_.option_ = reinterpret_cast<::mavsdk::rpc::camera::Option*>(p);
   }
-  return _impl_.camera_result_;
+  return _impl_.option_;
 }
-inline ::mavsdk::rpc::camera::CameraResult* PrepareResponse::mutable_camera_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::mavsdk::rpc::camera::CameraResult* _msg = _internal_mutable_camera_result();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.PrepareResponse.camera_result)
+inline ::mavsdk::rpc::camera::Option* Setting::mutable_option() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::camera::Option* _msg = _internal_mutable_option();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.Setting.option)
   return _msg;
 }
-inline void PrepareResponse::set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value) {
+inline void Setting::set_allocated_option(::mavsdk::rpc::camera::Option* value) {
   ::google::protobuf::Arena* message_arena = GetArena();
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   if (message_arena == nullptr) {
-    delete reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(_impl_.camera_result_);
+    delete reinterpret_cast<::mavsdk::rpc::camera::Option*>(_impl_.option_);
   }
 
   if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value)->GetArena();
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::Option*>(value)->GetArena();
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
@@ -14603,13 +17870,628 @@ inline void PrepareResponse::set_allocated_camera_result(::mavsdk::rpc::camera::
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
 
-  _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.PrepareResponse.camera_result)
+  _impl_.option_ = reinterpret_cast<::mavsdk::rpc::camera::Option*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Setting.option)
+}
+
+// bool is_range = 4;
+inline void Setting::clear_is_range() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.is_range_ = false;
+}
+inline bool Setting::is_range() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Setting.is_range)
+  return _internal_is_range();
+}
+inline void Setting::set_is_range(bool value) {
+  _internal_set_is_range(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Setting.is_range)
+}
+inline bool Setting::_internal_is_range() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.is_range_;
+}
+inline void Setting::_internal_set_is_range(bool value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.is_range_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// SettingOptions
+
+// int32 component_id = 1;
+inline void SettingOptions::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t SettingOptions::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.SettingOptions.component_id)
+  return _internal_component_id();
+}
+inline void SettingOptions::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.SettingOptions.component_id)
+}
+inline ::int32_t SettingOptions::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void SettingOptions::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// string setting_id = 2;
+inline void SettingOptions::clear_setting_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.setting_id_.ClearToEmpty();
+}
+inline const std::string& SettingOptions::setting_id() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.SettingOptions.setting_id)
+  return _internal_setting_id();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void SettingOptions::set_setting_id(Arg_&& arg,
+                                                     Args_... args) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.setting_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.SettingOptions.setting_id)
+}
+inline std::string* SettingOptions::mutable_setting_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_setting_id();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.SettingOptions.setting_id)
+  return _s;
+}
+inline const std::string& SettingOptions::_internal_setting_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.setting_id_.Get();
+}
+inline void SettingOptions::_internal_set_setting_id(const std::string& value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.setting_id_.Set(value, GetArena());
+}
+inline std::string* SettingOptions::_internal_mutable_setting_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  return _impl_.setting_id_.Mutable( GetArena());
+}
+inline std::string* SettingOptions::release_setting_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.SettingOptions.setting_id)
+  return _impl_.setting_id_.Release();
+}
+inline void SettingOptions::set_allocated_setting_id(std::string* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.setting_id_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.setting_id_.IsDefault()) {
+          _impl_.setting_id_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.SettingOptions.setting_id)
+}
+
+// string setting_description = 3;
+inline void SettingOptions::clear_setting_description() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.setting_description_.ClearToEmpty();
+}
+inline const std::string& SettingOptions::setting_description() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.SettingOptions.setting_description)
+  return _internal_setting_description();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void SettingOptions::set_setting_description(Arg_&& arg,
+                                                     Args_... args) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.setting_description_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.SettingOptions.setting_description)
+}
+inline std::string* SettingOptions::mutable_setting_description() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_setting_description();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.SettingOptions.setting_description)
+  return _s;
+}
+inline const std::string& SettingOptions::_internal_setting_description() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.setting_description_.Get();
+}
+inline void SettingOptions::_internal_set_setting_description(const std::string& value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.setting_description_.Set(value, GetArena());
+}
+inline std::string* SettingOptions::_internal_mutable_setting_description() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  return _impl_.setting_description_.Mutable( GetArena());
+}
+inline std::string* SettingOptions::release_setting_description() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.SettingOptions.setting_description)
+  return _impl_.setting_description_.Release();
+}
+inline void SettingOptions::set_allocated_setting_description(std::string* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.setting_description_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.setting_description_.IsDefault()) {
+          _impl_.setting_description_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.SettingOptions.setting_description)
+}
+
+// repeated .mavsdk.rpc.camera.Option options = 4;
+inline int SettingOptions::_internal_options_size() const {
+  return _internal_options().size();
+}
+inline int SettingOptions::options_size() const {
+  return _internal_options_size();
+}
+inline void SettingOptions::clear_options() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.options_.Clear();
+}
+inline ::mavsdk::rpc::camera::Option* SettingOptions::mutable_options(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.SettingOptions.options)
+  return _internal_mutable_options()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Option>* SettingOptions::mutable_options()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.camera.SettingOptions.options)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  return _internal_mutable_options();
+}
+inline const ::mavsdk::rpc::camera::Option& SettingOptions::options(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.SettingOptions.options)
+  return _internal_options().Get(index);
+}
+inline ::mavsdk::rpc::camera::Option* SettingOptions::add_options() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::mavsdk::rpc::camera::Option* _add = _internal_mutable_options()->Add();
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.camera.SettingOptions.options)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Option>& SettingOptions::options() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.camera.SettingOptions.options)
+  return _internal_options();
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Option>&
+SettingOptions::_internal_options() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.options_;
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Option>*
+SettingOptions::_internal_mutable_options() {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return &_impl_.options_;
+}
+
+// bool is_range = 5;
+inline void SettingOptions::clear_is_range() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.is_range_ = false;
+}
+inline bool SettingOptions::is_range() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.SettingOptions.is_range)
+  return _internal_is_range();
+}
+inline void SettingOptions::set_is_range(bool value) {
+  _internal_set_is_range(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.SettingOptions.is_range)
+}
+inline bool SettingOptions::_internal_is_range() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.is_range_;
+}
+inline void SettingOptions::_internal_set_is_range(bool value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.is_range_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// VideoStreamSettings
+
+// float frame_rate_hz = 1;
+inline void VideoStreamSettings::clear_frame_rate_hz() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.frame_rate_hz_ = 0;
+}
+inline float VideoStreamSettings::frame_rate_hz() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamSettings.frame_rate_hz)
+  return _internal_frame_rate_hz();
+}
+inline void VideoStreamSettings::set_frame_rate_hz(float value) {
+  _internal_set_frame_rate_hz(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.frame_rate_hz)
+}
+inline float VideoStreamSettings::_internal_frame_rate_hz() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.frame_rate_hz_;
+}
+inline void VideoStreamSettings::_internal_set_frame_rate_hz(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.frame_rate_hz_ = value;
+}
+
+// uint32 horizontal_resolution_pix = 2;
+inline void VideoStreamSettings::clear_horizontal_resolution_pix() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.horizontal_resolution_pix_ = 0u;
+}
+inline ::uint32_t VideoStreamSettings::horizontal_resolution_pix() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamSettings.horizontal_resolution_pix)
+  return _internal_horizontal_resolution_pix();
+}
+inline void VideoStreamSettings::set_horizontal_resolution_pix(::uint32_t value) {
+  _internal_set_horizontal_resolution_pix(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.horizontal_resolution_pix)
+}
+inline ::uint32_t VideoStreamSettings::_internal_horizontal_resolution_pix() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.horizontal_resolution_pix_;
+}
+inline void VideoStreamSettings::_internal_set_horizontal_resolution_pix(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.horizontal_resolution_pix_ = value;
+}
+
+// uint32 vertical_resolution_pix = 3;
+inline void VideoStreamSettings::clear_vertical_resolution_pix() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.vertical_resolution_pix_ = 0u;
+}
+inline ::uint32_t VideoStreamSettings::vertical_resolution_pix() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamSettings.vertical_resolution_pix)
+  return _internal_vertical_resolution_pix();
+}
+inline void VideoStreamSettings::set_vertical_resolution_pix(::uint32_t value) {
+  _internal_set_vertical_resolution_pix(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.vertical_resolution_pix)
+}
+inline ::uint32_t VideoStreamSettings::_internal_vertical_resolution_pix() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.vertical_resolution_pix_;
+}
+inline void VideoStreamSettings::_internal_set_vertical_resolution_pix(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.vertical_resolution_pix_ = value;
+}
+
+// uint32 bit_rate_b_s = 4;
+inline void VideoStreamSettings::clear_bit_rate_b_s() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.bit_rate_b_s_ = 0u;
+}
+inline ::uint32_t VideoStreamSettings::bit_rate_b_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamSettings.bit_rate_b_s)
+  return _internal_bit_rate_b_s();
+}
+inline void VideoStreamSettings::set_bit_rate_b_s(::uint32_t value) {
+  _internal_set_bit_rate_b_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.bit_rate_b_s)
+}
+inline ::uint32_t VideoStreamSettings::_internal_bit_rate_b_s() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.bit_rate_b_s_;
+}
+inline void VideoStreamSettings::_internal_set_bit_rate_b_s(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.bit_rate_b_s_ = value;
+}
+
+// uint32 rotation_deg = 5;
+inline void VideoStreamSettings::clear_rotation_deg() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.rotation_deg_ = 0u;
+}
+inline ::uint32_t VideoStreamSettings::rotation_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamSettings.rotation_deg)
+  return _internal_rotation_deg();
+}
+inline void VideoStreamSettings::set_rotation_deg(::uint32_t value) {
+  _internal_set_rotation_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.rotation_deg)
+}
+inline ::uint32_t VideoStreamSettings::_internal_rotation_deg() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.rotation_deg_;
+}
+inline void VideoStreamSettings::_internal_set_rotation_deg(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.rotation_deg_ = value;
+}
+
+// string uri = 6;
+inline void VideoStreamSettings::clear_uri() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.uri_.ClearToEmpty();
+}
+inline const std::string& VideoStreamSettings::uri() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamSettings.uri)
+  return _internal_uri();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void VideoStreamSettings::set_uri(Arg_&& arg,
+                                                     Args_... args) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.uri_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.uri)
+}
+inline std::string* VideoStreamSettings::mutable_uri() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_uri();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.VideoStreamSettings.uri)
+  return _s;
+}
+inline const std::string& VideoStreamSettings::_internal_uri() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.uri_.Get();
+}
+inline void VideoStreamSettings::_internal_set_uri(const std::string& value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.uri_.Set(value, GetArena());
+}
+inline std::string* VideoStreamSettings::_internal_mutable_uri() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  return _impl_.uri_.Mutable( GetArena());
+}
+inline std::string* VideoStreamSettings::release_uri() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.VideoStreamSettings.uri)
+  return _impl_.uri_.Release();
+}
+inline void VideoStreamSettings::set_allocated_uri(std::string* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.uri_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.uri_.IsDefault()) {
+          _impl_.uri_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.VideoStreamSettings.uri)
+}
+
+// float horizontal_fov_deg = 7;
+inline void VideoStreamSettings::clear_horizontal_fov_deg() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.horizontal_fov_deg_ = 0;
+}
+inline float VideoStreamSettings::horizontal_fov_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamSettings.horizontal_fov_deg)
+  return _internal_horizontal_fov_deg();
+}
+inline void VideoStreamSettings::set_horizontal_fov_deg(float value) {
+  _internal_set_horizontal_fov_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.horizontal_fov_deg)
+}
+inline float VideoStreamSettings::_internal_horizontal_fov_deg() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.horizontal_fov_deg_;
+}
+inline void VideoStreamSettings::_internal_set_horizontal_fov_deg(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.horizontal_fov_deg_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// VideoStreamInfo
+
+// int32 stream_id = 1;
+inline void VideoStreamInfo::clear_stream_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.stream_id_ = 0;
+}
+inline ::int32_t VideoStreamInfo::stream_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamInfo.stream_id)
+  return _internal_stream_id();
+}
+inline void VideoStreamInfo::set_stream_id(::int32_t value) {
+  _internal_set_stream_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamInfo.stream_id)
+}
+inline ::int32_t VideoStreamInfo::_internal_stream_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.stream_id_;
+}
+inline void VideoStreamInfo::_internal_set_stream_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.stream_id_ = value;
+}
+
+// .mavsdk.rpc.camera.VideoStreamSettings settings = 2;
+inline bool VideoStreamInfo::has_settings() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.settings_ != nullptr);
+  return value;
+}
+inline void VideoStreamInfo::clear_settings() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.settings_ != nullptr) _impl_.settings_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera::VideoStreamSettings& VideoStreamInfo::_internal_settings() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::camera::VideoStreamSettings* p = _impl_.settings_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::VideoStreamSettings&>(::mavsdk::rpc::camera::_VideoStreamSettings_default_instance_);
+}
+inline const ::mavsdk::rpc::camera::VideoStreamSettings& VideoStreamInfo::settings() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamInfo.settings)
+  return _internal_settings();
+}
+inline void VideoStreamInfo::unsafe_arena_set_allocated_settings(::mavsdk::rpc::camera::VideoStreamSettings* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.settings_);
+  }
+  _impl_.settings_ = reinterpret_cast<::mavsdk::rpc::camera::VideoStreamSettings*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.VideoStreamInfo.settings)
+}
+inline ::mavsdk::rpc::camera::VideoStreamSettings* VideoStreamInfo::release_settings() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::VideoStreamSettings* released = _impl_.settings_;
+  _impl_.settings_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::camera::VideoStreamSettings* VideoStreamInfo::unsafe_arena_release_settings() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.VideoStreamInfo.settings)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::VideoStreamSettings* temp = _impl_.settings_;
+  _impl_.settings_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera::VideoStreamSettings* VideoStreamInfo::_internal_mutable_settings() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.settings_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::VideoStreamSettings>(GetArena());
+    _impl_.settings_ = reinterpret_cast<::mavsdk::rpc::camera::VideoStreamSettings*>(p);
+  }
+  return _impl_.settings_;
+}
+inline ::mavsdk::rpc::camera::VideoStreamSettings* VideoStreamInfo::mutable_settings() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::camera::VideoStreamSettings* _msg = _internal_mutable_settings();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.VideoStreamInfo.settings)
+  return _msg;
+}
+inline void VideoStreamInfo::set_allocated_settings(::mavsdk::rpc::camera::VideoStreamSettings* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::camera::VideoStreamSettings*>(_impl_.settings_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::VideoStreamSettings*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.settings_ = reinterpret_cast<::mavsdk::rpc::camera::VideoStreamSettings*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.VideoStreamInfo.settings)
+}
+
+// .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamStatus status = 3;
+inline void VideoStreamInfo::clear_status() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.status_ = 0;
+}
+inline ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus VideoStreamInfo::status() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamInfo.status)
+  return _internal_status();
+}
+inline void VideoStreamInfo::set_status(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus value) {
+  _internal_set_status(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamInfo.status)
+}
+inline ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus VideoStreamInfo::_internal_status() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return static_cast<::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus>(_impl_.status_);
+}
+inline void VideoStreamInfo::_internal_set_status(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.status_ = value;
+}
+
+// .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamSpectrum spectrum = 4;
+inline void VideoStreamInfo::clear_spectrum() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.spectrum_ = 0;
+}
+inline ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum VideoStreamInfo::spectrum() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamInfo.spectrum)
+  return _internal_spectrum();
+}
+inline void VideoStreamInfo::set_spectrum(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum value) {
+  _internal_set_spectrum(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamInfo.spectrum)
+}
+inline ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum VideoStreamInfo::_internal_spectrum() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return static_cast<::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum>(_impl_.spectrum_);
+}
+inline void VideoStreamInfo::_internal_set_spectrum(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.spectrum_ = value;
 }
 
 // -------------------------------------------------------------------
 
 // TakePhotoRequest
+
+// int32 component_id = 1;
+inline void TakePhotoRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t TakePhotoRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.TakePhotoRequest.component_id)
+  return _internal_component_id();
+}
+inline void TakePhotoRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.TakePhotoRequest.component_id)
+}
+inline ::int32_t TakePhotoRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void TakePhotoRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
 
 // -------------------------------------------------------------------
 
@@ -14715,7 +18597,30 @@ inline void TakePhotoResponse::set_allocated_camera_result(::mavsdk::rpc::camera
 
 // StartPhotoIntervalRequest
 
-// float interval_s = 1;
+// int32 component_id = 1;
+inline void StartPhotoIntervalRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t StartPhotoIntervalRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.StartPhotoIntervalRequest.component_id)
+  return _internal_component_id();
+}
+inline void StartPhotoIntervalRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.StartPhotoIntervalRequest.component_id)
+}
+inline ::int32_t StartPhotoIntervalRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void StartPhotoIntervalRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// float interval_s = 2;
 inline void StartPhotoIntervalRequest::clear_interval_s() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.interval_s_ = 0;
@@ -14842,6 +18747,29 @@ inline void StartPhotoIntervalResponse::set_allocated_camera_result(::mavsdk::rp
 
 // StopPhotoIntervalRequest
 
+// int32 component_id = 1;
+inline void StopPhotoIntervalRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t StopPhotoIntervalRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.StopPhotoIntervalRequest.component_id)
+  return _internal_component_id();
+}
+inline void StopPhotoIntervalRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.StopPhotoIntervalRequest.component_id)
+}
+inline ::int32_t StopPhotoIntervalRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void StopPhotoIntervalRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // StopPhotoIntervalResponse
@@ -14945,6 +18873,29 @@ inline void StopPhotoIntervalResponse::set_allocated_camera_result(::mavsdk::rpc
 // -------------------------------------------------------------------
 
 // StartVideoRequest
+
+// int32 component_id = 1;
+inline void StartVideoRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t StartVideoRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.StartVideoRequest.component_id)
+  return _internal_component_id();
+}
+inline void StartVideoRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.StartVideoRequest.component_id)
+}
+inline ::int32_t StartVideoRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void StartVideoRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
 
 // -------------------------------------------------------------------
 
@@ -15050,6 +19001,29 @@ inline void StartVideoResponse::set_allocated_camera_result(::mavsdk::rpc::camer
 
 // StopVideoRequest
 
+// int32 component_id = 1;
+inline void StopVideoRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t StopVideoRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.StopVideoRequest.component_id)
+  return _internal_component_id();
+}
+inline void StopVideoRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.StopVideoRequest.component_id)
+}
+inline ::int32_t StopVideoRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void StopVideoRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // StopVideoResponse
@@ -15154,7 +19128,30 @@ inline void StopVideoResponse::set_allocated_camera_result(::mavsdk::rpc::camera
 
 // StartVideoStreamingRequest
 
-// int32 stream_id = 1;
+// int32 component_id = 1;
+inline void StartVideoStreamingRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t StartVideoStreamingRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.StartVideoStreamingRequest.component_id)
+  return _internal_component_id();
+}
+inline void StartVideoStreamingRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.StartVideoStreamingRequest.component_id)
+}
+inline ::int32_t StartVideoStreamingRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void StartVideoStreamingRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// int32 stream_id = 2;
 inline void StartVideoStreamingRequest::clear_stream_id() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.stream_id_ = 0;
@@ -15281,7 +19278,30 @@ inline void StartVideoStreamingResponse::set_allocated_camera_result(::mavsdk::r
 
 // StopVideoStreamingRequest
 
-// int32 stream_id = 1;
+// int32 component_id = 1;
+inline void StopVideoStreamingRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t StopVideoStreamingRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.StopVideoStreamingRequest.component_id)
+  return _internal_component_id();
+}
+inline void StopVideoStreamingRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.StopVideoStreamingRequest.component_id)
+}
+inline ::int32_t StopVideoStreamingRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void StopVideoStreamingRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// int32 stream_id = 2;
 inline void StopVideoStreamingRequest::clear_stream_id() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.stream_id_ = 0;
@@ -15408,7 +19428,30 @@ inline void StopVideoStreamingResponse::set_allocated_camera_result(::mavsdk::rp
 
 // SetModeRequest
 
-// .mavsdk.rpc.camera.Mode mode = 1;
+// int32 component_id = 1;
+inline void SetModeRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t SetModeRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.SetModeRequest.component_id)
+  return _internal_component_id();
+}
+inline void SetModeRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.SetModeRequest.component_id)
+}
+inline ::int32_t SetModeRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void SetModeRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// .mavsdk.rpc.camera.Mode mode = 2;
 inline void SetModeRequest::clear_mode() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.mode_ = 0;
@@ -15535,7 +19578,30 @@ inline void SetModeResponse::set_allocated_camera_result(::mavsdk::rpc::camera::
 
 // ListPhotosRequest
 
-// .mavsdk.rpc.camera.PhotosRange photos_range = 1;
+// int32 component_id = 1;
+inline void ListPhotosRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t ListPhotosRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.ListPhotosRequest.component_id)
+  return _internal_component_id();
+}
+inline void ListPhotosRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.ListPhotosRequest.component_id)
+}
+inline ::int32_t ListPhotosRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void ListPhotosRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// .mavsdk.rpc.camera.PhotosRange photos_range = 2;
 inline void ListPhotosRequest::clear_photos_range() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.photos_range_ = 0;
@@ -15709,51 +19775,51 @@ ListPhotosResponse::_internal_mutable_capture_infos() {
 
 // -------------------------------------------------------------------
 
-// SubscribeInformationRequest
+// SubscribeCameraListRequest
 
 // -------------------------------------------------------------------
 
-// InformationResponse
+// CameraListResponse
 
-// .mavsdk.rpc.camera.Information information = 1;
-inline bool InformationResponse::has_information() const {
+// .mavsdk.rpc.camera.CameraList camera_list = 1;
+inline bool CameraListResponse::has_camera_list() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.information_ != nullptr);
+  PROTOBUF_ASSUME(!value || _impl_.camera_list_ != nullptr);
   return value;
 }
-inline void InformationResponse::clear_information() {
+inline void CameraListResponse::clear_camera_list() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (_impl_.information_ != nullptr) _impl_.information_->Clear();
+  if (_impl_.camera_list_ != nullptr) _impl_.camera_list_->Clear();
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::camera::Information& InformationResponse::_internal_information() const {
+inline const ::mavsdk::rpc::camera::CameraList& CameraListResponse::_internal_camera_list() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  const ::mavsdk::rpc::camera::Information* p = _impl_.information_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::Information&>(::mavsdk::rpc::camera::_Information_default_instance_);
+  const ::mavsdk::rpc::camera::CameraList* p = _impl_.camera_list_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::CameraList&>(::mavsdk::rpc::camera::_CameraList_default_instance_);
 }
-inline const ::mavsdk::rpc::camera::Information& InformationResponse::information() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.InformationResponse.information)
-  return _internal_information();
+inline const ::mavsdk::rpc::camera::CameraList& CameraListResponse::camera_list() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.CameraListResponse.camera_list)
+  return _internal_camera_list();
 }
-inline void InformationResponse::unsafe_arena_set_allocated_information(::mavsdk::rpc::camera::Information* value) {
+inline void CameraListResponse::unsafe_arena_set_allocated_camera_list(::mavsdk::rpc::camera::CameraList* value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.information_);
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_list_);
   }
-  _impl_.information_ = reinterpret_cast<::mavsdk::rpc::camera::Information*>(value);
+  _impl_.camera_list_ = reinterpret_cast<::mavsdk::rpc::camera::CameraList*>(value);
   if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
   } else {
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.InformationResponse.information)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.CameraListResponse.camera_list)
 }
-inline ::mavsdk::rpc::camera::Information* InformationResponse::release_information() {
+inline ::mavsdk::rpc::camera::CameraList* CameraListResponse::release_camera_list() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
 
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::camera::Information* released = _impl_.information_;
-  _impl_.information_ = nullptr;
+  ::mavsdk::rpc::camera::CameraList* released = _impl_.camera_list_;
+  _impl_.camera_list_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
   released = ::google::protobuf::internal::DuplicateIfNonNull(released);
@@ -15767,38 +19833,38 @@ inline ::mavsdk::rpc::camera::Information* InformationResponse::release_informat
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return released;
 }
-inline ::mavsdk::rpc::camera::Information* InformationResponse::unsafe_arena_release_information() {
+inline ::mavsdk::rpc::camera::CameraList* CameraListResponse::unsafe_arena_release_camera_list() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.InformationResponse.information)
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.CameraListResponse.camera_list)
 
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::camera::Information* temp = _impl_.information_;
-  _impl_.information_ = nullptr;
+  ::mavsdk::rpc::camera::CameraList* temp = _impl_.camera_list_;
+  _impl_.camera_list_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::camera::Information* InformationResponse::_internal_mutable_information() {
+inline ::mavsdk::rpc::camera::CameraList* CameraListResponse::_internal_mutable_camera_list() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_._has_bits_[0] |= 0x00000001u;
-  if (_impl_.information_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::Information>(GetArena());
-    _impl_.information_ = reinterpret_cast<::mavsdk::rpc::camera::Information*>(p);
+  if (_impl_.camera_list_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::CameraList>(GetArena());
+    _impl_.camera_list_ = reinterpret_cast<::mavsdk::rpc::camera::CameraList*>(p);
   }
-  return _impl_.information_;
+  return _impl_.camera_list_;
 }
-inline ::mavsdk::rpc::camera::Information* InformationResponse::mutable_information() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::mavsdk::rpc::camera::Information* _msg = _internal_mutable_information();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.InformationResponse.information)
+inline ::mavsdk::rpc::camera::CameraList* CameraListResponse::mutable_camera_list() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::camera::CameraList* _msg = _internal_mutable_camera_list();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.CameraListResponse.camera_list)
   return _msg;
 }
-inline void InformationResponse::set_allocated_information(::mavsdk::rpc::camera::Information* value) {
+inline void CameraListResponse::set_allocated_camera_list(::mavsdk::rpc::camera::CameraList* value) {
   ::google::protobuf::Arena* message_arena = GetArena();
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   if (message_arena == nullptr) {
-    delete reinterpret_cast<::mavsdk::rpc::camera::Information*>(_impl_.information_);
+    delete reinterpret_cast<::mavsdk::rpc::camera::CameraList*>(_impl_.camera_list_);
   }
 
   if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::Information*>(value)->GetArena();
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::CameraList*>(value)->GetArena();
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
@@ -15807,8 +19873,58 @@ inline void InformationResponse::set_allocated_information(::mavsdk::rpc::camera
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
 
-  _impl_.information_ = reinterpret_cast<::mavsdk::rpc::camera::Information*>(value);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.InformationResponse.information)
+  _impl_.camera_list_ = reinterpret_cast<::mavsdk::rpc::camera::CameraList*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.CameraListResponse.camera_list)
+}
+
+// -------------------------------------------------------------------
+
+// ModeUpdate
+
+// int32 component_id = 1;
+inline void ModeUpdate::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t ModeUpdate::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.ModeUpdate.component_id)
+  return _internal_component_id();
+}
+inline void ModeUpdate::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.ModeUpdate.component_id)
+}
+inline ::int32_t ModeUpdate::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void ModeUpdate::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// .mavsdk.rpc.camera.Mode mode = 2;
+inline void ModeUpdate::clear_mode() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.mode_ = 0;
+}
+inline ::mavsdk::rpc::camera::Mode ModeUpdate::mode() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.ModeUpdate.mode)
+  return _internal_mode();
+}
+inline void ModeUpdate::set_mode(::mavsdk::rpc::camera::Mode value) {
+  _internal_set_mode(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.ModeUpdate.mode)
+}
+inline ::mavsdk::rpc::camera::Mode ModeUpdate::_internal_mode() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return static_cast<::mavsdk::rpc::camera::Mode>(_impl_.mode_);
+}
+inline void ModeUpdate::_internal_set_mode(::mavsdk::rpc::camera::Mode value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.mode_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -15819,58 +19935,150 @@ inline void InformationResponse::set_allocated_information(::mavsdk::rpc::camera
 
 // ModeResponse
 
-// .mavsdk.rpc.camera.Mode mode = 1;
-inline void ModeResponse::clear_mode() {
+// .mavsdk.rpc.camera.ModeUpdate update = 1;
+inline bool ModeResponse::has_update() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.update_ != nullptr);
+  return value;
+}
+inline void ModeResponse::clear_update() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.mode_ = 0;
+  if (_impl_.update_ != nullptr) _impl_.update_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline ::mavsdk::rpc::camera::Mode ModeResponse::mode() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.ModeResponse.mode)
-  return _internal_mode();
-}
-inline void ModeResponse::set_mode(::mavsdk::rpc::camera::Mode value) {
-  _internal_set_mode(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.ModeResponse.mode)
-}
-inline ::mavsdk::rpc::camera::Mode ModeResponse::_internal_mode() const {
+inline const ::mavsdk::rpc::camera::ModeUpdate& ModeResponse::_internal_update() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return static_cast<::mavsdk::rpc::camera::Mode>(_impl_.mode_);
+  const ::mavsdk::rpc::camera::ModeUpdate* p = _impl_.update_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::ModeUpdate&>(::mavsdk::rpc::camera::_ModeUpdate_default_instance_);
 }
-inline void ModeResponse::_internal_set_mode(::mavsdk::rpc::camera::Mode value) {
+inline const ::mavsdk::rpc::camera::ModeUpdate& ModeResponse::update() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.ModeResponse.update)
+  return _internal_update();
+}
+inline void ModeResponse::unsafe_arena_set_allocated_update(::mavsdk::rpc::camera::ModeUpdate* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.update_);
+  }
+  _impl_.update_ = reinterpret_cast<::mavsdk::rpc::camera::ModeUpdate*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.ModeResponse.update)
+}
+inline ::mavsdk::rpc::camera::ModeUpdate* ModeResponse::release_update() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::ModeUpdate* released = _impl_.update_;
+  _impl_.update_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::camera::ModeUpdate* ModeResponse::unsafe_arena_release_update() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.ModeResponse.update)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::ModeUpdate* temp = _impl_.update_;
+  _impl_.update_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera::ModeUpdate* ModeResponse::_internal_mutable_update() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.update_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::ModeUpdate>(GetArena());
+    _impl_.update_ = reinterpret_cast<::mavsdk::rpc::camera::ModeUpdate*>(p);
+  }
+  return _impl_.update_;
+}
+inline ::mavsdk::rpc::camera::ModeUpdate* ModeResponse::mutable_update() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::camera::ModeUpdate* _msg = _internal_mutable_update();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.ModeResponse.update)
+  return _msg;
+}
+inline void ModeResponse::set_allocated_update(::mavsdk::rpc::camera::ModeUpdate* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::camera::ModeUpdate*>(_impl_.update_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::ModeUpdate*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.update_ = reinterpret_cast<::mavsdk::rpc::camera::ModeUpdate*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.ModeResponse.update)
+}
+
+// -------------------------------------------------------------------
+
+// VideoStreamUpdate
+
+// int32 component_id = 1;
+inline void VideoStreamUpdate::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t VideoStreamUpdate::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamUpdate.component_id)
+  return _internal_component_id();
+}
+inline void VideoStreamUpdate::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamUpdate.component_id)
+}
+inline ::int32_t VideoStreamUpdate::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void VideoStreamUpdate::_internal_set_component_id(::int32_t value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
-  _impl_.mode_ = value;
+  _impl_.component_id_ = value;
 }
 
-// -------------------------------------------------------------------
-
-// SubscribeVideoStreamInfoRequest
-
-// -------------------------------------------------------------------
-
-// VideoStreamInfoResponse
-
-// .mavsdk.rpc.camera.VideoStreamInfo video_stream_info = 1;
-inline bool VideoStreamInfoResponse::has_video_stream_info() const {
+// .mavsdk.rpc.camera.VideoStreamInfo video_stream_info = 2;
+inline bool VideoStreamUpdate::has_video_stream_info() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.video_stream_info_ != nullptr);
   return value;
 }
-inline void VideoStreamInfoResponse::clear_video_stream_info() {
+inline void VideoStreamUpdate::clear_video_stream_info() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   if (_impl_.video_stream_info_ != nullptr) _impl_.video_stream_info_->Clear();
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::camera::VideoStreamInfo& VideoStreamInfoResponse::_internal_video_stream_info() const {
+inline const ::mavsdk::rpc::camera::VideoStreamInfo& VideoStreamUpdate::_internal_video_stream_info() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
   const ::mavsdk::rpc::camera::VideoStreamInfo* p = _impl_.video_stream_info_;
   return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::VideoStreamInfo&>(::mavsdk::rpc::camera::_VideoStreamInfo_default_instance_);
 }
-inline const ::mavsdk::rpc::camera::VideoStreamInfo& VideoStreamInfoResponse::video_stream_info() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamInfoResponse.video_stream_info)
+inline const ::mavsdk::rpc::camera::VideoStreamInfo& VideoStreamUpdate::video_stream_info() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamUpdate.video_stream_info)
   return _internal_video_stream_info();
 }
-inline void VideoStreamInfoResponse::unsafe_arena_set_allocated_video_stream_info(::mavsdk::rpc::camera::VideoStreamInfo* value) {
+inline void VideoStreamUpdate::unsafe_arena_set_allocated_video_stream_info(::mavsdk::rpc::camera::VideoStreamInfo* value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   if (GetArena() == nullptr) {
     delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.video_stream_info_);
@@ -15881,9 +20089,9 @@ inline void VideoStreamInfoResponse::unsafe_arena_set_allocated_video_stream_inf
   } else {
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.VideoStreamInfoResponse.video_stream_info)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.VideoStreamUpdate.video_stream_info)
 }
-inline ::mavsdk::rpc::camera::VideoStreamInfo* VideoStreamInfoResponse::release_video_stream_info() {
+inline ::mavsdk::rpc::camera::VideoStreamInfo* VideoStreamUpdate::release_video_stream_info() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
 
   _impl_._has_bits_[0] &= ~0x00000001u;
@@ -15902,16 +20110,16 @@ inline ::mavsdk::rpc::camera::VideoStreamInfo* VideoStreamInfoResponse::release_
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return released;
 }
-inline ::mavsdk::rpc::camera::VideoStreamInfo* VideoStreamInfoResponse::unsafe_arena_release_video_stream_info() {
+inline ::mavsdk::rpc::camera::VideoStreamInfo* VideoStreamUpdate::unsafe_arena_release_video_stream_info() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.VideoStreamInfoResponse.video_stream_info)
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.VideoStreamUpdate.video_stream_info)
 
   _impl_._has_bits_[0] &= ~0x00000001u;
   ::mavsdk::rpc::camera::VideoStreamInfo* temp = _impl_.video_stream_info_;
   _impl_.video_stream_info_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::camera::VideoStreamInfo* VideoStreamInfoResponse::_internal_mutable_video_stream_info() {
+inline ::mavsdk::rpc::camera::VideoStreamInfo* VideoStreamUpdate::_internal_mutable_video_stream_info() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_._has_bits_[0] |= 0x00000001u;
   if (_impl_.video_stream_info_ == nullptr) {
@@ -15920,12 +20128,12 @@ inline ::mavsdk::rpc::camera::VideoStreamInfo* VideoStreamInfoResponse::_interna
   }
   return _impl_.video_stream_info_;
 }
-inline ::mavsdk::rpc::camera::VideoStreamInfo* VideoStreamInfoResponse::mutable_video_stream_info() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::mavsdk::rpc::camera::VideoStreamInfo* VideoStreamUpdate::mutable_video_stream_info() ABSL_ATTRIBUTE_LIFETIME_BOUND {
   ::mavsdk::rpc::camera::VideoStreamInfo* _msg = _internal_mutable_video_stream_info();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.VideoStreamInfoResponse.video_stream_info)
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.VideoStreamUpdate.video_stream_info)
   return _msg;
 }
-inline void VideoStreamInfoResponse::set_allocated_video_stream_info(::mavsdk::rpc::camera::VideoStreamInfo* value) {
+inline void VideoStreamUpdate::set_allocated_video_stream_info(::mavsdk::rpc::camera::VideoStreamInfo* value) {
   ::google::protobuf::Arena* message_arena = GetArena();
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   if (message_arena == nullptr) {
@@ -15943,7 +20151,111 @@ inline void VideoStreamInfoResponse::set_allocated_video_stream_info(::mavsdk::r
   }
 
   _impl_.video_stream_info_ = reinterpret_cast<::mavsdk::rpc::camera::VideoStreamInfo*>(value);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.VideoStreamInfoResponse.video_stream_info)
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.VideoStreamUpdate.video_stream_info)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeVideoStreamInfoRequest
+
+// -------------------------------------------------------------------
+
+// VideoStreamInfoResponse
+
+// .mavsdk.rpc.camera.VideoStreamUpdate update = 1;
+inline bool VideoStreamInfoResponse::has_update() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.update_ != nullptr);
+  return value;
+}
+inline void VideoStreamInfoResponse::clear_update() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.update_ != nullptr) _impl_.update_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera::VideoStreamUpdate& VideoStreamInfoResponse::_internal_update() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::camera::VideoStreamUpdate* p = _impl_.update_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::VideoStreamUpdate&>(::mavsdk::rpc::camera::_VideoStreamUpdate_default_instance_);
+}
+inline const ::mavsdk::rpc::camera::VideoStreamUpdate& VideoStreamInfoResponse::update() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamInfoResponse.update)
+  return _internal_update();
+}
+inline void VideoStreamInfoResponse::unsafe_arena_set_allocated_update(::mavsdk::rpc::camera::VideoStreamUpdate* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.update_);
+  }
+  _impl_.update_ = reinterpret_cast<::mavsdk::rpc::camera::VideoStreamUpdate*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.VideoStreamInfoResponse.update)
+}
+inline ::mavsdk::rpc::camera::VideoStreamUpdate* VideoStreamInfoResponse::release_update() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::VideoStreamUpdate* released = _impl_.update_;
+  _impl_.update_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::camera::VideoStreamUpdate* VideoStreamInfoResponse::unsafe_arena_release_update() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.VideoStreamInfoResponse.update)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::VideoStreamUpdate* temp = _impl_.update_;
+  _impl_.update_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera::VideoStreamUpdate* VideoStreamInfoResponse::_internal_mutable_update() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.update_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::VideoStreamUpdate>(GetArena());
+    _impl_.update_ = reinterpret_cast<::mavsdk::rpc::camera::VideoStreamUpdate*>(p);
+  }
+  return _impl_.update_;
+}
+inline ::mavsdk::rpc::camera::VideoStreamUpdate* VideoStreamInfoResponse::mutable_update() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::camera::VideoStreamUpdate* _msg = _internal_mutable_update();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.VideoStreamInfoResponse.update)
+  return _msg;
+}
+inline void VideoStreamInfoResponse::set_allocated_update(::mavsdk::rpc::camera::VideoStreamUpdate* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::camera::VideoStreamUpdate*>(_impl_.update_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::VideoStreamUpdate*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.update_ = reinterpret_cast<::mavsdk::rpc::camera::VideoStreamUpdate*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.VideoStreamInfoResponse.update)
 }
 
 // -------------------------------------------------------------------
@@ -16052,51 +20364,357 @@ inline void CaptureInfoResponse::set_allocated_capture_info(::mavsdk::rpc::camer
 
 // -------------------------------------------------------------------
 
-// SubscribeStatusRequest
+// Storage
+
+// int32 component_id = 1;
+inline void Storage::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t Storage::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Storage.component_id)
+  return _internal_component_id();
+}
+inline void Storage::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Storage.component_id)
+}
+inline ::int32_t Storage::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void Storage::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// bool video_on = 2;
+inline void Storage::clear_video_on() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.video_on_ = false;
+}
+inline bool Storage::video_on() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Storage.video_on)
+  return _internal_video_on();
+}
+inline void Storage::set_video_on(bool value) {
+  _internal_set_video_on(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Storage.video_on)
+}
+inline bool Storage::_internal_video_on() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.video_on_;
+}
+inline void Storage::_internal_set_video_on(bool value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.video_on_ = value;
+}
+
+// bool photo_interval_on = 3;
+inline void Storage::clear_photo_interval_on() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.photo_interval_on_ = false;
+}
+inline bool Storage::photo_interval_on() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Storage.photo_interval_on)
+  return _internal_photo_interval_on();
+}
+inline void Storage::set_photo_interval_on(bool value) {
+  _internal_set_photo_interval_on(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Storage.photo_interval_on)
+}
+inline bool Storage::_internal_photo_interval_on() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.photo_interval_on_;
+}
+inline void Storage::_internal_set_photo_interval_on(bool value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.photo_interval_on_ = value;
+}
+
+// float used_storage_mib = 4;
+inline void Storage::clear_used_storage_mib() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.used_storage_mib_ = 0;
+}
+inline float Storage::used_storage_mib() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Storage.used_storage_mib)
+  return _internal_used_storage_mib();
+}
+inline void Storage::set_used_storage_mib(float value) {
+  _internal_set_used_storage_mib(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Storage.used_storage_mib)
+}
+inline float Storage::_internal_used_storage_mib() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.used_storage_mib_;
+}
+inline void Storage::_internal_set_used_storage_mib(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.used_storage_mib_ = value;
+}
+
+// float available_storage_mib = 5;
+inline void Storage::clear_available_storage_mib() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.available_storage_mib_ = 0;
+}
+inline float Storage::available_storage_mib() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Storage.available_storage_mib)
+  return _internal_available_storage_mib();
+}
+inline void Storage::set_available_storage_mib(float value) {
+  _internal_set_available_storage_mib(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Storage.available_storage_mib)
+}
+inline float Storage::_internal_available_storage_mib() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.available_storage_mib_;
+}
+inline void Storage::_internal_set_available_storage_mib(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.available_storage_mib_ = value;
+}
+
+// float total_storage_mib = 6;
+inline void Storage::clear_total_storage_mib() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.total_storage_mib_ = 0;
+}
+inline float Storage::total_storage_mib() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Storage.total_storage_mib)
+  return _internal_total_storage_mib();
+}
+inline void Storage::set_total_storage_mib(float value) {
+  _internal_set_total_storage_mib(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Storage.total_storage_mib)
+}
+inline float Storage::_internal_total_storage_mib() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.total_storage_mib_;
+}
+inline void Storage::_internal_set_total_storage_mib(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.total_storage_mib_ = value;
+}
+
+// float recording_time_s = 7;
+inline void Storage::clear_recording_time_s() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.recording_time_s_ = 0;
+}
+inline float Storage::recording_time_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Storage.recording_time_s)
+  return _internal_recording_time_s();
+}
+inline void Storage::set_recording_time_s(float value) {
+  _internal_set_recording_time_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Storage.recording_time_s)
+}
+inline float Storage::_internal_recording_time_s() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.recording_time_s_;
+}
+inline void Storage::_internal_set_recording_time_s(float value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.recording_time_s_ = value;
+}
+
+// string media_folder_name = 8;
+inline void Storage::clear_media_folder_name() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.media_folder_name_.ClearToEmpty();
+}
+inline const std::string& Storage::media_folder_name() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Storage.media_folder_name)
+  return _internal_media_folder_name();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void Storage::set_media_folder_name(Arg_&& arg,
+                                                     Args_... args) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.media_folder_name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Storage.media_folder_name)
+}
+inline std::string* Storage::mutable_media_folder_name() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_media_folder_name();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.Storage.media_folder_name)
+  return _s;
+}
+inline const std::string& Storage::_internal_media_folder_name() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.media_folder_name_.Get();
+}
+inline void Storage::_internal_set_media_folder_name(const std::string& value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.media_folder_name_.Set(value, GetArena());
+}
+inline std::string* Storage::_internal_mutable_media_folder_name() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  return _impl_.media_folder_name_.Mutable( GetArena());
+}
+inline std::string* Storage::release_media_folder_name() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.Storage.media_folder_name)
+  return _impl_.media_folder_name_.Release();
+}
+inline void Storage::set_allocated_media_folder_name(std::string* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.media_folder_name_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.media_folder_name_.IsDefault()) {
+          _impl_.media_folder_name_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Storage.media_folder_name)
+}
+
+// .mavsdk.rpc.camera.Storage.StorageStatus storage_status = 9;
+inline void Storage::clear_storage_status() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.storage_status_ = 0;
+}
+inline ::mavsdk::rpc::camera::Storage_StorageStatus Storage::storage_status() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Storage.storage_status)
+  return _internal_storage_status();
+}
+inline void Storage::set_storage_status(::mavsdk::rpc::camera::Storage_StorageStatus value) {
+  _internal_set_storage_status(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Storage.storage_status)
+}
+inline ::mavsdk::rpc::camera::Storage_StorageStatus Storage::_internal_storage_status() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return static_cast<::mavsdk::rpc::camera::Storage_StorageStatus>(_impl_.storage_status_);
+}
+inline void Storage::_internal_set_storage_status(::mavsdk::rpc::camera::Storage_StorageStatus value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.storage_status_ = value;
+}
+
+// uint32 storage_id = 10;
+inline void Storage::clear_storage_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.storage_id_ = 0u;
+}
+inline ::uint32_t Storage::storage_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Storage.storage_id)
+  return _internal_storage_id();
+}
+inline void Storage::set_storage_id(::uint32_t value) {
+  _internal_set_storage_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Storage.storage_id)
+}
+inline ::uint32_t Storage::_internal_storage_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.storage_id_;
+}
+inline void Storage::_internal_set_storage_id(::uint32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.storage_id_ = value;
+}
+
+// .mavsdk.rpc.camera.Storage.StorageType storage_type = 11;
+inline void Storage::clear_storage_type() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.storage_type_ = 0;
+}
+inline ::mavsdk::rpc::camera::Storage_StorageType Storage::storage_type() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Storage.storage_type)
+  return _internal_storage_type();
+}
+inline void Storage::set_storage_type(::mavsdk::rpc::camera::Storage_StorageType value) {
+  _internal_set_storage_type(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Storage.storage_type)
+}
+inline ::mavsdk::rpc::camera::Storage_StorageType Storage::_internal_storage_type() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return static_cast<::mavsdk::rpc::camera::Storage_StorageType>(_impl_.storage_type_);
+}
+inline void Storage::_internal_set_storage_type(::mavsdk::rpc::camera::Storage_StorageType value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.storage_type_ = value;
+}
 
 // -------------------------------------------------------------------
 
-// StatusResponse
+// StorageUpdate
 
-// .mavsdk.rpc.camera.Status camera_status = 1;
-inline bool StatusResponse::has_camera_status() const {
+// int32 component_id = 1;
+inline void StorageUpdate::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t StorageUpdate::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.StorageUpdate.component_id)
+  return _internal_component_id();
+}
+inline void StorageUpdate::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.StorageUpdate.component_id)
+}
+inline ::int32_t StorageUpdate::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void StorageUpdate::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// .mavsdk.rpc.camera.Storage storage = 2;
+inline bool StorageUpdate::has_storage() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.camera_status_ != nullptr);
+  PROTOBUF_ASSUME(!value || _impl_.storage_ != nullptr);
   return value;
 }
-inline void StatusResponse::clear_camera_status() {
+inline void StorageUpdate::clear_storage() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (_impl_.camera_status_ != nullptr) _impl_.camera_status_->Clear();
+  if (_impl_.storage_ != nullptr) _impl_.storage_->Clear();
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::camera::Status& StatusResponse::_internal_camera_status() const {
+inline const ::mavsdk::rpc::camera::Storage& StorageUpdate::_internal_storage() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  const ::mavsdk::rpc::camera::Status* p = _impl_.camera_status_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::Status&>(::mavsdk::rpc::camera::_Status_default_instance_);
+  const ::mavsdk::rpc::camera::Storage* p = _impl_.storage_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::Storage&>(::mavsdk::rpc::camera::_Storage_default_instance_);
 }
-inline const ::mavsdk::rpc::camera::Status& StatusResponse::camera_status() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.StatusResponse.camera_status)
-  return _internal_camera_status();
+inline const ::mavsdk::rpc::camera::Storage& StorageUpdate::storage() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.StorageUpdate.storage)
+  return _internal_storage();
 }
-inline void StatusResponse::unsafe_arena_set_allocated_camera_status(::mavsdk::rpc::camera::Status* value) {
+inline void StorageUpdate::unsafe_arena_set_allocated_storage(::mavsdk::rpc::camera::Storage* value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_status_);
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.storage_);
   }
-  _impl_.camera_status_ = reinterpret_cast<::mavsdk::rpc::camera::Status*>(value);
+  _impl_.storage_ = reinterpret_cast<::mavsdk::rpc::camera::Storage*>(value);
   if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
   } else {
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.StatusResponse.camera_status)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.StorageUpdate.storage)
 }
-inline ::mavsdk::rpc::camera::Status* StatusResponse::release_camera_status() {
+inline ::mavsdk::rpc::camera::Storage* StorageUpdate::release_storage() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
 
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::camera::Status* released = _impl_.camera_status_;
-  _impl_.camera_status_ = nullptr;
+  ::mavsdk::rpc::camera::Storage* released = _impl_.storage_;
+  _impl_.storage_ = nullptr;
 #ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
   auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
   released = ::google::protobuf::internal::DuplicateIfNonNull(released);
@@ -16110,38 +20728,38 @@ inline ::mavsdk::rpc::camera::Status* StatusResponse::release_camera_status() {
 #endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
   return released;
 }
-inline ::mavsdk::rpc::camera::Status* StatusResponse::unsafe_arena_release_camera_status() {
+inline ::mavsdk::rpc::camera::Storage* StorageUpdate::unsafe_arena_release_storage() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.StatusResponse.camera_status)
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.StorageUpdate.storage)
 
   _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::camera::Status* temp = _impl_.camera_status_;
-  _impl_.camera_status_ = nullptr;
+  ::mavsdk::rpc::camera::Storage* temp = _impl_.storage_;
+  _impl_.storage_ = nullptr;
   return temp;
 }
-inline ::mavsdk::rpc::camera::Status* StatusResponse::_internal_mutable_camera_status() {
+inline ::mavsdk::rpc::camera::Storage* StorageUpdate::_internal_mutable_storage() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_._has_bits_[0] |= 0x00000001u;
-  if (_impl_.camera_status_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::Status>(GetArena());
-    _impl_.camera_status_ = reinterpret_cast<::mavsdk::rpc::camera::Status*>(p);
+  if (_impl_.storage_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::Storage>(GetArena());
+    _impl_.storage_ = reinterpret_cast<::mavsdk::rpc::camera::Storage*>(p);
   }
-  return _impl_.camera_status_;
+  return _impl_.storage_;
 }
-inline ::mavsdk::rpc::camera::Status* StatusResponse::mutable_camera_status() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::mavsdk::rpc::camera::Status* _msg = _internal_mutable_camera_status();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.StatusResponse.camera_status)
+inline ::mavsdk::rpc::camera::Storage* StorageUpdate::mutable_storage() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::camera::Storage* _msg = _internal_mutable_storage();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.StorageUpdate.storage)
   return _msg;
 }
-inline void StatusResponse::set_allocated_camera_status(::mavsdk::rpc::camera::Status* value) {
+inline void StorageUpdate::set_allocated_storage(::mavsdk::rpc::camera::Storage* value) {
   ::google::protobuf::Arena* message_arena = GetArena();
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   if (message_arena == nullptr) {
-    delete reinterpret_cast<::mavsdk::rpc::camera::Status*>(_impl_.camera_status_);
+    delete reinterpret_cast<::mavsdk::rpc::camera::Storage*>(_impl_.storage_);
   }
 
   if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::Status*>(value)->GetArena();
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::Storage*>(value)->GetArena();
     if (message_arena != submessage_arena) {
       value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
     }
@@ -16150,8 +20768,188 @@ inline void StatusResponse::set_allocated_camera_status(::mavsdk::rpc::camera::S
     _impl_._has_bits_[0] &= ~0x00000001u;
   }
 
-  _impl_.camera_status_ = reinterpret_cast<::mavsdk::rpc::camera::Status*>(value);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.StatusResponse.camera_status)
+  _impl_.storage_ = reinterpret_cast<::mavsdk::rpc::camera::Storage*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.StorageUpdate.storage)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeStorageRequest
+
+// -------------------------------------------------------------------
+
+// StorageResponse
+
+// .mavsdk.rpc.camera.StorageUpdate update = 1;
+inline bool StorageResponse::has_update() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.update_ != nullptr);
+  return value;
+}
+inline void StorageResponse::clear_update() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.update_ != nullptr) _impl_.update_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera::StorageUpdate& StorageResponse::_internal_update() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::camera::StorageUpdate* p = _impl_.update_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::StorageUpdate&>(::mavsdk::rpc::camera::_StorageUpdate_default_instance_);
+}
+inline const ::mavsdk::rpc::camera::StorageUpdate& StorageResponse::update() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.StorageResponse.update)
+  return _internal_update();
+}
+inline void StorageResponse::unsafe_arena_set_allocated_update(::mavsdk::rpc::camera::StorageUpdate* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.update_);
+  }
+  _impl_.update_ = reinterpret_cast<::mavsdk::rpc::camera::StorageUpdate*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.StorageResponse.update)
+}
+inline ::mavsdk::rpc::camera::StorageUpdate* StorageResponse::release_update() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::StorageUpdate* released = _impl_.update_;
+  _impl_.update_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::camera::StorageUpdate* StorageResponse::unsafe_arena_release_update() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.StorageResponse.update)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::StorageUpdate* temp = _impl_.update_;
+  _impl_.update_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera::StorageUpdate* StorageResponse::_internal_mutable_update() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.update_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::StorageUpdate>(GetArena());
+    _impl_.update_ = reinterpret_cast<::mavsdk::rpc::camera::StorageUpdate*>(p);
+  }
+  return _impl_.update_;
+}
+inline ::mavsdk::rpc::camera::StorageUpdate* StorageResponse::mutable_update() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::camera::StorageUpdate* _msg = _internal_mutable_update();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.StorageResponse.update)
+  return _msg;
+}
+inline void StorageResponse::set_allocated_update(::mavsdk::rpc::camera::StorageUpdate* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::camera::StorageUpdate*>(_impl_.update_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::StorageUpdate*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.update_ = reinterpret_cast<::mavsdk::rpc::camera::StorageUpdate*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.StorageResponse.update)
+}
+
+// -------------------------------------------------------------------
+
+// CurrentSettingsUpdate
+
+// int32 component_id = 1;
+inline void CurrentSettingsUpdate::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t CurrentSettingsUpdate::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.CurrentSettingsUpdate.component_id)
+  return _internal_component_id();
+}
+inline void CurrentSettingsUpdate::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.CurrentSettingsUpdate.component_id)
+}
+inline ::int32_t CurrentSettingsUpdate::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void CurrentSettingsUpdate::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// repeated .mavsdk.rpc.camera.Setting current_settings = 2;
+inline int CurrentSettingsUpdate::_internal_current_settings_size() const {
+  return _internal_current_settings().size();
+}
+inline int CurrentSettingsUpdate::current_settings_size() const {
+  return _internal_current_settings_size();
+}
+inline void CurrentSettingsUpdate::clear_current_settings() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.current_settings_.Clear();
+}
+inline ::mavsdk::rpc::camera::Setting* CurrentSettingsUpdate::mutable_current_settings(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.CurrentSettingsUpdate.current_settings)
+  return _internal_mutable_current_settings()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Setting>* CurrentSettingsUpdate::mutable_current_settings()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.camera.CurrentSettingsUpdate.current_settings)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  return _internal_mutable_current_settings();
+}
+inline const ::mavsdk::rpc::camera::Setting& CurrentSettingsUpdate::current_settings(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.CurrentSettingsUpdate.current_settings)
+  return _internal_current_settings().Get(index);
+}
+inline ::mavsdk::rpc::camera::Setting* CurrentSettingsUpdate::add_current_settings() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::mavsdk::rpc::camera::Setting* _add = _internal_mutable_current_settings()->Add();
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.camera.CurrentSettingsUpdate.current_settings)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Setting>& CurrentSettingsUpdate::current_settings() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.camera.CurrentSettingsUpdate.current_settings)
+  return _internal_current_settings();
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Setting>&
+CurrentSettingsUpdate::_internal_current_settings() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.current_settings_;
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Setting>*
+CurrentSettingsUpdate::_internal_mutable_current_settings() {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return &_impl_.current_settings_;
 }
 
 // -------------------------------------------------------------------
@@ -16162,53 +20960,176 @@ inline void StatusResponse::set_allocated_camera_status(::mavsdk::rpc::camera::S
 
 // CurrentSettingsResponse
 
-// repeated .mavsdk.rpc.camera.Setting current_settings = 1;
-inline int CurrentSettingsResponse::_internal_current_settings_size() const {
-  return _internal_current_settings().size();
+// .mavsdk.rpc.camera.CurrentSettingsUpdate update = 1;
+inline bool CurrentSettingsResponse::has_update() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.update_ != nullptr);
+  return value;
 }
-inline int CurrentSettingsResponse::current_settings_size() const {
-  return _internal_current_settings_size();
-}
-inline void CurrentSettingsResponse::clear_current_settings() {
+inline void CurrentSettingsResponse::clear_update() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.current_settings_.Clear();
+  if (_impl_.update_ != nullptr) _impl_.update_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline ::mavsdk::rpc::camera::Setting* CurrentSettingsResponse::mutable_current_settings(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.CurrentSettingsResponse.current_settings)
-  return _internal_mutable_current_settings()->Mutable(index);
+inline const ::mavsdk::rpc::camera::CurrentSettingsUpdate& CurrentSettingsResponse::_internal_update() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::camera::CurrentSettingsUpdate* p = _impl_.update_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::CurrentSettingsUpdate&>(::mavsdk::rpc::camera::_CurrentSettingsUpdate_default_instance_);
 }
-inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Setting>* CurrentSettingsResponse::mutable_current_settings()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.camera.CurrentSettingsResponse.current_settings)
+inline const ::mavsdk::rpc::camera::CurrentSettingsUpdate& CurrentSettingsResponse::update() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.CurrentSettingsResponse.update)
+  return _internal_update();
+}
+inline void CurrentSettingsResponse::unsafe_arena_set_allocated_update(::mavsdk::rpc::camera::CurrentSettingsUpdate* value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  return _internal_mutable_current_settings();
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.update_);
+  }
+  _impl_.update_ = reinterpret_cast<::mavsdk::rpc::camera::CurrentSettingsUpdate*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.CurrentSettingsResponse.update)
 }
-inline const ::mavsdk::rpc::camera::Setting& CurrentSettingsResponse::current_settings(int index) const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.CurrentSettingsResponse.current_settings)
-  return _internal_current_settings().Get(index);
-}
-inline ::mavsdk::rpc::camera::Setting* CurrentSettingsResponse::add_current_settings() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+inline ::mavsdk::rpc::camera::CurrentSettingsUpdate* CurrentSettingsResponse::release_update() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ::mavsdk::rpc::camera::Setting* _add = _internal_mutable_current_settings()->Add();
-  // @@protoc_insertion_point(field_add:mavsdk.rpc.camera.CurrentSettingsResponse.current_settings)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::CurrentSettingsUpdate* released = _impl_.update_;
+  _impl_.update_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::camera::CurrentSettingsUpdate* CurrentSettingsResponse::unsafe_arena_release_update() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.CurrentSettingsResponse.update)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::CurrentSettingsUpdate* temp = _impl_.update_;
+  _impl_.update_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera::CurrentSettingsUpdate* CurrentSettingsResponse::_internal_mutable_update() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.update_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::CurrentSettingsUpdate>(GetArena());
+    _impl_.update_ = reinterpret_cast<::mavsdk::rpc::camera::CurrentSettingsUpdate*>(p);
+  }
+  return _impl_.update_;
+}
+inline ::mavsdk::rpc::camera::CurrentSettingsUpdate* CurrentSettingsResponse::mutable_update() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::camera::CurrentSettingsUpdate* _msg = _internal_mutable_update();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.CurrentSettingsResponse.update)
+  return _msg;
+}
+inline void CurrentSettingsResponse::set_allocated_update(::mavsdk::rpc::camera::CurrentSettingsUpdate* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::camera::CurrentSettingsUpdate*>(_impl_.update_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::CurrentSettingsUpdate*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.update_ = reinterpret_cast<::mavsdk::rpc::camera::CurrentSettingsUpdate*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.CurrentSettingsResponse.update)
+}
+
+// -------------------------------------------------------------------
+
+// PossibleSettingOptionsUpdate
+
+// int32 component_id = 1;
+inline void PossibleSettingOptionsUpdate::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t PossibleSettingOptionsUpdate::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.PossibleSettingOptionsUpdate.component_id)
+  return _internal_component_id();
+}
+inline void PossibleSettingOptionsUpdate::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.PossibleSettingOptionsUpdate.component_id)
+}
+inline ::int32_t PossibleSettingOptionsUpdate::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void PossibleSettingOptionsUpdate::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// repeated .mavsdk.rpc.camera.SettingOptions setting_options = 2;
+inline int PossibleSettingOptionsUpdate::_internal_setting_options_size() const {
+  return _internal_setting_options().size();
+}
+inline int PossibleSettingOptionsUpdate::setting_options_size() const {
+  return _internal_setting_options_size();
+}
+inline void PossibleSettingOptionsUpdate::clear_setting_options() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.setting_options_.Clear();
+}
+inline ::mavsdk::rpc::camera::SettingOptions* PossibleSettingOptionsUpdate::mutable_setting_options(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.PossibleSettingOptionsUpdate.setting_options)
+  return _internal_mutable_setting_options()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::SettingOptions>* PossibleSettingOptionsUpdate::mutable_setting_options()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.camera.PossibleSettingOptionsUpdate.setting_options)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  return _internal_mutable_setting_options();
+}
+inline const ::mavsdk::rpc::camera::SettingOptions& PossibleSettingOptionsUpdate::setting_options(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.PossibleSettingOptionsUpdate.setting_options)
+  return _internal_setting_options().Get(index);
+}
+inline ::mavsdk::rpc::camera::SettingOptions* PossibleSettingOptionsUpdate::add_setting_options() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::mavsdk::rpc::camera::SettingOptions* _add = _internal_mutable_setting_options()->Add();
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.camera.PossibleSettingOptionsUpdate.setting_options)
   return _add;
 }
-inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Setting>& CurrentSettingsResponse::current_settings() const
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::SettingOptions>& PossibleSettingOptionsUpdate::setting_options() const
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:mavsdk.rpc.camera.CurrentSettingsResponse.current_settings)
-  return _internal_current_settings();
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.camera.PossibleSettingOptionsUpdate.setting_options)
+  return _internal_setting_options();
 }
-inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Setting>&
-CurrentSettingsResponse::_internal_current_settings() const {
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::SettingOptions>&
+PossibleSettingOptionsUpdate::_internal_setting_options() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.current_settings_;
+  return _impl_.setting_options_;
 }
-inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Setting>*
-CurrentSettingsResponse::_internal_mutable_current_settings() {
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::SettingOptions>*
+PossibleSettingOptionsUpdate::_internal_mutable_setting_options() {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return &_impl_.current_settings_;
+  return &_impl_.setting_options_;
 }
 
 // -------------------------------------------------------------------
@@ -16219,60 +21140,130 @@ CurrentSettingsResponse::_internal_mutable_current_settings() {
 
 // PossibleSettingOptionsResponse
 
-// repeated .mavsdk.rpc.camera.SettingOptions setting_options = 1;
-inline int PossibleSettingOptionsResponse::_internal_setting_options_size() const {
-  return _internal_setting_options().size();
+// .mavsdk.rpc.camera.PossibleSettingOptionsUpdate update = 1;
+inline bool PossibleSettingOptionsResponse::has_update() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.update_ != nullptr);
+  return value;
 }
-inline int PossibleSettingOptionsResponse::setting_options_size() const {
-  return _internal_setting_options_size();
-}
-inline void PossibleSettingOptionsResponse::clear_setting_options() {
+inline void PossibleSettingOptionsResponse::clear_update() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.setting_options_.Clear();
+  if (_impl_.update_ != nullptr) _impl_.update_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline ::mavsdk::rpc::camera::SettingOptions* PossibleSettingOptionsResponse::mutable_setting_options(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.PossibleSettingOptionsResponse.setting_options)
-  return _internal_mutable_setting_options()->Mutable(index);
-}
-inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::SettingOptions>* PossibleSettingOptionsResponse::mutable_setting_options()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.camera.PossibleSettingOptionsResponse.setting_options)
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  return _internal_mutable_setting_options();
-}
-inline const ::mavsdk::rpc::camera::SettingOptions& PossibleSettingOptionsResponse::setting_options(int index) const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.PossibleSettingOptionsResponse.setting_options)
-  return _internal_setting_options().Get(index);
-}
-inline ::mavsdk::rpc::camera::SettingOptions* PossibleSettingOptionsResponse::add_setting_options() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ::mavsdk::rpc::camera::SettingOptions* _add = _internal_mutable_setting_options()->Add();
-  // @@protoc_insertion_point(field_add:mavsdk.rpc.camera.PossibleSettingOptionsResponse.setting_options)
-  return _add;
-}
-inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::SettingOptions>& PossibleSettingOptionsResponse::setting_options() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:mavsdk.rpc.camera.PossibleSettingOptionsResponse.setting_options)
-  return _internal_setting_options();
-}
-inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::SettingOptions>&
-PossibleSettingOptionsResponse::_internal_setting_options() const {
+inline const ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate& PossibleSettingOptionsResponse::_internal_update() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.setting_options_;
+  const ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate* p = _impl_.update_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate&>(::mavsdk::rpc::camera::_PossibleSettingOptionsUpdate_default_instance_);
 }
-inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::SettingOptions>*
-PossibleSettingOptionsResponse::_internal_mutable_setting_options() {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return &_impl_.setting_options_;
+inline const ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate& PossibleSettingOptionsResponse::update() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.PossibleSettingOptionsResponse.update)
+  return _internal_update();
+}
+inline void PossibleSettingOptionsResponse::unsafe_arena_set_allocated_update(::mavsdk::rpc::camera::PossibleSettingOptionsUpdate* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.update_);
+  }
+  _impl_.update_ = reinterpret_cast<::mavsdk::rpc::camera::PossibleSettingOptionsUpdate*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.PossibleSettingOptionsResponse.update)
+}
+inline ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate* PossibleSettingOptionsResponse::release_update() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate* released = _impl_.update_;
+  _impl_.update_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate* PossibleSettingOptionsResponse::unsafe_arena_release_update() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.PossibleSettingOptionsResponse.update)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate* temp = _impl_.update_;
+  _impl_.update_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate* PossibleSettingOptionsResponse::_internal_mutable_update() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.update_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::PossibleSettingOptionsUpdate>(GetArena());
+    _impl_.update_ = reinterpret_cast<::mavsdk::rpc::camera::PossibleSettingOptionsUpdate*>(p);
+  }
+  return _impl_.update_;
+}
+inline ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate* PossibleSettingOptionsResponse::mutable_update() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::camera::PossibleSettingOptionsUpdate* _msg = _internal_mutable_update();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.PossibleSettingOptionsResponse.update)
+  return _msg;
+}
+inline void PossibleSettingOptionsResponse::set_allocated_update(::mavsdk::rpc::camera::PossibleSettingOptionsUpdate* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::camera::PossibleSettingOptionsUpdate*>(_impl_.update_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::PossibleSettingOptionsUpdate*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.update_ = reinterpret_cast<::mavsdk::rpc::camera::PossibleSettingOptionsUpdate*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.PossibleSettingOptionsResponse.update)
 }
 
 // -------------------------------------------------------------------
 
 // SetSettingRequest
 
-// .mavsdk.rpc.camera.Setting setting = 1;
+// int32 component_id = 1;
+inline void SetSettingRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t SetSettingRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.SetSettingRequest.component_id)
+  return _internal_component_id();
+}
+inline void SetSettingRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.SetSettingRequest.component_id)
+}
+inline ::int32_t SetSettingRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void SetSettingRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// .mavsdk.rpc.camera.Setting setting = 2;
 inline bool SetSettingRequest::has_setting() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.setting_ != nullptr);
@@ -16470,9 +21461,980 @@ inline void SetSettingResponse::set_allocated_camera_result(::mavsdk::rpc::camer
 
 // -------------------------------------------------------------------
 
+// GetModeRequest
+
+// int32 component_id = 1;
+inline void GetModeRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t GetModeRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.GetModeRequest.component_id)
+  return _internal_component_id();
+}
+inline void GetModeRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.GetModeRequest.component_id)
+}
+inline ::int32_t GetModeRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void GetModeRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// GetModeResponse
+
+// .mavsdk.rpc.camera.CameraResult camera_result = 1;
+inline bool GetModeResponse::has_camera_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.camera_result_ != nullptr);
+  return value;
+}
+inline void GetModeResponse::clear_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.camera_result_ != nullptr) _impl_.camera_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera::CameraResult& GetModeResponse::_internal_camera_result() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::camera::CameraResult* p = _impl_.camera_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::CameraResult&>(::mavsdk::rpc::camera::_CameraResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera::CameraResult& GetModeResponse::camera_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.GetModeResponse.camera_result)
+  return _internal_camera_result();
+}
+inline void GetModeResponse::unsafe_arena_set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_result_);
+  }
+  _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.GetModeResponse.camera_result)
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetModeResponse::release_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::CameraResult* released = _impl_.camera_result_;
+  _impl_.camera_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetModeResponse::unsafe_arena_release_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.GetModeResponse.camera_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::CameraResult* temp = _impl_.camera_result_;
+  _impl_.camera_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetModeResponse::_internal_mutable_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.camera_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::CameraResult>(GetArena());
+    _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(p);
+  }
+  return _impl_.camera_result_;
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetModeResponse::mutable_camera_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::camera::CameraResult* _msg = _internal_mutable_camera_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.GetModeResponse.camera_result)
+  return _msg;
+}
+inline void GetModeResponse::set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(_impl_.camera_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.GetModeResponse.camera_result)
+}
+
+// .mavsdk.rpc.camera.Mode mode = 2;
+inline void GetModeResponse::clear_mode() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.mode_ = 0;
+}
+inline ::mavsdk::rpc::camera::Mode GetModeResponse::mode() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.GetModeResponse.mode)
+  return _internal_mode();
+}
+inline void GetModeResponse::set_mode(::mavsdk::rpc::camera::Mode value) {
+  _internal_set_mode(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.GetModeResponse.mode)
+}
+inline ::mavsdk::rpc::camera::Mode GetModeResponse::_internal_mode() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return static_cast<::mavsdk::rpc::camera::Mode>(_impl_.mode_);
+}
+inline void GetModeResponse::_internal_set_mode(::mavsdk::rpc::camera::Mode value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.mode_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// GetVideoStreamInfoRequest
+
+// int32 component_id = 1;
+inline void GetVideoStreamInfoRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t GetVideoStreamInfoRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.GetVideoStreamInfoRequest.component_id)
+  return _internal_component_id();
+}
+inline void GetVideoStreamInfoRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.GetVideoStreamInfoRequest.component_id)
+}
+inline ::int32_t GetVideoStreamInfoRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void GetVideoStreamInfoRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// GetVideoStreamInfoResponse
+
+// .mavsdk.rpc.camera.CameraResult camera_result = 1;
+inline bool GetVideoStreamInfoResponse::has_camera_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.camera_result_ != nullptr);
+  return value;
+}
+inline void GetVideoStreamInfoResponse::clear_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.camera_result_ != nullptr) _impl_.camera_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera::CameraResult& GetVideoStreamInfoResponse::_internal_camera_result() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::camera::CameraResult* p = _impl_.camera_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::CameraResult&>(::mavsdk::rpc::camera::_CameraResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera::CameraResult& GetVideoStreamInfoResponse::camera_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.GetVideoStreamInfoResponse.camera_result)
+  return _internal_camera_result();
+}
+inline void GetVideoStreamInfoResponse::unsafe_arena_set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_result_);
+  }
+  _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.GetVideoStreamInfoResponse.camera_result)
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetVideoStreamInfoResponse::release_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::CameraResult* released = _impl_.camera_result_;
+  _impl_.camera_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetVideoStreamInfoResponse::unsafe_arena_release_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.GetVideoStreamInfoResponse.camera_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::CameraResult* temp = _impl_.camera_result_;
+  _impl_.camera_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetVideoStreamInfoResponse::_internal_mutable_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.camera_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::CameraResult>(GetArena());
+    _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(p);
+  }
+  return _impl_.camera_result_;
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetVideoStreamInfoResponse::mutable_camera_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::camera::CameraResult* _msg = _internal_mutable_camera_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.GetVideoStreamInfoResponse.camera_result)
+  return _msg;
+}
+inline void GetVideoStreamInfoResponse::set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(_impl_.camera_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.GetVideoStreamInfoResponse.camera_result)
+}
+
+// .mavsdk.rpc.camera.VideoStreamInfo video_stream_info = 2;
+inline bool GetVideoStreamInfoResponse::has_video_stream_info() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.video_stream_info_ != nullptr);
+  return value;
+}
+inline void GetVideoStreamInfoResponse::clear_video_stream_info() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.video_stream_info_ != nullptr) _impl_.video_stream_info_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline const ::mavsdk::rpc::camera::VideoStreamInfo& GetVideoStreamInfoResponse::_internal_video_stream_info() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::camera::VideoStreamInfo* p = _impl_.video_stream_info_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::VideoStreamInfo&>(::mavsdk::rpc::camera::_VideoStreamInfo_default_instance_);
+}
+inline const ::mavsdk::rpc::camera::VideoStreamInfo& GetVideoStreamInfoResponse::video_stream_info() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.GetVideoStreamInfoResponse.video_stream_info)
+  return _internal_video_stream_info();
+}
+inline void GetVideoStreamInfoResponse::unsafe_arena_set_allocated_video_stream_info(::mavsdk::rpc::camera::VideoStreamInfo* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.video_stream_info_);
+  }
+  _impl_.video_stream_info_ = reinterpret_cast<::mavsdk::rpc::camera::VideoStreamInfo*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.GetVideoStreamInfoResponse.video_stream_info)
+}
+inline ::mavsdk::rpc::camera::VideoStreamInfo* GetVideoStreamInfoResponse::release_video_stream_info() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::camera::VideoStreamInfo* released = _impl_.video_stream_info_;
+  _impl_.video_stream_info_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::camera::VideoStreamInfo* GetVideoStreamInfoResponse::unsafe_arena_release_video_stream_info() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.GetVideoStreamInfoResponse.video_stream_info)
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::camera::VideoStreamInfo* temp = _impl_.video_stream_info_;
+  _impl_.video_stream_info_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera::VideoStreamInfo* GetVideoStreamInfoResponse::_internal_mutable_video_stream_info() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000002u;
+  if (_impl_.video_stream_info_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::VideoStreamInfo>(GetArena());
+    _impl_.video_stream_info_ = reinterpret_cast<::mavsdk::rpc::camera::VideoStreamInfo*>(p);
+  }
+  return _impl_.video_stream_info_;
+}
+inline ::mavsdk::rpc::camera::VideoStreamInfo* GetVideoStreamInfoResponse::mutable_video_stream_info() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::camera::VideoStreamInfo* _msg = _internal_mutable_video_stream_info();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.GetVideoStreamInfoResponse.video_stream_info)
+  return _msg;
+}
+inline void GetVideoStreamInfoResponse::set_allocated_video_stream_info(::mavsdk::rpc::camera::VideoStreamInfo* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::camera::VideoStreamInfo*>(_impl_.video_stream_info_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::VideoStreamInfo*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+
+  _impl_.video_stream_info_ = reinterpret_cast<::mavsdk::rpc::camera::VideoStreamInfo*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.GetVideoStreamInfoResponse.video_stream_info)
+}
+
+// -------------------------------------------------------------------
+
+// GetStorageRequest
+
+// int32 component_id = 1;
+inline void GetStorageRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t GetStorageRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.GetStorageRequest.component_id)
+  return _internal_component_id();
+}
+inline void GetStorageRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.GetStorageRequest.component_id)
+}
+inline ::int32_t GetStorageRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void GetStorageRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// GetStorageResponse
+
+// .mavsdk.rpc.camera.CameraResult camera_result = 1;
+inline bool GetStorageResponse::has_camera_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.camera_result_ != nullptr);
+  return value;
+}
+inline void GetStorageResponse::clear_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.camera_result_ != nullptr) _impl_.camera_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera::CameraResult& GetStorageResponse::_internal_camera_result() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::camera::CameraResult* p = _impl_.camera_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::CameraResult&>(::mavsdk::rpc::camera::_CameraResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera::CameraResult& GetStorageResponse::camera_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.GetStorageResponse.camera_result)
+  return _internal_camera_result();
+}
+inline void GetStorageResponse::unsafe_arena_set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_result_);
+  }
+  _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.GetStorageResponse.camera_result)
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetStorageResponse::release_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::CameraResult* released = _impl_.camera_result_;
+  _impl_.camera_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetStorageResponse::unsafe_arena_release_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.GetStorageResponse.camera_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::CameraResult* temp = _impl_.camera_result_;
+  _impl_.camera_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetStorageResponse::_internal_mutable_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.camera_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::CameraResult>(GetArena());
+    _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(p);
+  }
+  return _impl_.camera_result_;
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetStorageResponse::mutable_camera_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::camera::CameraResult* _msg = _internal_mutable_camera_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.GetStorageResponse.camera_result)
+  return _msg;
+}
+inline void GetStorageResponse::set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(_impl_.camera_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.GetStorageResponse.camera_result)
+}
+
+// .mavsdk.rpc.camera.Storage storage = 2;
+inline bool GetStorageResponse::has_storage() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.storage_ != nullptr);
+  return value;
+}
+inline void GetStorageResponse::clear_storage() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.storage_ != nullptr) _impl_.storage_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline const ::mavsdk::rpc::camera::Storage& GetStorageResponse::_internal_storage() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::camera::Storage* p = _impl_.storage_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::Storage&>(::mavsdk::rpc::camera::_Storage_default_instance_);
+}
+inline const ::mavsdk::rpc::camera::Storage& GetStorageResponse::storage() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.GetStorageResponse.storage)
+  return _internal_storage();
+}
+inline void GetStorageResponse::unsafe_arena_set_allocated_storage(::mavsdk::rpc::camera::Storage* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.storage_);
+  }
+  _impl_.storage_ = reinterpret_cast<::mavsdk::rpc::camera::Storage*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.GetStorageResponse.storage)
+}
+inline ::mavsdk::rpc::camera::Storage* GetStorageResponse::release_storage() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::camera::Storage* released = _impl_.storage_;
+  _impl_.storage_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::camera::Storage* GetStorageResponse::unsafe_arena_release_storage() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.GetStorageResponse.storage)
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::camera::Storage* temp = _impl_.storage_;
+  _impl_.storage_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera::Storage* GetStorageResponse::_internal_mutable_storage() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000002u;
+  if (_impl_.storage_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::Storage>(GetArena());
+    _impl_.storage_ = reinterpret_cast<::mavsdk::rpc::camera::Storage*>(p);
+  }
+  return _impl_.storage_;
+}
+inline ::mavsdk::rpc::camera::Storage* GetStorageResponse::mutable_storage() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::camera::Storage* _msg = _internal_mutable_storage();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.GetStorageResponse.storage)
+  return _msg;
+}
+inline void GetStorageResponse::set_allocated_storage(::mavsdk::rpc::camera::Storage* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::camera::Storage*>(_impl_.storage_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::Storage*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+
+  _impl_.storage_ = reinterpret_cast<::mavsdk::rpc::camera::Storage*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.GetStorageResponse.storage)
+}
+
+// -------------------------------------------------------------------
+
+// GetCurrentSettingsRequest
+
+// int32 component_id = 1;
+inline void GetCurrentSettingsRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t GetCurrentSettingsRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.GetCurrentSettingsRequest.component_id)
+  return _internal_component_id();
+}
+inline void GetCurrentSettingsRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.GetCurrentSettingsRequest.component_id)
+}
+inline ::int32_t GetCurrentSettingsRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void GetCurrentSettingsRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// GetCurrentSettingsResponse
+
+// .mavsdk.rpc.camera.CameraResult camera_result = 1;
+inline bool GetCurrentSettingsResponse::has_camera_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.camera_result_ != nullptr);
+  return value;
+}
+inline void GetCurrentSettingsResponse::clear_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.camera_result_ != nullptr) _impl_.camera_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera::CameraResult& GetCurrentSettingsResponse::_internal_camera_result() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::camera::CameraResult* p = _impl_.camera_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::CameraResult&>(::mavsdk::rpc::camera::_CameraResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera::CameraResult& GetCurrentSettingsResponse::camera_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.GetCurrentSettingsResponse.camera_result)
+  return _internal_camera_result();
+}
+inline void GetCurrentSettingsResponse::unsafe_arena_set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_result_);
+  }
+  _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.GetCurrentSettingsResponse.camera_result)
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetCurrentSettingsResponse::release_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::CameraResult* released = _impl_.camera_result_;
+  _impl_.camera_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetCurrentSettingsResponse::unsafe_arena_release_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.GetCurrentSettingsResponse.camera_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::CameraResult* temp = _impl_.camera_result_;
+  _impl_.camera_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetCurrentSettingsResponse::_internal_mutable_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.camera_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::CameraResult>(GetArena());
+    _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(p);
+  }
+  return _impl_.camera_result_;
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetCurrentSettingsResponse::mutable_camera_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::camera::CameraResult* _msg = _internal_mutable_camera_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.GetCurrentSettingsResponse.camera_result)
+  return _msg;
+}
+inline void GetCurrentSettingsResponse::set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(_impl_.camera_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.GetCurrentSettingsResponse.camera_result)
+}
+
+// repeated .mavsdk.rpc.camera.Setting current_settings = 2;
+inline int GetCurrentSettingsResponse::_internal_current_settings_size() const {
+  return _internal_current_settings().size();
+}
+inline int GetCurrentSettingsResponse::current_settings_size() const {
+  return _internal_current_settings_size();
+}
+inline void GetCurrentSettingsResponse::clear_current_settings() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.current_settings_.Clear();
+}
+inline ::mavsdk::rpc::camera::Setting* GetCurrentSettingsResponse::mutable_current_settings(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.GetCurrentSettingsResponse.current_settings)
+  return _internal_mutable_current_settings()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Setting>* GetCurrentSettingsResponse::mutable_current_settings()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.camera.GetCurrentSettingsResponse.current_settings)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  return _internal_mutable_current_settings();
+}
+inline const ::mavsdk::rpc::camera::Setting& GetCurrentSettingsResponse::current_settings(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.GetCurrentSettingsResponse.current_settings)
+  return _internal_current_settings().Get(index);
+}
+inline ::mavsdk::rpc::camera::Setting* GetCurrentSettingsResponse::add_current_settings() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::mavsdk::rpc::camera::Setting* _add = _internal_mutable_current_settings()->Add();
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.camera.GetCurrentSettingsResponse.current_settings)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Setting>& GetCurrentSettingsResponse::current_settings() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.camera.GetCurrentSettingsResponse.current_settings)
+  return _internal_current_settings();
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Setting>&
+GetCurrentSettingsResponse::_internal_current_settings() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.current_settings_;
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Setting>*
+GetCurrentSettingsResponse::_internal_mutable_current_settings() {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return &_impl_.current_settings_;
+}
+
+// -------------------------------------------------------------------
+
+// GetPossibleSettingOptionsRequest
+
+// int32 component_id = 1;
+inline void GetPossibleSettingOptionsRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t GetPossibleSettingOptionsRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.GetPossibleSettingOptionsRequest.component_id)
+  return _internal_component_id();
+}
+inline void GetPossibleSettingOptionsRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.GetPossibleSettingOptionsRequest.component_id)
+}
+inline ::int32_t GetPossibleSettingOptionsRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void GetPossibleSettingOptionsRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// GetPossibleSettingOptionsResponse
+
+// .mavsdk.rpc.camera.CameraResult camera_result = 1;
+inline bool GetPossibleSettingOptionsResponse::has_camera_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.camera_result_ != nullptr);
+  return value;
+}
+inline void GetPossibleSettingOptionsResponse::clear_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.camera_result_ != nullptr) _impl_.camera_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::camera::CameraResult& GetPossibleSettingOptionsResponse::_internal_camera_result() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::camera::CameraResult* p = _impl_.camera_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::CameraResult&>(::mavsdk::rpc::camera::_CameraResult_default_instance_);
+}
+inline const ::mavsdk::rpc::camera::CameraResult& GetPossibleSettingOptionsResponse::camera_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.GetPossibleSettingOptionsResponse.camera_result)
+  return _internal_camera_result();
+}
+inline void GetPossibleSettingOptionsResponse::unsafe_arena_set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_result_);
+  }
+  _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.GetPossibleSettingOptionsResponse.camera_result)
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetPossibleSettingOptionsResponse::release_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::CameraResult* released = _impl_.camera_result_;
+  _impl_.camera_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetPossibleSettingOptionsResponse::unsafe_arena_release_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.GetPossibleSettingOptionsResponse.camera_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::camera::CameraResult* temp = _impl_.camera_result_;
+  _impl_.camera_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetPossibleSettingOptionsResponse::_internal_mutable_camera_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.camera_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::CameraResult>(GetArena());
+    _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(p);
+  }
+  return _impl_.camera_result_;
+}
+inline ::mavsdk::rpc::camera::CameraResult* GetPossibleSettingOptionsResponse::mutable_camera_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::camera::CameraResult* _msg = _internal_mutable_camera_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.GetPossibleSettingOptionsResponse.camera_result)
+  return _msg;
+}
+inline void GetPossibleSettingOptionsResponse::set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(_impl_.camera_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.GetPossibleSettingOptionsResponse.camera_result)
+}
+
+// repeated .mavsdk.rpc.camera.SettingOptions setting_options = 2;
+inline int GetPossibleSettingOptionsResponse::_internal_setting_options_size() const {
+  return _internal_setting_options().size();
+}
+inline int GetPossibleSettingOptionsResponse::setting_options_size() const {
+  return _internal_setting_options_size();
+}
+inline void GetPossibleSettingOptionsResponse::clear_setting_options() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.setting_options_.Clear();
+}
+inline ::mavsdk::rpc::camera::SettingOptions* GetPossibleSettingOptionsResponse::mutable_setting_options(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.GetPossibleSettingOptionsResponse.setting_options)
+  return _internal_mutable_setting_options()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::SettingOptions>* GetPossibleSettingOptionsResponse::mutable_setting_options()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.camera.GetPossibleSettingOptionsResponse.setting_options)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  return _internal_mutable_setting_options();
+}
+inline const ::mavsdk::rpc::camera::SettingOptions& GetPossibleSettingOptionsResponse::setting_options(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.GetPossibleSettingOptionsResponse.setting_options)
+  return _internal_setting_options().Get(index);
+}
+inline ::mavsdk::rpc::camera::SettingOptions* GetPossibleSettingOptionsResponse::add_setting_options() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::mavsdk::rpc::camera::SettingOptions* _add = _internal_mutable_setting_options()->Add();
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.camera.GetPossibleSettingOptionsResponse.setting_options)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::SettingOptions>& GetPossibleSettingOptionsResponse::setting_options() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.camera.GetPossibleSettingOptionsResponse.setting_options)
+  return _internal_setting_options();
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::SettingOptions>&
+GetPossibleSettingOptionsResponse::_internal_setting_options() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.setting_options_;
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::SettingOptions>*
+GetPossibleSettingOptionsResponse::_internal_mutable_setting_options() {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return &_impl_.setting_options_;
+}
+
+// -------------------------------------------------------------------
+
 // GetSettingRequest
 
-// .mavsdk.rpc.camera.Setting setting = 1;
+// int32 component_id = 1;
+inline void GetSettingRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t GetSettingRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.GetSettingRequest.component_id)
+  return _internal_component_id();
+}
+inline void GetSettingRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.GetSettingRequest.component_id)
+}
+inline ::int32_t GetSettingRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void GetSettingRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// .mavsdk.rpc.camera.Setting setting = 2;
 inline bool GetSettingRequest::has_setting() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.setting_ != nullptr);
@@ -16768,7 +22730,30 @@ inline void GetSettingResponse::set_allocated_setting(::mavsdk::rpc::camera::Set
 
 // FormatStorageRequest
 
-// int32 storage_id = 1;
+// int32 component_id = 1;
+inline void FormatStorageRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t FormatStorageRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.FormatStorageRequest.component_id)
+  return _internal_component_id();
+}
+inline void FormatStorageRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.FormatStorageRequest.component_id)
+}
+inline ::int32_t FormatStorageRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void FormatStorageRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// int32 storage_id = 2;
 inline void FormatStorageRequest::clear_storage_id() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.storage_id_ = 0;
@@ -16893,134 +22878,30 @@ inline void FormatStorageResponse::set_allocated_camera_result(::mavsdk::rpc::ca
 
 // -------------------------------------------------------------------
 
-// SelectCameraResponse
+// ResetSettingsRequest
 
-// .mavsdk.rpc.camera.CameraResult camera_result = 1;
-inline bool SelectCameraResponse::has_camera_result() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.camera_result_ != nullptr);
-  return value;
-}
-inline void SelectCameraResponse::clear_camera_result() {
+// int32 component_id = 1;
+inline void ResetSettingsRequest::clear_component_id() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (_impl_.camera_result_ != nullptr) _impl_.camera_result_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_.component_id_ = 0;
 }
-inline const ::mavsdk::rpc::camera::CameraResult& SelectCameraResponse::_internal_camera_result() const {
+inline ::int32_t ResetSettingsRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.ResetSettingsRequest.component_id)
+  return _internal_component_id();
+}
+inline void ResetSettingsRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.ResetSettingsRequest.component_id)
+}
+inline ::int32_t ResetSettingsRequest::_internal_component_id() const {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  const ::mavsdk::rpc::camera::CameraResult* p = _impl_.camera_result_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::CameraResult&>(::mavsdk::rpc::camera::_CameraResult_default_instance_);
+  return _impl_.component_id_;
 }
-inline const ::mavsdk::rpc::camera::CameraResult& SelectCameraResponse::camera_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.SelectCameraResponse.camera_result)
-  return _internal_camera_result();
-}
-inline void SelectCameraResponse::unsafe_arena_set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.camera_result_);
-  }
-  _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.SelectCameraResponse.camera_result)
-}
-inline ::mavsdk::rpc::camera::CameraResult* SelectCameraResponse::release_camera_result() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::camera::CameraResult* released = _impl_.camera_result_;
-  _impl_.camera_result_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-  if (GetArena() == nullptr) {
-    delete old;
-  }
-#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArena() != nullptr) {
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return released;
-}
-inline ::mavsdk::rpc::camera::CameraResult* SelectCameraResponse::unsafe_arena_release_camera_result() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.SelectCameraResponse.camera_result)
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::camera::CameraResult* temp = _impl_.camera_result_;
-  _impl_.camera_result_ = nullptr;
-  return temp;
-}
-inline ::mavsdk::rpc::camera::CameraResult* SelectCameraResponse::_internal_mutable_camera_result() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_._has_bits_[0] |= 0x00000001u;
-  if (_impl_.camera_result_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::CameraResult>(GetArena());
-    _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(p);
-  }
-  return _impl_.camera_result_;
-}
-inline ::mavsdk::rpc::camera::CameraResult* SelectCameraResponse::mutable_camera_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::mavsdk::rpc::camera::CameraResult* _msg = _internal_mutable_camera_result();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.SelectCameraResponse.camera_result)
-  return _msg;
-}
-inline void SelectCameraResponse::set_allocated_camera_result(::mavsdk::rpc::camera::CameraResult* value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (message_arena == nullptr) {
-    delete reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(_impl_.camera_result_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-
-  _impl_.camera_result_ = reinterpret_cast<::mavsdk::rpc::camera::CameraResult*>(value);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.SelectCameraResponse.camera_result)
-}
-
-// -------------------------------------------------------------------
-
-// SelectCameraRequest
-
-// int32 camera_id = 1;
-inline void SelectCameraRequest::clear_camera_id() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.camera_id_ = 0;
-}
-inline ::int32_t SelectCameraRequest::camera_id() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.SelectCameraRequest.camera_id)
-  return _internal_camera_id();
-}
-inline void SelectCameraRequest::set_camera_id(::int32_t value) {
-  _internal_set_camera_id(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.SelectCameraRequest.camera_id)
-}
-inline ::int32_t SelectCameraRequest::_internal_camera_id() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.camera_id_;
-}
-inline void SelectCameraRequest::_internal_set_camera_id(::int32_t value) {
+inline void ResetSettingsRequest::_internal_set_component_id(::int32_t value) {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   ;
-  _impl_.camera_id_ = value;
+  _impl_.component_id_ = value;
 }
-
-// -------------------------------------------------------------------
-
-// ResetSettingsRequest
 
 // -------------------------------------------------------------------
 
@@ -17126,6 +23007,29 @@ inline void ResetSettingsResponse::set_allocated_camera_result(::mavsdk::rpc::ca
 
 // ZoomInStartRequest
 
+// int32 component_id = 1;
+inline void ZoomInStartRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t ZoomInStartRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.ZoomInStartRequest.component_id)
+  return _internal_component_id();
+}
+inline void ZoomInStartRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.ZoomInStartRequest.component_id)
+}
+inline ::int32_t ZoomInStartRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void ZoomInStartRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // ZoomInStartResponse
@@ -17229,6 +23133,29 @@ inline void ZoomInStartResponse::set_allocated_camera_result(::mavsdk::rpc::came
 // -------------------------------------------------------------------
 
 // ZoomOutStartRequest
+
+// int32 component_id = 1;
+inline void ZoomOutStartRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t ZoomOutStartRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.ZoomOutStartRequest.component_id)
+  return _internal_component_id();
+}
+inline void ZoomOutStartRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.ZoomOutStartRequest.component_id)
+}
+inline ::int32_t ZoomOutStartRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void ZoomOutStartRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
 
 // -------------------------------------------------------------------
 
@@ -17334,6 +23261,29 @@ inline void ZoomOutStartResponse::set_allocated_camera_result(::mavsdk::rpc::cam
 
 // ZoomStopRequest
 
+// int32 component_id = 1;
+inline void ZoomStopRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t ZoomStopRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.ZoomStopRequest.component_id)
+  return _internal_component_id();
+}
+inline void ZoomStopRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.ZoomStopRequest.component_id)
+}
+inline ::int32_t ZoomStopRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void ZoomStopRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // ZoomStopResponse
@@ -17438,7 +23388,30 @@ inline void ZoomStopResponse::set_allocated_camera_result(::mavsdk::rpc::camera:
 
 // ZoomRangeRequest
 
-// float range = 1;
+// int32 component_id = 1;
+inline void ZoomRangeRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t ZoomRangeRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.ZoomRangeRequest.component_id)
+  return _internal_component_id();
+}
+inline void ZoomRangeRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.ZoomRangeRequest.component_id)
+}
+inline ::int32_t ZoomRangeRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void ZoomRangeRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// float range = 2;
 inline void ZoomRangeRequest::clear_range() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.range_ = 0;
@@ -17565,7 +23538,30 @@ inline void ZoomRangeResponse::set_allocated_camera_result(::mavsdk::rpc::camera
 
 // TrackPointRequest
 
-// float point_x = 1;
+// int32 component_id = 1;
+inline void TrackPointRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t TrackPointRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.TrackPointRequest.component_id)
+  return _internal_component_id();
+}
+inline void TrackPointRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.TrackPointRequest.component_id)
+}
+inline ::int32_t TrackPointRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void TrackPointRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// float point_x = 2;
 inline void TrackPointRequest::clear_point_x() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.point_x_ = 0;
@@ -17588,7 +23584,7 @@ inline void TrackPointRequest::_internal_set_point_x(float value) {
   _impl_.point_x_ = value;
 }
 
-// float point_y = 2;
+// float point_y = 3;
 inline void TrackPointRequest::clear_point_y() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.point_y_ = 0;
@@ -17611,7 +23607,7 @@ inline void TrackPointRequest::_internal_set_point_y(float value) {
   _impl_.point_y_ = value;
 }
 
-// float radius = 3;
+// float radius = 4;
 inline void TrackPointRequest::clear_radius() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.radius_ = 0;
@@ -17738,7 +23734,30 @@ inline void TrackPointResponse::set_allocated_camera_result(::mavsdk::rpc::camer
 
 // TrackRectangleRequest
 
-// float top_left_x = 1;
+// int32 component_id = 1;
+inline void TrackRectangleRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t TrackRectangleRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.TrackRectangleRequest.component_id)
+  return _internal_component_id();
+}
+inline void TrackRectangleRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.TrackRectangleRequest.component_id)
+}
+inline ::int32_t TrackRectangleRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void TrackRectangleRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// float top_left_x = 2;
 inline void TrackRectangleRequest::clear_top_left_x() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.top_left_x_ = 0;
@@ -17761,7 +23780,7 @@ inline void TrackRectangleRequest::_internal_set_top_left_x(float value) {
   _impl_.top_left_x_ = value;
 }
 
-// float top_left_y = 2;
+// float top_left_y = 3;
 inline void TrackRectangleRequest::clear_top_left_y() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.top_left_y_ = 0;
@@ -17784,7 +23803,7 @@ inline void TrackRectangleRequest::_internal_set_top_left_y(float value) {
   _impl_.top_left_y_ = value;
 }
 
-// float bottom_right_x = 3;
+// float bottom_right_x = 4;
 inline void TrackRectangleRequest::clear_bottom_right_x() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.bottom_right_x_ = 0;
@@ -17807,7 +23826,7 @@ inline void TrackRectangleRequest::_internal_set_bottom_right_x(float value) {
   _impl_.bottom_right_x_ = value;
 }
 
-// float bottom_right_y = 4;
+// float bottom_right_y = 5;
 inline void TrackRectangleRequest::clear_bottom_right_y() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.bottom_right_y_ = 0;
@@ -17934,6 +23953,29 @@ inline void TrackRectangleResponse::set_allocated_camera_result(::mavsdk::rpc::c
 
 // TrackStopRequest
 
+// int32 component_id = 1;
+inline void TrackStopRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t TrackStopRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.TrackStopRequest.component_id)
+  return _internal_component_id();
+}
+inline void TrackStopRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.TrackStopRequest.component_id)
+}
+inline ::int32_t TrackStopRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void TrackStopRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // TrackStopResponse
@@ -18037,6 +24079,29 @@ inline void TrackStopResponse::set_allocated_camera_result(::mavsdk::rpc::camera
 // -------------------------------------------------------------------
 
 // FocusInStartRequest
+
+// int32 component_id = 1;
+inline void FocusInStartRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t FocusInStartRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.FocusInStartRequest.component_id)
+  return _internal_component_id();
+}
+inline void FocusInStartRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.FocusInStartRequest.component_id)
+}
+inline ::int32_t FocusInStartRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void FocusInStartRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
 
 // -------------------------------------------------------------------
 
@@ -18142,6 +24207,29 @@ inline void FocusInStartResponse::set_allocated_camera_result(::mavsdk::rpc::cam
 
 // FocusOutStartRequest
 
+// int32 component_id = 1;
+inline void FocusOutStartRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t FocusOutStartRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.FocusOutStartRequest.component_id)
+  return _internal_component_id();
+}
+inline void FocusOutStartRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.FocusOutStartRequest.component_id)
+}
+inline ::int32_t FocusOutStartRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void FocusOutStartRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // FocusOutStartResponse
@@ -18245,6 +24333,29 @@ inline void FocusOutStartResponse::set_allocated_camera_result(::mavsdk::rpc::ca
 // -------------------------------------------------------------------
 
 // FocusStopRequest
+
+// int32 component_id = 1;
+inline void FocusStopRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t FocusStopRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.FocusStopRequest.component_id)
+  return _internal_component_id();
+}
+inline void FocusStopRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.FocusStopRequest.component_id)
+}
+inline ::int32_t FocusStopRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void FocusStopRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
 
 // -------------------------------------------------------------------
 
@@ -18350,7 +24461,30 @@ inline void FocusStopResponse::set_allocated_camera_result(::mavsdk::rpc::camera
 
 // FocusRangeRequest
 
-// float range = 1;
+// int32 component_id = 1;
+inline void FocusRangeRequest::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t FocusRangeRequest::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.FocusRangeRequest.component_id)
+  return _internal_component_id();
+}
+inline void FocusRangeRequest::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.FocusRangeRequest.component_id)
+}
+inline ::int32_t FocusRangeRequest::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void FocusRangeRequest::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// float range = 2;
 inline void FocusRangeRequest::clear_range() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.range_ = 0;
@@ -18822,7 +24956,30 @@ inline void EulerAngle::_internal_set_yaw_deg(float value) {
 
 // CaptureInfo
 
-// .mavsdk.rpc.camera.Position position = 1;
+// int32 component_id = 1;
+inline void CaptureInfo::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t CaptureInfo::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.CaptureInfo.component_id)
+  return _internal_component_id();
+}
+inline void CaptureInfo::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.CaptureInfo.component_id)
+}
+inline ::int32_t CaptureInfo::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void CaptureInfo::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// .mavsdk.rpc.camera.Position position = 2;
 inline bool CaptureInfo::has_position() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.position_ != nullptr);
@@ -18918,7 +25075,7 @@ inline void CaptureInfo::set_allocated_position(::mavsdk::rpc::camera::Position*
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.CaptureInfo.position)
 }
 
-// .mavsdk.rpc.camera.Quaternion attitude_quaternion = 2;
+// .mavsdk.rpc.camera.Quaternion attitude_quaternion = 3;
 inline bool CaptureInfo::has_attitude_quaternion() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.attitude_quaternion_ != nullptr);
@@ -19014,7 +25171,7 @@ inline void CaptureInfo::set_allocated_attitude_quaternion(::mavsdk::rpc::camera
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.CaptureInfo.attitude_quaternion)
 }
 
-// .mavsdk.rpc.camera.EulerAngle attitude_euler_angle = 3;
+// .mavsdk.rpc.camera.EulerAngle attitude_euler_angle = 4;
 inline bool CaptureInfo::has_attitude_euler_angle() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   PROTOBUF_ASSUME(!value || _impl_.attitude_euler_angle_ != nullptr);
@@ -19110,7 +25267,7 @@ inline void CaptureInfo::set_allocated_attitude_euler_angle(::mavsdk::rpc::camer
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.CaptureInfo.attitude_euler_angle)
 }
 
-// uint64 time_utc_us = 4;
+// uint64 time_utc_us = 5;
 inline void CaptureInfo::clear_time_utc_us() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.time_utc_us_ = ::uint64_t{0u};
@@ -19133,7 +25290,7 @@ inline void CaptureInfo::_internal_set_time_utc_us(::uint64_t value) {
   _impl_.time_utc_us_ = value;
 }
 
-// bool is_success = 5;
+// bool is_success = 6;
 inline void CaptureInfo::clear_is_success() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.is_success_ = false;
@@ -19156,7 +25313,7 @@ inline void CaptureInfo::_internal_set_is_success(bool value) {
   _impl_.is_success_ = value;
 }
 
-// int32 index = 6;
+// int32 index = 7;
 inline void CaptureInfo::clear_index() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.index_ = 0;
@@ -19179,7 +25336,7 @@ inline void CaptureInfo::_internal_set_index(::int32_t value) {
   _impl_.index_ = value;
 }
 
-// string file_url = 7;
+// string file_url = 8;
 inline void CaptureInfo::clear_file_url() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.file_url_.ClearToEmpty();
@@ -19234,1135 +25391,32 @@ inline void CaptureInfo::set_allocated_file_url(std::string* value) {
 
 // -------------------------------------------------------------------
 
-// VideoStreamSettings
-
-// float frame_rate_hz = 1;
-inline void VideoStreamSettings::clear_frame_rate_hz() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.frame_rate_hz_ = 0;
-}
-inline float VideoStreamSettings::frame_rate_hz() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamSettings.frame_rate_hz)
-  return _internal_frame_rate_hz();
-}
-inline void VideoStreamSettings::set_frame_rate_hz(float value) {
-  _internal_set_frame_rate_hz(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.frame_rate_hz)
-}
-inline float VideoStreamSettings::_internal_frame_rate_hz() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.frame_rate_hz_;
-}
-inline void VideoStreamSettings::_internal_set_frame_rate_hz(float value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.frame_rate_hz_ = value;
-}
-
-// uint32 horizontal_resolution_pix = 2;
-inline void VideoStreamSettings::clear_horizontal_resolution_pix() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.horizontal_resolution_pix_ = 0u;
-}
-inline ::uint32_t VideoStreamSettings::horizontal_resolution_pix() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamSettings.horizontal_resolution_pix)
-  return _internal_horizontal_resolution_pix();
-}
-inline void VideoStreamSettings::set_horizontal_resolution_pix(::uint32_t value) {
-  _internal_set_horizontal_resolution_pix(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.horizontal_resolution_pix)
-}
-inline ::uint32_t VideoStreamSettings::_internal_horizontal_resolution_pix() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.horizontal_resolution_pix_;
-}
-inline void VideoStreamSettings::_internal_set_horizontal_resolution_pix(::uint32_t value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.horizontal_resolution_pix_ = value;
-}
-
-// uint32 vertical_resolution_pix = 3;
-inline void VideoStreamSettings::clear_vertical_resolution_pix() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.vertical_resolution_pix_ = 0u;
-}
-inline ::uint32_t VideoStreamSettings::vertical_resolution_pix() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamSettings.vertical_resolution_pix)
-  return _internal_vertical_resolution_pix();
-}
-inline void VideoStreamSettings::set_vertical_resolution_pix(::uint32_t value) {
-  _internal_set_vertical_resolution_pix(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.vertical_resolution_pix)
-}
-inline ::uint32_t VideoStreamSettings::_internal_vertical_resolution_pix() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.vertical_resolution_pix_;
-}
-inline void VideoStreamSettings::_internal_set_vertical_resolution_pix(::uint32_t value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.vertical_resolution_pix_ = value;
-}
-
-// uint32 bit_rate_b_s = 4;
-inline void VideoStreamSettings::clear_bit_rate_b_s() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.bit_rate_b_s_ = 0u;
-}
-inline ::uint32_t VideoStreamSettings::bit_rate_b_s() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamSettings.bit_rate_b_s)
-  return _internal_bit_rate_b_s();
-}
-inline void VideoStreamSettings::set_bit_rate_b_s(::uint32_t value) {
-  _internal_set_bit_rate_b_s(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.bit_rate_b_s)
-}
-inline ::uint32_t VideoStreamSettings::_internal_bit_rate_b_s() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.bit_rate_b_s_;
-}
-inline void VideoStreamSettings::_internal_set_bit_rate_b_s(::uint32_t value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.bit_rate_b_s_ = value;
-}
-
-// uint32 rotation_deg = 5;
-inline void VideoStreamSettings::clear_rotation_deg() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.rotation_deg_ = 0u;
-}
-inline ::uint32_t VideoStreamSettings::rotation_deg() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamSettings.rotation_deg)
-  return _internal_rotation_deg();
-}
-inline void VideoStreamSettings::set_rotation_deg(::uint32_t value) {
-  _internal_set_rotation_deg(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.rotation_deg)
-}
-inline ::uint32_t VideoStreamSettings::_internal_rotation_deg() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.rotation_deg_;
-}
-inline void VideoStreamSettings::_internal_set_rotation_deg(::uint32_t value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.rotation_deg_ = value;
-}
-
-// string uri = 6;
-inline void VideoStreamSettings::clear_uri() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.uri_.ClearToEmpty();
-}
-inline const std::string& VideoStreamSettings::uri() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamSettings.uri)
-  return _internal_uri();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void VideoStreamSettings::set_uri(Arg_&& arg,
-                                                     Args_... args) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.uri_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.uri)
-}
-inline std::string* VideoStreamSettings::mutable_uri() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_uri();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.VideoStreamSettings.uri)
-  return _s;
-}
-inline const std::string& VideoStreamSettings::_internal_uri() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.uri_.Get();
-}
-inline void VideoStreamSettings::_internal_set_uri(const std::string& value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.uri_.Set(value, GetArena());
-}
-inline std::string* VideoStreamSettings::_internal_mutable_uri() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  return _impl_.uri_.Mutable( GetArena());
-}
-inline std::string* VideoStreamSettings::release_uri() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.VideoStreamSettings.uri)
-  return _impl_.uri_.Release();
-}
-inline void VideoStreamSettings::set_allocated_uri(std::string* value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.uri_.SetAllocated(value, GetArena());
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        if (_impl_.uri_.IsDefault()) {
-          _impl_.uri_.Set("", GetArena());
-        }
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.VideoStreamSettings.uri)
-}
-
-// float horizontal_fov_deg = 7;
-inline void VideoStreamSettings::clear_horizontal_fov_deg() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.horizontal_fov_deg_ = 0;
-}
-inline float VideoStreamSettings::horizontal_fov_deg() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamSettings.horizontal_fov_deg)
-  return _internal_horizontal_fov_deg();
-}
-inline void VideoStreamSettings::set_horizontal_fov_deg(float value) {
-  _internal_set_horizontal_fov_deg(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamSettings.horizontal_fov_deg)
-}
-inline float VideoStreamSettings::_internal_horizontal_fov_deg() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.horizontal_fov_deg_;
-}
-inline void VideoStreamSettings::_internal_set_horizontal_fov_deg(float value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.horizontal_fov_deg_ = value;
-}
-
-// -------------------------------------------------------------------
-
-// VideoStreamInfo
-
-// .mavsdk.rpc.camera.VideoStreamSettings settings = 1;
-inline bool VideoStreamInfo::has_settings() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.settings_ != nullptr);
-  return value;
-}
-inline void VideoStreamInfo::clear_settings() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (_impl_.settings_ != nullptr) _impl_.settings_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
-}
-inline const ::mavsdk::rpc::camera::VideoStreamSettings& VideoStreamInfo::_internal_settings() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  const ::mavsdk::rpc::camera::VideoStreamSettings* p = _impl_.settings_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::VideoStreamSettings&>(::mavsdk::rpc::camera::_VideoStreamSettings_default_instance_);
-}
-inline const ::mavsdk::rpc::camera::VideoStreamSettings& VideoStreamInfo::settings() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamInfo.settings)
-  return _internal_settings();
-}
-inline void VideoStreamInfo::unsafe_arena_set_allocated_settings(::mavsdk::rpc::camera::VideoStreamSettings* value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.settings_);
-  }
-  _impl_.settings_ = reinterpret_cast<::mavsdk::rpc::camera::VideoStreamSettings*>(value);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.VideoStreamInfo.settings)
-}
-inline ::mavsdk::rpc::camera::VideoStreamSettings* VideoStreamInfo::release_settings() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::camera::VideoStreamSettings* released = _impl_.settings_;
-  _impl_.settings_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-  if (GetArena() == nullptr) {
-    delete old;
-  }
-#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArena() != nullptr) {
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return released;
-}
-inline ::mavsdk::rpc::camera::VideoStreamSettings* VideoStreamInfo::unsafe_arena_release_settings() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.VideoStreamInfo.settings)
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::camera::VideoStreamSettings* temp = _impl_.settings_;
-  _impl_.settings_ = nullptr;
-  return temp;
-}
-inline ::mavsdk::rpc::camera::VideoStreamSettings* VideoStreamInfo::_internal_mutable_settings() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_._has_bits_[0] |= 0x00000001u;
-  if (_impl_.settings_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::VideoStreamSettings>(GetArena());
-    _impl_.settings_ = reinterpret_cast<::mavsdk::rpc::camera::VideoStreamSettings*>(p);
-  }
-  return _impl_.settings_;
-}
-inline ::mavsdk::rpc::camera::VideoStreamSettings* VideoStreamInfo::mutable_settings() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::mavsdk::rpc::camera::VideoStreamSettings* _msg = _internal_mutable_settings();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.VideoStreamInfo.settings)
-  return _msg;
-}
-inline void VideoStreamInfo::set_allocated_settings(::mavsdk::rpc::camera::VideoStreamSettings* value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (message_arena == nullptr) {
-    delete reinterpret_cast<::mavsdk::rpc::camera::VideoStreamSettings*>(_impl_.settings_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::VideoStreamSettings*>(value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-
-  _impl_.settings_ = reinterpret_cast<::mavsdk::rpc::camera::VideoStreamSettings*>(value);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.VideoStreamInfo.settings)
-}
-
-// .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamStatus status = 2;
-inline void VideoStreamInfo::clear_status() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.status_ = 0;
-}
-inline ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus VideoStreamInfo::status() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamInfo.status)
-  return _internal_status();
-}
-inline void VideoStreamInfo::set_status(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus value) {
-  _internal_set_status(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamInfo.status)
-}
-inline ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus VideoStreamInfo::_internal_status() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return static_cast<::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus>(_impl_.status_);
-}
-inline void VideoStreamInfo::_internal_set_status(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.status_ = value;
-}
-
-// .mavsdk.rpc.camera.VideoStreamInfo.VideoStreamSpectrum spectrum = 3;
-inline void VideoStreamInfo::clear_spectrum() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.spectrum_ = 0;
-}
-inline ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum VideoStreamInfo::spectrum() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.VideoStreamInfo.spectrum)
-  return _internal_spectrum();
-}
-inline void VideoStreamInfo::set_spectrum(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum value) {
-  _internal_set_spectrum(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.VideoStreamInfo.spectrum)
-}
-inline ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum VideoStreamInfo::_internal_spectrum() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return static_cast<::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum>(_impl_.spectrum_);
-}
-inline void VideoStreamInfo::_internal_set_spectrum(::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.spectrum_ = value;
-}
-
-// -------------------------------------------------------------------
-
-// Status
-
-// bool video_on = 1;
-inline void Status::clear_video_on() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.video_on_ = false;
-}
-inline bool Status::video_on() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Status.video_on)
-  return _internal_video_on();
-}
-inline void Status::set_video_on(bool value) {
-  _internal_set_video_on(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Status.video_on)
-}
-inline bool Status::_internal_video_on() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.video_on_;
-}
-inline void Status::_internal_set_video_on(bool value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.video_on_ = value;
-}
-
-// bool photo_interval_on = 2;
-inline void Status::clear_photo_interval_on() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.photo_interval_on_ = false;
-}
-inline bool Status::photo_interval_on() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Status.photo_interval_on)
-  return _internal_photo_interval_on();
-}
-inline void Status::set_photo_interval_on(bool value) {
-  _internal_set_photo_interval_on(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Status.photo_interval_on)
-}
-inline bool Status::_internal_photo_interval_on() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.photo_interval_on_;
-}
-inline void Status::_internal_set_photo_interval_on(bool value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.photo_interval_on_ = value;
-}
-
-// float used_storage_mib = 3;
-inline void Status::clear_used_storage_mib() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.used_storage_mib_ = 0;
-}
-inline float Status::used_storage_mib() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Status.used_storage_mib)
-  return _internal_used_storage_mib();
-}
-inline void Status::set_used_storage_mib(float value) {
-  _internal_set_used_storage_mib(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Status.used_storage_mib)
-}
-inline float Status::_internal_used_storage_mib() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.used_storage_mib_;
-}
-inline void Status::_internal_set_used_storage_mib(float value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.used_storage_mib_ = value;
-}
-
-// float available_storage_mib = 4;
-inline void Status::clear_available_storage_mib() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.available_storage_mib_ = 0;
-}
-inline float Status::available_storage_mib() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Status.available_storage_mib)
-  return _internal_available_storage_mib();
-}
-inline void Status::set_available_storage_mib(float value) {
-  _internal_set_available_storage_mib(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Status.available_storage_mib)
-}
-inline float Status::_internal_available_storage_mib() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.available_storage_mib_;
-}
-inline void Status::_internal_set_available_storage_mib(float value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.available_storage_mib_ = value;
-}
-
-// float total_storage_mib = 5;
-inline void Status::clear_total_storage_mib() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.total_storage_mib_ = 0;
-}
-inline float Status::total_storage_mib() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Status.total_storage_mib)
-  return _internal_total_storage_mib();
-}
-inline void Status::set_total_storage_mib(float value) {
-  _internal_set_total_storage_mib(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Status.total_storage_mib)
-}
-inline float Status::_internal_total_storage_mib() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.total_storage_mib_;
-}
-inline void Status::_internal_set_total_storage_mib(float value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.total_storage_mib_ = value;
-}
-
-// float recording_time_s = 6;
-inline void Status::clear_recording_time_s() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.recording_time_s_ = 0;
-}
-inline float Status::recording_time_s() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Status.recording_time_s)
-  return _internal_recording_time_s();
-}
-inline void Status::set_recording_time_s(float value) {
-  _internal_set_recording_time_s(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Status.recording_time_s)
-}
-inline float Status::_internal_recording_time_s() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.recording_time_s_;
-}
-inline void Status::_internal_set_recording_time_s(float value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.recording_time_s_ = value;
-}
-
-// string media_folder_name = 7;
-inline void Status::clear_media_folder_name() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.media_folder_name_.ClearToEmpty();
-}
-inline const std::string& Status::media_folder_name() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Status.media_folder_name)
-  return _internal_media_folder_name();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void Status::set_media_folder_name(Arg_&& arg,
-                                                     Args_... args) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.media_folder_name_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Status.media_folder_name)
-}
-inline std::string* Status::mutable_media_folder_name() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_media_folder_name();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.Status.media_folder_name)
-  return _s;
-}
-inline const std::string& Status::_internal_media_folder_name() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.media_folder_name_.Get();
-}
-inline void Status::_internal_set_media_folder_name(const std::string& value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.media_folder_name_.Set(value, GetArena());
-}
-inline std::string* Status::_internal_mutable_media_folder_name() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  return _impl_.media_folder_name_.Mutable( GetArena());
-}
-inline std::string* Status::release_media_folder_name() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.Status.media_folder_name)
-  return _impl_.media_folder_name_.Release();
-}
-inline void Status::set_allocated_media_folder_name(std::string* value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.media_folder_name_.SetAllocated(value, GetArena());
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        if (_impl_.media_folder_name_.IsDefault()) {
-          _impl_.media_folder_name_.Set("", GetArena());
-        }
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Status.media_folder_name)
-}
-
-// .mavsdk.rpc.camera.Status.StorageStatus storage_status = 8;
-inline void Status::clear_storage_status() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.storage_status_ = 0;
-}
-inline ::mavsdk::rpc::camera::Status_StorageStatus Status::storage_status() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Status.storage_status)
-  return _internal_storage_status();
-}
-inline void Status::set_storage_status(::mavsdk::rpc::camera::Status_StorageStatus value) {
-  _internal_set_storage_status(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Status.storage_status)
-}
-inline ::mavsdk::rpc::camera::Status_StorageStatus Status::_internal_storage_status() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return static_cast<::mavsdk::rpc::camera::Status_StorageStatus>(_impl_.storage_status_);
-}
-inline void Status::_internal_set_storage_status(::mavsdk::rpc::camera::Status_StorageStatus value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.storage_status_ = value;
-}
-
-// uint32 storage_id = 9;
-inline void Status::clear_storage_id() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.storage_id_ = 0u;
-}
-inline ::uint32_t Status::storage_id() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Status.storage_id)
-  return _internal_storage_id();
-}
-inline void Status::set_storage_id(::uint32_t value) {
-  _internal_set_storage_id(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Status.storage_id)
-}
-inline ::uint32_t Status::_internal_storage_id() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.storage_id_;
-}
-inline void Status::_internal_set_storage_id(::uint32_t value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.storage_id_ = value;
-}
-
-// .mavsdk.rpc.camera.Status.StorageType storage_type = 10;
-inline void Status::clear_storage_type() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.storage_type_ = 0;
-}
-inline ::mavsdk::rpc::camera::Status_StorageType Status::storage_type() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Status.storage_type)
-  return _internal_storage_type();
-}
-inline void Status::set_storage_type(::mavsdk::rpc::camera::Status_StorageType value) {
-  _internal_set_storage_type(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Status.storage_type)
-}
-inline ::mavsdk::rpc::camera::Status_StorageType Status::_internal_storage_type() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return static_cast<::mavsdk::rpc::camera::Status_StorageType>(_impl_.storage_type_);
-}
-inline void Status::_internal_set_storage_type(::mavsdk::rpc::camera::Status_StorageType value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.storage_type_ = value;
-}
-
-// -------------------------------------------------------------------
-
-// Option
-
-// string option_id = 1;
-inline void Option::clear_option_id() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.option_id_.ClearToEmpty();
-}
-inline const std::string& Option::option_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Option.option_id)
-  return _internal_option_id();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void Option::set_option_id(Arg_&& arg,
-                                                     Args_... args) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.option_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Option.option_id)
-}
-inline std::string* Option::mutable_option_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_option_id();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.Option.option_id)
-  return _s;
-}
-inline const std::string& Option::_internal_option_id() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.option_id_.Get();
-}
-inline void Option::_internal_set_option_id(const std::string& value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.option_id_.Set(value, GetArena());
-}
-inline std::string* Option::_internal_mutable_option_id() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  return _impl_.option_id_.Mutable( GetArena());
-}
-inline std::string* Option::release_option_id() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.Option.option_id)
-  return _impl_.option_id_.Release();
-}
-inline void Option::set_allocated_option_id(std::string* value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.option_id_.SetAllocated(value, GetArena());
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        if (_impl_.option_id_.IsDefault()) {
-          _impl_.option_id_.Set("", GetArena());
-        }
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Option.option_id)
-}
-
-// string option_description = 2;
-inline void Option::clear_option_description() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.option_description_.ClearToEmpty();
-}
-inline const std::string& Option::option_description() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Option.option_description)
-  return _internal_option_description();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void Option::set_option_description(Arg_&& arg,
-                                                     Args_... args) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.option_description_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Option.option_description)
-}
-inline std::string* Option::mutable_option_description() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_option_description();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.Option.option_description)
-  return _s;
-}
-inline const std::string& Option::_internal_option_description() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.option_description_.Get();
-}
-inline void Option::_internal_set_option_description(const std::string& value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.option_description_.Set(value, GetArena());
-}
-inline std::string* Option::_internal_mutable_option_description() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  return _impl_.option_description_.Mutable( GetArena());
-}
-inline std::string* Option::release_option_description() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.Option.option_description)
-  return _impl_.option_description_.Release();
-}
-inline void Option::set_allocated_option_description(std::string* value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.option_description_.SetAllocated(value, GetArena());
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        if (_impl_.option_description_.IsDefault()) {
-          _impl_.option_description_.Set("", GetArena());
-        }
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Option.option_description)
-}
-
-// -------------------------------------------------------------------
-
-// Setting
-
-// string setting_id = 1;
-inline void Setting::clear_setting_id() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.setting_id_.ClearToEmpty();
-}
-inline const std::string& Setting::setting_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Setting.setting_id)
-  return _internal_setting_id();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void Setting::set_setting_id(Arg_&& arg,
-                                                     Args_... args) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.setting_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Setting.setting_id)
-}
-inline std::string* Setting::mutable_setting_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_setting_id();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.Setting.setting_id)
-  return _s;
-}
-inline const std::string& Setting::_internal_setting_id() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.setting_id_.Get();
-}
-inline void Setting::_internal_set_setting_id(const std::string& value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.setting_id_.Set(value, GetArena());
-}
-inline std::string* Setting::_internal_mutable_setting_id() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  return _impl_.setting_id_.Mutable( GetArena());
-}
-inline std::string* Setting::release_setting_id() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.Setting.setting_id)
-  return _impl_.setting_id_.Release();
-}
-inline void Setting::set_allocated_setting_id(std::string* value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.setting_id_.SetAllocated(value, GetArena());
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        if (_impl_.setting_id_.IsDefault()) {
-          _impl_.setting_id_.Set("", GetArena());
-        }
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Setting.setting_id)
-}
-
-// string setting_description = 2;
-inline void Setting::clear_setting_description() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.setting_description_.ClearToEmpty();
-}
-inline const std::string& Setting::setting_description() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Setting.setting_description)
-  return _internal_setting_description();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void Setting::set_setting_description(Arg_&& arg,
-                                                     Args_... args) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.setting_description_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Setting.setting_description)
-}
-inline std::string* Setting::mutable_setting_description() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_setting_description();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.Setting.setting_description)
-  return _s;
-}
-inline const std::string& Setting::_internal_setting_description() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.setting_description_.Get();
-}
-inline void Setting::_internal_set_setting_description(const std::string& value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.setting_description_.Set(value, GetArena());
-}
-inline std::string* Setting::_internal_mutable_setting_description() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  return _impl_.setting_description_.Mutable( GetArena());
-}
-inline std::string* Setting::release_setting_description() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.Setting.setting_description)
-  return _impl_.setting_description_.Release();
-}
-inline void Setting::set_allocated_setting_description(std::string* value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.setting_description_.SetAllocated(value, GetArena());
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        if (_impl_.setting_description_.IsDefault()) {
-          _impl_.setting_description_.Set("", GetArena());
-        }
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Setting.setting_description)
-}
-
-// .mavsdk.rpc.camera.Option option = 3;
-inline bool Setting::has_option() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.option_ != nullptr);
-  return value;
-}
-inline void Setting::clear_option() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (_impl_.option_ != nullptr) _impl_.option_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
-}
-inline const ::mavsdk::rpc::camera::Option& Setting::_internal_option() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  const ::mavsdk::rpc::camera::Option* p = _impl_.option_;
-  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::camera::Option&>(::mavsdk::rpc::camera::_Option_default_instance_);
-}
-inline const ::mavsdk::rpc::camera::Option& Setting::option() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Setting.option)
-  return _internal_option();
-}
-inline void Setting::unsafe_arena_set_allocated_option(::mavsdk::rpc::camera::Option* value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (GetArena() == nullptr) {
-    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.option_);
-  }
-  _impl_.option_ = reinterpret_cast<::mavsdk::rpc::camera::Option*>(value);
-  if (value != nullptr) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.camera.Setting.option)
-}
-inline ::mavsdk::rpc::camera::Option* Setting::release_option() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::camera::Option* released = _impl_.option_;
-  _impl_.option_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-  if (GetArena() == nullptr) {
-    delete old;
-  }
-#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArena() != nullptr) {
-    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return released;
-}
-inline ::mavsdk::rpc::camera::Option* Setting::unsafe_arena_release_option() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.Setting.option)
-
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::mavsdk::rpc::camera::Option* temp = _impl_.option_;
-  _impl_.option_ = nullptr;
-  return temp;
-}
-inline ::mavsdk::rpc::camera::Option* Setting::_internal_mutable_option() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_._has_bits_[0] |= 0x00000001u;
-  if (_impl_.option_ == nullptr) {
-    auto* p = CreateMaybeMessage<::mavsdk::rpc::camera::Option>(GetArena());
-    _impl_.option_ = reinterpret_cast<::mavsdk::rpc::camera::Option*>(p);
-  }
-  return _impl_.option_;
-}
-inline ::mavsdk::rpc::camera::Option* Setting::mutable_option() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  ::mavsdk::rpc::camera::Option* _msg = _internal_mutable_option();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.Setting.option)
-  return _msg;
-}
-inline void Setting::set_allocated_option(::mavsdk::rpc::camera::Option* value) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  if (message_arena == nullptr) {
-    delete reinterpret_cast<::mavsdk::rpc::camera::Option*>(_impl_.option_);
-  }
-
-  if (value != nullptr) {
-    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::camera::Option*>(value)->GetArena();
-    if (message_arena != submessage_arena) {
-      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-
-  _impl_.option_ = reinterpret_cast<::mavsdk::rpc::camera::Option*>(value);
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Setting.option)
-}
-
-// bool is_range = 4;
-inline void Setting::clear_is_range() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.is_range_ = false;
-}
-inline bool Setting::is_range() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Setting.is_range)
-  return _internal_is_range();
-}
-inline void Setting::set_is_range(bool value) {
-  _internal_set_is_range(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Setting.is_range)
-}
-inline bool Setting::_internal_is_range() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.is_range_;
-}
-inline void Setting::_internal_set_is_range(bool value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.is_range_ = value;
-}
-
-// -------------------------------------------------------------------
-
-// SettingOptions
-
-// string setting_id = 1;
-inline void SettingOptions::clear_setting_id() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.setting_id_.ClearToEmpty();
-}
-inline const std::string& SettingOptions::setting_id() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.SettingOptions.setting_id)
-  return _internal_setting_id();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void SettingOptions::set_setting_id(Arg_&& arg,
-                                                     Args_... args) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.setting_id_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.SettingOptions.setting_id)
-}
-inline std::string* SettingOptions::mutable_setting_id() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_setting_id();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.SettingOptions.setting_id)
-  return _s;
-}
-inline const std::string& SettingOptions::_internal_setting_id() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.setting_id_.Get();
-}
-inline void SettingOptions::_internal_set_setting_id(const std::string& value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.setting_id_.Set(value, GetArena());
-}
-inline std::string* SettingOptions::_internal_mutable_setting_id() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  return _impl_.setting_id_.Mutable( GetArena());
-}
-inline std::string* SettingOptions::release_setting_id() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.SettingOptions.setting_id)
-  return _impl_.setting_id_.Release();
-}
-inline void SettingOptions::set_allocated_setting_id(std::string* value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.setting_id_.SetAllocated(value, GetArena());
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        if (_impl_.setting_id_.IsDefault()) {
-          _impl_.setting_id_.Set("", GetArena());
-        }
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.SettingOptions.setting_id)
-}
-
-// string setting_description = 2;
-inline void SettingOptions::clear_setting_description() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.setting_description_.ClearToEmpty();
-}
-inline const std::string& SettingOptions::setting_description() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.SettingOptions.setting_description)
-  return _internal_setting_description();
-}
-template <typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void SettingOptions::set_setting_description(Arg_&& arg,
-                                                     Args_... args) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.setting_description_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.SettingOptions.setting_description)
-}
-inline std::string* SettingOptions::mutable_setting_description() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  std::string* _s = _internal_mutable_setting_description();
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.SettingOptions.setting_description)
-  return _s;
-}
-inline const std::string& SettingOptions::_internal_setting_description() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.setting_description_.Get();
-}
-inline void SettingOptions::_internal_set_setting_description(const std::string& value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.setting_description_.Set(value, GetArena());
-}
-inline std::string* SettingOptions::_internal_mutable_setting_description() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  return _impl_.setting_description_.Mutable( GetArena());
-}
-inline std::string* SettingOptions::release_setting_description() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  // @@protoc_insertion_point(field_release:mavsdk.rpc.camera.SettingOptions.setting_description)
-  return _impl_.setting_description_.Release();
-}
-inline void SettingOptions::set_allocated_setting_description(std::string* value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.setting_description_.SetAllocated(value, GetArena());
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-        if (_impl_.setting_description_.IsDefault()) {
-          _impl_.setting_description_.Set("", GetArena());
-        }
-  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.SettingOptions.setting_description)
-}
-
-// repeated .mavsdk.rpc.camera.Option options = 3;
-inline int SettingOptions::_internal_options_size() const {
-  return _internal_options().size();
-}
-inline int SettingOptions::options_size() const {
-  return _internal_options_size();
-}
-inline void SettingOptions::clear_options() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.options_.Clear();
-}
-inline ::mavsdk::rpc::camera::Option* SettingOptions::mutable_options(int index)
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.SettingOptions.options)
-  return _internal_mutable_options()->Mutable(index);
-}
-inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Option>* SettingOptions::mutable_options()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.camera.SettingOptions.options)
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  return _internal_mutable_options();
-}
-inline const ::mavsdk::rpc::camera::Option& SettingOptions::options(int index) const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.SettingOptions.options)
-  return _internal_options().Get(index);
-}
-inline ::mavsdk::rpc::camera::Option* SettingOptions::add_options() ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ::mavsdk::rpc::camera::Option* _add = _internal_mutable_options()->Add();
-  // @@protoc_insertion_point(field_add:mavsdk.rpc.camera.SettingOptions.options)
-  return _add;
-}
-inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Option>& SettingOptions::options() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:mavsdk.rpc.camera.SettingOptions.options)
-  return _internal_options();
-}
-inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Option>&
-SettingOptions::_internal_options() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.options_;
-}
-inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Option>*
-SettingOptions::_internal_mutable_options() {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return &_impl_.options_;
-}
-
-// bool is_range = 4;
-inline void SettingOptions::clear_is_range() {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  _impl_.is_range_ = false;
-}
-inline bool SettingOptions::is_range() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.SettingOptions.is_range)
-  return _internal_is_range();
-}
-inline void SettingOptions::set_is_range(bool value) {
-  _internal_set_is_range(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.SettingOptions.is_range)
-}
-inline bool SettingOptions::_internal_is_range() const {
-  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
-  return _impl_.is_range_;
-}
-inline void SettingOptions::_internal_set_is_range(bool value) {
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ;
-  _impl_.is_range_ = value;
-}
-
-// -------------------------------------------------------------------
-
 // Information
 
-// string vendor_name = 1;
+// int32 component_id = 1;
+inline void Information::clear_component_id() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.component_id_ = 0;
+}
+inline ::int32_t Information::component_id() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.Information.component_id)
+  return _internal_component_id();
+}
+inline void Information::set_component_id(::int32_t value) {
+  _internal_set_component_id(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.camera.Information.component_id)
+}
+inline ::int32_t Information::_internal_component_id() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.component_id_;
+}
+inline void Information::_internal_set_component_id(::int32_t value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ;
+  _impl_.component_id_ = value;
+}
+
+// string vendor_name = 2;
 inline void Information::clear_vendor_name() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.vendor_name_.ClearToEmpty();
@@ -20415,7 +25469,7 @@ inline void Information::set_allocated_vendor_name(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Information.vendor_name)
 }
 
-// string model_name = 2;
+// string model_name = 3;
 inline void Information::clear_model_name() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.model_name_.ClearToEmpty();
@@ -20468,7 +25522,7 @@ inline void Information::set_allocated_model_name(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.camera.Information.model_name)
 }
 
-// float focal_length_mm = 3;
+// float focal_length_mm = 4;
 inline void Information::clear_focal_length_mm() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.focal_length_mm_ = 0;
@@ -20491,7 +25545,7 @@ inline void Information::_internal_set_focal_length_mm(float value) {
   _impl_.focal_length_mm_ = value;
 }
 
-// float horizontal_sensor_size_mm = 4;
+// float horizontal_sensor_size_mm = 5;
 inline void Information::clear_horizontal_sensor_size_mm() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.horizontal_sensor_size_mm_ = 0;
@@ -20514,7 +25568,7 @@ inline void Information::_internal_set_horizontal_sensor_size_mm(float value) {
   _impl_.horizontal_sensor_size_mm_ = value;
 }
 
-// float vertical_sensor_size_mm = 5;
+// float vertical_sensor_size_mm = 6;
 inline void Information::clear_vertical_sensor_size_mm() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.vertical_sensor_size_mm_ = 0;
@@ -20537,7 +25591,7 @@ inline void Information::_internal_set_vertical_sensor_size_mm(float value) {
   _impl_.vertical_sensor_size_mm_ = value;
 }
 
-// uint32 horizontal_resolution_px = 6;
+// uint32 horizontal_resolution_px = 7;
 inline void Information::clear_horizontal_resolution_px() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.horizontal_resolution_px_ = 0u;
@@ -20560,7 +25614,7 @@ inline void Information::_internal_set_horizontal_resolution_px(::uint32_t value
   _impl_.horizontal_resolution_px_ = value;
 }
 
-// uint32 vertical_resolution_px = 7;
+// uint32 vertical_resolution_px = 8;
 inline void Information::clear_vertical_resolution_px() {
   PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
   _impl_.vertical_resolution_px_ = 0u;
@@ -20583,6 +25637,59 @@ inline void Information::_internal_set_vertical_resolution_px(::uint32_t value) 
   _impl_.vertical_resolution_px_ = value;
 }
 
+// -------------------------------------------------------------------
+
+// CameraList
+
+// repeated .mavsdk.rpc.camera.Information cameras = 1;
+inline int CameraList::_internal_cameras_size() const {
+  return _internal_cameras().size();
+}
+inline int CameraList::cameras_size() const {
+  return _internal_cameras_size();
+}
+inline void CameraList::clear_cameras() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.cameras_.Clear();
+}
+inline ::mavsdk::rpc::camera::Information* CameraList::mutable_cameras(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.camera.CameraList.cameras)
+  return _internal_mutable_cameras()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Information>* CameraList::mutable_cameras()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.camera.CameraList.cameras)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  return _internal_mutable_cameras();
+}
+inline const ::mavsdk::rpc::camera::Information& CameraList::cameras(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.camera.CameraList.cameras)
+  return _internal_cameras().Get(index);
+}
+inline ::mavsdk::rpc::camera::Information* CameraList::add_cameras() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::mavsdk::rpc::camera::Information* _add = _internal_mutable_cameras()->Add();
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.camera.CameraList.cameras)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Information>& CameraList::cameras() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.camera.CameraList.cameras)
+  return _internal_cameras();
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Information>&
+CameraList::_internal_cameras() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.cameras_;
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::camera::Information>*
+CameraList::_internal_mutable_cameras() {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return &_impl_.cameras_;
+}
+
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif  // __GNUC__
@@ -20597,12 +25704,6 @@ namespace google {
 namespace protobuf {
 
 template <>
-struct is_proto_enum<::mavsdk::rpc::camera::CameraResult_Result> : std::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera::CameraResult_Result>() {
-  return ::mavsdk::rpc::camera::CameraResult_Result_descriptor();
-}
-template <>
 struct is_proto_enum<::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus> : std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamStatus>() {
@@ -20615,16 +25716,22 @@ inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera::VideoStrea
   return ::mavsdk::rpc::camera::VideoStreamInfo_VideoStreamSpectrum_descriptor();
 }
 template <>
-struct is_proto_enum<::mavsdk::rpc::camera::Status_StorageStatus> : std::true_type {};
+struct is_proto_enum<::mavsdk::rpc::camera::Storage_StorageStatus> : std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera::Status_StorageStatus>() {
-  return ::mavsdk::rpc::camera::Status_StorageStatus_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera::Storage_StorageStatus>() {
+  return ::mavsdk::rpc::camera::Storage_StorageStatus_descriptor();
 }
 template <>
-struct is_proto_enum<::mavsdk::rpc::camera::Status_StorageType> : std::true_type {};
+struct is_proto_enum<::mavsdk::rpc::camera::Storage_StorageType> : std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera::Status_StorageType>() {
-  return ::mavsdk::rpc::camera::Status_StorageType_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera::Storage_StorageType>() {
+  return ::mavsdk::rpc::camera::Storage_StorageType_descriptor();
+}
+template <>
+struct is_proto_enum<::mavsdk::rpc::camera::CameraResult_Result> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::camera::CameraResult_Result>() {
+  return ::mavsdk::rpc::camera::CameraResult_Result_descriptor();
 }
 template <>
 struct is_proto_enum<::mavsdk::rpc::camera::Mode> : std::true_type {};

@@ -66,9 +66,11 @@ TEST(SystemTest, ParamGetAll)
     Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
-    ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(
-        mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
     auto param_server = ParamServer{mavsdk_autopilot.server_component()};
 
@@ -130,9 +132,11 @@ TEST(SystemTest, ParamGetAllLossy)
     mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
     mavsdk_groundstation.intercept_outgoing_messages_async(drop_some);
 
-    ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(
-        mavsdk_autopilot.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_autopilot.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
     auto param_server = ParamServer{mavsdk_autopilot.server_component()};
 

@@ -15,6 +15,8 @@ public:
     void init() override;
     void deinit() override;
 
+    ParamServer::Result set_protocol(bool extended_protocol);
+
     std::pair<ParamServer::Result, int32_t> retrieve_param_int(std::string name) const;
 
     ParamServer::Result provide_param_int(std::string name, int32_t value);

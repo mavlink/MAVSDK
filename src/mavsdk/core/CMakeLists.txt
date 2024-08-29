@@ -26,7 +26,7 @@ target_sources(mavsdk
     fs_utils.cpp
     hostname_to_ip.cpp
     inflate_lzma.cpp
-    math_conversions.cpp
+    math_utils.cpp
     mavsdk.cpp
     mavsdk_impl.cpp
     mavlink_channels.cpp
@@ -63,6 +63,7 @@ target_sources(mavsdk
     cli_arg.cpp
     geometry.cpp
     mavsdk_time.cpp
+    string_utils.cpp
     timesync.cpp
 )
 
@@ -188,8 +189,7 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/file_cache_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/locked_queue_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/geometry_test.cpp
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/math_conversions_test.cpp
-    ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_math_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/math_utils_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavsdk_time_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_channels_test.cpp
@@ -202,5 +202,6 @@ list(APPEND UNIT_TEST_SOURCES
     ${PROJECT_SOURCE_DIR}/mavsdk/core/timeout_handler_test.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/unittests_main.cpp
     ${PROJECT_SOURCE_DIR}/mavsdk/core/mavlink_parameter_cache_test.cpp
+    ${PROJECT_SOURCE_DIR}/mavsdk/core/string_utils_test.cpp
 )
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)

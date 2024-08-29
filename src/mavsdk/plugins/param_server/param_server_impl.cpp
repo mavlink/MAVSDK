@@ -26,12 +26,18 @@ void ParamServerImpl::deinit()
     _server_component_impl->mavlink_parameter_server().unsubscribe_all_params_changed(this);
 }
 
+ParamServer::Result ParamServerImpl::set_protocol(bool extended_protocol)
+{
+    _server_component_impl->mavlink_parameter_server().set_extended_protocol(extended_protocol);
+    return ParamServer::Result::Success;
+}
+
 std::pair<ParamServer::Result, int32_t> ParamServerImpl::retrieve_param_int(std::string name) const
 {
     auto result =
         _server_component_impl->mavlink_parameter_server().retrieve_server_param_int(name);
 
-    if (result.first == MavlinkParameterServer::Result::Success) {
+    if (result.first == MavlinkParameterServer::Result::Ok) {
         return {ParamServer::Result::Success, result.second};
     } else {
         return {ParamServer::Result::NotFound, -1};
@@ -43,12 +49,15 @@ ParamServer::Result ParamServerImpl::provide_param_int(std::string name, int32_t
     if (name.size() > 16) {
         return ParamServer::Result::ParamNameTooLong;
     }
-    _server_component_impl->mavlink_parameter_server().provide_server_param_int(name, value);
-    _server_component_impl->mavlink_parameter_server().subscribe_param_int_changed(
-        name,
-        [name, this](int32_t new_value) { _changed_param_int_callbacks({name, new_value}); },
-        this);
-    return ParamServer::Result::Success;
+    const auto ret =
+        _server_component_impl->mavlink_parameter_server().provide_server_param_int(name, value);
+    if (ret == MavlinkParameterServer::Result::Ok) {
+        _server_component_impl->mavlink_parameter_server().subscribe_param_int_changed(
+            name,
+            [name, this](int32_t new_value) { _changed_param_int_callbacks({name, new_value}); },
+            this);
+    }
+    return result_from_mavlink_parameter_server_result(ret);
 }
 
 std::pair<ParamServer::Result, float> ParamServerImpl::retrieve_param_float(std::string name) const
@@ -56,7 +65,7 @@ std::pair<ParamServer::Result, float> ParamServerImpl::retrieve_param_float(std:
     const auto result =
         _server_component_impl->mavlink_parameter_server().retrieve_server_param_float(name);
 
-    if (result.first == MavlinkParameterServer::Result::Success) {
+    if (result.first == MavlinkParameterServer::Result::Ok) {
         return {ParamServer::Result::Success, result.second};
     } else {
         return {ParamServer::Result::NotFound, NAN};
@@ -68,12 +77,15 @@ ParamServer::Result ParamServerImpl::provide_param_float(std::string name, float
     if (name.size() > 16) {
         return ParamServer::Result::ParamNameTooLong;
     }
-    _server_component_impl->mavlink_parameter_server().provide_server_param_float(name, value);
-    _server_component_impl->mavlink_parameter_server().subscribe_param_float_changed(
-        name,
-        [name, this](float new_value) { _changed_param_float_callbacks({name, new_value}); },
-        this);
-    return ParamServer::Result::Success;
+    const auto ret =
+        _server_component_impl->mavlink_parameter_server().provide_server_param_float(name, value);
+    if (ret == MavlinkParameterServer::Result::Ok) {
+        _server_component_impl->mavlink_parameter_server().subscribe_param_int_changed(
+            name,
+            [name, this](float new_value) { _changed_param_float_callbacks({name, new_value}); },
+            this);
+    }
+    return result_from_mavlink_parameter_server_result(ret);
 }
 
 std::pair<ParamServer::Result, std::string>
@@ -82,7 +94,7 @@ ParamServerImpl::retrieve_param_custom(std::string name) const
     const auto result =
         _server_component_impl->mavlink_parameter_server().retrieve_server_param_custom(name);
 
-    if (result.first == MavlinkParameterServer::Result::Success) {
+    if (result.first == MavlinkParameterServer::Result::Ok) {
         return {ParamServer::Result::Success, result.second};
     } else {
         return {ParamServer::Result::NotFound, {}};
@@ -95,12 +107,18 @@ ParamServerImpl::provide_param_custom(std::string name, const std::string& value
     if (name.size() > 16) {
         return ParamServer::Result::ParamNameTooLong;
     }
-    _server_component_impl->mavlink_parameter_server().provide_server_param_custom(name, value);
-    _server_component_impl->mavlink_parameter_server().subscribe_param_custom_changed(
-        name,
-        [name, this](std::string new_value) { _changed_param_custom_callbacks({name, new_value}); },
-        this);
-    return ParamServer::Result::Success;
+
+    const auto ret =
+        _server_component_impl->mavlink_parameter_server().provide_server_param_custom(name, value);
+    if (ret == MavlinkParameterServer::Result::Ok) {
+        _server_component_impl->mavlink_parameter_server().subscribe_param_custom_changed(
+            name,
+            [name, this](const std::string& new_value) {
+                _changed_param_custom_callbacks({name, new_value});
+            },
+            this);
+    }
+    return result_from_mavlink_parameter_server_result(ret);
 }
 
 ParamServer::AllParams ParamServerImpl::retrieve_all_params() const
@@ -163,7 +181,8 @@ ParamServer::Result
 ParamServerImpl::result_from_mavlink_parameter_server_result(MavlinkParameterServer::Result result)
 {
     switch (result) {
-        case MavlinkParameterServer::Result::Success:
+        case MavlinkParameterServer::Result::Ok:
+        case MavlinkParameterServer::Result::OkExistsAlready:
             return ParamServer::Result::Success;
         case MavlinkParameterServer::Result::NotFound:
             return ParamServer::Result::NotFound;

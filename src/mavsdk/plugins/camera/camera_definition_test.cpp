@@ -8,7 +8,7 @@
 
 using namespace mavsdk;
 
-static const std::string e90_unit_test_file = "src/mavsdk/plugins/camera/e90_unit_test.xml";
+static const std::string e90_unit_test_file = "src/mavsdk/plugins/camera/e90_camera.xml";
 
 TEST(CameraDefinition, E90LoadInfoFile)
 {
@@ -44,7 +44,7 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
     {
         std::unordered_map<std::string, ParamValue> settings{};
         EXPECT_TRUE(cd.get_all_settings(settings));
-        EXPECT_EQ(settings.size(), 17);
+        EXPECT_EQ(settings.size(), 18);
 
         EXPECT_EQ(settings["CAM_MODE"].get<uint32_t>(), 1);
         EXPECT_EQ(settings["CAM_WBMODE"].get<uint32_t>(), 0);
@@ -55,6 +55,7 @@ TEST(CameraDefinition, E90CheckDefaultSettings)
         EXPECT_EQ(settings["CAM_VIDRES"].get<uint32_t>(), 0);
         EXPECT_EQ(settings["CAM_VIDFMT"].get<uint32_t>(), 1);
         EXPECT_EQ(settings["CAM_PHOTORATIO"].get<uint8_t>(), 1);
+        EXPECT_EQ(settings["CAM_ASPECTRATIO"].get<float>(), 1.78f);
         EXPECT_EQ(settings["CAM_METERING"].get<uint32_t>(), 0);
         EXPECT_EQ(settings["CAM_COLORMODE"].get<uint32_t>(), 1);
         EXPECT_EQ(settings["CAM_FLICKER"].get<uint32_t>(), 0);
@@ -284,7 +285,7 @@ TEST(CameraDefinition, E90SettingsToUpdate)
     {
         std::vector<std::pair<std::string, ParamValue>> params;
         cd.get_unknown_params(params);
-        EXPECT_EQ(params.size(), 17);
+        EXPECT_EQ(params.size(), 18);
     }
 
     {
@@ -297,7 +298,7 @@ TEST(CameraDefinition, E90SettingsToUpdate)
     {
         std::vector<std::pair<std::string, ParamValue>> params;
         cd.get_unknown_params(params);
-        EXPECT_EQ(params.size(), 16);
+        EXPECT_EQ(params.size(), 17);
     }
 
     cd.set_all_params_unknown();
@@ -305,7 +306,7 @@ TEST(CameraDefinition, E90SettingsToUpdate)
     {
         std::vector<std::pair<std::string, ParamValue>> params;
         cd.get_unknown_params(params);
-        EXPECT_EQ(params.size(), 17);
+        EXPECT_EQ(params.size(), 18);
     }
 }
 
@@ -336,7 +337,7 @@ TEST(CameraDefinition, E90SettingsCauseUpdates)
     {
         std::vector<std::pair<std::string, ParamValue>> params;
         cd.get_unknown_params(params);
-        EXPECT_EQ(params.size(), 4);
+        EXPECT_EQ(params.size(), 5);
 
         // TODO: improve the poor man's vector search.
         bool found_shutterspd = false;
@@ -484,7 +485,7 @@ TEST(CameraDefinition, E90OptionHumanReadable)
     EXPECT_STREQ(description.c_str(), "");
 }
 
-static const std::string uvc_unit_test_file = "src/mavsdk/plugins/camera/uvc_unit_test.xml";
+static const std::string uvc_unit_test_file = "src/mavsdk/plugins/camera/uvc_camera.xml";
 
 TEST(CameraDefinition, UVCLoadInfoFile)
 {
@@ -521,22 +522,22 @@ TEST(CameraDefinition, UVCCheckDefaultSettings)
     EXPECT_TRUE(cd.get_all_settings(settings));
     EXPECT_EQ(settings.size(), 13);
 
-    EXPECT_TRUE(cd.is_setting_range("brightness"));
-    EXPECT_FALSE(cd.is_setting_range("exp-mode"));
+    EXPECT_TRUE(cd.is_setting_range("BRIGHTNESS"));
+    EXPECT_FALSE(cd.is_setting_range("EXP_MODE"));
 
-    EXPECT_EQ(settings["camera-mode"].get<uint32_t>(), 1);
-    EXPECT_EQ(settings["brightness"].get<int32_t>(), 128);
-    EXPECT_EQ(settings["contrast"].get<int32_t>(), 32);
-    EXPECT_EQ(settings["saturation"].get<int32_t>(), 32);
-    EXPECT_EQ(settings["gain"].get<int32_t>(), 64);
-    EXPECT_EQ(settings["sharpness"].get<int32_t>(), 24);
-    EXPECT_EQ(settings["backlight"].get<int32_t>(), 0);
-    EXPECT_EQ(settings["power-mode"].get<int32_t>(), 0);
-    EXPECT_EQ(settings["wb-mode"].get<int32_t>(), 1);
-    EXPECT_EQ(settings["wb-temp"].get<int32_t>(), 4000);
-    EXPECT_EQ(settings["exp-mode"].get<int32_t>(), 3);
-    EXPECT_EQ(settings["exp-absolute"].get<int32_t>(), 166);
-    EXPECT_EQ(settings["exp-priority"].get<int32_t>(), 1);
+    EXPECT_EQ(settings["CAM_MODE"].get<uint32_t>(), 1);
+    EXPECT_EQ(settings["BRIGHTNESS"].get<int32_t>(), 128);
+    EXPECT_EQ(settings["CONTRAST"].get<int32_t>(), 32);
+    EXPECT_EQ(settings["SATURATION"].get<int32_t>(), 32);
+    EXPECT_EQ(settings["GAIN"].get<int32_t>(), 64);
+    EXPECT_EQ(settings["SHARPNESS"].get<int32_t>(), 24);
+    EXPECT_EQ(settings["BACKLIGHT"].get<int32_t>(), 0);
+    EXPECT_EQ(settings["POWER_MODE"].get<int32_t>(), 0);
+    EXPECT_EQ(settings["WB_MODE"].get<int32_t>(), 1);
+    EXPECT_EQ(settings["WB_TEMP"].get<int32_t>(), 4000);
+    EXPECT_EQ(settings["EXP_MODE"].get<int32_t>(), 3);
+    EXPECT_EQ(settings["EXP_ABSOLUTE"].get<int32_t>(), 166);
+    EXPECT_EQ(settings["EXP_PRIORITY"].get<int32_t>(), 1);
 }
 
 TEST(CameraDefinition, UVCCheckPossibleSettings)
@@ -551,14 +552,14 @@ TEST(CameraDefinition, UVCCheckPossibleSettings)
     {
         ParamValue value;
         value.set<int32_t>(1);
-        EXPECT_TRUE(cd.set_setting("wb-mode", value));
+        EXPECT_TRUE(cd.set_setting("WB_MODE", value));
     }
 
     // And exposure mode aperture priority.
     {
         ParamValue value;
         value.set<int32_t>(3);
-        EXPECT_TRUE(cd.set_setting("exp-mode", value));
+        EXPECT_TRUE(cd.set_setting("EXP_MODE", value));
     }
 
     std::unordered_map<std::string, ParamValue> settings{};
@@ -569,7 +570,7 @@ TEST(CameraDefinition, UVCCheckPossibleSettings)
     {
         ParamValue value;
         value.set<int32_t>(1);
-        EXPECT_TRUE(cd.set_setting("exp-mode", value));
+        EXPECT_TRUE(cd.set_setting("EXP_MODE", value));
     }
 
     EXPECT_TRUE(cd.get_possible_settings(settings));
@@ -585,21 +586,21 @@ TEST(CameraDefinition, UVCSetRangeSetting)
     {
         ParamValue value;
         value.set<int32_t>(200);
-        EXPECT_TRUE(cd.set_setting("brightness", value));
+        EXPECT_TRUE(cd.set_setting("BRIGHTNESS", value));
     }
 
     {
         // Try too big.
         ParamValue value;
         value.set<int32_t>(400);
-        EXPECT_FALSE(cd.set_setting("brightness", value));
+        EXPECT_FALSE(cd.set_setting("BRIGHTNESS", value));
     }
 
     {
         // Try too small.
         ParamValue value;
         value.set<int32_t>(-100);
-        EXPECT_FALSE(cd.set_setting("brightness", value));
+        EXPECT_FALSE(cd.set_setting("BRIGHTNESS", value));
     }
 }
 
@@ -610,13 +611,13 @@ TEST(CameraDefinition, UVCCheckSettingHumanReadable)
     ASSERT_TRUE(cd.load_file(uvc_unit_test_file));
 
     std::string description{};
-    EXPECT_TRUE(cd.get_setting_str("brightness", description));
+    EXPECT_TRUE(cd.get_setting_str("BRIGHTNESS", description));
     EXPECT_STREQ(description.c_str(), "Brightness");
 
-    EXPECT_TRUE(cd.get_setting_str("wb-mode", description));
+    EXPECT_TRUE(cd.get_setting_str("WB_MODE", description));
     EXPECT_STREQ(description.c_str(), "White Balance Mode");
 
-    EXPECT_TRUE(cd.get_setting_str("exp-priority", description));
+    EXPECT_TRUE(cd.get_setting_str("EXP_PRIORITY", description));
     EXPECT_STREQ(description.c_str(), "Exposure Auto Priority");
 }
 
@@ -628,16 +629,16 @@ TEST(CameraDefinition, UVCCheckOptionHumanReadable)
 
     std::string description{};
     // TODO: range params are currently a bit weird like that.
-    EXPECT_TRUE(cd.get_option_str("brightness", "0", description));
+    EXPECT_TRUE(cd.get_option_str("BRIGHTNESS", "0", description));
     EXPECT_STREQ(description.c_str(), "min");
-    EXPECT_TRUE(cd.get_option_str("brightness", "225", description));
+    EXPECT_TRUE(cd.get_option_str("BRIGHTNESS", "225", description));
     EXPECT_STREQ(description.c_str(), "max");
-    EXPECT_TRUE(cd.get_option_str("brightness", "1", description));
+    EXPECT_TRUE(cd.get_option_str("BRIGHTNESS", "1", description));
     EXPECT_STREQ(description.c_str(), "step");
 
-    EXPECT_TRUE(cd.get_option_str("wb-mode", "0", description));
+    EXPECT_TRUE(cd.get_option_str("WB_MODE", "0", description));
     EXPECT_STREQ(description.c_str(), "Manual Mode");
 
-    EXPECT_TRUE(cd.get_option_str("exp-priority", "1", description));
+    EXPECT_TRUE(cd.get_option_str("EXP_PRIORITY", "1", description));
     EXPECT_STREQ(description.c_str(), "ON");
 }
