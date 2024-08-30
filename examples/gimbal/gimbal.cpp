@@ -85,7 +85,6 @@ int main(int argc, char** argv)
 
     std::cout << "Start controlling gimbal...\n";
     Gimbal::Result gimbal_result = gimbal.take_control(gimbal_id, Gimbal::ControlMode::Primary);
-    sleep_for(seconds(5));
     if (gimbal_result != Gimbal::Result::Success) {
         std::cerr << "Could not take gimbal control: " << gimbal_result << '\n';
         return 1;
