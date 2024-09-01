@@ -9,17 +9,14 @@
 #include "mavlink_include.h"
 #include "mavlink_parameter_client.h"
 #include "mavlink_command_sender.h"
-#include "mavlink_command_receiver.h"
 #include "mavlink_ftp_client.h"
 #include "mavlink_message_handler.h"
 #include "mavlink_mission_transfer_client.h"
-#include "mavlink_request_message_handler.h"
+#include "mavlink_request_message.h"
 #include "mavlink_statustext_handler.h"
-#include "request_message.h"
 #include "ardupilot_custom_mode.h"
 #include "ping.h"
 #include "timeout_handler.h"
-#include "safe_queue.h"
 #include "timesync.h"
 #include "system.h"
 #include <cstdint>
@@ -290,7 +287,7 @@ public:
 
     MavlinkComponentMetadata& component_metadata() { return _mavlink_component_metadata; }
 
-    RequestMessage& request_message() { return _request_message; }
+    MavlinkRequestMessage& mavlink_request_message() { return _mavlink_request_message; }
 
     // Non-copyable
     SystemImpl(const SystemImpl&) = delete;
@@ -308,8 +305,6 @@ private:
     void heartbeats_timed_out();
     void set_connected();
     void set_disconnected();
-
-    void receive_autopilot_version_request_ack(MavlinkCommandSender::Result result);
 
     static std::string component_name(uint8_t component_id);
     static System::ComponentType component_type(uint8_t component_id);
@@ -397,7 +392,7 @@ private:
     Ping _ping;
 
     MavlinkMissionTransferClient _mission_transfer_client;
-    RequestMessage _request_message;
+    MavlinkRequestMessage _mavlink_request_message;
     MavlinkFtpClient _mavlink_ftp_client;
     MavlinkComponentMetadata _mavlink_component_metadata;
 
@@ -416,8 +411,6 @@ private:
 
     std::mutex _mavlink_ftp_files_mutex{};
     std::unordered_map<std::string, std::string> _mavlink_ftp_files{};
-
-    bool _old_message_520_supported{true};
 };
 
 } // namespace mavsdk

@@ -6,7 +6,6 @@
 #include "plugin_impl_base.h"
 #include "px4_custom_mode.h"
 #include "ardupilot_custom_mode.h"
-#include "request_message.h"
 #include "callback_list.tpp"
 #include "unused.h"
 #include <cassert>
@@ -32,7 +31,7 @@ SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
         _mavsdk_impl.timeout_handler,
         [this]() { return timeout_s(); },
         [this]() { return autopilot(); }),
-    _request_message(
+    _mavlink_request_message(
         *this, _command_sender, _mavlink_message_handler, _mavsdk_impl.timeout_handler),
     _mavlink_ftp_client(*this),
     _mavlink_component_metadata(*this)
@@ -472,31 +471,8 @@ bool SystemImpl::queue_message(
 
 void SystemImpl::send_autopilot_version_request()
 {
-    MavlinkCommandSender::CommandLong command{};
-    command.target_component_id = get_autopilot_id();
-
-    if (_old_message_520_supported) {
-        // Note: This MAVLINK message is deprecated and would be removed from MAVSDK in a future
-        // release.
-        command.command = MAV_CMD_REQUEST_AUTOPILOT_CAPABILITIES;
-        command.params.maybe_param1 = 1.0f;
-    } else {
-        command.command = MAV_CMD_REQUEST_MESSAGE;
-        command.params.maybe_param1 = {static_cast<float>(MAVLINK_MSG_ID_AUTOPILOT_VERSION)};
-    }
-
-    send_command_async(command, [this](MavlinkCommandSender::Result result, float) {
-        receive_autopilot_version_request_ack(result);
-    });
-}
-
-void SystemImpl::receive_autopilot_version_request_ack(MavlinkCommandSender::Result result)
-{
-    if (result == MavlinkCommandSender::Result::Unsupported) {
-        _old_message_520_supported = false;
-        LogWarn()
-            << "Trying alternative command REQUEST_MESSAGE instead of REQUEST_AUTOPILOT_CAPABILITIES next.";
-    }
+    mavlink_request_message().request(
+        MAVLINK_MSG_ID_AUTOPILOT_VERSION, MAV_COMP_ID_AUTOPILOT1, nullptr);
 }
 
 void SystemImpl::set_connected()

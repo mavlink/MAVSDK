@@ -39,34 +39,17 @@ void MissionImpl::init()
         MAVLINK_MSG_ID_MISSION_ITEM_REACHED,
         [this](const mavlink_message_t& message) { process_mission_item_reached(message); },
         this);
-
-    _system_impl->register_mavlink_message_handler(
-        MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION,
-        [this](const mavlink_message_t& message) { process_gimbal_manager_information(message); },
-        this);
 }
 
-void MissionImpl::enable()
-{
-    _gimbal_protocol_cookie =
-        _system_impl->register_timeout_handler([this]() { receive_protocol_timeout(); }, 1.0);
-
-    MavlinkCommandSender::CommandLong command{};
-    command.command = MAV_CMD_REQUEST_MESSAGE;
-    command.params.maybe_param1 = static_cast<float>(MAVLINK_MSG_ID_GIMBAL_MANAGER_INFORMATION);
-    command.target_component_id = 0; // any component
-    _system_impl->send_command_async(command, nullptr);
-}
+void MissionImpl::enable() {}
 
 void MissionImpl::disable()
 {
     reset_mission_progress();
-    _gimbal_protocol = GimbalProtocol::Unknown;
 }
 
 void MissionImpl::deinit()
 {
-    _system_impl->unregister_timeout_handler(_gimbal_protocol_cookie);
     _system_impl->unregister_timeout_handler(_timeout_cookie);
     _system_impl->unregister_all_mavlink_message_handlers(this);
 }
@@ -100,36 +83,6 @@ void MissionImpl::process_mission_item_reached(const mavlink_message_t& message)
     report_progress_locked();
 }
 
-void MissionImpl::process_gimbal_manager_information(const mavlink_message_t& message)
-{
-    UNUSED(message);
-    if (_gimbal_protocol == GimbalProtocol::Unknown) {
-        LogDebug() << "Using gimbal protocol v2";
-        _gimbal_protocol = GimbalProtocol::V2;
-        _system_impl->unregister_timeout_handler(_gimbal_protocol_cookie);
-    }
-}
-
-void MissionImpl::wait_for_protocol()
-{
-    while (_gimbal_protocol == GimbalProtocol::Unknown) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-}
-
-void MissionImpl::wait_for_protocol_async(std::function<void()> callback)
-{
-    wait_for_protocol();
-    callback();
-}
-
-void MissionImpl::receive_protocol_timeout()
-{
-    LogDebug() << "Falling back to gimbal protocol v1";
-    _gimbal_protocol = GimbalProtocol::V1;
-    _gimbal_protocol_cookie = {};
-}
-
 Mission::Result MissionImpl::upload_mission(const Mission::MissionPlan& mission_plan)
 {
     auto prom = std::promise<Mission::Result>();
@@ -153,22 +106,20 @@ void MissionImpl::upload_mission_async(
 
     reset_mission_progress();
 
-    wait_for_protocol_async([callback, mission_plan, this]() {
-        const auto int_items = convert_to_int_items(mission_plan.mission_items);
+    const auto int_items = convert_to_int_items(mission_plan.mission_items);
 
-        _mission_data.last_upload = _system_impl->mission_transfer_client().upload_items_async(
-            MAV_MISSION_TYPE_MISSION,
-            _system_impl->get_system_id(),
-            int_items,
-            [this, callback](MavlinkMissionTransferClient::Result result) {
-                auto converted_result = convert_result(result);
-                _system_impl->call_user_callback([callback, converted_result]() {
-                    if (callback) {
-                        callback(converted_result);
-                    }
-                });
+    _mission_data.last_upload = _system_impl->mission_transfer_client().upload_items_async(
+        MAV_MISSION_TYPE_MISSION,
+        _system_impl->get_system_id(),
+        int_items,
+        [this, callback](MavlinkMissionTransferClient::Result result) {
+            auto converted_result = convert_result(result);
+            _system_impl->call_user_callback([callback, converted_result]() {
+                if (callback) {
+                    callback(converted_result);
+                }
             });
-    });
+        });
 }
 
 void MissionImpl::upload_mission_with_progress_async(
@@ -186,29 +137,27 @@ void MissionImpl::upload_mission_with_progress_async(
 
     reset_mission_progress();
 
-    wait_for_protocol_async([callback, mission_plan, this]() {
-        const auto int_items = convert_to_int_items(mission_plan.mission_items);
+    const auto int_items = convert_to_int_items(mission_plan.mission_items);
 
-        _mission_data.last_upload = _system_impl->mission_transfer_client().upload_items_async(
-            MAV_MISSION_TYPE_MISSION,
-            _system_impl->get_system_id(),
-            int_items,
-            [this, callback](MavlinkMissionTransferClient::Result result) {
-                auto converted_result = convert_result(result);
-                _system_impl->call_user_callback([callback, converted_result]() {
-                    if (callback) {
-                        callback(converted_result, Mission::ProgressData{});
-                    }
-                });
-            },
-            [this, callback](float progress) {
-                _system_impl->call_user_callback([callback, progress]() {
-                    if (callback) {
-                        callback(Mission::Result::Next, Mission::ProgressData{progress});
-                    }
-                });
+    _mission_data.last_upload = _system_impl->mission_transfer_client().upload_items_async(
+        MAV_MISSION_TYPE_MISSION,
+        _system_impl->get_system_id(),
+        int_items,
+        [this, callback](MavlinkMissionTransferClient::Result result) {
+            auto converted_result = convert_result(result);
+            _system_impl->call_user_callback([callback, converted_result]() {
+                if (callback) {
+                    callback(converted_result, Mission::ProgressData{});
+                }
             });
-    });
+        },
+        [this, callback](float progress) {
+            _system_impl->call_user_callback([callback, progress]() {
+                if (callback) {
+                    callback(Mission::Result::Next, Mission::ProgressData{progress});
+                }
+            });
+        });
 }
 
 Mission::Result MissionImpl::cancel_mission_upload() const
@@ -461,26 +410,11 @@ MissionImpl::convert_to_int_items(const std::vector<MissionItem>& mission_items)
         }
 
         if (std::isfinite(item.gimbal_yaw_deg) || std::isfinite(item.gimbal_pitch_deg)) {
-            const auto temp_gimbal_protocol = _gimbal_protocol.load();
-            switch (temp_gimbal_protocol) {
-                case GimbalProtocol::V1:
-                    add_gimbal_items_v1(
-                        int_items, item_i, item.gimbal_pitch_deg, item.gimbal_yaw_deg);
-                    break;
-
-                case GimbalProtocol::V2:
-                    if (!_mission_data.gimbal_v2_in_control) {
-                        acquire_gimbal_control_v2(int_items, item_i);
-                        _mission_data.gimbal_v2_in_control = true;
-                    }
-                    add_gimbal_items_v2(
-                        int_items, item_i, item.gimbal_pitch_deg, item.gimbal_yaw_deg);
-                    break;
-                case GimbalProtocol::Unknown:
-                    // This should not happen because we wait until we know the protocol version.
-                    LogErr() << "Unknown gimbal protocol, skipping gimbal commands.";
-                    break;
+            if (!_mission_data.gimbal_v2_in_control) {
+                acquire_gimbal_control_v2(int_items, item_i);
+                _mission_data.gimbal_v2_in_control = true;
             }
+            add_gimbal_items_v2(int_items, item_i, item.gimbal_pitch_deg, item.gimbal_yaw_deg);
         }
 
         // A loiter time of NAN is ignored but also a loiter time of 0 doesn't
@@ -750,16 +684,6 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
 
                 have_set_position = true;
 
-            } else if (int_item.command == MAV_CMD_DO_MOUNT_CONTROL) {
-                if (int(int_item.z) != MAV_MOUNT_MODE_MAVLINK_TARGETING) {
-                    LogErr() << "Gimbal mount control mode unsupported";
-                    result_pair.first = Mission::Result::Unsupported;
-                    break;
-                }
-
-                new_mission_item.gimbal_pitch_deg = int_item.param1;
-                new_mission_item.gimbal_yaw_deg = int_item.param3;
-
             } else if (int_item.command == MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW) {
                 if (int_item.x !=
                     (GIMBAL_MANAGER_FLAGS_ROLL_LOCK | GIMBAL_MANAGER_FLAGS_PITCH_LOCK)) {
@@ -774,21 +698,6 @@ std::pair<Mission::Result, Mission::MissionPlan> MissionImpl::convert_to_result_
             } else if (int_item.command == MAV_CMD_DO_GIMBAL_MANAGER_CONFIGURE) {
                 // We need to ignore it in order to not throw an "Unsupported" error
                 continue;
-
-            } else if (int_item.command == MAV_CMD_DO_MOUNT_CONFIGURE) {
-                if (int(int_item.param1) != MAV_MOUNT_MODE_MAVLINK_TARGETING) {
-                    LogErr() << "Gimbal mount configure mode unsupported";
-                    result_pair.first = Mission::Result::Unsupported;
-                    break;
-                }
-
-                // FIXME: ultimately param4 doesn't count anymore and
-                //        param7 holds the truth.
-                if (int(int_item.param4) == 1 || int(int_item.z) == 2) {
-                    _enable_absolute_gimbal_yaw_angle = true;
-                } else {
-                    _enable_absolute_gimbal_yaw_angle = false;
-                }
 
             } else if (int_item.command == MAV_CMD_IMAGE_START_CAPTURE) {
                 if (int_item.param2 > 0 && int(int_item.param3) == 0) {
@@ -1195,66 +1104,6 @@ Mission::Result MissionImpl::convert_result(MavlinkMissionTransferClient::Result
         default:
             return Mission::Result::Unknown;
     }
-}
-
-void MissionImpl::add_gimbal_items_v1(
-    std::vector<MavlinkMissionTransferClient::ItemInt>& int_items,
-    unsigned item_i,
-    float pitch_deg,
-    float yaw_deg)
-{
-    if (_enable_absolute_gimbal_yaw_angle) {
-        // We need to configure the gimbal to use an absolute angle.
-
-        // Current is the 0th waypoint
-        uint8_t current = ((int_items.size() == 0) ? 1 : 0);
-
-        uint8_t autocontinue = 1;
-
-        MavlinkMissionTransferClient::ItemInt next_item{
-            static_cast<uint16_t>(int_items.size()),
-            MAV_FRAME_MISSION,
-            MAV_CMD_DO_MOUNT_CONFIGURE,
-            current,
-            autocontinue,
-            MAV_MOUNT_MODE_MAVLINK_TARGETING,
-            0.0f, // stabilize roll
-            0.0f, // stabilize pitch
-            1.0f, // stabilize yaw, FIXME: for now we use this for an absolute yaw angle,
-                  // because it works.
-            0,
-            0,
-            2.0f, // eventually this is the correct flag to set absolute yaw angle.
-            MAV_MISSION_TYPE_MISSION};
-
-        _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
-        int_items.push_back(next_item);
-    }
-
-    // The gimbal has changed, we need to add a gimbal command.
-
-    // Current is the 0th waypoint
-    uint8_t current = ((int_items.size() == 0) ? 1 : 0);
-
-    uint8_t autocontinue = 1;
-
-    MavlinkMissionTransferClient::ItemInt next_item{
-        static_cast<uint16_t>(int_items.size()),
-        MAV_FRAME_MISSION,
-        MAV_CMD_DO_MOUNT_CONTROL,
-        current,
-        autocontinue,
-        pitch_deg, // pitch
-        0.0f, // roll (yes it is a weird order)
-        yaw_deg, // yaw
-        NAN,
-        0,
-        0,
-        MAV_MOUNT_MODE_MAVLINK_TARGETING,
-        MAV_MISSION_TYPE_MISSION};
-
-    _mission_data.mavlink_mission_item_to_mission_item_indices.push_back(item_i);
-    int_items.push_back(next_item);
 }
 
 void MissionImpl::add_gimbal_items_v2(

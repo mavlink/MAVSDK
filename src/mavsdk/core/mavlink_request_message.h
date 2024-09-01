@@ -13,36 +13,38 @@ namespace mavsdk {
 
 class SystemImpl;
 
-class RequestMessage {
+class MavlinkRequestMessage {
 public:
-    RequestMessage(
+    MavlinkRequestMessage(
         SystemImpl& system_impl,
         MavlinkCommandSender& command_sender,
         MavlinkMessageHandler& message_handler,
         TimeoutHandler& timeout_handler);
-    RequestMessage() = delete;
+    MavlinkRequestMessage() = delete;
 
-    using RequestMessageCallback =
+    using MavlinkRequestMessageCallback =
         std::function<void(MavlinkCommandSender::Result, const mavlink_message_t&)>;
 
     void request(
         uint32_t message_id,
         uint8_t target_component,
-        RequestMessageCallback callback,
+        MavlinkRequestMessageCallback callback,
         uint32_t param2 = 0);
 
 private:
     struct WorkItem {
         uint32_t message_id{0};
         uint8_t target_component{0};
-        RequestMessageCallback callback{};
+        MavlinkRequestMessageCallback callback{};
         uint32_t param2{0};
-        std::size_t retries{0};
+        unsigned retries{0};
         TimeoutHandler::Cookie timeout_cookie{};
         std::optional<MavlinkCommandSender::Result> maybe_result{};
     };
 
-    void send_request(uint32_t message_id, uint8_t target_component);
+    void send_request(WorkItem& item);
+    void send_request_using_new_command(WorkItem& item);
+    bool try_sending_request_using_old_command(WorkItem& item);
     void handle_any_message(const mavlink_message_t& message);
     void handle_command_result(uint32_t message_id, MavlinkCommandSender::Result result);
     void handle_timeout(uint32_t message_id, uint8_t target_component);

@@ -265,17 +265,6 @@ Camera::Result CameraImpl::select_camera(const size_t id)
     return Camera::Result::Success;
 }
 
-MavlinkCommandSender::CommandLong CameraImpl::make_command_request_camera_info()
-{
-    MavlinkCommandSender::CommandLong command_camera_info{};
-
-    command_camera_info.command = MAV_CMD_REQUEST_CAMERA_INFORMATION;
-    command_camera_info.params.maybe_param1 = 1.0f; // Request it
-    command_camera_info.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
-
-    return command_camera_info;
-}
-
 MavlinkCommandSender::CommandLong
 CameraImpl::make_command_take_photo(float interval_s, float no_of_photos)
 {
@@ -461,54 +450,6 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_set_camera_mode(float
     return cmd_set_camera_mode;
 }
 
-MavlinkCommandSender::CommandLong CameraImpl::make_command_request_camera_settings()
-{
-    MavlinkCommandSender::CommandLong cmd_req_camera_settings{};
-
-    cmd_req_camera_settings.command = MAV_CMD_REQUEST_CAMERA_SETTINGS;
-    cmd_req_camera_settings.params.maybe_param1 = 1.f; // Request it
-    cmd_req_camera_settings.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
-
-    return cmd_req_camera_settings;
-}
-
-MavlinkCommandSender::CommandLong CameraImpl::make_command_request_camera_capture_status()
-{
-    MavlinkCommandSender::CommandLong cmd_req_camera_cap_stat{};
-
-    cmd_req_camera_cap_stat.command = MAV_CMD_REQUEST_CAMERA_CAPTURE_STATUS;
-    cmd_req_camera_cap_stat.params.maybe_param1 = 1.0f; // Request it
-    cmd_req_camera_cap_stat.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
-
-    return cmd_req_camera_cap_stat;
-}
-
-MavlinkCommandSender::CommandLong
-CameraImpl::make_command_request_camera_image_captured(const size_t photo_id)
-{
-    MavlinkCommandSender::CommandLong cmd_req_camera_image_captured{};
-
-    cmd_req_camera_image_captured.command = MAV_CMD_REQUEST_MESSAGE;
-    cmd_req_camera_image_captured.params.maybe_param1 =
-        static_cast<float>(MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED);
-    cmd_req_camera_image_captured.params.maybe_param2 = static_cast<float>(photo_id);
-    cmd_req_camera_image_captured.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
-
-    return cmd_req_camera_image_captured;
-}
-
-MavlinkCommandSender::CommandLong CameraImpl::make_command_request_storage_info()
-{
-    MavlinkCommandSender::CommandLong cmd_req_storage_info{};
-
-    cmd_req_storage_info.command = MAV_CMD_REQUEST_STORAGE_INFORMATION;
-    cmd_req_storage_info.params.maybe_param1 = 0.f; // Reserved, set to 0
-    cmd_req_storage_info.params.maybe_param2 = 1.f; // Request it
-    cmd_req_storage_info.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
-
-    return cmd_req_storage_info;
-}
-
 MavlinkCommandSender::CommandLong CameraImpl::make_command_start_video_streaming(int32_t stream_id)
 {
     MavlinkCommandSender::CommandLong cmd_start_video_streaming{};
@@ -529,28 +470,6 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_stop_video_streaming(
     cmd_stop_video_streaming.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
 
     return cmd_stop_video_streaming;
-}
-
-MavlinkCommandSender::CommandLong CameraImpl::make_command_request_video_stream_info()
-{
-    MavlinkCommandSender::CommandLong cmd_req_video_stream_info{};
-
-    cmd_req_video_stream_info.command = MAV_CMD_REQUEST_VIDEO_STREAM_INFORMATION;
-    cmd_req_video_stream_info.params.maybe_param2 = 1.0f;
-    cmd_req_video_stream_info.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
-
-    return cmd_req_video_stream_info;
-}
-
-MavlinkCommandSender::CommandLong CameraImpl::make_command_request_video_stream_status()
-{
-    MavlinkCommandSender::CommandLong cmd_req_video_stream_status{};
-
-    cmd_req_video_stream_status.command = MAV_CMD_REQUEST_VIDEO_STREAM_STATUS;
-    cmd_req_video_stream_status.params.maybe_param2 = 1.0f;
-    cmd_req_video_stream_status.target_component_id = _camera_id + MAV_COMP_ID_CAMERA;
-
-    return cmd_req_video_stream_status;
 }
 
 Camera::Result CameraImpl::take_photo()
@@ -993,8 +912,10 @@ Camera::Result CameraImpl::stop_video_streaming(int32_t stream_id)
 
 void CameraImpl::request_video_stream_info()
 {
-    _system_impl->send_command_async(make_command_request_video_stream_info(), nullptr);
-    _system_impl->send_command_async(make_command_request_video_stream_status(), nullptr);
+    _system_impl->mavlink_request_message().request(
+        MAVLINK_MSG_ID_VIDEO_STREAM_INFORMATION, _camera_id + MAV_COMP_ID_CAMERA, nullptr);
+    _system_impl->mavlink_request_message().request(
+        MAVLINK_MSG_ID_VIDEO_STREAM_STATUS, _camera_id + MAV_COMP_ID_CAMERA, nullptr);
 }
 
 Camera::VideoStreamInfo CameraImpl::video_stream_info()
@@ -1219,8 +1140,10 @@ bool CameraImpl::interval_valid(float interval_s)
 
 void CameraImpl::request_status()
 {
-    _system_impl->send_command_async(make_command_request_camera_capture_status(), nullptr);
-    _system_impl->send_command_async(make_command_request_storage_info(), nullptr);
+    _system_impl->mavlink_request_message().request(
+        MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS, _camera_id + MAV_COMP_ID_CAMERA, nullptr);
+    _system_impl->mavlink_request_message().request(
+        MAVLINK_MSG_ID_STORAGE_INFORMATION, _camera_id + MAV_COMP_ID_CAMERA, nullptr);
 }
 
 Camera::StatusHandle CameraImpl::subscribe_status(const Camera::StatusCallback& callback)
@@ -1431,9 +1354,11 @@ void CameraImpl::request_missing_capture_info()
     if (!_capture_info.missing_image_retries.empty()) {
         auto it_lowest_retries = std::min_element(
             _capture_info.missing_image_retries.begin(), _capture_info.missing_image_retries.end());
-        _system_impl->send_command_async(
-            CameraImpl::make_command_request_camera_image_captured(it_lowest_retries->first),
-            nullptr);
+        _system_impl->mavlink_request_message().request(
+            MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED,
+            _camera_id + MAV_COMP_ID_CAMERA,
+            nullptr,
+            it_lowest_retries->first);
         it_lowest_retries->second += 1;
     }
 }
@@ -2304,14 +2229,14 @@ bool CameraImpl::get_option_str(
 
 void CameraImpl::request_camera_settings()
 {
-    auto command_camera_settings = make_command_request_camera_settings();
-    _system_impl->send_command_async(command_camera_settings, nullptr);
+    _system_impl->mavlink_request_message().request(
+        MAVLINK_MSG_ID_CAMERA_SETTINGS, _camera_id + MAV_COMP_ID_CAMERA, nullptr);
 }
 
 void CameraImpl::request_camera_information()
 {
-    auto command_camera_info = make_command_request_camera_info();
-    _system_impl->send_command_async(command_camera_info, nullptr);
+    _system_impl->mavlink_request_message().request(
+        MAVLINK_MSG_ID_CAMERA_INFORMATION, _camera_id + MAV_COMP_ID_CAMERA, nullptr);
 }
 
 Camera::Result CameraImpl::format_storage(int32_t storage_id)
@@ -2474,8 +2399,11 @@ void CameraImpl::list_photos_async(
                         return;
                     }
 
-                    _system_impl->send_command_async(
-                        make_command_request_camera_image_captured(i), nullptr);
+                    _system_impl->mavlink_request_message().request(
+                        MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED,
+                        _camera_id + MAV_COMP_ID_CAMERA,
+                        nullptr,
+                        i);
                     cv_status = _captured_request_cv.wait_for(
                         capture_request_lock, std::chrono::seconds(1));
                 }

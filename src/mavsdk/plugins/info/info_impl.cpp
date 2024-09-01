@@ -230,7 +230,7 @@ std::pair<Info::Result, Info::FlightInfo> InfoImpl::get_flight_information()
 {
     std::promise<std::pair<Info::Result, Info::FlightInfo>> prom;
     auto fut = prom.get_future();
-    _system_impl->request_message().request(
+    _system_impl->mavlink_request_message().request(
         MAVLINK_MSG_ID_FLIGHT_INFORMATION,
         MAV_COMP_ID_AUTOPILOT1,
         [&](MavlinkCommandSender::Result result, const mavlink_message_t& message) {
