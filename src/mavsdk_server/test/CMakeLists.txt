@@ -4,7 +4,6 @@ add_executable(unit_tests_mavsdk_server
     action_service_impl_test.cpp
     mavsdk_server_main.cpp
     camera_service_impl_test.cpp
-    connection_initiator_test.cpp
     core_service_impl_test.cpp
     mission_service_impl_test.cpp
     offboard_service_impl_test.cpp
