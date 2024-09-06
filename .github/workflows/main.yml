@@ -211,7 +211,7 @@ jobs:
     runs-on: ${{ matrix.container_name }}
     strategy:
       matrix:
-        container_name: [ubuntu-20.04, ubuntu-22.04]
+        container_name: [ubuntu-20.04, ubuntu-22.04, ubuntu-24.04]
     steps:
       - uses: actions/checkout@v4
         with:
