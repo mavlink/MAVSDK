@@ -180,7 +180,7 @@ jobs:
       #- name: system tests
       #  run: ./build/src/system_tests/system_tests_runner
 
-  ubuntu22-style-and-proto-check:
+  ubuntu24-style-and-proto-check:
     name: ubuntu-24.04 (style and proto check)
     runs-on: ubuntu-24.04
     steps:
