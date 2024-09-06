@@ -77,7 +77,27 @@ jobs:
     runs-on: ${{ matrix.ubuntu_image }}
     strategy:
       matrix:
-        ubuntu_image: [ubuntu-20.04, ubuntu-22.04, ubuntu-24.04]
+        include:
+          - ubuntu_image: ubuntu-20.04
+            cc: gcc
+            cxx: g++
+            description: Ubuntu 20.04 (GCC)
+          - ubuntu_image: ubuntu-22.04
+            cc: gcc
+            cxx: g++
+            description: Ubuntu 22.04 (GCC)
+          - ubuntu_image: ubuntu-24.04
+            cc: gcc-13
+            cxx: g++-13
+            description: Ubuntu 24.04 (GCC 13)
+          - ubuntu_image: ubuntu-24.04
+            cc: gcc-14
+            cxx: g++-14
+            description: Ubuntu 24.04 (GCC 14)
+          - ubuntu_image: ubuntu-24.04
+            cc: clang-18
+            cxx: clang++-18
+            description: Ubuntu 24.04 (clang 18)
     steps:
       - uses: actions/checkout@v4
         with:
@@ -86,12 +106,15 @@ jobs:
         id: cache
         with:
           path: ./build/release/third_party/install
-          key: ${{ github.job }}-${{ matrix.ubuntu_image }}-${{ hashFiles('./third_party/**') }}-1
+          key: ${{ github.job }}-${{ matrix.ubuntu_image }}-${{ matrix.cc }}-${{ hashFiles('./third_party/**') }}-1
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=ON -DENABLE_CPPTRACE=On -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
+        run: |
+          echo "CC=${{ matrix.cc }}" >> $GITHUB_ENV
+          echo "CXX=${{ matrix.cxx }}" >> $GITHUB_ENV
+          cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=ON -DENABLE_CPPTRACE=On -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
       - name: cleanup to save space
         run: |
           rm -rf ./build/release/third_party/absl
@@ -120,7 +143,7 @@ jobs:
          echo 'APT::Get::Always-Include-Phased-Updates "true";' | sudo tee -a /etc/apt/apt.conf.d/99-phased-updates
          sudo apt-get update
       - name: install examples dependencies
-        run: sudo apt-get install libsdl2-dev
+        run: sudo apt-get install libsdl2-dev ${{ matrix.cc }} ${{ matrix.cxx }}
       - name: configure examples
         run: cmake -DCMAKE_PREFIX_PATH="$(pwd)/install;$(pwd)/build/release/third_party/install" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWERROR=ON -Bexamples/build -Hexamples
       - name: build examples
