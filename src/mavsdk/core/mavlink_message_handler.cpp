@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <mutex>
 #include "mavlink_message_handler.h"
 #include "log.h"
