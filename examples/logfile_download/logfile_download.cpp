@@ -11,6 +11,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cstring>
+#include <string>
 #include <thread>
 
 using namespace mavsdk;
@@ -42,7 +43,7 @@ int main(int argc, char** argv)
     bool remove_log_files = false;
 
     for (int i = 2; i < argc; ++i) {
-        if (argv[i] == "--rm") {
+        if (std::string(argv[i]) == "--rm") {
             remove_log_files = true;
         }
     }
