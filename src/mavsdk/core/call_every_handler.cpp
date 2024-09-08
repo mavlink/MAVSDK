@@ -1,5 +1,6 @@
 #include "call_every_handler.h"
 
+#include <algorithm>
 #include <utility>
 
 namespace mavsdk {
