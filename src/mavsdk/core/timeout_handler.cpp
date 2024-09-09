@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "timeout_handler.h"
 
 namespace mavsdk {
