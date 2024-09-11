@@ -293,6 +293,29 @@ void MavlinkParameterClient::get_param_async_typesafe(
     get_param_async(name, callback_future_result, cookie);
 }
 
+template<>
+void MavlinkParameterClient::get_param_async_typesafe(
+    const std::string& name, const GetParamTypesafeCallback<int32_t> callback, const void* cookie)
+{
+    // We need to delay the type checking until we get a response from the server.
+    GetParamAnyCallback callback_future_result = [callback](Result result, ParamValue value) {
+        if (result == Result::Success) {
+            if (value.is<int32_t>()) {
+                callback(Result::Success, value.get<int32_t>());
+            } else if (value.is<int16_t>()) {
+                callback(Result::Success, value.get<int16_t>());
+            } else if (value.is<int8_t>()) {
+                callback(Result::Success, value.get<int8_t>());
+            } else {
+                callback(Result::WrongType, {});
+            }
+        } else {
+            callback(result, {});
+        }
+    };
+    get_param_async(name, callback_future_result, cookie);
+}
+
 void MavlinkParameterClient::get_param_float_async(
     const std::string& name, const GetParamFloatCallback& callback, const void* cookie)
 {
