@@ -116,7 +116,6 @@ bool UdpConnection::send_message(const mavlink_message_t& message)
     std::lock_guard<std::mutex> lock(_remote_mutex);
 
     if (_remotes.size() == 0) {
-        LogErr() << "No known remotes";
         return false;
     }
 
