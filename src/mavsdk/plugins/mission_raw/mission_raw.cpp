@@ -68,10 +68,30 @@ void MissionRaw::download_mission_async(const DownloadMissionCallback callback)
     _impl->download_mission_async(callback);
 }
 
+void MissionRaw::download_geofence_async(const DownloadMissionCallback callback)
+{
+    _impl->download_geofence_async(callback);
+}
+
+void MissionRaw::download_rallypoints_async(const DownloadMissionCallback callback)
+{
+    _impl->download_rallypoints_async(callback);
+}
+
 std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>
 MissionRaw::download_mission() const
 {
     return _impl->download_mission();
+}
+
+std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem> > MissionRaw::download_geofence() const
+{
+    return _impl->download_geofence();
+}
+
+std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem> > MissionRaw::download_rallypoints() const
+{
+    return _impl->download_rallypoints();
 }
 
 MissionRaw::Result MissionRaw::cancel_mission_download() const
