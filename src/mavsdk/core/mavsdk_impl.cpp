@@ -41,6 +41,13 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
         }
     }
 
+    if (const char* env_p = std::getenv("MAVSDK_SYSTEM_DEBUGGING")) {
+        if (std::string(env_p) == "1") {
+            LogDebug() << "System debugging is on.";
+            _system_debugging = true;
+        }
+    }
+
     set_configuration(configuration);
 
     _work_thread = new std::thread(&MavsdkImpl::work_thread, this);
@@ -384,6 +391,16 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
     }
 
     if (!found_system) {
+        if (_system_debugging) {
+            LogWarn() << "Create new system/component " << (int)message.sysid << "/"
+                      << (int)message.compid;
+            LogWarn() << "From message " << (int)message.msgid << " with len " << (int)message.len;
+            std::string bytes = "";
+            for (unsigned i = 0; i < 12 + message.len; ++i) {
+                bytes += std::to_string(reinterpret_cast<uint8_t*>(&message)[i]) + ' ';
+            }
+            LogWarn() << "Bytes: " << bytes;
+        }
         make_system_with_component(message.sysid, message.compid);
     }
 
