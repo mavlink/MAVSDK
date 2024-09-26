@@ -87,6 +87,24 @@ class MissionRawService final {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::DownloadMissionResponse>>(PrepareAsyncDownloadMissionRaw(context, request, cq));
     }
     //
+    // Download a list of raw geofence items from the system (asynchronous).
+    virtual ::grpc::Status DownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest& request, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>> AsyncDownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>>(AsyncDownloadGeofenceRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>> PrepareAsyncDownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>>(PrepareAsyncDownloadGeofenceRaw(context, request, cq));
+    }
+    //
+    // Download a list of raw rallypoint items from the system (asynchronous).
+    virtual ::grpc::Status DownloadRallypoints(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest& request, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>> AsyncDownloadRallypoints(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>>(AsyncDownloadRallypointsRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>> PrepareAsyncDownloadRallypoints(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>>(PrepareAsyncDownloadRallypointsRaw(context, request, cq));
+    }
+    //
     // Cancel an ongoing mission download.
     virtual ::grpc::Status CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest& request, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse>> AsyncCancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest& request, ::grpc::CompletionQueue* cq) {
@@ -225,6 +243,14 @@ class MissionRawService final {
       virtual void DownloadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadMissionRequest* request, ::mavsdk::rpc::mission_raw::DownloadMissionResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void DownloadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadMissionRequest* request, ::mavsdk::rpc::mission_raw::DownloadMissionResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       //
+      // Download a list of raw geofence items from the system (asynchronous).
+      virtual void DownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest* request, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void DownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest* request, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      //
+      // Download a list of raw rallypoint items from the system (asynchronous).
+      virtual void DownloadRallypoints(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest* request, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void DownloadRallypoints(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest* request, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      //
       // Cancel an ongoing mission download.
       virtual void CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
@@ -300,6 +326,10 @@ class MissionRawService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::CancelMissionUploadResponse>* PrepareAsyncCancelMissionUploadRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionUploadRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::DownloadMissionResponse>* AsyncDownloadMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadMissionRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::DownloadMissionResponse>* PrepareAsyncDownloadMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadMissionRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>* AsyncDownloadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>* PrepareAsyncDownloadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>* AsyncDownloadRallypointsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>* PrepareAsyncDownloadRallypointsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse>* AsyncCancelMissionDownloadRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse>* PrepareAsyncCancelMissionDownloadRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::mission_raw::StartMissionResponse>* AsyncStartMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::StartMissionRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -358,6 +388,20 @@ class MissionRawService final {
     }
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::DownloadMissionResponse>> PrepareAsyncDownloadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadMissionRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::DownloadMissionResponse>>(PrepareAsyncDownloadMissionRaw(context, request, cq));
+    }
+    ::grpc::Status DownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest& request, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>> AsyncDownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>>(AsyncDownloadGeofenceRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>> PrepareAsyncDownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>>(PrepareAsyncDownloadGeofenceRaw(context, request, cq));
+    }
+    ::grpc::Status DownloadRallypoints(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest& request, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>> AsyncDownloadRallypoints(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>>(AsyncDownloadRallypointsRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>> PrepareAsyncDownloadRallypoints(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>>(PrepareAsyncDownloadRallypointsRaw(context, request, cq));
     }
     ::grpc::Status CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest& request, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse>> AsyncCancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest& request, ::grpc::CompletionQueue* cq) {
@@ -439,6 +483,10 @@ class MissionRawService final {
       void CancelMissionUpload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionUploadRequest* request, ::mavsdk::rpc::mission_raw::CancelMissionUploadResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void DownloadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadMissionRequest* request, ::mavsdk::rpc::mission_raw::DownloadMissionResponse* response, std::function<void(::grpc::Status)>) override;
       void DownloadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadMissionRequest* request, ::mavsdk::rpc::mission_raw::DownloadMissionResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void DownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest* request, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse* response, std::function<void(::grpc::Status)>) override;
+      void DownloadGeofence(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest* request, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void DownloadRallypoints(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest* request, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse* response, std::function<void(::grpc::Status)>) override;
+      void DownloadRallypoints(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest* request, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse* response, std::function<void(::grpc::Status)>) override;
       void CancelMissionDownload(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void StartMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::StartMissionRequest* request, ::mavsdk::rpc::mission_raw::StartMissionResponse* response, std::function<void(::grpc::Status)>) override;
@@ -476,6 +524,10 @@ class MissionRawService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::CancelMissionUploadResponse>* PrepareAsyncCancelMissionUploadRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionUploadRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::DownloadMissionResponse>* AsyncDownloadMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadMissionRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::DownloadMissionResponse>* PrepareAsyncDownloadMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadMissionRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>* AsyncDownloadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>* PrepareAsyncDownloadGeofenceRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>* AsyncDownloadRallypointsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>* PrepareAsyncDownloadRallypointsRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse>* AsyncCancelMissionDownloadRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse>* PrepareAsyncCancelMissionDownloadRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::StartMissionResponse>* AsyncStartMissionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::StartMissionRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -501,6 +553,8 @@ class MissionRawService final {
     const ::grpc::internal::RpcMethod rpcmethod_UploadRallyPoints_;
     const ::grpc::internal::RpcMethod rpcmethod_CancelMissionUpload_;
     const ::grpc::internal::RpcMethod rpcmethod_DownloadMission_;
+    const ::grpc::internal::RpcMethod rpcmethod_DownloadGeofence_;
+    const ::grpc::internal::RpcMethod rpcmethod_DownloadRallypoints_;
     const ::grpc::internal::RpcMethod rpcmethod_CancelMissionDownload_;
     const ::grpc::internal::RpcMethod rpcmethod_StartMission_;
     const ::grpc::internal::RpcMethod rpcmethod_PauseMission_;
@@ -535,6 +589,12 @@ class MissionRawService final {
     //
     // Download a list of raw mission items from the system (asynchronous).
     virtual ::grpc::Status DownloadMission(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_raw::DownloadMissionRequest* request, ::mavsdk::rpc::mission_raw::DownloadMissionResponse* response);
+    //
+    // Download a list of raw geofence items from the system (asynchronous).
+    virtual ::grpc::Status DownloadGeofence(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest* request, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse* response);
+    //
+    // Download a list of raw rallypoint items from the system (asynchronous).
+    virtual ::grpc::Status DownloadRallypoints(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest* request, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse* response);
     //
     // Cancel an ongoing mission download.
     virtual ::grpc::Status CancelMissionDownload(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse* response);
@@ -691,12 +751,52 @@ class MissionRawService final {
     }
   };
   template <class BaseClass>
+  class WithAsyncMethod_DownloadGeofence : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_DownloadGeofence() {
+      ::grpc::Service::MarkMethodAsync(5);
+    }
+    ~WithAsyncMethod_DownloadGeofence() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DownloadGeofence(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest* /*request*/, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestDownloadGeofence(::grpc::ServerContext* context, ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_DownloadRallypoints : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_DownloadRallypoints() {
+      ::grpc::Service::MarkMethodAsync(6);
+    }
+    ~WithAsyncMethod_DownloadRallypoints() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DownloadRallypoints(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest* /*request*/, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestDownloadRallypoints(::grpc::ServerContext* context, ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithAsyncMethod_CancelMissionDownload : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_CancelMissionDownload() {
-      ::grpc::Service::MarkMethodAsync(5);
+      ::grpc::Service::MarkMethodAsync(7);
     }
     ~WithAsyncMethod_CancelMissionDownload() override {
       BaseClassMustBeDerivedFromService(this);
@@ -707,7 +807,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestCancelMissionDownload(::grpc::ServerContext* context, ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(7, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -716,7 +816,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_StartMission() {
-      ::grpc::Service::MarkMethodAsync(6);
+      ::grpc::Service::MarkMethodAsync(8);
     }
     ~WithAsyncMethod_StartMission() override {
       BaseClassMustBeDerivedFromService(this);
@@ -727,7 +827,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestStartMission(::grpc::ServerContext* context, ::mavsdk::rpc::mission_raw::StartMissionRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::mission_raw::StartMissionResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(8, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -736,7 +836,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_PauseMission() {
-      ::grpc::Service::MarkMethodAsync(7);
+      ::grpc::Service::MarkMethodAsync(9);
     }
     ~WithAsyncMethod_PauseMission() override {
       BaseClassMustBeDerivedFromService(this);
@@ -747,7 +847,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestPauseMission(::grpc::ServerContext* context, ::mavsdk::rpc::mission_raw::PauseMissionRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::mission_raw::PauseMissionResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(7, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(9, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -756,7 +856,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_ClearMission() {
-      ::grpc::Service::MarkMethodAsync(8);
+      ::grpc::Service::MarkMethodAsync(10);
     }
     ~WithAsyncMethod_ClearMission() override {
       BaseClassMustBeDerivedFromService(this);
@@ -767,7 +867,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestClearMission(::grpc::ServerContext* context, ::mavsdk::rpc::mission_raw::ClearMissionRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::mission_raw::ClearMissionResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(8, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(10, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -776,7 +876,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SetCurrentMissionItem() {
-      ::grpc::Service::MarkMethodAsync(9);
+      ::grpc::Service::MarkMethodAsync(11);
     }
     ~WithAsyncMethod_SetCurrentMissionItem() override {
       BaseClassMustBeDerivedFromService(this);
@@ -787,7 +887,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetCurrentMissionItem(::grpc::ServerContext* context, ::mavsdk::rpc::mission_raw::SetCurrentMissionItemRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::mission_raw::SetCurrentMissionItemResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(9, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(11, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -796,7 +896,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeMissionProgress() {
-      ::grpc::Service::MarkMethodAsync(10);
+      ::grpc::Service::MarkMethodAsync(12);
     }
     ~WithAsyncMethod_SubscribeMissionProgress() override {
       BaseClassMustBeDerivedFromService(this);
@@ -807,7 +907,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSubscribeMissionProgress(::grpc::ServerContext* context, ::mavsdk::rpc::mission_raw::SubscribeMissionProgressRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::mission_raw::MissionProgressResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncServerStreaming(10, context, request, writer, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncServerStreaming(12, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -816,7 +916,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_SubscribeMissionChanged() {
-      ::grpc::Service::MarkMethodAsync(11);
+      ::grpc::Service::MarkMethodAsync(13);
     }
     ~WithAsyncMethod_SubscribeMissionChanged() override {
       BaseClassMustBeDerivedFromService(this);
@@ -827,7 +927,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSubscribeMissionChanged(::grpc::ServerContext* context, ::mavsdk::rpc::mission_raw::SubscribeMissionChangedRequest* request, ::grpc::ServerAsyncWriter< ::mavsdk::rpc::mission_raw::MissionChangedResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncServerStreaming(11, context, request, writer, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncServerStreaming(13, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -836,7 +936,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_ImportQgroundcontrolMission() {
-      ::grpc::Service::MarkMethodAsync(12);
+      ::grpc::Service::MarkMethodAsync(14);
     }
     ~WithAsyncMethod_ImportQgroundcontrolMission() override {
       BaseClassMustBeDerivedFromService(this);
@@ -847,7 +947,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestImportQgroundcontrolMission(::grpc::ServerContext* context, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(12, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(14, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -856,7 +956,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_ImportQgroundcontrolMissionFromString() {
-      ::grpc::Service::MarkMethodAsync(13);
+      ::grpc::Service::MarkMethodAsync(15);
     }
     ~WithAsyncMethod_ImportQgroundcontrolMissionFromString() override {
       BaseClassMustBeDerivedFromService(this);
@@ -867,10 +967,10 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestImportQgroundcontrolMissionFromString(::grpc::ServerContext* context, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(13, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(15, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_UploadMission<WithAsyncMethod_UploadGeofence<WithAsyncMethod_UploadRallyPoints<WithAsyncMethod_CancelMissionUpload<WithAsyncMethod_DownloadMission<WithAsyncMethod_CancelMissionDownload<WithAsyncMethod_StartMission<WithAsyncMethod_PauseMission<WithAsyncMethod_ClearMission<WithAsyncMethod_SetCurrentMissionItem<WithAsyncMethod_SubscribeMissionProgress<WithAsyncMethod_SubscribeMissionChanged<WithAsyncMethod_ImportQgroundcontrolMission<WithAsyncMethod_ImportQgroundcontrolMissionFromString<Service > > > > > > > > > > > > > > AsyncService;
+  typedef WithAsyncMethod_UploadMission<WithAsyncMethod_UploadGeofence<WithAsyncMethod_UploadRallyPoints<WithAsyncMethod_CancelMissionUpload<WithAsyncMethod_DownloadMission<WithAsyncMethod_DownloadGeofence<WithAsyncMethod_DownloadRallypoints<WithAsyncMethod_CancelMissionDownload<WithAsyncMethod_StartMission<WithAsyncMethod_PauseMission<WithAsyncMethod_ClearMission<WithAsyncMethod_SetCurrentMissionItem<WithAsyncMethod_SubscribeMissionProgress<WithAsyncMethod_SubscribeMissionChanged<WithAsyncMethod_ImportQgroundcontrolMission<WithAsyncMethod_ImportQgroundcontrolMissionFromString<Service > > > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_UploadMission : public BaseClass {
    private:
@@ -1007,18 +1107,72 @@ class MissionRawService final {
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::DownloadMissionRequest* /*request*/, ::mavsdk::rpc::mission_raw::DownloadMissionResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithCallbackMethod_DownloadGeofence : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_DownloadGeofence() {
+      ::grpc::Service::MarkMethodCallback(5,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest* request, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse* response) { return this->DownloadGeofence(context, request, response); }));}
+    void SetMessageAllocatorFor_DownloadGeofence(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(5);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_DownloadGeofence() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DownloadGeofence(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest* /*request*/, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* DownloadGeofence(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest* /*request*/, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_DownloadRallypoints : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_DownloadRallypoints() {
+      ::grpc::Service::MarkMethodCallback(6,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest* request, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse* response) { return this->DownloadRallypoints(context, request, response); }));}
+    void SetMessageAllocatorFor_DownloadRallypoints(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(6);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_DownloadRallypoints() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DownloadRallypoints(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest* /*request*/, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* DownloadRallypoints(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest* /*request*/, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithCallbackMethod_CancelMissionDownload : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_CancelMissionDownload() {
-      ::grpc::Service::MarkMethodCallback(5,
+      ::grpc::Service::MarkMethodCallback(7,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest* request, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse* response) { return this->CancelMissionDownload(context, request, response); }));}
     void SetMessageAllocatorFor_CancelMissionDownload(
         ::grpc::MessageAllocator< ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(5);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(7);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -1039,13 +1193,13 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_StartMission() {
-      ::grpc::Service::MarkMethodCallback(6,
+      ::grpc::Service::MarkMethodCallback(8,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::StartMissionRequest, ::mavsdk::rpc::mission_raw::StartMissionResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission_raw::StartMissionRequest* request, ::mavsdk::rpc::mission_raw::StartMissionResponse* response) { return this->StartMission(context, request, response); }));}
     void SetMessageAllocatorFor_StartMission(
         ::grpc::MessageAllocator< ::mavsdk::rpc::mission_raw::StartMissionRequest, ::mavsdk::rpc::mission_raw::StartMissionResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(6);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(8);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::StartMissionRequest, ::mavsdk::rpc::mission_raw::StartMissionResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -1066,13 +1220,13 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_PauseMission() {
-      ::grpc::Service::MarkMethodCallback(7,
+      ::grpc::Service::MarkMethodCallback(9,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::PauseMissionRequest, ::mavsdk::rpc::mission_raw::PauseMissionResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission_raw::PauseMissionRequest* request, ::mavsdk::rpc::mission_raw::PauseMissionResponse* response) { return this->PauseMission(context, request, response); }));}
     void SetMessageAllocatorFor_PauseMission(
         ::grpc::MessageAllocator< ::mavsdk::rpc::mission_raw::PauseMissionRequest, ::mavsdk::rpc::mission_raw::PauseMissionResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(7);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(9);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::PauseMissionRequest, ::mavsdk::rpc::mission_raw::PauseMissionResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -1093,13 +1247,13 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_ClearMission() {
-      ::grpc::Service::MarkMethodCallback(8,
+      ::grpc::Service::MarkMethodCallback(10,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::ClearMissionRequest, ::mavsdk::rpc::mission_raw::ClearMissionResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission_raw::ClearMissionRequest* request, ::mavsdk::rpc::mission_raw::ClearMissionResponse* response) { return this->ClearMission(context, request, response); }));}
     void SetMessageAllocatorFor_ClearMission(
         ::grpc::MessageAllocator< ::mavsdk::rpc::mission_raw::ClearMissionRequest, ::mavsdk::rpc::mission_raw::ClearMissionResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(8);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(10);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::ClearMissionRequest, ::mavsdk::rpc::mission_raw::ClearMissionResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -1120,13 +1274,13 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_SetCurrentMissionItem() {
-      ::grpc::Service::MarkMethodCallback(9,
+      ::grpc::Service::MarkMethodCallback(11,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::SetCurrentMissionItemRequest, ::mavsdk::rpc::mission_raw::SetCurrentMissionItemResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission_raw::SetCurrentMissionItemRequest* request, ::mavsdk::rpc::mission_raw::SetCurrentMissionItemResponse* response) { return this->SetCurrentMissionItem(context, request, response); }));}
     void SetMessageAllocatorFor_SetCurrentMissionItem(
         ::grpc::MessageAllocator< ::mavsdk::rpc::mission_raw::SetCurrentMissionItemRequest, ::mavsdk::rpc::mission_raw::SetCurrentMissionItemResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(9);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(11);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::SetCurrentMissionItemRequest, ::mavsdk::rpc::mission_raw::SetCurrentMissionItemResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -1147,7 +1301,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_SubscribeMissionProgress() {
-      ::grpc::Service::MarkMethodCallback(10,
+      ::grpc::Service::MarkMethodCallback(12,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::mission_raw::SubscribeMissionProgressRequest, ::mavsdk::rpc::mission_raw::MissionProgressResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission_raw::SubscribeMissionProgressRequest* request) { return this->SubscribeMissionProgress(context, request); }));
@@ -1169,7 +1323,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_SubscribeMissionChanged() {
-      ::grpc::Service::MarkMethodCallback(11,
+      ::grpc::Service::MarkMethodCallback(13,
           new ::grpc::internal::CallbackServerStreamingHandler< ::mavsdk::rpc::mission_raw::SubscribeMissionChangedRequest, ::mavsdk::rpc::mission_raw::MissionChangedResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission_raw::SubscribeMissionChangedRequest* request) { return this->SubscribeMissionChanged(context, request); }));
@@ -1191,13 +1345,13 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_ImportQgroundcontrolMission() {
-      ::grpc::Service::MarkMethodCallback(12,
+      ::grpc::Service::MarkMethodCallback(14,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest* request, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse* response) { return this->ImportQgroundcontrolMission(context, request, response); }));}
     void SetMessageAllocatorFor_ImportQgroundcontrolMission(
         ::grpc::MessageAllocator< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(12);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(14);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -1218,13 +1372,13 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_ImportQgroundcontrolMissionFromString() {
-      ::grpc::Service::MarkMethodCallback(13,
+      ::grpc::Service::MarkMethodCallback(15,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest* request, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse* response) { return this->ImportQgroundcontrolMissionFromString(context, request, response); }));}
     void SetMessageAllocatorFor_ImportQgroundcontrolMissionFromString(
         ::grpc::MessageAllocator< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(13);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(15);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -1239,7 +1393,7 @@ class MissionRawService final {
     virtual ::grpc::ServerUnaryReactor* ImportQgroundcontrolMissionFromString(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest* /*request*/, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_UploadMission<WithCallbackMethod_UploadGeofence<WithCallbackMethod_UploadRallyPoints<WithCallbackMethod_CancelMissionUpload<WithCallbackMethod_DownloadMission<WithCallbackMethod_CancelMissionDownload<WithCallbackMethod_StartMission<WithCallbackMethod_PauseMission<WithCallbackMethod_ClearMission<WithCallbackMethod_SetCurrentMissionItem<WithCallbackMethod_SubscribeMissionProgress<WithCallbackMethod_SubscribeMissionChanged<WithCallbackMethod_ImportQgroundcontrolMission<WithCallbackMethod_ImportQgroundcontrolMissionFromString<Service > > > > > > > > > > > > > > CallbackService;
+  typedef WithCallbackMethod_UploadMission<WithCallbackMethod_UploadGeofence<WithCallbackMethod_UploadRallyPoints<WithCallbackMethod_CancelMissionUpload<WithCallbackMethod_DownloadMission<WithCallbackMethod_DownloadGeofence<WithCallbackMethod_DownloadRallypoints<WithCallbackMethod_CancelMissionDownload<WithCallbackMethod_StartMission<WithCallbackMethod_PauseMission<WithCallbackMethod_ClearMission<WithCallbackMethod_SetCurrentMissionItem<WithCallbackMethod_SubscribeMissionProgress<WithCallbackMethod_SubscribeMissionChanged<WithCallbackMethod_ImportQgroundcontrolMission<WithCallbackMethod_ImportQgroundcontrolMissionFromString<Service > > > > > > > > > > > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_UploadMission : public BaseClass {
@@ -1327,12 +1481,46 @@ class MissionRawService final {
     }
   };
   template <class BaseClass>
+  class WithGenericMethod_DownloadGeofence : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_DownloadGeofence() {
+      ::grpc::Service::MarkMethodGeneric(5);
+    }
+    ~WithGenericMethod_DownloadGeofence() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DownloadGeofence(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest* /*request*/, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_DownloadRallypoints : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_DownloadRallypoints() {
+      ::grpc::Service::MarkMethodGeneric(6);
+    }
+    ~WithGenericMethod_DownloadRallypoints() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DownloadRallypoints(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest* /*request*/, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
   class WithGenericMethod_CancelMissionDownload : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_CancelMissionDownload() {
-      ::grpc::Service::MarkMethodGeneric(5);
+      ::grpc::Service::MarkMethodGeneric(7);
     }
     ~WithGenericMethod_CancelMissionDownload() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1349,7 +1537,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_StartMission() {
-      ::grpc::Service::MarkMethodGeneric(6);
+      ::grpc::Service::MarkMethodGeneric(8);
     }
     ~WithGenericMethod_StartMission() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1366,7 +1554,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_PauseMission() {
-      ::grpc::Service::MarkMethodGeneric(7);
+      ::grpc::Service::MarkMethodGeneric(9);
     }
     ~WithGenericMethod_PauseMission() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1383,7 +1571,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_ClearMission() {
-      ::grpc::Service::MarkMethodGeneric(8);
+      ::grpc::Service::MarkMethodGeneric(10);
     }
     ~WithGenericMethod_ClearMission() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1400,7 +1588,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SetCurrentMissionItem() {
-      ::grpc::Service::MarkMethodGeneric(9);
+      ::grpc::Service::MarkMethodGeneric(11);
     }
     ~WithGenericMethod_SetCurrentMissionItem() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1417,7 +1605,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeMissionProgress() {
-      ::grpc::Service::MarkMethodGeneric(10);
+      ::grpc::Service::MarkMethodGeneric(12);
     }
     ~WithGenericMethod_SubscribeMissionProgress() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1434,7 +1622,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_SubscribeMissionChanged() {
-      ::grpc::Service::MarkMethodGeneric(11);
+      ::grpc::Service::MarkMethodGeneric(13);
     }
     ~WithGenericMethod_SubscribeMissionChanged() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1451,7 +1639,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_ImportQgroundcontrolMission() {
-      ::grpc::Service::MarkMethodGeneric(12);
+      ::grpc::Service::MarkMethodGeneric(14);
     }
     ~WithGenericMethod_ImportQgroundcontrolMission() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1468,7 +1656,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_ImportQgroundcontrolMissionFromString() {
-      ::grpc::Service::MarkMethodGeneric(13);
+      ::grpc::Service::MarkMethodGeneric(15);
     }
     ~WithGenericMethod_ImportQgroundcontrolMissionFromString() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1580,12 +1768,52 @@ class MissionRawService final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_DownloadGeofence : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_DownloadGeofence() {
+      ::grpc::Service::MarkMethodRaw(5);
+    }
+    ~WithRawMethod_DownloadGeofence() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DownloadGeofence(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest* /*request*/, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestDownloadGeofence(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_DownloadRallypoints : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_DownloadRallypoints() {
+      ::grpc::Service::MarkMethodRaw(6);
+    }
+    ~WithRawMethod_DownloadRallypoints() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DownloadRallypoints(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest* /*request*/, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestDownloadRallypoints(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawMethod_CancelMissionDownload : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_CancelMissionDownload() {
-      ::grpc::Service::MarkMethodRaw(5);
+      ::grpc::Service::MarkMethodRaw(7);
     }
     ~WithRawMethod_CancelMissionDownload() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1596,7 +1824,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestCancelMissionDownload(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(7, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1605,7 +1833,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_StartMission() {
-      ::grpc::Service::MarkMethodRaw(6);
+      ::grpc::Service::MarkMethodRaw(8);
     }
     ~WithRawMethod_StartMission() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1616,7 +1844,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestStartMission(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(6, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(8, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1625,7 +1853,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_PauseMission() {
-      ::grpc::Service::MarkMethodRaw(7);
+      ::grpc::Service::MarkMethodRaw(9);
     }
     ~WithRawMethod_PauseMission() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1636,7 +1864,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestPauseMission(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(7, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(9, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1645,7 +1873,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_ClearMission() {
-      ::grpc::Service::MarkMethodRaw(8);
+      ::grpc::Service::MarkMethodRaw(10);
     }
     ~WithRawMethod_ClearMission() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1656,7 +1884,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestClearMission(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(8, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(10, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1665,7 +1893,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SetCurrentMissionItem() {
-      ::grpc::Service::MarkMethodRaw(9);
+      ::grpc::Service::MarkMethodRaw(11);
     }
     ~WithRawMethod_SetCurrentMissionItem() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1676,7 +1904,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSetCurrentMissionItem(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(9, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(11, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1685,7 +1913,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeMissionProgress() {
-      ::grpc::Service::MarkMethodRaw(10);
+      ::grpc::Service::MarkMethodRaw(12);
     }
     ~WithRawMethod_SubscribeMissionProgress() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1696,7 +1924,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSubscribeMissionProgress(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncServerStreaming(10, context, request, writer, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncServerStreaming(12, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1705,7 +1933,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_SubscribeMissionChanged() {
-      ::grpc::Service::MarkMethodRaw(11);
+      ::grpc::Service::MarkMethodRaw(13);
     }
     ~WithRawMethod_SubscribeMissionChanged() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1716,7 +1944,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestSubscribeMissionChanged(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncServerStreaming(11, context, request, writer, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncServerStreaming(13, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1725,7 +1953,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_ImportQgroundcontrolMission() {
-      ::grpc::Service::MarkMethodRaw(12);
+      ::grpc::Service::MarkMethodRaw(14);
     }
     ~WithRawMethod_ImportQgroundcontrolMission() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1736,7 +1964,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestImportQgroundcontrolMission(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(12, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(14, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1745,7 +1973,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_ImportQgroundcontrolMissionFromString() {
-      ::grpc::Service::MarkMethodRaw(13);
+      ::grpc::Service::MarkMethodRaw(15);
     }
     ~WithRawMethod_ImportQgroundcontrolMissionFromString() override {
       BaseClassMustBeDerivedFromService(this);
@@ -1756,7 +1984,7 @@ class MissionRawService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestImportQgroundcontrolMissionFromString(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(13, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(15, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1870,12 +2098,56 @@ class MissionRawService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithRawCallbackMethod_DownloadGeofence : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_DownloadGeofence() {
+      ::grpc::Service::MarkMethodRawCallback(5,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->DownloadGeofence(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_DownloadGeofence() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DownloadGeofence(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest* /*request*/, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* DownloadGeofence(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_DownloadRallypoints : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_DownloadRallypoints() {
+      ::grpc::Service::MarkMethodRawCallback(6,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->DownloadRallypoints(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_DownloadRallypoints() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status DownloadRallypoints(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest* /*request*/, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* DownloadRallypoints(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithRawCallbackMethod_CancelMissionDownload : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_CancelMissionDownload() {
-      ::grpc::Service::MarkMethodRawCallback(5,
+      ::grpc::Service::MarkMethodRawCallback(7,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->CancelMissionDownload(context, request, response); }));
@@ -1897,7 +2169,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_StartMission() {
-      ::grpc::Service::MarkMethodRawCallback(6,
+      ::grpc::Service::MarkMethodRawCallback(8,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->StartMission(context, request, response); }));
@@ -1919,7 +2191,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_PauseMission() {
-      ::grpc::Service::MarkMethodRawCallback(7,
+      ::grpc::Service::MarkMethodRawCallback(9,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->PauseMission(context, request, response); }));
@@ -1941,7 +2213,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_ClearMission() {
-      ::grpc::Service::MarkMethodRawCallback(8,
+      ::grpc::Service::MarkMethodRawCallback(10,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ClearMission(context, request, response); }));
@@ -1963,7 +2235,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_SetCurrentMissionItem() {
-      ::grpc::Service::MarkMethodRawCallback(9,
+      ::grpc::Service::MarkMethodRawCallback(11,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetCurrentMissionItem(context, request, response); }));
@@ -1985,7 +2257,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_SubscribeMissionProgress() {
-      ::grpc::Service::MarkMethodRawCallback(10,
+      ::grpc::Service::MarkMethodRawCallback(12,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeMissionProgress(context, request); }));
@@ -2007,7 +2279,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_SubscribeMissionChanged() {
-      ::grpc::Service::MarkMethodRawCallback(11,
+      ::grpc::Service::MarkMethodRawCallback(13,
           new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->SubscribeMissionChanged(context, request); }));
@@ -2029,7 +2301,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_ImportQgroundcontrolMission() {
-      ::grpc::Service::MarkMethodRawCallback(12,
+      ::grpc::Service::MarkMethodRawCallback(14,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ImportQgroundcontrolMission(context, request, response); }));
@@ -2051,7 +2323,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_ImportQgroundcontrolMissionFromString() {
-      ::grpc::Service::MarkMethodRawCallback(13,
+      ::grpc::Service::MarkMethodRawCallback(15,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->ImportQgroundcontrolMissionFromString(context, request, response); }));
@@ -2203,12 +2475,66 @@ class MissionRawService final {
     virtual ::grpc::Status StreamedDownloadMission(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::mission_raw::DownloadMissionRequest,::mavsdk::rpc::mission_raw::DownloadMissionResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
+  class WithStreamedUnaryMethod_DownloadGeofence : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_DownloadGeofence() {
+      ::grpc::Service::MarkMethodStreamed(5,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>* streamer) {
+                       return this->StreamedDownloadGeofence(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_DownloadGeofence() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status DownloadGeofence(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest* /*request*/, ::mavsdk::rpc::mission_raw::DownloadGeofenceResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedDownloadGeofence(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::mission_raw::DownloadGeofenceRequest,::mavsdk::rpc::mission_raw::DownloadGeofenceResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_DownloadRallypoints : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_DownloadRallypoints() {
+      ::grpc::Service::MarkMethodStreamed(6,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>* streamer) {
+                       return this->StreamedDownloadRallypoints(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_DownloadRallypoints() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status DownloadRallypoints(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest* /*request*/, ::mavsdk::rpc::mission_raw::DownloadRallypointsResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedDownloadRallypoints(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::mission_raw::DownloadRallypointsRequest,::mavsdk::rpc::mission_raw::DownloadRallypointsResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_CancelMissionDownload : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_CancelMissionDownload() {
-      ::grpc::Service::MarkMethodStreamed(5,
+      ::grpc::Service::MarkMethodStreamed(7,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::mission_raw::CancelMissionDownloadRequest, ::mavsdk::rpc::mission_raw::CancelMissionDownloadResponse>(
             [this](::grpc::ServerContext* context,
@@ -2235,7 +2561,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_StartMission() {
-      ::grpc::Service::MarkMethodStreamed(6,
+      ::grpc::Service::MarkMethodStreamed(8,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::mission_raw::StartMissionRequest, ::mavsdk::rpc::mission_raw::StartMissionResponse>(
             [this](::grpc::ServerContext* context,
@@ -2262,7 +2588,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_PauseMission() {
-      ::grpc::Service::MarkMethodStreamed(7,
+      ::grpc::Service::MarkMethodStreamed(9,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::mission_raw::PauseMissionRequest, ::mavsdk::rpc::mission_raw::PauseMissionResponse>(
             [this](::grpc::ServerContext* context,
@@ -2289,7 +2615,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_ClearMission() {
-      ::grpc::Service::MarkMethodStreamed(8,
+      ::grpc::Service::MarkMethodStreamed(10,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::mission_raw::ClearMissionRequest, ::mavsdk::rpc::mission_raw::ClearMissionResponse>(
             [this](::grpc::ServerContext* context,
@@ -2316,7 +2642,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_SetCurrentMissionItem() {
-      ::grpc::Service::MarkMethodStreamed(9,
+      ::grpc::Service::MarkMethodStreamed(11,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::mission_raw::SetCurrentMissionItemRequest, ::mavsdk::rpc::mission_raw::SetCurrentMissionItemResponse>(
             [this](::grpc::ServerContext* context,
@@ -2343,7 +2669,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_ImportQgroundcontrolMission() {
-      ::grpc::Service::MarkMethodStreamed(12,
+      ::grpc::Service::MarkMethodStreamed(14,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionRequest, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionResponse>(
             [this](::grpc::ServerContext* context,
@@ -2370,7 +2696,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_ImportQgroundcontrolMissionFromString() {
-      ::grpc::Service::MarkMethodStreamed(13,
+      ::grpc::Service::MarkMethodStreamed(15,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse>(
             [this](::grpc::ServerContext* context,
@@ -2391,14 +2717,14 @@ class MissionRawService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedImportQgroundcontrolMissionFromString(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest,::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_UploadMission<WithStreamedUnaryMethod_UploadGeofence<WithStreamedUnaryMethod_UploadRallyPoints<WithStreamedUnaryMethod_CancelMissionUpload<WithStreamedUnaryMethod_DownloadMission<WithStreamedUnaryMethod_CancelMissionDownload<WithStreamedUnaryMethod_StartMission<WithStreamedUnaryMethod_PauseMission<WithStreamedUnaryMethod_ClearMission<WithStreamedUnaryMethod_SetCurrentMissionItem<WithStreamedUnaryMethod_ImportQgroundcontrolMission<WithStreamedUnaryMethod_ImportQgroundcontrolMissionFromString<Service > > > > > > > > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_UploadMission<WithStreamedUnaryMethod_UploadGeofence<WithStreamedUnaryMethod_UploadRallyPoints<WithStreamedUnaryMethod_CancelMissionUpload<WithStreamedUnaryMethod_DownloadMission<WithStreamedUnaryMethod_DownloadGeofence<WithStreamedUnaryMethod_DownloadRallypoints<WithStreamedUnaryMethod_CancelMissionDownload<WithStreamedUnaryMethod_StartMission<WithStreamedUnaryMethod_PauseMission<WithStreamedUnaryMethod_ClearMission<WithStreamedUnaryMethod_SetCurrentMissionItem<WithStreamedUnaryMethod_ImportQgroundcontrolMission<WithStreamedUnaryMethod_ImportQgroundcontrolMissionFromString<Service > > > > > > > > > > > > > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeMissionProgress : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeMissionProgress() {
-      ::grpc::Service::MarkMethodStreamed(10,
+      ::grpc::Service::MarkMethodStreamed(12,
         new ::grpc::internal::SplitServerStreamingHandler<
           ::mavsdk::rpc::mission_raw::SubscribeMissionProgressRequest, ::mavsdk::rpc::mission_raw::MissionProgressResponse>(
             [this](::grpc::ServerContext* context,
@@ -2425,7 +2751,7 @@ class MissionRawService final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithSplitStreamingMethod_SubscribeMissionChanged() {
-      ::grpc::Service::MarkMethodStreamed(11,
+      ::grpc::Service::MarkMethodStreamed(13,
         new ::grpc::internal::SplitServerStreamingHandler<
           ::mavsdk::rpc::mission_raw::SubscribeMissionChangedRequest, ::mavsdk::rpc::mission_raw::MissionChangedResponse>(
             [this](::grpc::ServerContext* context,
@@ -2447,7 +2773,7 @@ class MissionRawService final {
     virtual ::grpc::Status StreamedSubscribeMissionChanged(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::mission_raw::SubscribeMissionChangedRequest,::mavsdk::rpc::mission_raw::MissionChangedResponse>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_SubscribeMissionProgress<WithSplitStreamingMethod_SubscribeMissionChanged<Service > > SplitStreamedService;
-  typedef WithStreamedUnaryMethod_UploadMission<WithStreamedUnaryMethod_UploadGeofence<WithStreamedUnaryMethod_UploadRallyPoints<WithStreamedUnaryMethod_CancelMissionUpload<WithStreamedUnaryMethod_DownloadMission<WithStreamedUnaryMethod_CancelMissionDownload<WithStreamedUnaryMethod_StartMission<WithStreamedUnaryMethod_PauseMission<WithStreamedUnaryMethod_ClearMission<WithStreamedUnaryMethod_SetCurrentMissionItem<WithSplitStreamingMethod_SubscribeMissionProgress<WithSplitStreamingMethod_SubscribeMissionChanged<WithStreamedUnaryMethod_ImportQgroundcontrolMission<WithStreamedUnaryMethod_ImportQgroundcontrolMissionFromString<Service > > > > > > > > > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_UploadMission<WithStreamedUnaryMethod_UploadGeofence<WithStreamedUnaryMethod_UploadRallyPoints<WithStreamedUnaryMethod_CancelMissionUpload<WithStreamedUnaryMethod_DownloadMission<WithStreamedUnaryMethod_DownloadGeofence<WithStreamedUnaryMethod_DownloadRallypoints<WithStreamedUnaryMethod_CancelMissionDownload<WithStreamedUnaryMethod_StartMission<WithStreamedUnaryMethod_PauseMission<WithStreamedUnaryMethod_ClearMission<WithStreamedUnaryMethod_SetCurrentMissionItem<WithSplitStreamingMethod_SubscribeMissionProgress<WithSplitStreamingMethod_SubscribeMissionChanged<WithStreamedUnaryMethod_ImportQgroundcontrolMission<WithStreamedUnaryMethod_ImportQgroundcontrolMissionFromString<Service > > > > > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace mission_raw

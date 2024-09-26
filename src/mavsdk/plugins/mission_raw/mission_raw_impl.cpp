@@ -242,7 +242,8 @@ MissionRawImpl::download_mission()
     return fut.get();
 }
 
-std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem> > MissionRawImpl::download_geofence()
+std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>
+MissionRawImpl::download_geofence()
 {
     auto prom = std::promise<std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>>();
     auto fut = prom.get_future();
@@ -254,7 +255,8 @@ std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem> > MissionRawI
     return fut.get();
 }
 
-std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem> > MissionRawImpl::download_rallypoints()
+std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>
+MissionRawImpl::download_rallypoints()
 {
     auto prom = std::promise<std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>>();
     auto fut = prom.get_future();
@@ -293,7 +295,7 @@ void MissionRawImpl::download_mission_async(const MissionRaw::DownloadMissionCal
         });
 }
 
-void MissionRawImpl::download_geofence_async(const MissionRaw::DownloadMissionCallback &callback)
+void MissionRawImpl::download_geofence_async(const MissionRaw::DownloadGeofenceCallback& callback)
 {
     auto work_item = _last_download.lock();
     if (work_item && !work_item->is_done()) {
@@ -320,7 +322,7 @@ void MissionRawImpl::download_geofence_async(const MissionRaw::DownloadMissionCa
         });
 }
 
-void MissionRawImpl::download_rallypoints_async(const MissionRaw::DownloadMissionCallback &callback)
+void MissionRawImpl::download_rallypoints_async(const MissionRaw::DownloadRallypointsCallback& callback)
 {
     auto work_item = _last_download.lock();
     if (work_item && !work_item->is_done()) {

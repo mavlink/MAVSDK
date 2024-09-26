@@ -261,20 +261,6 @@ public:
     void download_mission_async(const DownloadMissionCallback callback);
 
     /**
-     * @brief Download a list of raw geofence items from the system (asynchronous).
-     *
-     * This function is non-blocking. See 'download_geofence' for the blocking counterpart.
-     */
-    void download_geofence_async(const DownloadMissionCallback callback);
-
-    /**
-     * @brief Download a list of raw rallypoint items from the system (asynchronous).
-     *
-     * This function is non-blocking. See 'download_rallypoints' for the blocking counterpart.
-     */
-    void download_rallypoints_async(const DownloadMissionCallback callback);
-
-    /**
      * @brief Download a list of raw mission items from the system (asynchronous).
      *
      * This function is blocking. See 'download_mission_async' for the non-blocking counterpart.
@@ -282,6 +268,18 @@ public:
      * @return Result of request.
      */
     std::pair<Result, std::vector<MissionRaw::MissionItem>> download_mission() const;
+
+    /**
+     * @brief Callback type for download_geofence_async.
+     */
+    using DownloadGeofenceCallback = std::function<void(Result, std::vector<MissionItem>)>;
+
+    /**
+     * @brief Download a list of raw geofence items from the system (asynchronous).
+     *
+     * This function is non-blocking. See 'download_geofence' for the blocking counterpart.
+     */
+    void download_geofence_async(const DownloadGeofenceCallback callback);
 
     /**
      * @brief Download a list of raw geofence items from the system (asynchronous).
@@ -293,9 +291,21 @@ public:
     std::pair<Result, std::vector<MissionRaw::MissionItem>> download_geofence() const;
 
     /**
+     * @brief Callback type for download_rallypoints_async.
+     */
+    using DownloadRallypointsCallback = std::function<void(Result, std::vector<MissionItem>)>;
+
+    /**
      * @brief Download a list of raw rallypoint items from the system (asynchronous).
      *
-     * This function is blocking. See 'download_rallypoint_async' for the non-blocking counterpart.
+     * This function is non-blocking. See 'download_rallypoints' for the blocking counterpart.
+     */
+    void download_rallypoints_async(const DownloadRallypointsCallback callback);
+
+    /**
+     * @brief Download a list of raw rallypoint items from the system (asynchronous).
+     *
+     * This function is blocking. See 'download_rallypoints_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
