@@ -322,7 +322,8 @@ void MissionRawImpl::download_geofence_async(const MissionRaw::DownloadGeofenceC
         });
 }
 
-void MissionRawImpl::download_rallypoints_async(const MissionRaw::DownloadRallypointsCallback& callback)
+void MissionRawImpl::download_rallypoints_async(
+    const MissionRaw::DownloadRallypointsCallback& callback)
 {
     auto work_item = _last_download.lock();
     if (work_item && !work_item->is_done()) {
