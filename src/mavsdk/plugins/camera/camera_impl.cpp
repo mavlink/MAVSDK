@@ -153,6 +153,9 @@ void CameraImpl::deinit()
     //_camera_found = false;
 }
 
+void CameraImpl::enable() {}
+void CameraImpl::disable() {}
+
 MavlinkCommandSender::CommandLong
 CameraImpl::make_command_take_photo(int32_t camera_id, float interval_s, float no_of_photos)
 {
@@ -1177,8 +1180,7 @@ void CameraImpl::process_storage_information(const mavlink_message_t& message)
     check_status();
 }
 
-Camera::Status::StorageStatus
-CameraImpl::storage_status_from_mavlink(const int storage_status)
+Camera::Status::StorageStatus CameraImpl::storage_status_from_mavlink(const int storage_status)
 {
     switch (storage_status) {
         case STORAGE_STATUS_EMPTY:
@@ -1234,7 +1236,8 @@ void CameraImpl::process_camera_image_captured(const mavlink_message_t& message)
         capture_info.position.latitude_deg = image_captured.lat / 1e7;
         capture_info.position.longitude_deg = image_captured.lon / 1e7;
         capture_info.position.absolute_altitude_m = static_cast<float>(image_captured.alt) / 1e3f;
-        capture_info.position.relative_altitude_m = static_cast<float>(image_captured.relative_alt) / 1e3f;
+        capture_info.position.relative_altitude_m =
+            static_cast<float>(image_captured.relative_alt) / 1e3f;
         capture_info.time_utc_us = image_captured.time_utc;
         capture_info.attitude_quaternion.w = image_captured.q[0];
         capture_info.attitude_quaternion.x = image_captured.q[1];
@@ -1613,8 +1616,7 @@ void CameraImpl::receive_set_mode_command_result(
     Camera::Result camera_result = camera_result_from_command_result(command_result);
 
     if (callback) {
-        _system_impl->call_user_callback(
-            [callback, camera_result]() { callback(camera_result); });
+        _system_impl->call_user_callback([callback, camera_result]() { callback(camera_result); });
     }
 
     if (camera_result == Camera::Result::Success) {
@@ -1635,9 +1637,8 @@ void CameraImpl::notify_mode()
     //    _mode.data, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
-bool CameraImpl::get_possible_options(
-    PotentialCamera& camera,
-    const std::string& setting_id, std::vector<Camera::Option>& options)
+bool CameraImpl::get_possible_options_with_lock(
+    PotentialCamera& camera, const std::string& setting_id, std::vector<Camera::Option>& options)
 {
     options.clear();
 
@@ -1657,7 +1658,8 @@ bool CameraImpl::get_possible_options(
         Camera::Option option{};
         option.option_id = ss.str();
         if (!camera.camera_definition->is_setting_range(setting_id)) {
-            get_option_str(setting_id, option.option_id, option.option_description);
+            get_option_str_with_lock(
+                camera, setting_id, option.option_id, option.option_description);
         }
         options.push_back(option);
     }
@@ -1694,7 +1696,7 @@ void CameraImpl::set_option_async(
     if (maybe_potential_camera == nullptr) {
         if (callback != nullptr) {
             _system_impl->call_user_callback(
-                    [callback]() { callback(Camera::Result::CameraIdInvalid); });
+                [callback]() { callback(Camera::Result::CameraIdInvalid); });
         }
         return;
     }
@@ -1704,7 +1706,7 @@ void CameraImpl::set_option_async(
     if (camera.camera_definition == nullptr) {
         if (callback != nullptr) {
             _system_impl->call_user_callback(
-                    [callback]() { callback(Camera::Result::SettingsUnavailable); });
+                [callback]() { callback(Camera::Result::SettingsUnavailable); });
         }
         return;
     }
@@ -1718,8 +1720,7 @@ void CameraImpl::set_option_async(
         if (!camera.camera_definition->get_all_options(setting_id, all_values)) {
             if (callback) {
                 LogErr() << "Could not get all options to get type for range param.";
-                _system_impl->call_user_callback(
-                    [callback]() { callback(Camera::Result::Error); });
+                _system_impl->call_user_callback([callback]() { callback(Camera::Result::Error); });
             }
             return;
         }
@@ -1727,8 +1728,7 @@ void CameraImpl::set_option_async(
         if (all_values.size() == 0) {
             if (callback) {
                 LogErr() << "Could not get any options to get type for range param.";
-                _system_impl->call_user_callback(
-                    [callback]() { callback(Camera::Result::Error); });
+                _system_impl->call_user_callback([callback]() { callback(Camera::Result::Error); });
             }
             return;
         }
@@ -1738,8 +1738,7 @@ void CameraImpl::set_option_async(
         if (!value.set_as_same_type(option.option_id)) {
             if (callback) {
                 LogErr() << "Could not set option value to given type.";
-                _system_impl->call_user_callback(
-                    [callback]() { callback(Camera::Result::Error); });
+                _system_impl->call_user_callback([callback]() { callback(Camera::Result::Error); });
             }
             return;
         }
@@ -1748,8 +1747,7 @@ void CameraImpl::set_option_async(
         if (!camera.camera_definition->get_option_value(setting_id, option.option_id, value)) {
             if (callback) {
                 LogErr() << "Could not get option value.";
-                _system_impl->call_user_callback(
-                    [callback]() { callback(Camera::Result::Error); });
+                _system_impl->call_user_callback([callback]() { callback(Camera::Result::Error); });
             }
             return;
         }
@@ -1765,8 +1763,7 @@ void CameraImpl::set_option_async(
         if (!allowed) {
             LogErr() << "Setting " << setting_id << "(" << option.option_id << ") not allowed";
             if (callback) {
-                _system_impl->call_user_callback(
-                    [callback]() { callback(Camera::Result::Error); });
+                _system_impl->call_user_callback([callback]() { callback(Camera::Result::Error); });
             }
             return;
         }
@@ -1776,9 +1773,9 @@ void CameraImpl::set_option_async(
         setting_id,
         value,
         [this, camera_id, callback, setting_id, value](MavlinkParameterClient::Result result) {
-
             std::lock_guard lock_later(_potential_cameras_mutex);
-            auto maybe_potential_camera_later = maybe_potential_camera_for_camera_id_with_lock(camera_id);
+            auto maybe_potential_camera_later =
+                maybe_potential_camera_for_camera_id_with_lock(camera_id);
             // We already checked these fields earlier, so we don't check again.
             assert(maybe_potential_camera_later != nullptr);
             assert(maybe_potential_camera_later->camera_definition != nullptr);
@@ -1787,8 +1784,9 @@ void CameraImpl::set_option_async(
 
             if (result != MavlinkParameterClient::Result::Success) {
                 if (callback) {
-                    _system_impl->call_user_callback(
-                        [callback, result]() { callback(camera_result_from_parameter_result(result)); });
+                    _system_impl->call_user_callback([callback, result]() {
+                        callback(camera_result_from_parameter_result(result));
+                    });
                 }
                 return;
             }
@@ -1807,7 +1805,6 @@ void CameraImpl::set_option_async(
             }
 
             refresh_params_with_lock(camera_later);
-
         },
         this,
         static_cast<uint8_t>(_camera_id + MAV_COMP_ID_CAMERA),
@@ -1817,6 +1814,26 @@ void CameraImpl::set_option_async(
 void CameraImpl::get_setting_async(
     int32_t camera_id, Camera::Setting setting, const Camera::GetSettingCallback callback)
 {
+    std::lock_guard lock(_potential_cameras_mutex);
+    auto maybe_potential_camera = maybe_potential_camera_for_camera_id_with_lock(camera_id);
+    if (maybe_potential_camera == nullptr) {
+        if (callback != nullptr) {
+            _system_impl->call_user_callback(
+                [callback]() { callback(Camera::Result::CameraIdInvalid, {}); });
+        }
+        return;
+    }
+
+    auto& camera = *maybe_potential_camera;
+
+    if (camera.camera_definition == nullptr) {
+        if (callback != nullptr) {
+            _system_impl->call_user_callback(
+                [callback]() { callback(Camera::Result::SettingsUnavailable, {}); });
+        }
+        return;
+    }
+
     get_option_async(
         camera_id,
         setting.setting_id,
@@ -1844,14 +1861,16 @@ CameraImpl::get_setting(int32_t camera_id, Camera::Setting setting)
     return ret.get();
 }
 
-Camera::Result CameraImpl::get_option(int32_t camera_id, const std::string& setting_id, Camera::Option& option)
+Camera::Result
+CameraImpl::get_option(int32_t camera_id, const std::string& setting_id, Camera::Option& option)
 {
     auto prom = std::make_shared<std::promise<Camera::Result>>();
     auto ret = prom->get_future();
 
     get_option_async(
         camera_id,
-        setting_id, [prom, &option](Camera::Result result, const Camera::Option& option_gotten) {
+        setting_id,
+        [prom, &option](Camera::Result result, const Camera::Option& option_gotten) {
             prom->set_value(result);
             if (result == Camera::Result::Success) {
                 option = option_gotten;
@@ -1877,8 +1896,7 @@ void CameraImpl::get_option_async(
     if (maybe_potential_camera == nullptr) {
         if (callback != nullptr) {
             _system_impl->call_user_callback(
-                    [callback]() {
-                        callback(Camera::Result::CameraIdInvalid, {}); });
+                [callback]() { callback(Camera::Result::CameraIdInvalid, {}); });
         }
         return;
     }
@@ -1888,8 +1906,7 @@ void CameraImpl::get_option_async(
     if (camera.camera_definition == nullptr) {
         if (callback != nullptr) {
             _system_impl->call_user_callback(
-                    [callback]() {
-                        callback(Camera::Result::SettingsUnavailable, {}); });
+                [callback]() { callback(Camera::Result::SettingsUnavailable, {}); });
         }
         return;
     }
@@ -1901,7 +1918,8 @@ void CameraImpl::get_option_async(
             Camera::Option new_option{};
             new_option.option_id = value.get_string();
             if (!camera.camera_definition->is_setting_range(setting_id)) {
-                get_option_str(setting_id, new_option.option_id, new_option.option_description);
+                get_option_str_with_lock(
+                    camera, setting_id, new_option.option_id, new_option.option_description);
             }
             const auto temp_callback = callback;
             _system_impl->call_user_callback([temp_callback, new_option]() {
@@ -1943,7 +1961,7 @@ Camera::PossibleSettingOptionsHandle CameraImpl::subscribe_possible_setting_opti
     auto handle = _subscribe_possible_setting_options.callbacks.subscribe(callback);
     lock.unlock();
 
-    notify_possible_setting_options();
+    notify_possible_setting_options_for_all();
     return handle;
 }
 
@@ -1964,6 +1982,17 @@ void CameraImpl::notify_current_settings_for_all()
     }
 }
 
+void CameraImpl::notify_possible_setting_options_for_all()
+{
+    std::lock_guard lock(_potential_cameras_mutex);
+
+    for (auto& potential_camera : _potential_cameras) {
+        if (potential_camera.camera_definition != nullptr) {
+            notify_possible_setting_options_with_lock(potential_camera);
+        }
+    }
+}
+
 void CameraImpl::notify_current_settings_with_lock(PotentialCamera& potential_camera)
 {
     assert(potential_camera.camera_definition != nullptr);
@@ -1972,24 +2001,29 @@ void CameraImpl::notify_current_settings_with_lock(PotentialCamera& potential_ca
         return;
     }
 
-    std::vector<Camera::Setting> current_settings{};
-    std::vector<std::string> possible_setting_options{};
-    if (!get_possible_setting_options(possible_setting_options)) {
+    auto possible_setting_options = get_possible_setting_options_with_lock(potential_camera);
+    if (possible_setting_options.first != Camera::Result::Success) {
         LogErr() << "Could not get possible settings in current options subscription.";
         return;
     }
 
-    for (auto& possible_setting : possible_setting_options) {
+    auto& camera = potential_camera;
+
+    std::vector<Camera::Setting> current_settings{};
+
+    for (auto& possible_setting : possible_setting_options.second) {
         // use the cache for this, presumably we updated it right before.
         ParamValue value;
-        if (potential_camera.camera_definition->get_setting(possible_setting, value)) {
+        if (camera.camera_definition->get_setting(possible_setting.setting_id, value)) {
             Camera::Setting setting{};
-            setting.setting_id = possible_setting;
-            setting.is_range = potential_camera.camera_definition->is_setting_range(possible_setting);
-            get_setting_str(setting.setting_id, setting.setting_description);
+            setting.setting_id = possible_setting.setting_id;
+            setting.is_range =
+                camera.camera_definition->is_setting_range(possible_setting.setting_id);
+            get_setting_str_with_lock(camera, setting.setting_id, setting.setting_description);
             setting.option.option_id = value.get_string();
-            if (!potential_camera.camera_definition->is_setting_range(possible_setting)) {
-                get_option_str(
+            if (!camera.camera_definition->is_setting_range(possible_setting.setting_id)) {
+                get_option_str_with_lock(
+                    camera,
                     setting.setting_id,
                     setting.option.option_id,
                     setting.option.option_description);
@@ -2002,28 +2036,23 @@ void CameraImpl::notify_current_settings_with_lock(PotentialCamera& potential_ca
         current_settings, [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
-void CameraImpl::notify_possible_setting_options()
+void CameraImpl::notify_possible_setting_options_with_lock(PotentialCamera& potential_camera)
 {
-    std::lock_guard<std::mutex> lock(_subscribe_possible_setting_options.mutex);
+    assert(potential_camera.camera_definition != nullptr);
 
     if (_subscribe_possible_setting_options.callbacks.empty()) {
         return;
     }
 
-    if (!_camera_definition) {
-        LogErr() << "notify_possible_setting_options has no camera definition";
-        return;
-    }
-
-    auto setting_options = possible_setting_options();
-    if (setting_options.size() == 0) {
+    auto setting_options = get_possible_setting_options_with_lock(potential_camera);
+    if (setting_options.second.size() == 0) {
         return;
     }
 
     _subscribe_possible_setting_options.callbacks.queue(
-        setting_options, [this](const auto& func) { _system_impl->call_user_callback(func); });
+        setting_options.second,
+        [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
-
 
 std::pair<Camera::Result, std::vector<Camera::SettingOptions>>
 CameraImpl::get_possible_setting_options(int32_t camera_id)
@@ -2032,12 +2061,12 @@ CameraImpl::get_possible_setting_options(int32_t camera_id)
 
     std::lock_guard lock(_potential_cameras_mutex);
     auto maybe_potential_camera = maybe_potential_camera_for_camera_id_with_lock(camera_id);
-    if (maybe_potential_camera != nullptr) {
+    if (maybe_potential_camera == nullptr) {
         result.first = Camera::Result::CameraIdInvalid;
         return result;
     }
 
-    auto camera& = maybe_potential_camera.value();
+    auto& camera = *maybe_potential_camera;
     if (!camera.is_fetching_camera_definition) {
         result.first = Camera::Result::SettingsLoading;
         return result;
@@ -2048,19 +2077,33 @@ CameraImpl::get_possible_setting_options(int32_t camera_id)
         return result;
     }
 
+    return get_possible_setting_options_with_lock(*maybe_potential_camera);
+}
+
+std::pair<Camera::Result, std::vector<Camera::SettingOptions>>
+CameraImpl::get_possible_setting_options_with_lock(PotentialCamera& potential_camera)
+{
+    std::pair<Camera::Result, std::vector<Camera::SettingOptions>> result;
+
     std::unordered_map<std::string, ParamValue> possible_settings;
+    assert(potential_camera.camera_definition != nullptr);
+
+    auto& camera = potential_camera;
+
     camera.camera_definition->get_possible_settings(possible_settings);
 
     for (auto& possible_setting : possible_settings) {
         Camera::SettingOptions setting_options{};
         setting_options.setting_id = possible_setting.first;
-        setting_options.is_range = _camera_definition->is_setting_range(possible_setting.first);
-        get_setting_str(setting_options.setting_id, setting_options.setting_description);
-        get_possible_options_with_lock(camera, possible_setting, setting_options.options);
+        setting_options.is_range =
+            camera.camera_definition->is_setting_range(possible_setting.first);
+        get_setting_str_with_lock(
+            camera, setting_options.setting_id, setting_options.setting_description);
+        get_possible_options_with_lock(camera, possible_setting.first, setting_options.options);
         result.second.push_back(setting_options);
     }
 
-    return results;
+    return result;
 }
 
 void CameraImpl::refresh_params_with_lock(PotentialCamera& potential_camera)
@@ -2069,12 +2112,12 @@ void CameraImpl::refresh_params_with_lock(PotentialCamera& potential_camera)
 
     std::vector<std::pair<std::string, ParamValue>> params;
     potential_camera.camera_definition->get_unknown_params(params);
-    if (params.size() == 0) {
+    if (params.empty()) {
         // We're assuming that we changed one option and this did not cause
         // any other possible settings to change. However, we still would
         // like to notify the current settings with this one change.
         notify_current_settings_with_lock(potential_camera);
-        notify_possible_setting_options();
+        notify_possible_setting_options_with_lock(potential_camera);
         return;
     }
 
@@ -2088,13 +2131,15 @@ void CameraImpl::refresh_params_with_lock(PotentialCamera& potential_camera)
         _system_impl->get_param_async(
             param_name,
             param_value_type,
-            [camera_id, param_name, is_last, this](MavlinkParameterClient::Result result, ParamValue value) {
+            [camera_id, param_name, is_last, this](
+                MavlinkParameterClient::Result result, ParamValue value) {
                 if (result != MavlinkParameterClient::Result::Success) {
                     return;
                 }
 
                 std::lock_guard lock_later(_potential_cameras_mutex);
-                auto maybe_potential_camera_later = maybe_potential_camera_for_camera_id_with_lock(camera_id);
+                auto maybe_potential_camera_later =
+                    maybe_potential_camera_for_camera_id_with_lock(camera_id);
                 // We already checked these fields earlier, so we don't check again.
                 assert(maybe_potential_camera_later != nullptr);
                 assert(maybe_potential_camera_later->camera_definition != nullptr);
@@ -2106,8 +2151,8 @@ void CameraImpl::refresh_params_with_lock(PotentialCamera& potential_camera)
                 }
 
                 if (is_last) {
-                    notify_current_settings();
-                    notify_possible_setting_options();
+                    notify_current_settings_with_lock(camera_later);
+                    notify_possible_setting_options_with_lock(camera_later);
                 }
             },
             this,
@@ -2117,23 +2162,27 @@ void CameraImpl::refresh_params_with_lock(PotentialCamera& potential_camera)
     }
 }
 
-bool CameraImpl::get_setting_str(const std::string& setting_id, std::string& description)
+bool CameraImpl::get_setting_str_with_lock(
+    PotentialCamera& potential_camera, std::string& setting_id, std::string& description)
 {
-    if (!_camera_definition) {
+    if (potential_camera.camera_definition == nullptr) {
         return false;
     }
 
-    return _camera_definition->get_setting_str(setting_id, description);
+    return potential_camera.camera_definition->get_setting_str(setting_id, description);
 }
 
-bool CameraImpl::get_option_str(
-    const std::string& setting_id, const std::string& option_id, std::string& description)
+bool CameraImpl::get_option_str_with_lock(
+    PotentialCamera& potential_camera,
+    const std::string& setting_id,
+    const std::string& option_id,
+    std::string& description)
 {
-    if (!_camera_definition) {
+    if (potential_camera.camera_definition == nullptr) {
         return false;
     }
 
-    return _camera_definition->get_option_str(setting_id, option_id, description);
+    return potential_camera.camera_definition->get_option_str(setting_id, option_id, description);
 }
 
 void CameraImpl::request_camera_settings(int32_t camera_id)
@@ -2361,7 +2410,7 @@ Camera::VideoStreamInfo CameraImpl::get_video_stream_info(int32_t camera_id) {}
 std::pair<Camera::Result, std::vector<Camera::Setting>>
 CameraImpl::get_current_settings(int32_t camera_id)
 {
-    std::pair<Camera::Result, std::vector<Camera::SettingOptions>> result;
+    std::pair<Camera::Result, std::vector<Camera::Setting>> result;
 
     std::lock_guard lock(_potential_cameras_mutex);
     auto maybe_potential_camera = maybe_potential_camera_for_camera_id_with_lock(camera_id);
@@ -2370,7 +2419,7 @@ CameraImpl::get_current_settings(int32_t camera_id)
         return result;
     }
 
-    auto camera& = maybe_potential_camera.value();
+    auto& camera = *maybe_potential_camera;
     if (!camera.is_fetching_camera_definition) {
         result.first = Camera::Result::SettingsLoading;
         return result;
@@ -2382,23 +2431,26 @@ CameraImpl::get_current_settings(int32_t camera_id)
     }
 
     std::vector<Camera::Setting> current_settings{};
-    std::vector<std::string> possible_setting_options{};
-    if (!get_possible_setting_options(possible_setting_options)) {
-        LogErr() << "Could not get possible settings in current options subscription.";
-        return;
+
+    auto possible_setting_options = get_possible_setting_options_with_lock(camera);
+    if (possible_setting_options.first != Camera::Result::Success) {
+        result.first = possible_setting_options.first;
+        return result;
     }
 
-    for (auto& possible_setting : possible_setting_options) {
+    for (auto& possible_setting : possible_setting_options.second) {
         // use the cache for this, presumably we updated it right before.
         ParamValue value;
-        if (_camera_definition->get_setting(possible_setting, value)) {
+        if (camera.camera_definition->get_setting(possible_setting.setting_id, value)) {
             Camera::Setting setting{};
-            setting.setting_id = possible_setting;
-            setting.is_range = _camera_definition->is_setting_range(possible_setting);
-            get_setting_str(setting.setting_id, setting.setting_description);
+            setting.setting_id = possible_setting.setting_id;
+            setting.is_range =
+                camera.camera_definition->is_setting_range(possible_setting.setting_id);
+            get_setting_str_with_lock(camera, setting.setting_id, setting.setting_description);
             setting.option.option_id = value.get_string();
-            if (!_camera_definition->is_setting_range(possible_setting)) {
-                get_option_str(
+            if (!camera.camera_definition->is_setting_range(possible_setting.setting_id)) {
+                get_option_str_with_lock(
+                    camera,
                     setting.setting_id,
                     setting.option.option_id,
                     setting.option.option_description);
@@ -2411,44 +2463,44 @@ CameraImpl::get_current_settings(int32_t camera_id)
     return result;
 }
 
-std::pair<Camera::Result, std::vector<Camera::SettingOptions>>
-CameraImpl::get_possible_setting_options(int32_t camera_id)
-{
-    std::pair<Camera::Result, std::vector<Camera::SettingOptions>> result;
-
-    std::lock_guard lock(_potential_cameras_mutex);
-    auto maybe_potential_camera = maybe_potential_camera_for_camera_id_with_lock(camera_id);
-    if (maybe_potential_camera != nullptr) {
-        result.first = Camera::Result::CameraIdInvalid;
-        return result;
-    }
-
-    auto camera& = maybe_potential_camera.value();
-    if (!camera.is_fetching_camera_definition) {
-        result.first = Camera::Result::SettingsLoading;
-        return result;
-    }
-
-    if (camera.camera_definition == nullptr) {
-        result.first = Camera::Result::SettingsUnavailable;
-        return result;
-    }
-
-    std::unordered_map<std::string, ParamValue> cd_settings{};
-    camera.camera_definition->get_possible_settings(cd_settings);
-
-    for (const auto& cd_setting : cd_settings) {
-        if (cd_setting.first == "CAM_MODE") {
-            // We ignore the mode param.
-            continue;
-        }
-
-        result.second.push_back(cd_setting.first);
-    }
-
-    result.first = Camera::Result::Success;
-    return result;
-}
+// std::pair<Camera::Result, std::vector<Camera::SettingOptions>>
+// CameraImpl::get_possible_setting_options(int32_t camera_id)
+//{
+//     std::pair<Camera::Result, std::vector<Camera::SettingOptions>> result;
+//
+//     std::lock_guard lock(_potential_cameras_mutex);
+//     auto maybe_potential_camera = maybe_potential_camera_for_camera_id_with_lock(camera_id);
+//     if (maybe_potential_camera != nullptr) {
+//         result.first = Camera::Result::CameraIdInvalid;
+//         return result;
+//     }
+//
+//     auto& camera& = *maybe_potential_camera;
+//     if (!camera.is_fetching_camera_definition) {
+//         result.first = Camera::Result::SettingsLoading;
+//         return result;
+//     }
+//
+//     if (camera.camera_definition == nullptr) {
+//         result.first = Camera::Result::SettingsUnavailable;
+//         return result;
+//     }
+//
+//     std::unordered_map<std::string, ParamValue> cd_settings{};
+//     camera.camera_definition->get_possible_settings(cd_settings);
+//
+//     for (const auto& cd_setting : cd_settings) {
+//         if (cd_setting.first == "CAM_MODE") {
+//             // We ignore the mode param.
+//             continue;
+//         }
+//
+//         result.second.push_back(cd_setting.first);
+//     }
+//
+//     result.first = Camera::Result::Success;
+//     return result;
+// }
 
 uint8_t CameraImpl::component_id_for_camera_id(int32_t camera_id)
 {
@@ -2465,11 +2517,10 @@ uint8_t CameraImpl::component_id_for_camera_id(int32_t camera_id)
     return _potential_cameras[camera_id - 1].component_id;
 }
 
-int32_t
-CameraImpl::camera_id_for_potential_camera_with_lock(const PotentialCamera& potential_camera)
+int32_t CameraImpl::camera_id_for_potential_camera_with_lock(PotentialCamera& potential_camera)
 {
     if (const auto it =
-            find(_potential_cameras.begin(), _potential_cameras.end(), potential_camera);
+            std::find(_potential_cameras.begin(), _potential_cameras.end(), potential_camera);
         it != _potential_cameras.end()) {
         return static_cast<int32_t>(it - _potential_cameras.begin()) + 1;
     }

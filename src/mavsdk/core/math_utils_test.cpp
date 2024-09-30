@@ -130,7 +130,6 @@ TEST(MathUtils, QuaternionRotation)
     EXPECT_NEAR(expected_q.z, rotated_q.z, 1e-3);
 }
 
-
 TEST(MathUtils, OurPi)
 {
     ASSERT_DOUBLE_EQ(PI, M_PI);

@@ -116,12 +116,12 @@ public:
 
     Camera::Status get_status(int32_t camera_id);
 
+    void get_setting_async(
+        int32_t camera_id, Camera::Setting setting, const Camera::GetSettingCallback callback);
     Camera::Result set_setting(int32_t camera_id, Camera::Setting setting);
     void set_setting_async(
         int32_t camera_id, Camera::Setting setting, const Camera::ResultCallback callback);
 
-    void get_setting_async(
-        int32_t camera_id, Camera::Setting setting, const Camera::GetSettingCallback callback);
     std::pair<Camera::Result, Camera::Setting>
     get_setting(int32_t camera_id, Camera::Setting setting);
 
@@ -174,11 +174,25 @@ private:
         uint8_t component_id;
 
         Camera::Mode mode{Camera::Mode::Unknown};
+
+        bool operator==(const PotentialCamera& other) const
+        {
+            return this->component_id == other.component_id;
+        }
     };
 
-    bool get_possible_setting_options(std::vector<std::string>& settings);
+    std::pair<Camera::Result, std::vector<Camera::SettingOptions>>
+    get_possible_setting_options_with_lock(PotentialCamera& potential_camera);
 
-    bool get_possible_options(PotentialCamera& camera, const std::string& setting_id, std::vector<Camera::Option>& options);
+    void get_setting_async_with_lock(
+        PotentialCamera& potential_camera,
+        Camera::Setting setting,
+        const Camera::GetSettingCallback callback);
+
+    bool get_possible_options_with_lock(
+        PotentialCamera& camera,
+        const std::string& setting_id,
+        std::vector<Camera::Option>& options);
 
     void set_option_async(
         int32_t camera_id,
@@ -186,15 +200,20 @@ private:
         const Camera::Option& option,
         const Camera::ResultCallback& callback);
 
-    Camera::Result get_option(int32_t camera_id, const std::string& setting_id, Camera::Option& option);
+    Camera::Result
+    get_option(int32_t camera_id, const std::string& setting_id, Camera::Option& option);
     void get_option_async(
         int32_t camera_id,
         const std::string& setting_id,
         const std::function<void(Camera::Result, const Camera::Option&)>& callback);
 
-    bool get_setting_str(const std::string& setting_id, std::string& description);
-    bool get_option_str(
-        const std::string& setting_id, const std::string& option_id, std::string& description);
+    bool get_setting_str_with_lock(
+        PotentialCamera& potential_camera, std::string& setting_id, std::string& description);
+    bool get_option_str_with_lock(
+        PotentialCamera& potential_camera,
+        const std::string& setting_id,
+        const std::string& option_id,
+        std::string& description);
 
     void receive_set_mode_command_result(
         const MavlinkCommandSender::Result command_result,
@@ -225,14 +244,14 @@ private:
     void load_camera_definition_with_lock(
         PotentialCamera& potential_camera, const std::filesystem::path& path);
 
-
     void notify_mode();
     void notify_video_stream_info();
 
     void notify_current_settings_for_all();
     void notify_current_settings_with_lock(PotentialCamera& potential_camera);
 
-    void notify_possible_setting_options();
+    void notify_possible_setting_options_for_all();
+    void notify_possible_setting_options_with_lock(PotentialCamera& potential_camera);
 
     void check_status();
 
@@ -297,7 +316,8 @@ private:
     void request_missing_capture_info();
 
     uint8_t component_id_for_camera_id(int32_t camera_id);
-    int32_t camera_id_for_potential_camera_with_lock(const PotentialCamera& potential_camera);
+
+    int32_t camera_id_for_potential_camera_with_lock(PotentialCamera& potential_camera);
     PotentialCamera* maybe_potential_camera_for_camera_id_with_lock(int32_t camera_id);
 
     static std::string get_filename_from_path(const std::string& path);
