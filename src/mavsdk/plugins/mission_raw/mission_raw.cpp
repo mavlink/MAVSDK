@@ -74,6 +74,28 @@ MissionRaw::download_mission() const
     return _impl->download_mission();
 }
 
+void MissionRaw::download_geofence_async(const DownloadGeofenceCallback callback)
+{
+    _impl->download_geofence_async(callback);
+}
+
+std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>
+MissionRaw::download_geofence() const
+{
+    return _impl->download_geofence();
+}
+
+void MissionRaw::download_rallypoints_async(const DownloadRallypointsCallback callback)
+{
+    _impl->download_rallypoints_async(callback);
+}
+
+std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>
+MissionRaw::download_rallypoints() const
+{
+    return _impl->download_rallypoints();
+}
+
 MissionRaw::Result MissionRaw::cancel_mission_download() const
 {
     return _impl->cancel_mission_download();

@@ -270,6 +270,48 @@ public:
     std::pair<Result, std::vector<MissionRaw::MissionItem>> download_mission() const;
 
     /**
+     * @brief Callback type for download_geofence_async.
+     */
+    using DownloadGeofenceCallback = std::function<void(Result, std::vector<MissionItem>)>;
+
+    /**
+     * @brief Download a list of raw geofence items from the system (asynchronous).
+     *
+     * This function is non-blocking. See 'download_geofence' for the blocking counterpart.
+     */
+    void download_geofence_async(const DownloadGeofenceCallback callback);
+
+    /**
+     * @brief Download a list of raw geofence items from the system (asynchronous).
+     *
+     * This function is blocking. See 'download_geofence_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, std::vector<MissionRaw::MissionItem>> download_geofence() const;
+
+    /**
+     * @brief Callback type for download_rallypoints_async.
+     */
+    using DownloadRallypointsCallback = std::function<void(Result, std::vector<MissionItem>)>;
+
+    /**
+     * @brief Download a list of raw rallypoint items from the system (asynchronous).
+     *
+     * This function is non-blocking. See 'download_rallypoints' for the blocking counterpart.
+     */
+    void download_rallypoints_async(const DownloadRallypointsCallback callback);
+
+    /**
+     * @brief Download a list of raw rallypoint items from the system (asynchronous).
+     *
+     * This function is blocking. See 'download_rallypoints_async' for the non-blocking counterpart.
+     *
+     * @return Result of request.
+     */
+    std::pair<Result, std::vector<MissionRaw::MissionItem>> download_rallypoints() const;
+
+    /**
      * @brief Cancel an ongoing mission download.
      *
      * This function is blocking.

@@ -23,7 +23,11 @@ public:
     void disable() override;
 
     std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>> download_mission();
+    std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>> download_geofence();
+    std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>> download_rallypoints();
     void download_mission_async(const MissionRaw::DownloadMissionCallback& callback);
+    void download_geofence_async(const MissionRaw::DownloadMissionCallback& callback);
+    void download_rallypoints_async(const MissionRaw::DownloadMissionCallback& callback);
     MissionRaw::Result cancel_mission_download();
 
     MissionRaw::Result upload_mission(std::vector<MissionRaw::MissionItem> mission_items);

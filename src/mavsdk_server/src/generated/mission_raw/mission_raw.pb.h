@@ -79,12 +79,24 @@ extern ClearMissionRequestDefaultTypeInternal _ClearMissionRequest_default_insta
 class ClearMissionResponse;
 struct ClearMissionResponseDefaultTypeInternal;
 extern ClearMissionResponseDefaultTypeInternal _ClearMissionResponse_default_instance_;
+class DownloadGeofenceRequest;
+struct DownloadGeofenceRequestDefaultTypeInternal;
+extern DownloadGeofenceRequestDefaultTypeInternal _DownloadGeofenceRequest_default_instance_;
+class DownloadGeofenceResponse;
+struct DownloadGeofenceResponseDefaultTypeInternal;
+extern DownloadGeofenceResponseDefaultTypeInternal _DownloadGeofenceResponse_default_instance_;
 class DownloadMissionRequest;
 struct DownloadMissionRequestDefaultTypeInternal;
 extern DownloadMissionRequestDefaultTypeInternal _DownloadMissionRequest_default_instance_;
 class DownloadMissionResponse;
 struct DownloadMissionResponseDefaultTypeInternal;
 extern DownloadMissionResponseDefaultTypeInternal _DownloadMissionResponse_default_instance_;
+class DownloadRallypointsRequest;
+struct DownloadRallypointsRequestDefaultTypeInternal;
+extern DownloadRallypointsRequestDefaultTypeInternal _DownloadRallypointsRequest_default_instance_;
+class DownloadRallypointsResponse;
+struct DownloadRallypointsResponseDefaultTypeInternal;
+extern DownloadRallypointsResponseDefaultTypeInternal _DownloadRallypointsResponse_default_instance_;
 class ImportQgroundcontrolMissionFromStringRequest;
 struct ImportQgroundcontrolMissionFromStringRequestDefaultTypeInternal;
 extern ImportQgroundcontrolMissionFromStringRequestDefaultTypeInternal _ImportQgroundcontrolMissionFromStringRequest_default_instance_;
@@ -282,7 +294,7 @@ class SubscribeMissionProgressRequest final :
                &_SubscribeMissionProgressRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    24;
 
   friend void swap(SubscribeMissionProgressRequest& a, SubscribeMissionProgressRequest& b) {
     a.Swap(&b);
@@ -418,7 +430,7 @@ class SubscribeMissionChangedRequest final :
                &_SubscribeMissionChangedRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    26;
 
   friend void swap(SubscribeMissionChangedRequest& a, SubscribeMissionChangedRequest& b) {
     a.Swap(&b);
@@ -554,7 +566,7 @@ class StartMissionRequest final :
                &_StartMissionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    16;
 
   friend void swap(StartMissionRequest& a, StartMissionRequest& b) {
     a.Swap(&b);
@@ -691,7 +703,7 @@ class SetCurrentMissionItemRequest final :
                &_SetCurrentMissionItemRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    22;
 
   friend void swap(SetCurrentMissionItemRequest& a, SetCurrentMissionItemRequest& b) {
     a.Swap(&b);
@@ -865,7 +877,7 @@ class PauseMissionRequest final :
                &_PauseMissionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    18;
 
   friend void swap(PauseMissionRequest& a, PauseMissionRequest& b) {
     a.Swap(&b);
@@ -1002,7 +1014,7 @@ class MissionRawResult final :
                &_MissionRawResult_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    31;
+    35;
 
   friend void swap(MissionRawResult& a, MissionRawResult& b) {
     a.Swap(&b);
@@ -1232,7 +1244,7 @@ class MissionProgress final :
                &_MissionProgress_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    28;
+    32;
 
   friend void swap(MissionProgress& a, MissionProgress& b) {
     a.Swap(&b);
@@ -1419,7 +1431,7 @@ class MissionItem final :
                &_MissionItem_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    29;
+    33;
 
   friend void swap(MissionItem& a, MissionItem& b) {
     a.Swap(&b);
@@ -1738,7 +1750,7 @@ class MissionChangedResponse final :
                &_MissionChangedResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    27;
 
   friend void swap(MissionChangedResponse& a, MissionChangedResponse& b) {
     a.Swap(&b);
@@ -1913,7 +1925,7 @@ class ImportQgroundcontrolMissionRequest final :
                &_ImportQgroundcontrolMissionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    28;
 
   friend void swap(ImportQgroundcontrolMissionRequest& a, ImportQgroundcontrolMissionRequest& b) {
     a.Swap(&b);
@@ -2094,7 +2106,7 @@ class ImportQgroundcontrolMissionFromStringRequest final :
                &_ImportQgroundcontrolMissionFromStringRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    26;
+    30;
 
   friend void swap(ImportQgroundcontrolMissionFromStringRequest& a, ImportQgroundcontrolMissionFromStringRequest& b) {
     a.Swap(&b);
@@ -2213,6 +2225,142 @@ class ImportQgroundcontrolMissionFromStringRequest final :
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
+};// -------------------------------------------------------------------
+
+class DownloadRallypointsRequest final :
+    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw.DownloadRallypointsRequest) */ {
+ public:
+  inline DownloadRallypointsRequest() : DownloadRallypointsRequest(nullptr) {}
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR DownloadRallypointsRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline DownloadRallypointsRequest(const DownloadRallypointsRequest& from)
+      : DownloadRallypointsRequest(nullptr, from) {}
+  DownloadRallypointsRequest(DownloadRallypointsRequest&& from) noexcept
+    : DownloadRallypointsRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline DownloadRallypointsRequest& operator=(const DownloadRallypointsRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DownloadRallypointsRequest& operator=(DownloadRallypointsRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DownloadRallypointsRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DownloadRallypointsRequest* internal_default_instance() {
+    return reinterpret_cast<const DownloadRallypointsRequest*>(
+               &_DownloadRallypointsRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    12;
+
+  friend void swap(DownloadRallypointsRequest& a, DownloadRallypointsRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(DownloadRallypointsRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DownloadRallypointsRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DownloadRallypointsRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<DownloadRallypointsRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const DownloadRallypointsRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const DownloadRallypointsRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+  public:
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.mission_raw.DownloadRallypointsRequest";
+  }
+  protected:
+  explicit DownloadRallypointsRequest(::google::protobuf::Arena* arena);
+  DownloadRallypointsRequest(::google::protobuf::Arena* arena, const DownloadRallypointsRequest& from);
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission_raw.DownloadRallypointsRequest)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
   friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
 };// -------------------------------------------------------------------
 
@@ -2352,6 +2500,142 @@ class DownloadMissionRequest final :
   friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
 };// -------------------------------------------------------------------
 
+class DownloadGeofenceRequest final :
+    public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw.DownloadGeofenceRequest) */ {
+ public:
+  inline DownloadGeofenceRequest() : DownloadGeofenceRequest(nullptr) {}
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR DownloadGeofenceRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline DownloadGeofenceRequest(const DownloadGeofenceRequest& from)
+      : DownloadGeofenceRequest(nullptr, from) {}
+  DownloadGeofenceRequest(DownloadGeofenceRequest&& from) noexcept
+    : DownloadGeofenceRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline DownloadGeofenceRequest& operator=(const DownloadGeofenceRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DownloadGeofenceRequest& operator=(DownloadGeofenceRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DownloadGeofenceRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DownloadGeofenceRequest* internal_default_instance() {
+    return reinterpret_cast<const DownloadGeofenceRequest*>(
+               &_DownloadGeofenceRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    10;
+
+  friend void swap(DownloadGeofenceRequest& a, DownloadGeofenceRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(DownloadGeofenceRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DownloadGeofenceRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DownloadGeofenceRequest* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<DownloadGeofenceRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const DownloadGeofenceRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const DownloadGeofenceRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+  public:
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.mission_raw.DownloadGeofenceRequest";
+  }
+  protected:
+  explicit DownloadGeofenceRequest(::google::protobuf::Arena* arena);
+  DownloadGeofenceRequest(::google::protobuf::Arena* arena, const DownloadGeofenceRequest& from);
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission_raw.DownloadGeofenceRequest)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
+};// -------------------------------------------------------------------
+
 class ClearMissionRequest final :
     public ::google::protobuf::internal::ZeroFieldsBase /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw.ClearMissionRequest) */ {
  public:
@@ -2410,7 +2694,7 @@ class ClearMissionRequest final :
                &_ClearMissionRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    20;
 
   friend void swap(ClearMissionRequest& a, ClearMissionRequest& b) {
     a.Swap(&b);
@@ -2682,7 +2966,7 @@ class CancelMissionDownloadRequest final :
                &_CancelMissionDownloadRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    14;
 
   friend void swap(CancelMissionDownloadRequest& a, CancelMissionDownloadRequest& b) {
     a.Swap(&b);
@@ -3911,7 +4195,7 @@ class StartMissionResponse final :
                &_StartMissionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    17;
 
   friend void swap(StartMissionResponse& a, StartMissionResponse& b) {
     a.Swap(&b);
@@ -4092,7 +4376,7 @@ class SetCurrentMissionItemResponse final :
                &_SetCurrentMissionItemResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    23;
 
   friend void swap(SetCurrentMissionItemResponse& a, SetCurrentMissionItemResponse& b) {
     a.Swap(&b);
@@ -4273,7 +4557,7 @@ class PauseMissionResponse final :
                &_PauseMissionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    19;
 
   friend void swap(PauseMissionResponse& a, PauseMissionResponse& b) {
     a.Swap(&b);
@@ -4454,7 +4738,7 @@ class MissionProgressResponse final :
                &_MissionProgressResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    25;
 
   friend void swap(MissionProgressResponse& a, MissionProgressResponse& b) {
     a.Swap(&b);
@@ -4635,7 +4919,7 @@ class MissionImportData final :
                &_MissionImportData_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    30;
+    34;
 
   friend void swap(MissionImportData& a, MissionImportData& b) {
     a.Swap(&b);
@@ -4793,6 +5077,207 @@ class MissionImportData final :
     ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem > geofence_items_;
     ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem > rally_items_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
+};// -------------------------------------------------------------------
+
+class DownloadRallypointsResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw.DownloadRallypointsResponse) */ {
+ public:
+  inline DownloadRallypointsResponse() : DownloadRallypointsResponse(nullptr) {}
+  ~DownloadRallypointsResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR DownloadRallypointsResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline DownloadRallypointsResponse(const DownloadRallypointsResponse& from)
+      : DownloadRallypointsResponse(nullptr, from) {}
+  DownloadRallypointsResponse(DownloadRallypointsResponse&& from) noexcept
+    : DownloadRallypointsResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline DownloadRallypointsResponse& operator=(const DownloadRallypointsResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DownloadRallypointsResponse& operator=(DownloadRallypointsResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DownloadRallypointsResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DownloadRallypointsResponse* internal_default_instance() {
+    return reinterpret_cast<const DownloadRallypointsResponse*>(
+               &_DownloadRallypointsResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    13;
+
+  friend void swap(DownloadRallypointsResponse& a, DownloadRallypointsResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(DownloadRallypointsResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DownloadRallypointsResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DownloadRallypointsResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<DownloadRallypointsResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const DownloadRallypointsResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const DownloadRallypointsResponse& from) {
+    DownloadRallypointsResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(DownloadRallypointsResponse* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.mission_raw.DownloadRallypointsResponse";
+  }
+  protected:
+  explicit DownloadRallypointsResponse(::google::protobuf::Arena* arena);
+  DownloadRallypointsResponse(::google::protobuf::Arena* arena, const DownloadRallypointsResponse& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kRallypointItemsFieldNumber = 2,
+    kMissionRawResultFieldNumber = 1,
+  };
+  // repeated .mavsdk.rpc.mission_raw.MissionItem rallypoint_items = 2;
+  int rallypoint_items_size() const;
+  private:
+  int _internal_rallypoint_items_size() const;
+
+  public:
+  void clear_rallypoint_items() ;
+  ::mavsdk::rpc::mission_raw::MissionItem* mutable_rallypoint_items(int index);
+  ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem >*
+      mutable_rallypoint_items();
+  private:
+  const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>& _internal_rallypoint_items() const;
+  ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>* _internal_mutable_rallypoint_items();
+  public:
+  const ::mavsdk::rpc::mission_raw::MissionItem& rallypoint_items(int index) const;
+  ::mavsdk::rpc::mission_raw::MissionItem* add_rallypoint_items();
+  const ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem >&
+      rallypoint_items() const;
+  // .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+  bool has_mission_raw_result() const;
+  void clear_mission_raw_result() ;
+  const ::mavsdk::rpc::mission_raw::MissionRawResult& mission_raw_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission_raw::MissionRawResult* release_mission_raw_result();
+  ::mavsdk::rpc::mission_raw::MissionRawResult* mutable_mission_raw_result();
+  void set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value);
+  void unsafe_arena_set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value);
+  ::mavsdk::rpc::mission_raw::MissionRawResult* unsafe_arena_release_mission_raw_result();
+
+  private:
+  const ::mavsdk::rpc::mission_raw::MissionRawResult& _internal_mission_raw_result() const;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* _internal_mutable_mission_raw_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission_raw.DownloadRallypointsResponse)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 2,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem > rallypoint_items_;
+    ::mavsdk::rpc::mission_raw::MissionRawResult* mission_raw_result_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -5000,6 +5485,207 @@ class DownloadMissionResponse final :
   friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
 };// -------------------------------------------------------------------
 
+class DownloadGeofenceResponse final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw.DownloadGeofenceResponse) */ {
+ public:
+  inline DownloadGeofenceResponse() : DownloadGeofenceResponse(nullptr) {}
+  ~DownloadGeofenceResponse() override;
+  template<typename = void>
+  explicit PROTOBUF_CONSTEXPR DownloadGeofenceResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline DownloadGeofenceResponse(const DownloadGeofenceResponse& from)
+      : DownloadGeofenceResponse(nullptr, from) {}
+  DownloadGeofenceResponse(DownloadGeofenceResponse&& from) noexcept
+    : DownloadGeofenceResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline DownloadGeofenceResponse& operator=(const DownloadGeofenceResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DownloadGeofenceResponse& operator=(DownloadGeofenceResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DownloadGeofenceResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DownloadGeofenceResponse* internal_default_instance() {
+    return reinterpret_cast<const DownloadGeofenceResponse*>(
+               &_DownloadGeofenceResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    11;
+
+  friend void swap(DownloadGeofenceResponse& a, DownloadGeofenceResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(DownloadGeofenceResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr &&
+        GetArena() == other->GetArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(DownloadGeofenceResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  DownloadGeofenceResponse* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<DownloadGeofenceResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const DownloadGeofenceResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom( const DownloadGeofenceResponse& from) {
+    DownloadGeofenceResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  ::google::protobuf::internal::CachedSize* AccessCachedSize() const final;
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(DownloadGeofenceResponse* other);
+
+  private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "mavsdk.rpc.mission_raw.DownloadGeofenceResponse";
+  }
+  protected:
+  explicit DownloadGeofenceResponse(::google::protobuf::Arena* arena);
+  DownloadGeofenceResponse(::google::protobuf::Arena* arena, const DownloadGeofenceResponse& from);
+  public:
+
+  static const ClassData _class_data_;
+  const ::google::protobuf::Message::ClassData*GetClassData() const final;
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kGeofenceItemsFieldNumber = 2,
+    kMissionRawResultFieldNumber = 1,
+  };
+  // repeated .mavsdk.rpc.mission_raw.MissionItem geofence_items = 2;
+  int geofence_items_size() const;
+  private:
+  int _internal_geofence_items_size() const;
+
+  public:
+  void clear_geofence_items() ;
+  ::mavsdk::rpc::mission_raw::MissionItem* mutable_geofence_items(int index);
+  ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem >*
+      mutable_geofence_items();
+  private:
+  const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>& _internal_geofence_items() const;
+  ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>* _internal_mutable_geofence_items();
+  public:
+  const ::mavsdk::rpc::mission_raw::MissionItem& geofence_items(int index) const;
+  ::mavsdk::rpc::mission_raw::MissionItem* add_geofence_items();
+  const ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem >&
+      geofence_items() const;
+  // .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+  bool has_mission_raw_result() const;
+  void clear_mission_raw_result() ;
+  const ::mavsdk::rpc::mission_raw::MissionRawResult& mission_raw_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission_raw::MissionRawResult* release_mission_raw_result();
+  ::mavsdk::rpc::mission_raw::MissionRawResult* mutable_mission_raw_result();
+  void set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value);
+  void unsafe_arena_set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value);
+  ::mavsdk::rpc::mission_raw::MissionRawResult* unsafe_arena_release_mission_raw_result();
+
+  private:
+  const ::mavsdk::rpc::mission_raw::MissionRawResult& _internal_mission_raw_result() const;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* _internal_mutable_mission_raw_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission_raw.DownloadGeofenceResponse)
+ private:
+  class _Internal;
+
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 2,
+      0, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+
+        inline explicit constexpr Impl_(
+            ::google::protobuf::internal::ConstantInitialized) noexcept;
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena);
+        inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                              ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::mission_raw::MissionItem > geofence_items_;
+    ::mavsdk::rpc::mission_raw::MissionRawResult* mission_raw_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_5fraw_2fmission_5fraw_2eproto;
+};// -------------------------------------------------------------------
+
 class ClearMissionResponse final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission_raw.ClearMissionResponse) */ {
  public:
@@ -5059,7 +5745,7 @@ class ClearMissionResponse final :
                &_ClearMissionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    21;
 
   friend void swap(ClearMissionResponse& a, ClearMissionResponse& b) {
     a.Swap(&b);
@@ -5421,7 +6107,7 @@ class CancelMissionDownloadResponse final :
                &_CancelMissionDownloadResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    15;
 
   friend void swap(CancelMissionDownloadResponse& a, CancelMissionDownloadResponse& b) {
     a.Swap(&b);
@@ -5602,7 +6288,7 @@ class ImportQgroundcontrolMissionResponse final :
                &_ImportQgroundcontrolMissionResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    29;
 
   friend void swap(ImportQgroundcontrolMissionResponse& a, ImportQgroundcontrolMissionResponse& b) {
     a.Swap(&b);
@@ -5800,7 +6486,7 @@ class ImportQgroundcontrolMissionFromStringResponse final :
                &_ImportQgroundcontrolMissionFromStringResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    31;
 
   friend void swap(ImportQgroundcontrolMissionFromStringResponse& a, ImportQgroundcontrolMissionFromStringResponse& b) {
     a.Swap(&b);
@@ -6665,6 +7351,312 @@ inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionI
 DownloadMissionResponse::_internal_mutable_mission_items() {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
   return &_impl_.mission_items_;
+}
+
+// -------------------------------------------------------------------
+
+// DownloadGeofenceRequest
+
+// -------------------------------------------------------------------
+
+// DownloadGeofenceResponse
+
+// .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+inline bool DownloadGeofenceResponse::has_mission_raw_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_raw_result_ != nullptr);
+  return value;
+}
+inline void DownloadGeofenceResponse::clear_mission_raw_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.mission_raw_result_ != nullptr) _impl_.mission_raw_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::mission_raw::MissionRawResult& DownloadGeofenceResponse::_internal_mission_raw_result() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::mission_raw::MissionRawResult* p = _impl_.mission_raw_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission_raw::MissionRawResult&>(::mavsdk::rpc::mission_raw::_MissionRawResult_default_instance_);
+}
+inline const ::mavsdk::rpc::mission_raw::MissionRawResult& DownloadGeofenceResponse::mission_raw_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.DownloadGeofenceResponse.mission_raw_result)
+  return _internal_mission_raw_result();
+}
+inline void DownloadGeofenceResponse::unsafe_arena_set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_raw_result_);
+  }
+  _impl_.mission_raw_result_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission_raw.DownloadGeofenceResponse.mission_raw_result)
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* DownloadGeofenceResponse::release_mission_raw_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* released = _impl_.mission_raw_result_;
+  _impl_.mission_raw_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* DownloadGeofenceResponse::unsafe_arena_release_mission_raw_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission_raw.DownloadGeofenceResponse.mission_raw_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* temp = _impl_.mission_raw_result_;
+  _impl_.mission_raw_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* DownloadGeofenceResponse::_internal_mutable_mission_raw_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.mission_raw_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::mission_raw::MissionRawResult>(GetArena());
+    _impl_.mission_raw_result_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(p);
+  }
+  return _impl_.mission_raw_result_;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* DownloadGeofenceResponse::mutable_mission_raw_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::mission_raw::MissionRawResult* _msg = _internal_mutable_mission_raw_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw.DownloadGeofenceResponse.mission_raw_result)
+  return _msg;
+}
+inline void DownloadGeofenceResponse::set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(_impl_.mission_raw_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_raw_result_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw.DownloadGeofenceResponse.mission_raw_result)
+}
+
+// repeated .mavsdk.rpc.mission_raw.MissionItem geofence_items = 2;
+inline int DownloadGeofenceResponse::_internal_geofence_items_size() const {
+  return _internal_geofence_items().size();
+}
+inline int DownloadGeofenceResponse::geofence_items_size() const {
+  return _internal_geofence_items_size();
+}
+inline void DownloadGeofenceResponse::clear_geofence_items() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.geofence_items_.Clear();
+}
+inline ::mavsdk::rpc::mission_raw::MissionItem* DownloadGeofenceResponse::mutable_geofence_items(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw.DownloadGeofenceResponse.geofence_items)
+  return _internal_mutable_geofence_items()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>* DownloadGeofenceResponse::mutable_geofence_items()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.mission_raw.DownloadGeofenceResponse.geofence_items)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  return _internal_mutable_geofence_items();
+}
+inline const ::mavsdk::rpc::mission_raw::MissionItem& DownloadGeofenceResponse::geofence_items(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.DownloadGeofenceResponse.geofence_items)
+  return _internal_geofence_items().Get(index);
+}
+inline ::mavsdk::rpc::mission_raw::MissionItem* DownloadGeofenceResponse::add_geofence_items() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::mavsdk::rpc::mission_raw::MissionItem* _add = _internal_mutable_geofence_items()->Add();
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.mission_raw.DownloadGeofenceResponse.geofence_items)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>& DownloadGeofenceResponse::geofence_items() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.mission_raw.DownloadGeofenceResponse.geofence_items)
+  return _internal_geofence_items();
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>&
+DownloadGeofenceResponse::_internal_geofence_items() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.geofence_items_;
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>*
+DownloadGeofenceResponse::_internal_mutable_geofence_items() {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return &_impl_.geofence_items_;
+}
+
+// -------------------------------------------------------------------
+
+// DownloadRallypointsRequest
+
+// -------------------------------------------------------------------
+
+// DownloadRallypointsResponse
+
+// .mavsdk.rpc.mission_raw.MissionRawResult mission_raw_result = 1;
+inline bool DownloadRallypointsResponse::has_mission_raw_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_raw_result_ != nullptr);
+  return value;
+}
+inline void DownloadRallypointsResponse::clear_mission_raw_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (_impl_.mission_raw_result_ != nullptr) _impl_.mission_raw_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::mission_raw::MissionRawResult& DownloadRallypointsResponse::_internal_mission_raw_result() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  const ::mavsdk::rpc::mission_raw::MissionRawResult* p = _impl_.mission_raw_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission_raw::MissionRawResult&>(::mavsdk::rpc::mission_raw::_MissionRawResult_default_instance_);
+}
+inline const ::mavsdk::rpc::mission_raw::MissionRawResult& DownloadRallypointsResponse::mission_raw_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.DownloadRallypointsResponse.mission_raw_result)
+  return _internal_mission_raw_result();
+}
+inline void DownloadRallypointsResponse::unsafe_arena_set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_raw_result_);
+  }
+  _impl_.mission_raw_result_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission_raw.DownloadRallypointsResponse.mission_raw_result)
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* DownloadRallypointsResponse::release_mission_raw_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* released = _impl_.mission_raw_result_;
+  _impl_.mission_raw_result_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* DownloadRallypointsResponse::unsafe_arena_release_mission_raw_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission_raw.DownloadRallypointsResponse.mission_raw_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission_raw::MissionRawResult* temp = _impl_.mission_raw_result_;
+  _impl_.mission_raw_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* DownloadRallypointsResponse::_internal_mutable_mission_raw_result() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  if (_impl_.mission_raw_result_ == nullptr) {
+    auto* p = CreateMaybeMessage<::mavsdk::rpc::mission_raw::MissionRawResult>(GetArena());
+    _impl_.mission_raw_result_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(p);
+  }
+  return _impl_.mission_raw_result_;
+}
+inline ::mavsdk::rpc::mission_raw::MissionRawResult* DownloadRallypointsResponse::mutable_mission_raw_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::mavsdk::rpc::mission_raw::MissionRawResult* _msg = _internal_mutable_mission_raw_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw.DownloadRallypointsResponse.mission_raw_result)
+  return _msg;
+}
+inline void DownloadRallypointsResponse::set_allocated_mission_raw_result(::mavsdk::rpc::mission_raw::MissionRawResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  if (message_arena == nullptr) {
+    delete reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(_impl_.mission_raw_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_raw_result_ = reinterpret_cast<::mavsdk::rpc::mission_raw::MissionRawResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission_raw.DownloadRallypointsResponse.mission_raw_result)
+}
+
+// repeated .mavsdk.rpc.mission_raw.MissionItem rallypoint_items = 2;
+inline int DownloadRallypointsResponse::_internal_rallypoint_items_size() const {
+  return _internal_rallypoint_items().size();
+}
+inline int DownloadRallypointsResponse::rallypoint_items_size() const {
+  return _internal_rallypoint_items_size();
+}
+inline void DownloadRallypointsResponse::clear_rallypoint_items() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.rallypoint_items_.Clear();
+}
+inline ::mavsdk::rpc::mission_raw::MissionItem* DownloadRallypointsResponse::mutable_rallypoint_items(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission_raw.DownloadRallypointsResponse.rallypoint_items)
+  return _internal_mutable_rallypoint_items()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>* DownloadRallypointsResponse::mutable_rallypoint_items()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.mission_raw.DownloadRallypointsResponse.rallypoint_items)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  return _internal_mutable_rallypoint_items();
+}
+inline const ::mavsdk::rpc::mission_raw::MissionItem& DownloadRallypointsResponse::rallypoint_items(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission_raw.DownloadRallypointsResponse.rallypoint_items)
+  return _internal_rallypoint_items().Get(index);
+}
+inline ::mavsdk::rpc::mission_raw::MissionItem* DownloadRallypointsResponse::add_rallypoint_items() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::mavsdk::rpc::mission_raw::MissionItem* _add = _internal_mutable_rallypoint_items()->Add();
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.mission_raw.DownloadRallypointsResponse.rallypoint_items)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>& DownloadRallypointsResponse::rallypoint_items() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.mission_raw.DownloadRallypointsResponse.rallypoint_items)
+  return _internal_rallypoint_items();
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>&
+DownloadRallypointsResponse::_internal_rallypoint_items() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.rallypoint_items_;
+}
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission_raw::MissionItem>*
+DownloadRallypointsResponse::_internal_mutable_rallypoint_items() {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return &_impl_.rallypoint_items_;
 }
 
 // -------------------------------------------------------------------

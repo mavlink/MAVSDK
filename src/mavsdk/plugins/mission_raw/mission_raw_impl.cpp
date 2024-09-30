@@ -242,6 +242,32 @@ MissionRawImpl::download_mission()
     return fut.get();
 }
 
+std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>
+MissionRawImpl::download_geofence()
+{
+    auto prom = std::promise<std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>>();
+    auto fut = prom.get_future();
+
+    download_geofence_async(
+        [&prom](MissionRaw::Result result, std::vector<MissionRaw::MissionItem> geofence) {
+            prom.set_value(std::make_pair<>(result, geofence));
+        });
+    return fut.get();
+}
+
+std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>
+MissionRawImpl::download_rallypoints()
+{
+    auto prom = std::promise<std::pair<MissionRaw::Result, std::vector<MissionRaw::MissionItem>>>();
+    auto fut = prom.get_future();
+
+    download_rallypoints_async(
+        [&prom](MissionRaw::Result result, std::vector<MissionRaw::MissionItem> rallypoints) {
+            prom.set_value(std::make_pair<>(result, rallypoints));
+        });
+    return fut.get();
+}
+
 void MissionRawImpl::download_mission_async(const MissionRaw::DownloadMissionCallback& callback)
 {
     auto work_item = _last_download.lock();
@@ -257,6 +283,61 @@ void MissionRawImpl::download_mission_async(const MissionRaw::DownloadMissionCal
 
     _last_download = _system_impl->mission_transfer_client().download_items_async(
         MAV_MISSION_TYPE_MISSION,
+        _system_impl->get_system_id(),
+        [this, callback](
+            MavlinkMissionTransferClient::Result result,
+            std::vector<MavlinkMissionTransferClient::ItemInt> items) {
+            auto converted_result = convert_result(result);
+            auto converted_items = convert_items(items);
+            _system_impl->call_user_callback([callback, converted_result, converted_items]() {
+                callback(converted_result, converted_items);
+            });
+        });
+}
+
+void MissionRawImpl::download_geofence_async(const MissionRaw::DownloadGeofenceCallback& callback)
+{
+    auto work_item = _last_download.lock();
+    if (work_item && !work_item->is_done()) {
+        _system_impl->call_user_callback([callback]() {
+            if (callback) {
+                std::vector<MissionRaw::MissionItem> empty_items;
+                callback(MissionRaw::Result::Busy, empty_items);
+            }
+        });
+        return;
+    }
+
+    _last_download = _system_impl->mission_transfer_client().download_items_async(
+        MAV_MISSION_TYPE_FENCE,
+        _system_impl->get_system_id(),
+        [this, callback](
+            MavlinkMissionTransferClient::Result result,
+            std::vector<MavlinkMissionTransferClient::ItemInt> items) {
+            auto converted_result = convert_result(result);
+            auto converted_items = convert_items(items);
+            _system_impl->call_user_callback([callback, converted_result, converted_items]() {
+                callback(converted_result, converted_items);
+            });
+        });
+}
+
+void MissionRawImpl::download_rallypoints_async(
+    const MissionRaw::DownloadRallypointsCallback& callback)
+{
+    auto work_item = _last_download.lock();
+    if (work_item && !work_item->is_done()) {
+        _system_impl->call_user_callback([callback]() {
+            if (callback) {
+                std::vector<MissionRaw::MissionItem> empty_items;
+                callback(MissionRaw::Result::Busy, empty_items);
+            }
+        });
+        return;
+    }
+
+    _last_download = _system_impl->mission_transfer_client().download_items_async(
+        MAV_MISSION_TYPE_RALLY,
         _system_impl->get_system_id(),
         [this, callback](
             MavlinkMissionTransferClient::Result result,

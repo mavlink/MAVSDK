@@ -426,6 +426,62 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status DownloadGeofence(
+        grpc::ServerContext* /* context */,
+        const rpc::mission_raw::DownloadGeofenceRequest* /* request */,
+        rpc::mission_raw::DownloadGeofenceResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::MissionRaw::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->download_geofence();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result.first);
+
+            for (auto elem : result.second) {
+                auto* ptr = response->add_geofence_items();
+                ptr->CopyFrom(*translateToRpcMissionItem(elem).release());
+            }
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status DownloadRallypoints(
+        grpc::ServerContext* /* context */,
+        const rpc::mission_raw::DownloadRallypointsRequest* /* request */,
+        rpc::mission_raw::DownloadRallypointsResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::MissionRaw::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->download_rallypoints();
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result.first);
+
+            for (auto elem : result.second) {
+                auto* ptr = response->add_rallypoint_items();
+                ptr->CopyFrom(*translateToRpcMissionItem(elem).release());
+            }
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status CancelMissionDownload(
         grpc::ServerContext* /* context */,
         const rpc::mission_raw::CancelMissionDownloadRequest* /* request */,
