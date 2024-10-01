@@ -95,8 +95,9 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
     if (cmd.target_component_id != _server_component_impl.get_own_component_id() &&
         cmd.target_component_id != MAV_COMP_ID_ALL) {
         if (_debugging) {
-            LogDebug() << "Ignored command long to component " << (int)cmd.target_component_id
-                       << " instead of " << (int)_server_component_impl.get_own_component_id();
+            LogDebug() << "Ignored command long to component "
+                       << std::to_string(cmd.target_component_id) << " instead of "
+                       << std::to_string(_server_component_impl.get_own_component_id());
         }
         return;
     }
@@ -106,7 +107,7 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
     for (auto& handler : _mavlink_command_long_handler_table) {
         if (handler.cmd_id == cmd.command) {
             if (_debugging) {
-                LogDebug() << "Handling command long " << (int)cmd.command;
+                LogDebug() << "Handling command long " << std::to_string(cmd.command);
             }
 
             // The client side can pack a COMMAND_ACK as a response to receiving the command.
@@ -124,8 +125,8 @@ void MavlinkCommandReceiver::receive_command_long(const mavlink_message_t& messa
                         return response_message;
                     });
                 if (_debugging) {
-                    LogDebug() << "Acked command long " << (int)cmd.command << " with "
-                               << maybe_command_ack.value().result;
+                    LogDebug() << "Acked command long " << std::to_string(cmd.command) << " with "
+                               << std::to_string(maybe_command_ack.value().result);
                 }
             }
         }

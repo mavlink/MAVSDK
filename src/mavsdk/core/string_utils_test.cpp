@@ -19,6 +19,6 @@ TEST(StringUtils, StripPrefix)
     EXPECT_EQ(strip_prefix("blafoo", "1234"), "blafoo");
     EXPECT_EQ(strip_prefix("blafoo", "foo"), "blafoo");
     EXPECT_EQ(strip_prefix("", ""), "");
-    EXPECT_EQ(strip_prefix("", "b"), "b");
+    EXPECT_EQ(strip_prefix("", "b"), "");
     EXPECT_EQ(strip_prefix("f", ""), "f");
 }

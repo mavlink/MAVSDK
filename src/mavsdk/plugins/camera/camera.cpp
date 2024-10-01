@@ -433,6 +433,8 @@ std::ostream& operator<<(std::ostream& str, Camera::Result const& result)
             return str << "Settings Loading";
         case Camera::Result::CameraIdInvalid:
             return str << "Camera Id Invalid";
+        case Camera::Result::ActionUnsupported:
+            return str << "Action Unsupported";
         default:
             return str << "Unknown";
     }

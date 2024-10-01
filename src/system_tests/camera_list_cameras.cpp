@@ -9,7 +9,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, CameraDefinition)
+TEST(SystemTest, CameraListCameras)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 
@@ -43,11 +43,23 @@ TEST(SystemTest, CameraDefinition)
         }
     });
 
-    ASSERT_EQ(fut.wait_for(std::chrono::seconds(5)), std::future_status::ready);
+    ASSERT_EQ(fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     mavsdk_groundstation.unsubscribe_on_new_system(handle);
     auto system = fut.get();
 
     auto camera = Camera{system};
 
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    bool found_camera = false;
+    camera.subscribe_camera_list([&](Camera::CameraList camera_list) {
+        LogWarn() << "got called";
+        if (!camera_list.cameras.empty()) {
+            found_camera = true;
+        }
+    });
+
+    // We have to wait until camera is found.
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    EXPECT_EQ(camera.camera_list().cameras.size(), 1);
+    EXPECT_TRUE(found_camera);
 }

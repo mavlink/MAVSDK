@@ -156,6 +156,8 @@ public:
                 return rpc::camera::CameraResult_Result_RESULT_SETTINGS_LOADING;
             case mavsdk::Camera::Result::CameraIdInvalid:
                 return rpc::camera::CameraResult_Result_RESULT_CAMERA_ID_INVALID;
+            case mavsdk::Camera::Result::ActionUnsupported:
+                return rpc::camera::CameraResult_Result_RESULT_ACTION_UNSUPPORTED;
         }
     }
 
@@ -192,6 +194,8 @@ public:
                 return mavsdk::Camera::Result::SettingsLoading;
             case rpc::camera::CameraResult_Result_RESULT_CAMERA_ID_INVALID:
                 return mavsdk::Camera::Result::CameraIdInvalid;
+            case rpc::camera::CameraResult_Result_RESULT_ACTION_UNSUPPORTED:
+                return mavsdk::Camera::Result::ActionUnsupported;
         }
     }
 
