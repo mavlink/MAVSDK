@@ -10,7 +10,6 @@
 #include "plugin_impl_base.h"
 #include "system.h"
 #include "callback_list.h"
-#include "string_utils.h"
 #include <filesystem>
 
 namespace mavsdk {
@@ -85,7 +84,7 @@ public:
     void start_video_async(int32_t camera_id, const Camera::ResultCallback& callback);
     void stop_video_async(int32_t camera_id, const Camera::ResultCallback& callback);
 
-    Camera::CameraList camera_list() const;
+    Camera::CameraList camera_list();
     Camera::CameraListHandle subscribe_camera_list(const Camera::CameraListCallback& callback);
     void unsubscribe_camera_list(Camera::CameraListHandle handle);
 
@@ -99,9 +98,9 @@ public:
     Camera::Result start_video_streaming(int32_t camera_id, int32_t stream_id);
     Camera::Result stop_video_streaming(int32_t camera_id, int32_t stream_id);
 
-    Camera::Result set_mode(int32_t camera_id, const Camera::Mode mode);
-    void set_mode_async(
-        int32_t camera_id, const Camera::Mode mode, const Camera::ResultCallback& callback);
+    Camera::Result set_mode(int32_t camera_id, Camera::Mode mode);
+    void
+    set_mode_async(int32_t camera_id, Camera::Mode mode, const Camera::ResultCallback& callback);
 
     Camera::Mode get_mode(int32_t camera_id);
 
@@ -117,13 +116,15 @@ public:
     Camera::Status get_status(int32_t camera_id);
 
     void get_setting_async(
-        int32_t camera_id, Camera::Setting setting, const Camera::GetSettingCallback callback);
-    Camera::Result set_setting(int32_t camera_id, Camera::Setting setting);
+        int32_t camera_id,
+        const Camera::Setting& setting,
+        const Camera::GetSettingCallback& callback);
+    Camera::Result set_setting(int32_t camera_id, const Camera::Setting& setting);
     void set_setting_async(
-        int32_t camera_id, Camera::Setting setting, const Camera::ResultCallback callback);
+        int32_t camera_id, const Camera::Setting& setting, const Camera::ResultCallback& callback);
 
     std::pair<Camera::Result, Camera::Setting>
-    get_setting(int32_t camera_id, Camera::Setting setting);
+    get_setting(int32_t camera_id, const Camera::Setting& setting);
 
     bool is_setting_range(const std::string& setting_id);
 
@@ -142,17 +143,17 @@ public:
 
     Camera::Result format_storage(int32_t camera_id, int32_t storage_id);
     void format_storage_async(
-        int32_t camera_id, int32_t storage_id, const Camera::ResultCallback callback);
+        int32_t camera_id, int32_t storage_id, const Camera::ResultCallback& callback);
 
     Camera::Result reset_settings(int32_t camera_id);
-    void reset_settings_async(int32_t camera_id, const Camera::ResultCallback callback);
+    void reset_settings_async(int32_t camera_id, const Camera::ResultCallback& callback);
 
     std::pair<Camera::Result, std::vector<Camera::CaptureInfo>>
     list_photos(int32_t camera_id, Camera::PhotosRange photos_range);
     void list_photos_async(
         int32_t camera_id,
         Camera::PhotosRange photos_range,
-        const Camera::ListPhotosCallback callback);
+        const Camera::ListPhotosCallback& callback);
 
     CameraImpl(const CameraImpl&) = delete;
     CameraImpl& operator=(const CameraImpl&) = delete;
@@ -174,6 +175,7 @@ private:
         uint8_t component_id;
 
         Camera::Mode mode{Camera::Mode::Unknown};
+        uint16_t capture_sequence{0};
 
         bool operator==(const PotentialCamera& other) const
         {
@@ -187,7 +189,7 @@ private:
     void get_setting_async_with_lock(
         PotentialCamera& potential_camera,
         Camera::Setting setting,
-        const Camera::GetSettingCallback callback);
+        const Camera::GetSettingCallback& callback);
 
     bool get_possible_options_with_lock(
         PotentialCamera& camera,
@@ -208,7 +210,7 @@ private:
         const std::function<void(Camera::Result, const Camera::Option&)>& callback);
 
     bool get_setting_str_with_lock(
-        PotentialCamera& potential_camera, std::string& setting_id, std::string& description);
+        PotentialCamera& potential_camera, const std::string& setting_id, std::string& description);
     bool get_option_str_with_lock(
         PotentialCamera& potential_camera,
         const std::string& setting_id,
@@ -216,18 +218,18 @@ private:
         std::string& description);
 
     void receive_set_mode_command_result(
-        const MavlinkCommandSender::Result command_result,
-        const Camera::ResultCallback callback,
-        const Camera::Mode mode,
+        MavlinkCommandSender::Result command_result,
+        const Camera::ResultCallback& callback,
+        Camera::Mode mode,
         int32_t camera_id);
 
     static Camera::Result
-    camera_result_from_command_result(const MavlinkCommandSender::Result command_result);
+    camera_result_from_command_result(MavlinkCommandSender::Result command_result);
     static Camera::Result
-    camera_result_from_parameter_result(const MavlinkParameterClient::Result parameter_result);
+    camera_result_from_parameter_result(MavlinkParameterClient::Result parameter_result);
 
     void receive_command_result(
-        MavlinkCommandSender::Result command_result, const Camera::ResultCallback& callback);
+        MavlinkCommandSender::Result command_result, const Camera::ResultCallback& callback) const;
 
     void process_heartbeat(const mavlink_message_t& message);
     void process_camera_image_captured(const mavlink_message_t& message);
@@ -241,7 +243,7 @@ private:
 
     void check_potential_cameras_with_lock();
     void check_camera_definition_with_lock(PotentialCamera& potential_camera);
-    void load_camera_definition_with_lock(
+    static void load_camera_definition_with_lock(
         PotentialCamera& potential_camera, const std::filesystem::path& path);
 
     void notify_mode();
@@ -253,16 +255,18 @@ private:
     void notify_possible_setting_options_for_all();
     void notify_possible_setting_options_with_lock(PotentialCamera& potential_camera);
 
+    void notify_camera_list();
+
     void check_status();
 
     void refresh_params_with_lock(PotentialCamera& camera);
 
     void save_camera_mode_with_lock(PotentialCamera& potential_camera, Camera::Mode mode);
 
-    static Camera::Status::StorageStatus storage_status_from_mavlink(const int storage_status);
-    static Camera::Status::StorageType storage_type_from_mavlink(const int storage_type);
-    static float to_mavlink_camera_mode(const Camera::Mode mode);
-    static Camera::Mode to_camera_mode(const uint8_t mavlink_camera_mode);
+    static Camera::Status::StorageStatus storage_status_from_mavlink(int storage_status);
+    static Camera::Status::StorageType storage_type_from_mavlink(int storage_type);
+    static float to_mavlink_camera_mode(Camera::Mode mode);
+    static Camera::Mode to_camera_mode(uint8_t mavlink_camera_mode);
 
     CallEveryHandler::Cookie _camera_information_call_every_cookie{};
     CallEveryHandler::Cookie _request_missing_capture_info_cookie{};
@@ -277,14 +281,8 @@ private:
     make_command_take_photo(int32_t camera_id, float interval_s, float no_of_photos);
     MavlinkCommandSender::CommandLong make_command_stop_photo(int32_t camera_id);
 
-    MavlinkCommandSender::CommandLong make_command_request_camera_info(int32_t camera_id);
     MavlinkCommandSender::CommandLong
     make_command_set_camera_mode(int32_t camera_id, float mavlink_mode);
-    MavlinkCommandSender::CommandLong make_command_request_camera_settings(int32_t camera_id);
-    MavlinkCommandSender::CommandLong make_command_request_camera_capture_status(int32_t camera_id);
-    MavlinkCommandSender::CommandLong
-    make_command_request_camera_image_captured(int32_t camera_id, size_t photo_id);
-    MavlinkCommandSender::CommandLong make_command_request_storage_info(int32_t camera_id);
 
     MavlinkCommandSender::CommandLong
     make_command_start_video(int32_t camera_id, float capture_status_rate_hz);
@@ -316,14 +314,16 @@ private:
     void request_missing_capture_info();
 
     uint8_t component_id_for_camera_id(int32_t camera_id);
+    uint16_t capture_sequence_for_camera_id(int32_t camera_id);
 
-    int32_t camera_id_for_potential_camera_with_lock(PotentialCamera& potential_camera);
+    int32_t camera_id_for_potential_camera_with_lock(const PotentialCamera& potential_camera);
     PotentialCamera* maybe_potential_camera_for_camera_id_with_lock(int32_t camera_id);
 
     static std::string get_filename_from_path(const std::string& path);
 
-    std::mutex _potential_cameras_mutex;
+    std::mutex _mutex;
     std::vector<PotentialCamera> _potential_cameras;
+    CallbackList<Camera::CameraList> camera_list_subscription_callbacks{};
 
     CallEveryHandler::Cookie _check_potential_cameras_call_every_cookie{};
 
@@ -363,11 +363,6 @@ private:
 
     struct {
         std::mutex mutex{};
-        int sequence = 1; // The MAVLink spec says the sequence starts at 1.
-    } _capture{};
-
-    struct {
-        std::mutex mutex{};
         CallbackList<Camera::CaptureInfo> callbacks{};
         int last_advertised_image_index{-1};
         std::map<int, int> missing_image_retries{};
@@ -380,12 +375,6 @@ private:
         CallEveryHandler::Cookie call_every_cookie{};
         CallbackList<Camera::VideoStreamInfo> subscription_callbacks{};
     } _video_stream_info{};
-
-    struct {
-        mutable std::mutex mutex{};
-        Camera::CameraList data{};
-        CallbackList<Camera::CameraList> subscription_callbacks{};
-    } _camera_list{};
 
     struct {
         std::mutex mutex{};

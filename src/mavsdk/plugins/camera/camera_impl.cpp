@@ -165,7 +165,7 @@ CameraImpl::make_command_take_photo(int32_t camera_id, float interval_s, float n
     cmd.params.maybe_param1 = 0.0f; // Reserved, set to 0
     cmd.params.maybe_param2 = interval_s;
     cmd.params.maybe_param3 = no_of_photos;
-    cmd.params.maybe_param4 = static_cast<float>(_capture.sequence++);
+    cmd.params.maybe_param4 = capture_sequence_for_camera_id(camera_id);
     cmd.target_component_id = component_id_for_camera_id(camera_id);
 
     return cmd;
@@ -175,7 +175,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_zoom_out(int32_t came
 {
     MavlinkCommandSender::CommandLong cmd{};
     cmd.command = MAV_CMD_SET_CAMERA_ZOOM;
-    cmd.params.maybe_param1 = (float)ZOOM_TYPE_CONTINUOUS;
+    cmd.params.maybe_param1 = static_cast<float>(ZOOM_TYPE_CONTINUOUS);
     cmd.params.maybe_param2 = -1.f;
     cmd.target_component_id = component_id_for_camera_id(camera_id);
 
@@ -186,7 +186,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_zoom_in(int32_t camer
 {
     MavlinkCommandSender::CommandLong cmd{};
     cmd.command = MAV_CMD_SET_CAMERA_ZOOM;
-    cmd.params.maybe_param1 = (float)ZOOM_TYPE_CONTINUOUS;
+    cmd.params.maybe_param1 = static_cast<float>(ZOOM_TYPE_CONTINUOUS);
     cmd.params.maybe_param2 = 1.f;
     cmd.target_component_id = component_id_for_camera_id(camera_id);
 
@@ -197,7 +197,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_zoom_stop(int32_t cam
 {
     MavlinkCommandSender::CommandLong cmd{};
     cmd.command = MAV_CMD_SET_CAMERA_ZOOM;
-    cmd.params.maybe_param1 = (float)ZOOM_TYPE_CONTINUOUS;
+    cmd.params.maybe_param1 = static_cast<float>(ZOOM_TYPE_CONTINUOUS);
     cmd.params.maybe_param2 = 0.f;
     cmd.target_component_id = component_id_for_camera_id(camera_id);
 
@@ -212,7 +212,7 @@ CameraImpl::make_command_zoom_range(int32_t camera_id, float range)
 
     MavlinkCommandSender::CommandLong cmd{};
     cmd.command = MAV_CMD_SET_CAMERA_ZOOM;
-    cmd.params.maybe_param1 = (float)ZOOM_TYPE_RANGE;
+    cmd.params.maybe_param1 = static_cast<float>(ZOOM_TYPE_RANGE);
     cmd.params.maybe_param2 = range;
     cmd.target_component_id = component_id_for_camera_id(camera_id);
 
@@ -224,9 +224,9 @@ CameraImpl::make_command_track_point(int32_t camera_id, float point_x, float poi
 {
     MavlinkCommandSender::CommandLong cmd{};
     cmd.command = MAV_CMD_CAMERA_TRACK_POINT;
-    cmd.params.maybe_param1 = (float)point_x;
-    cmd.params.maybe_param2 = (float)point_y;
-    cmd.params.maybe_param3 = (float)radius;
+    cmd.params.maybe_param1 = point_x;
+    cmd.params.maybe_param2 = point_y;
+    cmd.params.maybe_param3 = radius;
     cmd.target_component_id = component_id_for_camera_id(camera_id);
 
     return cmd;
@@ -249,6 +249,7 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_track_rectangle(
 
     return cmd;
 }
+
 MavlinkCommandSender::CommandLong CameraImpl::make_command_track_stop(int32_t camera_id)
 {
     MavlinkCommandSender::CommandLong cmd{};
@@ -257,36 +258,40 @@ MavlinkCommandSender::CommandLong CameraImpl::make_command_track_stop(int32_t ca
 
     return cmd;
 }
+
 MavlinkCommandSender::CommandLong CameraImpl::make_command_focus_in(int32_t camera_id)
 {
     MavlinkCommandSender::CommandLong cmd{};
     cmd.command = MAV_CMD_SET_CAMERA_FOCUS;
-    cmd.params.maybe_param1 = (float)FOCUS_TYPE_CONTINUOUS;
+    cmd.params.maybe_param1 = static_cast<float>(FOCUS_TYPE_CONTINUOUS);
     cmd.params.maybe_param2 = -1.f;
     cmd.target_component_id = component_id_for_camera_id(camera_id);
 
     return cmd;
 }
+
 MavlinkCommandSender::CommandLong CameraImpl::make_command_focus_out(int32_t camera_id)
 {
     MavlinkCommandSender::CommandLong cmd{};
     cmd.command = MAV_CMD_SET_CAMERA_FOCUS;
-    cmd.params.maybe_param1 = (float)FOCUS_TYPE_CONTINUOUS;
+    cmd.params.maybe_param1 = static_cast<float>(FOCUS_TYPE_CONTINUOUS);
     cmd.params.maybe_param2 = 1.f;
     cmd.target_component_id = component_id_for_camera_id(camera_id);
 
     return cmd;
 }
+
 MavlinkCommandSender::CommandLong CameraImpl::make_command_focus_stop(int32_t camera_id)
 {
     MavlinkCommandSender::CommandLong cmd{};
     cmd.command = MAV_CMD_SET_CAMERA_FOCUS;
-    cmd.params.maybe_param1 = (float)FOCUS_TYPE_CONTINUOUS;
+    cmd.params.maybe_param1 = static_cast<float>(FOCUS_TYPE_CONTINUOUS);
     cmd.params.maybe_param2 = 0.f;
     cmd.target_component_id = component_id_for_camera_id(camera_id);
 
     return cmd;
 }
+
 MavlinkCommandSender::CommandLong
 CameraImpl::make_command_focus_range(int32_t camera_id, float range)
 {
@@ -295,7 +300,7 @@ CameraImpl::make_command_focus_range(int32_t camera_id, float range)
 
     MavlinkCommandSender::CommandLong cmd{};
     cmd.command = MAV_CMD_SET_CAMERA_FOCUS;
-    cmd.params.maybe_param1 = (float)FOCUS_TYPE_RANGE;
+    cmd.params.maybe_param1 = static_cast<float>(FOCUS_TYPE_RANGE);
     cmd.params.maybe_param2 = range;
     cmd.target_component_id = component_id_for_camera_id(camera_id);
 
@@ -350,56 +355,6 @@ CameraImpl::make_command_set_camera_mode(int32_t camera_id, float mavlink_mode)
 }
 
 MavlinkCommandSender::CommandLong
-CameraImpl::make_command_request_camera_settings(int32_t camera_id)
-{
-    MavlinkCommandSender::CommandLong cmd_req_camera_settings{};
-
-    cmd_req_camera_settings.command = MAV_CMD_REQUEST_CAMERA_SETTINGS;
-    cmd_req_camera_settings.params.maybe_param1 = 1.f; // Request it
-    cmd_req_camera_settings.target_component_id = component_id_for_camera_id(camera_id);
-
-    return cmd_req_camera_settings;
-}
-
-MavlinkCommandSender::CommandLong
-CameraImpl::make_command_request_camera_capture_status(int32_t camera_id)
-{
-    MavlinkCommandSender::CommandLong cmd_req_camera_cap_stat{};
-
-    cmd_req_camera_cap_stat.command = MAV_CMD_REQUEST_CAMERA_CAPTURE_STATUS;
-    cmd_req_camera_cap_stat.params.maybe_param1 = 1.0f; // Request it
-    cmd_req_camera_cap_stat.target_component_id = component_id_for_camera_id(camera_id);
-
-    return cmd_req_camera_cap_stat;
-}
-
-MavlinkCommandSender::CommandLong
-CameraImpl::make_command_request_camera_image_captured(int32_t camera_id, const size_t photo_id)
-{
-    MavlinkCommandSender::CommandLong cmd_req_camera_image_captured{};
-
-    cmd_req_camera_image_captured.command = MAV_CMD_REQUEST_MESSAGE;
-    cmd_req_camera_image_captured.params.maybe_param1 =
-        static_cast<float>(MAVLINK_MSG_ID_CAMERA_IMAGE_CAPTURED);
-    cmd_req_camera_image_captured.params.maybe_param2 = static_cast<float>(photo_id);
-    cmd_req_camera_image_captured.target_component_id = component_id_for_camera_id(camera_id);
-
-    return cmd_req_camera_image_captured;
-}
-
-MavlinkCommandSender::CommandLong CameraImpl::make_command_request_storage_info(int32_t camera_id)
-{
-    MavlinkCommandSender::CommandLong cmd_req_storage_info{};
-
-    cmd_req_storage_info.command = MAV_CMD_REQUEST_STORAGE_INFORMATION;
-    cmd_req_storage_info.params.maybe_param1 = 0.f; // Reserved, set to 0
-    cmd_req_storage_info.params.maybe_param2 = 1.f; // Request it
-    cmd_req_storage_info.target_component_id = component_id_for_camera_id(camera_id);
-
-    return cmd_req_storage_info;
-}
-
-MavlinkCommandSender::CommandLong
 CameraImpl::make_command_start_video_streaming(int32_t camera_id, int32_t stream_id)
 {
     MavlinkCommandSender::CommandLong cmd_start_video_streaming{};
@@ -425,10 +380,6 @@ CameraImpl::make_command_stop_video_streaming(int32_t camera_id, int32_t stream_
 
 Camera::Result CameraImpl::take_photo(int32_t camera_id)
 {
-    // TODO: check whether we are in photo mode.
-
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     // Take 1 photo only with no interval
     auto cmd_take_photo = make_command_take_photo(camera_id, 0.f, 1.0f);
 
@@ -437,8 +388,6 @@ Camera::Result CameraImpl::take_photo(int32_t camera_id)
 
 Camera::Result CameraImpl::zoom_out_start(int32_t camera_id)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_zoom_out(camera_id);
 
     return camera_result_from_command_result(_system_impl->send_command(cmd));
@@ -446,8 +395,6 @@ Camera::Result CameraImpl::zoom_out_start(int32_t camera_id)
 
 Camera::Result CameraImpl::zoom_in_start(int32_t camera_id)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_zoom_in(camera_id);
 
     return camera_result_from_command_result(_system_impl->send_command(cmd));
@@ -455,8 +402,6 @@ Camera::Result CameraImpl::zoom_in_start(int32_t camera_id)
 
 Camera::Result CameraImpl::zoom_stop(int32_t camera_id)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_zoom_stop(camera_id);
 
     return camera_result_from_command_result(_system_impl->send_command(cmd));
@@ -464,8 +409,6 @@ Camera::Result CameraImpl::zoom_stop(int32_t camera_id)
 
 Camera::Result CameraImpl::zoom_range(int32_t camera_id, float range)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_zoom_range(camera_id, range);
 
     return camera_result_from_command_result(_system_impl->send_command(cmd));
@@ -474,8 +417,6 @@ Camera::Result CameraImpl::zoom_range(int32_t camera_id, float range)
 Camera::Result
 CameraImpl::track_point(int32_t camera_id, float point_x, float point_y, float radius)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_track_point(camera_id, point_x, point_y, radius);
 
     return camera_result_from_command_result(_system_impl->send_command(cmd));
@@ -488,8 +429,6 @@ Camera::Result CameraImpl::track_rectangle(
     float bottom_right_x,
     float bottom_right_y)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_track_rectangle(
         camera_id, top_left_x, top_left_y, bottom_right_x, bottom_right_y);
 
@@ -498,8 +437,6 @@ Camera::Result CameraImpl::track_rectangle(
 
 Camera::Result CameraImpl::track_stop(int32_t camera_id)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_track_stop(camera_id);
 
     return camera_result_from_command_result(_system_impl->send_command(cmd));
@@ -507,8 +444,6 @@ Camera::Result CameraImpl::track_stop(int32_t camera_id)
 
 Camera::Result CameraImpl::focus_in_start(int32_t camera_id)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_focus_in(camera_id);
 
     return camera_result_from_command_result(_system_impl->send_command(cmd));
@@ -516,8 +451,6 @@ Camera::Result CameraImpl::focus_in_start(int32_t camera_id)
 
 Camera::Result CameraImpl::focus_out_start(int32_t camera_id)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_focus_out(camera_id);
 
     return camera_result_from_command_result(_system_impl->send_command(cmd));
@@ -525,8 +458,6 @@ Camera::Result CameraImpl::focus_out_start(int32_t camera_id)
 
 Camera::Result CameraImpl::focus_stop(int32_t camera_id)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_focus_stop(camera_id);
 
     return camera_result_from_command_result(_system_impl->send_command(cmd));
@@ -534,8 +465,6 @@ Camera::Result CameraImpl::focus_stop(int32_t camera_id)
 
 Camera::Result CameraImpl::focus_range(int32_t camera_id, float range)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_focus_range(camera_id, range);
 
     return camera_result_from_command_result(_system_impl->send_command(cmd));
@@ -543,10 +472,6 @@ Camera::Result CameraImpl::focus_range(int32_t camera_id, float range)
 
 Camera::Result CameraImpl::start_photo_interval(int32_t camera_id, float interval_s)
 {
-    // TODO: check whether we are in photo mode.
-
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd_take_photo_time_lapse = make_command_take_photo(camera_id, interval_s, 0.f);
 
     return camera_result_from_command_result(_system_impl->send_command(cmd_take_photo_time_lapse));
@@ -562,8 +487,6 @@ Camera::Result CameraImpl::stop_photo_interval(int32_t camera_id)
 Camera::Result CameraImpl::start_video(int32_t camera_id)
 {
     // TODO: check whether video capture is already in progress.
-    // TODO: check whether we are in video mode.
-
     // Capture status rate is not set
     auto cmd_start_video = make_command_start_video(camera_id, 0.f);
 
@@ -584,8 +507,6 @@ Camera::Result CameraImpl::stop_video(int32_t camera_id)
 
 void CameraImpl::zoom_in_start_async(int32_t camera_id, const Camera::ResultCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_zoom_in(camera_id);
 
     _system_impl->send_command_async(
@@ -596,8 +517,6 @@ void CameraImpl::zoom_in_start_async(int32_t camera_id, const Camera::ResultCall
 
 void CameraImpl::zoom_out_start_async(int32_t camera_id, const Camera::ResultCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_zoom_out(camera_id);
 
     _system_impl->send_command_async(
@@ -608,8 +527,6 @@ void CameraImpl::zoom_out_start_async(int32_t camera_id, const Camera::ResultCal
 
 void CameraImpl::zoom_stop_async(int32_t camera_id, const Camera::ResultCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_zoom_stop(camera_id);
 
     _system_impl->send_command_async(
@@ -621,8 +538,6 @@ void CameraImpl::zoom_stop_async(int32_t camera_id, const Camera::ResultCallback
 void CameraImpl::zoom_range_async(
     int32_t camera_id, float range, const Camera::ResultCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_zoom_range(camera_id, range);
 
     _system_impl->send_command_async(
@@ -638,8 +553,6 @@ void CameraImpl::track_point_async(
     float radius,
     const Camera::ResultCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_track_point(camera_id, point_x, point_y, radius);
 
     _system_impl->send_command_async(
@@ -656,8 +569,6 @@ void CameraImpl::track_rectangle_async(
     float bottom_right_y,
     const Camera::ResultCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_track_rectangle(
         camera_id, top_left_x, top_left_y, bottom_right_x, bottom_right_y);
 
@@ -669,8 +580,6 @@ void CameraImpl::track_rectangle_async(
 
 void CameraImpl::track_stop_async(int32_t camera_id, const Camera::ResultCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_track_stop(camera_id);
 
     _system_impl->send_command_async(
@@ -681,8 +590,6 @@ void CameraImpl::track_stop_async(int32_t camera_id, const Camera::ResultCallbac
 
 void CameraImpl::focus_in_start_async(int32_t camera_id, const Camera::ResultCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_focus_in(camera_id);
 
     _system_impl->send_command_async(
@@ -693,8 +600,6 @@ void CameraImpl::focus_in_start_async(int32_t camera_id, const Camera::ResultCal
 
 void CameraImpl::focus_out_start_async(int32_t camera_id, const Camera::ResultCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_focus_out(camera_id);
 
     _system_impl->send_command_async(
@@ -705,8 +610,6 @@ void CameraImpl::focus_out_start_async(int32_t camera_id, const Camera::ResultCa
 
 void CameraImpl::focus_stop_async(int32_t camera_id, const Camera::ResultCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_focus_stop(camera_id);
 
     _system_impl->send_command_async(
@@ -718,8 +621,6 @@ void CameraImpl::focus_stop_async(int32_t camera_id, const Camera::ResultCallbac
 void CameraImpl::focus_range_async(
     int32_t camera_id, float range, const Camera::ResultCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd = make_command_focus_range(camera_id, range);
 
     _system_impl->send_command_async(
@@ -730,10 +631,6 @@ void CameraImpl::focus_range_async(
 
 void CameraImpl::take_photo_async(int32_t camera_id, const Camera::ResultCallback& callback)
 {
-    // TODO: check whether we are in photo mode.
-
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     // Take 1 photo only with no interval
     auto cmd_take_photo = make_command_take_photo(camera_id, 0.f, 1.0f);
 
@@ -746,10 +643,6 @@ void CameraImpl::take_photo_async(int32_t camera_id, const Camera::ResultCallbac
 void CameraImpl::start_photo_interval_async(
     int32_t camera_id, float interval_s, const Camera::ResultCallback& callback)
 {
-    // TODO: check whether we are in photo mode.
-
-    std::lock_guard<std::mutex> lock(_capture.mutex);
-
     auto cmd_take_photo_time_lapse = make_command_take_photo(camera_id, interval_s, 0.f);
 
     _system_impl->send_command_async(
@@ -772,7 +665,6 @@ void CameraImpl::stop_photo_interval_async(
 void CameraImpl::start_video_async(int32_t camera_id, const Camera::ResultCallback& callback)
 {
     // TODO: check whether video capture is already in progress.
-    // TODO: check whether we are in video mode.
 
     // Capture status rate is not set
     auto cmd_start_video = make_command_start_video(camera_id, 0.f);
@@ -793,28 +685,45 @@ void CameraImpl::stop_video_async(int32_t camera_id, const Camera::ResultCallbac
         });
 }
 
-Camera::CameraList CameraImpl::camera_list() const
+Camera::CameraList CameraImpl::camera_list()
 {
-    std::lock_guard<std::mutex> lock(_camera_list.mutex);
+    Camera::CameraList result{};
 
-    return _camera_list.data;
+    std::lock_guard lock(_mutex);
+
+    for (auto& potential_camera : _potential_cameras) {
+        if (!potential_camera.maybe_information) {
+            continue;
+        }
+        result.cameras.push_back(potential_camera.maybe_information.value());
+    }
+
+    return result;
 }
 
 Camera::CameraListHandle
 CameraImpl::subscribe_camera_list(const Camera::CameraListCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_camera_list.mutex);
-    auto handle = _camera_list.subscription_callbacks.subscribe(callback);
+    std::lock_guard<std::mutex> lock(_mutex);
+    auto handle = camera_list_subscription_callbacks.subscribe(callback);
 
-    // TODO: what should we do?
+    notify_camera_list();
 
     return handle;
 }
 
 void CameraImpl::unsubscribe_camera_list(Camera::CameraListHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_camera_list.mutex);
-    _camera_list.subscription_callbacks.unsubscribe(handle);
+    std::lock_guard<std::mutex> lock(_mutex);
+    camera_list_subscription_callbacks.unsubscribe(handle);
+}
+
+void CameraImpl::notify_camera_list()
+{
+    _system_impl->call_user_callback([&]() {
+        camera_list_subscription_callbacks.queue(
+            camera_list(), [this](const auto& func) { func(); });
+    });
 }
 
 Camera::Result CameraImpl::start_video_streaming(int32_t camera_id, int32_t stream_id)
@@ -906,7 +815,7 @@ CameraImpl::camera_result_from_command_result(const MavlinkCommandSender::Result
         case MavlinkCommandSender::Result::ConnectionError:
             // FALLTHROUGH
         case MavlinkCommandSender::Result::Busy:
-            return Camera::Result::Error;
+            // FALLTHROUGH
         case MavlinkCommandSender::Result::Failed:
             return Camera::Result::Error;
         case MavlinkCommandSender::Result::Denied:
@@ -915,6 +824,9 @@ CameraImpl::camera_result_from_command_result(const MavlinkCommandSender::Result
             return Camera::Result::Denied;
         case MavlinkCommandSender::Result::Timeout:
             return Camera::Result::Timeout;
+        case MavlinkCommandSender::Result::Unsupported:
+            return Camera::Result::ActionUnsupported;
+        case MavlinkCommandSender::Result::Cancelled:
         default:
             return Camera::Result::Unknown;
     }
@@ -928,18 +840,18 @@ Camera::Result CameraImpl::camera_result_from_parameter_result(
             return Camera::Result::Success;
         case MavlinkParameterClient::Result::Timeout:
             return Camera::Result::Timeout;
-        case MavlinkParameterClient::Result::ConnectionError:
-            return Camera::Result::Error;
         case MavlinkParameterClient::Result::WrongType:
-            return Camera::Result::WrongArgument;
+            // FALLTHROUGH
         case MavlinkParameterClient::Result::ParamNameTooLong:
-            return Camera::Result::WrongArgument;
+            // FALLTHROUGH
         case MavlinkParameterClient::Result::NotFound:
-            return Camera::Result::WrongArgument;
+            // FALLTHROUGH
         case MavlinkParameterClient::Result::ValueUnsupported:
             return Camera::Result::WrongArgument;
+        case MavlinkParameterClient::Result::ConnectionError:
+            // FALLTHROUGH
         case MavlinkParameterClient::Result::Failed:
-            return Camera::Result::Error;
+            // FALLTHROUGH
         case MavlinkParameterClient::Result::UnknownError:
             return Camera::Result::Error;
         default:
@@ -955,7 +867,7 @@ Camera::Result CameraImpl::set_mode(int32_t camera_id, const Camera::Mode mode)
     const auto camera_result = camera_result_from_command_result(command_result);
 
     if (camera_result == Camera::Result::Success) {
-        std::lock_guard lock(_potential_cameras_mutex);
+        std::lock_guard lock(_mutex);
         auto maybe_potential_camera = maybe_potential_camera_for_camera_id_with_lock(camera_id);
         if (maybe_potential_camera != nullptr) {
             save_camera_mode_with_lock(*maybe_potential_camera, mode);
@@ -974,7 +886,7 @@ void CameraImpl::save_camera_mode_with_lock(PotentialCamera& potential_camera, C
     // Otherwise, we hardcode it to `uint32_t`.
 
     // Note that it could be that the camera definition defines options
-    // different than {PHOTO, VIDEO}, in which case the mode received from
+    // different from {PHOTO, VIDEO}, in which case the mode received from
     // CAMERA_SETTINGS will be wrong.
 
     ParamValue value;
@@ -1094,7 +1006,7 @@ void CameraImpl::unsubscribe_capture_info(Camera::CaptureInfoHandle handle)
 void CameraImpl::process_heartbeat(const mavlink_message_t& message)
 {
     // Check for potential camera
-    std::lock_guard lock(_potential_cameras_mutex);
+    std::lock_guard lock(_mutex);
     auto found =
         std::any_of(_potential_cameras.begin(), _potential_cameras.end(), [&](const auto& item) {
             return item.component_id == message.compid;
@@ -1137,7 +1049,8 @@ void CameraImpl::process_camera_capture_status(const mavlink_message_t& message)
         _status.data.photo_interval_on =
             (camera_capture_status.image_status == 2 || camera_capture_status.image_status == 3);
         _status.received_camera_capture_status = true;
-        _status.data.recording_time_s = float(camera_capture_status.recording_time_ms) / 1e3f;
+        _status.data.recording_time_s =
+            static_cast<float>(camera_capture_status.recording_time_ms) / 1e3f;
 
         _status.image_count = camera_capture_status.image_count;
 
@@ -1157,8 +1070,8 @@ void CameraImpl::process_storage_information(const mavlink_message_t& message)
     if (storage_information.total_capacity == 0.0f) {
         // Some MAVLink systems happen to send the STORAGE_INFORMATION message
         // to indicate that the camera has a slot for a storage even if there
-        // is no way to know anything about that storage (e.g. whether or not
-        // there is an sdcard in the slot).
+        // is no way to know anything about that storage (e.g. regardless of
+        // whether there is a sdcard in the slot).
         //
         // We consider that a total capacity of 0 means that this is such a
         // message, and we don't expect MAVSDK users to leverage it, which is
@@ -1318,7 +1231,7 @@ void CameraImpl::process_camera_settings(const mavlink_message_t& message)
     mavlink_camera_settings_t camera_settings;
     mavlink_msg_camera_settings_decode(&message, &camera_settings);
 
-    std::lock_guard lock(_potential_cameras_mutex);
+    std::lock_guard lock(_mutex);
     auto maybe_potential_camera = maybe_potential_camera_for_camera_id_with_lock(message.compid);
 
     if (maybe_potential_camera == nullptr) {
@@ -1359,7 +1272,7 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
     new_information.horizontal_resolution_px = camera_information.resolution_h;
     new_information.vertical_resolution_px = camera_information.resolution_v;
 
-    std::lock_guard lock(_potential_cameras_mutex);
+    std::lock_guard lock(_mutex);
 
     auto potential_camera =
         std::find_if(_potential_cameras.begin(), _potential_cameras.end(), [&](auto& item) {
@@ -1409,6 +1322,7 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
         if (starts_with(url, "http://") || starts_with(url, "https://")) {
 #if BUILD_WITHOUT_CURL == 1
             potential_camera.camera_definition_result = Camera::Result::ProtocolUnsupported;
+            notify_camera_list();
 #else
             HttpLoader http_loader;
             LogInfo() << "Downloading camera definition from: " << url;
@@ -1421,10 +1335,11 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                 [download_path, file_cache_tag, camera_id, this](
                     int progress, HttpStatus status, CURLcode curl_code) mutable {
                     // TODO: check if we still exist
-                    LogDebug() << "Download progress: " << progress << ", status: " << (int)status
-                               << ", curl_code: " << (int)curl_code;
+                    LogDebug() << "Download progress: " << progress
+                               << ", status: " << static_cast<int>(status)
+                               << ", curl_code: " << std::to_string(curl_code);
 
-                    std::lock_guard lock(_potential_cameras_mutex);
+                    std::lock_guard lock(_mutex);
                     auto maybe_potential_camera =
                         maybe_potential_camera_for_camera_id_with_lock(camera_id);
                     if (maybe_potential_camera != nullptr) {
@@ -1432,9 +1347,11 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                     }
 
                     if (status == HttpStatus::Error) {
-                        LogErr() << "File download failed with result " << curl_code;
+                        LogErr() << "File download failed with result "
+                                 << std::to_string(curl_code);
                         maybe_potential_camera->is_fetching_camera_definition = false;
                         maybe_potential_camera->camera_definition_result = Camera::Result::Error;
+                        notify_camera_list();
 
                     } else if (status == HttpStatus::Finished) {
                         LogDebug() << "File download finished " << download_path;
@@ -1448,6 +1365,7 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                         maybe_potential_camera->is_fetching_camera_definition = false;
                         // TODO: add parsing result
                         maybe_potential_camera->camera_definition_result = Camera::Result::Success;
+                        notify_camera_list();
                     }
                 });
 #endif
@@ -1471,7 +1389,7 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                         return;
                     }
 
-                    std::lock_guard lock(_potential_cameras_mutex);
+                    std::lock_guard lock(_mutex);
                     auto maybe_potential_camera =
                         maybe_potential_camera_for_camera_id_with_lock(camera_id);
                     if (maybe_potential_camera != nullptr) {
@@ -1483,6 +1401,7 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                         LogErr() << "File download failed with result " << client_result;
                         maybe_potential_camera->is_fetching_camera_definition = false;
                         maybe_potential_camera->camera_definition_result = Camera::Result::Error;
+                        notify_camera_list();
                         return;
                     }
 
@@ -1497,10 +1416,12 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                     // TODO: add parsing result
                     maybe_potential_camera->is_fetching_camera_definition = false;
                     maybe_potential_camera->camera_definition_result = Camera::Result::Success;
+                    notify_camera_list();
                 });
         } else {
             LogErr() << "Unknown protocol for URL: " << url;
             potential_camera.camera_definition_result = Camera::Result::ProtocolUnsupported;
+            notify_camera_list();
         }
     }
 }
@@ -1598,7 +1519,7 @@ void CameraImpl::check_status()
 }
 
 void CameraImpl::receive_command_result(
-    MavlinkCommandSender::Result command_result, const Camera::ResultCallback& callback)
+    MavlinkCommandSender::Result command_result, const Camera::ResultCallback& callback) const
 {
     Camera::Result camera_result = camera_result_from_command_result(command_result);
 
@@ -1609,7 +1530,7 @@ void CameraImpl::receive_command_result(
 
 void CameraImpl::receive_set_mode_command_result(
     const MavlinkCommandSender::Result command_result,
-    const Camera::ResultCallback callback,
+    const Camera::ResultCallback& callback,
     const Camera::Mode mode,
     int32_t camera_id)
 {
@@ -1620,7 +1541,7 @@ void CameraImpl::receive_set_mode_command_result(
     }
 
     if (camera_result == Camera::Result::Success) {
-        std::lock_guard lock(_potential_cameras_mutex);
+        std::lock_guard lock(_mutex);
         auto maybe_potential_camera = maybe_potential_camera_for_camera_id_with_lock(camera_id);
         if (maybe_potential_camera != nullptr) {
             save_camera_mode_with_lock(*maybe_potential_camera, mode);
@@ -1664,10 +1585,10 @@ bool CameraImpl::get_possible_options_with_lock(
         options.push_back(option);
     }
 
-    return options.size() > 0;
+    return !options.empty();
 }
 
-Camera::Result CameraImpl::set_setting(int32_t camera_id, Camera::Setting setting)
+Camera::Result CameraImpl::set_setting(int32_t camera_id, const Camera::Setting& setting)
 
 {
     auto prom = std::make_shared<std::promise<Camera::Result>>();
@@ -1680,7 +1601,7 @@ Camera::Result CameraImpl::set_setting(int32_t camera_id, Camera::Setting settin
 }
 
 void CameraImpl::set_setting_async(
-    int32_t camera_id, Camera::Setting setting, const Camera::ResultCallback callback)
+    int32_t camera_id, const Camera::Setting& setting, const Camera::ResultCallback& callback)
 {
     set_option_async(camera_id, setting.setting_id, setting.option, callback);
 }
@@ -1691,7 +1612,7 @@ void CameraImpl::set_option_async(
     const Camera::Option& option,
     const Camera::ResultCallback& callback)
 {
-    std::lock_guard lock(_potential_cameras_mutex);
+    std::lock_guard lock(_mutex);
     auto maybe_potential_camera = maybe_potential_camera_for_camera_id_with_lock(camera_id);
     if (maybe_potential_camera == nullptr) {
         if (callback != nullptr) {
@@ -1725,7 +1646,7 @@ void CameraImpl::set_option_async(
             return;
         }
 
-        if (all_values.size() == 0) {
+        if (all_values.empty()) {
             if (callback) {
                 LogErr() << "Could not get any options to get type for range param.";
                 _system_impl->call_user_callback([callback]() { callback(Camera::Result::Error); });
@@ -1773,7 +1694,7 @@ void CameraImpl::set_option_async(
         setting_id,
         value,
         [this, camera_id, callback, setting_id, value](MavlinkParameterClient::Result result) {
-            std::lock_guard lock_later(_potential_cameras_mutex);
+            std::lock_guard lock_later(_mutex);
             auto maybe_potential_camera_later =
                 maybe_potential_camera_for_camera_id_with_lock(camera_id);
             // We already checked these fields earlier, so we don't check again.
@@ -1812,9 +1733,9 @@ void CameraImpl::set_option_async(
 }
 
 void CameraImpl::get_setting_async(
-    int32_t camera_id, Camera::Setting setting, const Camera::GetSettingCallback callback)
+    int32_t camera_id, const Camera::Setting& setting, const Camera::GetSettingCallback& callback)
 {
-    std::lock_guard lock(_potential_cameras_mutex);
+    std::lock_guard lock(_mutex);
     auto maybe_potential_camera = maybe_potential_camera_for_camera_id_with_lock(camera_id);
     if (maybe_potential_camera == nullptr) {
         if (callback != nullptr) {
@@ -1837,7 +1758,7 @@ void CameraImpl::get_setting_async(
     get_option_async(
         camera_id,
         setting.setting_id,
-        [this, setting, callback](Camera::Result result, const Camera::Option& option) {
+        [this, callback](Camera::Result result, const Camera::Option& option) {
             Camera::Setting new_setting{};
             new_setting.option = option;
             if (callback) {
@@ -1848,7 +1769,7 @@ void CameraImpl::get_setting_async(
 }
 
 std::pair<Camera::Result, Camera::Setting>
-CameraImpl::get_setting(int32_t camera_id, Camera::Setting setting)
+CameraImpl::get_setting(int32_t camera_id, const Camera::Setting& setting)
 {
     auto prom = std::make_shared<std::promise<std::pair<Camera::Result, Camera::Setting>>>();
     auto ret = prom->get_future();
@@ -1891,7 +1812,7 @@ void CameraImpl::get_option_async(
     const std::string& setting_id,
     const std::function<void(Camera::Result, const Camera::Option&)>& callback)
 {
-    std::lock_guard lock(_potential_cameras_mutex);
+    std::lock_guard lock(_mutex);
     auto maybe_potential_camera = maybe_potential_camera_for_camera_id_with_lock(camera_id);
     if (maybe_potential_camera == nullptr) {
         if (callback != nullptr) {
@@ -1973,7 +1894,7 @@ void CameraImpl::unsubscribe_possible_setting_options(Camera::PossibleSettingOpt
 
 void CameraImpl::notify_current_settings_for_all()
 {
-    std::lock_guard lock(_potential_cameras_mutex);
+    std::lock_guard lock(_mutex);
 
     for (auto& potential_camera : _potential_cameras) {
         if (potential_camera.camera_definition != nullptr) {
@@ -1984,7 +1905,7 @@ void CameraImpl::notify_current_settings_for_all()
 
 void CameraImpl::notify_possible_setting_options_for_all()
 {
-    std::lock_guard lock(_potential_cameras_mutex);
+    std::lock_guard lock(_mutex);
 
     for (auto& potential_camera : _potential_cameras) {
         if (potential_camera.camera_definition != nullptr) {
@@ -2045,7 +1966,7 @@ void CameraImpl::notify_possible_setting_options_with_lock(PotentialCamera& pote
     }
 
     auto setting_options = get_possible_setting_options_with_lock(potential_camera);
-    if (setting_options.second.size() == 0) {
+    if (setting_options.second.empty()) {
         return;
     }
 
@@ -2059,7 +1980,7 @@ CameraImpl::get_possible_setting_options(int32_t camera_id)
 {
     std::pair<Camera::Result, std::vector<Camera::SettingOptions>> result;
 
-    std::lock_guard lock(_potential_cameras_mutex);
+    std::lock_guard lock(_mutex);
     auto maybe_potential_camera = maybe_potential_camera_for_camera_id_with_lock(camera_id);
     if (maybe_potential_camera == nullptr) {
         result.first = Camera::Result::CameraIdInvalid;
@@ -2132,12 +2053,12 @@ void CameraImpl::refresh_params_with_lock(PotentialCamera& potential_camera)
             param_name,
             param_value_type,
             [camera_id, param_name, is_last, this](
-                MavlinkParameterClient::Result result, ParamValue value) {
+                MavlinkParameterClient::Result result, const ParamValue& value) {
                 if (result != MavlinkParameterClient::Result::Success) {
                     return;
                 }
 
-                std::lock_guard lock_later(_potential_cameras_mutex);
+                std::lock_guard lock_later(_mutex);
                 auto maybe_potential_camera_later =
                     maybe_potential_camera_for_camera_id_with_lock(camera_id);
                 // We already checked these fields earlier, so we don't check again.
@@ -2163,7 +2084,7 @@ void CameraImpl::refresh_params_with_lock(PotentialCamera& potential_camera)
 }
 
 bool CameraImpl::get_setting_str_with_lock(
-    PotentialCamera& potential_camera, std::string& setting_id, std::string& description)
+    PotentialCamera& potential_camera, const std::string& setting_id, std::string& description)
 {
     if (potential_camera.camera_definition == nullptr) {
         return false;
@@ -2209,7 +2130,7 @@ Camera::Result CameraImpl::format_storage(int32_t camera_id, int32_t storage_id)
 }
 
 void CameraImpl::format_storage_async(
-    int32_t camera_id, int32_t storage_id, Camera::ResultCallback callback)
+    int32_t camera_id, int32_t storage_id, const Camera::ResultCallback& callback)
 {
     MavlinkCommandSender::CommandLong cmd_format{};
 
@@ -2242,7 +2163,7 @@ Camera::Result CameraImpl::reset_settings(int32_t camera_id)
 
     return ret.get();
 }
-void CameraImpl::reset_settings_async(int32_t camera_id, const Camera::ResultCallback callback)
+void CameraImpl::reset_settings_async(int32_t camera_id, const Camera::ResultCallback& callback)
 {
     MavlinkCommandSender::CommandLong cmd_format{};
 
@@ -2284,7 +2205,7 @@ CameraImpl::list_photos(int32_t camera_id, Camera::PhotosRange photos_range)
     list_photos_async(
         camera_id,
         photos_range,
-        [&prom](Camera::Result result, std::vector<Camera::CaptureInfo> photo_list) {
+        [&prom](Camera::Result result, const std::vector<Camera::CaptureInfo>& photo_list) {
             prom.set_value(std::make_pair(result, photo_list));
         });
 
@@ -2292,7 +2213,7 @@ CameraImpl::list_photos(int32_t camera_id, Camera::PhotosRange photos_range)
 }
 
 void CameraImpl::list_photos_async(
-    int32_t camera_id, Camera::PhotosRange photos_range, const Camera::ListPhotosCallback callback)
+    int32_t camera_id, Camera::PhotosRange photos_range, const Camera::ListPhotosCallback& callback)
 {
     if (!callback) {
         LogWarn() << "Trying to get a photo list with a null callback, ignoring...";
@@ -2339,19 +2260,20 @@ void CameraImpl::list_photos_async(
             // In case the vehicle sends capture info, but not those we are asking, we do not
             // want to loop infinitely. The safety_count is here to abort if this happens.
             auto safety_count = 0;
-            const auto safety_count_boundary = 10;
+            constexpr auto safety_count_boundary = 10;
 
             while (_status.photo_list.find(i) == _status.photo_list.end() &&
                    safety_count < safety_count_boundary) {
                 safety_count++;
 
                 auto request_try_number = 0;
-                const auto request_try_limit =
-                    10; // Timeout if the request times out that many times
                 auto cv_status = std::cv_status::timeout;
 
                 while (cv_status == std::cv_status::timeout) {
                     request_try_number++;
+
+                    // Timeout if the request times out that many times
+                    const auto request_try_limit = 10;
                     if (request_try_number >= request_try_limit) {
                         std::lock_guard<std::mutex> status_lock(_status.mutex);
                         _status.is_fetching_photos = false;
@@ -2385,7 +2307,7 @@ void CameraImpl::list_photos_async(
         {
             std::lock_guard<std::mutex> status_lock(_status.mutex);
 
-            for (auto capture_info : _status.photo_list) {
+            for (const auto& capture_info : _status.photo_list) {
                 if (capture_info.first >= start_index) {
                     photo_list.push_back(capture_info.second);
                 }
@@ -2412,7 +2334,7 @@ CameraImpl::get_current_settings(int32_t camera_id)
 {
     std::pair<Camera::Result, std::vector<Camera::Setting>> result;
 
-    std::lock_guard lock(_potential_cameras_mutex);
+    std::lock_guard lock(_mutex);
     auto maybe_potential_camera = maybe_potential_camera_for_camera_id_with_lock(camera_id);
     if (maybe_potential_camera != nullptr) {
         result.first = Camera::Result::CameraIdInvalid;
@@ -2509,6 +2431,8 @@ uint8_t CameraImpl::component_id_for_camera_id(int32_t camera_id)
         return 0;
     }
 
+    std::lock_guard lock(_mutex);
+
     if (camera_id < 0 || static_cast<size_t>(camera_id - 1) >= _potential_cameras.size()) {
         LogErr() << "Invalid camera ID";
         return 0;
@@ -2517,7 +2441,24 @@ uint8_t CameraImpl::component_id_for_camera_id(int32_t camera_id)
     return _potential_cameras[camera_id - 1].component_id;
 }
 
-int32_t CameraImpl::camera_id_for_potential_camera_with_lock(PotentialCamera& potential_camera)
+uint16_t CameraImpl::capture_sequence_for_camera_id(int32_t camera_id)
+{
+    if (camera_id == 0) {
+        // All cameras
+        return 0;
+    }
+
+    std::lock_guard lock(_mutex);
+    auto maybe_potential_camera = maybe_potential_camera_for_camera_id_with_lock(camera_id);
+    if (maybe_potential_camera == nullptr) {
+        return 0;
+    }
+
+    return maybe_potential_camera->capture_sequence++;
+}
+
+int32_t
+CameraImpl::camera_id_for_potential_camera_with_lock(const PotentialCamera& potential_camera)
 {
     if (const auto it =
             std::find(_potential_cameras.begin(), _potential_cameras.end(), potential_camera);

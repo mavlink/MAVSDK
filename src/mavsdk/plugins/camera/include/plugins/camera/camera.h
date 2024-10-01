@@ -134,6 +134,7 @@ public:
         SettingsUnavailable, /**< @brief Settings not available. */
         SettingsLoading, /**< @brief Settings not available yet. */
         CameraIdInvalid, /**< @brief Camera with camera ID not found. */
+        ActionUnsupported, /**< @brief Camera action not supported. */
     };
 
     /**

@@ -344,6 +344,7 @@ enum CameraResult_Result : int {
   CameraResult_Result_RESULT_SETTINGS_UNAVAILABLE = 10,
   CameraResult_Result_RESULT_SETTINGS_LOADING = 11,
   CameraResult_Result_RESULT_CAMERA_ID_INVALID = 12,
+  CameraResult_Result_RESULT_ACTION_UNSUPPORTED = 13,
   CameraResult_Result_CameraResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   CameraResult_Result_CameraResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -353,8 +354,8 @@ enum CameraResult_Result : int {
 bool CameraResult_Result_IsValid(int value);
 extern const uint32_t CameraResult_Result_internal_data_[];
 constexpr CameraResult_Result CameraResult_Result_Result_MIN = static_cast<CameraResult_Result>(0);
-constexpr CameraResult_Result CameraResult_Result_Result_MAX = static_cast<CameraResult_Result>(12);
-constexpr int CameraResult_Result_Result_ARRAYSIZE = 12 + 1;
+constexpr CameraResult_Result CameraResult_Result_Result_MAX = static_cast<CameraResult_Result>(13);
+constexpr int CameraResult_Result_Result_ARRAYSIZE = 13 + 1;
 const ::google::protobuf::EnumDescriptor*
 CameraResult_Result_descriptor();
 template <typename T>
@@ -367,7 +368,7 @@ const std::string& CameraResult_Result_Name(T value) {
 template <>
 inline const std::string& CameraResult_Result_Name(CameraResult_Result value) {
   return ::google::protobuf::internal::NameOfDenseEnum<CameraResult_Result_descriptor,
-                                                 0, 12>(
+                                                 0, 13>(
       static_cast<int>(value));
 }
 inline bool CameraResult_Result_Parse(absl::string_view name, CameraResult_Result* value) {
@@ -8621,6 +8622,7 @@ class CameraResult final :
   static constexpr Result RESULT_SETTINGS_UNAVAILABLE = CameraResult_Result_RESULT_SETTINGS_UNAVAILABLE;
   static constexpr Result RESULT_SETTINGS_LOADING = CameraResult_Result_RESULT_SETTINGS_LOADING;
   static constexpr Result RESULT_CAMERA_ID_INVALID = CameraResult_Result_RESULT_CAMERA_ID_INVALID;
+  static constexpr Result RESULT_ACTION_UNSUPPORTED = CameraResult_Result_RESULT_ACTION_UNSUPPORTED;
   static inline bool Result_IsValid(int value) {
     return CameraResult_Result_IsValid(value);
   }
