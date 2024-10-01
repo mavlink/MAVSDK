@@ -28,8 +28,7 @@ TEST(SystemTest, CameraListCameras)
     information.model_name = "Frozen Super";
     information.firmware_version = "4.0.0";
     information.definition_file_version = 1;
-    information.definition_file_uri =
-        "https://raw.githubusercontent.com/mavlink/MAVSDK/main/src/mavsdk/plugins/camera/e90_unit_test.xml";
+    information.definition_file_uri = "";
     camera_server.set_information(information);
 
     auto prom = std::promise<std::shared_ptr<System>>();
@@ -51,14 +50,13 @@ TEST(SystemTest, CameraListCameras)
 
     bool found_camera = false;
     camera.subscribe_camera_list([&](Camera::CameraList camera_list) {
-        LogWarn() << "got called";
         if (!camera_list.cameras.empty()) {
             found_camera = true;
         }
     });
 
     // We have to wait until camera is found.
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
     EXPECT_EQ(camera.camera_list().cameras.size(), 1);
     EXPECT_TRUE(found_camera);

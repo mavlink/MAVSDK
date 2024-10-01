@@ -1,6 +1,7 @@
 #include "mavsdk.h"
 #include "plugins/camera/camera.h"
 #include "plugins/camera_server/camera_server.h"
+#include "plugins/ftp_server/ftp_server.h"
 #include "log.h"
 #include <future>
 #include <mutex>
@@ -21,6 +22,10 @@ TEST(SystemTest, CameraDefinition)
     ASSERT_EQ(
         mavsdk_camera.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
+    auto ftp_server = FtpServer{mavsdk_camera.server_component()};
+
+    EXPECT_EQ(ftp_server.set_root_dir("src/plugins/camera/"), FtpServer::Result::Success);
+
     auto camera_server = CameraServer{mavsdk_camera.server_component()};
 
     CameraServer::Information information{};
@@ -28,9 +33,8 @@ TEST(SystemTest, CameraDefinition)
     information.model_name = "Frozen Super";
     information.firmware_version = "4.0.0";
     information.definition_file_version = 1;
-    information.definition_file_uri =
-        "https://raw.githubusercontent.com/mavlink/MAVSDK/main/src/mavsdk/plugins/camera/e90_unit_test.xml";
-    camera_server.set_information(information);
+    information.definition_file_uri = "mavlinkftp://e90_unit_test.xml";
+    EXPECT_EQ(camera_server.set_information(information), CameraServer::Result::Success);
 
     auto prom = std::promise<std::shared_ptr<System>>();
     auto fut = prom.get_future();

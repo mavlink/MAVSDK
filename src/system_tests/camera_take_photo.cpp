@@ -22,6 +22,15 @@ TEST(SystemTest, CameraTakePhoto)
         mavsdk_camera.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
     auto camera_server = CameraServer{mavsdk_camera.server_component()};
+
+    CameraServer::Information information{};
+    information.vendor_name = "CoolCameras";
+    information.model_name = "Frozen Super";
+    information.firmware_version = "4.0.0";
+    information.definition_file_version = 1;
+    information.definition_file_uri = "";
+    camera_server.set_information(information);
+
     camera_server.subscribe_take_photo([&camera_server](int32_t index) {
         LogInfo() << "Let's take photo " << index;
 
@@ -54,8 +63,12 @@ TEST(SystemTest, CameraTakePhoto)
 
     auto camera = Camera{system};
 
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    // We expect to find one camera.
+    ASSERT_EQ(camera.camera_list().cameras.size(), 1);
+
     // We want to take the picture in photo mode.
-    EXPECT_EQ(camera.set_mode(0, Camera::Mode::Photo), Camera::Result::Success);
+    EXPECT_EQ(camera.set_mode(1, Camera::Mode::Photo), Camera::Result::Success);
 
     auto received_captured_info_prom = std::promise<void>{};
     auto received_captured_info_fut = received_captured_info_prom.get_future();
@@ -68,7 +81,7 @@ TEST(SystemTest, CameraTakePhoto)
             received_captured_info_prom.set_value();
         });
 
-    EXPECT_EQ(camera.take_photo(0), Camera::Result::Success);
+    EXPECT_EQ(camera.take_photo(1), Camera::Result::Success);
     ASSERT_EQ(
         received_captured_info_fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     received_captured_info_fut.get();

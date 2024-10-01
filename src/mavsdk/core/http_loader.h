@@ -18,7 +18,7 @@ public:
     HttpLoader(const std::shared_ptr<ICurlWrapper>& curl_wrapper);
 #endif
 
-    explicit HttpLoader();
+    HttpLoader();
     ~HttpLoader();
 
     void start();

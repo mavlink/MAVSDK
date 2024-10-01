@@ -388,6 +388,8 @@ private:
 
     std::condition_variable _captured_request_cv;
     std::mutex _captured_request_mutex;
+
+    std::unique_ptr<HttpLoader> _http_loader{nullptr};
 };
 
 } // namespace mavsdk
