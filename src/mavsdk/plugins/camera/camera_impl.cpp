@@ -889,9 +889,12 @@ void CameraImpl::save_camera_mode_with_lock(PotentialCamera& potential_camera, C
     // different from {PHOTO, VIDEO}, in which case the mode received from
     // CAMERA_SETTINGS will be wrong.
 
+    if (!potential_camera.camera_definition) {
+        return;
+    }
+
     ParamValue value;
-    if (potential_camera.camera_definition &&
-        potential_camera.camera_definition->get_setting("CAM_MODE", value)) {
+    if (potential_camera.camera_definition->get_setting("CAM_MODE", value)) {
         if (value.is<uint8_t>()) {
             value.set<uint8_t>(static_cast<uint8_t>(mode));
         } else if (value.is<int8_t>()) {
@@ -1298,7 +1301,8 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
     const std::string url = potential_camera.camera_definition_url;
 
     if (potential_camera.camera_definition_url.empty()) {
-        return;
+        potential_camera.camera_definition_result = Camera::Result::SettingsUnavailable;
+        notify_camera_list();
     }
 
     const auto& info = potential_camera.maybe_information.value();
@@ -1314,6 +1318,9 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
     if (cached_file_option) {
         LogDebug() << "Using cached file " << cached_file_option.value();
         load_camera_definition_with_lock(potential_camera, cached_file_option.value());
+        potential_camera.is_fetching_camera_definition = false;
+        potential_camera.camera_definition_result = Camera::Result::Success;
+        notify_camera_list();
 
     } else {
         potential_camera.is_fetching_camera_definition = true;
@@ -1324,12 +1331,14 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
             potential_camera.camera_definition_result = Camera::Result::ProtocolUnsupported;
             notify_camera_list();
 #else
-            HttpLoader http_loader;
+            if (_http_loader == nullptr) {
+                _http_loader = std::make_unique<HttpLoader>();
+            }
             LogInfo() << "Downloading camera definition from: " << url;
 
             auto camera_id = camera_id_for_potential_camera_with_lock(potential_camera);
 
-            http_loader.download_async(
+            _http_loader->download_async(
                 url,
                 download_path,
                 [download_path, file_cache_tag, camera_id, this](
@@ -1382,11 +1391,15 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                     MavlinkFtpClient::ClientResult client_result,
                     MavlinkFtpClient::ProgressData progress_data) mutable {
                     // TODO: check if we still exist
-                    LogDebug() << "Mavlink FTP download progress: "
-                               << 100 * progress_data.bytes_transferred / progress_data.total_bytes
-                               << " %";
-                    if (client_result == MavlinkFtpClient::ClientResult::Next) {
-                        return;
+                    if (client_result == MavlinkFtpClient::ClientResult::Success ||
+                        client_result == MavlinkFtpClient::ClientResult::Next) {
+                        LogDebug()
+                            << "Mavlink FTP download progress: "
+                            << 100 * progress_data.bytes_transferred / progress_data.total_bytes
+                            << " %";
+                        if (client_result == MavlinkFtpClient::ClientResult::Next) {
+                            return;
+                        }
                     }
 
                     std::lock_guard lock(_mutex);
