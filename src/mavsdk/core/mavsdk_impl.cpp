@@ -292,8 +292,6 @@ void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connect
         (message.msgid != MAVLINK_MSG_ID_HEARTBEAT || forward_heartbeats_enabled);
 
     if (!targeted_only_at_us && heartbeat_check_ok) {
-        std::lock_guard<std::mutex> lock(_connections_mutex);
-
         unsigned successful_emissions = 0;
         for (auto& entry : _connections) {
             // Check whether the connection is not the one from which we received the message.
@@ -319,6 +317,11 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
                    << static_cast<int>(message.sysid) << "/" << static_cast<int>(message.compid);
     }
 
+    if (_should_exit) {
+        // If we're meant to clean up, let's not try to acquire any more locks but bail.
+        return;
+    }
+
     // This is a low level interface where incoming messages can be tampered
     // with or even dropped.
     {
@@ -332,6 +335,11 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
         }
     }
 
+    if (_should_exit) {
+        // If we're meant to clean up, let's not try to acquire any more locks but bail.
+        return;
+    }
+
     /** @note: Forward message if option is enabled and multiple interfaces are connected.
      *  Performs message forwarding checks for every messages if message forwarding
      *  is enabled on at least one connection, and in case of a single forwarding connection,
@@ -342,15 +350,20 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
      * 2. At least 1 forwarding connection.
      * 3. At least 2 forwarding connections or current connection is not forwarding.
      */
-    if (_connections.size() > 1 && mavsdk::Connection::forwarding_connections_count() > 0 &&
-        (mavsdk::Connection::forwarding_connections_count() > 1 ||
-         !connection->should_forward_messages())) {
-        if (_message_logging_on) {
-            LogDebug() << "Forwarding message " << message.msgid << " from "
-                       << static_cast<int>(message.sysid) << "/"
-                       << static_cast<int>(message.compid);
+
+    {
+        std::lock_guard<std::mutex> lock(_connections_mutex);
+
+        if (_connections.size() > 1 && mavsdk::Connection::forwarding_connections_count() > 0 &&
+            (mavsdk::Connection::forwarding_connections_count() > 1 ||
+             !connection->should_forward_messages())) {
+            if (_message_logging_on) {
+                LogDebug() << "Forwarding message " << message.msgid << " from "
+                           << static_cast<int>(message.sysid) << "/"
+                           << static_cast<int>(message.compid);
+            }
+            forward_message(message, connection);
         }
-        forward_message(message, connection);
     }
 
     // Don't ever create a system with sysid 0.
