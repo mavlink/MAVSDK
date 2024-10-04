@@ -18,7 +18,7 @@ add_waypoint(double latitude_deg, double longitude_deg, float relative_altitude_
 // Test to check speed set for mission items.
 TEST(SitlTest, PX4MissionSetCurrent)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);

@@ -10,6 +10,7 @@
 
 #include "autopilot.h"
 #include "call_every_handler.h"
+#include "component_type.h"
 #include "connection.h"
 #include "cli_arg.h"
 #include "handle_factory.h"
@@ -76,7 +77,7 @@ public:
     std::shared_ptr<ServerComponent> server_component(unsigned instance = 0);
 
     std::shared_ptr<ServerComponent>
-    server_component_by_type(Mavsdk::ComponentType server_component_type, unsigned instance = 0);
+    server_component_by_type(ComponentType server_component_type, unsigned instance = 0);
     std::shared_ptr<ServerComponent> server_component_by_id(uint8_t component_id);
 
     Time time{};
@@ -137,7 +138,7 @@ private:
 
     CallbackList<> _new_system_callbacks{};
 
-    Mavsdk::Configuration _configuration{Mavsdk::ComponentType::GroundStation};
+    Mavsdk::Configuration _configuration{ComponentType::GroundStation};
 
     struct UserCallback {
         UserCallback() = default;

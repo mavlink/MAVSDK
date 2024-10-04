@@ -24,7 +24,7 @@ int main(int, char**)
         });
 
     // Instantiate Mavsdk after. This will just print the version.
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     return 0;
 }

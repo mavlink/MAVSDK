@@ -181,11 +181,11 @@ std::shared_ptr<ServerComponent> MavsdkImpl::server_component(unsigned instance)
 {
     auto component_type = _configuration.get_component_type();
     switch (component_type) {
-        case Mavsdk::ComponentType::Autopilot:
-        case Mavsdk::ComponentType::GroundStation:
-        case Mavsdk::ComponentType::CompanionComputer:
-        case Mavsdk::ComponentType::Camera:
-        case Mavsdk::ComponentType::Custom:
+        case ComponentType::Autopilot:
+        case ComponentType::GroundStation:
+        case ComponentType::CompanionComputer:
+        case ComponentType::Camera:
+        case ComponentType::Custom:
             return server_component_by_type(component_type, instance);
         default:
             LogErr() << "Unknown component type";
@@ -194,10 +194,10 @@ std::shared_ptr<ServerComponent> MavsdkImpl::server_component(unsigned instance)
 }
 
 std::shared_ptr<ServerComponent>
-MavsdkImpl::server_component_by_type(Mavsdk::ComponentType server_component_type, unsigned instance)
+MavsdkImpl::server_component_by_type(ComponentType server_component_type, unsigned instance)
 {
     switch (server_component_type) {
-        case Mavsdk::ComponentType::Autopilot:
+        case ComponentType::Autopilot:
             if (instance == 0) {
                 return server_component_by_id(MAV_COMP_ID_AUTOPILOT1);
             } else {
@@ -205,7 +205,7 @@ MavsdkImpl::server_component_by_type(Mavsdk::ComponentType server_component_type
                 return {};
             }
 
-        case Mavsdk::ComponentType::GroundStation:
+        case ComponentType::GroundStation:
             if (instance == 0) {
                 return server_component_by_id(MAV_COMP_ID_MISSIONPLANNER);
             } else {
@@ -213,7 +213,7 @@ MavsdkImpl::server_component_by_type(Mavsdk::ComponentType server_component_type
                 return {};
             }
 
-        case Mavsdk::ComponentType::CompanionComputer:
+        case ComponentType::CompanionComputer:
             if (instance == 0) {
                 return server_component_by_id(MAV_COMP_ID_ONBOARD_COMPUTER);
             } else if (instance == 1) {
@@ -227,7 +227,7 @@ MavsdkImpl::server_component_by_type(Mavsdk::ComponentType server_component_type
                 return {};
             }
 
-        case Mavsdk::ComponentType::Camera:
+        case ComponentType::Camera:
             if (instance == 0) {
                 return server_component_by_id(MAV_COMP_ID_CAMERA);
             } else if (instance == 1) {
@@ -384,7 +384,7 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
     // mavlink instances which leads to existing implementations (including
     // examples and integration tests) to connect to QGroundControl by accident
     // instead of PX4 because the check `has_autopilot()` is not used.
-    if (_configuration.get_component_type() == Mavsdk::ComponentType::GroundStation &&
+    if (_configuration.get_component_type() == ComponentType::GroundStation &&
         message.sysid == 255 && message.compid == MAV_COMP_ID_MISSIONPLANNER) {
         if (_message_logging_on) {
             LogDebug() << "Ignoring messages from QGC as we are also a ground station";
@@ -692,19 +692,19 @@ Autopilot MavsdkImpl::autopilot() const
 uint8_t MavsdkImpl::get_mav_type() const
 {
     switch (_configuration.get_component_type()) {
-        case Mavsdk::ComponentType::Autopilot:
+        case ComponentType::Autopilot:
             return MAV_TYPE_GENERIC;
 
-        case Mavsdk::ComponentType::GroundStation:
+        case ComponentType::GroundStation:
             return MAV_TYPE_GCS;
 
-        case Mavsdk::ComponentType::CompanionComputer:
+        case ComponentType::CompanionComputer:
             return MAV_TYPE_ONBOARD_CONTROLLER;
 
-        case Mavsdk::ComponentType::Camera:
+        case ComponentType::Camera:
             return MAV_TYPE_CAMERA;
 
-        case Mavsdk::ComponentType::Custom:
+        case ComponentType::Custom:
             return MAV_TYPE_GENERIC;
 
         default:

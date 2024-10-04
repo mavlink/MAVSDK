@@ -38,7 +38,7 @@ static std::atomic<bool> pause_already_done{false};
 
 TEST(SitlTest, PX4MissionAddWaypointsAndFly)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     {
         auto prom = std::make_shared<std::promise<void>>();

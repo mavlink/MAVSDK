@@ -34,7 +34,7 @@ TEST(SitlTest, PX4MissionWithRTLHigherAnyway)
 
 void do_mission_with_rtl(float mission_altitude_m, float return_altitude_m)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     {
         auto prom = std::make_shared<std::promise<void>>();

@@ -10,9 +10,9 @@ using namespace mavsdk;
 
 TEST(SystemTest, TelemetrySubscription)
 {
-    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
 
-    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
 
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("tcpin://0.0.0.0:13000"),

@@ -10,9 +10,9 @@ static void receive_capture_info(Camera::CaptureInfo capture_info, bool& receive
 
 TEST(CameraTest, TakePhotoSingle)
 {
-    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
 
-    Mavsdk mavsdk_camera{Mavsdk::Configuration{Mavsdk::ComponentType::Camera}};
+    Mavsdk mavsdk_camera{Mavsdk::Configuration{ComponentType::Camera}};
 
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(mavsdk_camera.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
@@ -52,7 +52,7 @@ TEST(CameraTest, TakePhotoSingle)
 
 TEST(CameraTest, TakePhotosMultiple)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     const int num_photos_to_take = 3;
 

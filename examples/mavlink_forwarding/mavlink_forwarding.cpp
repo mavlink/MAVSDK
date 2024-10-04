@@ -15,7 +15,7 @@ using namespace mavsdk;
 
 int main(int, char**)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     ConnectionResult connection_result =
         mavsdk.add_any_connection("udp://:12550", ForwardingOption::ForwardingOn);

@@ -87,7 +87,7 @@ Mavsdk::Configuration::Configuration(
     _component_type(component_type_for_component_id(component_id))
 {}
 
-Mavsdk::ComponentType Mavsdk::Configuration::component_type_for_component_id(uint8_t component_id)
+ComponentType Mavsdk::Configuration::component_type_for_component_id(uint8_t component_id)
 {
     switch (component_id) {
         case Mavsdk::DEFAULT_COMPONENT_ID_GCS:
@@ -110,23 +110,23 @@ Mavsdk::Configuration::Configuration(ComponentType component_type) :
     _component_type(component_type)
 {
     switch (component_type) {
-        case Mavsdk::ComponentType::GroundStation:
+        case ComponentType::GroundStation:
             _system_id = Mavsdk::DEFAULT_SYSTEM_ID_GCS;
             _component_id = Mavsdk::DEFAULT_COMPONENT_ID_GCS;
             _always_send_heartbeats = false;
             break;
-        case Mavsdk::ComponentType::CompanionComputer:
+        case ComponentType::CompanionComputer:
             // TODO implement auto-detection of system ID - maybe from heartbeats?
             _system_id = Mavsdk::DEFAULT_SYSTEM_ID_CC;
             _component_id = Mavsdk::DEFAULT_COMPONENT_ID_CC;
             _always_send_heartbeats = true;
             break;
-        case Mavsdk::ComponentType::Autopilot:
+        case ComponentType::Autopilot:
             _system_id = Mavsdk::DEFAULT_SYSTEM_ID_AUTOPILOT;
             _component_id = Mavsdk::DEFAULT_COMPONENT_ID_AUTOPILOT;
             _always_send_heartbeats = true;
             break;
-        case Mavsdk::ComponentType::Camera:
+        case ComponentType::Camera:
             _system_id = Mavsdk::DEFAULT_SYSTEM_ID_CAMERA;
             _component_id = Mavsdk::DEFAULT_COMPONENT_ID_CAMERA;
             _always_send_heartbeats = true;
@@ -166,12 +166,12 @@ void Mavsdk::Configuration::set_always_send_heartbeats(bool always_send_heartbea
     _always_send_heartbeats = always_send_heartbeats;
 }
 
-Mavsdk::ComponentType Mavsdk::Configuration::get_component_type() const
+ComponentType Mavsdk::Configuration::get_component_type() const
 {
     return _component_type;
 }
 
-void Mavsdk::Configuration::set_component_type(Mavsdk::ComponentType component_type)
+void Mavsdk::Configuration::set_component_type(ComponentType component_type)
 {
     _component_type = component_type;
 }

@@ -70,7 +70,7 @@ int main(int argc, char** argv)
 
     std::unique_ptr<Mavsdk> mavsdk;
 
-    mavsdk = std::make_unique<Mavsdk>(Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation});
+    mavsdk = std::make_unique<Mavsdk>(Mavsdk::Configuration{ComponentType::GroundStation});
 
     while (true) {
         if (connect(mavsdk.get(), connection_url)) {
@@ -82,8 +82,7 @@ int main(int argc, char** argv)
         wait_for_disconnect(mavsdk.get());
 
         // Destruct and construct Mavsdk.
-        mavsdk =
-            std::make_unique<Mavsdk>(Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation});
+        mavsdk = std::make_unique<Mavsdk>(Mavsdk::Configuration{ComponentType::GroundStation});
     }
 
     return 0;
