@@ -334,6 +334,13 @@ ComponentType SystemImpl::component_type(uint8_t component_id)
     switch (component_id) {
         case MAV_COMP_ID_AUTOPILOT1:
             return ComponentType::Autopilot;
+        case MAV_COMP_ID_MISSIONPLANNER:
+            return ComponentType::GroundStation;
+        case MAV_COMP_ID_ONBOARD_COMPUTER:
+        case MAV_COMP_ID_ONBOARD_COMPUTER2:
+        case MAV_COMP_ID_ONBOARD_COMPUTER3:
+        case MAV_COMP_ID_ONBOARD_COMPUTER4:
+            return ComponentType::CompanionComputer;
         case MAV_COMP_ID_CAMERA:
         case MAV_COMP_ID_CAMERA2:
         case MAV_COMP_ID_CAMERA3:
@@ -343,13 +350,10 @@ ComponentType SystemImpl::component_type(uint8_t component_id)
             return ComponentType::Camera;
         case MAV_COMP_ID_GIMBAL:
             return ComponentType::Gimbal;
-        case MAV_COMP_ID_ONBOARD_COMPUTER:
-        case MAV_COMP_ID_ONBOARD_COMPUTER2:
-        case MAV_COMP_ID_ONBOARD_COMPUTER3:
-        case MAV_COMP_ID_ONBOARD_COMPUTER4:
-            return ComponentType::CompanionComputer;
-        case MAV_COMP_ID_MISSIONPLANNER:
-            return ComponentType::GroundStation;
+        case MAV_COMP_ID_ODID_TXRX_1:
+        case MAV_COMP_ID_ODID_TXRX_2:
+        case MAV_COMP_ID_ODID_TXRX_3:
+            return ComponentType::RemoteId;
         default:
             return ComponentType::Custom;
     }

@@ -185,6 +185,8 @@ std::shared_ptr<ServerComponent> MavsdkImpl::server_component(unsigned instance)
         case ComponentType::GroundStation:
         case ComponentType::CompanionComputer:
         case ComponentType::Camera:
+        case ComponentType::Gimbal:
+        case ComponentType::RemoteId:
         case ComponentType::Custom:
             return server_component_by_type(component_type, instance);
         default:
@@ -703,6 +705,12 @@ uint8_t MavsdkImpl::get_mav_type() const
 
         case ComponentType::Camera:
             return MAV_TYPE_CAMERA;
+
+        case ComponentType::Gimbal:
+            return MAV_TYPE_GIMBAL;
+
+        case ComponentType::RemoteId:
+            return MAV_TYPE_ODID;
 
         case ComponentType::Custom:
             return MAV_TYPE_GENERIC;

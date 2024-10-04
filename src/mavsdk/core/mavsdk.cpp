@@ -90,14 +90,18 @@ Mavsdk::Configuration::Configuration(
 ComponentType Mavsdk::Configuration::component_type_for_component_id(uint8_t component_id)
 {
     switch (component_id) {
+        case Mavsdk::DEFAULT_COMPONENT_ID_AUTOPILOT:
+            return ComponentType::Autopilot;
         case Mavsdk::DEFAULT_COMPONENT_ID_GCS:
             return ComponentType::GroundStation;
         case Mavsdk::DEFAULT_COMPONENT_ID_CC:
             return ComponentType::CompanionComputer;
-        case Mavsdk::DEFAULT_COMPONENT_ID_AUTOPILOT:
-            return ComponentType::Autopilot;
         case Mavsdk::DEFAULT_COMPONENT_ID_CAMERA:
             return ComponentType::Camera;
+        case Mavsdk::DEFAULT_COMPONENT_ID_GIMBAL:
+            return ComponentType::Gimbal;
+        case Mavsdk::DEFAULT_COMPONENT_ID_REMOTEID:
+            return ComponentType::RemoteId;
         default:
             return ComponentType::Custom;
     }
@@ -129,6 +133,16 @@ Mavsdk::Configuration::Configuration(ComponentType component_type) :
         case ComponentType::Camera:
             _system_id = Mavsdk::DEFAULT_SYSTEM_ID_CAMERA;
             _component_id = Mavsdk::DEFAULT_COMPONENT_ID_CAMERA;
+            _always_send_heartbeats = true;
+            break;
+        case ComponentType::Gimbal:
+            _system_id = Mavsdk::DEFAULT_SYSTEM_ID_GIMBAL;
+            _component_id = Mavsdk::DEFAULT_COMPONENT_ID_GIMBAL;
+            _always_send_heartbeats = true;
+            break;
+        case ComponentType::RemoteId:
+            _system_id = Mavsdk::DEFAULT_SYSTEM_ID_REMOTEID;
+            _component_id = Mavsdk::DEFAULT_COMPONENT_ID_REMOTEID;
             _always_send_heartbeats = true;
             break;
         default:
