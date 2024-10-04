@@ -163,16 +163,11 @@ bool TcpClientConnection::send_message(const mavlink_message_t& message)
     auto flags = MSG_NOSIGNAL;
 #endif
 
-    const auto send_len = sendto(
-        _socket_fd.get(),
-        reinterpret_cast<char*>(buffer),
-        buffer_len,
-        flags,
-        reinterpret_cast<const sockaddr*>(&dest_addr),
-        sizeof(dest_addr));
+    const auto send_len =
+        send(_socket_fd.get(), reinterpret_cast<const char*>(buffer), buffer_len, flags);
 
     if (send_len != buffer_len) {
-        LogErr() << "sendto failure: " << GET_ERROR(errno);
+        LogErr() << "send failure: " << GET_ERROR(errno);
         _is_ok = false;
         return false;
     }

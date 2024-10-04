@@ -77,7 +77,10 @@ ConnectionResult UdpConnection::setup_port()
 
     struct sockaddr_in addr {};
     addr.sin_family = AF_INET;
-    inet_pton(AF_INET, _local_ip.c_str(), &(addr.sin_addr));
+    if (inet_pton(AF_INET, _local_ip.c_str(), &(addr.sin_addr)) != 1) {
+        LogErr() << "inet_pton failure for address: " << _local_ip;
+        return ConnectionResult::SocketError;
+    }
     addr.sin_port = htons(_local_port_number);
 
     if (bind(_socket_fd.get(), reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) != 0) {
@@ -129,7 +132,11 @@ bool UdpConnection::send_message(const mavlink_message_t& message)
         struct sockaddr_in dest_addr {};
         dest_addr.sin_family = AF_INET;
 
-        inet_pton(AF_INET, remote.ip.c_str(), &dest_addr.sin_addr.s_addr);
+        if (inet_pton(AF_INET, remote.ip.c_str(), &dest_addr.sin_addr.s_addr) != 1) {
+            LogErr() << "inet_pton failure for address: " << remote.ip;
+            send_successful = false;
+            continue;
+        }
         dest_addr.sin_port = htons(remote.port_number);
 
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
