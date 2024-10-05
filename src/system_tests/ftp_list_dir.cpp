@@ -41,10 +41,10 @@ TEST(SystemTest, FtpListDir)
     std::sort(truth_dirs.begin(), truth_dirs.end());
     std::sort(truth_files.begin(), truth_files.end());
 
-    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
-    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);

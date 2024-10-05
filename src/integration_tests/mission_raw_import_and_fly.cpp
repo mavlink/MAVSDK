@@ -28,7 +28,7 @@ void test_mission_raw(
 
 TEST(SitlTest, PX4MissionRawImportAndFly)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -89,7 +89,7 @@ TEST(SitlTest, PX4MissionRawImportAndFly)
 
 TEST(SitlTest, APMissionRawImportAndFly)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);

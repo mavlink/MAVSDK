@@ -796,7 +796,7 @@ void usage(const std::string& bin_name)
 
 int main(int argc, char** argv)
 {
-    Mavsdk::Configuration config(Mavsdk::ComponentType::Autopilot);
+    Mavsdk::Configuration config(ComponentType::Autopilot);
     config.set_system_id(own_sysid);
     Mavsdk mavsdk{config};
     std::string connection_url;

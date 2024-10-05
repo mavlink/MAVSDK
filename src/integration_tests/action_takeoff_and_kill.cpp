@@ -9,7 +9,7 @@ using namespace mavsdk;
 
 TEST(SitlTest, ActionTakeoffAndKill)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
     ASSERT_EQ(mavsdk.add_any_connection("udpin://0.0.0.0:14540"), ConnectionResult::Success);
 
     {

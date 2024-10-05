@@ -25,7 +25,7 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::CompanionComputer}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::CompanionComputer}};
     ConnectionResult connection_result = mavsdk.add_any_connection(argv[1]);
     if (connection_result != ConnectionResult::Success) {
         std::cerr << "Error setting up Mavlink FTP server.\n";

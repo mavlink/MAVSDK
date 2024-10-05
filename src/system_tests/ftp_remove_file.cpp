@@ -24,10 +24,10 @@ TEST(SystemTest, FtpRemoveFile)
 {
     ASSERT_TRUE(create_temp_file(temp_dir_provided / temp_file, 50));
 
-    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
-    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
@@ -60,10 +60,10 @@ TEST(SystemTest, FtpRemoveFile)
 
 TEST(SystemTest, FtpRemoveFileThatDoesNotExist)
 {
-    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
-    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
@@ -94,10 +94,10 @@ TEST(SystemTest, FtpRemoveFileThatDoesNotExist)
 
 TEST(SystemTest, FtpRemoveFileOutsideOfRoot)
 {
-    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     mavsdk_groundstation.set_timeout_s(reduced_timeout_s);
 
-    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{Mavsdk::ComponentType::Autopilot}};
+    Mavsdk mavsdk_autopilot{Mavsdk::Configuration{ComponentType::Autopilot}};
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);

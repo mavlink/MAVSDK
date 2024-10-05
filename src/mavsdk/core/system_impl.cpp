@@ -17,8 +17,8 @@
 namespace mavsdk {
 
 template class CallbackList<bool>;
-template class CallbackList<System::ComponentType>;
-template class CallbackList<System::ComponentType, uint8_t>;
+template class CallbackList<ComponentType>;
+template class CallbackList<ComponentType, uint8_t>;
 
 SystemImpl::SystemImpl(MavsdkImpl& mavsdk_impl) :
     _mavsdk_impl(mavsdk_impl),
@@ -329,22 +329,29 @@ std::string SystemImpl::component_name(uint8_t component_id)
     }
 }
 
-System::ComponentType SystemImpl::component_type(uint8_t component_id)
+ComponentType SystemImpl::component_type(uint8_t component_id)
 {
     switch (component_id) {
         case MAV_COMP_ID_AUTOPILOT1:
-            return System::ComponentType::AUTOPILOT;
+            return ComponentType::Autopilot;
         case MAV_COMP_ID_CAMERA:
         case MAV_COMP_ID_CAMERA2:
         case MAV_COMP_ID_CAMERA3:
         case MAV_COMP_ID_CAMERA4:
         case MAV_COMP_ID_CAMERA5:
         case MAV_COMP_ID_CAMERA6:
-            return System::ComponentType::CAMERA;
+            return ComponentType::Camera;
         case MAV_COMP_ID_GIMBAL:
-            return System::ComponentType::GIMBAL;
+            return ComponentType::Gimbal;
+        case MAV_COMP_ID_ONBOARD_COMPUTER:
+        case MAV_COMP_ID_ONBOARD_COMPUTER2:
+        case MAV_COMP_ID_ONBOARD_COMPUTER3:
+        case MAV_COMP_ID_ONBOARD_COMPUTER4:
+            return ComponentType::CompanionComputer;
+        case MAV_COMP_ID_MISSIONPLANNER:
+            return ComponentType::GroundStation;
         default:
-            return System::ComponentType::UNKNOWN;
+            return ComponentType::Custom;
     }
 }
 

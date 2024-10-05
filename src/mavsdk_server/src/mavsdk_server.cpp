@@ -11,7 +11,7 @@ using namespace mavsdk::mavsdk_server;
 
 class MavsdkServer::Impl {
 public:
-    Impl() : _mavsdk(Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}) {}
+    Impl() : _mavsdk(Mavsdk::Configuration{ComponentType::GroundStation}) {}
     ~Impl() {}
 
     bool connect(const std::string& connection_url)

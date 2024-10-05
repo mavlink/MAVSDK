@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "autopilot.h"
+#include "component_type.h"
 #include "deprecated.h"
 #include "handle.h"
 
@@ -123,11 +124,6 @@ public:
      * @brief Unsubscribe from subscribe_is_connected.
      */
     void unsubscribe_is_connected(IsConnectedHandle handle);
-
-    /**
-     * @brief Component Types
-     */
-    enum class ComponentType { UNKNOWN, AUTOPILOT, CAMERA, GIMBAL };
 
     /**
      * @brief type for component discovery callback

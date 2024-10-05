@@ -31,7 +31,7 @@ const size_t N_LOCATIONS = 100ul;
 /* Test FollowMe with a stationary target at one location */
 TEST(SitlTest, PX4FollowMeOneLocation)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ConnectionResult::Success, ret);
@@ -114,7 +114,7 @@ TEST(SitlTest, PX4FollowMeOneLocation)
 /* Test FollowMe with a dynamically moving target */
 TEST(SitlTest, PX4FollowMeMultiLocationWithConfig)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ConnectionResult::Success, ret);

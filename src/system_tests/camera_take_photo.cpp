@@ -11,9 +11,9 @@ using namespace mavsdk;
 
 TEST(SystemTest, CameraTakePhoto)
 {
-    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
 
-    Mavsdk mavsdk_camera{Mavsdk::Configuration{Mavsdk::ComponentType::Camera}};
+    Mavsdk mavsdk_camera{Mavsdk::Configuration{ComponentType::Camera}};
 
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
     ASSERT_EQ(mavsdk_camera.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);

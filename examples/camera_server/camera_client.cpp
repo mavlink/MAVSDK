@@ -12,8 +12,7 @@ int main(int argc, const char* argv[])
 {
     // we run client plugins to act as the GCS
     // to communicate with the camera server plugins.
-    mavsdk::Mavsdk mavsdk{
-        mavsdk::Mavsdk::Configuration{mavsdk::Mavsdk::ComponentType::GroundStation}};
+    mavsdk::Mavsdk mavsdk{mavsdk::Mavsdk::Configuration{mavsdk::ComponentType::GroundStation}};
 
     auto result = mavsdk.add_any_connection("udp://:14030");
     if (result == mavsdk::ConnectionResult::Success) {

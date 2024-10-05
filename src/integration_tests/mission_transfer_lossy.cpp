@@ -19,7 +19,7 @@ static std::uniform_real_distribution<double> distribution(0.0, 1.0);
 
 TEST(SitlTest, PX4MissionTransferLossy)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
     ASSERT_EQ(mavsdk.add_any_connection("udpin://0.0.0.0:14540"), ConnectionResult::Success);
 
     {

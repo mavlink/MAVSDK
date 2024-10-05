@@ -9,6 +9,7 @@
 #include "deprecated.h"
 #include "handle.h"
 #include "system.h"
+#include "component_type.h"
 #include "server_component.h"
 #include "connection_result.h"
 #include "mavlink_include.h"
@@ -146,18 +147,6 @@ public:
     std::optional<std::shared_ptr<System>> first_autopilot(double timeout_s) const;
 
     /**
-     * @brief ComponentType of configurations, used for automatic ID setting
-     */
-    enum class ComponentType {
-        Autopilot, /**< @brief SDK is used as an autopilot. */
-        GroundStation, /**< @brief SDK is used as a ground station. */
-        CompanionComputer, /**< @brief SDK is used as a companion computer on board the MAV. */
-        Camera, /** < @brief SDK is used as a camera. */
-        Custom /**< @brief the SDK is used in a custom configuration, no automatic ID will be
-                  provided */
-    };
-
-    /**
      * @brief Possible configurations.
      */
     class Configuration {
@@ -228,7 +217,7 @@ public:
         bool _always_send_heartbeats;
         ComponentType _component_type;
 
-        static Mavsdk::ComponentType component_type_for_component_id(uint8_t component_id);
+        static ComponentType component_type_for_component_id(uint8_t component_id);
     };
 
     /**

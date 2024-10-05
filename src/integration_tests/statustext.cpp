@@ -15,10 +15,10 @@ static const auto type = ServerUtility::StatusTextType::Info;
 
 TEST(StatusTextTest, TestServer)
 {
-    Mavsdk mavsdk_gcs{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_gcs{Mavsdk::Configuration{ComponentType::GroundStation}};
     ASSERT_EQ(mavsdk_gcs.add_any_connection("udpin://0.0.0.0:24550"), ConnectionResult::Success);
 
-    Mavsdk mavsdk_onboard{Mavsdk::Configuration{Mavsdk::ComponentType::CompanionComputer}};
+    Mavsdk mavsdk_onboard{Mavsdk::Configuration{ComponentType::CompanionComputer}};
     ASSERT_EQ(
         mavsdk_onboard.add_any_connection("udpout://127.0.0.1:24550"), ConnectionResult::Success);
 

@@ -165,10 +165,10 @@ TEST(SystemTest, ComponentInformationConnect)
     setenv("MAVSDK_COMPONENT_METADATA_DEBUGGING", "1", 1);
 #endif
 
-    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
     ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
 
-    Mavsdk mavsdk_companion{Mavsdk::Configuration{Mavsdk::ComponentType::CompanionComputer}};
+    Mavsdk mavsdk_companion{Mavsdk::Configuration{ComponentType::CompanionComputer}};
     ASSERT_EQ(
         mavsdk_companion.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
 

@@ -24,7 +24,7 @@ static Mission::MissionItem add_waypoint(
 
 TEST(SitlTest, PX4MissionUploadCancellation)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -80,7 +80,7 @@ TEST(SitlTest, PX4MissionUploadCancellation)
 
 TEST(SitlTest, PX4MissionDownloadCancellation)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);

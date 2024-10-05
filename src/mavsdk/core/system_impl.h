@@ -307,7 +307,7 @@ private:
     void set_disconnected();
 
     static std::string component_name(uint8_t component_id);
-    static System::ComponentType component_type(uint8_t component_id);
+    static ComponentType component_type(uint8_t component_id);
 
     void system_thread();
 
@@ -338,8 +338,8 @@ private:
         const GetParamIntCallback& callback);
 
     std::mutex _component_discovered_callback_mutex{};
-    CallbackList<System::ComponentType> _component_discovered_callbacks{};
-    CallbackList<System::ComponentType, uint8_t> _component_discovered_id_callbacks{};
+    CallbackList<ComponentType> _component_discovered_callbacks{};
+    CallbackList<ComponentType, uint8_t> _component_discovered_id_callbacks{};
 
     MavlinkAddress _target_address{};
 

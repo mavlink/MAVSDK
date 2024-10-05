@@ -36,7 +36,7 @@ void contains_num_options(
 
 TEST(CameraTest, ShowSettingsAndOptions)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     ConnectionResult ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(ret, ConnectionResult::Success);
@@ -125,7 +125,7 @@ TEST(CameraTest, ShowSettingsAndOptions)
 
 TEST(CameraTest, SetSettings)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     ConnectionResult connection_ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(connection_ret, ConnectionResult::Success);
@@ -263,7 +263,7 @@ receive_current_settings(bool& subscription_called, const std::vector<Camera::Se
 
 TEST(CameraTest, SubscribeCurrentSettings)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     ConnectionResult connection_ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(connection_ret, ConnectionResult::Success);
@@ -327,7 +327,7 @@ static void receive_possible_setting_options(
 
 TEST(CameraTest, SubscribePossibleSettings)
 {
-    Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     ConnectionResult connection_ret = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
     ASSERT_EQ(connection_ret, ConnectionResult::Success);
