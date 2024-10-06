@@ -11,5 +11,5 @@ target_include_directories(mavsdk PUBLIC
 
 install(FILES
         include/plugins/component_metadata_server/component_metadata_server.h
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/component_information_server
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mavsdk/plugins/component_metadata_server
 )
