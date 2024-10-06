@@ -16,7 +16,8 @@ public:
 
     bool connect(const std::string& connection_url)
     {
-        return _connection_initiator.connect(_mavsdk, connection_url);
+        _connection_initiator = std::make_shared<ConnectionInitiator>();
+        return _connection_initiator->connect(_mavsdk, connection_url);
     }
 
     int startGrpcServer(const int port)
@@ -31,7 +32,7 @@ public:
 
     void stop()
     {
-        _connection_initiator.cancel();
+        _connection_initiator->cancel();
 
         if (_server != nullptr) {
             _server->stop();
@@ -47,7 +48,7 @@ public:
 
 private:
     mavsdk::Mavsdk _mavsdk;
-    ConnectionInitiator<mavsdk::Mavsdk> _connection_initiator;
+    std::shared_ptr<ConnectionInitiator> _connection_initiator;
     std::unique_ptr<GrpcServer> _server;
     int _grpc_port;
 };

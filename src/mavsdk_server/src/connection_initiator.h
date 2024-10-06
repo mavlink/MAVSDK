@@ -1,25 +1,26 @@
 #pragma once
 
+#include <atomic>
 #include <chrono>
 #include <future>
+#include <memory>
 #include <mutex>
 #include <thread>
 #include <string>
 
 #include "connection_result.h"
 #include "log.h"
+#include "mavsdk.h"
 
 namespace mavsdk {
 namespace mavsdk_server {
 
-template<typename Mavsdk> class ConnectionInitiator {
+class ConnectionInitiator : public std::enable_shared_from_this<ConnectionInitiator> {
 public:
-    ConnectionInitiator() {}
-    ~ConnectionInitiator() {}
-
-    bool connect(Mavsdk& mavsdk, const std::string& connection_url)
+    bool connect(mavsdk::Mavsdk& mavsdk, const std::string& connection_url)
     {
-        LogInfo() << "Waiting to discover system on " << connection_url << "...";
+        // Keep this class alive while this function is running.
+        auto self = shared_from_this();
 
         if (!add_any_connection(mavsdk, connection_url)) {
             return false;
@@ -49,7 +50,7 @@ public:
     void cancel() { _should_exit = true; }
 
 private:
-    bool add_any_connection(Mavsdk& mavsdk, const std::string& connection_url)
+    bool add_any_connection(mavsdk::Mavsdk& mavsdk, const std::string& connection_url)
     {
         mavsdk::ConnectionResult connection_result = mavsdk.add_any_connection(connection_url);
 
