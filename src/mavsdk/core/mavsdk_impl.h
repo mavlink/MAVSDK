@@ -166,7 +166,7 @@ private:
     std::function<bool(mavlink_message_t&)> _intercept_incoming_messages_callback{nullptr};
     std::function<bool(mavlink_message_t&)> _intercept_outgoing_messages_callback{nullptr};
 
-    std::atomic<double> _timeout_s{};
+    std::atomic<double> _timeout_s{DEFAULT_TIMEOUT_S};
 
     static constexpr double HEARTBEAT_SEND_INTERVAL_S = 1.0;
     CallEveryHandler::Cookie _heartbeat_send_cookie{};
