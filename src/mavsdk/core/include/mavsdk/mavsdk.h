@@ -357,14 +357,18 @@ public:
     void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
 private:
+    static constexpr int DEFAULT_SYSTEM_ID_AUTOPILOT = 1;
+    static constexpr int DEFAULT_COMPONENT_ID_AUTOPILOT = MAV_COMP_ID_AUTOPILOT1;
     static constexpr int DEFAULT_SYSTEM_ID_GCS = 245;
     static constexpr int DEFAULT_COMPONENT_ID_GCS = MAV_COMP_ID_MISSIONPLANNER;
     static constexpr int DEFAULT_SYSTEM_ID_CC = 1;
     static constexpr int DEFAULT_COMPONENT_ID_CC = MAV_COMP_ID_PATHPLANNER;
-    static constexpr int DEFAULT_SYSTEM_ID_AUTOPILOT = 1;
-    static constexpr int DEFAULT_COMPONENT_ID_AUTOPILOT = MAV_COMP_ID_AUTOPILOT1;
     static constexpr int DEFAULT_SYSTEM_ID_CAMERA = 1;
     static constexpr int DEFAULT_COMPONENT_ID_CAMERA = MAV_COMP_ID_CAMERA;
+    static constexpr int DEFAULT_SYSTEM_ID_GIMBAL = 1;
+    static constexpr int DEFAULT_COMPONENT_ID_GIMBAL = MAV_COMP_ID_GIMBAL;
+    static constexpr int DEFAULT_SYSTEM_ID_REMOTEID = 1;
+    static constexpr int DEFAULT_COMPONENT_ID_REMOTEID = MAV_COMP_ID_ODID_TXRX_1;
 
     /* @private. */
     std::shared_ptr<MavsdkImpl> _impl{};
