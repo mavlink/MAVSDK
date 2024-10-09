@@ -14,8 +14,8 @@ namespace mavsdk {
 
 class CameraDefinition {
 public:
-    CameraDefinition();
-    ~CameraDefinition();
+    CameraDefinition() = default;
+    ~CameraDefinition() = default;
 
     bool load_file(const std::string& filepath);
     bool load_string(const std::string& content);

@@ -15,10 +15,22 @@ TEST(SystemTest, CameraTakePhoto)
 
     Mavsdk mavsdk_camera{Mavsdk::Configuration{ComponentType::Camera}};
 
-    ASSERT_EQ(mavsdk_groundstation.add_any_connection("udp://:17000"), ConnectionResult::Success);
-    ASSERT_EQ(mavsdk_camera.add_any_connection("udp://127.0.0.1:17000"), ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
+        ConnectionResult::Success);
+    ASSERT_EQ(
+        mavsdk_camera.add_any_connection("udpout://127.0.0.1:17000"), ConnectionResult::Success);
 
     auto camera_server = CameraServer{mavsdk_camera.server_component()};
+
+    CameraServer::Information information{};
+    information.vendor_name = "CoolCameras";
+    information.model_name = "Frozen Super";
+    information.firmware_version = "4.0.0";
+    information.definition_file_version = 1;
+    information.definition_file_uri = "";
+    camera_server.set_information(information);
+
     camera_server.subscribe_take_photo([&camera_server](int32_t index) {
         LogInfo() << "Let's take photo " << index;
 
@@ -27,6 +39,11 @@ TEST(SystemTest, CameraTakePhoto)
         info.is_success = true;
 
         camera_server.respond_take_photo(CameraServer::CameraFeedback::Ok, info);
+    });
+
+    camera_server.subscribe_set_mode([&](CameraServer::Mode mode) {
+        LogInfo() << "Set mode to " << mode;
+        camera_server.respond_set_mode(CameraServer::CameraFeedback::Ok);
     });
 
     auto prom = std::promise<std::shared_ptr<System>>();
@@ -45,10 +62,13 @@ TEST(SystemTest, CameraTakePhoto)
     auto system = fut.get();
 
     auto camera = Camera{system};
-    return;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    // We expect to find one camera.
+    ASSERT_EQ(camera.camera_list().cameras.size(), 1);
 
     // We want to take the picture in photo mode.
-    // EXPECT_EQ(camera.set_mode(Camera::Mode::Photo), Camera::Result::Success);
+    EXPECT_EQ(camera.set_mode(1, Camera::Mode::Photo), Camera::Result::Success);
 
     auto received_captured_info_prom = std::promise<void>{};
     auto received_captured_info_fut = received_captured_info_prom.get_future();
@@ -61,7 +81,7 @@ TEST(SystemTest, CameraTakePhoto)
             received_captured_info_prom.set_value();
         });
 
-    EXPECT_EQ(camera.take_photo(), Camera::Result::Success);
+    EXPECT_EQ(camera.take_photo(1), Camera::Result::Success);
     ASSERT_EQ(
         received_captured_info_fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
     received_captured_info_fut.get();

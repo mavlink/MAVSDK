@@ -3,10 +3,6 @@
 
 namespace mavsdk {
 
-CameraDefinition::CameraDefinition() {}
-
-CameraDefinition::~CameraDefinition() {}
-
 bool CameraDefinition::load_file(const std::string& filepath)
 {
     tinyxml2::XMLError xml_error = _doc.LoadFile(filepath.c_str());
@@ -542,7 +538,7 @@ bool CameraDefinition::get_possible_settings_locked(
         settings[setting.first] = setting.second.value;
     }
 
-    return (settings.size() > 0);
+    return !settings.empty();
 }
 
 bool CameraDefinition::set_setting(const std::string& name, const ParamValue& value)
