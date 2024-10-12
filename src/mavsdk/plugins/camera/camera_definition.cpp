@@ -238,7 +238,7 @@ bool CameraDefinition::parse_xml()
         } else {
             auto maybe_range_options = parse_range_options(e_parameter, param_name, type_map);
             if (!std::get<0>(maybe_range_options)) {
-                LogWarn() << "Not found: " << param_name;
+                LogWarn() << "Range not found for: " << param_name;
                 continue;
             }
 
@@ -363,7 +363,7 @@ CameraDefinition::parse_range_options(
 
     const char* min_str = param_handle->Attribute("min");
     if (!min_str) {
-        LogErr() << "min range missing for " << param_name;
+        LogDebug() << "min range missing for " << param_name;
         return std::make_tuple<>(false, options, default_option);
     }
 
@@ -372,7 +372,7 @@ CameraDefinition::parse_range_options(
 
     const char* max_str = param_handle->Attribute("max");
     if (!max_str) {
-        LogErr() << "max range missing for " << param_name;
+        LogDebug() << "max range missing for " << param_name;
         return std::make_tuple<>(false, options, default_option);
     }
 

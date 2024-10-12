@@ -1324,7 +1324,6 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
 
     } else {
         potential_camera.is_fetching_camera_definition = true;
-        auto download_path = _tmp_download_path / file_cache_tag;
 
         if (starts_with(url, "http://") || starts_with(url, "https://")) {
 #if BUILD_WITHOUT_CURL == 1
@@ -1337,6 +1336,8 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
             LogInfo() << "Downloading camera definition from: " << url;
 
             auto camera_id = camera_id_for_potential_camera_with_lock(potential_camera);
+
+            auto download_path = _tmp_download_path / file_cache_tag;
 
             _http_loader->download_async(
                 url,
@@ -1372,7 +1373,6 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                         }
                         load_camera_definition_with_lock(*maybe_potential_camera, download_path);
                         maybe_potential_camera->is_fetching_camera_definition = false;
-                        // TODO: add parsing result
                         maybe_potential_camera->camera_definition_result = Camera::Result::Success;
                         notify_camera_list();
                     }
@@ -1383,30 +1383,29 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
 
             auto camera_id = camera_id_for_potential_camera_with_lock(potential_camera);
 
+            auto downloaded_filename = strip_prefix(strip_prefix(url, "mavlinkftp://"), "mftp://");
+
             _system_impl->mavlink_ftp_client().download_async(
-                strip_prefix(strip_prefix(url, "mavlinkftp://"), "mftp://"),
-                download_path,
+                downloaded_filename,
+                _tmp_download_path,
                 false,
-                [file_cache_tag, download_path, camera_id, this](
+                [file_cache_tag, downloaded_filename, camera_id, this](
                     MavlinkFtpClient::ClientResult client_result,
                     MavlinkFtpClient::ProgressData progress_data) mutable {
                     // TODO: check if we still exist
-                    if (client_result == MavlinkFtpClient::ClientResult::Success ||
-                        client_result == MavlinkFtpClient::ClientResult::Next) {
+                    if (client_result == MavlinkFtpClient::ClientResult::Next) {
                         LogDebug()
                             << "Mavlink FTP download progress: "
                             << 100 * progress_data.bytes_transferred / progress_data.total_bytes
                             << " %";
-                        if (client_result == MavlinkFtpClient::ClientResult::Next) {
-                            return;
-                        }
+                        return;
                     }
 
                     std::lock_guard lock(_mutex);
                     auto maybe_potential_camera =
                         maybe_potential_camera_for_camera_id_with_lock(camera_id);
-                    if (maybe_potential_camera != nullptr) {
-                        LogErr() << "Failed to find camera.";
+                    if (maybe_potential_camera == nullptr) {
+                        LogErr() << "Failed to find camera with ID " << camera_id;
                         return;
                     }
 
@@ -1418,15 +1417,17 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
                         return;
                     }
 
-                    LogDebug() << "File download finished to " << download_path;
+                    auto downloaded_filepath = _tmp_download_path / downloaded_filename;
+
+                    LogDebug() << "File download finished to " << downloaded_filepath;
                     if (_file_cache) {
                         // Cache the file (this will move/remove the temp file as well)
-                        download_path = _file_cache->insert(file_cache_tag, download_path)
-                                            .value_or(download_path);
-                        LogDebug() << "Cached path: " << download_path;
+                        downloaded_filepath =
+                            _file_cache->insert(file_cache_tag, downloaded_filepath)
+                                .value_or(downloaded_filepath);
+                        LogDebug() << "Cached path: " << downloaded_filepath;
                     }
-                    load_camera_definition_with_lock(*maybe_potential_camera, download_path);
-                    // TODO: add parsing result
+                    load_camera_definition_with_lock(*maybe_potential_camera, downloaded_filepath);
                     maybe_potential_camera->is_fetching_camera_definition = false;
                     maybe_potential_camera->camera_definition_result = Camera::Result::Success;
                     notify_camera_list();
@@ -1446,7 +1447,16 @@ void CameraImpl::load_camera_definition_with_lock(
         potential_camera.camera_definition = std::make_unique<CameraDefinition>();
     }
 
-    potential_camera.camera_definition->load_file(path.string());
+    if (!potential_camera.camera_definition->load_file(path.string())) {
+        LogErr() << "Failed to load camera definition: " << path;
+        // We can't keep something around that's not loaded correctly.
+        potential_camera.camera_definition = nullptr;
+        return;
+    }
+
+    // We assume default settings initially and then load the params one by one.
+    // This way we can start using it straightaway.
+    potential_camera.camera_definition->assume_default_settings();
 }
 
 void CameraImpl::process_video_information(const mavlink_message_t& message)
@@ -1587,10 +1597,8 @@ bool CameraImpl::get_possible_options_with_lock(
     }
 
     for (const auto& value : values) {
-        std::stringstream ss{};
-        ss << value;
         Camera::Option option{};
-        option.option_id = ss.str();
+        option.option_id = value.get_string();
         if (!camera.camera_definition->is_setting_range(setting_id)) {
             get_option_str_with_lock(
                 camera, setting_id, option.option_id, option.option_description);
@@ -2001,7 +2009,7 @@ CameraImpl::get_possible_setting_options(int32_t camera_id)
     }
 
     auto& camera = *maybe_potential_camera;
-    if (!camera.is_fetching_camera_definition) {
+    if (camera.is_fetching_camera_definition) {
         result.first = Camera::Result::SettingsLoading;
         return result;
     }
@@ -2037,6 +2045,7 @@ CameraImpl::get_possible_setting_options_with_lock(PotentialCamera& potential_ca
         result.second.push_back(setting_options);
     }
 
+    result.first = Camera::Result::Success;
     return result;
 }
 
@@ -2355,7 +2364,7 @@ CameraImpl::get_current_settings(int32_t camera_id)
     }
 
     auto& camera = *maybe_potential_camera;
-    if (!camera.is_fetching_camera_definition) {
+    if (camera.is_fetching_camera_definition) {
         result.first = Camera::Result::SettingsLoading;
         return result;
     }

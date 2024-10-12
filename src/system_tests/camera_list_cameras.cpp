@@ -11,9 +11,9 @@ using namespace mavsdk;
 
 TEST(SystemTest, CameraListCameras)
 {
-    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
 
-    Mavsdk mavsdk_camera{Mavsdk::Configuration{Mavsdk::ComponentType::Camera}};
+    Mavsdk mavsdk_camera{Mavsdk::Configuration{ComponentType::Camera}};
 
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),

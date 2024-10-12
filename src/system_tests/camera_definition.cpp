@@ -12,9 +12,9 @@ using namespace mavsdk;
 
 TEST(SystemTest, CameraDefinition)
 {
-    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
+    Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
 
-    Mavsdk mavsdk_camera{Mavsdk::Configuration{Mavsdk::ComponentType::Camera}};
+    Mavsdk mavsdk_camera{Mavsdk::Configuration{ComponentType::Camera}};
 
     ASSERT_EQ(
         mavsdk_groundstation.add_any_connection("udpin://0.0.0.0:17000"),
@@ -24,7 +24,7 @@ TEST(SystemTest, CameraDefinition)
 
     auto ftp_server = FtpServer{mavsdk_camera.server_component()};
 
-    EXPECT_EQ(ftp_server.set_root_dir("src/plugins/camera/"), FtpServer::Result::Success);
+    EXPECT_EQ(ftp_server.set_root_dir("src/mavsdk/plugins/camera/"), FtpServer::Result::Success);
 
     auto camera_server = CameraServer{mavsdk_camera.server_component()};
 
@@ -32,7 +32,7 @@ TEST(SystemTest, CameraDefinition)
     information.vendor_name = "CoolCameras";
     information.model_name = "Frozen Super";
     information.firmware_version = "4.0.0";
-    information.definition_file_version = 1;
+    information.definition_file_version = 16;
     information.definition_file_uri = "mavlinkftp://e90_unit_test.xml";
     EXPECT_EQ(camera_server.set_information(information), CameraServer::Result::Success);
 
@@ -54,4 +54,16 @@ TEST(SystemTest, CameraDefinition)
     auto camera = Camera{system};
 
     std::this_thread::sleep_for(std::chrono::seconds(5));
+    EXPECT_EQ(camera.camera_list().cameras.size(), 1);
+    auto possible_setting_options = camera.get_possible_setting_options(1);
+    ASSERT_EQ(possible_setting_options.first, Camera::Result::Success);
+
+    for (auto setting_option : possible_setting_options.second) {
+        std::cout << setting_option.setting_id << "->" << setting_option.setting_description
+                  << std::endl;
+        for (auto option : setting_option.options) {
+            std::cout << "Option: " << option.option_id << "->" << option.option_description
+                      << std::endl;
+        }
+    }
 }

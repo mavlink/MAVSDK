@@ -588,7 +588,6 @@ std::array<char, 128> ParamValue::get_128_bytes() const
 
 bool ParamValue::operator==(const std::string& value_str) const
 {
-    // LogDebug() << "Compare " << value_str() << " and " << rhs.value_str();
     if (std::get_if<uint8_t>(&_value)) {
         return std::get<uint8_t>(_value) == std::stoi(value_str);
     } else if (std::get_if<int8_t>(&_value)) {
