@@ -243,7 +243,7 @@ private:
 
     void check_potential_cameras_with_lock();
     void check_camera_definition_with_lock(PotentialCamera& potential_camera);
-    static void load_camera_definition_with_lock(
+    void load_camera_definition_with_lock(
         PotentialCamera& potential_camera, const std::filesystem::path& path);
 
     void notify_mode();
@@ -336,9 +336,6 @@ private:
     using CameraDefinitionCallback = std::function<void(Camera::Result)>;
     CameraDefinitionCallback _camera_definition_callback{};
 
-    std::atomic<size_t> _camera_id{0};
-    std::atomic<bool> _camera_found{false};
-
     struct {
         std::mutex mutex{};
         Camera::Status data{};
@@ -390,6 +387,8 @@ private:
     std::mutex _captured_request_mutex;
 
     std::unique_ptr<HttpLoader> _http_loader{nullptr};
+
+    bool _debugging{false};
 };
 
 } // namespace mavsdk

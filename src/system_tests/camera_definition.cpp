@@ -7,6 +7,7 @@
 #include <mutex>
 #include <thread>
 #include <gtest/gtest.h>
+#include <plugins/param_server/param_server.h>
 
 using namespace mavsdk;
 
@@ -29,12 +30,30 @@ TEST(SystemTest, CameraDefinition)
     auto camera_server = CameraServer{mavsdk_camera.server_component()};
 
     CameraServer::Information information{};
-    information.vendor_name = "CoolCameras";
-    information.model_name = "Frozen Super";
+    information.vendor_name = "UVC";
+    information.model_name = "Logitech C270HD Webcam";
     information.firmware_version = "4.0.0";
-    information.definition_file_version = 16;
-    information.definition_file_uri = "mavlinkftp://e90_unit_test.xml";
+    information.definition_file_version = 2;
+    information.definition_file_uri = "mavlinkftp://uvc_camera.xml";
     EXPECT_EQ(camera_server.set_information(information), CameraServer::Result::Success);
+
+    auto param_server = ParamServer{mavsdk_camera.server_component()};
+    EXPECT_EQ(param_server.provide_param_int("CAM_MODE", 0), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("BRIGHTNESS", 128), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("CONTRAST", 32), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("SATURATION", 32), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("GAIN", 64), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("SHARPNESS", 24), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("BACKLIGHT", 0), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("POWER_MODE", 0), ParamServer::Result::Success);
+
+    // Don't use the default for these two.
+    EXPECT_EQ(param_server.provide_param_int("WB_MODE", 0), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("WB_TEMP", 5000), ParamServer::Result::Success);
+
+    EXPECT_EQ(param_server.provide_param_int("EXP_MODE", 3), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("EXP_ABSOLUTE", 166), ParamServer::Result::Success);
+    EXPECT_EQ(param_server.provide_param_int("EXP_PRIORITY", 1), ParamServer::Result::Success);
 
     auto prom = std::promise<std::shared_ptr<System>>();
     auto fut = prom.get_future();
@@ -58,12 +77,27 @@ TEST(SystemTest, CameraDefinition)
     auto possible_setting_options = camera.get_possible_setting_options(1);
     ASSERT_EQ(possible_setting_options.first, Camera::Result::Success);
 
-    for (auto setting_option : possible_setting_options.second) {
-        std::cout << setting_option.setting_id << "->" << setting_option.setting_description
-                  << std::endl;
-        for (auto option : setting_option.options) {
-            std::cout << "Option: " << option.option_id << "->" << option.option_description
-                      << std::endl;
-        }
-    }
+    auto wb_mode = camera.get_setting(1, Camera::Setting{"WB_MODE"});
+    EXPECT_EQ(wb_mode.first, Camera::Result::Success);
+    EXPECT_EQ(wb_mode.second.option.option_id, "0");
+
+    EXPECT_EQ(possible_setting_options.second.size(), 11);
+
+    auto current_setting = camera.get_current_settings(1);
+    EXPECT_EQ(current_setting.first, Camera::Result::Success);
+    EXPECT_EQ(current_setting.second.size(), 11);
+
+    // Now we change a setting which means the WB_TEMP param is now excluded from our options.
+
+    Camera::Setting new_setting{};
+    new_setting.setting_id = "WB_MODE";
+    new_setting.option = Camera::Option{"1"};
+    EXPECT_EQ(camera.set_setting(1, new_setting), Camera::Result::Success);
+
+    possible_setting_options = camera.get_possible_setting_options(1);
+    EXPECT_EQ(possible_setting_options.second.size(), 10);
+
+    current_setting = camera.get_current_settings(1);
+    EXPECT_EQ(current_setting.first, Camera::Result::Success);
+    EXPECT_EQ(current_setting.second.size(), 10);
 }

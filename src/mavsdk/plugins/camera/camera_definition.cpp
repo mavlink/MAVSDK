@@ -458,7 +458,7 @@ void CameraDefinition::assume_default_settings()
 
         InternalCurrentSetting new_setting;
         new_setting.value = parameter.second->default_option.value;
-        new_setting.needs_updating = false;
+        new_setting.needs_updating = true;
         _current_settings[parameter.first] = new_setting;
 
         //} else {
@@ -574,7 +574,7 @@ bool CameraDefinition::set_setting(const std::string& name, const ParamValue& va
     // needs to happen outside of this class.
     for (const auto& update : _parameter_map[name]->updates) {
         if (_current_settings.find(update) == _current_settings.end()) {
-            // LogDebug() << "Update to '" << update << "' not understood.";
+            LogDebug() << "Update to '" << update << "' not understood.";
             continue;
         }
         _current_settings[update].needs_updating = true;
@@ -795,8 +795,6 @@ bool CameraDefinition::get_option_str(
     }
 
     for (const auto& option : _parameter_map[setting_name]->options) {
-        std::stringstream value_ss{};
-        value_ss << option->value;
         if (option->value == option_name) {
             description = option->name;
             return true;

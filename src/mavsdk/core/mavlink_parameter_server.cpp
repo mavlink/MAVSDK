@@ -294,6 +294,7 @@ void MavlinkParameterServer::process_param_ext_set(const mavlink_message_t& mess
         LogWarn() << "Invalid Param Set ext Request: " << safe_param_id;
         return;
     }
+
     process_param_set_internally(safe_param_id, value_to_set, true);
 }
 
@@ -332,7 +333,6 @@ void MavlinkParameterServer::process_param_request_read(const mavlink_message_t&
 
 void MavlinkParameterServer::process_param_ext_request_read(const mavlink_message_t& message)
 {
-    LogDebug() << "process param_ext_request_read";
     mavlink_param_ext_request_read_t read_request{};
     mavlink_msg_param_ext_request_read_decode(&message, &read_request);
     if (!target_matches(read_request.target_system, read_request.target_component, true)) {

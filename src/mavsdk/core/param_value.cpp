@@ -488,7 +488,7 @@ bool ParamValue::set_int(int new_value)
         _value = static_cast<uint32_t>(new_value);
         return true;
     } else if (std::get_if<int32_t>(&_value)) {
-        _value = static_cast<int32_t>(new_value);
+        _value = new_value;
         return true;
     } else {
         return false;
