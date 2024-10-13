@@ -1,3 +1,4 @@
+#include <atomic>
 #include <future>
 #include <iostream>
 #include <thread>
@@ -55,13 +56,15 @@ Mission::MissionItem make_mission_item(
 
 int main(int argc, char** argv)
 {
+    std::atomic<bool> _should_exit{false};
+
     // We run the server plugins on a seperate thread so we can use the main
     // thread as a ground station.
-    std::thread autopilotThread([]() {
+    std::thread autopilot_thread([&_should_exit]() {
         mavsdk::Mavsdk mavsdkTester{
             mavsdk::Mavsdk::Configuration{mavsdk::ComponentType::Autopilot}};
 
-        auto result = mavsdkTester.add_any_connection("udp://127.0.0.1:14551");
+        auto result = mavsdkTester.add_any_connection("udpout://127.0.0.1:14551");
         if (result == mavsdk::ConnectionResult::Success) {
             std::cout << "Connected autopilot server side!" << std::endl;
         }
@@ -74,13 +77,9 @@ int main(int argc, char** argv)
         auto actionServer = mavsdk::ActionServer{server_component};
 
         // These are needed for MAVSDK at the moment
-        paramServer.provide_param_int("CAL_ACC0_ID", 1);
-        paramServer.provide_param_int("CAL_GYRO0_ID", 1);
-        paramServer.provide_param_int("CAL_MAG0_ID", 1);
-        paramServer.provide_param_int("SYS_HITL", 0);
         paramServer.provide_param_int("MIS_TAKEOFF_ALT", 0);
         // Add a custom param
-        paramServer.provide_param_int("my_param", 1);
+        paramServer.provide_param_int("MY_PARAM", 1);
 
         // Allow the vehicle to change modes, takeoff and arm
         actionServer.set_allowable_flight_modes({true, true, true});
@@ -117,8 +116,7 @@ int main(int argc, char** argv)
                     mission_prom.set_value(plan);
                 });
         missionRawServer.subscribe_current_item_changed([](MissionRawServer::MissionItem item) {
-            std::cout << "Current Mission Item Changed!" << std::endl;
-            std::cout << "Current Item: " << item << std::endl;
+            std::cout << "Current item changed: " << item << std::endl;
         });
         missionRawServer.subscribe_clear_all(
             [](uint32_t clear_all) { std::cout << "Clear All Mission!" << std::endl; });
@@ -135,7 +133,13 @@ int main(int argc, char** argv)
             }
         });
 
-        while (true) {
+        actionServer.subscribe_land([&position](ActionServer::Result result, bool land) {
+            if (result == ActionServer::Result::Success) {
+                position.relative_altitude_m = 0;
+            }
+        });
+
+        while (!_should_exit.load()) {
             std::this_thread::sleep_for(std::chrono::seconds(1));
 
             // Publish the telemetry
@@ -149,6 +153,12 @@ int main(int argc, char** argv)
             telemServer.publish_unix_epoch_time(42);
         }
     });
+
+    // Before exiting main, we need to make sure we clean up our thread.
+    auto cleanup_autopilot_thread = [&]() {
+        _should_exit.store(true);
+        autopilot_thread.join();
+    };
 
     // Now this is the main thread, we run client plugins to act as the GCS
     // to communicate with the autopilot server plugins.
@@ -226,6 +236,7 @@ int main(int argc, char** argv)
         const Mission::Result result = future_result.get();
         if (result != Mission::Result::Success) {
             std::cout << "Mission upload failed (" << result << "), exiting." << std::endl;
+            cleanup_autopilot_thread();
             return 1;
         }
         std::cout << "Mission uploaded." << std::endl;
@@ -239,12 +250,13 @@ int main(int argc, char** argv)
         });
     }
 
-    std::this_thread::sleep_for(std::chrono::seconds(20));
+    std::this_thread::sleep_for(std::chrono::seconds(3));
 
     // We want to listen to the altitude of the drone at 1 Hz.
     auto set_rate_result = telemetry.set_rate_position(1.0);
     if (set_rate_result != mavsdk::Telemetry::Result::Success) {
         std::cout << "Setting rate failed:" << set_rate_result << std::endl;
+        cleanup_autopilot_thread();
         return 1;
     }
 
@@ -270,6 +282,7 @@ int main(int argc, char** argv)
 
     if (arm_result != Action::Result::Success) {
         std::cout << "Arming failed:" << arm_result << std::endl;
+        cleanup_autopilot_thread();
         return 1;
     }
 
@@ -278,19 +291,18 @@ int main(int argc, char** argv)
     // Take off
     std::cout << "Taking off..." << std::endl;
     bool takenOff = false;
-    while (true) {
-        const Action::Result takeoff_result = action.takeoff();
-        if (takeoff_result != Action::Result::Success) {
-            std::cout << "Takeoff failed!:" << takeoff_result << std::endl;
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-            continue;
-        }
-        break;
+    const Action::Result takeoff_result = action.takeoff();
+    if (takeoff_result != Action::Result::Success) {
+        std::cout << "Takeoff failed!:" << takeoff_result << std::endl;
+        cleanup_autopilot_thread();
+        return 1;
     }
 
-    while (true) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
+    std::this_thread::sleep_for(std::chrono::seconds(3));
 
+    std::cout << "Land is not currently implemented, so we're leaving it in-air, exiting."
+              << std::endl;
+
+    cleanup_autopilot_thread();
     return 0;
 }
