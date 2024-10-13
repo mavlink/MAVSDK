@@ -96,26 +96,267 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Camera::PhotosRange const& photos_range);
 
     /**
+     * @brief Type to represent a setting option.
+     */
+    struct Option {
+        std::string option_id{}; /**< @brief Name of the option (machine readable) */
+        std::string option_description{}; /**< @brief Description of the option (human readable) */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Camera::Option` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Camera::Option& lhs, const Camera::Option& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Camera::Option`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Camera::Option const& option);
+
+    /**
+     * @brief Type to represent a setting with a selected option.
+     */
+    struct Setting {
+        std::string setting_id{}; /**< @brief Name of a setting (machine readable) */
+        std::string setting_description{}; /**< @brief Description of the setting (human readable).
+                                              This field is meant to be read from the drone, ignore
+                                              it when setting. */
+        Option option{}; /**< @brief Selected option */
+        bool is_range{}; /**< @brief If option is given as a range. This field is meant to be read
+                            from the drone, ignore it when setting. */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Camera::Setting` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Camera::Setting& lhs, const Camera::Setting& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Camera::Setting`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Camera::Setting const& setting);
+
+    /**
+     * @brief Type to represent a setting with a list of options to choose from.
+     */
+    struct SettingOptions {
+        int32_t camera_id{}; /**< @brief Camera ID */
+        std::string setting_id{}; /**< @brief Name of the setting (machine readable) */
+        std::string
+            setting_description{}; /**< @brief Description of the setting (human readable) */
+        std::vector<Option>
+            options{}; /**< @brief List of options or if range [min, max] or [min, max, interval] */
+        bool is_range{}; /**< @brief If option is given as a range */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Camera::SettingOptions` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Camera::SettingOptions& lhs, const Camera::SettingOptions& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Camera::SettingOptions`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Camera::SettingOptions const& setting_options);
+
+    /**
+     * @brief Type for video stream settings.
+     */
+    struct VideoStreamSettings {
+        float frame_rate_hz{}; /**< @brief Frames per second */
+        uint32_t horizontal_resolution_pix{}; /**< @brief Horizontal resolution (in pixels) */
+        uint32_t vertical_resolution_pix{}; /**< @brief Vertical resolution (in pixels) */
+        uint32_t bit_rate_b_s{}; /**< @brief Bit rate (in bits per second) */
+        uint32_t rotation_deg{}; /**< @brief Video image rotation (clockwise, 0-359 degrees) */
+        std::string uri{}; /**< @brief Video stream URI */
+        float horizontal_fov_deg{}; /**< @brief Horizontal fov in degrees */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Camera::VideoStreamSettings` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const Camera::VideoStreamSettings& lhs, const Camera::VideoStreamSettings& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Camera::VideoStreamSettings`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Camera::VideoStreamSettings const& video_stream_settings);
+
+    /**
+     * @brief Information about the video stream.
+     */
+    struct VideoStreamInfo {
+        /**
+         * @brief Video stream status type.
+         */
+        enum class VideoStreamStatus {
+            NotRunning, /**< @brief Video stream is not running. */
+            InProgress, /**< @brief Video stream is running. */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `Camera::VideoStreamStatus`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream& operator<<(
+            std::ostream& str,
+            Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status);
+
+        /**
+         * @brief Video stream light spectrum type
+         */
+        enum class VideoStreamSpectrum {
+            Unknown, /**< @brief Unknown. */
+            VisibleLight, /**< @brief Visible light. */
+            Infrared, /**< @brief Infrared. */
+        };
+
+        /**
+         * @brief Stream operator to print information about a `Camera::VideoStreamSpectrum`.
+         *
+         * @return A reference to the stream.
+         */
+        friend std::ostream& operator<<(
+            std::ostream& str,
+            Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum);
+
+        int32_t camera_id{}; /**< @brief Camera ID */
+        VideoStreamSettings settings{}; /**< @brief Video stream settings */
+        VideoStreamStatus status{}; /**< @brief Current status of video streaming */
+        VideoStreamSpectrum spectrum{}; /**< @brief Light-spectrum of the video stream */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Camera::VideoStreamInfo` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Camera::VideoStreamInfo& lhs, const Camera::VideoStreamInfo& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Camera::VideoStreamInfo`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Camera::VideoStreamInfo const& video_stream_info);
+
+    /**
      * @brief
      */
-    struct ModeInfo {
+    struct ModeUpdate {
         int32_t camera_id{}; /**< @brief Camera ID */
         Mode mode{}; /**< @brief Camera mode */
     };
 
     /**
-     * @brief Equal operator to compare two `Camera::ModeInfo` objects.
+     * @brief Equal operator to compare two `Camera::ModeUpdate` objects.
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(const Camera::ModeInfo& lhs, const Camera::ModeInfo& rhs);
+    friend bool operator==(const Camera::ModeUpdate& lhs, const Camera::ModeUpdate& rhs);
 
     /**
-     * @brief Stream operator to print information about a `Camera::ModeInfo`.
+     * @brief Stream operator to print information about a `Camera::ModeUpdate`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream& operator<<(std::ostream& str, Camera::ModeInfo const& mode_info);
+    friend std::ostream& operator<<(std::ostream& str, Camera::ModeUpdate const& mode_update);
+
+    /**
+     * @brief
+     */
+    struct VideoStreamUpdate {
+        int32_t camera_id{}; /**< @brief Camera ID */
+        VideoStreamInfo video_stream_info{}; /**< @brief Video stream info */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Camera::VideoStreamUpdate` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const Camera::VideoStreamUpdate& lhs, const Camera::VideoStreamUpdate& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Camera::VideoStreamUpdate`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Camera::VideoStreamUpdate const& video_stream_update);
+
+    /**
+     * @brief
+     */
+    struct CurrentSettingsUpdate {
+        int32_t camera_id{}; /**< @brief Camera ID */
+        std::vector<Setting> current_settings{}; /**< @brief List of current settings */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Camera::CurrentSettingsUpdate` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool
+    operator==(const Camera::CurrentSettingsUpdate& lhs, const Camera::CurrentSettingsUpdate& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Camera::CurrentSettingsUpdate`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Camera::CurrentSettingsUpdate const& current_settings_update);
+
+    /**
+     * @brief
+     */
+    struct PossibleSettingOptionsUpdate {
+        int32_t camera_id{}; /**< @brief Camera ID */
+        std::vector<SettingOptions>
+            setting_options{}; /**< @brief List of settings that can be changed */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Camera::PossibleSettingOptionsUpdate` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(
+        const Camera::PossibleSettingOptionsUpdate& lhs,
+        const Camera::PossibleSettingOptionsUpdate& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Camera::PossibleSettingOptionsUpdate`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(
+        std::ostream& str,
+        Camera::PossibleSettingOptionsUpdate const& possible_setting_options_update);
 
     /**
      * @brief Possible results returned for camera commands
@@ -257,95 +498,6 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Camera::CaptureInfo const& capture_info);
 
     /**
-     * @brief Type for video stream settings.
-     */
-    struct VideoStreamSettings {
-        float frame_rate_hz{}; /**< @brief Frames per second */
-        uint32_t horizontal_resolution_pix{}; /**< @brief Horizontal resolution (in pixels) */
-        uint32_t vertical_resolution_pix{}; /**< @brief Vertical resolution (in pixels) */
-        uint32_t bit_rate_b_s{}; /**< @brief Bit rate (in bits per second) */
-        uint32_t rotation_deg{}; /**< @brief Video image rotation (clockwise, 0-359 degrees) */
-        std::string uri{}; /**< @brief Video stream URI */
-        float horizontal_fov_deg{}; /**< @brief Horizontal fov in degrees */
-    };
-
-    /**
-     * @brief Equal operator to compare two `Camera::VideoStreamSettings` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend bool
-    operator==(const Camera::VideoStreamSettings& lhs, const Camera::VideoStreamSettings& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `Camera::VideoStreamSettings`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream&
-    operator<<(std::ostream& str, Camera::VideoStreamSettings const& video_stream_settings);
-
-    /**
-     * @brief Information about the video stream.
-     */
-    struct VideoStreamInfo {
-        /**
-         * @brief Video stream status type.
-         */
-        enum class VideoStreamStatus {
-            NotRunning, /**< @brief Video stream is not running. */
-            InProgress, /**< @brief Video stream is running. */
-        };
-
-        /**
-         * @brief Stream operator to print information about a `Camera::VideoStreamStatus`.
-         *
-         * @return A reference to the stream.
-         */
-        friend std::ostream& operator<<(
-            std::ostream& str,
-            Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status);
-
-        /**
-         * @brief Video stream light spectrum type
-         */
-        enum class VideoStreamSpectrum {
-            Unknown, /**< @brief Unknown. */
-            VisibleLight, /**< @brief Visible light. */
-            Infrared, /**< @brief Infrared. */
-        };
-
-        /**
-         * @brief Stream operator to print information about a `Camera::VideoStreamSpectrum`.
-         *
-         * @return A reference to the stream.
-         */
-        friend std::ostream& operator<<(
-            std::ostream& str,
-            Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum);
-
-        int32_t camera_id{}; /**< @brief Camera ID */
-        VideoStreamSettings settings{}; /**< @brief Video stream settings */
-        VideoStreamStatus status{}; /**< @brief Current status of video streaming */
-        VideoStreamSpectrum spectrum{}; /**< @brief Light-spectrum of the video stream */
-    };
-
-    /**
-     * @brief Equal operator to compare two `Camera::VideoStreamInfo` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend bool operator==(const Camera::VideoStreamInfo& lhs, const Camera::VideoStreamInfo& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `Camera::VideoStreamInfo`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream&
-    operator<<(std::ostream& str, Camera::VideoStreamInfo const& video_stream_info);
-
-    /**
      * @brief Information about the camera status.
      */
     struct Status {
@@ -415,83 +567,6 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, Camera::Status const& status);
-
-    /**
-     * @brief Type to represent a setting option.
-     */
-    struct Option {
-        std::string option_id{}; /**< @brief Name of the option (machine readable) */
-        std::string option_description{}; /**< @brief Description of the option (human readable) */
-    };
-
-    /**
-     * @brief Equal operator to compare two `Camera::Option` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend bool operator==(const Camera::Option& lhs, const Camera::Option& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `Camera::Option`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(std::ostream& str, Camera::Option const& option);
-
-    /**
-     * @brief Type to represent a setting with a selected option.
-     */
-    struct Setting {
-        std::string setting_id{}; /**< @brief Name of a setting (machine readable) */
-        std::string setting_description{}; /**< @brief Description of the setting (human readable).
-                                              This field is meant to be read from the drone, ignore
-                                              it when setting. */
-        Option option{}; /**< @brief Selected option */
-        bool is_range{}; /**< @brief If option is given as a range. This field is meant to be read
-                            from the drone, ignore it when setting. */
-    };
-
-    /**
-     * @brief Equal operator to compare two `Camera::Setting` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend bool operator==(const Camera::Setting& lhs, const Camera::Setting& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `Camera::Setting`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream& operator<<(std::ostream& str, Camera::Setting const& setting);
-
-    /**
-     * @brief Type to represent a setting with a list of options to choose from.
-     */
-    struct SettingOptions {
-        int32_t camera_id{}; /**< @brief Camera ID */
-        std::string setting_id{}; /**< @brief Name of the setting (machine readable) */
-        std::string
-            setting_description{}; /**< @brief Description of the setting (human readable) */
-        std::vector<Option>
-            options{}; /**< @brief List of options or if range [min, max] or [min, max, interval] */
-        bool is_range{}; /**< @brief If option is given as a range */
-    };
-
-    /**
-     * @brief Equal operator to compare two `Camera::SettingOptions` objects.
-     *
-     * @return `true` if items are equal.
-     */
-    friend bool operator==(const Camera::SettingOptions& lhs, const Camera::SettingOptions& rhs);
-
-    /**
-     * @brief Stream operator to print information about a `Camera::SettingOptions`.
-     *
-     * @return A reference to the stream.
-     */
-    friend std::ostream&
-    operator<<(std::ostream& str, Camera::SettingOptions const& setting_options);
 
     /**
      * @brief Type to represent a camera information.
@@ -667,7 +742,7 @@ public:
     using ListPhotosCallback = std::function<void(Result, std::vector<CaptureInfo>)>;
 
     /**
-     * @brief List photos available on the camera.
+     * @brief List photos available on the camera (currently not implemented).
      *
      * This function is non-blocking. See 'list_photos' for the blocking counterpart.
      */
@@ -675,7 +750,7 @@ public:
         int32_t camera_id, PhotosRange photos_range, const ListPhotosCallback callback);
 
     /**
-     * @brief List photos available on the camera.
+     * @brief List photos available on the camera (currently not implemented).
      *
      * This function is blocking. See 'list_photos_async' for the non-blocking counterpart.
      *
@@ -717,12 +792,12 @@ public:
     /**
      * @brief Callback type for subscribe_mode.
      */
-    using ModeCallback = std::function<void(ModeInfo)>;
+    using ModeCallback = std::function<void(ModeUpdate)>;
 
     /**
      * @brief Handle type for subscribe_mode.
      */
-    using ModeHandle = Handle<ModeInfo>;
+    using ModeHandle = Handle<ModeUpdate>;
 
     /**
      * @brief Subscribe to camera mode updates.
@@ -741,17 +816,17 @@ public:
      *
      * @return Result of request.
      */
-    Camera::Mode get_mode(int32_t camera_id) const;
+    std::pair<Result, Camera::Mode> get_mode(int32_t camera_id) const;
 
     /**
      * @brief Callback type for subscribe_video_stream_info.
      */
-    using VideoStreamInfoCallback = std::function<void(VideoStreamInfo)>;
+    using VideoStreamInfoCallback = std::function<void(VideoStreamUpdate)>;
 
     /**
      * @brief Handle type for subscribe_video_stream_info.
      */
-    using VideoStreamInfoHandle = Handle<VideoStreamInfo>;
+    using VideoStreamInfoHandle = Handle<VideoStreamUpdate>;
 
     /**
      * @brief Subscribe to video stream info updates.
@@ -770,7 +845,7 @@ public:
      *
      * @return Result of request.
      */
-    Camera::VideoStreamInfo get_video_stream_info(int32_t camera_id) const;
+    std::pair<Result, Camera::VideoStreamInfo> get_video_stream_info(int32_t camera_id) const;
 
     /**
      * @brief Callback type for subscribe_capture_info.
@@ -819,17 +894,17 @@ public:
      *
      * @return Result of request.
      */
-    Camera::Status get_status(int32_t camera_id) const;
+    std::pair<Result, Camera::Status> get_status(int32_t camera_id) const;
 
     /**
      * @brief Callback type for subscribe_current_settings.
      */
-    using CurrentSettingsCallback = std::function<void(std::vector<Setting>)>;
+    using CurrentSettingsCallback = std::function<void(CurrentSettingsUpdate)>;
 
     /**
      * @brief Handle type for subscribe_current_settings.
      */
-    using CurrentSettingsHandle = Handle<std::vector<Setting>>;
+    using CurrentSettingsHandle = Handle<CurrentSettingsUpdate>;
 
     /**
      * @brief Get the list of current camera settings.
@@ -853,12 +928,12 @@ public:
     /**
      * @brief Callback type for subscribe_possible_setting_options.
      */
-    using PossibleSettingOptionsCallback = std::function<void(std::vector<SettingOptions>)>;
+    using PossibleSettingOptionsCallback = std::function<void(PossibleSettingOptionsUpdate)>;
 
     /**
      * @brief Handle type for subscribe_possible_setting_options.
      */
-    using PossibleSettingOptionsHandle = Handle<std::vector<SettingOptions>>;
+    using PossibleSettingOptionsHandle = Handle<PossibleSettingOptionsUpdate>;
 
     /**
      * @brief Get the list of settings that can be changed.

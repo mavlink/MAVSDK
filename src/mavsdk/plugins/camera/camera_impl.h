@@ -1,7 +1,10 @@
 #pragma once
 
 #include <cstdint>
+#include <filesystem>
 #include <map>
+#include <mutex>
+#include <thread>
 
 #include "camera_definition.h"
 #include "file_cache.h"
@@ -10,7 +13,6 @@
 #include "plugin_impl_base.h"
 #include "system.h"
 #include "callback_list.h"
-#include <filesystem>
 
 namespace mavsdk {
 
@@ -93,7 +95,7 @@ public:
     subscribe_video_stream_info(const Camera::VideoStreamInfoCallback& callback);
     void unsubscribe_video_stream_info(Camera::VideoStreamInfoHandle handle);
 
-    Camera::VideoStreamInfo get_video_stream_info(int32_t camera_id);
+    std::pair<Camera::Result, Camera::VideoStreamInfo> get_video_stream_info(int32_t camera_id);
 
     Camera::Result start_video_streaming(int32_t camera_id, int32_t stream_id);
     Camera::Result stop_video_streaming(int32_t camera_id, int32_t stream_id);
@@ -102,7 +104,7 @@ public:
     void
     set_mode_async(int32_t camera_id, Camera::Mode mode, const Camera::ResultCallback& callback);
 
-    Camera::Mode get_mode(int32_t camera_id);
+    std::pair<Camera::Result, Camera::Mode> get_mode(int32_t camera_id);
 
     Camera::ModeHandle subscribe_mode(const Camera::ModeCallback& callback);
     void unsubscribe_mode(Camera::ModeHandle handle);
@@ -113,7 +115,7 @@ public:
     Camera::StatusHandle subscribe_status(const Camera::StatusCallback& callback);
     void unsubscribe_status(Camera::StatusHandle handle);
 
-    Camera::Status get_status(int32_t camera_id);
+    std::pair<Camera::Result, Camera::Status> get_status(int32_t camera_id);
 
     void get_setting_async(
         int32_t camera_id,
@@ -159,7 +161,27 @@ public:
     CameraImpl& operator=(const CameraImpl&) = delete;
 
 private:
+    // struct CaptureStatus {
+    //     // Duplicate right now.
+    //     Camera::Status data{};
+    //     std::unique_ptr<std::thread> fetch_thread{};
+
+    //    bool received_camera_capture_status{false};
+    //    bool received_storage_information{false};
+    //    int image_count{-1};
+    //    int image_count_at_connection{-1};
+    //    std::map<int, Camera::CaptureInfo> photo_list;
+    //    bool is_fetching_photos{false};
+    // };
+
+    // struct CaptureInfo {
+    //     int last_advertised_image_index{-1};
+    //     std::map<int, int> missing_image_retries{};
+    // };
+
     struct PotentialCamera {
+        explicit PotentialCamera(uint8_t new_component_id) : component_id(new_component_id) {}
+
         std::optional<Camera::Information> maybe_information;
         std::unique_ptr<CameraDefinition> camera_definition{};
         std::string camera_definition_url{};
@@ -167,15 +189,22 @@ private:
         Camera::Result camera_definition_result{Camera::Result::Unknown};
         bool is_fetching_camera_definition{false};
         size_t camera_definition_fetch_count{0};
-        using CameraDefinitionCallback = std::function<void(Camera::Result)>;
-        CameraDefinitionCallback camera_definition_callback{};
 
         bool information_requested{false};
         bool is_valid{false};
-        uint8_t component_id;
 
+        // CaptureStatus capture_status{};
+        // CaptureInfo capture_info{};
+        // std::condition_variable _captured_request_cv;
+        // std::mutex _captured_request_mutex;
+
+        Camera::Status status{};
+        Camera::VideoStreamInfo video_stream_info{};
         Camera::Mode mode{Camera::Mode::Unknown};
+
         uint16_t capture_sequence{0};
+
+        uint8_t component_id;
 
         bool operator==(const PotentialCamera& other) const
         {
@@ -239,23 +268,25 @@ private:
     void process_camera_information(const mavlink_message_t& message);
     void process_video_information(const mavlink_message_t& message);
     void process_video_stream_status(const mavlink_message_t& message);
-    void reset_following_format_storage();
+
+    void reset_following_format_storage_with_lock(PotentialCamera& potential_camera);
 
     void check_potential_cameras_with_lock();
     void check_camera_definition_with_lock(PotentialCamera& potential_camera);
     void load_camera_definition_with_lock(
         PotentialCamera& potential_camera, const std::filesystem::path& path);
 
-    void notify_mode();
-    void notify_video_stream_info();
+    void notify_mode_with_lock();
 
-    void notify_current_settings_for_all();
+    void notify_video_stream_info_with_lock();
+
+    void notify_current_settings_for_all_with_lock();
     void notify_current_settings_with_lock(PotentialCamera& potential_camera);
 
-    void notify_possible_setting_options_for_all();
+    void notify_possible_setting_options_for_all_with_lock();
     void notify_possible_setting_options_with_lock(PotentialCamera& potential_camera);
 
-    void notify_camera_list();
+    void notify_camera_list_with_lock();
 
     void check_status();
 
@@ -271,11 +302,11 @@ private:
     CallEveryHandler::Cookie _camera_information_call_every_cookie{};
     CallEveryHandler::Cookie _request_missing_capture_info_cookie{};
 
-    void request_camera_settings(int32_t camera_id);
+    // void request_camera_settings(int32_t camera_id);
     void request_camera_information(uint8_t component_id);
-    void request_video_stream_info(int32_t camera_id);
-    void request_video_stream_status(int32_t camera_id);
-    void request_status(int32_t camera_id);
+    // void request_video_stream_info(int32_t camera_id);
+    // void request_video_stream_status(int32_t camera_id);
+    // void request_status(int32_t camera_id);
 
     MavlinkCommandSender::CommandLong
     make_command_take_photo(int32_t camera_id, float interval_s, float no_of_photos);
@@ -311,6 +342,9 @@ private:
     MavlinkCommandSender::CommandLong make_command_focus_stop(int32_t camera_id);
     MavlinkCommandSender::CommandLong make_command_focus_range(int32_t camera_id, float range);
 
+    void request_slower();
+    void request_faster();
+
     void request_missing_capture_info();
 
     uint8_t component_id_for_camera_id(int32_t camera_id);
@@ -318,73 +352,29 @@ private:
 
     int32_t camera_id_for_potential_camera_with_lock(const PotentialCamera& potential_camera);
     PotentialCamera* maybe_potential_camera_for_camera_id_with_lock(int32_t camera_id);
+    std::vector<PotentialCamera*> potential_cameras_for_camera_id_with_lock(int32_t camera_id);
 
     static std::string get_filename_from_path(const std::string& path);
 
     std::mutex _mutex;
     std::vector<PotentialCamera> _potential_cameras;
-    CallbackList<Camera::CameraList> camera_list_subscription_callbacks{};
+    CallbackList<Camera::CameraList> _camera_list_subscription_callbacks{};
+    CallbackList<Camera::PossibleSettingOptionsUpdate>
+        _subscribe_possible_setting_options_callbacks{};
+    CallbackList<Camera::CurrentSettingsUpdate> _subscribe_current_settings_callbacks{};
+    CallbackList<Camera::ModeUpdate> _mode_subscription_callbacks{};
+    CallbackList<Camera::CaptureInfo> _capture_info_callbacks{};
+    CallbackList<Camera::VideoStreamUpdate> _video_stream_info_subscription_callbacks{};
 
     CallEveryHandler::Cookie _check_potential_cameras_call_every_cookie{};
 
     std::optional<FileCache> _file_cache{};
     std::filesystem::path _tmp_download_path{};
 
-    bool _is_fetching_camera_definition{false};
-    bool _has_camera_definition_timed_out{false};
-    size_t _camera_definition_fetch_count{0};
-    using CameraDefinitionCallback = std::function<void(Camera::Result)>;
-    CameraDefinitionCallback _camera_definition_callback{};
+    CallbackList<Camera::Status> _status_subscription_callbacks{};
 
-    struct {
-        std::mutex mutex{};
-        Camera::Status data{};
-        bool received_camera_capture_status{false};
-        bool received_storage_information{false};
-        int image_count{-1};
-        int image_count_at_connection{-1};
-        std::map<int, Camera::CaptureInfo> photo_list;
-        bool is_fetching_photos{false};
-
-        CallbackList<Camera::Status> subscription_callbacks{};
-        CallEveryHandler::Cookie call_every_cookie{};
-    } _status{};
-
-    static constexpr double DEFAULT_TIMEOUT_S = 3.0;
-
-    struct {
-        std::mutex mutex{};
-        CallbackList<Camera::ModeInfo> subscription_callbacks{};
-        CallEveryHandler::Cookie call_every_cookie{};
-    } _mode{};
-
-    struct {
-        std::mutex mutex{};
-        CallbackList<Camera::CaptureInfo> callbacks{};
-        int last_advertised_image_index{-1};
-        std::map<int, int> missing_image_retries{};
-    } _capture_info{};
-
-    struct {
-        std::mutex mutex{};
-        Camera::VideoStreamInfo data{};
-        bool available{false};
-        CallEveryHandler::Cookie call_every_cookie{};
-        CallbackList<Camera::VideoStreamInfo> subscription_callbacks{};
-    } _video_stream_info{};
-
-    struct {
-        std::mutex mutex{};
-        CallbackList<std::vector<Camera::Setting>> callbacks{};
-    } _subscribe_current_settings{};
-
-    struct {
-        std::mutex mutex{};
-        CallbackList<std::vector<Camera::SettingOptions>> callbacks{};
-    } _subscribe_possible_setting_options{};
-
-    std::condition_variable _captured_request_cv;
-    std::mutex _captured_request_mutex;
+    CallEveryHandler::Cookie _request_slower_call_every_cookie{};
+    CallEveryHandler::Cookie _request_faster_call_every_cookie{};
 
     std::unique_ptr<HttpLoader> _http_loader{nullptr};
 

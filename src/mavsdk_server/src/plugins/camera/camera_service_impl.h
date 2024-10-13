@@ -100,25 +100,357 @@ public:
         }
     }
 
-    static std::unique_ptr<rpc::camera::ModeInfo>
-    translateToRpcModeInfo(const mavsdk::Camera::ModeInfo& mode_info)
+    static std::unique_ptr<rpc::camera::Option>
+    translateToRpcOption(const mavsdk::Camera::Option& option)
     {
-        auto rpc_obj = std::make_unique<rpc::camera::ModeInfo>();
+        auto rpc_obj = std::make_unique<rpc::camera::Option>();
 
-        rpc_obj->set_camera_id(mode_info.camera_id);
+        rpc_obj->set_option_id(option.option_id);
 
-        rpc_obj->set_mode(translateToRpcMode(mode_info.mode));
+        rpc_obj->set_option_description(option.option_description);
 
         return rpc_obj;
     }
 
-    static mavsdk::Camera::ModeInfo translateFromRpcModeInfo(const rpc::camera::ModeInfo& mode_info)
+    static mavsdk::Camera::Option translateFromRpcOption(const rpc::camera::Option& option)
     {
-        mavsdk::Camera::ModeInfo obj;
+        mavsdk::Camera::Option obj;
 
-        obj.camera_id = mode_info.camera_id();
+        obj.option_id = option.option_id();
 
-        obj.mode = translateFromRpcMode(mode_info.mode());
+        obj.option_description = option.option_description();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::camera::Setting>
+    translateToRpcSetting(const mavsdk::Camera::Setting& setting)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera::Setting>();
+
+        rpc_obj->set_setting_id(setting.setting_id);
+
+        rpc_obj->set_setting_description(setting.setting_description);
+
+        rpc_obj->set_allocated_option(translateToRpcOption(setting.option).release());
+
+        rpc_obj->set_is_range(setting.is_range);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Camera::Setting translateFromRpcSetting(const rpc::camera::Setting& setting)
+    {
+        mavsdk::Camera::Setting obj;
+
+        obj.setting_id = setting.setting_id();
+
+        obj.setting_description = setting.setting_description();
+
+        obj.option = translateFromRpcOption(setting.option());
+
+        obj.is_range = setting.is_range();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::camera::SettingOptions>
+    translateToRpcSettingOptions(const mavsdk::Camera::SettingOptions& setting_options)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera::SettingOptions>();
+
+        rpc_obj->set_camera_id(setting_options.camera_id);
+
+        rpc_obj->set_setting_id(setting_options.setting_id);
+
+        rpc_obj->set_setting_description(setting_options.setting_description);
+
+        for (const auto& elem : setting_options.options) {
+            auto* ptr = rpc_obj->add_options();
+            ptr->CopyFrom(*translateToRpcOption(elem).release());
+        }
+
+        rpc_obj->set_is_range(setting_options.is_range);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Camera::SettingOptions
+    translateFromRpcSettingOptions(const rpc::camera::SettingOptions& setting_options)
+    {
+        mavsdk::Camera::SettingOptions obj;
+
+        obj.camera_id = setting_options.camera_id();
+
+        obj.setting_id = setting_options.setting_id();
+
+        obj.setting_description = setting_options.setting_description();
+
+        for (const auto& elem : setting_options.options()) {
+            obj.options.push_back(
+                translateFromRpcOption(static_cast<mavsdk::rpc::camera::Option>(elem)));
+        }
+
+        obj.is_range = setting_options.is_range();
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::camera::VideoStreamSettings> translateToRpcVideoStreamSettings(
+        const mavsdk::Camera::VideoStreamSettings& video_stream_settings)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera::VideoStreamSettings>();
+
+        rpc_obj->set_frame_rate_hz(video_stream_settings.frame_rate_hz);
+
+        rpc_obj->set_horizontal_resolution_pix(video_stream_settings.horizontal_resolution_pix);
+
+        rpc_obj->set_vertical_resolution_pix(video_stream_settings.vertical_resolution_pix);
+
+        rpc_obj->set_bit_rate_b_s(video_stream_settings.bit_rate_b_s);
+
+        rpc_obj->set_rotation_deg(video_stream_settings.rotation_deg);
+
+        rpc_obj->set_uri(video_stream_settings.uri);
+
+        rpc_obj->set_horizontal_fov_deg(video_stream_settings.horizontal_fov_deg);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Camera::VideoStreamSettings translateFromRpcVideoStreamSettings(
+        const rpc::camera::VideoStreamSettings& video_stream_settings)
+    {
+        mavsdk::Camera::VideoStreamSettings obj;
+
+        obj.frame_rate_hz = video_stream_settings.frame_rate_hz();
+
+        obj.horizontal_resolution_pix = video_stream_settings.horizontal_resolution_pix();
+
+        obj.vertical_resolution_pix = video_stream_settings.vertical_resolution_pix();
+
+        obj.bit_rate_b_s = video_stream_settings.bit_rate_b_s();
+
+        obj.rotation_deg = video_stream_settings.rotation_deg();
+
+        obj.uri = video_stream_settings.uri();
+
+        obj.horizontal_fov_deg = video_stream_settings.horizontal_fov_deg();
+
+        return obj;
+    }
+
+    static rpc::camera::VideoStreamInfo::VideoStreamStatus translateToRpcVideoStreamStatus(
+        const mavsdk::Camera::VideoStreamInfo::VideoStreamStatus& video_stream_status)
+    {
+        switch (video_stream_status) {
+            default:
+                LogErr() << "Unknown video_stream_status enum value: "
+                         << static_cast<int>(video_stream_status);
+            // FALLTHROUGH
+            case mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::NotRunning:
+                return rpc::camera::
+                    VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING;
+            case mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::InProgress:
+                return rpc::camera::
+                    VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_IN_PROGRESS;
+        }
+    }
+
+    static mavsdk::Camera::VideoStreamInfo::VideoStreamStatus translateFromRpcVideoStreamStatus(
+        const rpc::camera::VideoStreamInfo::VideoStreamStatus video_stream_status)
+    {
+        switch (video_stream_status) {
+            default:
+                LogErr() << "Unknown video_stream_status enum value: "
+                         << static_cast<int>(video_stream_status);
+            // FALLTHROUGH
+            case rpc::camera::VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING:
+                return mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::NotRunning;
+            case rpc::camera::VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_IN_PROGRESS:
+                return mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::InProgress;
+        }
+    }
+
+    static rpc::camera::VideoStreamInfo::VideoStreamSpectrum translateToRpcVideoStreamSpectrum(
+        const mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum& video_stream_spectrum)
+    {
+        switch (video_stream_spectrum) {
+            default:
+                LogErr() << "Unknown video_stream_spectrum enum value: "
+                         << static_cast<int>(video_stream_spectrum);
+            // FALLTHROUGH
+            case mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown:
+                return rpc::camera::
+                    VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_UNKNOWN;
+            case mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight:
+                return rpc::camera::
+                    VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT;
+            case mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared:
+                return rpc::camera::
+                    VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_INFRARED;
+        }
+    }
+
+    static mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum translateFromRpcVideoStreamSpectrum(
+        const rpc::camera::VideoStreamInfo::VideoStreamSpectrum video_stream_spectrum)
+    {
+        switch (video_stream_spectrum) {
+            default:
+                LogErr() << "Unknown video_stream_spectrum enum value: "
+                         << static_cast<int>(video_stream_spectrum);
+            // FALLTHROUGH
+            case rpc::camera::VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_UNKNOWN:
+                return mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown;
+            case rpc::camera::
+                VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT:
+                return mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight;
+            case rpc::camera::VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_INFRARED:
+                return mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared;
+        }
+    }
+
+    static std::unique_ptr<rpc::camera::VideoStreamInfo>
+    translateToRpcVideoStreamInfo(const mavsdk::Camera::VideoStreamInfo& video_stream_info)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera::VideoStreamInfo>();
+
+        rpc_obj->set_camera_id(video_stream_info.camera_id);
+
+        rpc_obj->set_allocated_settings(
+            translateToRpcVideoStreamSettings(video_stream_info.settings).release());
+
+        rpc_obj->set_status(translateToRpcVideoStreamStatus(video_stream_info.status));
+
+        rpc_obj->set_spectrum(translateToRpcVideoStreamSpectrum(video_stream_info.spectrum));
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Camera::VideoStreamInfo
+    translateFromRpcVideoStreamInfo(const rpc::camera::VideoStreamInfo& video_stream_info)
+    {
+        mavsdk::Camera::VideoStreamInfo obj;
+
+        obj.camera_id = video_stream_info.camera_id();
+
+        obj.settings = translateFromRpcVideoStreamSettings(video_stream_info.settings());
+
+        obj.status = translateFromRpcVideoStreamStatus(video_stream_info.status());
+
+        obj.spectrum = translateFromRpcVideoStreamSpectrum(video_stream_info.spectrum());
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::camera::ModeUpdate>
+    translateToRpcModeUpdate(const mavsdk::Camera::ModeUpdate& mode_update)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera::ModeUpdate>();
+
+        rpc_obj->set_camera_id(mode_update.camera_id);
+
+        rpc_obj->set_mode(translateToRpcMode(mode_update.mode));
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Camera::ModeUpdate
+    translateFromRpcModeUpdate(const rpc::camera::ModeUpdate& mode_update)
+    {
+        mavsdk::Camera::ModeUpdate obj;
+
+        obj.camera_id = mode_update.camera_id();
+
+        obj.mode = translateFromRpcMode(mode_update.mode());
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::camera::VideoStreamUpdate>
+    translateToRpcVideoStreamUpdate(const mavsdk::Camera::VideoStreamUpdate& video_stream_update)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera::VideoStreamUpdate>();
+
+        rpc_obj->set_camera_id(video_stream_update.camera_id);
+
+        rpc_obj->set_allocated_video_stream_info(
+            translateToRpcVideoStreamInfo(video_stream_update.video_stream_info).release());
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Camera::VideoStreamUpdate
+    translateFromRpcVideoStreamUpdate(const rpc::camera::VideoStreamUpdate& video_stream_update)
+    {
+        mavsdk::Camera::VideoStreamUpdate obj;
+
+        obj.camera_id = video_stream_update.camera_id();
+
+        obj.video_stream_info =
+            translateFromRpcVideoStreamInfo(video_stream_update.video_stream_info());
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::camera::CurrentSettingsUpdate> translateToRpcCurrentSettingsUpdate(
+        const mavsdk::Camera::CurrentSettingsUpdate& current_settings_update)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera::CurrentSettingsUpdate>();
+
+        rpc_obj->set_camera_id(current_settings_update.camera_id);
+
+        for (const auto& elem : current_settings_update.current_settings) {
+            auto* ptr = rpc_obj->add_current_settings();
+            ptr->CopyFrom(*translateToRpcSetting(elem).release());
+        }
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Camera::CurrentSettingsUpdate translateFromRpcCurrentSettingsUpdate(
+        const rpc::camera::CurrentSettingsUpdate& current_settings_update)
+    {
+        mavsdk::Camera::CurrentSettingsUpdate obj;
+
+        obj.camera_id = current_settings_update.camera_id();
+
+        for (const auto& elem : current_settings_update.current_settings()) {
+            obj.current_settings.push_back(
+                translateFromRpcSetting(static_cast<mavsdk::rpc::camera::Setting>(elem)));
+        }
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::camera::PossibleSettingOptionsUpdate>
+    translateToRpcPossibleSettingOptionsUpdate(
+        const mavsdk::Camera::PossibleSettingOptionsUpdate& possible_setting_options_update)
+    {
+        auto rpc_obj = std::make_unique<rpc::camera::PossibleSettingOptionsUpdate>();
+
+        rpc_obj->set_camera_id(possible_setting_options_update.camera_id);
+
+        for (const auto& elem : possible_setting_options_update.setting_options) {
+            auto* ptr = rpc_obj->add_setting_options();
+            ptr->CopyFrom(*translateToRpcSettingOptions(elem).release());
+        }
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Camera::PossibleSettingOptionsUpdate
+    translateFromRpcPossibleSettingOptionsUpdate(
+        const rpc::camera::PossibleSettingOptionsUpdate& possible_setting_options_update)
+    {
+        mavsdk::Camera::PossibleSettingOptionsUpdate obj;
+
+        obj.camera_id = possible_setting_options_update.camera_id();
+
+        for (const auto& elem : possible_setting_options_update.setting_options()) {
+            obj.setting_options.push_back(translateFromRpcSettingOptions(
+                static_cast<mavsdk::rpc::camera::SettingOptions>(elem)));
+        }
 
         return obj;
     }
@@ -336,153 +668,6 @@ public:
         return obj;
     }
 
-    static std::unique_ptr<rpc::camera::VideoStreamSettings> translateToRpcVideoStreamSettings(
-        const mavsdk::Camera::VideoStreamSettings& video_stream_settings)
-    {
-        auto rpc_obj = std::make_unique<rpc::camera::VideoStreamSettings>();
-
-        rpc_obj->set_frame_rate_hz(video_stream_settings.frame_rate_hz);
-
-        rpc_obj->set_horizontal_resolution_pix(video_stream_settings.horizontal_resolution_pix);
-
-        rpc_obj->set_vertical_resolution_pix(video_stream_settings.vertical_resolution_pix);
-
-        rpc_obj->set_bit_rate_b_s(video_stream_settings.bit_rate_b_s);
-
-        rpc_obj->set_rotation_deg(video_stream_settings.rotation_deg);
-
-        rpc_obj->set_uri(video_stream_settings.uri);
-
-        rpc_obj->set_horizontal_fov_deg(video_stream_settings.horizontal_fov_deg);
-
-        return rpc_obj;
-    }
-
-    static mavsdk::Camera::VideoStreamSettings translateFromRpcVideoStreamSettings(
-        const rpc::camera::VideoStreamSettings& video_stream_settings)
-    {
-        mavsdk::Camera::VideoStreamSettings obj;
-
-        obj.frame_rate_hz = video_stream_settings.frame_rate_hz();
-
-        obj.horizontal_resolution_pix = video_stream_settings.horizontal_resolution_pix();
-
-        obj.vertical_resolution_pix = video_stream_settings.vertical_resolution_pix();
-
-        obj.bit_rate_b_s = video_stream_settings.bit_rate_b_s();
-
-        obj.rotation_deg = video_stream_settings.rotation_deg();
-
-        obj.uri = video_stream_settings.uri();
-
-        obj.horizontal_fov_deg = video_stream_settings.horizontal_fov_deg();
-
-        return obj;
-    }
-
-    static rpc::camera::VideoStreamInfo::VideoStreamStatus translateToRpcVideoStreamStatus(
-        const mavsdk::Camera::VideoStreamInfo::VideoStreamStatus& video_stream_status)
-    {
-        switch (video_stream_status) {
-            default:
-                LogErr() << "Unknown video_stream_status enum value: "
-                         << static_cast<int>(video_stream_status);
-            // FALLTHROUGH
-            case mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::NotRunning:
-                return rpc::camera::
-                    VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING;
-            case mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::InProgress:
-                return rpc::camera::
-                    VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_IN_PROGRESS;
-        }
-    }
-
-    static mavsdk::Camera::VideoStreamInfo::VideoStreamStatus translateFromRpcVideoStreamStatus(
-        const rpc::camera::VideoStreamInfo::VideoStreamStatus video_stream_status)
-    {
-        switch (video_stream_status) {
-            default:
-                LogErr() << "Unknown video_stream_status enum value: "
-                         << static_cast<int>(video_stream_status);
-            // FALLTHROUGH
-            case rpc::camera::VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_NOT_RUNNING:
-                return mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::NotRunning;
-            case rpc::camera::VideoStreamInfo_VideoStreamStatus_VIDEO_STREAM_STATUS_IN_PROGRESS:
-                return mavsdk::Camera::VideoStreamInfo::VideoStreamStatus::InProgress;
-        }
-    }
-
-    static rpc::camera::VideoStreamInfo::VideoStreamSpectrum translateToRpcVideoStreamSpectrum(
-        const mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum& video_stream_spectrum)
-    {
-        switch (video_stream_spectrum) {
-            default:
-                LogErr() << "Unknown video_stream_spectrum enum value: "
-                         << static_cast<int>(video_stream_spectrum);
-            // FALLTHROUGH
-            case mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown:
-                return rpc::camera::
-                    VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_UNKNOWN;
-            case mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight:
-                return rpc::camera::
-                    VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT;
-            case mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared:
-                return rpc::camera::
-                    VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_INFRARED;
-        }
-    }
-
-    static mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum translateFromRpcVideoStreamSpectrum(
-        const rpc::camera::VideoStreamInfo::VideoStreamSpectrum video_stream_spectrum)
-    {
-        switch (video_stream_spectrum) {
-            default:
-                LogErr() << "Unknown video_stream_spectrum enum value: "
-                         << static_cast<int>(video_stream_spectrum);
-            // FALLTHROUGH
-            case rpc::camera::VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_UNKNOWN:
-                return mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown;
-            case rpc::camera::
-                VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_VISIBLE_LIGHT:
-                return mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight;
-            case rpc::camera::VideoStreamInfo_VideoStreamSpectrum_VIDEO_STREAM_SPECTRUM_INFRARED:
-                return mavsdk::Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared;
-        }
-    }
-
-    static std::unique_ptr<rpc::camera::VideoStreamInfo>
-    translateToRpcVideoStreamInfo(const mavsdk::Camera::VideoStreamInfo& video_stream_info)
-    {
-        auto rpc_obj = std::make_unique<rpc::camera::VideoStreamInfo>();
-
-        rpc_obj->set_camera_id(video_stream_info.camera_id);
-
-        rpc_obj->set_allocated_settings(
-            translateToRpcVideoStreamSettings(video_stream_info.settings).release());
-
-        rpc_obj->set_status(translateToRpcVideoStreamStatus(video_stream_info.status));
-
-        rpc_obj->set_spectrum(translateToRpcVideoStreamSpectrum(video_stream_info.spectrum));
-
-        return rpc_obj;
-    }
-
-    static mavsdk::Camera::VideoStreamInfo
-    translateFromRpcVideoStreamInfo(const rpc::camera::VideoStreamInfo& video_stream_info)
-    {
-        mavsdk::Camera::VideoStreamInfo obj;
-
-        obj.camera_id = video_stream_info.camera_id();
-
-        obj.settings = translateFromRpcVideoStreamSettings(video_stream_info.settings());
-
-        obj.status = translateFromRpcVideoStreamStatus(video_stream_info.status());
-
-        obj.spectrum = translateFromRpcVideoStreamSpectrum(video_stream_info.spectrum());
-
-        return obj;
-    }
-
     static rpc::camera::Status::StorageStatus
     translateToRpcStorageStatus(const mavsdk::Camera::Status::StorageStatus& storage_status)
     {
@@ -620,102 +805,6 @@ public:
         obj.storage_id = status.storage_id();
 
         obj.storage_type = translateFromRpcStorageType(status.storage_type());
-
-        return obj;
-    }
-
-    static std::unique_ptr<rpc::camera::Option>
-    translateToRpcOption(const mavsdk::Camera::Option& option)
-    {
-        auto rpc_obj = std::make_unique<rpc::camera::Option>();
-
-        rpc_obj->set_option_id(option.option_id);
-
-        rpc_obj->set_option_description(option.option_description);
-
-        return rpc_obj;
-    }
-
-    static mavsdk::Camera::Option translateFromRpcOption(const rpc::camera::Option& option)
-    {
-        mavsdk::Camera::Option obj;
-
-        obj.option_id = option.option_id();
-
-        obj.option_description = option.option_description();
-
-        return obj;
-    }
-
-    static std::unique_ptr<rpc::camera::Setting>
-    translateToRpcSetting(const mavsdk::Camera::Setting& setting)
-    {
-        auto rpc_obj = std::make_unique<rpc::camera::Setting>();
-
-        rpc_obj->set_setting_id(setting.setting_id);
-
-        rpc_obj->set_setting_description(setting.setting_description);
-
-        rpc_obj->set_allocated_option(translateToRpcOption(setting.option).release());
-
-        rpc_obj->set_is_range(setting.is_range);
-
-        return rpc_obj;
-    }
-
-    static mavsdk::Camera::Setting translateFromRpcSetting(const rpc::camera::Setting& setting)
-    {
-        mavsdk::Camera::Setting obj;
-
-        obj.setting_id = setting.setting_id();
-
-        obj.setting_description = setting.setting_description();
-
-        obj.option = translateFromRpcOption(setting.option());
-
-        obj.is_range = setting.is_range();
-
-        return obj;
-    }
-
-    static std::unique_ptr<rpc::camera::SettingOptions>
-    translateToRpcSettingOptions(const mavsdk::Camera::SettingOptions& setting_options)
-    {
-        auto rpc_obj = std::make_unique<rpc::camera::SettingOptions>();
-
-        rpc_obj->set_camera_id(setting_options.camera_id);
-
-        rpc_obj->set_setting_id(setting_options.setting_id);
-
-        rpc_obj->set_setting_description(setting_options.setting_description);
-
-        for (const auto& elem : setting_options.options) {
-            auto* ptr = rpc_obj->add_options();
-            ptr->CopyFrom(*translateToRpcOption(elem).release());
-        }
-
-        rpc_obj->set_is_range(setting_options.is_range);
-
-        return rpc_obj;
-    }
-
-    static mavsdk::Camera::SettingOptions
-    translateFromRpcSettingOptions(const rpc::camera::SettingOptions& setting_options)
-    {
-        mavsdk::Camera::SettingOptions obj;
-
-        obj.camera_id = setting_options.camera_id();
-
-        obj.setting_id = setting_options.setting_id();
-
-        obj.setting_description = setting_options.setting_description();
-
-        for (const auto& elem : setting_options.options()) {
-            obj.options.push_back(
-                translateFromRpcOption(static_cast<mavsdk::rpc::camera::Option>(elem)));
-        }
-
-        obj.is_range = setting_options.is_range();
 
         return obj;
     }
@@ -1112,10 +1201,10 @@ public:
 
         const mavsdk::Camera::ModeHandle handle = _lazy_plugin.maybe_plugin()->subscribe_mode(
             [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                const mavsdk::Camera::ModeInfo mode) {
+                const mavsdk::Camera::ModeUpdate mode) {
                 rpc::camera::ModeResponse rpc_response;
 
-                rpc_response.set_allocated_mode_info(translateToRpcModeInfo(mode).release());
+                rpc_response.set_allocated_update(translateToRpcModeUpdate(mode).release());
 
                 std::unique_lock<std::mutex> lock(*subscribe_mutex);
                 if (!*is_finished && !writer->Write(rpc_response)) {
@@ -1140,6 +1229,11 @@ public:
         rpc::camera::GetModeResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Camera::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
             return grpc::Status::OK;
         }
 
@@ -1151,7 +1245,9 @@ public:
         auto result = _lazy_plugin.maybe_plugin()->get_mode(request->camera_id());
 
         if (response != nullptr) {
-            response->set_mode(translateToRpcMode(result));
+            fillResponseWithResult(response, result.first);
+
+            response->set_mode(translateToRpcMode(result.second));
         }
 
         return grpc::Status::OK;
@@ -1176,11 +1272,11 @@ public:
         const mavsdk::Camera::VideoStreamInfoHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_video_stream_info(
                 [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const mavsdk::Camera::VideoStreamInfo video_stream_info) {
+                    const mavsdk::Camera::VideoStreamUpdate video_stream_info) {
                     rpc::camera::VideoStreamInfoResponse rpc_response;
 
-                    rpc_response.set_allocated_video_stream_info(
-                        translateToRpcVideoStreamInfo(video_stream_info).release());
+                    rpc_response.set_allocated_update(
+                        translateToRpcVideoStreamUpdate(video_stream_info).release());
 
                     std::unique_lock<std::mutex> lock(*subscribe_mutex);
                     if (!*is_finished && !writer->Write(rpc_response)) {
@@ -1205,6 +1301,11 @@ public:
         rpc::camera::GetVideoStreamInfoResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Camera::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
             return grpc::Status::OK;
         }
 
@@ -1216,8 +1317,10 @@ public:
         auto result = _lazy_plugin.maybe_plugin()->get_video_stream_info(request->camera_id());
 
         if (response != nullptr) {
+            fillResponseWithResult(response, result.first);
+
             response->set_allocated_video_stream_info(
-                translateToRpcVideoStreamInfo(result).release());
+                translateToRpcVideoStreamInfo(result.second).release());
         }
 
         return grpc::Status::OK;
@@ -1311,6 +1414,11 @@ public:
         rpc::camera::GetStatusResponse* response) override
     {
         if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Camera::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
             return grpc::Status::OK;
         }
 
@@ -1322,7 +1430,9 @@ public:
         auto result = _lazy_plugin.maybe_plugin()->get_status(request->camera_id());
 
         if (response != nullptr) {
-            response->set_allocated_status(translateToRpcStatus(result).release());
+            fillResponseWithResult(response, result.first);
+
+            response->set_allocated_status(translateToRpcStatus(result.second).release());
         }
 
         return grpc::Status::OK;
@@ -1347,13 +1457,11 @@ public:
         const mavsdk::Camera::CurrentSettingsHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_current_settings(
                 [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const std::vector<mavsdk::Camera::Setting> current_settings) {
+                    const mavsdk::Camera::CurrentSettingsUpdate current_settings) {
                     rpc::camera::CurrentSettingsResponse rpc_response;
 
-                    for (const auto& elem : current_settings) {
-                        auto* ptr = rpc_response.add_current_settings();
-                        ptr->CopyFrom(*translateToRpcSetting(elem).release());
-                    }
+                    rpc_response.set_allocated_update(
+                        translateToRpcCurrentSettingsUpdate(current_settings).release());
 
                     std::unique_lock<std::mutex> lock(*subscribe_mutex);
                     if (!*is_finished && !writer->Write(rpc_response)) {
@@ -1424,13 +1532,12 @@ public:
         const mavsdk::Camera::PossibleSettingOptionsHandle handle =
             _lazy_plugin.maybe_plugin()->subscribe_possible_setting_options(
                 [this, &writer, &stream_closed_promise, is_finished, subscribe_mutex, &handle](
-                    const std::vector<mavsdk::Camera::SettingOptions> possible_setting_options) {
+                    const mavsdk::Camera::PossibleSettingOptionsUpdate possible_setting_options) {
                     rpc::camera::PossibleSettingOptionsResponse rpc_response;
 
-                    for (const auto& elem : possible_setting_options) {
-                        auto* ptr = rpc_response.add_setting_options();
-                        ptr->CopyFrom(*translateToRpcSettingOptions(elem).release());
-                    }
+                    rpc_response.set_allocated_update(
+                        translateToRpcPossibleSettingOptionsUpdate(possible_setting_options)
+                            .release());
 
                     std::unique_lock<std::mutex> lock(*subscribe_mutex);
                     if (!*is_finished && !writer->Write(rpc_response)) {

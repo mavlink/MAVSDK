@@ -88,7 +88,6 @@ TEST(SystemTest, CameraDefinition)
     EXPECT_EQ(current_setting.second.size(), 11);
 
     // Now we change a setting which means the WB_TEMP param is now excluded from our options.
-
     Camera::Setting new_setting{};
     new_setting.setting_id = "WB_MODE";
     new_setting.option = Camera::Option{"1"};

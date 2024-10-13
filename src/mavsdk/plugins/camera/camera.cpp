@@ -9,18 +9,21 @@
 
 namespace mavsdk {
 
-using ModeInfo = Camera::ModeInfo;
+using Option = Camera::Option;
+using Setting = Camera::Setting;
+using SettingOptions = Camera::SettingOptions;
+using VideoStreamSettings = Camera::VideoStreamSettings;
+using VideoStreamInfo = Camera::VideoStreamInfo;
+using ModeUpdate = Camera::ModeUpdate;
+using VideoStreamUpdate = Camera::VideoStreamUpdate;
+using CurrentSettingsUpdate = Camera::CurrentSettingsUpdate;
+using PossibleSettingOptionsUpdate = Camera::PossibleSettingOptionsUpdate;
 
 using Position = Camera::Position;
 using Quaternion = Camera::Quaternion;
 using EulerAngle = Camera::EulerAngle;
 using CaptureInfo = Camera::CaptureInfo;
-using VideoStreamSettings = Camera::VideoStreamSettings;
-using VideoStreamInfo = Camera::VideoStreamInfo;
 using Status = Camera::Status;
-using Option = Camera::Option;
-using Setting = Camera::Setting;
-using SettingOptions = Camera::SettingOptions;
 using Information = Camera::Information;
 using CameraList = Camera::CameraList;
 
@@ -141,7 +144,7 @@ void Camera::unsubscribe_mode(ModeHandle handle)
     _impl->unsubscribe_mode(handle);
 }
 
-Camera::Mode Camera::get_mode(int32_t camera_id) const
+std::pair<Camera::Result, Camera::Mode> Camera::get_mode(int32_t camera_id) const
 {
     return _impl->get_mode(camera_id);
 }
@@ -157,7 +160,8 @@ void Camera::unsubscribe_video_stream_info(VideoStreamInfoHandle handle)
     _impl->unsubscribe_video_stream_info(handle);
 }
 
-Camera::VideoStreamInfo Camera::get_video_stream_info(int32_t camera_id) const
+std::pair<Camera::Result, Camera::VideoStreamInfo>
+Camera::get_video_stream_info(int32_t camera_id) const
 {
     return _impl->get_video_stream_info(camera_id);
 }
@@ -182,7 +186,7 @@ void Camera::unsubscribe_status(StatusHandle handle)
     _impl->unsubscribe_status(handle);
 }
 
-Camera::Status Camera::get_status(int32_t camera_id) const
+std::pair<Camera::Result, Camera::Status> Camera::get_status(int32_t camera_id) const
 {
     return _impl->get_status(camera_id);
 }
@@ -389,17 +393,210 @@ Camera::Result Camera::focus_range(int32_t camera_id, float range) const
     return _impl->focus_range(camera_id, range);
 }
 
-bool operator==(const Camera::ModeInfo& lhs, const Camera::ModeInfo& rhs)
+bool operator==(const Camera::Option& lhs, const Camera::Option& rhs)
+{
+    return (rhs.option_id == lhs.option_id) && (rhs.option_description == lhs.option_description);
+}
+
+std::ostream& operator<<(std::ostream& str, Camera::Option const& option)
+{
+    str << std::setprecision(15);
+    str << "option:" << '\n' << "{\n";
+    str << "    option_id: " << option.option_id << '\n';
+    str << "    option_description: " << option.option_description << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Camera::Setting& lhs, const Camera::Setting& rhs)
+{
+    return (rhs.setting_id == lhs.setting_id) &&
+           (rhs.setting_description == lhs.setting_description) && (rhs.option == lhs.option) &&
+           (rhs.is_range == lhs.is_range);
+}
+
+std::ostream& operator<<(std::ostream& str, Camera::Setting const& setting)
+{
+    str << std::setprecision(15);
+    str << "setting:" << '\n' << "{\n";
+    str << "    setting_id: " << setting.setting_id << '\n';
+    str << "    setting_description: " << setting.setting_description << '\n';
+    str << "    option: " << setting.option << '\n';
+    str << "    is_range: " << setting.is_range << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Camera::SettingOptions& lhs, const Camera::SettingOptions& rhs)
+{
+    return (rhs.camera_id == lhs.camera_id) && (rhs.setting_id == lhs.setting_id) &&
+           (rhs.setting_description == lhs.setting_description) && (rhs.options == lhs.options) &&
+           (rhs.is_range == lhs.is_range);
+}
+
+std::ostream& operator<<(std::ostream& str, Camera::SettingOptions const& setting_options)
+{
+    str << std::setprecision(15);
+    str << "setting_options:" << '\n' << "{\n";
+    str << "    camera_id: " << setting_options.camera_id << '\n';
+    str << "    setting_id: " << setting_options.setting_id << '\n';
+    str << "    setting_description: " << setting_options.setting_description << '\n';
+    str << "    options: [";
+    for (auto it = setting_options.options.begin(); it != setting_options.options.end(); ++it) {
+        str << *it;
+        str << (it + 1 != setting_options.options.end() ? ", " : "]\n");
+    }
+    str << "    is_range: " << setting_options.is_range << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Camera::VideoStreamSettings& lhs, const Camera::VideoStreamSettings& rhs)
+{
+    return ((std::isnan(rhs.frame_rate_hz) && std::isnan(lhs.frame_rate_hz)) ||
+            rhs.frame_rate_hz == lhs.frame_rate_hz) &&
+           (rhs.horizontal_resolution_pix == lhs.horizontal_resolution_pix) &&
+           (rhs.vertical_resolution_pix == lhs.vertical_resolution_pix) &&
+           (rhs.bit_rate_b_s == lhs.bit_rate_b_s) && (rhs.rotation_deg == lhs.rotation_deg) &&
+           (rhs.uri == lhs.uri) &&
+           ((std::isnan(rhs.horizontal_fov_deg) && std::isnan(lhs.horizontal_fov_deg)) ||
+            rhs.horizontal_fov_deg == lhs.horizontal_fov_deg);
+}
+
+std::ostream&
+operator<<(std::ostream& str, Camera::VideoStreamSettings const& video_stream_settings)
+{
+    str << std::setprecision(15);
+    str << "video_stream_settings:" << '\n' << "{\n";
+    str << "    frame_rate_hz: " << video_stream_settings.frame_rate_hz << '\n';
+    str << "    horizontal_resolution_pix: " << video_stream_settings.horizontal_resolution_pix
+        << '\n';
+    str << "    vertical_resolution_pix: " << video_stream_settings.vertical_resolution_pix << '\n';
+    str << "    bit_rate_b_s: " << video_stream_settings.bit_rate_b_s << '\n';
+    str << "    rotation_deg: " << video_stream_settings.rotation_deg << '\n';
+    str << "    uri: " << video_stream_settings.uri << '\n';
+    str << "    horizontal_fov_deg: " << video_stream_settings.horizontal_fov_deg << '\n';
+    str << '}';
+    return str;
+}
+
+std::ostream&
+operator<<(std::ostream& str, Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status)
+{
+    switch (video_stream_status) {
+        case Camera::VideoStreamInfo::VideoStreamStatus::NotRunning:
+            return str << "Not Running";
+        case Camera::VideoStreamInfo::VideoStreamStatus::InProgress:
+            return str << "In Progress";
+        default:
+            return str << "Unknown";
+    }
+}
+
+std::ostream& operator<<(
+    std::ostream& str, Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum)
+{
+    switch (video_stream_spectrum) {
+        case Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown:
+            return str << "Unknown";
+        case Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight:
+            return str << "Visible Light";
+        case Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared:
+            return str << "Infrared";
+        default:
+            return str << "Unknown";
+    }
+}
+bool operator==(const Camera::VideoStreamInfo& lhs, const Camera::VideoStreamInfo& rhs)
+{
+    return (rhs.camera_id == lhs.camera_id) && (rhs.settings == lhs.settings) &&
+           (rhs.status == lhs.status) && (rhs.spectrum == lhs.spectrum);
+}
+
+std::ostream& operator<<(std::ostream& str, Camera::VideoStreamInfo const& video_stream_info)
+{
+    str << std::setprecision(15);
+    str << "video_stream_info:" << '\n' << "{\n";
+    str << "    camera_id: " << video_stream_info.camera_id << '\n';
+    str << "    settings: " << video_stream_info.settings << '\n';
+    str << "    status: " << video_stream_info.status << '\n';
+    str << "    spectrum: " << video_stream_info.spectrum << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Camera::ModeUpdate& lhs, const Camera::ModeUpdate& rhs)
 {
     return (rhs.camera_id == lhs.camera_id) && (rhs.mode == lhs.mode);
 }
 
-std::ostream& operator<<(std::ostream& str, Camera::ModeInfo const& mode_info)
+std::ostream& operator<<(std::ostream& str, Camera::ModeUpdate const& mode_update)
 {
     str << std::setprecision(15);
-    str << "mode_info:" << '\n' << "{\n";
-    str << "    camera_id: " << mode_info.camera_id << '\n';
-    str << "    mode: " << mode_info.mode << '\n';
+    str << "mode_update:" << '\n' << "{\n";
+    str << "    camera_id: " << mode_update.camera_id << '\n';
+    str << "    mode: " << mode_update.mode << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Camera::VideoStreamUpdate& lhs, const Camera::VideoStreamUpdate& rhs)
+{
+    return (rhs.camera_id == lhs.camera_id) && (rhs.video_stream_info == lhs.video_stream_info);
+}
+
+std::ostream& operator<<(std::ostream& str, Camera::VideoStreamUpdate const& video_stream_update)
+{
+    str << std::setprecision(15);
+    str << "video_stream_update:" << '\n' << "{\n";
+    str << "    camera_id: " << video_stream_update.camera_id << '\n';
+    str << "    video_stream_info: " << video_stream_update.video_stream_info << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Camera::CurrentSettingsUpdate& lhs, const Camera::CurrentSettingsUpdate& rhs)
+{
+    return (rhs.camera_id == lhs.camera_id) && (rhs.current_settings == lhs.current_settings);
+}
+
+std::ostream&
+operator<<(std::ostream& str, Camera::CurrentSettingsUpdate const& current_settings_update)
+{
+    str << std::setprecision(15);
+    str << "current_settings_update:" << '\n' << "{\n";
+    str << "    camera_id: " << current_settings_update.camera_id << '\n';
+    str << "    current_settings: [";
+    for (auto it = current_settings_update.current_settings.begin();
+         it != current_settings_update.current_settings.end();
+         ++it) {
+        str << *it;
+        str << (it + 1 != current_settings_update.current_settings.end() ? ", " : "]\n");
+    }
+    str << '}';
+    return str;
+}
+
+bool operator==(
+    const Camera::PossibleSettingOptionsUpdate& lhs,
+    const Camera::PossibleSettingOptionsUpdate& rhs)
+{
+    return (rhs.camera_id == lhs.camera_id) && (rhs.setting_options == lhs.setting_options);
+}
+
+std::ostream& operator<<(
+    std::ostream& str, Camera::PossibleSettingOptionsUpdate const& possible_setting_options_update)
+{
+    str << std::setprecision(15);
+    str << "possible_setting_options_update:" << '\n' << "{\n";
+    str << "    camera_id: " << possible_setting_options_update.camera_id << '\n';
+    str << "    setting_options: [";
+    for (auto it = possible_setting_options_update.setting_options.begin();
+         it != possible_setting_options_update.setting_options.end();
+         ++it) {
+        str << *it;
+        str << (it + 1 != possible_setting_options_update.setting_options.end() ? ", " : "]\n");
+    }
     str << '}';
     return str;
 }
@@ -527,80 +724,6 @@ std::ostream& operator<<(std::ostream& str, Camera::CaptureInfo const& capture_i
     return str;
 }
 
-bool operator==(const Camera::VideoStreamSettings& lhs, const Camera::VideoStreamSettings& rhs)
-{
-    return ((std::isnan(rhs.frame_rate_hz) && std::isnan(lhs.frame_rate_hz)) ||
-            rhs.frame_rate_hz == lhs.frame_rate_hz) &&
-           (rhs.horizontal_resolution_pix == lhs.horizontal_resolution_pix) &&
-           (rhs.vertical_resolution_pix == lhs.vertical_resolution_pix) &&
-           (rhs.bit_rate_b_s == lhs.bit_rate_b_s) && (rhs.rotation_deg == lhs.rotation_deg) &&
-           (rhs.uri == lhs.uri) &&
-           ((std::isnan(rhs.horizontal_fov_deg) && std::isnan(lhs.horizontal_fov_deg)) ||
-            rhs.horizontal_fov_deg == lhs.horizontal_fov_deg);
-}
-
-std::ostream&
-operator<<(std::ostream& str, Camera::VideoStreamSettings const& video_stream_settings)
-{
-    str << std::setprecision(15);
-    str << "video_stream_settings:" << '\n' << "{\n";
-    str << "    frame_rate_hz: " << video_stream_settings.frame_rate_hz << '\n';
-    str << "    horizontal_resolution_pix: " << video_stream_settings.horizontal_resolution_pix
-        << '\n';
-    str << "    vertical_resolution_pix: " << video_stream_settings.vertical_resolution_pix << '\n';
-    str << "    bit_rate_b_s: " << video_stream_settings.bit_rate_b_s << '\n';
-    str << "    rotation_deg: " << video_stream_settings.rotation_deg << '\n';
-    str << "    uri: " << video_stream_settings.uri << '\n';
-    str << "    horizontal_fov_deg: " << video_stream_settings.horizontal_fov_deg << '\n';
-    str << '}';
-    return str;
-}
-
-std::ostream&
-operator<<(std::ostream& str, Camera::VideoStreamInfo::VideoStreamStatus const& video_stream_status)
-{
-    switch (video_stream_status) {
-        case Camera::VideoStreamInfo::VideoStreamStatus::NotRunning:
-            return str << "Not Running";
-        case Camera::VideoStreamInfo::VideoStreamStatus::InProgress:
-            return str << "In Progress";
-        default:
-            return str << "Unknown";
-    }
-}
-
-std::ostream& operator<<(
-    std::ostream& str, Camera::VideoStreamInfo::VideoStreamSpectrum const& video_stream_spectrum)
-{
-    switch (video_stream_spectrum) {
-        case Camera::VideoStreamInfo::VideoStreamSpectrum::Unknown:
-            return str << "Unknown";
-        case Camera::VideoStreamInfo::VideoStreamSpectrum::VisibleLight:
-            return str << "Visible Light";
-        case Camera::VideoStreamInfo::VideoStreamSpectrum::Infrared:
-            return str << "Infrared";
-        default:
-            return str << "Unknown";
-    }
-}
-bool operator==(const Camera::VideoStreamInfo& lhs, const Camera::VideoStreamInfo& rhs)
-{
-    return (rhs.camera_id == lhs.camera_id) && (rhs.settings == lhs.settings) &&
-           (rhs.status == lhs.status) && (rhs.spectrum == lhs.spectrum);
-}
-
-std::ostream& operator<<(std::ostream& str, Camera::VideoStreamInfo const& video_stream_info)
-{
-    str << std::setprecision(15);
-    str << "video_stream_info:" << '\n' << "{\n";
-    str << "    camera_id: " << video_stream_info.camera_id << '\n';
-    str << "    settings: " << video_stream_info.settings << '\n';
-    str << "    status: " << video_stream_info.status << '\n';
-    str << "    spectrum: " << video_stream_info.spectrum << '\n';
-    str << '}';
-    return str;
-}
-
 std::ostream& operator<<(std::ostream& str, Camera::Status::StorageStatus const& storage_status)
 {
     switch (storage_status) {
@@ -668,64 +791,6 @@ std::ostream& operator<<(std::ostream& str, Camera::Status const& status)
     str << "    storage_status: " << status.storage_status << '\n';
     str << "    storage_id: " << status.storage_id << '\n';
     str << "    storage_type: " << status.storage_type << '\n';
-    str << '}';
-    return str;
-}
-
-bool operator==(const Camera::Option& lhs, const Camera::Option& rhs)
-{
-    return (rhs.option_id == lhs.option_id) && (rhs.option_description == lhs.option_description);
-}
-
-std::ostream& operator<<(std::ostream& str, Camera::Option const& option)
-{
-    str << std::setprecision(15);
-    str << "option:" << '\n' << "{\n";
-    str << "    option_id: " << option.option_id << '\n';
-    str << "    option_description: " << option.option_description << '\n';
-    str << '}';
-    return str;
-}
-
-bool operator==(const Camera::Setting& lhs, const Camera::Setting& rhs)
-{
-    return (rhs.setting_id == lhs.setting_id) &&
-           (rhs.setting_description == lhs.setting_description) && (rhs.option == lhs.option) &&
-           (rhs.is_range == lhs.is_range);
-}
-
-std::ostream& operator<<(std::ostream& str, Camera::Setting const& setting)
-{
-    str << std::setprecision(15);
-    str << "setting:" << '\n' << "{\n";
-    str << "    setting_id: " << setting.setting_id << '\n';
-    str << "    setting_description: " << setting.setting_description << '\n';
-    str << "    option: " << setting.option << '\n';
-    str << "    is_range: " << setting.is_range << '\n';
-    str << '}';
-    return str;
-}
-
-bool operator==(const Camera::SettingOptions& lhs, const Camera::SettingOptions& rhs)
-{
-    return (rhs.camera_id == lhs.camera_id) && (rhs.setting_id == lhs.setting_id) &&
-           (rhs.setting_description == lhs.setting_description) && (rhs.options == lhs.options) &&
-           (rhs.is_range == lhs.is_range);
-}
-
-std::ostream& operator<<(std::ostream& str, Camera::SettingOptions const& setting_options)
-{
-    str << std::setprecision(15);
-    str << "setting_options:" << '\n' << "{\n";
-    str << "    camera_id: " << setting_options.camera_id << '\n';
-    str << "    setting_id: " << setting_options.setting_id << '\n';
-    str << "    setting_description: " << setting_options.setting_description << '\n';
-    str << "    options: [";
-    for (auto it = setting_options.options.begin(); it != setting_options.options.end(); ++it) {
-        str << *it;
-        str << (it + 1 != setting_options.options.end() ? ", " : "]\n");
-    }
-    str << "    is_range: " << setting_options.is_range << '\n';
     str << '}';
     return str;
 }
