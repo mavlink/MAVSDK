@@ -83,20 +83,25 @@ void TelemetryServerImpl::init()
                 case MAVLINK_MSG_ID_HOME_POSITION:
                     if (_maybe_home) {
                         if (_send_home()) {
-                            return _server_component_impl->make_command_ack_message(
-                                command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+                            return std::optional<mavlink_command_ack_t>{
+                                _server_component_impl->make_command_ack_message(
+                                    command, MAV_RESULT::MAV_RESULT_ACCEPTED)};
                         } else {
-                            return _server_component_impl->make_command_ack_message(
-                                command, MAV_RESULT::MAV_RESULT_FAILED);
+                            return std::optional<mavlink_command_ack_t>{
+                                _server_component_impl->make_command_ack_message(
+                                    command, MAV_RESULT::MAV_RESULT_FAILED)};
                         }
                     } else {
-                        return _server_component_impl->make_command_ack_message(
-                            command, MAV_RESULT::MAV_RESULT_DENIED);
+                        return std::optional<mavlink_command_ack_t>{
+                            _server_component_impl->make_command_ack_message(
+                                command, MAV_RESULT::MAV_RESULT_DENIED)};
                     }
 
                 default:
-                    return _server_component_impl->make_command_ack_message(
-                        command, MAV_RESULT::MAV_RESULT_DENIED);
+                    // Let's hope someone else answers and keep silent. In an ideal world we would
+                    // explicitly deny all the ones that we ought to answer but haven't implemented
+                    // yet.
+                    return std::optional<mavlink_command_ack_t>{};
             }
         },
         this);
