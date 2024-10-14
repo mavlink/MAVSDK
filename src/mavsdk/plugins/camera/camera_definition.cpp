@@ -3,10 +3,6 @@
 
 namespace mavsdk {
 
-CameraDefinition::CameraDefinition() {}
-
-CameraDefinition::~CameraDefinition() {}
-
 bool CameraDefinition::load_file(const std::string& filepath)
 {
     tinyxml2::XMLError xml_error = _doc.LoadFile(filepath.c_str());
@@ -242,7 +238,7 @@ bool CameraDefinition::parse_xml()
         } else {
             auto maybe_range_options = parse_range_options(e_parameter, param_name, type_map);
             if (!std::get<0>(maybe_range_options)) {
-                LogWarn() << "Not found: " << param_name;
+                LogWarn() << "Range not found for: " << param_name;
                 continue;
             }
 
@@ -367,7 +363,7 @@ CameraDefinition::parse_range_options(
 
     const char* min_str = param_handle->Attribute("min");
     if (!min_str) {
-        LogErr() << "min range missing for " << param_name;
+        LogDebug() << "min range missing for " << param_name;
         return std::make_tuple<>(false, options, default_option);
     }
 
@@ -376,7 +372,7 @@ CameraDefinition::parse_range_options(
 
     const char* max_str = param_handle->Attribute("max");
     if (!max_str) {
-        LogErr() << "max range missing for " << param_name;
+        LogDebug() << "max range missing for " << param_name;
         return std::make_tuple<>(false, options, default_option);
     }
 
@@ -462,7 +458,7 @@ void CameraDefinition::assume_default_settings()
 
         InternalCurrentSetting new_setting;
         new_setting.value = parameter.second->default_option.value;
-        new_setting.needs_updating = false;
+        new_setting.needs_updating = true;
         _current_settings[parameter.first] = new_setting;
 
         //} else {
@@ -542,7 +538,7 @@ bool CameraDefinition::get_possible_settings_locked(
         settings[setting.first] = setting.second.value;
     }
 
-    return (settings.size() > 0);
+    return !settings.empty();
 }
 
 bool CameraDefinition::set_setting(const std::string& name, const ParamValue& value)
@@ -578,7 +574,7 @@ bool CameraDefinition::set_setting(const std::string& name, const ParamValue& va
     // needs to happen outside of this class.
     for (const auto& update : _parameter_map[name]->updates) {
         if (_current_settings.find(update) == _current_settings.end()) {
-            // LogDebug() << "Update to '" << update << "' not understood.";
+            LogDebug() << "Update to '" << update << "' not understood.";
             continue;
         }
         _current_settings[update].needs_updating = true;
@@ -799,8 +795,6 @@ bool CameraDefinition::get_option_str(
     }
 
     for (const auto& option : _parameter_map[setting_name]->options) {
-        std::stringstream value_ss{};
-        value_ss << option->value;
         if (option->value == option_name) {
             description = option->name;
             return true;

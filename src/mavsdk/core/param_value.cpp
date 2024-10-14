@@ -488,7 +488,7 @@ bool ParamValue::set_int(int new_value)
         _value = static_cast<uint32_t>(new_value);
         return true;
     } else if (std::get_if<int32_t>(&_value)) {
-        _value = static_cast<int32_t>(new_value);
+        _value = new_value;
         return true;
     } else {
         return false;
@@ -588,7 +588,6 @@ std::array<char, 128> ParamValue::get_128_bytes() const
 
 bool ParamValue::operator==(const std::string& value_str) const
 {
-    // LogDebug() << "Compare " << value_str() << " and " << rhs.value_str();
     if (std::get_if<uint8_t>(&_value)) {
         return std::get<uint8_t>(_value) == std::stoi(value_str);
     } else if (std::get_if<int8_t>(&_value)) {
