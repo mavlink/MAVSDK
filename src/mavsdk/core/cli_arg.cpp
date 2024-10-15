@@ -105,7 +105,7 @@ bool CliArg::parse_udpin(const std::string_view rest)
     p.mode = Udp::Mode::In;
 
     if (p.host.empty()) {
-        LogErr() << "No network interface (or 0.0.0.0 for all network interfaces) supplied";
+        LogErr() << "No network interface supplied (use 0.0.0.0 for all network interfaces)";
         return false;
     }
 
