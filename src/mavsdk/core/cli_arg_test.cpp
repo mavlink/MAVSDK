@@ -128,6 +128,13 @@ TEST(CliArg, UdpInAll)
     EXPECT_EQ(udp->mode, CliArg::Udp::Mode::In);
 }
 
+TEST(CliArg, UdpInWrong)
+{
+    CliArg ca;
+
+    EXPECT_FALSE(ca.parse("udpin://:55"));
+}
+
 TEST(CliArg, UdpInSpecific)
 {
     CliArg ca;

@@ -103,8 +103,11 @@ bool CliArg::parse_udpin(const std::string_view rest)
     auto& p = std::get<Udp>(protocol);
     p.host = rest.substr(0, pos);
     p.mode = Udp::Mode::In;
-    p.host = rest.substr(0, pos);
-    p.mode = Udp::Mode::In;
+
+    if (p.host.empty()) {
+        LogErr() << "No network interface (or 0.0.0.0 for all network interfaces) supplied";
+        return false;
+    }
 
     if (auto maybe_port = port_from_str(rest.substr(pos + 1))) {
         p.port = maybe_port.value();
