@@ -33,8 +33,8 @@ class MavsdkImpl;
 
  * It is used to discover vehicles and manage active connections.
  *
- * An instance of this class must be created (first) in order to use the library.
- * The instance must be destroyed after use in order to break connections and release all resources.
+ * An instance of this class must be created and kept alive in order to use the library.
+ * The instance can be destroyed after use in order to break connections and release all resources.
  */
 class Mavsdk {
 public:
