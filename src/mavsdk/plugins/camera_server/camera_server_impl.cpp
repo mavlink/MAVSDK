@@ -1110,7 +1110,6 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_storage_informati
     auto information = static_cast<bool>(command.params.param2);
 
     if (!information) {
-        LogDebug() << "early storage return";
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_ACCEPTED);
     }
@@ -1122,57 +1121,13 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_storage_informati
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
 
-    // ack needs to be sent before storage information message
-    auto command_ack =
-        _server_component_impl->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
-    _server_component_impl->send_command_ack(command_ack);
-
     // TODO may need support multi storage id
     _last_storage_id = storage_id;
 
     _last_storage_information_command = command;
     _storage_information_callbacks(storage_id);
 
-    // unsupported
-    const uint8_t storage_count = 0;
-    const auto status = STORAGE_STATUS::STORAGE_STATUS_NOT_SUPPORTED;
-    const float total_capacity = 0;
-    const float used_capacity = 0;
-    const float available_capacity = 0;
-    const float read_speed = 0;
-    const float write_speed = 0;
-    const uint8_t type = STORAGE_TYPE::STORAGE_TYPE_UNKNOWN;
-    std::string name("");
-    // This needs to be long enough, otherwise the memcpy in mavlink overflows.
-    name.resize(32);
-    const uint8_t storage_usage = 0;
-
-    _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
-        mavlink_message_t message{};
-        mavlink_msg_storage_information_pack_chan(
-            mavlink_address.system_id,
-            mavlink_address.component_id,
-            channel,
-            &message,
-            static_cast<uint32_t>(_server_component_impl->get_time().elapsed_s() * 1e3),
-            storage_id,
-            storage_count,
-            status,
-            total_capacity,
-            used_capacity,
-            available_capacity,
-            read_speed,
-            write_speed,
-            type,
-            name.data(),
-            storage_usage);
-
-        return message;
-    });
-
-    LogDebug() << "sent storage msg";
-
-    // ack was already sent
+    // ack will be sent later in respond_storage_information
     return std::nullopt;
 }
 
@@ -1213,17 +1168,10 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_capture_st
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
     }
 
-    // ack needs to be sent before camera capture status message
-    auto command_ack =
-        _server_component_impl->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
-    _server_component_impl->send_command_ack(command_ack);
-
     _last_capture_status_command = command;
 
     // may not need param for now ,just use zero
     _capture_status_callbacks(0);
-
-    send_capture_status();
 
     // ack was already sent
     return std::nullopt;
