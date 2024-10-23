@@ -1020,6 +1020,11 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_informatio
         capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_TRACKING_RECTANGLE;
     }
 
+    if (!_zoom_range_callbacks.empty() || !_zoom_in_start_callbacks.empty() ||
+        !_zoom_out_start_callbacks.empty()) {
+        capability_flags |= CAMERA_CAP_FLAGS::CAMERA_CAP_FLAGS_HAS_BASIC_ZOOM;
+    }
+
     _information.vendor_name.resize(sizeof(mavlink_camera_information_t::vendor_name));
     _information.model_name.resize(sizeof(mavlink_camera_information_t::model_name));
     _information.definition_file_uri.resize(
