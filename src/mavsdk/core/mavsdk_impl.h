@@ -29,7 +29,7 @@ namespace mavsdk {
 class MavsdkImpl {
 public:
     /** @brief Default System ID for GCS configuration type. */
-    static constexpr int DEFAULT_SYSTEM_ID_GCS = 245;
+    static constexpr int DEFAULT_SYSTEM_ID_GCS = 255;
     /** @brief Default Component ID for GCS configuration type. */
     static constexpr int DEFAULT_COMPONENT_ID_GCS = MAV_COMP_ID_MISSIONPLANNER;
     /** @brief Default System ID for CompanionComputer configuration type. */
