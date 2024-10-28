@@ -610,59 +610,6 @@ public:
         return grpc::Status::OK;
     }
 
-    grpc::Status GetMaximumSpeed(
-        grpc::ServerContext* /* context */,
-        const rpc::action::GetMaximumSpeedRequest* /* request */,
-        rpc::action::GetMaximumSpeedResponse* response) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            if (response != nullptr) {
-                auto result = mavsdk::Action::Result::NoSystem;
-                fillResponseWithResult(response, result);
-            }
-
-            return grpc::Status::OK;
-        }
-
-        auto result = _lazy_plugin.maybe_plugin()->get_maximum_speed();
-
-        if (response != nullptr) {
-            fillResponseWithResult(response, result.first);
-
-            response->set_speed(result.second);
-        }
-
-        return grpc::Status::OK;
-    }
-
-    grpc::Status SetMaximumSpeed(
-        grpc::ServerContext* /* context */,
-        const rpc::action::SetMaximumSpeedRequest* request,
-        rpc::action::SetMaximumSpeedResponse* response) override
-    {
-        if (_lazy_plugin.maybe_plugin() == nullptr) {
-            if (response != nullptr) {
-                auto result = mavsdk::Action::Result::NoSystem;
-                fillResponseWithResult(response, result);
-            }
-
-            return grpc::Status::OK;
-        }
-
-        if (request == nullptr) {
-            LogWarn() << "SetMaximumSpeed sent with a null request! Ignoring...";
-            return grpc::Status::OK;
-        }
-
-        auto result = _lazy_plugin.maybe_plugin()->set_maximum_speed(request->speed());
-
-        if (response != nullptr) {
-            fillResponseWithResult(response, result);
-        }
-
-        return grpc::Status::OK;
-    }
-
     grpc::Status GetReturnToLaunchAltitude(
         grpc::ServerContext* /* context */,
         const rpc::action::GetReturnToLaunchAltitudeRequest* /* request */,

@@ -20,7 +20,6 @@ using ActionServiceImpl = mavsdk::mavsdk_server::ActionServiceImpl<MockAction, M
 using ActionResult = mavsdk::rpc::action::ActionResult;
 
 static constexpr float ARBITRARY_ALTITUDE = 42.42f;
-static constexpr float ARBITRARY_SPEED = 8.24f;
 
 std::vector<mavsdk::Action::Result> generateResults();
 mavsdk::Action::Result armAndGetTranslatedResult(mavsdk::Action::Result arm_result);
@@ -413,93 +412,6 @@ setTakeoffAltitudeAndGetTranslatedResult(const mavsdk::Action::Result action_res
     actionService.SetTakeoffAltitude(nullptr, &request, &response);
 
     return translateFromRpcResult(response.action_result().result());
-}
-
-TEST_F(ActionServiceImplTest, getMaxSpeedDoesNotCrashWithNullResponse)
-{
-    MockLazyPlugin lazy_plugin;
-    MockAction action;
-    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
-    ActionServiceImpl actionService(lazy_plugin);
-
-    actionService.GetMaximumSpeed(nullptr, nullptr, nullptr);
-}
-
-TEST_F(ActionServiceImplTest, getMaxSpeedCallsGetter)
-{
-    MockLazyPlugin lazy_plugin;
-    MockAction action;
-    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
-    ActionServiceImpl actionService(lazy_plugin);
-    EXPECT_CALL(action, get_maximum_speed()).Times(1);
-    mavsdk::rpc::action::GetMaximumSpeedResponse response;
-
-    actionService.GetMaximumSpeed(nullptr, nullptr, &response);
-}
-
-TEST_P(ActionServiceImplTest, getMaxSpeedGetsRightValue)
-{
-    MockLazyPlugin lazy_plugin;
-    MockAction action;
-    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
-    ActionServiceImpl actionService(lazy_plugin);
-    const auto expected_pair = std::make_pair<>(GetParam(), ARBITRARY_SPEED);
-    ON_CALL(action, get_maximum_speed()).WillByDefault(Return(expected_pair));
-    mavsdk::rpc::action::GetMaximumSpeedResponse response;
-
-    actionService.GetMaximumSpeed(nullptr, nullptr, &response);
-
-    EXPECT_EQ(GetParam(), translateFromRpcResult(response.action_result().result()));
-    EXPECT_EQ(expected_pair.second, response.speed());
-}
-
-TEST_F(ActionServiceImplTest, setMaxSpeedDoesNotCrashWithNullRequest)
-{
-    MockLazyPlugin lazy_plugin;
-    MockAction action;
-    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
-    ActionServiceImpl actionService(lazy_plugin);
-    mavsdk::rpc::action::SetMaximumSpeedResponse response;
-
-    actionService.SetMaximumSpeed(nullptr, nullptr, &response);
-}
-
-TEST_F(ActionServiceImplTest, setMaxSpeedDoesNotCrashWithNullResponse)
-{
-    MockLazyPlugin lazy_plugin;
-    MockAction action;
-    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
-    ActionServiceImpl actionService(lazy_plugin);
-    mavsdk::rpc::action::SetMaximumSpeedRequest request;
-    request.set_speed(ARBITRARY_SPEED);
-
-    actionService.SetMaximumSpeed(nullptr, &request, nullptr);
-}
-
-TEST_F(ActionServiceImplTest, setMaxSpeedCallsSetter)
-{
-    MockLazyPlugin lazy_plugin;
-    MockAction action;
-    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
-    ActionServiceImpl actionService(lazy_plugin);
-    EXPECT_CALL(action, set_maximum_speed(_)).Times(1);
-    mavsdk::rpc::action::SetMaximumSpeedRequest request;
-
-    actionService.SetMaximumSpeed(nullptr, &request, nullptr);
-}
-
-TEST_F(ActionServiceImplTest, setMaxSpeedSetsRightValue)
-{
-    MockLazyPlugin lazy_plugin;
-    MockAction action;
-    ON_CALL(lazy_plugin, maybe_plugin()).WillByDefault(Return(&action));
-    ActionServiceImpl actionService(lazy_plugin);
-    const auto expected_speed = ARBITRARY_SPEED;
-    EXPECT_CALL(action, set_maximum_speed(expected_speed)).Times(1);
-    mavsdk::rpc::action::SetMaximumSpeedRequest request;
-    request.set_speed(expected_speed);
-
-    actionService.SetMaximumSpeed(nullptr, &request, nullptr);
 }
 
 TEST_P(ActionServiceImplTest, getReturnToLaunchAltitudeResultIsTranslatedCorrectly)

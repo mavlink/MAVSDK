@@ -42,8 +42,6 @@ static const char* ActionService_method_names[] = {
   "/mavsdk.rpc.action.ActionService/TransitionToMulticopter",
   "/mavsdk.rpc.action.ActionService/GetTakeoffAltitude",
   "/mavsdk.rpc.action.ActionService/SetTakeoffAltitude",
-  "/mavsdk.rpc.action.ActionService/GetMaximumSpeed",
-  "/mavsdk.rpc.action.ActionService/SetMaximumSpeed",
   "/mavsdk.rpc.action.ActionService/GetReturnToLaunchAltitude",
   "/mavsdk.rpc.action.ActionService/SetReturnToLaunchAltitude",
   "/mavsdk.rpc.action.ActionService/SetCurrentSpeed",
@@ -74,11 +72,9 @@ ActionService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& chan
   , rpcmethod_TransitionToMulticopter_(ActionService_method_names[15], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_GetTakeoffAltitude_(ActionService_method_names[16], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetTakeoffAltitude_(ActionService_method_names[17], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetMaximumSpeed_(ActionService_method_names[18], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetMaximumSpeed_(ActionService_method_names[19], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetReturnToLaunchAltitude_(ActionService_method_names[20], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetReturnToLaunchAltitude_(ActionService_method_names[21], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetCurrentSpeed_(ActionService_method_names[22], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetReturnToLaunchAltitude_(ActionService_method_names[18], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetReturnToLaunchAltitude_(ActionService_method_names[19], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetCurrentSpeed_(ActionService_method_names[20], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status ActionService::Stub::Arm(::grpc::ClientContext* context, const ::mavsdk::rpc::action::ArmRequest& request, ::mavsdk::rpc::action::ArmResponse* response) {
@@ -495,52 +491,6 @@ void ActionService::Stub::async::SetTakeoffAltitude(::grpc::ClientContext* conte
   return result;
 }
 
-::grpc::Status ActionService::Stub::GetMaximumSpeed(::grpc::ClientContext* context, const ::mavsdk::rpc::action::GetMaximumSpeedRequest& request, ::mavsdk::rpc::action::GetMaximumSpeedResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action::GetMaximumSpeedRequest, ::mavsdk::rpc::action::GetMaximumSpeedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetMaximumSpeed_, context, request, response);
-}
-
-void ActionService::Stub::async::GetMaximumSpeed(::grpc::ClientContext* context, const ::mavsdk::rpc::action::GetMaximumSpeedRequest* request, ::mavsdk::rpc::action::GetMaximumSpeedResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::action::GetMaximumSpeedRequest, ::mavsdk::rpc::action::GetMaximumSpeedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetMaximumSpeed_, context, request, response, std::move(f));
-}
-
-void ActionService::Stub::async::GetMaximumSpeed(::grpc::ClientContext* context, const ::mavsdk::rpc::action::GetMaximumSpeedRequest* request, ::mavsdk::rpc::action::GetMaximumSpeedResponse* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetMaximumSpeed_, context, request, response, reactor);
-}
-
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::GetMaximumSpeedResponse>* ActionService::Stub::PrepareAsyncGetMaximumSpeedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::GetMaximumSpeedRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::action::GetMaximumSpeedResponse, ::mavsdk::rpc::action::GetMaximumSpeedRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetMaximumSpeed_, context, request);
-}
-
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::GetMaximumSpeedResponse>* ActionService::Stub::AsyncGetMaximumSpeedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::GetMaximumSpeedRequest& request, ::grpc::CompletionQueue* cq) {
-  auto* result =
-    this->PrepareAsyncGetMaximumSpeedRaw(context, request, cq);
-  result->StartCall();
-  return result;
-}
-
-::grpc::Status ActionService::Stub::SetMaximumSpeed(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetMaximumSpeedRequest& request, ::mavsdk::rpc::action::SetMaximumSpeedResponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action::SetMaximumSpeedRequest, ::mavsdk::rpc::action::SetMaximumSpeedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetMaximumSpeed_, context, request, response);
-}
-
-void ActionService::Stub::async::SetMaximumSpeed(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetMaximumSpeedRequest* request, ::mavsdk::rpc::action::SetMaximumSpeedResponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::action::SetMaximumSpeedRequest, ::mavsdk::rpc::action::SetMaximumSpeedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetMaximumSpeed_, context, request, response, std::move(f));
-}
-
-void ActionService::Stub::async::SetMaximumSpeed(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetMaximumSpeedRequest* request, ::mavsdk::rpc::action::SetMaximumSpeedResponse* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetMaximumSpeed_, context, request, response, reactor);
-}
-
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::SetMaximumSpeedResponse>* ActionService::Stub::PrepareAsyncSetMaximumSpeedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetMaximumSpeedRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::action::SetMaximumSpeedResponse, ::mavsdk::rpc::action::SetMaximumSpeedRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetMaximumSpeed_, context, request);
-}
-
-::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action::SetMaximumSpeedResponse>* ActionService::Stub::AsyncSetMaximumSpeedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action::SetMaximumSpeedRequest& request, ::grpc::CompletionQueue* cq) {
-  auto* result =
-    this->PrepareAsyncSetMaximumSpeedRaw(context, request, cq);
-  result->StartCall();
-  return result;
-}
-
 ::grpc::Status ActionService::Stub::GetReturnToLaunchAltitude(::grpc::ClientContext* context, const ::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest& request, ::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse* response) {
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetReturnToLaunchAltitude_, context, request, response);
 }
@@ -794,26 +744,6 @@ ActionService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       ActionService_method_names[18],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::GetMaximumSpeedRequest, ::mavsdk::rpc::action::GetMaximumSpeedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
-          [](ActionService::Service* service,
-             ::grpc::ServerContext* ctx,
-             const ::mavsdk::rpc::action::GetMaximumSpeedRequest* req,
-             ::mavsdk::rpc::action::GetMaximumSpeedResponse* resp) {
-               return service->GetMaximumSpeed(ctx, req, resp);
-             }, this)));
-  AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[19],
-      ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::SetMaximumSpeedRequest, ::mavsdk::rpc::action::SetMaximumSpeedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
-          [](ActionService::Service* service,
-             ::grpc::ServerContext* ctx,
-             const ::mavsdk::rpc::action::SetMaximumSpeedRequest* req,
-             ::mavsdk::rpc::action::SetMaximumSpeedResponse* resp) {
-               return service->SetMaximumSpeed(ctx, req, resp);
-             }, this)));
-  AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[20],
-      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
              ::grpc::ServerContext* ctx,
@@ -822,7 +752,7 @@ ActionService::Service::Service() {
                return service->GetReturnToLaunchAltitude(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[21],
+      ActionService_method_names[19],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest, ::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -832,7 +762,7 @@ ActionService::Service::Service() {
                return service->SetReturnToLaunchAltitude(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      ActionService_method_names[22],
+      ActionService_method_names[20],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< ActionService::Service, ::mavsdk::rpc::action::SetCurrentSpeedRequest, ::mavsdk::rpc::action::SetCurrentSpeedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](ActionService::Service* service,
@@ -966,20 +896,6 @@ ActionService::Service::~Service() {
 }
 
 ::grpc::Status ActionService::Service::SetTakeoffAltitude(::grpc::ServerContext* context, const ::mavsdk::rpc::action::SetTakeoffAltitudeRequest* request, ::mavsdk::rpc::action::SetTakeoffAltitudeResponse* response) {
-  (void) context;
-  (void) request;
-  (void) response;
-  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-}
-
-::grpc::Status ActionService::Service::GetMaximumSpeed(::grpc::ServerContext* context, const ::mavsdk::rpc::action::GetMaximumSpeedRequest* request, ::mavsdk::rpc::action::GetMaximumSpeedResponse* response) {
-  (void) context;
-  (void) request;
-  (void) response;
-  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
-}
-
-::grpc::Status ActionService::Service::SetMaximumSpeed(::grpc::ServerContext* context, const ::mavsdk::rpc::action::SetMaximumSpeedRequest* request, ::mavsdk::rpc::action::SetMaximumSpeedResponse* response) {
   (void) context;
   (void) request;
   (void) response;

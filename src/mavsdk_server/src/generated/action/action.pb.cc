@@ -122,25 +122,6 @@ struct SetReturnToLaunchAltitudeRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetReturnToLaunchAltitudeRequestDefaultTypeInternal _SetReturnToLaunchAltitudeRequest_default_instance_;
 
-inline constexpr SetMaximumSpeedRequest::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : speed_{0},
-        _cached_size_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR SetMaximumSpeedRequest::SetMaximumSpeedRequest(::_pbi::ConstantInitialized)
-    : _impl_(::_pbi::ConstantInitialized()) {}
-struct SetMaximumSpeedRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetMaximumSpeedRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~SetMaximumSpeedRequestDefaultTypeInternal() {}
-  union {
-    SetMaximumSpeedRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetMaximumSpeedRequestDefaultTypeInternal _SetMaximumSpeedRequest_default_instance_;
-
 inline constexpr SetCurrentSpeedRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : speed_m_s_{0},
@@ -285,18 +266,6 @@ struct GetReturnToLaunchAltitudeRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetReturnToLaunchAltitudeRequestDefaultTypeInternal _GetReturnToLaunchAltitudeRequest_default_instance_;
-      template <typename>
-PROTOBUF_CONSTEXPR GetMaximumSpeedRequest::GetMaximumSpeedRequest(::_pbi::ConstantInitialized) {}
-struct GetMaximumSpeedRequestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR GetMaximumSpeedRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~GetMaximumSpeedRequestDefaultTypeInternal() {}
-  union {
-    GetMaximumSpeedRequest _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetMaximumSpeedRequestDefaultTypeInternal _GetMaximumSpeedRequest_default_instance_;
 
 inline constexpr DoOrbitRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -513,25 +482,6 @@ struct SetReturnToLaunchAltitudeResponseDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetReturnToLaunchAltitudeResponseDefaultTypeInternal _SetReturnToLaunchAltitudeResponse_default_instance_;
 
-inline constexpr SetMaximumSpeedResponse::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        action_result_{nullptr} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR SetMaximumSpeedResponse::SetMaximumSpeedResponse(::_pbi::ConstantInitialized)
-    : _impl_(::_pbi::ConstantInitialized()) {}
-struct SetMaximumSpeedResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR SetMaximumSpeedResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~SetMaximumSpeedResponseDefaultTypeInternal() {}
-  union {
-    SetMaximumSpeedResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetMaximumSpeedResponseDefaultTypeInternal _SetMaximumSpeedResponse_default_instance_;
-
 inline constexpr SetCurrentSpeedResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -724,26 +674,6 @@ struct GetReturnToLaunchAltitudeResponseDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetReturnToLaunchAltitudeResponseDefaultTypeInternal _GetReturnToLaunchAltitudeResponse_default_instance_;
 
-inline constexpr GetMaximumSpeedResponse::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        action_result_{nullptr},
-        speed_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR GetMaximumSpeedResponse::GetMaximumSpeedResponse(::_pbi::ConstantInitialized)
-    : _impl_(::_pbi::ConstantInitialized()) {}
-struct GetMaximumSpeedResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR GetMaximumSpeedResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~GetMaximumSpeedResponseDefaultTypeInternal() {}
-  union {
-    GetMaximumSpeedResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GetMaximumSpeedResponseDefaultTypeInternal _GetMaximumSpeedResponse_default_instance_;
-
 inline constexpr DoOrbitResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -822,7 +752,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 }  // namespace action
 }  // namespace rpc
 }  // namespace mavsdk
-static ::_pb::Metadata file_level_metadata_action_2faction_2eproto[47];
+static ::_pb::Metadata file_level_metadata_action_2faction_2eproto[43];
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_action_2faction_2eproto[2];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_action_2faction_2eproto = nullptr;
@@ -1168,45 +1098,6 @@ const ::uint32_t TableStruct_action_2faction_2eproto::offsets[] PROTOBUF_SECTION
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetTakeoffAltitudeResponse, _impl_.action_result_),
     0,
     ~0u,  // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::GetMaximumSpeedRequest, _internal_metadata_),
-    ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
-    ~0u,  // no _weak_field_map_
-    ~0u,  // no _inlined_string_donated_
-    ~0u,  // no _split_
-    ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::GetMaximumSpeedResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::GetMaximumSpeedResponse, _internal_metadata_),
-    ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
-    ~0u,  // no _weak_field_map_
-    ~0u,  // no _inlined_string_donated_
-    ~0u,  // no _split_
-    ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::GetMaximumSpeedResponse, _impl_.action_result_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::GetMaximumSpeedResponse, _impl_.speed_),
-    0,
-    ~0u,
-    ~0u,  // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetMaximumSpeedRequest, _internal_metadata_),
-    ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
-    ~0u,  // no _weak_field_map_
-    ~0u,  // no _inlined_string_donated_
-    ~0u,  // no _split_
-    ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetMaximumSpeedRequest, _impl_.speed_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetMaximumSpeedResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetMaximumSpeedResponse, _internal_metadata_),
-    ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
-    ~0u,  // no _weak_field_map_
-    ~0u,  // no _inlined_string_donated_
-    ~0u,  // no _split_
-    ~0u,  // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::SetMaximumSpeedResponse, _impl_.action_result_),
-    0,
-    ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest, _internal_metadata_),
     ~0u,  // no _extensions_
     ~0u,  // no _oneof_case_
@@ -1314,17 +1205,13 @@ static const ::_pbi::MigrationSchema
         {308, 318, -1, sizeof(::mavsdk::rpc::action::GetTakeoffAltitudeResponse)},
         {320, -1, -1, sizeof(::mavsdk::rpc::action::SetTakeoffAltitudeRequest)},
         {329, 338, -1, sizeof(::mavsdk::rpc::action::SetTakeoffAltitudeResponse)},
-        {339, -1, -1, sizeof(::mavsdk::rpc::action::GetMaximumSpeedRequest)},
-        {347, 357, -1, sizeof(::mavsdk::rpc::action::GetMaximumSpeedResponse)},
-        {359, -1, -1, sizeof(::mavsdk::rpc::action::SetMaximumSpeedRequest)},
-        {368, 377, -1, sizeof(::mavsdk::rpc::action::SetMaximumSpeedResponse)},
-        {378, -1, -1, sizeof(::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest)},
-        {386, 396, -1, sizeof(::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse)},
-        {398, -1, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest)},
-        {407, 416, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse)},
-        {417, -1, -1, sizeof(::mavsdk::rpc::action::SetCurrentSpeedRequest)},
-        {426, 435, -1, sizeof(::mavsdk::rpc::action::SetCurrentSpeedResponse)},
-        {436, -1, -1, sizeof(::mavsdk::rpc::action::ActionResult)},
+        {339, -1, -1, sizeof(::mavsdk::rpc::action::GetReturnToLaunchAltitudeRequest)},
+        {347, 357, -1, sizeof(::mavsdk::rpc::action::GetReturnToLaunchAltitudeResponse)},
+        {359, -1, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeRequest)},
+        {368, 377, -1, sizeof(::mavsdk::rpc::action::SetReturnToLaunchAltitudeResponse)},
+        {378, -1, -1, sizeof(::mavsdk::rpc::action::SetCurrentSpeedRequest)},
+        {387, 396, -1, sizeof(::mavsdk::rpc::action::SetCurrentSpeedResponse)},
+        {397, -1, -1, sizeof(::mavsdk::rpc::action::ActionResult)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -1364,10 +1251,6 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::action::_GetTakeoffAltitudeResponse_default_instance_._instance,
     &::mavsdk::rpc::action::_SetTakeoffAltitudeRequest_default_instance_._instance,
     &::mavsdk::rpc::action::_SetTakeoffAltitudeResponse_default_instance_._instance,
-    &::mavsdk::rpc::action::_GetMaximumSpeedRequest_default_instance_._instance,
-    &::mavsdk::rpc::action::_GetMaximumSpeedResponse_default_instance_._instance,
-    &::mavsdk::rpc::action::_SetMaximumSpeedRequest_default_instance_._instance,
-    &::mavsdk::rpc::action::_SetMaximumSpeedResponse_default_instance_._instance,
     &::mavsdk::rpc::action::_GetReturnToLaunchAltitudeRequest_default_instance_._instance,
     &::mavsdk::rpc::action::_GetReturnToLaunchAltitudeResponse_default_instance_._instance,
     &::mavsdk::rpc::action::_SetReturnToLaunchAltitudeRequest_default_instance_._instance,
@@ -1432,102 +1315,90 @@ const char descriptor_table_protodef_action_2faction_2eproto[] PROTOBUF_SECTION_
     "tTakeoffAltitudeRequest\022\020\n\010altitude\030\001 \001("
     "\002\"T\n\032SetTakeoffAltitudeResponse\0226\n\ractio"
     "n_result\030\001 \001(\0132\037.mavsdk.rpc.action.Actio"
-    "nResult\"\030\n\026GetMaximumSpeedRequest\"`\n\027Get"
-    "MaximumSpeedResponse\0226\n\raction_result\030\001 "
-    "\001(\0132\037.mavsdk.rpc.action.ActionResult\022\r\n\005"
-    "speed\030\002 \001(\002\"\'\n\026SetMaximumSpeedRequest\022\r\n"
-    "\005speed\030\001 \001(\002\"Q\n\027SetMaximumSpeedResponse\022"
-    "6\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc.acti"
-    "on.ActionResult\"\"\n GetReturnToLaunchAlti"
-    "tudeRequest\"x\n!GetReturnToLaunchAltitude"
-    "Response\0226\n\raction_result\030\001 \001(\0132\037.mavsdk"
-    ".rpc.action.ActionResult\022\033\n\023relative_alt"
-    "itude_m\030\002 \001(\002\"\?\n SetReturnToLaunchAltitu"
-    "deRequest\022\033\n\023relative_altitude_m\030\001 \001(\002\"["
-    "\n!SetReturnToLaunchAltitudeResponse\0226\n\ra"
+    "nResult\"\"\n GetReturnToLaunchAltitudeRequ"
+    "est\"x\n!GetReturnToLaunchAltitudeResponse"
+    "\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc.act"
+    "ion.ActionResult\022\033\n\023relative_altitude_m\030"
+    "\002 \001(\002\"\?\n SetReturnToLaunchAltitudeReques"
+    "t\022\033\n\023relative_altitude_m\030\001 \001(\002\"[\n!SetRet"
+    "urnToLaunchAltitudeResponse\0226\n\raction_re"
+    "sult\030\001 \001(\0132\037.mavsdk.rpc.action.ActionRes"
+    "ult\"+\n\026SetCurrentSpeedRequest\022\021\n\tspeed_m"
+    "_s\030\001 \001(\002\"Q\n\027SetCurrentSpeedResponse\0226\n\ra"
     "ction_result\030\001 \001(\0132\037.mavsdk.rpc.action.A"
-    "ctionResult\"+\n\026SetCurrentSpeedRequest\022\021\n"
-    "\tspeed_m_s\030\001 \001(\002\"Q\n\027SetCurrentSpeedRespo"
-    "nse\0226\n\raction_result\030\001 \001(\0132\037.mavsdk.rpc."
-    "action.ActionResult\"\215\004\n\014ActionResult\0226\n\006"
-    "result\030\001 \001(\0162&.mavsdk.rpc.action.ActionR"
-    "esult.Result\022\022\n\nresult_str\030\002 \001(\t\"\260\003\n\006Res"
-    "ult\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCES"
-    "S\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CONN"
-    "ECTION_ERROR\020\003\022\017\n\013RESULT_BUSY\020\004\022\031\n\025RESUL"
-    "T_COMMAND_DENIED\020\005\022.\n*RESULT_COMMAND_DEN"
-    "IED_LANDED_STATE_UNKNOWN\020\006\022$\n RESULT_COM"
-    "MAND_DENIED_NOT_LANDED\020\007\022\022\n\016RESULT_TIMEO"
-    "UT\020\010\022*\n&RESULT_VTOL_TRANSITION_SUPPORT_U"
-    "NKNOWN\020\t\022%\n!RESULT_NO_VTOL_TRANSITION_SU"
-    "PPORT\020\n\022\032\n\026RESULT_PARAMETER_ERROR\020\013\022\026\n\022R"
-    "ESULT_UNSUPPORTED\020\014\022\021\n\rRESULT_FAILED\020\r\022\033"
-    "\n\027RESULT_INVALID_ARGUMENT\020\016*\363\001\n\020OrbitYaw"
-    "Behavior\0222\n.ORBIT_YAW_BEHAVIOR_HOLD_FRON"
-    "T_TO_CIRCLE_CENTER\020\000\022+\n\'ORBIT_YAW_BEHAVI"
-    "OR_HOLD_INITIAL_HEADING\020\001\022#\n\037ORBIT_YAW_B"
-    "EHAVIOR_UNCONTROLLED\020\002\0223\n/ORBIT_YAW_BEHA"
-    "VIOR_HOLD_FRONT_TANGENT_TO_CIRCLE\020\003\022$\n O"
-    "RBIT_YAW_BEHAVIOR_RC_CONTROLLED\020\0042\375\021\n\rAc"
-    "tionService\022F\n\003Arm\022\035.mavsdk.rpc.action.A"
-    "rmRequest\032\036.mavsdk.rpc.action.ArmRespons"
-    "e\"\000\022U\n\010ArmForce\022\".mavsdk.rpc.action.ArmF"
-    "orceRequest\032#.mavsdk.rpc.action.ArmForce"
-    "Response\"\000\022O\n\006Disarm\022 .mavsdk.rpc.action"
-    ".DisarmRequest\032!.mavsdk.rpc.action.Disar"
-    "mResponse\"\000\022R\n\007Takeoff\022!.mavsdk.rpc.acti"
-    "on.TakeoffRequest\032\".mavsdk.rpc.action.Ta"
-    "keoffResponse\"\000\022I\n\004Land\022\036.mavsdk.rpc.act"
-    "ion.LandRequest\032\037.mavsdk.rpc.action.Land"
-    "Response\"\000\022O\n\006Reboot\022 .mavsdk.rpc.action"
-    ".RebootRequest\032!.mavsdk.rpc.action.Reboo"
-    "tResponse\"\000\022U\n\010Shutdown\022\".mavsdk.rpc.act"
-    "ion.ShutdownRequest\032#.mavsdk.rpc.action."
-    "ShutdownResponse\"\000\022X\n\tTerminate\022#.mavsdk"
-    ".rpc.action.TerminateRequest\032$.mavsdk.rp"
-    "c.action.TerminateResponse\"\000\022I\n\004Kill\022\036.m"
-    "avsdk.rpc.action.KillRequest\032\037.mavsdk.rp"
-    "c.action.KillResponse\"\000\022g\n\016ReturnToLaunc"
-    "h\022(.mavsdk.rpc.action.ReturnToLaunchRequ"
-    "est\032).mavsdk.rpc.action.ReturnToLaunchRe"
-    "sponse\"\000\022a\n\014GotoLocation\022&.mavsdk.rpc.ac"
-    "tion.GotoLocationRequest\032\'.mavsdk.rpc.ac"
-    "tion.GotoLocationResponse\"\000\022R\n\007DoOrbit\022!"
-    ".mavsdk.rpc.action.DoOrbitRequest\032\".mavs"
-    "dk.rpc.action.DoOrbitResponse\"\000\022I\n\004Hold\022"
-    "\036.mavsdk.rpc.action.HoldRequest\032\037.mavsdk"
-    ".rpc.action.HoldResponse\"\000\022^\n\013SetActuato"
-    "r\022%.mavsdk.rpc.action.SetActuatorRequest"
-    "\032&.mavsdk.rpc.action.SetActuatorResponse"
-    "\"\000\022|\n\025TransitionToFixedwing\022/.mavsdk.rpc"
-    ".action.TransitionToFixedwingRequest\0320.m"
-    "avsdk.rpc.action.TransitionToFixedwingRe"
-    "sponse\"\000\022\202\001\n\027TransitionToMulticopter\0221.m"
-    "avsdk.rpc.action.TransitionToMulticopter"
-    "Request\0322.mavsdk.rpc.action.TransitionTo"
-    "MulticopterResponse\"\000\022s\n\022GetTakeoffAltit"
-    "ude\022,.mavsdk.rpc.action.GetTakeoffAltitu"
-    "deRequest\032-.mavsdk.rpc.action.GetTakeoff"
-    "AltitudeResponse\"\000\022s\n\022SetTakeoffAltitude"
-    "\022,.mavsdk.rpc.action.SetTakeoffAltitudeR"
-    "equest\032-.mavsdk.rpc.action.SetTakeoffAlt"
-    "itudeResponse\"\000\022j\n\017GetMaximumSpeed\022).mav"
-    "sdk.rpc.action.GetMaximumSpeedRequest\032*."
-    "mavsdk.rpc.action.GetMaximumSpeedRespons"
-    "e\"\000\022j\n\017SetMaximumSpeed\022).mavsdk.rpc.acti"
-    "on.SetMaximumSpeedRequest\032*.mavsdk.rpc.a"
-    "ction.SetMaximumSpeedResponse\"\000\022\210\001\n\031GetR"
-    "eturnToLaunchAltitude\0223.mavsdk.rpc.actio"
-    "n.GetReturnToLaunchAltitudeRequest\0324.mav"
-    "sdk.rpc.action.GetReturnToLaunchAltitude"
-    "Response\"\000\022\210\001\n\031SetReturnToLaunchAltitude"
-    "\0223.mavsdk.rpc.action.SetReturnToLaunchAl"
-    "titudeRequest\0324.mavsdk.rpc.action.SetRet"
-    "urnToLaunchAltitudeResponse\"\000\022j\n\017SetCurr"
-    "entSpeed\022).mavsdk.rpc.action.SetCurrentS"
-    "peedRequest\032*.mavsdk.rpc.action.SetCurre"
-    "ntSpeedResponse\"\000B\037\n\020io.mavsdk.actionB\013A"
-    "ctionProtob\006proto3"
+    "ctionResult\"\215\004\n\014ActionResult\0226\n\006result\030\001"
+    " \001(\0162&.mavsdk.rpc.action.ActionResult.Re"
+    "sult\022\022\n\nresult_str\030\002 \001(\t\"\260\003\n\006Result\022\022\n\016R"
+    "ESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020R"
+    "ESULT_NO_SYSTEM\020\002\022\033\n\027RESULT_CONNECTION_E"
+    "RROR\020\003\022\017\n\013RESULT_BUSY\020\004\022\031\n\025RESULT_COMMAN"
+    "D_DENIED\020\005\022.\n*RESULT_COMMAND_DENIED_LAND"
+    "ED_STATE_UNKNOWN\020\006\022$\n RESULT_COMMAND_DEN"
+    "IED_NOT_LANDED\020\007\022\022\n\016RESULT_TIMEOUT\020\010\022*\n&"
+    "RESULT_VTOL_TRANSITION_SUPPORT_UNKNOWN\020\t"
+    "\022%\n!RESULT_NO_VTOL_TRANSITION_SUPPORT\020\n\022"
+    "\032\n\026RESULT_PARAMETER_ERROR\020\013\022\026\n\022RESULT_UN"
+    "SUPPORTED\020\014\022\021\n\rRESULT_FAILED\020\r\022\033\n\027RESULT"
+    "_INVALID_ARGUMENT\020\016*\363\001\n\020OrbitYawBehavior"
+    "\0222\n.ORBIT_YAW_BEHAVIOR_HOLD_FRONT_TO_CIR"
+    "CLE_CENTER\020\000\022+\n\'ORBIT_YAW_BEHAVIOR_HOLD_"
+    "INITIAL_HEADING\020\001\022#\n\037ORBIT_YAW_BEHAVIOR_"
+    "UNCONTROLLED\020\002\0223\n/ORBIT_YAW_BEHAVIOR_HOL"
+    "D_FRONT_TANGENT_TO_CIRCLE\020\003\022$\n ORBIT_YAW"
+    "_BEHAVIOR_RC_CONTROLLED\020\0042\245\020\n\rActionServ"
+    "ice\022F\n\003Arm\022\035.mavsdk.rpc.action.ArmReques"
+    "t\032\036.mavsdk.rpc.action.ArmResponse\"\000\022U\n\010A"
+    "rmForce\022\".mavsdk.rpc.action.ArmForceRequ"
+    "est\032#.mavsdk.rpc.action.ArmForceResponse"
+    "\"\000\022O\n\006Disarm\022 .mavsdk.rpc.action.DisarmR"
+    "equest\032!.mavsdk.rpc.action.DisarmRespons"
+    "e\"\000\022R\n\007Takeoff\022!.mavsdk.rpc.action.Takeo"
+    "ffRequest\032\".mavsdk.rpc.action.TakeoffRes"
+    "ponse\"\000\022I\n\004Land\022\036.mavsdk.rpc.action.Land"
+    "Request\032\037.mavsdk.rpc.action.LandResponse"
+    "\"\000\022O\n\006Reboot\022 .mavsdk.rpc.action.RebootR"
+    "equest\032!.mavsdk.rpc.action.RebootRespons"
+    "e\"\000\022U\n\010Shutdown\022\".mavsdk.rpc.action.Shut"
+    "downRequest\032#.mavsdk.rpc.action.Shutdown"
+    "Response\"\000\022X\n\tTerminate\022#.mavsdk.rpc.act"
+    "ion.TerminateRequest\032$.mavsdk.rpc.action"
+    ".TerminateResponse\"\000\022I\n\004Kill\022\036.mavsdk.rp"
+    "c.action.KillRequest\032\037.mavsdk.rpc.action"
+    ".KillResponse\"\000\022g\n\016ReturnToLaunch\022(.mavs"
+    "dk.rpc.action.ReturnToLaunchRequest\032).ma"
+    "vsdk.rpc.action.ReturnToLaunchResponse\"\000"
+    "\022a\n\014GotoLocation\022&.mavsdk.rpc.action.Got"
+    "oLocationRequest\032\'.mavsdk.rpc.action.Got"
+    "oLocationResponse\"\000\022R\n\007DoOrbit\022!.mavsdk."
+    "rpc.action.DoOrbitRequest\032\".mavsdk.rpc.a"
+    "ction.DoOrbitResponse\"\000\022I\n\004Hold\022\036.mavsdk"
+    ".rpc.action.HoldRequest\032\037.mavsdk.rpc.act"
+    "ion.HoldResponse\"\000\022^\n\013SetActuator\022%.mavs"
+    "dk.rpc.action.SetActuatorRequest\032&.mavsd"
+    "k.rpc.action.SetActuatorResponse\"\000\022|\n\025Tr"
+    "ansitionToFixedwing\022/.mavsdk.rpc.action."
+    "TransitionToFixedwingRequest\0320.mavsdk.rp"
+    "c.action.TransitionToFixedwingResponse\"\000"
+    "\022\202\001\n\027TransitionToMulticopter\0221.mavsdk.rp"
+    "c.action.TransitionToMulticopterRequest\032"
+    "2.mavsdk.rpc.action.TransitionToMulticop"
+    "terResponse\"\000\022s\n\022GetTakeoffAltitude\022,.ma"
+    "vsdk.rpc.action.GetTakeoffAltitudeReques"
+    "t\032-.mavsdk.rpc.action.GetTakeoffAltitude"
+    "Response\"\000\022s\n\022SetTakeoffAltitude\022,.mavsd"
+    "k.rpc.action.SetTakeoffAltitudeRequest\032-"
+    ".mavsdk.rpc.action.SetTakeoffAltitudeRes"
+    "ponse\"\000\022\210\001\n\031GetReturnToLaunchAltitude\0223."
+    "mavsdk.rpc.action.GetReturnToLaunchAltit"
+    "udeRequest\0324.mavsdk.rpc.action.GetReturn"
+    "ToLaunchAltitudeResponse\"\000\022\210\001\n\031SetReturn"
+    "ToLaunchAltitude\0223.mavsdk.rpc.action.Set"
+    "ReturnToLaunchAltitudeRequest\0324.mavsdk.r"
+    "pc.action.SetReturnToLaunchAltitudeRespo"
+    "nse\"\000\022j\n\017SetCurrentSpeed\022).mavsdk.rpc.ac"
+    "tion.SetCurrentSpeedRequest\032*.mavsdk.rpc"
+    ".action.SetCurrentSpeedResponse\"\000B\037\n\020io."
+    "mavsdk.actionB\013ActionProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_action_2faction_2eproto_deps[1] =
     {
@@ -1537,13 +1408,13 @@ static ::absl::once_flag descriptor_table_action_2faction_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_action_2faction_2eproto = {
     false,
     false,
-    6018,
+    5554,
     descriptor_table_protodef_action_2faction_2eproto,
     "action/action.proto",
     &descriptor_table_action_2faction_2eproto_once,
     descriptor_table_action_2faction_2eproto_deps,
     1,
-    47,
+    43,
     schemas,
     file_default_instances,
     TableStruct_action_2faction_2eproto::offsets,
@@ -6950,687 +6821,6 @@ void SetTakeoffAltitudeResponse::InternalSwap(SetTakeoffAltitudeResponse* PROTOB
 }
 // ===================================================================
 
-class GetMaximumSpeedRequest::_Internal {
- public:
-};
-
-GetMaximumSpeedRequest::GetMaximumSpeedRequest(::google::protobuf::Arena* arena)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action.GetMaximumSpeedRequest)
-}
-GetMaximumSpeedRequest::GetMaximumSpeedRequest(
-    ::google::protobuf::Arena* arena,
-    const GetMaximumSpeedRequest& from)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
-  GetMaximumSpeedRequest* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action.GetMaximumSpeedRequest)
-}
-
-
-
-
-
-
-
-
-
-::google::protobuf::Metadata GetMaximumSpeedRequest::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[36]);
-}
-// ===================================================================
-
-class GetMaximumSpeedResponse::_Internal {
- public:
-  using HasBits = decltype(std::declval<GetMaximumSpeedResponse>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-    8 * PROTOBUF_FIELD_OFFSET(GetMaximumSpeedResponse, _impl_._has_bits_);
-  static const ::mavsdk::rpc::action::ActionResult& action_result(const GetMaximumSpeedResponse* msg);
-  static void set_has_action_result(HasBits* has_bits) {
-    (*has_bits)[0] |= 1u;
-  }
-};
-
-const ::mavsdk::rpc::action::ActionResult& GetMaximumSpeedResponse::_Internal::action_result(const GetMaximumSpeedResponse* msg) {
-  return *msg->_impl_.action_result_;
-}
-GetMaximumSpeedResponse::GetMaximumSpeedResponse(::google::protobuf::Arena* arena)
-    : ::google::protobuf::Message(arena) {
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action.GetMaximumSpeedResponse)
-}
-inline PROTOBUF_NDEBUG_INLINE GetMaximumSpeedResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0} {}
-
-GetMaximumSpeedResponse::GetMaximumSpeedResponse(
-    ::google::protobuf::Arena* arena,
-    const GetMaximumSpeedResponse& from)
-    : ::google::protobuf::Message(arena) {
-  GetMaximumSpeedResponse* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
-  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.action_result_ = (cached_has_bits & 0x00000001u)
-                ? CreateMaybeMessage<::mavsdk::rpc::action::ActionResult>(arena, *from._impl_.action_result_)
-                : nullptr;
-  _impl_.speed_ = from._impl_.speed_;
-
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action.GetMaximumSpeedResponse)
-}
-inline PROTOBUF_NDEBUG_INLINE GetMaximumSpeedResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : _cached_size_{0} {}
-
-inline void GetMaximumSpeedResponse::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  ::memset(reinterpret_cast<char *>(&_impl_) +
-               offsetof(Impl_, action_result_),
-           0,
-           offsetof(Impl_, speed_) -
-               offsetof(Impl_, action_result_) +
-               sizeof(Impl_::speed_));
-}
-GetMaximumSpeedResponse::~GetMaximumSpeedResponse() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.action.GetMaximumSpeedResponse)
-  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  SharedDtor();
-}
-inline void GetMaximumSpeedResponse::SharedDtor() {
-  ABSL_DCHECK(GetArena() == nullptr);
-  delete _impl_.action_result_;
-  _impl_.~Impl_();
-}
-
-PROTOBUF_NOINLINE void GetMaximumSpeedResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action.GetMaximumSpeedResponse)
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(_impl_.action_result_ != nullptr);
-    _impl_.action_result_->Clear();
-  }
-  _impl_.speed_ = 0;
-  _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-const char* GetMaximumSpeedResponse::_InternalParse(
-    const char* ptr, ::_pbi::ParseContext* ctx) {
-  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
-  return ptr;
-}
-
-
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<1, 2, 1, 0, 2> GetMaximumSpeedResponse::_table_ = {
-  {
-    PROTOBUF_FIELD_OFFSET(GetMaximumSpeedResponse, _impl_._has_bits_),
-    0, // no _extensions_
-    2, 8,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967292,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    2,  // num_field_entries
-    1,  // num_aux_entries
-    offsetof(decltype(_table_), aux_entries),
-    &_GetMaximumSpeedResponse_default_instance_._instance,
-    ::_pbi::TcParser::GenericFallback,  // fallback
-  }, {{
-    // float speed = 2;
-    {::_pbi::TcParser::FastF32S1,
-     {21, 63, 0, PROTOBUF_FIELD_OFFSET(GetMaximumSpeedResponse, _impl_.speed_)}},
-    // .mavsdk.rpc.action.ActionResult action_result = 1;
-    {::_pbi::TcParser::FastMtS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(GetMaximumSpeedResponse, _impl_.action_result_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // .mavsdk.rpc.action.ActionResult action_result = 1;
-    {PROTOBUF_FIELD_OFFSET(GetMaximumSpeedResponse, _impl_.action_result_), _Internal::kHasBitsOffset + 0, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-    // float speed = 2;
-    {PROTOBUF_FIELD_OFFSET(GetMaximumSpeedResponse, _impl_.speed_), -1, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-  }}, {{
-    {::_pbi::TcParser::GetTable<::mavsdk::rpc::action::ActionResult>()},
-  }}, {{
-  }},
-};
-
-::uint8_t* GetMaximumSpeedResponse::_InternalSerialize(
-    ::uint8_t* target,
-    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action.GetMaximumSpeedResponse)
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  // .mavsdk.rpc.action.ActionResult action_result = 1;
-  if (cached_has_bits & 0x00000001u) {
-    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        1, _Internal::action_result(this),
-        _Internal::action_result(this).GetCachedSize(), target, stream);
-  }
-
-  // float speed = 2;
-  static_assert(sizeof(::uint32_t) == sizeof(float),
-                "Code assumes ::uint32_t and float are the same size.");
-  float tmp_speed = this->_internal_speed();
-  ::uint32_t raw_speed;
-  memcpy(&raw_speed, &tmp_speed, sizeof(tmp_speed));
-  if (raw_speed != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        2, this->_internal_speed(), target);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target =
-        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action.GetMaximumSpeedResponse)
-  return target;
-}
-
-::size_t GetMaximumSpeedResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action.GetMaximumSpeedResponse)
-  ::size_t total_size = 0;
-
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.action.ActionResult action_result = 1;
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    total_size +=
-        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.action_result_);
-  }
-
-  // float speed = 2;
-  static_assert(sizeof(::uint32_t) == sizeof(float),
-                "Code assumes ::uint32_t and float are the same size.");
-  float tmp_speed = this->_internal_speed();
-  ::uint32_t raw_speed;
-  memcpy(&raw_speed, &tmp_speed, sizeof(tmp_speed));
-  if (raw_speed != 0) {
-    total_size += 5;
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
-}
-
-const ::google::protobuf::Message::ClassData GetMaximumSpeedResponse::_class_data_ = {
-    GetMaximumSpeedResponse::MergeImpl,
-    nullptr,  // OnDemandRegisterArenaDtor
-};
-const ::google::protobuf::Message::ClassData* GetMaximumSpeedResponse::GetClassData() const {
-  return &_class_data_;
-}
-
-void GetMaximumSpeedResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
-  auto* const _this = static_cast<GetMaximumSpeedResponse*>(&to_msg);
-  auto& from = static_cast<const GetMaximumSpeedResponse&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action.GetMaximumSpeedResponse)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_internal_mutable_action_result()->::mavsdk::rpc::action::ActionResult::MergeFrom(
-        from._internal_action_result());
-  }
-  static_assert(sizeof(::uint32_t) == sizeof(float),
-                "Code assumes ::uint32_t and float are the same size.");
-  float tmp_speed = from._internal_speed();
-  ::uint32_t raw_speed;
-  memcpy(&raw_speed, &tmp_speed, sizeof(tmp_speed));
-  if (raw_speed != 0) {
-    _this->_internal_set_speed(from._internal_speed());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void GetMaximumSpeedResponse::CopyFrom(const GetMaximumSpeedResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action.GetMaximumSpeedResponse)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-PROTOBUF_NOINLINE bool GetMaximumSpeedResponse::IsInitialized() const {
-  return true;
-}
-
-::_pbi::CachedSize* GetMaximumSpeedResponse::AccessCachedSize() const {
-  return &_impl_._cached_size_;
-}
-void GetMaximumSpeedResponse::InternalSwap(GetMaximumSpeedResponse* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(GetMaximumSpeedResponse, _impl_.speed_)
-      + sizeof(GetMaximumSpeedResponse::_impl_.speed_)
-      - PROTOBUF_FIELD_OFFSET(GetMaximumSpeedResponse, _impl_.action_result_)>(
-          reinterpret_cast<char*>(&_impl_.action_result_),
-          reinterpret_cast<char*>(&other->_impl_.action_result_));
-}
-
-::google::protobuf::Metadata GetMaximumSpeedResponse::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[37]);
-}
-// ===================================================================
-
-class SetMaximumSpeedRequest::_Internal {
- public:
-};
-
-SetMaximumSpeedRequest::SetMaximumSpeedRequest(::google::protobuf::Arena* arena)
-    : ::google::protobuf::Message(arena) {
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action.SetMaximumSpeedRequest)
-}
-SetMaximumSpeedRequest::SetMaximumSpeedRequest(
-    ::google::protobuf::Arena* arena, const SetMaximumSpeedRequest& from)
-    : SetMaximumSpeedRequest(arena) {
-  MergeFrom(from);
-}
-inline PROTOBUF_NDEBUG_INLINE SetMaximumSpeedRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : _cached_size_{0} {}
-
-inline void SetMaximumSpeedRequest::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.speed_ = {};
-}
-SetMaximumSpeedRequest::~SetMaximumSpeedRequest() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.action.SetMaximumSpeedRequest)
-  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  SharedDtor();
-}
-inline void SetMaximumSpeedRequest::SharedDtor() {
-  ABSL_DCHECK(GetArena() == nullptr);
-  _impl_.~Impl_();
-}
-
-PROTOBUF_NOINLINE void SetMaximumSpeedRequest::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action.SetMaximumSpeedRequest)
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _impl_.speed_ = 0;
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-const char* SetMaximumSpeedRequest::_InternalParse(
-    const char* ptr, ::_pbi::ParseContext* ctx) {
-  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
-  return ptr;
-}
-
-
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 0, 2> SetMaximumSpeedRequest::_table_ = {
-  {
-    0,  // no _has_bits_
-    0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
-    &_SetMaximumSpeedRequest_default_instance_._instance,
-    ::_pbi::TcParser::GenericFallback,  // fallback
-  }, {{
-    // float speed = 1;
-    {::_pbi::TcParser::FastF32S1,
-     {13, 63, 0, PROTOBUF_FIELD_OFFSET(SetMaximumSpeedRequest, _impl_.speed_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // float speed = 1;
-    {PROTOBUF_FIELD_OFFSET(SetMaximumSpeedRequest, _impl_.speed_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-  }},
-  // no aux_entries
-  {{
-  }},
-};
-
-::uint8_t* SetMaximumSpeedRequest::_InternalSerialize(
-    ::uint8_t* target,
-    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action.SetMaximumSpeedRequest)
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  // float speed = 1;
-  static_assert(sizeof(::uint32_t) == sizeof(float),
-                "Code assumes ::uint32_t and float are the same size.");
-  float tmp_speed = this->_internal_speed();
-  ::uint32_t raw_speed;
-  memcpy(&raw_speed, &tmp_speed, sizeof(tmp_speed));
-  if (raw_speed != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteFloatToArray(
-        1, this->_internal_speed(), target);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target =
-        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action.SetMaximumSpeedRequest)
-  return target;
-}
-
-::size_t SetMaximumSpeedRequest::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action.SetMaximumSpeedRequest)
-  ::size_t total_size = 0;
-
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // float speed = 1;
-  static_assert(sizeof(::uint32_t) == sizeof(float),
-                "Code assumes ::uint32_t and float are the same size.");
-  float tmp_speed = this->_internal_speed();
-  ::uint32_t raw_speed;
-  memcpy(&raw_speed, &tmp_speed, sizeof(tmp_speed));
-  if (raw_speed != 0) {
-    total_size += 5;
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
-}
-
-const ::google::protobuf::Message::ClassData SetMaximumSpeedRequest::_class_data_ = {
-    SetMaximumSpeedRequest::MergeImpl,
-    nullptr,  // OnDemandRegisterArenaDtor
-};
-const ::google::protobuf::Message::ClassData* SetMaximumSpeedRequest::GetClassData() const {
-  return &_class_data_;
-}
-
-void SetMaximumSpeedRequest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
-  auto* const _this = static_cast<SetMaximumSpeedRequest*>(&to_msg);
-  auto& from = static_cast<const SetMaximumSpeedRequest&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action.SetMaximumSpeedRequest)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  static_assert(sizeof(::uint32_t) == sizeof(float),
-                "Code assumes ::uint32_t and float are the same size.");
-  float tmp_speed = from._internal_speed();
-  ::uint32_t raw_speed;
-  memcpy(&raw_speed, &tmp_speed, sizeof(tmp_speed));
-  if (raw_speed != 0) {
-    _this->_internal_set_speed(from._internal_speed());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void SetMaximumSpeedRequest::CopyFrom(const SetMaximumSpeedRequest& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action.SetMaximumSpeedRequest)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-PROTOBUF_NOINLINE bool SetMaximumSpeedRequest::IsInitialized() const {
-  return true;
-}
-
-::_pbi::CachedSize* SetMaximumSpeedRequest::AccessCachedSize() const {
-  return &_impl_._cached_size_;
-}
-void SetMaximumSpeedRequest::InternalSwap(SetMaximumSpeedRequest* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-        swap(_impl_.speed_, other->_impl_.speed_);
-}
-
-::google::protobuf::Metadata SetMaximumSpeedRequest::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[38]);
-}
-// ===================================================================
-
-class SetMaximumSpeedResponse::_Internal {
- public:
-  using HasBits = decltype(std::declval<SetMaximumSpeedResponse>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-    8 * PROTOBUF_FIELD_OFFSET(SetMaximumSpeedResponse, _impl_._has_bits_);
-  static const ::mavsdk::rpc::action::ActionResult& action_result(const SetMaximumSpeedResponse* msg);
-  static void set_has_action_result(HasBits* has_bits) {
-    (*has_bits)[0] |= 1u;
-  }
-};
-
-const ::mavsdk::rpc::action::ActionResult& SetMaximumSpeedResponse::_Internal::action_result(const SetMaximumSpeedResponse* msg) {
-  return *msg->_impl_.action_result_;
-}
-SetMaximumSpeedResponse::SetMaximumSpeedResponse(::google::protobuf::Arena* arena)
-    : ::google::protobuf::Message(arena) {
-  SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.action.SetMaximumSpeedResponse)
-}
-inline PROTOBUF_NDEBUG_INLINE SetMaximumSpeedResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from)
-      : _has_bits_{from._has_bits_},
-        _cached_size_{0} {}
-
-SetMaximumSpeedResponse::SetMaximumSpeedResponse(
-    ::google::protobuf::Arena* arena,
-    const SetMaximumSpeedResponse& from)
-    : ::google::protobuf::Message(arena) {
-  SetMaximumSpeedResponse* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
-  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-  _impl_.action_result_ = (cached_has_bits & 0x00000001u)
-                ? CreateMaybeMessage<::mavsdk::rpc::action::ActionResult>(arena, *from._impl_.action_result_)
-                : nullptr;
-
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.action.SetMaximumSpeedResponse)
-}
-inline PROTOBUF_NDEBUG_INLINE SetMaximumSpeedResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena)
-      : _cached_size_{0} {}
-
-inline void SetMaximumSpeedResponse::SharedCtor(::_pb::Arena* arena) {
-  new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.action_result_ = {};
-}
-SetMaximumSpeedResponse::~SetMaximumSpeedResponse() {
-  // @@protoc_insertion_point(destructor:mavsdk.rpc.action.SetMaximumSpeedResponse)
-  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-  SharedDtor();
-}
-inline void SetMaximumSpeedResponse::SharedDtor() {
-  ABSL_DCHECK(GetArena() == nullptr);
-  delete _impl_.action_result_;
-  _impl_.~Impl_();
-}
-
-PROTOBUF_NOINLINE void SetMaximumSpeedResponse::Clear() {
-// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.action.SetMaximumSpeedResponse)
-  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(_impl_.action_result_ != nullptr);
-    _impl_.action_result_->Clear();
-  }
-  _impl_._has_bits_.Clear();
-  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-const char* SetMaximumSpeedResponse::_InternalParse(
-    const char* ptr, ::_pbi::ParseContext* ctx) {
-  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
-  return ptr;
-}
-
-
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetMaximumSpeedResponse::_table_ = {
-  {
-    PROTOBUF_FIELD_OFFSET(SetMaximumSpeedResponse, _impl_._has_bits_),
-    0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
-    offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
-    1,  // num_aux_entries
-    offsetof(decltype(_table_), aux_entries),
-    &_SetMaximumSpeedResponse_default_instance_._instance,
-    ::_pbi::TcParser::GenericFallback,  // fallback
-  }, {{
-    // .mavsdk.rpc.action.ActionResult action_result = 1;
-    {::_pbi::TcParser::FastMtS1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetMaximumSpeedResponse, _impl_.action_result_)}},
-  }}, {{
-    65535, 65535
-  }}, {{
-    // .mavsdk.rpc.action.ActionResult action_result = 1;
-    {PROTOBUF_FIELD_OFFSET(SetMaximumSpeedResponse, _impl_.action_result_), _Internal::kHasBitsOffset + 0, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-  }}, {{
-    {::_pbi::TcParser::GetTable<::mavsdk::rpc::action::ActionResult>()},
-  }}, {{
-  }},
-};
-
-::uint8_t* SetMaximumSpeedResponse::_InternalSerialize(
-    ::uint8_t* target,
-    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.action.SetMaximumSpeedResponse)
-  ::uint32_t cached_has_bits = 0;
-  (void)cached_has_bits;
-
-  cached_has_bits = _impl_._has_bits_[0];
-  // .mavsdk.rpc.action.ActionResult action_result = 1;
-  if (cached_has_bits & 0x00000001u) {
-    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-        1, _Internal::action_result(this),
-        _Internal::action_result(this).GetCachedSize(), target, stream);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target =
-        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.action.SetMaximumSpeedResponse)
-  return target;
-}
-
-::size_t SetMaximumSpeedResponse::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.action.SetMaximumSpeedResponse)
-  ::size_t total_size = 0;
-
-  ::uint32_t cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // .mavsdk.rpc.action.ActionResult action_result = 1;
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    total_size +=
-        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.action_result_);
-  }
-
-  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
-}
-
-const ::google::protobuf::Message::ClassData SetMaximumSpeedResponse::_class_data_ = {
-    SetMaximumSpeedResponse::MergeImpl,
-    nullptr,  // OnDemandRegisterArenaDtor
-};
-const ::google::protobuf::Message::ClassData* SetMaximumSpeedResponse::GetClassData() const {
-  return &_class_data_;
-}
-
-void SetMaximumSpeedResponse::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
-  auto* const _this = static_cast<SetMaximumSpeedResponse*>(&to_msg);
-  auto& from = static_cast<const SetMaximumSpeedResponse&>(from_msg);
-  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.action.SetMaximumSpeedResponse)
-  ABSL_DCHECK_NE(&from, _this);
-  ::uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_internal_mutable_action_result()->::mavsdk::rpc::action::ActionResult::MergeFrom(
-        from._internal_action_result());
-  }
-  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-}
-
-void SetMaximumSpeedResponse::CopyFrom(const SetMaximumSpeedResponse& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.action.SetMaximumSpeedResponse)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-PROTOBUF_NOINLINE bool SetMaximumSpeedResponse::IsInitialized() const {
-  return true;
-}
-
-::_pbi::CachedSize* SetMaximumSpeedResponse::AccessCachedSize() const {
-  return &_impl_._cached_size_;
-}
-void SetMaximumSpeedResponse::InternalSwap(SetMaximumSpeedResponse* PROTOBUF_RESTRICT other) {
-  using std::swap;
-  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  swap(_impl_.action_result_, other->_impl_.action_result_);
-}
-
-::google::protobuf::Metadata SetMaximumSpeedResponse::GetMetadata() const {
-  return ::_pbi::AssignDescriptors(
-      &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[39]);
-}
-// ===================================================================
-
 class GetReturnToLaunchAltitudeRequest::_Internal {
  public:
 };
@@ -7662,7 +6852,7 @@ GetReturnToLaunchAltitudeRequest::GetReturnToLaunchAltitudeRequest(
 ::google::protobuf::Metadata GetReturnToLaunchAltitudeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[40]);
+      file_level_metadata_action_2faction_2eproto[36]);
 }
 // ===================================================================
 
@@ -7917,7 +7107,7 @@ void GetReturnToLaunchAltitudeResponse::InternalSwap(GetReturnToLaunchAltitudeRe
 ::google::protobuf::Metadata GetReturnToLaunchAltitudeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[41]);
+      file_level_metadata_action_2faction_2eproto[37]);
 }
 // ===================================================================
 
@@ -8101,7 +7291,7 @@ void SetReturnToLaunchAltitudeRequest::InternalSwap(SetReturnToLaunchAltitudeReq
 ::google::protobuf::Metadata SetReturnToLaunchAltitudeRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[42]);
+      file_level_metadata_action_2faction_2eproto[38]);
 }
 // ===================================================================
 
@@ -8308,7 +7498,7 @@ void SetReturnToLaunchAltitudeResponse::InternalSwap(SetReturnToLaunchAltitudeRe
 ::google::protobuf::Metadata SetReturnToLaunchAltitudeResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[43]);
+      file_level_metadata_action_2faction_2eproto[39]);
 }
 // ===================================================================
 
@@ -8492,7 +7682,7 @@ void SetCurrentSpeedRequest::InternalSwap(SetCurrentSpeedRequest* PROTOBUF_RESTR
 ::google::protobuf::Metadata SetCurrentSpeedRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[44]);
+      file_level_metadata_action_2faction_2eproto[40]);
 }
 // ===================================================================
 
@@ -8699,7 +7889,7 @@ void SetCurrentSpeedResponse::InternalSwap(SetCurrentSpeedResponse* PROTOBUF_RES
 ::google::protobuf::Metadata SetCurrentSpeedResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[45]);
+      file_level_metadata_action_2faction_2eproto[41]);
 }
 // ===================================================================
 
@@ -8915,7 +8105,7 @@ void ActionResult::InternalSwap(ActionResult* PROTOBUF_RESTRICT other) {
 ::google::protobuf::Metadata ActionResult::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_action_2faction_2eproto_getter, &descriptor_table_action_2faction_2eproto_once,
-      file_level_metadata_action_2faction_2eproto[46]);
+      file_level_metadata_action_2faction_2eproto[42]);
 }
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace action
