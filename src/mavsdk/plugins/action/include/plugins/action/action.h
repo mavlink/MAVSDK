@@ -543,43 +543,6 @@ public:
     Result set_takeoff_altitude(float altitude) const;
 
     /**
-     * @brief Callback type for get_maximum_speed_async.
-     */
-    using GetMaximumSpeedCallback = std::function<void(Result, float)>;
-
-    /**
-     * @brief Get the vehicle maximum speed (in metres/second).
-     *
-     * This function is non-blocking. See 'get_maximum_speed' for the blocking counterpart.
-     */
-    void get_maximum_speed_async(const GetMaximumSpeedCallback callback);
-
-    /**
-     * @brief Get the vehicle maximum speed (in metres/second).
-     *
-     * This function is blocking. See 'get_maximum_speed_async' for the non-blocking counterpart.
-     *
-     * @return Result of request.
-     */
-    std::pair<Result, float> get_maximum_speed() const;
-
-    /**
-     * @brief Set vehicle maximum speed (in metres/second).
-     *
-     * This function is non-blocking. See 'set_maximum_speed' for the blocking counterpart.
-     */
-    void set_maximum_speed_async(float speed, const ResultCallback callback);
-
-    /**
-     * @brief Set vehicle maximum speed (in metres/second).
-     *
-     * This function is blocking. See 'set_maximum_speed_async' for the non-blocking counterpart.
-     *
-     * @return Result of request.
-     */
-    Result set_maximum_speed(float speed) const;
-
-    /**
      * @brief Callback type for get_return_to_launch_altitude_async.
      */
     using GetReturnToLaunchAltitudeCallback = std::function<void(Result, float)>;

@@ -29,8 +29,6 @@ public:
     MOCK_CONST_METHOD0(transition_to_multicopter, Action::Result()){};
     MOCK_CONST_METHOD0(get_takeoff_altitude, std::pair<Action::Result, float>()){};
     MOCK_CONST_METHOD1(set_takeoff_altitude, Action::Result(float)){};
-    MOCK_CONST_METHOD0(get_maximum_speed, std::pair<Action::Result, float>()){};
-    MOCK_CONST_METHOD1(set_maximum_speed, Action::Result(float)){};
     MOCK_CONST_METHOD0(get_return_to_launch_altitude, std::pair<Action::Result, float>()){};
     MOCK_CONST_METHOD1(set_return_to_launch_altitude, Action::Result(float)){};
     MOCK_CONST_METHOD1(set_current_speed, Action::Result(float)){};
