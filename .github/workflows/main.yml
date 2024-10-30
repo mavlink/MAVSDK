@@ -13,8 +13,8 @@ on:
 
 jobs:
   coverage:
-    name: coverage (ubuntu-20.04)
-    runs-on: ubuntu-20.04
+    name: Coverage (ubuntu-22.04)
+    runs-on: ubuntu-22.04
     env:
       NODE_OPTIONS: --max_old_space_size=4096
     steps:
@@ -45,7 +45,7 @@ jobs:
         run: |
           ls -l lcov.info
       - name: Coveralls
-        uses: coverallsapp/github-action@master
+        uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: "./lcov.info"
