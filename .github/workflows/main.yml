@@ -248,25 +248,6 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
 
-  debian-packaging:
-    name: Ubuntu/Debian packaging (Ubuntu 20.04)
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-          fetch-depth: 0
-      - name: install packages
-        run: sudo apt-get update && sudo apt-get install -y build-essential debhelper fakeroot libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev libjsoncpp1 libcurl4 libtinyxml2-6a
-      - name: install mavlink on the system
-        run: |
-            cmake -Bthird_party/mavlink/build -Sthird_party/mavlink
-            sudo cmake --build third_party/mavlink/build
-      - name: generate changelog
-        run: ./tools/generate_debian_changelog.sh > debian/changelog
-      - name: Build package
-        run: dpkg-buildpackage -us -uc -b
-
   dockcross-linux-arm:
     name: linux-${{ matrix.docker_name }}
     runs-on: ubuntu-20.04
