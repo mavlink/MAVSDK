@@ -35,6 +35,13 @@ if(SUPERBUILD)
         build_target(grpc)
     endif()
 
+    if(NOT BUILD_WITHOUT_CURL)
+        if(NOT IOS)
+            build_target(zlib-ng)
+        endif()
+        build_target(curl)
+    endif()
+
     if(BUILD_TESTING)
         build_target(gtest)
     endif()
