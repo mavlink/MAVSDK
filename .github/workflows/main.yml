@@ -50,9 +50,15 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: "./lcov.info"
 
-  ubuntu20-non-superbuild:
-    name: ubuntu-20.04 (non-mavsdk_server, non-superbuild)
-    runs-on: ubuntu-20.04
+  ubuntu-non-superbuild:
+    name: ${{ matrix.ubuntu_image }} (non-mavsdk_server, non-superbuild)
+    runs-on: ${{ matrix.ubuntu_image }}
+    strategy:
+      matrix:
+        include:
+          - ubuntu_image: ubuntu-20.04
+          - ubuntu_image: ubuntu-22.04
+          - ubuntu_image: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
