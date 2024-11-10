@@ -13,8 +13,8 @@ on:
 
 jobs:
   coverage:
-    name: coverage (ubuntu-20.04)
-    runs-on: ubuntu-20.04
+    name: Coverage (ubuntu-22.04)
+    runs-on: ubuntu-22.04
     env:
       NODE_OPTIONS: --max_old_space_size=4096
     steps:
@@ -45,20 +45,26 @@ jobs:
         run: |
           ls -l lcov.info
       - name: Coveralls
-        uses: coverallsapp/github-action@master
+        uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: "./lcov.info"
 
-  ubuntu20-non-superbuild:
-    name: ubuntu-20.04 (non-mavsdk_server, non-superbuild)
-    runs-on: ubuntu-20.04
+  ubuntu-non-superbuild:
+    name: ${{ matrix.ubuntu_image }} (non-mavsdk_server, non-superbuild)
+    runs-on: ${{ matrix.ubuntu_image }}
+    strategy:
+      matrix:
+        include:
+          - ubuntu_image: ubuntu-20.04
+          - ubuntu_image: ubuntu-22.04
+          - ubuntu_image: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: install
-        run: sudo apt-get update && sudo apt-get install -y libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev libgtest-dev libgmock-dev
+        run: sudo apt-get update && sudo apt-get install -y libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev libgtest-dev libgmock-dev liblzma-dev
       - name: install mavlink on the system
         run: |
             cmake -Bthird_party/mavlink/build -Sthird_party/mavlink
@@ -69,8 +75,8 @@ jobs:
         run: cmake --build build/release -j2
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
-      #- name: system tests
-      #  run: ./build/release/src/system_tests/system_tests_runner
+      - name: system tests
+        run: ./build/release/src/system_tests/system_tests_runner
 
   ubuntu-superbuild:
     name: ${{ matrix.ubuntu_image }} (mavsdk_server, superbuild)
@@ -155,9 +161,15 @@ jobs:
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
 
-  ubuntu20-hunter:
-    name: ubuntu-20.04 (mavsdk, hunter)
-    runs-on: ubuntu-20.04
+  ubuntu-hunter:
+    name: ${{ matrix.ubuntu_image }} (non-mavsdk_server, hunter)
+    runs-on: ${{ matrix.ubuntu_image }}
+    strategy:
+      matrix:
+        include:
+          - ubuntu_image: ubuntu-20.04
+          - ubuntu_image: ubuntu-22.04
+          - ubuntu_image: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -166,7 +178,7 @@ jobs:
         id: cache
         with:
           path: ~/.hunter
-          key: ${{ github.job }}-${{ hashFiles('~/.hunter/**') }}-2
+          key: ${{ github.job }}-${{ matrix.ubuntu_image }}-${{ hashFiles('~/.hunter/**') }}-2
       - name: install mavlink on the system
         run: |
             cmake -Bthird_party/mavlink/build -Sthird_party/mavlink
@@ -241,25 +253,6 @@ jobs:
           file: '*.deb'
           tag: ${{ github.ref }}
           overwrite: true
-
-  debian-packaging:
-    name: Ubuntu/Debian packaging (Ubuntu 20.04)
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-          fetch-depth: 0
-      - name: install packages
-        run: sudo apt-get update && sudo apt-get install -y build-essential debhelper fakeroot libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev libjsoncpp1 libcurl4 libtinyxml2-6a
-      - name: install mavlink on the system
-        run: |
-            cmake -Bthird_party/mavlink/build -Sthird_party/mavlink
-            sudo cmake --build third_party/mavlink/build
-      - name: generate changelog
-        run: ./tools/generate_debian_changelog.sh > debian/changelog
-      - name: Build package
-        run: dpkg-buildpackage -us -uc -b
 
   dockcross-linux-arm:
     name: linux-${{ matrix.docker_name }}
@@ -339,8 +332,8 @@ jobs:
         run: cmake --build build/release --target install -- -j2
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
-      # - name: system tests
-      #   run: ./build/release/src/system_tests/system_tests_runner
+      - name: system tests
+        run: ./build/release/src/system_tests/system_tests_runner
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
       - name: Upload as artefact
