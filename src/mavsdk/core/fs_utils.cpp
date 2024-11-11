@@ -119,11 +119,11 @@ std::optional<std::filesystem::path> create_tmp_directory(const std::string& pre
 std::string replace_non_ascii_and_whitespace(const std::string& input)
 {
     std::string result = input;
-    std::transform(result.begin(), result.end(), result.begin(), [](const char ch) {
-        if (ch < 0 || static_cast<unsigned char>(ch) > 127 || std::isspace(ch)) {
+    std::transform(result.begin(), result.end(), result.begin(), [](unsigned char ch) {
+        if (ch > 127 || std::isspace(ch)) {
             return '_';
         }
-        return ch;
+        return static_cast<char>(ch);
     });
     return result;
 }
