@@ -88,13 +88,16 @@ void MavlinkCommandSender::queue_command_async(
 
     CommandIdentification identification = identification_from_command(command);
 
-    for (const auto& work : _work_queue) {
-        if (work->identification == identification && callback == nullptr) {
-            if (_command_debugging) {
-                LogDebug() << "Dropping command " << static_cast<int>(identification.command)
-                           << " that is already being sent";
+    {
+        LockedQueue<Work>::Guard work_queue_guard(_work_queue);
+        for (const auto& work : _work_queue) {
+            if (work->identification == identification && callback == nullptr) {
+                if (_command_debugging) {
+                    LogDebug() << "Dropping command " << static_cast<int>(identification.command)
+                               << " that is already being sent";
+                }
+                return;
             }
-            return;
         }
     }
 
@@ -117,13 +120,16 @@ void MavlinkCommandSender::queue_command_async(
 
     CommandIdentification identification = identification_from_command(command);
 
-    for (const auto& work : _work_queue) {
-        if (work->identification == identification && callback == nullptr) {
-            if (_command_debugging) {
-                LogDebug() << "Dropping command " << static_cast<int>(identification.command)
-                           << " that is already being sent";
+    {
+        LockedQueue<Work>::Guard work_queue_guard(_work_queue);
+        for (const auto& work : _work_queue) {
+            if (work->identification == identification && callback == nullptr) {
+                if (_command_debugging) {
+                    LogDebug() << "Dropping command " << static_cast<int>(identification.command)
+                               << " that is already being sent";
+                }
+                return;
             }
-            return;
         }
     }
 
