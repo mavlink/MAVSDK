@@ -971,8 +971,7 @@ void CameraImpl::process_heartbeat(const mavlink_message_t& message)
         });
 
     if (!found) {
-        auto new_potential_camera = PotentialCamera(message.compid);
-        _potential_cameras.emplace_back(std::move(new_potential_camera));
+        _potential_cameras.emplace_back(message.compid);
         check_potential_cameras_with_lock();
     }
 }
@@ -1252,6 +1251,8 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
     camera_information.cam_definition_uri[sizeof(camera_information.cam_definition_uri) - 1] = '\0';
 
     Camera::Information new_information{};
+    // TODO: Check the case for 1-6.
+    new_information.component_id = message.compid;
     new_information.vendor_name = reinterpret_cast<char*>(camera_information.vendor_name);
     new_information.model_name = reinterpret_cast<char*>(camera_information.model_name);
     new_information.focal_length_mm = camera_information.focal_length;
@@ -1268,13 +1269,12 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
         });
 
     if (potential_camera == _potential_cameras.end()) {
-        auto new_potential_camera = PotentialCamera(message.compid);
-        _potential_cameras.emplace_back(std::move(new_potential_camera));
+        _potential_cameras.emplace_back(message.compid);
         potential_camera = std::prev(_potential_cameras.end());
     }
 
     // We need a copy of the component ID inside the information.
-    new_information.component_id = potential_camera->component_id;
+    potential_camera->component_id = new_information.component_id;
     potential_camera->maybe_information = new_information;
     potential_camera->camera_definition_url = camera_information.cam_definition_uri;
     potential_camera->camera_definition_version = camera_information.cam_definition_version;
