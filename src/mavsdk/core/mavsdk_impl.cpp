@@ -14,6 +14,7 @@
 #include "server_component_impl.h"
 #include "mavlink_channels.h"
 #include "callback_list.tpp"
+#include "hostname_to_ip.h"
 
 namespace mavsdk {
 
@@ -573,7 +574,14 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::setup_udp_remo
     }
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::Success) {
-        new_conn->add_remote(remote_ip, remote_port);
+        // We need to add the IP rather than a hostname, otherwise we end up with two remotes:
+        // one for the IP, and one for a hostname.
+        auto always_ip = resolve_hostname_to_ip(remote_ip);
+
+        if (!always_ip) {
+            return {ConnectionResult::DestinationIpUnknown, Mavsdk::ConnectionHandle{}};
+        }
+        new_conn->add_remote(always_ip.value(), remote_port);
         auto handle = add_connection(new_conn);
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
