@@ -16,6 +16,7 @@
 #include "plugin_base.h"
 #include "mavlink_channels.h"
 #include "callback_list.tpp"
+#include "hostname_to_ip.h"
 
 namespace mavsdk {
 
@@ -538,7 +539,15 @@ MavsdkImpl::add_udp_connection(const CliArg::Udp& udp, ForwardingOption forwardi
     auto handle = add_connection(new_conn);
 
     if (udp.mode == CliArg::Udp::Mode::Out) {
-        new_conn->add_remote(udp.host, udp.port);
+        // We need to add the IP rather than a hostname, otherwise we end up with two remotes:
+        // one for the IP, and one for a hostname.
+        auto remote_ip = resolve_hostname_to_ip(udp.host);
+
+        if (!remote_ip) {
+            return {ConnectionResult::DestinationIpUnknown, Mavsdk::ConnectionHandle{}};
+        }
+
+        new_conn->add_remote(remote_ip.value(), udp.port);
         std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
 
         // With a UDP remote, we need to initiate the connection by sending heartbeats.
