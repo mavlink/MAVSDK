@@ -23,6 +23,7 @@ target_sources(mavsdk
     system_impl.cpp
     flight_mode.cpp
     fs_utils.cpp
+    hostname_to_ip.cpp
     inflate_lzma.cpp
     math_conversions.cpp
     mavsdk.cpp
@@ -82,8 +83,9 @@ if (NOT BUILD_WITHOUT_CURL)
     )
 
     list(APPEND UNIT_TEST_SOURCES
-        # TODO: add this again
         ${PROJECT_SOURCE_DIR}/mavsdk/core/curl_test.cpp
+        ${PROJECT_SOURCE_DIR}/mavsdk/core/hostname_to_ip_test.cpp
+        # TODO: add this again
         #${PROJECT_SOURCE_DIR}/mavsdk/core/http_loader_test.cpp
     )
 else()
