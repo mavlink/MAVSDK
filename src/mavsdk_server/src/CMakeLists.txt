@@ -7,6 +7,8 @@ list(APPEND MAVSDK_SERVER_SOURCES
     grpc_server.cpp
 )
 
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 set(COMPONENTS_LIST ${ENABLED_PLUGINS})
 list(APPEND COMPONENTS_LIST core)
 foreach(COMPONENT_NAME ${COMPONENTS_LIST})
@@ -109,7 +111,19 @@ if(NOT IOS AND NOT ANDROID)
         EXPORT mavsdk-targets
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
+
+    if (BUILD_SHARED_LIBS)
+        set_target_properties(mavsdk_server_bin PROPERTIES
+            INSTALL_RPATH "${CMAKE_INSTALL_LIBDIR}"
+            )
+
+        set_target_properties(mavsdk_server
+            PROPERTIES
+            INSTALL_RPATH "$ORIGIN"
+        )
+    endif()
 endif()
+
 
 # iOS builds mavsdk_server.framework
 if(IOS OR (APPLE AND MACOS_FRAMEWORK))
