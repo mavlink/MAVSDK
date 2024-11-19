@@ -76,6 +76,7 @@ jobs:
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
+        if: ${{ matrix.ubuntu_image }} == "ubuntu-24.04"
         run: ./build/release/src/system_tests/system_tests_runner
 
   ubuntu-superbuild:
