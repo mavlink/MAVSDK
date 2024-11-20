@@ -107,13 +107,17 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
     mavlink_msg_file_transfer_protocol_decode(&msg, &ftp_req);
 
     if (ftp_req.target_system != 0 && ftp_req.target_system != _system_impl.get_own_system_id()) {
-        LogWarn() << "Received FTP with wrong target system ID!";
+        if (_debugging) {
+            LogDebug() << "Received FTP message with wrong target system ID";
+        }
         return;
     }
 
     if (ftp_req.target_component != 0 &&
         ftp_req.target_component != _system_impl.get_own_component_id()) {
-        LogWarn() << "Received FTP with wrong target component ID!";
+        if (_debugging) {
+            LogDebug() << "Received FTP message with wrong target component ID";
+        }
         return;
     }
 
