@@ -18,6 +18,8 @@ ServerComponentImpl::ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t compon
     _mavlink_request_message_handler(mavsdk_impl, *this, _mavlink_command_receiver),
     _mavlink_ftp_server(*this)
 {
+    _autopilot_version.capabilities |= MAV_PROTOCOL_CAPABILITY_MAVLINK2;
+
     if (!MavlinkChannels::Instance().checkout_free_channel(_channel)) {
         // We use a default of channel 0 which will still work but not track
         // seq correctly.
@@ -38,6 +40,14 @@ ServerComponentImpl::ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t compon
         [this](const MavlinkCommandReceiver::CommandInt& command) {
             send_autopilot_version();
             return make_command_ack_message(command, MAV_RESULT_ACCEPTED);
+        },
+        this);
+
+    _mavlink_request_message_handler.register_handler(
+        MAVLINK_MSG_ID_PROTOCOL_VERSION,
+        [this](uint8_t, uint8_t, const MavlinkRequestMessageHandler::Params&) {
+            send_protocol_version();
+            return MAV_RESULT_ACCEPTED;
         },
         this);
 
@@ -373,6 +383,24 @@ void ServerComponentImpl::send_autopilot_version()
             _autopilot_version.product_id,
             0,
             _autopilot_version.uid2.data());
+        return message;
+    });
+}
+
+void ServerComponentImpl::send_protocol_version()
+{
+    queue_message([&, this](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_protocol_version_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            kMavlinkVersionInfo.version,
+            kMavlinkVersionInfo.min_version,
+            kMavlinkVersionInfo.max_version,
+            kMavlinkVersionInfo.spec_version_hash,
+            kMavlinkVersionInfo.library_version_hash);
         return message;
     });
 }

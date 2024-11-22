@@ -25,6 +25,14 @@ class ServerPluginImplBase;
 
 class ServerComponentImpl {
 public:
+    static constexpr mavlink_protocol_version_t kMavlinkVersionInfo{
+        MAVLINK_VERSION * 100, // currently active mavlink version
+        100, // min supported version
+        MAVLINK_VERSION * 100, // max supported version
+        {}, // spec version hash (unused for now)
+        {}, // library version hash (unused for now)
+    };
+
     ServerComponentImpl(MavsdkImpl& mavsdk_impl, uint8_t component_id);
     ~ServerComponentImpl();
 
@@ -140,6 +148,7 @@ public:
     void set_product_id(uint16_t product_id);
     bool set_uid2(std::string uid2);
     void send_autopilot_version();
+    void send_protocol_version();
 
     MavlinkMissionTransferServer& mission_transfer_server() { return _mission_transfer_server; }
     MavlinkParameterServer& mavlink_parameter_server() { return _mavlink_parameter_server; }
