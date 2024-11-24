@@ -396,11 +396,11 @@ void ServerComponentImpl::send_protocol_version()
             mavlink_address.component_id,
             channel,
             &message,
-            kMavlinkVersionInfo.version,
-            kMavlinkVersionInfo.min_version,
-            kMavlinkVersionInfo.max_version,
-            kMavlinkVersionInfo.spec_version_hash,
-            kMavlinkVersionInfo.library_version_hash);
+            MAVLINK_VERSION_INFO.version,
+            MAVLINK_VERSION_INFO.min_version,
+            MAVLINK_VERSION_INFO.max_version,
+            MAVLINK_VERSION_INFO.spec_version_hash,
+            MAVLINK_VERSION_INFO.library_version_hash);
         return message;
     });
 }

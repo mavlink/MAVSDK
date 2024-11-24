@@ -25,7 +25,7 @@ class ServerPluginImplBase;
 
 class ServerComponentImpl {
 public:
-    static constexpr mavlink_protocol_version_t kMavlinkVersionInfo{
+    static constexpr mavlink_protocol_version_t MAVLINK_VERSION_INFO{
         MAVLINK_VERSION * 100, // currently active mavlink version
         100, // min supported version
         MAVLINK_VERSION * 100, // max supported version
