@@ -1848,10 +1848,8 @@ bool CameraImpl::get_possible_options(
     }
 
     for (const auto& value : values) {
-        std::stringstream ss{};
-        ss << value.get_string();
         Camera::Option option{};
-        option.option_id = ss.str();
+        option.option_id = value.get_string();
         if (!is_setting_range(setting_id)) {
             get_option_str(setting_id, option.option_id, option.option_description);
         }
