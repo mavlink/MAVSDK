@@ -7,7 +7,7 @@
 
 static auto constexpr default_connection = "udp://:14540";
 static auto constexpr default_mavsdk_server_port = 50051;
-static auto constexpr default_sysid = 245;
+static auto constexpr default_sysid = 255;
 static auto constexpr default_compid = 190;
 
 static void usage(const char* bin_name);
