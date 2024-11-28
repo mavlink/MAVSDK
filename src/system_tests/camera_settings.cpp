@@ -213,7 +213,7 @@ TEST(SystemTest, CameraSettingsAsync)
         camera.set_setting(camera.camera_list().cameras[0].component_id, setting),
         Camera::Result::Success);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
     EXPECT_TRUE(found_wb_temp);
 
     bool found_exp_absolute = false;
@@ -233,6 +233,6 @@ TEST(SystemTest, CameraSettingsAsync)
         camera.set_setting(camera.camera_list().cameras[0].component_id, setting),
         Camera::Result::Success);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
     EXPECT_TRUE(found_exp_absolute);
 }
