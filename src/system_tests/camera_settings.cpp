@@ -123,10 +123,20 @@ TEST(SystemTest, CameraSettings)
         camera.reset_settings(camera.camera_list().cameras[0].component_id),
         Camera::Result::Success);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    std::pair<Camera::Result, Camera::Setting> wb_temp;
 
-    auto wb_temp = camera.get_setting(
-        camera.camera_list().cameras[0].component_id, Camera::Setting{"WB_TEMP"});
+    for (size_t i = 0; i < 10; i++) {
+        // In some setups it takes longer for the param changes to propagate.
+        // But we want to end the test as early as possible. So we check regularly
+        // for a period of time and exit early if the check passes.
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+        wb_temp = camera.get_setting(camera.camera_list().cameras[0].component_id, Camera::Setting{"WB_TEMP"});
+        if (wb_temp.first == Camera::Result::Success && wb_temp.second.option.option_id == "4000") {
+            break;
+        }
+    }
+
     EXPECT_EQ(wb_temp.first, Camera::Result::Success);
     EXPECT_EQ(wb_temp.second.option.option_id, "4000");
 }
