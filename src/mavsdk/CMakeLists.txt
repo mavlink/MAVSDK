@@ -14,6 +14,8 @@ find_package(tinyxml2 REQUIRED)
 find_package(libevents REQUIRED)
 
 target_link_libraries(mavsdk
+    PUBLIC
+    ${CMAKE_DL_LIBS}
     PRIVATE
     JsonCpp::JsonCpp
     tinyxml2::tinyxml2
