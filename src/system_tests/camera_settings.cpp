@@ -79,16 +79,29 @@ TEST(SystemTest, CameraSettings)
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
     EXPECT_EQ(camera.camera_list().cameras.size(), 1);
 
-    auto possible_setting_options =
-        camera.get_possible_setting_options(camera.camera_list().cameras[0].component_id);
+    std::pair<Camera::Result, std::vector<Camera::SettingOptions>> possible_setting_options;
+
+    for (size_t i = 0; i < 50; i++) {
+        // In some setups it takes longer for the params to propagate.
+        // But we want to end the test as early as possible. So we check regularly
+        // for a period of time and exit early if the check passes.
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+        possible_setting_options =
+            camera.get_possible_setting_options(camera.camera_list().cameras[0].component_id);
+        if (possible_setting_options.first == Camera::Result::Success && possible_setting_options.second.size() == 11) {
+            break;
+        }
+    }
+
     ASSERT_EQ(possible_setting_options.first, Camera::Result::Success);
+    EXPECT_EQ(possible_setting_options.second.size(), 11);
+
 
     auto wb_mode = camera.get_setting(
         camera.camera_list().cameras[0].component_id, Camera::Setting{"WB_MODE"});
     EXPECT_EQ(wb_mode.first, Camera::Result::Success);
     EXPECT_EQ(wb_mode.second.option.option_id, "0");
-
-    EXPECT_EQ(possible_setting_options.second.size(), 11);
 
     auto current_setting =
         camera.get_current_settings(camera.camera_list().cameras[0].component_id);
