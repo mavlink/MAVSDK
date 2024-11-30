@@ -484,6 +484,8 @@ jobs:
         run: cmake --build build/macos -j2 --target install
       - name: unit tests
         run: ./build/macos/src/unit_tests/unit_tests_runner
+      - name: set camera debugging
+        run: echo "MAVSDK_CAMERA_DEBUGGING=1" >> $GITHUB_ENV
       - name: system tests
         run: ./build/macos/src/system_tests/system_tests_runner
       - name: test (mavsdk_server)
