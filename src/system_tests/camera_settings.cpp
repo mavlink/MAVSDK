@@ -86,10 +86,12 @@ TEST(SystemTest, CameraSettings)
         // But we want to end the test as early as possible. So we check regularly
         // for a period of time and exit early if the check passes.
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::cout << "Trying to get possible_setting_options" << std::endl;
 
         possible_setting_options =
             camera.get_possible_setting_options(camera.camera_list().cameras[0].component_id);
         if (possible_setting_options.first == Camera::Result::Success && possible_setting_options.second.size() == 11) {
+            std::cout << "All good, possible_setting_options has 11 elements" << std::endl;
             break;
         }
     }
