@@ -462,6 +462,8 @@ void MavlinkParameterClient::do_work()
                     _timeout_handler.add([this] { receive_timeout(); }, _timeout_s_callback());
             },
             [&](WorkItemGet& item) {
+                // We can't rely on the cache as we haven't implemented the hash check.
+                clear_cache();
                 if (!send_get_param_message(item)) {
                     LogErr() << "Send message failed";
                     work_queue_guard->pop_front();
@@ -478,6 +480,8 @@ void MavlinkParameterClient::do_work()
                     _timeout_handler.add([this] { receive_timeout(); }, _timeout_s_callback());
             },
             [&](WorkItemGetAll& item) {
+                // We can't rely on the cache as we haven't implemented the hash check.
+                clear_cache();
                 if (!send_request_list_message()) {
                     LogErr() << "Send message failed";
                     work_queue_guard->pop_front();
