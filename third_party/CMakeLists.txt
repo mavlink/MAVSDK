@@ -14,14 +14,20 @@ if (SUPERBUILD)
     build_target(liblzma)
 
     if(NOT BUILD_WITHOUT_CURL)
+        build_target(openssl)
+
         if(NOT IOS)
             build_target(zlib-ng)
         endif()
+
         build_target(curl)
     endif()
 
     if(BUILD_MAVSDK_SERVER)
-        build_target(openssl)
+        if (BUILD_WITHOUT_CURL)
+            build_target(openssl)
+        endif()
+
         build_target(cares)
         build_target(absl)
         build_target(protobuf)
