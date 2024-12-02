@@ -89,14 +89,14 @@ TEST(SystemTest, CameraSettings)
 
         possible_setting_options =
             camera.get_possible_setting_options(camera.camera_list().cameras[0].component_id);
-        if (possible_setting_options.first == Camera::Result::Success && possible_setting_options.second.size() == 11) {
+        if (possible_setting_options.first == Camera::Result::Success &&
+            possible_setting_options.second.size() == 11) {
             break;
         }
     }
 
     ASSERT_EQ(possible_setting_options.first, Camera::Result::Success);
     EXPECT_EQ(possible_setting_options.second.size(), 11);
-
 
     auto wb_mode = camera.get_setting(
         camera.camera_list().cameras[0].component_id, Camera::Setting{"WB_MODE"});
@@ -111,9 +111,9 @@ TEST(SystemTest, CameraSettings)
         // for a period of time and exit early if the check passes.
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
-        current_setting =
-        camera.get_current_settings(camera.camera_list().cameras[0].component_id);
-        if (current_setting.first == Camera::Result::Success && current_setting.second.size() == 11) {
+        current_setting = camera.get_current_settings(camera.camera_list().cameras[0].component_id);
+        if (current_setting.first == Camera::Result::Success &&
+            current_setting.second.size() == 11) {
             break;
         }
     }
@@ -157,7 +157,8 @@ TEST(SystemTest, CameraSettings)
         // for a period of time and exit early if the check passes.
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
-        wb_temp = camera.get_setting(camera.camera_list().cameras[0].component_id, Camera::Setting{"WB_TEMP"});
+        wb_temp = camera.get_setting(
+            camera.camera_list().cameras[0].component_id, Camera::Setting{"WB_TEMP"});
         if (wb_temp.first == Camera::Result::Success && wb_temp.second.option.option_id == "4000") {
             break;
         }
