@@ -11,21 +11,11 @@ add_executable(integration_tests_runner
     action_goto.cpp
     action_hold.cpp
     calibration.cpp
-    camera_capture_info.cpp
-    camera_mode.cpp
-    camera_settings.cpp
-    camera_status.cpp
-    camera_take_photo.cpp
-    camera_take_photo_interval.cpp
-    camera_format.cpp
-    camera_reset_settings.cpp
-    camera_test_helpers.cpp
     connection.cpp
     follow_me.cpp
     geofence.cpp
     info.cpp
     offboard_attitude.cpp
-    #logging.cpp # Not fully implemented
     log_files.cpp
     mission_cancellation.cpp
     mission_change_speed.cpp

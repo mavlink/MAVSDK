@@ -73,8 +73,22 @@ int main(int argc, char** argv)
     auto telemetry = Telemetry{system};
     auto camera = Camera{system};
 
+    // Wait for camera to be discovered.
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+    // We expect to find one camera.
+    if (camera.camera_list().cameras.size() == 0) {
+        std::cerr << "No camera found, exiting.\n";
+        return 1;
+    }
+
+    if (camera.camera_list().cameras.size() > 1) {
+        std::cout << "More than one camera found, using first one discovered.\n";
+    }
+    const auto component_id = camera.camera_list().cameras[0].component_id;
+
     // First, make sure camera is in photo mode.
-    const auto mode_result = camera.set_mode(Camera::Mode::Photo);
+    const auto mode_result = camera.set_mode(component_id, Camera::Mode::Photo);
     if (mode_result != Camera::Result::Success) {
         std::cerr << "Could not switch to Photo mode: " << mode_result;
         return 1;
@@ -85,7 +99,7 @@ int main(int argc, char** argv)
         std::cout << "Image captured, stored at: " << capture_info.file_url << '\n';
     });
 
-    const auto photo_result = camera.take_photo();
+    const auto photo_result = camera.take_photo(component_id);
     if (photo_result != Camera::Result::Success) {
         std::cerr << "Taking Photo failed: " << mode_result;
         return 1;

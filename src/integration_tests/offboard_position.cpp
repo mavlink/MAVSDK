@@ -2,7 +2,6 @@
 #include <cmath>
 #include "integration_test_helper.h"
 #include "mavsdk.h"
-#include "mavsdk_math.h"
 #include "plugins/action/action.h"
 #include "plugins/telemetry/telemetry.h"
 #include "plugins/offboard/offboard.h"
@@ -63,7 +62,7 @@ TEST(SitlTest, OffboardPositionNED)
         const float radius = 10.0f;
         const float step = 0.01f;
         float angle = 0.0f;
-        while (angle <= 2.0f * static_cast<float>(PI)) {
+        while (angle <= 2.0f * static_cast<float>(M_PI)) {
             float x = radius * cosf(angle);
             float y = radius * sinf(angle);
 

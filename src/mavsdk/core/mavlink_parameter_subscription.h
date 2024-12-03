@@ -2,7 +2,8 @@
 
 #include "param_value.h"
 #include <mutex>
-#include <list>
+#include <string>
+#include <vector>
 
 namespace mavsdk {
 
@@ -16,6 +17,30 @@ class MavlinkParameterSubscription {
 public:
     template<class T> using ParamChangedCallback = std::function<void(T value)>;
 
+    using ParamChangedCallbacks = std::variant<
+        ParamChangedCallback<uint8_t>,
+        ParamChangedCallback<uint16_t>,
+        ParamChangedCallback<uint32_t>,
+        ParamChangedCallback<uint64_t>,
+        ParamChangedCallback<int8_t>,
+        ParamChangedCallback<int16_t>,
+        ParamChangedCallback<int32_t>,
+        ParamChangedCallback<int64_t>,
+        ParamChangedCallback<float>,
+        ParamChangedCallback<double>,
+        ParamChangedCallback<std::string>>;
+
+    struct ParamChangedSubscription {
+        std::string param_name;
+        ParamChangedCallbacks callback;
+        const void* cookie;
+        ParamChangedSubscription(
+            std::string param_name1, ParamChangedCallbacks callback1, const void* cookie1) :
+            param_name(std::move(param_name1)),
+            callback(std::move(callback1)),
+            cookie(cookie1){};
+    };
+
     /**
      * Subscribe to changes on the parameter referenced by @param name.
      * If the value for this parameter changes, the given callback is called provided that the
@@ -23,15 +48,46 @@ public:
      */
     template<class T>
     void subscribe_param_changed(
-        const std::string& name, const ParamChangedCallback<T>& callback, const void* cookie);
+        const std::string& name, const ParamChangedCallback<T>& callback, const void* cookie)
+    {
+        std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
+        if (callback != nullptr) {
+            ParamChangedSubscription subscription{name, callback, cookie};
+            // This is just to let the upper level know of what probably is a bug, but we check
+            // again when actually calling the callback We also cannot assume here that the user
+            // called provide_param before subscribe_param_changed, so the only thing that makes
+            // sense is to log a warning, but then continue anyways.
+            /*std::lock_guard<std::mutex> lock2(_all_params_mutex);
+            if (_all_params.find(name) != _all_params.end()) {
+                const auto curr_value = _all_params.at(name);
+                if (!curr_value.template is_same_type_templated<T>()) {
+                    LogDebug()
+                        << "You just registered a param changed callback where the type does not
+            match the type already stored";
+                }
+            }*/
+            _param_changed_subscriptions.push_back(subscription);
+        } else {
+            for (auto it = _param_changed_subscriptions.begin();
+                 it != _param_changed_subscriptions.end();
+                 /* ++it */) {
+                if (it->param_name == name && it->cookie == cookie) {
+                    it = _param_changed_subscriptions.erase(it);
+                } else {
+                    ++it;
+                }
+            }
+        }
+    }
 
     using ParamFloatChangedCallback = ParamChangedCallback<float>;
+    using ParamIntChangedCallback = ParamChangedCallback<int>;
+    using ParamCustomChangedCallback = ParamChangedCallback<std::string>;
+
     void subscribe_param_float_changed(
         const std::string& name, const ParamFloatChangedCallback& callback, const void* cookie);
-    using ParamIntChangedCallback = ParamChangedCallback<int>;
     void subscribe_param_int_changed(
         const std::string& name, const ParamIntChangedCallback& callback, const void* cookie);
-    using ParamCustomChangedCallback = ParamChangedCallback<std::string>;
     void subscribe_param_custom_changed(
         const std::string& name, const ParamCustomChangedCallback& callback, const void* cookie);
 
@@ -47,20 +103,8 @@ protected:
         const std::string& param_name, const ParamValue& new_param_value);
 
 private:
-    using ParamChangedCallbacks = std::
-        variant<ParamFloatChangedCallback, ParamIntChangedCallback, ParamCustomChangedCallback>;
-    struct ParamChangedSubscription {
-        const std::string param_name;
-        const ParamChangedCallbacks callback;
-        const void* const cookie;
-        explicit ParamChangedSubscription(
-            std::string param_name1, ParamChangedCallbacks callback1, const void* cookie1) :
-            param_name(std::move(param_name1)),
-            callback(std::move(callback1)),
-            cookie(cookie1){};
-    };
     std::mutex _param_changed_subscriptions_mutex{};
-    std::list<ParamChangedSubscription> _param_changed_subscriptions{};
+    std::vector<ParamChangedSubscription> _param_changed_subscriptions{};
 };
 
 } // namespace mavsdk
