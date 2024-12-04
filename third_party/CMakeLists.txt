@@ -14,7 +14,7 @@ if (SUPERBUILD)
     build_target(liblzma)
 
     if(NOT BUILD_WITHOUT_CURL)
-        build_target(openssl)
+        build_target(boringssl)
 
         if(NOT IOS)
             build_target(zlib-ng)
@@ -25,7 +25,7 @@ if (SUPERBUILD)
 
     if(BUILD_MAVSDK_SERVER)
         if (BUILD_WITHOUT_CURL)
-            build_target(openssl)
+            build_target(boringssl)
         endif()
 
         build_target(cares)
