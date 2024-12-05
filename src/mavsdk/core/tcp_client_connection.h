@@ -30,7 +30,7 @@ public:
     ConnectionResult start() override;
     ConnectionResult stop() override;
 
-    bool send_message(const mavlink_message_t& message) override;
+    std::pair<bool, std::string> send_message(const mavlink_message_t& message) override;
 
     // Non-copyable
     TcpClientConnection(const TcpClientConnection&) = delete;

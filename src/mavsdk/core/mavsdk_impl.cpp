@@ -306,8 +306,13 @@ void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connect
                 !entry.connection->should_forward_messages()) {
                 continue;
             }
-            if ((*entry.connection).send_message(message)) {
+            auto result = (*entry.connection).send_message(message);
+            if (result.first) {
                 successful_emissions++;
+            } else {
+                _connections_errors_subscriptions.queue(
+                    Mavsdk::ConnectionError{result.second, entry.handle},
+                    [this](const auto& func) { call_user_callback(func); });
             }
         }
         if (successful_emissions == 0) {
@@ -474,13 +479,12 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
         if (target_system_id != 0 && !(*_connection.connection).has_system_id(target_system_id)) {
             continue;
         }
-
-        if ((*_connection.connection).send_message(message)) {
+        const auto result = (*_connection.connection).send_message(message);
+        if (result.first) {
             successful_emissions++;
         } else {
             _connections_errors_subscriptions.queue(
-                // TODO: Make it a better error message
-                Mavsdk::ConnectionError{"send error", _connection.handle},
+                Mavsdk::ConnectionError{result.second, _connection.handle},
                 [this](const auto& func) { call_user_callback(func); });
         }
     }

@@ -4,7 +4,9 @@
 #include "mavlink_receiver.h"
 #include <atomic>
 #include <memory>
+#include <string>
 #include <unordered_set>
+#include <utility>
 
 namespace mavsdk {
 
@@ -21,7 +23,7 @@ public:
     virtual ConnectionResult start() = 0;
     virtual ConnectionResult stop() = 0;
 
-    virtual bool send_message(const mavlink_message_t& message) = 0;
+    virtual std::pair<bool, std::string> send_message(const mavlink_message_t& message) = 0;
 
     bool has_system_id(uint8_t system_id);
     bool should_forward_messages() const;

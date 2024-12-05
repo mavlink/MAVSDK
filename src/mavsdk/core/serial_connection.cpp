@@ -10,6 +10,8 @@
 #include <utility>
 #endif
 
+#include <sstream>
+
 namespace mavsdk {
 
 #ifndef WINDOWS
@@ -249,16 +251,21 @@ ConnectionResult SerialConnection::stop()
     return ConnectionResult::Success;
 }
 
-bool SerialConnection::send_message(const mavlink_message_t& message)
+std::pair<bool, std::string> SerialConnection::send_message(const mavlink_message_t& message)
 {
+    std::pair<bool, std::string> result;
+
     if (_serial_node.empty()) {
         LogErr() << "Dev Path unknown";
-        return false;
+        result.first = false;
+        result.second = "Dev Path unknown";
+        return result;
     }
 
     if (_baudrate == 0) {
-        LogErr() << "Baudrate unknown";
-        return false;
+        result.first = false;
+        result.second = "Baudrate unknown";
+        return result;
     }
 
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
@@ -275,11 +282,19 @@ bool SerialConnection::send_message(const mavlink_message_t& message)
 #endif
 
     if (send_len != buffer_len) {
-        LogErr() << "write failure: " << GET_ERROR();
-        return false;
+        result.first = false;
+        result.second = "Baudrate unknown";
+
+        std::stringstream ss;
+        ss << "write failure: " << GET_ERROR();
+        LogErr() << ss.str();
+        result.first = false;
+        result.second = ss.str();
+        return result;
     }
 
-    return true;
+    result.first = true;
+    return result;
 }
 
 void SerialConnection::receive()

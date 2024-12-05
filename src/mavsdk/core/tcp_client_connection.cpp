@@ -2,8 +2,10 @@
 #include "log.h"
 
 #include <cassert>
+#include <sstream>
 #include <utility>
 #include <thread>
+#include <sstream>
 
 #ifdef WINDOWS
 #ifndef MINGW
@@ -128,20 +130,29 @@ ConnectionResult TcpClientConnection::stop()
     return ConnectionResult::Success;
 }
 
-bool TcpClientConnection::send_message(const mavlink_message_t& message)
+std::pair<bool, std::string> TcpClientConnection::send_message(const mavlink_message_t& message)
 {
+    std::pair<bool, std::string> result;
+
     if (!_is_ok) {
-        return false;
+        // TODO: not entirely sure whether this makes sense here.
+        result.first = false;
+        result.second = "not ok";
+        return result;
     }
 
     if (_remote_ip.empty()) {
-        LogErr() << "Remote IP unknown";
-        return false;
+        result.first = false;
+        result.second = "Remote IP unknown";
+        LogErr() << result.second;
+        return result;
     }
 
     if (_remote_port_number == 0) {
-        LogErr() << "Remote port unknown";
-        return false;
+        result.first = false;
+        result.second = "Remote port unknown";
+        LogErr() << result.second;
+        return result;
     }
 
     struct sockaddr_in dest_addr {};
@@ -167,11 +178,17 @@ bool TcpClientConnection::send_message(const mavlink_message_t& message)
         send(_socket_fd.get(), reinterpret_cast<const char*>(buffer), buffer_len, flags);
 
     if (send_len != buffer_len) {
-        LogErr() << "send failure: " << GET_ERROR(errno);
+        std::stringstream ss;
+        ss << "Send failure: " << GET_ERROR(errno);
+        LogErr() << ss.str();
         _is_ok = false;
-        return false;
+        result.first = false;
+        result.second = ss.str();
+        return result;
     }
-    return true;
+
+    result.first = true;
+    return result;
 }
 
 void TcpClientConnection::receive()
