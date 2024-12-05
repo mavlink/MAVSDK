@@ -15,6 +15,7 @@
 #include "mavlink_channels.h"
 #include "callback_list.tpp"
 #include "hostname_to_ip.h"
+#include "http_loader.h"
 
 namespace mavsdk {
 
@@ -53,6 +54,17 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
 
     _process_user_callbacks_thread =
         new std::thread(&MavsdkImpl::process_user_callbacks_thread, this);
+
+    
+    HttpLoader http_loader;
+    std::string uri = "https://github.com/Gremsy/Vio-Camera-Definition/releases/download/v2.0.3/vio_camera_f1_def.xml";
+    LogInfo() << "RAWR Downloading camera definition from: " << uri;
+    std::string camera_definition_out = "";
+    if (!http_loader.download_text_sync(uri, camera_definition_out)) {
+        LogErr() << "RAWR Failed to download camera definition.";
+    } else {
+        LogInfo() << "RAWR SUCCESS " << camera_definition_out;
+    }
 }
 
 MavsdkImpl::~MavsdkImpl()

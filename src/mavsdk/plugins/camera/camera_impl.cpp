@@ -1514,6 +1514,7 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
 
             if (result == Camera::Result::Success) {
                 LogDebug() << "Successfully loaded camera definition";
+                LogDebug() << "RAWR: THE CONTENT IS " << content;
 
                 if (_camera_definition_callback) {
                     _system_impl->call_user_callback(
@@ -1522,6 +1523,7 @@ void CameraImpl::process_camera_information(const mavlink_message_t& message)
 
                 _camera_definition.reset(new CameraDefinition());
                 _camera_definition->load_string(content);
+                
                 refresh_params();
 
             } else if (result == Camera::Result::ProtocolUnsupported) {
