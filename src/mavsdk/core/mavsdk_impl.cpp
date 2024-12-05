@@ -5,6 +5,7 @@
 #include <tcp_server_connection.h>
 
 #include "connection.h"
+#include "log.h"
 #include "tcp_client_connection.h"
 #include "tcp_server_connection.h"
 #include "udp_connection.h"
@@ -476,6 +477,11 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
 
         if ((*_connection.connection).send_message(message)) {
             successful_emissions++;
+        } else {
+            _connections_errors_subscriptions.queue(
+                // TODO: Make it a better error message
+                Mavsdk::ConnectionError{"send error", _connection.handle},
+                [this](const auto& func) { call_user_callback(func); });
         }
     }
 
@@ -913,6 +919,22 @@ void MavsdkImpl::intercept_outgoing_messages_async(std::function<bool(mavlink_me
 {
     std::lock_guard<std::mutex> lock(_intercept_callback_mutex);
     _intercept_outgoing_messages_callback = callback;
+}
+
+Mavsdk::ConnectionErrorHandle
+MavsdkImpl::subscribe_connection_errors(Mavsdk::ConnectionErrorCallback callback)
+{
+    std::lock_guard lock(_connections_mutex);
+
+    const auto handle = _connections_errors_subscriptions.subscribe(callback);
+
+    return handle;
+}
+
+void MavsdkImpl::unsubscribe_connection_errors(Mavsdk::ConnectionErrorHandle handle)
+{
+    std::lock_guard lock(_connections_mutex);
+    _connections_errors_subscriptions.unsubscribe(handle);
 }
 
 uint8_t MavsdkImpl::get_target_system_id(const mavlink_message_t& message)
