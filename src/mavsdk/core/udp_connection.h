@@ -24,7 +24,7 @@ public:
     ConnectionResult start() override;
     ConnectionResult stop() override;
 
-    bool send_message(const mavlink_message_t& message) override;
+    std::pair<bool, std::string> send_message(const mavlink_message_t& message) override;
 
     void add_remote(const std::string& remote_ip, int remote_port);
 
