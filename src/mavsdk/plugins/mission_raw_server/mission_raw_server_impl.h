@@ -22,6 +22,10 @@ public:
     subscribe_incoming_mission(const MissionRawServer::IncomingMissionCallback& callback);
     void unsubscribe_incoming_mission(MissionRawServer::IncomingMissionHandle handle);
 
+    MissionRawServer::OutgoingMissionResultHandle subscribe_outgoing_mission_result(
+        const MissionRawServer::OutgoingMissionResultCallback& callback);
+    void unsubscribe_outgoing_mission_result(MissionRawServer::OutgoingMissionResultHandle handle);
+
     MissionRawServer::CurrentItemChangedHandle
     subscribe_current_item_changed(const MissionRawServer::CurrentItemChangedCallback& callback);
     void unsubscribe_current_item_changed(MissionRawServer::CurrentItemChangedHandle handle);
@@ -38,11 +42,13 @@ public:
 
 private:
     void process_mission_count(const mavlink_message_t& message);
+    void process_mission_request_list(const mavlink_message_t& message);
     void process_mission_set_current(const mavlink_message_t& message);
     void process_mission_clear(const mavlink_message_t message);
 
     CallbackList<MissionRawServer::Result, MissionRawServer::MissionPlan>
         _incoming_mission_callbacks{};
+    CallbackList<MissionRawServer::Result> _outgoing_mission_callbacks{};
     CallbackList<MissionRawServer::MissionItem> _current_item_changed_callbacks{};
     CallbackList<uint32_t> _clear_all_callbacks{};
     std::atomic<int> _target_system_id;
@@ -54,6 +60,7 @@ private:
     std::size_t _current_seq;
 
     std::weak_ptr<MavlinkMissionTransferServer::WorkItem> _last_download{};
+    std::weak_ptr<MavlinkMissionTransferServer::WorkItem> _last_upload{};
 
     void set_current_seq(std::size_t seq);
 };

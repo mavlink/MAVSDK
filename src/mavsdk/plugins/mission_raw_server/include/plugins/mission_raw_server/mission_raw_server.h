@@ -176,6 +176,16 @@ public:
     using IncomingMissionHandle = Handle<Result, MissionPlan>;
 
     /**
+     * @brief Callback type for subscribe_outgoing_mission.
+     */
+    using OutgoingMissionResultCallback = std::function<void(Result)>;
+
+    /**
+     * @brief Handle type for subscribe_outgoing_mission.
+     */
+    using OutgoingMissionResultHandle = Handle<Result>;
+
+    /**
      * @brief Subscribe to when a new mission is uploaded (asynchronous).
      */
     IncomingMissionHandle subscribe_incoming_mission(const IncomingMissionCallback& callback);
@@ -184,6 +194,17 @@ public:
      * @brief Unsubscribe from subscribe_incoming_mission
      */
     void unsubscribe_incoming_mission(IncomingMissionHandle handle);
+
+    /**
+     * @brief Subscribe to the result of outgoing mission download requests (air to ground)
+     */
+    OutgoingMissionResultHandle
+    subscribe_outgoing_mission_result(const OutgoingMissionResultCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_incoming_mission
+     */
+    void unsubscribe_outgoing_mission_result(OutgoingMissionResultHandle handle);
 
     /**
      * @brief Poll for 'MissionPlan' (blocking).
