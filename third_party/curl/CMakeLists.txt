@@ -13,14 +13,17 @@ list(APPEND CMAKE_ARGS
     "-DCURL_USE_LIBSSH2=OFF"
     "-DBUILD_CURL_EXE=OFF"
     "-DBUILD_SHARED_LIBS=OFF"
-    "-DCURL_CA_PATH_SET=OFF"
     "-DCURL_ZLIB=OFF"
     "-DHTTP_ONLY=ON"
     "-DHAVE_POSIX_STRERROR_R=1"
     "-DBUILD_TESTING=OFF"
     )
 
-if(IOS)
+if(ANDROID)
+    list(APPEND CMAKE_ARGS
+        "-DCURL_CA_PATH=/system/etc/security/cacerts"
+    )
+elseif(IOS)
     list(APPEND CMAKE_ARGS
         "-DPLATFORM=${PLATFORM}"
         "-DDEPLOYMENT_TARGET=${DEPLOYMENT_TARGET}"
