@@ -29,6 +29,8 @@ bool CurlWrapper::download_text(const std::string& url, std::string& content)
         curl_easy_setopt(curl.get(), CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl.get(), CURLOPT_WRITEFUNCTION, write_callback);
         curl_easy_setopt(curl.get(), CURLOPT_WRITEDATA, &readBuffer);
+        curl_easy_setopt(curl.get(), CURLOPT_SSL_VERIFYPEER, 1L);
+        curl_easy_setopt(curl.get(), CURLOPT_FOLLOWLOCATION, 1L);
         res = curl_easy_perform(curl.get());
         content = readBuffer;
 
@@ -108,6 +110,8 @@ bool CurlWrapper::download_file_to_path(
         curl_easy_setopt(curl.get(), CURLOPT_WRITEFUNCTION, NULL);
         curl_easy_setopt(curl.get(), CURLOPT_WRITEDATA, fp);
         curl_easy_setopt(curl.get(), CURLOPT_NOPROGRESS, 0L);
+        curl_easy_setopt(curl.get(), CURLOPT_SSL_VERIFYPEER, 1L);
+        curl_easy_setopt(curl.get(), CURLOPT_FOLLOWLOCATION, 1L);
         res = curl_easy_perform(curl.get());
         fclose(fp);
 
