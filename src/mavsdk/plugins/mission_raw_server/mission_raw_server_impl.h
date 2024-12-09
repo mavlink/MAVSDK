@@ -22,9 +22,9 @@ public:
     subscribe_incoming_mission(const MissionRawServer::IncomingMissionCallback& callback);
     void unsubscribe_incoming_mission(MissionRawServer::IncomingMissionHandle handle);
 
-    MissionRawServer::OutgoingMissionResultHandle subscribe_outgoing_mission_result(
-        const MissionRawServer::OutgoingMissionResultCallback& callback);
-    void unsubscribe_outgoing_mission_result(MissionRawServer::OutgoingMissionResultHandle handle);
+    MissionRawServer::OutgoingMissionHandle
+    subscribe_outgoing_mission(const MissionRawServer::OutgoingMissionCallback& callback);
+    void unsubscribe_outgoing_mission(MissionRawServer::OutgoingMissionHandle handle);
 
     MissionRawServer::CurrentItemChangedHandle
     subscribe_current_item_changed(const MissionRawServer::CurrentItemChangedCallback& callback);
@@ -48,7 +48,8 @@ private:
 
     CallbackList<MissionRawServer::Result, MissionRawServer::MissionPlan>
         _incoming_mission_callbacks{};
-    CallbackList<MissionRawServer::Result> _outgoing_mission_callbacks{};
+    CallbackList<MissionRawServer::Result, MissionRawServer::MissionPlan>
+        _outgoing_mission_callbacks{};
     CallbackList<MissionRawServer::MissionItem> _current_item_changed_callbacks{};
     CallbackList<uint32_t> _clear_all_callbacks{};
     std::atomic<int> _target_system_id;

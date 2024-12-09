@@ -32,20 +32,20 @@ void MissionRawServer::unsubscribe_incoming_mission(IncomingMissionHandle handle
     _impl->unsubscribe_incoming_mission(handle);
 }
 
-MissionRawServer::OutgoingMissionResultHandle
-MissionRawServer::subscribe_outgoing_mission_result(const OutgoingMissionResultCallback& callback)
-{
-    return _impl->subscribe_outgoing_mission_result(callback);
-}
-
-void MissionRawServer::unsubscribe_outgoing_mission_result(OutgoingMissionResultHandle handle)
-{
-    _impl->unsubscribe_outgoing_mission_result(handle);
-}
-
 MissionRawServer::MissionPlan MissionRawServer::incoming_mission() const
 {
     return _impl->incoming_mission();
+}
+
+MissionRawServer::OutgoingMissionHandle
+MissionRawServer::subscribe_outgoing_mission(const OutgoingMissionCallback& callback)
+{
+    return _impl->subscribe_outgoing_mission(callback);
+}
+
+void MissionRawServer::unsubscribe_outgoing_mission(OutgoingMissionHandle handle)
+{
+    _impl->unsubscribe_outgoing_mission(handle);
 }
 
 MissionRawServer::CurrentItemChangedHandle

@@ -213,9 +213,10 @@ void MissionRawServerImpl::process_mission_request_list(const mavlink_message_t&
 
     // Mission Download Outbound
     if (_last_upload.lock()) {
-        _outgoing_mission_callbacks.queue(MissionRawServer::Result::Busy, [this](const auto& func) {
-            _server_component_impl->call_user_callback(func);
-        });
+        _outgoing_mission_callbacks.queue(
+            MissionRawServer::Result::Busy,
+            MissionRawServer::MissionPlan{},
+            [this](const auto& func) { _server_component_impl->call_user_callback(func); });
         return;
     }
 
@@ -226,9 +227,11 @@ void MissionRawServerImpl::process_mission_request_list(const mavlink_message_t&
         _target_component_id,
         [this](MavlinkMissionTransferServer::Result result) {
             auto converted_result = convert_result(result);
-            _outgoing_mission_callbacks.queue(converted_result, [this](const auto& func) {
-                _server_component_impl->call_user_callback(func);
-            });
+            auto converted_items = convert_items(_current_mission);
+            _outgoing_mission_callbacks.queue(
+                converted_result, {converted_items}, [this](const auto& func) {
+                    _server_component_impl->call_user_callback(func);
+                });
             _mission_completed = false;
         });
 }
@@ -317,22 +320,21 @@ void MissionRawServerImpl::unsubscribe_incoming_mission(
     _incoming_mission_callbacks.unsubscribe(handle);
 }
 
-MissionRawServer::OutgoingMissionResultHandle
-MissionRawServerImpl::subscribe_outgoing_mission_result(
-    const MissionRawServer::OutgoingMissionResultCallback& callback)
+MissionRawServer::OutgoingMissionHandle MissionRawServerImpl::subscribe_outgoing_mission(
+    const MissionRawServer::OutgoingMissionCallback& callback)
 {
     return _outgoing_mission_callbacks.subscribe(callback);
 }
 
-void MissionRawServerImpl::unsubscribe_outgoing_mission_result(
-    MissionRawServer::OutgoingMissionResultHandle handle)
+void MissionRawServerImpl::unsubscribe_outgoing_mission(
+    MissionRawServer::OutgoingMissionHandle handle)
 {
     _outgoing_mission_callbacks.unsubscribe(handle);
 }
 
 MissionRawServer::MissionPlan MissionRawServerImpl::incoming_mission() const
 {
-    // FIXME: this doesn't look right.
+    // TO-DO
     return {};
 }
 
