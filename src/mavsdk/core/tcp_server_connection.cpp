@@ -3,6 +3,7 @@
 
 #include <cassert>
 #include <fcntl.h>
+#include <sstream>
 
 #ifdef WINDOWS
 #ifndef MINGW
@@ -105,8 +106,10 @@ ConnectionResult TcpServerConnection::stop()
     return ConnectionResult::Success;
 }
 
-bool TcpServerConnection::send_message(const mavlink_message_t& message)
+std::pair<bool, std::string> TcpServerConnection::send_message(const mavlink_message_t& message)
 {
+    std::pair<bool, std::string> result;
+
     uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
     uint16_t buffer_len = mavlink_msg_to_send_buffer(buffer, &message);
 
@@ -122,10 +125,16 @@ bool TcpServerConnection::send_message(const mavlink_message_t& message)
         send(_client_socket_fd.get(), reinterpret_cast<const char*>(buffer), buffer_len, flags);
 
     if (send_len != buffer_len) {
-        LogErr() << "send failure: " << GET_ERROR(errno);
-        return false;
+        std::stringstream ss;
+        ss << "Send failure: " << GET_ERROR(errno);
+        LogErr() << ss.str();
+        result.first = false;
+        result.second = ss.str();
+        return result;
     }
-    return true;
+
+    result.first = true;
+    return result;
 }
 
 void TcpServerConnection::accept_client()

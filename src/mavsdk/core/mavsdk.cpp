@@ -200,4 +200,15 @@ void Mavsdk::intercept_outgoing_messages_async(std::function<bool(mavlink_messag
     _impl->intercept_outgoing_messages_async(callback);
 }
 
+Mavsdk::ConnectionErrorHandle
+Mavsdk::subscribe_connection_errors(Mavsdk::ConnectionErrorCallback callback)
+{
+    return _impl->subscribe_connection_errors(callback);
+}
+
+void Mavsdk::unsubscribe_connection_errors(ConnectionErrorHandle handle)
+{
+    return _impl->unsubscribe_connection_errors(handle);
+}
+
 } // namespace mavsdk

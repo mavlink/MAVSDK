@@ -17,6 +17,7 @@
 
 #include <algorithm>
 #include <utility>
+#include <sstream>
 
 #ifdef WINDOWS
 #define GET_ERROR(_x) WSAGetLastError()
@@ -114,12 +115,16 @@ ConnectionResult UdpConnection::stop()
     return ConnectionResult::Success;
 }
 
-bool UdpConnection::send_message(const mavlink_message_t& message)
+std::pair<bool, std::string> UdpConnection::send_message(const mavlink_message_t& message)
 {
+    std::pair<bool, std::string> result;
+
     std::lock_guard<std::mutex> lock(_remote_mutex);
 
     if (_remotes.size() == 0) {
-        return false;
+        result.first = false;
+        result.second = "no remotes";
+        return result;
     }
 
     // Send the message to all the remotes. A remote is a UDP endpoint
@@ -127,14 +132,23 @@ bool UdpConnection::send_message(const mavlink_message_t& message)
     // systems on two different endpoints, then messages directed towards
     // only one system will be sent to both remotes. The systems are
     // then expected to ignore messages that are not directed to them.
-    bool send_successful = true;
+
+    // For multiple remotes, we ignore errors, for just one, we bubble it up.
+    result.first = true;
+
     for (auto& remote : _remotes) {
         struct sockaddr_in dest_addr {};
         dest_addr.sin_family = AF_INET;
 
         if (inet_pton(AF_INET, remote.ip.c_str(), &dest_addr.sin_addr.s_addr) != 1) {
-            LogErr() << "inet_pton failure for address: " << remote.ip;
-            send_successful = false;
+            std::stringstream ss;
+            ss << "inet_pton failure for: " << remote.ip << ":" << remote.port_number;
+            LogErr() << ss.str();
+            result.first = false;
+            if (!result.second.empty()) {
+                result.second += ", ";
+            }
+            result.second += ss.str();
             continue;
         }
         dest_addr.sin_port = htons(remote.port_number);
@@ -151,13 +165,20 @@ bool UdpConnection::send_message(const mavlink_message_t& message)
             sizeof(dest_addr));
 
         if (send_len != buffer_len) {
-            LogErr() << "sendto failure: " << GET_ERROR(errno);
-            send_successful = false;
+            std::stringstream ss;
+            ss << "sendto failure: " << GET_ERROR(errno) << " for: " << remote.ip << ":"
+               << remote.port_number;
+            LogErr() << ss.str();
+            result.first = false;
+            if (!result.second.empty()) {
+                result.second += ", ";
+            }
+            result.second += ss.str();
             continue;
         }
     }
 
-    return send_successful;
+    return result;
 }
 
 void UdpConnection::add_remote(const std::string& remote_ip, const int remote_port)
