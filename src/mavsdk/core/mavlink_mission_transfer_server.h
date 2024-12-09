@@ -186,7 +186,6 @@ public:
         ResultCallback _callback{nullptr};
         TimeoutHandler::Cookie _cookie{};
         std::size_t _next_sequence{0};
-        std::size_t _expected_count{0};
         unsigned _retries_done{0};
         uint8_t _target_system_id{0};
         uint8_t _target_component_id{0};
