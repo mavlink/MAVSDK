@@ -193,6 +193,26 @@ public:
     MissionPlan incoming_mission() const;
 
     /**
+     * @brief Callback type for subscribe_outgoing_mission.
+     */
+    using OutgoingMissionCallback = std::function<void(Result, MissionPlan)>;
+
+    /**
+     * @brief Handle type for subscribe_outgoing_mission.
+     */
+    using OutgoingMissionHandle = Handle<Result, MissionPlan>;
+
+    /**
+     * @brief Subscribe to when a new mission download request completes (asynchronous)
+     */
+    OutgoingMissionHandle subscribe_outgoing_mission(const OutgoingMissionCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_outgoing_mission
+     */
+    void unsubscribe_outgoing_mission(OutgoingMissionHandle handle);
+
+    /**
      * @brief Callback type for subscribe_current_item_changed.
      */
     using CurrentItemChangedCallback = std::function<void(MissionItem)>;
