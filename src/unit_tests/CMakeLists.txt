@@ -10,12 +10,14 @@ set_target_properties(unit_tests_runner
     PROPERTIES COMPILE_FLAGS ${warnings}
 )
 
-find_package(GTest)
+find_package(GTest REQUIRED)
+find_package(tinyxml2 REQUIRED)
 
 target_link_libraries(unit_tests_runner
     mavsdk
     CURL::libcurl
     JsonCpp::JsonCpp
+    tinyxml2::tinyxml2
     GTest::gtest
     GTest::gtest_main
     GTest::gmock

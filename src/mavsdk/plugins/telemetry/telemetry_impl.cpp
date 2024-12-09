@@ -1,7 +1,6 @@
 #include "telemetry_impl.h"
 #include "system.h"
-#include "math_conversions.h"
-#include "mavsdk_math.h"
+#include "math_utils.h"
 #include "callback_list.tpp"
 
 #include <cmath>

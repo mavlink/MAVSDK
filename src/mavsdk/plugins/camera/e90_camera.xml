@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <mavlinkcamera>
-    <definition version="15">
+    <definition version="16">
         <model>E90</model>
         <vendor>Yuneec</vendor>
     </definition>
@@ -61,7 +61,7 @@
                 <option name="Lock" value="99" />
             </options>
         </parameter>
-        <parameter name="CAM_CUSTOMWB" type="uint16" min="3000" max="8000" default="5500" control="0">
+        <parameter name="CAM_CUSTOMWB" type="uint16" min="3000" max="8000" default="5500" control="0" step="1">
             <description>Custom White Balance (K)</description>
         </parameter>
         <parameter name="CAM_EXPMODE" type="uint32" default="0">
@@ -914,38 +914,8 @@
                 <option name="PAL" value="1" />
             </options>
         </parameter>
-        <!--
-            Spot Metering Area
-            Encoded as 2 uint8 values
-            x = (value >> 8) & 0xFF
-            y = value & 0xFF
-            x is x_coord / screen_witdh  * 100
-            y is y_coord / screen_height * 100
-        -->
-        <parameter name="CAM_SPOTAREA" type="uint16" control="0" default="0">
-            <description>Spot Metering Area</description>
-        </parameter>
-        <!--
-            Video stream aspect ratio
-            Float value is width / height (i.e. 3:2 = 1.5)
-        -->
-        <parameter name="CAM_ASPECTRATIO" type="float" control="0" readonly="1" default="01.777777">
+        <parameter name="CAM_ASPECTRATIO" type="float" control="0" readonly="1" default="1.78" min="1.33" max="1.78" step="0.01">
             <description>Video Stream Aspect Ratio</description>
-        </parameter>
-        <parameter name="CAM_WIFIPASSWD" type="string" control="0" writeonly="1" default="">
-            <description>Set WiFi Password</description>
-        </parameter>
-        <parameter name="CAM_SYSTEMTIME" type="uint64" control="0" writeonly="1">
-            <description>Set System Time</description>
-        </parameter>
-        <!--
-            These parameters are not used by DataPilot
-        -->
-        <parameter name="CAM_PHOTOMODE" type="custom" control="0">
-            <description>Camera Photo Mode</description>
-        </parameter>
-        <parameter name="CAM_FWBUNDLEVER" type="custom" control="0" readonly="1">
-            <description>Firmware Bundle Version</description>
         </parameter>
     </parameters>
     <localization>
