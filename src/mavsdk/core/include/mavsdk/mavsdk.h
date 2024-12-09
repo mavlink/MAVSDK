@@ -126,6 +126,44 @@ public:
     void remove_connection(ConnectionHandle handle);
 
     /**
+     * ConnectionError type
+     */
+    struct ConnectionError {
+        std::string error_description;
+        ConnectionHandle connection_handle;
+    };
+
+    /**
+     * Connection Error callback type
+     */
+    using ConnectionErrorCallback = std::function<void(ConnectionError)>;
+
+    /**
+     * @brief Handle type to remove a connection error subscription.
+     */
+    using ConnectionErrorHandle = Handle<ConnectionError>;
+
+    /**
+     * Subscribe to connection errors.
+     *
+     * This will trigger when messages fail to be sent which can help
+     * diagnosing network interfaces or serial devices disappearing.
+     *
+     * Usually, an error will require to remove a connection and add it fresh.
+     *
+     * @param callback Callback to subscribe.
+     * @return Handle to unsubscribe again.
+     */
+    ConnectionErrorHandle subscribe_connection_errors(ConnectionErrorCallback callback);
+
+    /**
+     * Unsubscribe from connection errors.
+     *
+     * @param handle Handle to unsubscribe.
+     */
+    void unsubscribe_connection_errors(ConnectionErrorHandle handle);
+
+    /**
      * @brief Get a vector of systems which have been discovered or set-up.
      *
      * @return The vector of systems which are available.

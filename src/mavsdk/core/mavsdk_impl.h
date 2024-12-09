@@ -74,6 +74,10 @@ public:
     void intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback);
     void intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback);
 
+    Mavsdk::ConnectionErrorHandle
+    subscribe_connection_errors(Mavsdk::ConnectionErrorCallback callback);
+    void unsubscribe_connection_errors(Mavsdk::ConnectionErrorHandle handle);
+
     std::shared_ptr<ServerComponent> server_component(unsigned instance = 0);
 
     std::shared_ptr<ServerComponent>
@@ -128,6 +132,7 @@ private:
         Handle<> handle;
     };
     std::vector<ConnectionEntry> _connections{};
+    CallbackList<Mavsdk::ConnectionError> _connections_errors_subscriptions{};
 
     mutable std::recursive_mutex _systems_mutex{};
     std::vector<std::pair<uint8_t, std::shared_ptr<System>>> _systems{};

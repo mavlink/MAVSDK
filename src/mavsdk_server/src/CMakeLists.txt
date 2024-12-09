@@ -37,7 +37,6 @@ target_link_libraries(mavsdk_server
     PRIVATE
     mavsdk
     gRPC::grpc++
-    ${CMAKE_DL_LIBS}
 )
 
 if(BUILD_WITH_PROTO_REFLECTION)
