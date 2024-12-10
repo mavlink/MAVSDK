@@ -19,6 +19,8 @@ class ConnectionInitiator : public std::enable_shared_from_this<ConnectionInitia
 public:
     bool connect(mavsdk::Mavsdk& mavsdk, const std::string& connection_url)
     {
+        LogInfo() << "Waiting to discover system on " << connection_url << "...";
+
         // Keep this class alive while this function is running.
         auto self = shared_from_this();
 
