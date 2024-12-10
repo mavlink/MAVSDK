@@ -25,8 +25,9 @@ namespace _pb = ::google::protobuf;
 namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
 namespace mavsdk {
-namespace options {} // namespace options
-} // namespace mavsdk
+namespace options {
+}  // namespace options
+}  // namespace mavsdk
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_mavsdk_5foptions_2eproto[1];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_mavsdk_5foptions_2eproto = nullptr;
@@ -44,9 +45,11 @@ const char descriptor_table_protodef_mavsdk_5foptions_2eproto[] ABSL_ATTRIBUTE_S
     "oogle.protobuf.MethodOptions\030\320\206\003 \001(\0162\031.m"
     "avsdk.options.AsyncType:3\n\tis_finite\022\036.g"
     "oogle.protobuf.MethodOptions\030\321\206\003 \001(\010B\020\n\016"
-    "options.mavsdkb\006proto3"};
-static const ::_pbi::DescriptorTable* const descriptor_table_mavsdk_5foptions_2eproto_deps[1] = {
-    &::descriptor_table_google_2fprotobuf_2fdescriptor_2eproto,
+    "options.mavsdkb\006proto3"
+};
+static const ::_pbi::DescriptorTable* const descriptor_table_mavsdk_5foptions_2eproto_deps[1] =
+    {
+        &::descriptor_table_google_2fprotobuf_2fdescriptor_2eproto,
 };
 static ::absl::once_flag descriptor_table_mavsdk_5foptions_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_mavsdk_5foptions_2eproto = {
@@ -67,66 +70,58 @@ PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_mavsdk_5foptio
 };
 namespace mavsdk {
 namespace options {
-const ::google::protobuf::EnumDescriptor* AsyncType_descriptor()
-{
-    ::google::protobuf::internal::AssignDescriptors(&descriptor_table_mavsdk_5foptions_2eproto);
-    return file_level_enum_descriptors_mavsdk_5foptions_2eproto[0];
+const ::google::protobuf::EnumDescriptor* AsyncType_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_mavsdk_5foptions_2eproto);
+  return file_level_enum_descriptors_mavsdk_5foptions_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t AsyncType_internal_data_[] = {
-    196608u,
-    0u,
-};
-bool AsyncType_IsValid(int value)
-{
-    return 0 <= value && value <= 2;
+    196608u, 0u, };
+bool AsyncType_IsValid(int value) {
+  return 0 <= value && value <= 2;
 }
 const std::string default_value_default("");
 PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::_pbi::
-    ExtensionIdentifier<::google::protobuf::FieldOptions, ::_pbi::StringTypeTraits, 9, false>
-        default_value(kDefaultValueFieldNumber, default_value_default);
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::_pbi::
+        ExtensionIdentifier<::google::protobuf::FieldOptions, ::_pbi::StringTypeTraits,
+                            9, false>
+            default_value(kDefaultValueFieldNumber, default_value_default);
 PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::_pbi::ExtensionIdentifier<
-    ::google::protobuf::FieldOptions,
-    ::_pbi::PrimitiveTypeTraits<double>,
-    1,
-    false>
-    epsilon(kEpsilonFieldNumber, 0);
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::_pbi::
+        ExtensionIdentifier<::google::protobuf::FieldOptions, ::_pbi::PrimitiveTypeTraits< double >,
+                            1, false>
+            epsilon(kEpsilonFieldNumber, 0);
 PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::_pbi::ExtensionIdentifier<
-    ::google::protobuf::MethodOptions,
-    ::_pbi::EnumTypeTraits<::mavsdk::options::AsyncType, ::mavsdk::options::AsyncType_IsValid>,
-    14,
-    false>
-    async_type(kAsyncTypeFieldNumber, static_cast<::mavsdk::options::AsyncType>(0));
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::_pbi::
+        ExtensionIdentifier<::google::protobuf::MethodOptions, ::_pbi::EnumTypeTraits< ::mavsdk::options::AsyncType, ::mavsdk::options::AsyncType_IsValid>,
+                            14, false>
+            async_type(kAsyncTypeFieldNumber, static_cast< ::mavsdk::options::AsyncType >(0));
 PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::_pbi::ExtensionIdentifier<
-    ::google::protobuf::MethodOptions,
-    ::_pbi::PrimitiveTypeTraits<bool>,
-    8,
-    false>
-    is_finite(kIsFiniteFieldNumber, false);
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 ::_pbi::
+        ExtensionIdentifier<::google::protobuf::MethodOptions, ::_pbi::PrimitiveTypeTraits< bool >,
+                            8, false>
+            is_finite(kIsFiniteFieldNumber, false);
 // @@protoc_insertion_point(namespace_scope)
-} // namespace options
-} // namespace mavsdk
+}  // namespace options
+}  // namespace mavsdk
 namespace google {
-namespace protobuf {} // namespace protobuf
-} // namespace google
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 // @@protoc_insertion_point(global_scope)
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::std::false_type _static_init2_ PROTOBUF_UNUSED =
-    (::_pbi::AddDescriptors(&descriptor_table_mavsdk_5foptions_2eproto),
-     ::_pbi::ExtensionSet::RegisterExtension(
-         &::google::protobuf::FieldOptions::default_instance(), 50000, 9, false, false),
-     ::_pbi::ExtensionSet::RegisterExtension(
-         &::google::protobuf::FieldOptions::default_instance(), 50001, 1, false, false),
-     ::_pbi::ExtensionSet::RegisterEnumExtension(
-         &::google::protobuf::MethodOptions::default_instance(),
-         50000,
-         14,
-         false,
-         false,
-         ::mavsdk::options::AsyncType_IsValid),
-     ::_pbi::ExtensionSet::RegisterExtension(
-         &::google::protobuf::MethodOptions::default_instance(), 50001, 8, false, false),
-     ::std::false_type{});
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::std::false_type
+    _static_init2_ PROTOBUF_UNUSED =
+        (::_pbi::AddDescriptors(&descriptor_table_mavsdk_5foptions_2eproto),
+        ::_pbi::ExtensionSet::RegisterExtension(
+            &::google::protobuf::FieldOptions::default_instance(), 50000, 9,
+            false, false),
+        ::_pbi::ExtensionSet::RegisterExtension(
+            &::google::protobuf::FieldOptions::default_instance(), 50001, 1,
+            false, false),
+        ::_pbi::ExtensionSet::RegisterEnumExtension(
+            &::google::protobuf::MethodOptions::default_instance(), 50000, 14,
+            false, false, ::mavsdk::options::AsyncType_IsValid),
+        ::_pbi::ExtensionSet::RegisterExtension(
+            &::google::protobuf::MethodOptions::default_instance(), 50001, 8,
+            false, false),
+         ::std::false_type{});
 #include "google/protobuf/port_undef.inc"

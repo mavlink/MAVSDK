@@ -28,213 +28,199 @@ namespace mavsdk {
 namespace rpc {
 namespace gripper {
 
-inline constexpr ReleaseRequest::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    instance_{0u},
-    _cached_size_{0}
-{}
+inline constexpr ReleaseRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : instance_{0u},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR ReleaseRequest::ReleaseRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct ReleaseRequestDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR ReleaseRequestDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~ReleaseRequestDefaultTypeInternal() {}
-    union {
-        ReleaseRequest _instance;
-    };
+  PROTOBUF_CONSTEXPR ReleaseRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ReleaseRequestDefaultTypeInternal() {}
+  union {
+    ReleaseRequest _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    ReleaseRequestDefaultTypeInternal _ReleaseRequest_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ReleaseRequestDefaultTypeInternal _ReleaseRequest_default_instance_;
 
-inline constexpr GripperResult::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    result_str_(
-        &::google::protobuf::internal::fixed_address_empty_string, ::_pbi::ConstantInitialized()),
-    result_{static_cast<::mavsdk::rpc::gripper::GripperResult_Result>(0)},
-    _cached_size_{0}
-{}
+inline constexpr GripperResult::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : result_str_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        result_{static_cast< ::mavsdk::rpc::gripper::GripperResult_Result >(0)},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR GripperResult::GripperResult(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct GripperResultDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR GripperResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~GripperResultDefaultTypeInternal() {}
-    union {
-        GripperResult _instance;
-    };
+  PROTOBUF_CONSTEXPR GripperResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GripperResultDefaultTypeInternal() {}
+  union {
+    GripperResult _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    GripperResultDefaultTypeInternal _GripperResult_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GripperResultDefaultTypeInternal _GripperResult_default_instance_;
 
-inline constexpr GrabRequest::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    instance_{0u},
-    _cached_size_{0}
-{}
+inline constexpr GrabRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : instance_{0u},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR GrabRequest::GrabRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct GrabRequestDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR GrabRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~GrabRequestDefaultTypeInternal() {}
-    union {
-        GrabRequest _instance;
-    };
+  PROTOBUF_CONSTEXPR GrabRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GrabRequestDefaultTypeInternal() {}
+  union {
+    GrabRequest _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    GrabRequestDefaultTypeInternal _GrabRequest_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GrabRequestDefaultTypeInternal _GrabRequest_default_instance_;
 
-inline constexpr ReleaseResponse::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    _cached_size_{0},
-    gripper_result_{nullptr}
-{}
+inline constexpr ReleaseResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        gripper_result_{nullptr} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR ReleaseResponse::ReleaseResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct ReleaseResponseDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR ReleaseResponseDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~ReleaseResponseDefaultTypeInternal() {}
-    union {
-        ReleaseResponse _instance;
-    };
+  PROTOBUF_CONSTEXPR ReleaseResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ReleaseResponseDefaultTypeInternal() {}
+  union {
+    ReleaseResponse _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    ReleaseResponseDefaultTypeInternal _ReleaseResponse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ReleaseResponseDefaultTypeInternal _ReleaseResponse_default_instance_;
 
-inline constexpr GrabResponse::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    _cached_size_{0},
-    gripper_result_{nullptr}
-{}
+inline constexpr GrabResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        gripper_result_{nullptr} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR GrabResponse::GrabResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct GrabResponseDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR GrabResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~GrabResponseDefaultTypeInternal() {}
-    union {
-        GrabResponse _instance;
-    };
+  PROTOBUF_CONSTEXPR GrabResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GrabResponseDefaultTypeInternal() {}
+  union {
+    GrabResponse _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    GrabResponseDefaultTypeInternal _GrabResponse_default_instance_;
-} // namespace gripper
-} // namespace rpc
-} // namespace mavsdk
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GrabResponseDefaultTypeInternal _GrabResponse_default_instance_;
+}  // namespace gripper
+}  // namespace rpc
+}  // namespace mavsdk
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_gripper_2fgripper_2eproto[2];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_gripper_2fgripper_2eproto = nullptr;
-const ::uint32_t TableStruct_gripper_2fgripper_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
-    protodesc_cold) = {
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::GrabRequest, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::GrabRequest, _impl_.instance_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::GrabResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::GrabResponse, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::GrabResponse, _impl_.gripper_result_),
-    0,
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::ReleaseRequest, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::ReleaseRequest, _impl_.instance_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::ReleaseResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::ReleaseResponse, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::ReleaseResponse, _impl_.gripper_result_),
-    0,
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::GripperResult, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::GripperResult, _impl_.result_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::GripperResult, _impl_.result_str_),
+const ::uint32_t
+    TableStruct_gripper_2fgripper_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
+        protodesc_cold) = {
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::GrabRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::GrabRequest, _impl_.instance_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::GrabResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::GrabResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::GrabResponse, _impl_.gripper_result_),
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::ReleaseRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::ReleaseRequest, _impl_.instance_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::ReleaseResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::ReleaseResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::ReleaseResponse, _impl_.gripper_result_),
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::GripperResult, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::GripperResult, _impl_.result_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gripper::GripperResult, _impl_.result_str_),
 };
 
-static const ::_pbi::MigrationSchema schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-    {0, -1, -1, sizeof(::mavsdk::rpc::gripper::GrabRequest)},
-    {9, 18, -1, sizeof(::mavsdk::rpc::gripper::GrabResponse)},
-    {19, -1, -1, sizeof(::mavsdk::rpc::gripper::ReleaseRequest)},
-    {28, 37, -1, sizeof(::mavsdk::rpc::gripper::ReleaseResponse)},
-    {38, -1, -1, sizeof(::mavsdk::rpc::gripper::GripperResult)},
+static const ::_pbi::MigrationSchema
+    schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+        {0, -1, -1, sizeof(::mavsdk::rpc::gripper::GrabRequest)},
+        {9, 18, -1, sizeof(::mavsdk::rpc::gripper::GrabResponse)},
+        {19, -1, -1, sizeof(::mavsdk::rpc::gripper::ReleaseRequest)},
+        {28, 37, -1, sizeof(::mavsdk::rpc::gripper::ReleaseResponse)},
+        {38, -1, -1, sizeof(::mavsdk::rpc::gripper::GripperResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::gripper::_GrabRequest_default_instance_._instance,
@@ -265,7 +251,8 @@ const char descriptor_table_protodef_gripper_2fgripper_2eproto[] ABSL_ATTRIBUTE_
     "\022T\n\007Release\022\".mavsdk.rpc.gripper.Release"
     "Request\032#.mavsdk.rpc.gripper.ReleaseResp"
     "onse\"\000B!\n\021io.mavsdk.gripperB\014GripperProt"
-    "ob\006proto3"};
+    "ob\006proto3"
+};
 static ::absl::once_flag descriptor_table_gripper_2fgripper_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_gripper_2fgripper_2eproto = {
     false,
@@ -286,20 +273,17 @@ PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_gripper_2fgrip
 namespace mavsdk {
 namespace rpc {
 namespace gripper {
-const ::google::protobuf::EnumDescriptor* GripperResult_Result_descriptor()
-{
-    ::google::protobuf::internal::AssignDescriptors(&descriptor_table_gripper_2fgripper_2eproto);
-    return file_level_enum_descriptors_gripper_2fgripper_2eproto[0];
+const ::google::protobuf::EnumDescriptor* GripperResult_Result_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_gripper_2fgripper_2eproto);
+  return file_level_enum_descriptors_gripper_2fgripper_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t GripperResult_Result_internal_data_[] = {
-    458752u,
-    0u,
-};
-bool GripperResult_Result_IsValid(int value)
-{
-    return 0 <= value && value <= 6;
+    458752u, 0u, };
+bool GripperResult_Result_IsValid(int value) {
+  return 0 <= value && value <= 6;
 }
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
 constexpr GripperResult_Result GripperResult::RESULT_UNKNOWN;
 constexpr GripperResult_Result GripperResult::RESULT_SUCCESS;
@@ -312,76 +296,64 @@ constexpr GripperResult_Result GripperResult::Result_MIN;
 constexpr GripperResult_Result GripperResult::Result_MAX;
 constexpr int GripperResult::Result_ARRAYSIZE;
 
-#endif // (__cplusplus < 201703) &&
-       // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
-const ::google::protobuf::EnumDescriptor* GripperAction_descriptor()
-{
-    ::google::protobuf::internal::AssignDescriptors(&descriptor_table_gripper_2fgripper_2eproto);
-    return file_level_enum_descriptors_gripper_2fgripper_2eproto[1];
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+const ::google::protobuf::EnumDescriptor* GripperAction_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_gripper_2fgripper_2eproto);
+  return file_level_enum_descriptors_gripper_2fgripper_2eproto[1];
 }
 PROTOBUF_CONSTINIT const uint32_t GripperAction_internal_data_[] = {
-    131072u,
-    0u,
-};
-bool GripperAction_IsValid(int value)
-{
-    return 0 <= value && value <= 1;
+    131072u, 0u, };
+bool GripperAction_IsValid(int value) {
+  return 0 <= value && value <= 1;
 }
 // ===================================================================
 
 class GrabRequest::_Internal {
-public:
+ public:
 };
 
 GrabRequest::GrabRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gripper.GrabRequest)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gripper.GrabRequest)
 }
-GrabRequest::GrabRequest(::google::protobuf::Arena* arena, const GrabRequest& from) :
-    GrabRequest(arena)
-{
-    MergeFrom(from);
+GrabRequest::GrabRequest(
+    ::google::protobuf::Arena* arena, const GrabRequest& from)
+    : GrabRequest(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE GrabRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-inline void GrabRequest::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.instance_ = {};
+inline void GrabRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.instance_ = {};
 }
-GrabRequest::~GrabRequest()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gripper.GrabRequest)
-    SharedDtor(*this);
+GrabRequest::~GrabRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gripper.GrabRequest)
+  SharedDtor(*this);
 }
-inline void GrabRequest::SharedDtor(MessageLite& self)
-{
-    GrabRequest& this_ = static_cast<GrabRequest&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.~Impl_();
+inline void GrabRequest::SharedDtor(MessageLite& self) {
+  GrabRequest& this_ = static_cast<GrabRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
-inline void* GrabRequest::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) GrabRequest(arena);
+inline void* GrabRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) GrabRequest(arena);
 }
-constexpr auto GrabRequest::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(GrabRequest), alignof(GrabRequest));
+constexpr auto GrabRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(GrabRequest),
+                                            alignof(GrabRequest));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -389,259 +361,232 @@ const ::google::protobuf::internal::ClassDataFull GrabRequest::_class_data_ = {
     ::google::protobuf::internal::ClassData{
         &_GrabRequest_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &GrabRequest::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<GrabRequest>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &GrabRequest::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<GrabRequest>(),
-        &GrabRequest::ByteSizeLong,
-        &GrabRequest::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<GrabRequest>(), &GrabRequest::ByteSizeLong,
+            &GrabRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(GrabRequest, _impl_._cached_size_),
         false,
     },
     &GrabRequest::kDescriptorMethods,
     &descriptor_table_gripper_2fgripper_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* GrabRequest::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* GrabRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 0, 0, 2>
-    GrabRequest::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gripper::GrabRequest>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // uint32 instance = 1;
-            {::_pbi::TcParser::
-                 SingularVarintNoZag1<::uint32_t, offsetof(GrabRequest, _impl_.instance_), 63>(),
-             {8, 63, 0, PROTOBUF_FIELD_OFFSET(GrabRequest, _impl_.instance_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // uint32 instance = 1;
-            {PROTOBUF_FIELD_OFFSET(GrabRequest, _impl_.instance_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
-        }},
-        // no aux_entries
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void GrabRequest::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gripper.GrabRequest)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    _impl_.instance_ = 0u;
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* GrabRequest::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const GrabRequest& this_ = static_cast<const GrabRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* GrabRequest::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const GrabRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gripper.GrabRequest)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> GrabRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gripper::GrabRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // uint32 instance = 1;
-    if (this_._internal_instance() != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this_._internal_instance(), target);
-    }
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GrabRequest, _impl_.instance_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(GrabRequest, _impl_.instance_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint32 instance = 1;
+    {PROTOBUF_FIELD_OFFSET(GrabRequest, _impl_.instance_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gripper.GrabRequest)
-    return target;
+PROTOBUF_NOINLINE void GrabRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gripper.GrabRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.instance_ = 0u;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t GrabRequest::ByteSizeLong(const MessageLite& base)
-{
-    const GrabRequest& this_ = static_cast<const GrabRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t GrabRequest::ByteSizeLong() const
-{
-    const GrabRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gripper.GrabRequest)
-    ::size_t total_size = 0;
+        ::uint8_t* GrabRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const GrabRequest& this_ = static_cast<const GrabRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* GrabRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const GrabRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gripper.GrabRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // uint32 instance = 1;
+          if (this_._internal_instance() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                1, this_._internal_instance(), target);
+          }
 
-    {
-        // uint32 instance = 1;
-        if (this_._internal_instance() != 0) {
-            total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this_._internal_instance());
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gripper.GrabRequest)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t GrabRequest::ByteSizeLong(const MessageLite& base) {
+          const GrabRequest& this_ = static_cast<const GrabRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t GrabRequest::ByteSizeLong() const {
+          const GrabRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gripper.GrabRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // uint32 instance = 1;
+            if (this_._internal_instance() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_instance());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void GrabRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<GrabRequest*>(&to_msg);
+  auto& from = static_cast<const GrabRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gripper.GrabRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_instance() != 0) {
+    _this->_impl_.instance_ = from._impl_.instance_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void GrabRequest::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<GrabRequest*>(&to_msg);
-    auto& from = static_cast<const GrabRequest&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gripper.GrabRequest)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (from._internal_instance() != 0) {
-        _this->_impl_.instance_ = from._impl_.instance_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void GrabRequest::CopyFrom(const GrabRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gripper.GrabRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void GrabRequest::CopyFrom(const GrabRequest& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gripper.GrabRequest)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void GrabRequest::InternalSwap(GrabRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.instance_, other->_impl_.instance_);
 }
 
-void GrabRequest::InternalSwap(GrabRequest* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_.instance_, other->_impl_.instance_);
-}
-
-::google::protobuf::Metadata GrabRequest::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata GrabRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class GrabResponse::_Internal {
-public:
-    using HasBits = decltype(std::declval<GrabResponse>()._impl_._has_bits_);
-    static constexpr ::int32_t kHasBitsOffset =
-        8 * PROTOBUF_FIELD_OFFSET(GrabResponse, _impl_._has_bits_);
+ public:
+  using HasBits =
+      decltype(std::declval<GrabResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(GrabResponse, _impl_._has_bits_);
 };
 
 GrabResponse::GrabResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gripper.GrabResponse)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gripper.GrabResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE GrabResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::gripper::GrabResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+GrabResponse::GrabResponse(
+    ::google::protobuf::Arena* arena,
+    const GrabResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  GrabResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.gripper_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gripper::GripperResult>(
+                              arena, *from._impl_.gripper_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gripper.GrabResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE GrabResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::gripper::GrabResponse& from_msg) :
-    _has_bits_{from._has_bits_},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-GrabResponse::GrabResponse(::google::protobuf::Arena* arena, const GrabResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    GrabResponse* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-    _impl_.gripper_result_ =
-        (cached_has_bits & 0x00000001u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gripper::GripperResult>(
-                arena, *from._impl_.gripper_result_) :
-            nullptr;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gripper.GrabResponse)
+inline void GrabResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.gripper_result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE GrabResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
-
-inline void GrabResponse::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.gripper_result_ = {};
+GrabResponse::~GrabResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gripper.GrabResponse)
+  SharedDtor(*this);
 }
-GrabResponse::~GrabResponse()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gripper.GrabResponse)
-    SharedDtor(*this);
-}
-inline void GrabResponse::SharedDtor(MessageLite& self)
-{
-    GrabResponse& this_ = static_cast<GrabResponse&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    delete this_._impl_.gripper_result_;
-    this_._impl_.~Impl_();
+inline void GrabResponse::SharedDtor(MessageLite& self) {
+  GrabResponse& this_ = static_cast<GrabResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.gripper_result_;
+  this_._impl_.~Impl_();
 }
 
-inline void* GrabResponse::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) GrabResponse(arena);
+inline void* GrabResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) GrabResponse(arena);
 }
-constexpr auto GrabResponse::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(GrabResponse), alignof(GrabResponse));
+constexpr auto GrabResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(GrabResponse),
+                                            alignof(GrabResponse));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -649,252 +594,223 @@ const ::google::protobuf::internal::ClassDataFull GrabResponse::_class_data_ = {
     ::google::protobuf::internal::ClassData{
         &_GrabResponse_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &GrabResponse::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<GrabResponse>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &GrabResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<GrabResponse>(),
-        &GrabResponse::ByteSizeLong,
-        &GrabResponse::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<GrabResponse>(), &GrabResponse::ByteSizeLong,
+            &GrabResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(GrabResponse, _impl_._cached_size_),
         false,
     },
     &GrabResponse::kDescriptorMethods,
     &descriptor_table_gripper_2fgripper_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* GrabResponse::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* GrabResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-    GrabResponse::_table_ = {
-        {
-            PROTOBUF_FIELD_OFFSET(GrabResponse, _impl_._has_bits_),
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            1, // num_aux_entries
-            offsetof(decltype(_table_), aux_entries),
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gripper::GrabResponse>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.gripper.GripperResult gripper_result = 1;
-            {::_pbi::TcParser::FastMtS1,
-             {10, 0, 0, PROTOBUF_FIELD_OFFSET(GrabResponse, _impl_.gripper_result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.gripper.GripperResult gripper_result = 1;
-            {PROTOBUF_FIELD_OFFSET(GrabResponse, _impl_.gripper_result_),
-             _Internal::kHasBitsOffset + 0,
-             0,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-        }},
-        {{
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::gripper::GripperResult>()},
-        }},
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void GrabResponse::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gripper.GrabResponse)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    cached_has_bits = _impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(_impl_.gripper_result_ != nullptr);
-        _impl_.gripper_result_->Clear();
-    }
-    _impl_._has_bits_.Clear();
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* GrabResponse::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const GrabResponse& this_ = static_cast<const GrabResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* GrabResponse::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const GrabResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gripper.GrabResponse)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = this_._impl_._has_bits_[0];
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> GrabResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(GrabResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gripper::GrabResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.gripper.GripperResult gripper_result = 1;
-    if (cached_has_bits & 0x00000001u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1,
-            *this_._impl_.gripper_result_,
-            this_._impl_.gripper_result_->GetCachedSize(),
-            target,
-            stream);
-    }
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(GrabResponse, _impl_.gripper_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gripper.GripperResult gripper_result = 1;
+    {PROTOBUF_FIELD_OFFSET(GrabResponse, _impl_.gripper_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gripper::GripperResult>()},
+  }}, {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gripper.GrabResponse)
-    return target;
+PROTOBUF_NOINLINE void GrabResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gripper.GrabResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.gripper_result_ != nullptr);
+    _impl_.gripper_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t GrabResponse::ByteSizeLong(const MessageLite& base)
-{
-    const GrabResponse& this_ = static_cast<const GrabResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t GrabResponse::ByteSizeLong() const
-{
-    const GrabResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gripper.GrabResponse)
-    ::size_t total_size = 0;
+        ::uint8_t* GrabResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const GrabResponse& this_ = static_cast<const GrabResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* GrabResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const GrabResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gripper.GrabResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.gripper.GripperResult gripper_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.gripper_result_, this_._impl_.gripper_result_->GetCachedSize(), target,
+                stream);
+          }
 
-    {
-        // .mavsdk.rpc.gripper.GripperResult gripper_result = 1;
-        cached_has_bits = this_._impl_._has_bits_[0];
-        if (cached_has_bits & 0x00000001u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.gripper_result_);
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gripper.GrabResponse)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
-}
 
-void GrabResponse::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<GrabResponse*>(&to_msg);
-    auto& from = static_cast<const GrabResponse&>(from_msg);
-    ::google::protobuf::Arena* arena = _this->GetArena();
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gripper.GrabResponse)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t GrabResponse::ByteSizeLong(const MessageLite& base) {
+          const GrabResponse& this_ = static_cast<const GrabResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t GrabResponse::ByteSizeLong() const {
+          const GrabResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gripper.GrabResponse)
+          ::size_t total_size = 0;
 
-    cached_has_bits = from._impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(from._impl_.gripper_result_ != nullptr);
-        if (_this->_impl_.gripper_result_ == nullptr) {
-            _this->_impl_.gripper_result_ =
-                ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gripper::GripperResult>(
-                    arena, *from._impl_.gripper_result_);
-        } else {
-            _this->_impl_.gripper_result_->MergeFrom(*from._impl_.gripper_result_);
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.gripper.GripperResult gripper_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.gripper_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
+
+void GrabResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<GrabResponse*>(&to_msg);
+  auto& from = static_cast<const GrabResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gripper.GrabResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.gripper_result_ != nullptr);
+    if (_this->_impl_.gripper_result_ == nullptr) {
+      _this->_impl_.gripper_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gripper::GripperResult>(arena, *from._impl_.gripper_result_);
+    } else {
+      _this->_impl_.gripper_result_->MergeFrom(*from._impl_.gripper_result_);
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void GrabResponse::CopyFrom(const GrabResponse& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gripper.GrabResponse)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+void GrabResponse::CopyFrom(const GrabResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gripper.GrabResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void GrabResponse::InternalSwap(GrabResponse* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-    swap(_impl_.gripper_result_, other->_impl_.gripper_result_);
+
+void GrabResponse::InternalSwap(GrabResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.gripper_result_, other->_impl_.gripper_result_);
 }
 
-::google::protobuf::Metadata GrabResponse::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata GrabResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class ReleaseRequest::_Internal {
-public:
+ public:
 };
 
 ReleaseRequest::ReleaseRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gripper.ReleaseRequest)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gripper.ReleaseRequest)
 }
-ReleaseRequest::ReleaseRequest(::google::protobuf::Arena* arena, const ReleaseRequest& from) :
-    ReleaseRequest(arena)
-{
-    MergeFrom(from);
+ReleaseRequest::ReleaseRequest(
+    ::google::protobuf::Arena* arena, const ReleaseRequest& from)
+    : ReleaseRequest(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE ReleaseRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-inline void ReleaseRequest::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.instance_ = {};
+inline void ReleaseRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.instance_ = {};
 }
-ReleaseRequest::~ReleaseRequest()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gripper.ReleaseRequest)
-    SharedDtor(*this);
+ReleaseRequest::~ReleaseRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gripper.ReleaseRequest)
+  SharedDtor(*this);
 }
-inline void ReleaseRequest::SharedDtor(MessageLite& self)
-{
-    ReleaseRequest& this_ = static_cast<ReleaseRequest&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.~Impl_();
+inline void ReleaseRequest::SharedDtor(MessageLite& self) {
+  ReleaseRequest& this_ = static_cast<ReleaseRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
-inline void* ReleaseRequest::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) ReleaseRequest(arena);
+inline void* ReleaseRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) ReleaseRequest(arena);
 }
-constexpr auto ReleaseRequest::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(ReleaseRequest), alignof(ReleaseRequest));
+constexpr auto ReleaseRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(ReleaseRequest),
+                                            alignof(ReleaseRequest));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -902,260 +818,232 @@ const ::google::protobuf::internal::ClassDataFull ReleaseRequest::_class_data_ =
     ::google::protobuf::internal::ClassData{
         &_ReleaseRequest_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &ReleaseRequest::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<ReleaseRequest>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &ReleaseRequest::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<ReleaseRequest>(),
-        &ReleaseRequest::ByteSizeLong,
-        &ReleaseRequest::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<ReleaseRequest>(), &ReleaseRequest::ByteSizeLong,
+            &ReleaseRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(ReleaseRequest, _impl_._cached_size_),
         false,
     },
     &ReleaseRequest::kDescriptorMethods,
     &descriptor_table_gripper_2fgripper_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* ReleaseRequest::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* ReleaseRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 0, 0, 2>
-    ReleaseRequest::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gripper::ReleaseRequest>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // uint32 instance = 1;
-            {::_pbi::TcParser::
-                 SingularVarintNoZag1<::uint32_t, offsetof(ReleaseRequest, _impl_.instance_), 63>(),
-             {8, 63, 0, PROTOBUF_FIELD_OFFSET(ReleaseRequest, _impl_.instance_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // uint32 instance = 1;
-            {PROTOBUF_FIELD_OFFSET(ReleaseRequest, _impl_.instance_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
-        }},
-        // no aux_entries
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void ReleaseRequest::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gripper.ReleaseRequest)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    _impl_.instance_ = 0u;
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* ReleaseRequest::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const ReleaseRequest& this_ = static_cast<const ReleaseRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* ReleaseRequest::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const ReleaseRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gripper.ReleaseRequest)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> ReleaseRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gripper::ReleaseRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // uint32 instance = 1;
-    if (this_._internal_instance() != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this_._internal_instance(), target);
-    }
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ReleaseRequest, _impl_.instance_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(ReleaseRequest, _impl_.instance_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint32 instance = 1;
+    {PROTOBUF_FIELD_OFFSET(ReleaseRequest, _impl_.instance_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gripper.ReleaseRequest)
-    return target;
+PROTOBUF_NOINLINE void ReleaseRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gripper.ReleaseRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.instance_ = 0u;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t ReleaseRequest::ByteSizeLong(const MessageLite& base)
-{
-    const ReleaseRequest& this_ = static_cast<const ReleaseRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t ReleaseRequest::ByteSizeLong() const
-{
-    const ReleaseRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gripper.ReleaseRequest)
-    ::size_t total_size = 0;
+        ::uint8_t* ReleaseRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const ReleaseRequest& this_ = static_cast<const ReleaseRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* ReleaseRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const ReleaseRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gripper.ReleaseRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // uint32 instance = 1;
+          if (this_._internal_instance() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                1, this_._internal_instance(), target);
+          }
 
-    {
-        // uint32 instance = 1;
-        if (this_._internal_instance() != 0) {
-            total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this_._internal_instance());
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gripper.ReleaseRequest)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t ReleaseRequest::ByteSizeLong(const MessageLite& base) {
+          const ReleaseRequest& this_ = static_cast<const ReleaseRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t ReleaseRequest::ByteSizeLong() const {
+          const ReleaseRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gripper.ReleaseRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // uint32 instance = 1;
+            if (this_._internal_instance() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_instance());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void ReleaseRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<ReleaseRequest*>(&to_msg);
+  auto& from = static_cast<const ReleaseRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gripper.ReleaseRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_instance() != 0) {
+    _this->_impl_.instance_ = from._impl_.instance_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void ReleaseRequest::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<ReleaseRequest*>(&to_msg);
-    auto& from = static_cast<const ReleaseRequest&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gripper.ReleaseRequest)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (from._internal_instance() != 0) {
-        _this->_impl_.instance_ = from._impl_.instance_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void ReleaseRequest::CopyFrom(const ReleaseRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gripper.ReleaseRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void ReleaseRequest::CopyFrom(const ReleaseRequest& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gripper.ReleaseRequest)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void ReleaseRequest::InternalSwap(ReleaseRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.instance_, other->_impl_.instance_);
 }
 
-void ReleaseRequest::InternalSwap(ReleaseRequest* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_.instance_, other->_impl_.instance_);
-}
-
-::google::protobuf::Metadata ReleaseRequest::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata ReleaseRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class ReleaseResponse::_Internal {
-public:
-    using HasBits = decltype(std::declval<ReleaseResponse>()._impl_._has_bits_);
-    static constexpr ::int32_t kHasBitsOffset =
-        8 * PROTOBUF_FIELD_OFFSET(ReleaseResponse, _impl_._has_bits_);
+ public:
+  using HasBits =
+      decltype(std::declval<ReleaseResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(ReleaseResponse, _impl_._has_bits_);
 };
 
 ReleaseResponse::ReleaseResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gripper.ReleaseResponse)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gripper.ReleaseResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE ReleaseResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::gripper::ReleaseResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+ReleaseResponse::ReleaseResponse(
+    ::google::protobuf::Arena* arena,
+    const ReleaseResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  ReleaseResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.gripper_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gripper::GripperResult>(
+                              arena, *from._impl_.gripper_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gripper.ReleaseResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE ReleaseResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::gripper::ReleaseResponse& from_msg) :
-    _has_bits_{from._has_bits_},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-ReleaseResponse::ReleaseResponse(::google::protobuf::Arena* arena, const ReleaseResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    ReleaseResponse* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-    _impl_.gripper_result_ =
-        (cached_has_bits & 0x00000001u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gripper::GripperResult>(
-                arena, *from._impl_.gripper_result_) :
-            nullptr;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gripper.ReleaseResponse)
+inline void ReleaseResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.gripper_result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE ReleaseResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
-
-inline void ReleaseResponse::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.gripper_result_ = {};
+ReleaseResponse::~ReleaseResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gripper.ReleaseResponse)
+  SharedDtor(*this);
 }
-ReleaseResponse::~ReleaseResponse()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gripper.ReleaseResponse)
-    SharedDtor(*this);
-}
-inline void ReleaseResponse::SharedDtor(MessageLite& self)
-{
-    ReleaseResponse& this_ = static_cast<ReleaseResponse&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    delete this_._impl_.gripper_result_;
-    this_._impl_.~Impl_();
+inline void ReleaseResponse::SharedDtor(MessageLite& self) {
+  ReleaseResponse& this_ = static_cast<ReleaseResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.gripper_result_;
+  this_._impl_.~Impl_();
 }
 
-inline void*
-ReleaseResponse::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) ReleaseResponse(arena);
+inline void* ReleaseResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) ReleaseResponse(arena);
 }
-constexpr auto ReleaseResponse::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(ReleaseResponse), alignof(ReleaseResponse));
+constexpr auto ReleaseResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(ReleaseResponse),
+                                            alignof(ReleaseResponse));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -1163,276 +1051,243 @@ const ::google::protobuf::internal::ClassDataFull ReleaseResponse::_class_data_ 
     ::google::protobuf::internal::ClassData{
         &_ReleaseResponse_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &ReleaseResponse::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<ReleaseResponse>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &ReleaseResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<ReleaseResponse>(),
-        &ReleaseResponse::ByteSizeLong,
-        &ReleaseResponse::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<ReleaseResponse>(), &ReleaseResponse::ByteSizeLong,
+            &ReleaseResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(ReleaseResponse, _impl_._cached_size_),
         false,
     },
     &ReleaseResponse::kDescriptorMethods,
     &descriptor_table_gripper_2fgripper_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* ReleaseResponse::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* ReleaseResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-    ReleaseResponse::_table_ = {
-        {
-            PROTOBUF_FIELD_OFFSET(ReleaseResponse, _impl_._has_bits_),
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            1, // num_aux_entries
-            offsetof(decltype(_table_), aux_entries),
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gripper::ReleaseResponse>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.gripper.GripperResult gripper_result = 1;
-            {::_pbi::TcParser::FastMtS1,
-             {10, 0, 0, PROTOBUF_FIELD_OFFSET(ReleaseResponse, _impl_.gripper_result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.gripper.GripperResult gripper_result = 1;
-            {PROTOBUF_FIELD_OFFSET(ReleaseResponse, _impl_.gripper_result_),
-             _Internal::kHasBitsOffset + 0,
-             0,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-        }},
-        {{
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::gripper::GripperResult>()},
-        }},
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void ReleaseResponse::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gripper.ReleaseResponse)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    cached_has_bits = _impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(_impl_.gripper_result_ != nullptr);
-        _impl_.gripper_result_->Clear();
-    }
-    _impl_._has_bits_.Clear();
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* ReleaseResponse::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const ReleaseResponse& this_ = static_cast<const ReleaseResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* ReleaseResponse::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const ReleaseResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gripper.ReleaseResponse)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = this_._impl_._has_bits_[0];
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> ReleaseResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(ReleaseResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gripper::ReleaseResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.gripper.GripperResult gripper_result = 1;
-    if (cached_has_bits & 0x00000001u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1,
-            *this_._impl_.gripper_result_,
-            this_._impl_.gripper_result_->GetCachedSize(),
-            target,
-            stream);
-    }
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(ReleaseResponse, _impl_.gripper_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gripper.GripperResult gripper_result = 1;
+    {PROTOBUF_FIELD_OFFSET(ReleaseResponse, _impl_.gripper_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gripper::GripperResult>()},
+  }}, {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gripper.ReleaseResponse)
-    return target;
+PROTOBUF_NOINLINE void ReleaseResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gripper.ReleaseResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.gripper_result_ != nullptr);
+    _impl_.gripper_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t ReleaseResponse::ByteSizeLong(const MessageLite& base)
-{
-    const ReleaseResponse& this_ = static_cast<const ReleaseResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t ReleaseResponse::ByteSizeLong() const
-{
-    const ReleaseResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gripper.ReleaseResponse)
-    ::size_t total_size = 0;
+        ::uint8_t* ReleaseResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const ReleaseResponse& this_ = static_cast<const ReleaseResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* ReleaseResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const ReleaseResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gripper.ReleaseResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.gripper.GripperResult gripper_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.gripper_result_, this_._impl_.gripper_result_->GetCachedSize(), target,
+                stream);
+          }
 
-    {
-        // .mavsdk.rpc.gripper.GripperResult gripper_result = 1;
-        cached_has_bits = this_._impl_._has_bits_[0];
-        if (cached_has_bits & 0x00000001u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.gripper_result_);
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gripper.ReleaseResponse)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
-}
 
-void ReleaseResponse::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<ReleaseResponse*>(&to_msg);
-    auto& from = static_cast<const ReleaseResponse&>(from_msg);
-    ::google::protobuf::Arena* arena = _this->GetArena();
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gripper.ReleaseResponse)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t ReleaseResponse::ByteSizeLong(const MessageLite& base) {
+          const ReleaseResponse& this_ = static_cast<const ReleaseResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t ReleaseResponse::ByteSizeLong() const {
+          const ReleaseResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gripper.ReleaseResponse)
+          ::size_t total_size = 0;
 
-    cached_has_bits = from._impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(from._impl_.gripper_result_ != nullptr);
-        if (_this->_impl_.gripper_result_ == nullptr) {
-            _this->_impl_.gripper_result_ =
-                ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gripper::GripperResult>(
-                    arena, *from._impl_.gripper_result_);
-        } else {
-            _this->_impl_.gripper_result_->MergeFrom(*from._impl_.gripper_result_);
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.gripper.GripperResult gripper_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.gripper_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
+
+void ReleaseResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<ReleaseResponse*>(&to_msg);
+  auto& from = static_cast<const ReleaseResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gripper.ReleaseResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.gripper_result_ != nullptr);
+    if (_this->_impl_.gripper_result_ == nullptr) {
+      _this->_impl_.gripper_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gripper::GripperResult>(arena, *from._impl_.gripper_result_);
+    } else {
+      _this->_impl_.gripper_result_->MergeFrom(*from._impl_.gripper_result_);
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void ReleaseResponse::CopyFrom(const ReleaseResponse& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gripper.ReleaseResponse)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+void ReleaseResponse::CopyFrom(const ReleaseResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gripper.ReleaseResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void ReleaseResponse::InternalSwap(ReleaseResponse* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-    swap(_impl_.gripper_result_, other->_impl_.gripper_result_);
+
+void ReleaseResponse::InternalSwap(ReleaseResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.gripper_result_, other->_impl_.gripper_result_);
 }
 
-::google::protobuf::Metadata ReleaseResponse::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata ReleaseResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class GripperResult::_Internal {
-public:
+ public:
 };
 
 GripperResult::GripperResult(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gripper.GripperResult)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gripper.GripperResult)
+}
+inline PROTOBUF_NDEBUG_INLINE GripperResult::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::gripper::GripperResult& from_msg)
+      : result_str_(arena, from.result_str_),
+        _cached_size_{0} {}
+
+GripperResult::GripperResult(
+    ::google::protobuf::Arena* arena,
+    const GripperResult& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  GripperResult* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.result_ = from._impl_.result_;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gripper.GripperResult)
 }
 inline PROTOBUF_NDEBUG_INLINE GripperResult::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::gripper::GripperResult& from_msg) :
-    result_str_(arena, from.result_str_),
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : result_str_(arena),
+        _cached_size_{0} {}
 
-GripperResult::GripperResult(::google::protobuf::Arena* arena, const GripperResult& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    GripperResult* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    _impl_.result_ = from._impl_.result_;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gripper.GripperResult)
+inline void GripperResult::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE GripperResult::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    result_str_(arena),
-    _cached_size_{0}
-{}
-
-inline void GripperResult::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.result_ = {};
+GripperResult::~GripperResult() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gripper.GripperResult)
+  SharedDtor(*this);
 }
-GripperResult::~GripperResult()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gripper.GripperResult)
-    SharedDtor(*this);
-}
-inline void GripperResult::SharedDtor(MessageLite& self)
-{
-    GripperResult& this_ = static_cast<GripperResult&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.result_str_.Destroy();
-    this_._impl_.~Impl_();
+inline void GripperResult::SharedDtor(MessageLite& self) {
+  GripperResult& this_ = static_cast<GripperResult&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.result_str_.Destroy();
+  this_._impl_.~Impl_();
 }
 
-inline void* GripperResult::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) GripperResult(arena);
+inline void* GripperResult::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) GripperResult(arena);
 }
-constexpr auto GripperResult::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::CopyInit(
-        sizeof(GripperResult), alignof(GripperResult));
+constexpr auto GripperResult::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(GripperResult),
+                                            alignof(GripperResult));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -1440,215 +1295,200 @@ const ::google::protobuf::internal::ClassDataFull GripperResult::_class_data_ = 
     ::google::protobuf::internal::ClassData{
         &_GripperResult_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &GripperResult::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<GripperResult>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &GripperResult::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<GripperResult>(),
-        &GripperResult::ByteSizeLong,
-        &GripperResult::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<GripperResult>(), &GripperResult::ByteSizeLong,
+            &GripperResult::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(GripperResult, _impl_._cached_size_),
         false,
     },
     &GripperResult::kDescriptorMethods,
     &descriptor_table_gripper_2fgripper_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* GripperResult::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* GripperResult::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<1, 2, 0, 51, 2>
-    GripperResult::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            2,
-            8, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967292, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            2, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gripper::GripperResult>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // string result_str = 2;
-            {::_pbi::TcParser::FastUS1,
-             {18, 63, 0, PROTOBUF_FIELD_OFFSET(GripperResult, _impl_.result_str_)}},
-            // .mavsdk.rpc.gripper.GripperResult.Result result = 1;
-            {::_pbi::TcParser::
-                 SingularVarintNoZag1<::uint32_t, offsetof(GripperResult, _impl_.result_), 63>(),
-             {8, 63, 0, PROTOBUF_FIELD_OFFSET(GripperResult, _impl_.result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.gripper.GripperResult.Result result = 1;
-            {PROTOBUF_FIELD_OFFSET(GripperResult, _impl_.result_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-            // string result_str = 2;
-            {PROTOBUF_FIELD_OFFSET(GripperResult, _impl_.result_str_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-        }},
-        // no aux_entries
-        {{"\40\0\12\0\0\0\0\0"
-          "mavsdk.rpc.gripper.GripperResult"
-          "result_str"}},
-    };
-
-PROTOBUF_NOINLINE void GripperResult::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gripper.GripperResult)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    _impl_.result_str_.ClearToEmpty();
-    _impl_.result_ = 0;
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* GripperResult::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const GripperResult& this_ = static_cast<const GripperResult&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* GripperResult::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const GripperResult& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gripper.GripperResult)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    // .mavsdk.rpc.gripper.GripperResult.Result result = 1;
-    if (this_._internal_result() != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteEnumToArray(1, this_._internal_result(), target);
-    }
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 51, 2> GripperResult::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gripper::GripperResult>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // string result_str = 2;
-    if (!this_._internal_result_str().empty()) {
-        const std::string& _s = this_._internal_result_str();
-        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            _s.data(),
-            static_cast<int>(_s.length()),
-            ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-            "mavsdk.rpc.gripper.GripperResult.result_str");
-        target = stream->WriteStringMaybeAliased(2, _s, target);
-    }
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(GripperResult, _impl_.result_str_)}},
+    // .mavsdk.rpc.gripper.GripperResult.Result result = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GripperResult, _impl_.result_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(GripperResult, _impl_.result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gripper.GripperResult.Result result = 1;
+    {PROTOBUF_FIELD_OFFSET(GripperResult, _impl_.result_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // string result_str = 2;
+    {PROTOBUF_FIELD_OFFSET(GripperResult, _impl_.result_str_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\40\0\12\0\0\0\0\0"
+    "mavsdk.rpc.gripper.GripperResult"
+    "result_str"
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gripper.GripperResult)
-    return target;
+PROTOBUF_NOINLINE void GripperResult::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gripper.GripperResult)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.result_str_.ClearToEmpty();
+  _impl_.result_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t GripperResult::ByteSizeLong(const MessageLite& base)
-{
-    const GripperResult& this_ = static_cast<const GripperResult&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t GripperResult::ByteSizeLong() const
-{
-    const GripperResult& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gripper.GripperResult)
-    ::size_t total_size = 0;
+        ::uint8_t* GripperResult::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const GripperResult& this_ = static_cast<const GripperResult&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* GripperResult::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const GripperResult& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gripper.GripperResult)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // .mavsdk.rpc.gripper.GripperResult.Result result = 1;
+          if (this_._internal_result() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                1, this_._internal_result(), target);
+          }
 
-    ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-    {
-        // string result_str = 2;
-        if (!this_._internal_result_str().empty()) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                  this_._internal_result_str());
+          // string result_str = 2;
+          if (!this_._internal_result_str().empty()) {
+            const std::string& _s = this_._internal_result_str();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.gripper.GripperResult.result_str");
+            target = stream->WriteStringMaybeAliased(2, _s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gripper.GripperResult)
+          return target;
         }
-        // .mavsdk.rpc.gripper.GripperResult.Result result = 1;
-        if (this_._internal_result() != 0) {
-            total_size += 1 + ::_pbi::WireFormatLite::EnumSize(this_._internal_result());
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t GripperResult::ByteSizeLong(const MessageLite& base) {
+          const GripperResult& this_ = static_cast<const GripperResult&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t GripperResult::ByteSizeLong() const {
+          const GripperResult& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gripper.GripperResult)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string result_str = 2;
+            if (!this_._internal_result_str().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_result_str());
+            }
+            // .mavsdk.rpc.gripper.GripperResult.Result result = 1;
+            if (this_._internal_result() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_result());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+void GripperResult::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<GripperResult*>(&to_msg);
+  auto& from = static_cast<const GripperResult&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gripper.GripperResult)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_result_str().empty()) {
+    _this->_internal_set_result_str(from._internal_result_str());
+  }
+  if (from._internal_result() != 0) {
+    _this->_impl_.result_ = from._impl_.result_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void GripperResult::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<GripperResult*>(&to_msg);
-    auto& from = static_cast<const GripperResult&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gripper.GripperResult)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (!from._internal_result_str().empty()) {
-        _this->_internal_set_result_str(from._internal_result_str());
-    }
-    if (from._internal_result() != 0) {
-        _this->_impl_.result_ = from._impl_.result_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void GripperResult::CopyFrom(const GripperResult& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gripper.GripperResult)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void GripperResult::CopyFrom(const GripperResult& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gripper.GripperResult)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void GripperResult::InternalSwap(GripperResult* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, &other->_impl_.result_str_, arena);
+  swap(_impl_.result_, other->_impl_.result_);
 }
 
-void GripperResult::InternalSwap(GripperResult* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    auto* arena = GetArena();
-    ABSL_DCHECK_EQ(arena, other->GetArena());
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, &other->_impl_.result_str_, arena);
-    swap(_impl_.result_, other->_impl_.result_);
-}
-
-::google::protobuf::Metadata GripperResult::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata GripperResult::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)
-} // namespace gripper
-} // namespace rpc
-} // namespace mavsdk
+}  // namespace gripper
+}  // namespace rpc
+}  // namespace mavsdk
 namespace google {
-namespace protobuf {} // namespace protobuf
-} // namespace google
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 // @@protoc_insertion_point(global_scope)
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::std::false_type _static_init2_ PROTOBUF_UNUSED =
-    (::_pbi::AddDescriptors(&descriptor_table_gripper_2fgripper_2eproto), ::std::false_type{});
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::std::false_type
+    _static_init2_ PROTOBUF_UNUSED =
+        (::_pbi::AddDescriptors(&descriptor_table_gripper_2fgripper_2eproto),
+         ::std::false_type{});
 #include "google/protobuf/port_undef.inc"

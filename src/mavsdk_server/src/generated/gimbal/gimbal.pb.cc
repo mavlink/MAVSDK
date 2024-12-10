@@ -28,995 +28,897 @@ namespace mavsdk {
 namespace rpc {
 namespace gimbal {
 
-inline constexpr TakeControlRequest::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    control_mode_{static_cast<::mavsdk::rpc::gimbal::ControlMode>(0)},
-    _cached_size_{0}
-{}
+inline constexpr TakeControlRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : control_mode_{static_cast< ::mavsdk::rpc::gimbal::ControlMode >(0)},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR TakeControlRequest::TakeControlRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct TakeControlRequestDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR TakeControlRequestDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~TakeControlRequestDefaultTypeInternal() {}
-    union {
-        TakeControlRequest _instance;
-    };
+  PROTOBUF_CONSTEXPR TakeControlRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~TakeControlRequestDefaultTypeInternal() {}
+  union {
+    TakeControlRequest _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    TakeControlRequestDefaultTypeInternal _TakeControlRequest_default_instance_;
-template<typename>
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TakeControlRequestDefaultTypeInternal _TakeControlRequest_default_instance_;
+              template <typename>
 PROTOBUF_CONSTEXPR SubscribeControlRequest::SubscribeControlRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::internal::ZeroFieldsBase()
-{
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
 }
-#endif // PROTOBUF_CUSTOM_VTABLE
-    struct SubscribeControlRequestDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR SubscribeControlRequestDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~SubscribeControlRequestDefaultTypeInternal() {}
-    union {
-        SubscribeControlRequest _instance;
-    };
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct SubscribeControlRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SubscribeControlRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SubscribeControlRequestDefaultTypeInternal() {}
+  union {
+    SubscribeControlRequest _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    SubscribeControlRequestDefaultTypeInternal _SubscribeControlRequest_default_instance_;
-template<typename>
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeControlRequestDefaultTypeInternal _SubscribeControlRequest_default_instance_;
+              template <typename>
 PROTOBUF_CONSTEXPR SubscribeAttitudeRequest::SubscribeAttitudeRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::internal::ZeroFieldsBase()
-{
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
 }
-#endif // PROTOBUF_CUSTOM_VTABLE
-    struct SubscribeAttitudeRequestDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR SubscribeAttitudeRequestDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~SubscribeAttitudeRequestDefaultTypeInternal() {}
-    union {
-        SubscribeAttitudeRequest _instance;
-    };
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct SubscribeAttitudeRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SubscribeAttitudeRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SubscribeAttitudeRequestDefaultTypeInternal() {}
+  union {
+    SubscribeAttitudeRequest _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    SubscribeAttitudeRequestDefaultTypeInternal _SubscribeAttitudeRequest_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeAttitudeRequestDefaultTypeInternal _SubscribeAttitudeRequest_default_instance_;
 
-inline constexpr SetRoiLocationRequest::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    latitude_deg_{0},
-    longitude_deg_{0},
-    altitude_m_{0},
-    _cached_size_{0}
-{}
+inline constexpr SetRoiLocationRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : latitude_deg_{0},
+        longitude_deg_{0},
+        altitude_m_{0},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR SetRoiLocationRequest::SetRoiLocationRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct SetRoiLocationRequestDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR SetRoiLocationRequestDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~SetRoiLocationRequestDefaultTypeInternal() {}
-    union {
-        SetRoiLocationRequest _instance;
-    };
+  PROTOBUF_CONSTEXPR SetRoiLocationRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetRoiLocationRequestDefaultTypeInternal() {}
+  union {
+    SetRoiLocationRequest _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    SetRoiLocationRequestDefaultTypeInternal _SetRoiLocationRequest_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRoiLocationRequestDefaultTypeInternal _SetRoiLocationRequest_default_instance_;
 
-inline constexpr SetPitchRateAndYawRateRequest::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    pitch_rate_deg_s_{0},
-    yaw_rate_deg_s_{0},
-    _cached_size_{0}
-{}
+inline constexpr SetPitchRateAndYawRateRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : pitch_rate_deg_s_{0},
+        yaw_rate_deg_s_{0},
+        _cached_size_{0} {}
 
-template<typename>
-PROTOBUF_CONSTEXPR
-    SetPitchRateAndYawRateRequest::SetPitchRateAndYawRateRequest(::_pbi::ConstantInitialized)
+template <typename>
+PROTOBUF_CONSTEXPR SetPitchRateAndYawRateRequest::SetPitchRateAndYawRateRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct SetPitchRateAndYawRateRequestDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR SetPitchRateAndYawRateRequestDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~SetPitchRateAndYawRateRequestDefaultTypeInternal() {}
-    union {
-        SetPitchRateAndYawRateRequest _instance;
-    };
+  PROTOBUF_CONSTEXPR SetPitchRateAndYawRateRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetPitchRateAndYawRateRequestDefaultTypeInternal() {}
+  union {
+    SetPitchRateAndYawRateRequest _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    SetPitchRateAndYawRateRequestDefaultTypeInternal
-        _SetPitchRateAndYawRateRequest_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetPitchRateAndYawRateRequestDefaultTypeInternal _SetPitchRateAndYawRateRequest_default_instance_;
 
-inline constexpr SetPitchAndYawRequest::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    pitch_deg_{0},
-    yaw_deg_{0},
-    _cached_size_{0}
-{}
+inline constexpr SetPitchAndYawRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : pitch_deg_{0},
+        yaw_deg_{0},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR SetPitchAndYawRequest::SetPitchAndYawRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct SetPitchAndYawRequestDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR SetPitchAndYawRequestDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~SetPitchAndYawRequestDefaultTypeInternal() {}
-    union {
-        SetPitchAndYawRequest _instance;
-    };
+  PROTOBUF_CONSTEXPR SetPitchAndYawRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetPitchAndYawRequestDefaultTypeInternal() {}
+  union {
+    SetPitchAndYawRequest _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    SetPitchAndYawRequestDefaultTypeInternal _SetPitchAndYawRequest_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetPitchAndYawRequestDefaultTypeInternal _SetPitchAndYawRequest_default_instance_;
 
-inline constexpr SetModeRequest::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    gimbal_mode_{static_cast<::mavsdk::rpc::gimbal::GimbalMode>(0)},
-    _cached_size_{0}
-{}
+inline constexpr SetModeRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : gimbal_mode_{static_cast< ::mavsdk::rpc::gimbal::GimbalMode >(0)},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR SetModeRequest::SetModeRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct SetModeRequestDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR SetModeRequestDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~SetModeRequestDefaultTypeInternal() {}
-    union {
-        SetModeRequest _instance;
-    };
+  PROTOBUF_CONSTEXPR SetModeRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetModeRequestDefaultTypeInternal() {}
+  union {
+    SetModeRequest _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    SetModeRequestDefaultTypeInternal _SetModeRequest_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetModeRequestDefaultTypeInternal _SetModeRequest_default_instance_;
 
-inline constexpr SetAnglesRequest::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    roll_deg_{0},
-    pitch_deg_{0},
-    yaw_deg_{0},
-    _cached_size_{0}
-{}
+inline constexpr SetAnglesRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : roll_deg_{0},
+        pitch_deg_{0},
+        yaw_deg_{0},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR SetAnglesRequest::SetAnglesRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct SetAnglesRequestDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR SetAnglesRequestDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~SetAnglesRequestDefaultTypeInternal() {}
-    union {
-        SetAnglesRequest _instance;
-    };
+  PROTOBUF_CONSTEXPR SetAnglesRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetAnglesRequestDefaultTypeInternal() {}
+  union {
+    SetAnglesRequest _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    SetAnglesRequestDefaultTypeInternal _SetAnglesRequest_default_instance_;
-template<typename>
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetAnglesRequestDefaultTypeInternal _SetAnglesRequest_default_instance_;
+              template <typename>
 PROTOBUF_CONSTEXPR ReleaseControlRequest::ReleaseControlRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::internal::ZeroFieldsBase()
-{
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
 }
-#endif // PROTOBUF_CUSTOM_VTABLE
-    struct ReleaseControlRequestDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR ReleaseControlRequestDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~ReleaseControlRequestDefaultTypeInternal() {}
-    union {
-        ReleaseControlRequest _instance;
-    };
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct ReleaseControlRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ReleaseControlRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ReleaseControlRequestDefaultTypeInternal() {}
+  union {
+    ReleaseControlRequest _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    ReleaseControlRequestDefaultTypeInternal _ReleaseControlRequest_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ReleaseControlRequestDefaultTypeInternal _ReleaseControlRequest_default_instance_;
 
-inline constexpr Quaternion::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    w_{0},
-    x_{0},
-    y_{0},
-    z_{0},
-    _cached_size_{0}
-{}
+inline constexpr Quaternion::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : w_{0},
+        x_{0},
+        y_{0},
+        z_{0},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR Quaternion::Quaternion(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct QuaternionDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR QuaternionDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-    ~QuaternionDefaultTypeInternal() {}
-    union {
-        Quaternion _instance;
-    };
+  PROTOBUF_CONSTEXPR QuaternionDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~QuaternionDefaultTypeInternal() {}
+  union {
+    Quaternion _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    QuaternionDefaultTypeInternal _Quaternion_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 QuaternionDefaultTypeInternal _Quaternion_default_instance_;
 
-inline constexpr GimbalResult::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    result_str_(
-        &::google::protobuf::internal::fixed_address_empty_string, ::_pbi::ConstantInitialized()),
-    result_{static_cast<::mavsdk::rpc::gimbal::GimbalResult_Result>(0)},
-    _cached_size_{0}
-{}
+inline constexpr GimbalResult::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : result_str_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        result_{static_cast< ::mavsdk::rpc::gimbal::GimbalResult_Result >(0)},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR GimbalResult::GimbalResult(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct GimbalResultDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR GimbalResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~GimbalResultDefaultTypeInternal() {}
-    union {
-        GimbalResult _instance;
-    };
+  PROTOBUF_CONSTEXPR GimbalResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~GimbalResultDefaultTypeInternal() {}
+  union {
+    GimbalResult _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    GimbalResultDefaultTypeInternal _GimbalResult_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 GimbalResultDefaultTypeInternal _GimbalResult_default_instance_;
 
-inline constexpr EulerAngle::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    roll_deg_{0},
-    pitch_deg_{0},
-    yaw_deg_{0},
-    _cached_size_{0}
-{}
+inline constexpr EulerAngle::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : roll_deg_{0},
+        pitch_deg_{0},
+        yaw_deg_{0},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR EulerAngle::EulerAngle(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct EulerAngleDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR EulerAngleDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-    ~EulerAngleDefaultTypeInternal() {}
-    union {
-        EulerAngle _instance;
-    };
+  PROTOBUF_CONSTEXPR EulerAngleDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~EulerAngleDefaultTypeInternal() {}
+  union {
+    EulerAngle _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    EulerAngleDefaultTypeInternal _EulerAngle_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 EulerAngleDefaultTypeInternal _EulerAngle_default_instance_;
 
-inline constexpr ControlStatus::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    control_mode_{static_cast<::mavsdk::rpc::gimbal::ControlMode>(0)},
-    sysid_primary_control_{0},
-    compid_primary_control_{0},
-    sysid_secondary_control_{0},
-    compid_secondary_control_{0},
-    _cached_size_{0}
-{}
+inline constexpr ControlStatus::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : control_mode_{static_cast< ::mavsdk::rpc::gimbal::ControlMode >(0)},
+        sysid_primary_control_{0},
+        compid_primary_control_{0},
+        sysid_secondary_control_{0},
+        compid_secondary_control_{0},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR ControlStatus::ControlStatus(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct ControlStatusDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR ControlStatusDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~ControlStatusDefaultTypeInternal() {}
-    union {
-        ControlStatus _instance;
-    };
+  PROTOBUF_CONSTEXPR ControlStatusDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ControlStatusDefaultTypeInternal() {}
+  union {
+    ControlStatus _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    ControlStatusDefaultTypeInternal _ControlStatus_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ControlStatusDefaultTypeInternal _ControlStatus_default_instance_;
 
-inline constexpr AngularVelocityBody::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    roll_rad_s_{0},
-    pitch_rad_s_{0},
-    yaw_rad_s_{0},
-    _cached_size_{0}
-{}
+inline constexpr AngularVelocityBody::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : roll_rad_s_{0},
+        pitch_rad_s_{0},
+        yaw_rad_s_{0},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR AngularVelocityBody::AngularVelocityBody(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct AngularVelocityBodyDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR AngularVelocityBodyDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~AngularVelocityBodyDefaultTypeInternal() {}
-    union {
-        AngularVelocityBody _instance;
-    };
+  PROTOBUF_CONSTEXPR AngularVelocityBodyDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~AngularVelocityBodyDefaultTypeInternal() {}
+  union {
+    AngularVelocityBody _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    AngularVelocityBodyDefaultTypeInternal _AngularVelocityBody_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AngularVelocityBodyDefaultTypeInternal _AngularVelocityBody_default_instance_;
 
-inline constexpr TakeControlResponse::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    _cached_size_{0},
-    gimbal_result_{nullptr}
-{}
+inline constexpr TakeControlResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        gimbal_result_{nullptr} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR TakeControlResponse::TakeControlResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct TakeControlResponseDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR TakeControlResponseDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~TakeControlResponseDefaultTypeInternal() {}
-    union {
-        TakeControlResponse _instance;
-    };
+  PROTOBUF_CONSTEXPR TakeControlResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~TakeControlResponseDefaultTypeInternal() {}
+  union {
+    TakeControlResponse _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    TakeControlResponseDefaultTypeInternal _TakeControlResponse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TakeControlResponseDefaultTypeInternal _TakeControlResponse_default_instance_;
 
-inline constexpr SetRoiLocationResponse::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    _cached_size_{0},
-    gimbal_result_{nullptr}
-{}
+inline constexpr SetRoiLocationResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        gimbal_result_{nullptr} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR SetRoiLocationResponse::SetRoiLocationResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct SetRoiLocationResponseDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR SetRoiLocationResponseDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~SetRoiLocationResponseDefaultTypeInternal() {}
-    union {
-        SetRoiLocationResponse _instance;
-    };
+  PROTOBUF_CONSTEXPR SetRoiLocationResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetRoiLocationResponseDefaultTypeInternal() {}
+  union {
+    SetRoiLocationResponse _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    SetRoiLocationResponseDefaultTypeInternal _SetRoiLocationResponse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetRoiLocationResponseDefaultTypeInternal _SetRoiLocationResponse_default_instance_;
 
-inline constexpr SetPitchRateAndYawRateResponse::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept
-    :
-    _cached_size_{0},
-    gimbal_result_{nullptr}
-{}
+inline constexpr SetPitchRateAndYawRateResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        gimbal_result_{nullptr} {}
 
-template<typename>
-PROTOBUF_CONSTEXPR
-    SetPitchRateAndYawRateResponse::SetPitchRateAndYawRateResponse(::_pbi::ConstantInitialized)
+template <typename>
+PROTOBUF_CONSTEXPR SetPitchRateAndYawRateResponse::SetPitchRateAndYawRateResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct SetPitchRateAndYawRateResponseDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR SetPitchRateAndYawRateResponseDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~SetPitchRateAndYawRateResponseDefaultTypeInternal() {}
-    union {
-        SetPitchRateAndYawRateResponse _instance;
-    };
+  PROTOBUF_CONSTEXPR SetPitchRateAndYawRateResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetPitchRateAndYawRateResponseDefaultTypeInternal() {}
+  union {
+    SetPitchRateAndYawRateResponse _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    SetPitchRateAndYawRateResponseDefaultTypeInternal
-        _SetPitchRateAndYawRateResponse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetPitchRateAndYawRateResponseDefaultTypeInternal _SetPitchRateAndYawRateResponse_default_instance_;
 
-inline constexpr SetPitchAndYawResponse::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    _cached_size_{0},
-    gimbal_result_{nullptr}
-{}
+inline constexpr SetPitchAndYawResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        gimbal_result_{nullptr} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR SetPitchAndYawResponse::SetPitchAndYawResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct SetPitchAndYawResponseDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR SetPitchAndYawResponseDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~SetPitchAndYawResponseDefaultTypeInternal() {}
-    union {
-        SetPitchAndYawResponse _instance;
-    };
+  PROTOBUF_CONSTEXPR SetPitchAndYawResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetPitchAndYawResponseDefaultTypeInternal() {}
+  union {
+    SetPitchAndYawResponse _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    SetPitchAndYawResponseDefaultTypeInternal _SetPitchAndYawResponse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetPitchAndYawResponseDefaultTypeInternal _SetPitchAndYawResponse_default_instance_;
 
-inline constexpr SetModeResponse::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    _cached_size_{0},
-    gimbal_result_{nullptr}
-{}
+inline constexpr SetModeResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        gimbal_result_{nullptr} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR SetModeResponse::SetModeResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct SetModeResponseDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR SetModeResponseDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~SetModeResponseDefaultTypeInternal() {}
-    union {
-        SetModeResponse _instance;
-    };
+  PROTOBUF_CONSTEXPR SetModeResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetModeResponseDefaultTypeInternal() {}
+  union {
+    SetModeResponse _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    SetModeResponseDefaultTypeInternal _SetModeResponse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetModeResponseDefaultTypeInternal _SetModeResponse_default_instance_;
 
-inline constexpr SetAnglesResponse::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    _cached_size_{0},
-    gimbal_result_{nullptr}
-{}
+inline constexpr SetAnglesResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        gimbal_result_{nullptr} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR SetAnglesResponse::SetAnglesResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct SetAnglesResponseDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR SetAnglesResponseDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~SetAnglesResponseDefaultTypeInternal() {}
-    union {
-        SetAnglesResponse _instance;
-    };
+  PROTOBUF_CONSTEXPR SetAnglesResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetAnglesResponseDefaultTypeInternal() {}
+  union {
+    SetAnglesResponse _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    SetAnglesResponseDefaultTypeInternal _SetAnglesResponse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetAnglesResponseDefaultTypeInternal _SetAnglesResponse_default_instance_;
 
-inline constexpr ReleaseControlResponse::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    _cached_size_{0},
-    gimbal_result_{nullptr}
-{}
+inline constexpr ReleaseControlResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        gimbal_result_{nullptr} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR ReleaseControlResponse::ReleaseControlResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct ReleaseControlResponseDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR ReleaseControlResponseDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~ReleaseControlResponseDefaultTypeInternal() {}
-    union {
-        ReleaseControlResponse _instance;
-    };
+  PROTOBUF_CONSTEXPR ReleaseControlResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ReleaseControlResponseDefaultTypeInternal() {}
+  union {
+    ReleaseControlResponse _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    ReleaseControlResponseDefaultTypeInternal _ReleaseControlResponse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ReleaseControlResponseDefaultTypeInternal _ReleaseControlResponse_default_instance_;
 
-inline constexpr ControlResponse::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    _cached_size_{0},
-    control_status_{nullptr}
-{}
+inline constexpr ControlResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        control_status_{nullptr} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR ControlResponse::ControlResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct ControlResponseDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR ControlResponseDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~ControlResponseDefaultTypeInternal() {}
-    union {
-        ControlResponse _instance;
-    };
+  PROTOBUF_CONSTEXPR ControlResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ControlResponseDefaultTypeInternal() {}
+  union {
+    ControlResponse _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    ControlResponseDefaultTypeInternal _ControlResponse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ControlResponseDefaultTypeInternal _ControlResponse_default_instance_;
 
-inline constexpr Attitude::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    _cached_size_{0},
-    euler_angle_forward_{nullptr},
-    quaternion_forward_{nullptr},
-    euler_angle_north_{nullptr},
-    quaternion_north_{nullptr},
-    angular_velocity_{nullptr},
-    timestamp_us_{::uint64_t{0u}}
-{}
+inline constexpr Attitude::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        euler_angle_forward_{nullptr},
+        quaternion_forward_{nullptr},
+        euler_angle_north_{nullptr},
+        quaternion_north_{nullptr},
+        angular_velocity_{nullptr},
+        timestamp_us_{::uint64_t{0u}} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR Attitude::Attitude(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct AttitudeDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR AttitudeDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-    ~AttitudeDefaultTypeInternal() {}
-    union {
-        Attitude _instance;
-    };
+  PROTOBUF_CONSTEXPR AttitudeDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~AttitudeDefaultTypeInternal() {}
+  union {
+    Attitude _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    AttitudeDefaultTypeInternal _Attitude_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AttitudeDefaultTypeInternal _Attitude_default_instance_;
 
-inline constexpr AttitudeResponse::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    _cached_size_{0},
-    attitude_{nullptr}
-{}
+inline constexpr AttitudeResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        attitude_{nullptr} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR AttitudeResponse::AttitudeResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct AttitudeResponseDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR AttitudeResponseDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~AttitudeResponseDefaultTypeInternal() {}
-    union {
-        AttitudeResponse _instance;
-    };
+  PROTOBUF_CONSTEXPR AttitudeResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~AttitudeResponseDefaultTypeInternal() {}
+  union {
+    AttitudeResponse _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    AttitudeResponseDefaultTypeInternal _AttitudeResponse_default_instance_;
-} // namespace gimbal
-} // namespace rpc
-} // namespace mavsdk
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AttitudeResponseDefaultTypeInternal _AttitudeResponse_default_instance_;
+}  // namespace gimbal
+}  // namespace rpc
+}  // namespace mavsdk
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_gimbal_2fgimbal_2eproto[3];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_gimbal_2fgimbal_2eproto = nullptr;
-const ::uint32_t TableStruct_gimbal_2fgimbal_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
-    protodesc_cold) = {
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesRequest, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesRequest, _impl_.roll_deg_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesRequest, _impl_.pitch_deg_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesRequest, _impl_.yaw_deg_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesResponse, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesResponse, _impl_.gimbal_result_),
-    0,
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawRequest, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawRequest, _impl_.pitch_deg_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawRequest, _impl_.yaw_deg_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawResponse, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawResponse, _impl_.gimbal_result_),
-    0,
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(
-        ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(
-        ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest, _impl_.pitch_rate_deg_s_),
-    PROTOBUF_FIELD_OFFSET(
-        ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest, _impl_.yaw_rate_deg_s_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(
-        ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(
-        ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse, _impl_.gimbal_result_),
-    0,
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeRequest, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeRequest, _impl_.gimbal_mode_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeResponse, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeResponse, _impl_.gimbal_result_),
-    0,
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationRequest, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationRequest, _impl_.latitude_deg_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationRequest, _impl_.longitude_deg_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationRequest, _impl_.altitude_m_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationResponse, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationResponse, _impl_.gimbal_result_),
-    0,
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlRequest, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlRequest, _impl_.control_mode_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlResponse, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlResponse, _impl_.gimbal_result_),
-    0,
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlRequest, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlResponse, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlResponse, _impl_.gimbal_result_),
-    0,
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SubscribeControlRequest, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlResponse, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlResponse, _impl_.control_status_),
-    0,
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Quaternion, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Quaternion, _impl_.w_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Quaternion, _impl_.x_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Quaternion, _impl_.y_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Quaternion, _impl_.z_),
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::EulerAngle, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::EulerAngle, _impl_.roll_deg_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::EulerAngle, _impl_.pitch_deg_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::EulerAngle, _impl_.yaw_deg_),
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AngularVelocityBody, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AngularVelocityBody, _impl_.roll_rad_s_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AngularVelocityBody, _impl_.pitch_rad_s_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AngularVelocityBody, _impl_.yaw_rad_s_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.euler_angle_forward_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.quaternion_forward_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.euler_angle_north_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.quaternion_north_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.angular_velocity_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.timestamp_us_),
-    0,
-    1,
-    2,
-    3,
-    4,
-    ~0u,
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SubscribeAttitudeRequest, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AttitudeResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AttitudeResponse, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AttitudeResponse, _impl_.attitude_),
-    0,
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _impl_.control_mode_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _impl_.sysid_primary_control_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _impl_.compid_primary_control_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _impl_.sysid_secondary_control_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _impl_.compid_secondary_control_),
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::GimbalResult, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::GimbalResult, _impl_.result_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::GimbalResult, _impl_.result_str_),
+const ::uint32_t
+    TableStruct_gimbal_2fgimbal_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
+        protodesc_cold) = {
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesRequest, _impl_.roll_deg_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesRequest, _impl_.pitch_deg_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesRequest, _impl_.yaw_deg_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetAnglesResponse, _impl_.gimbal_result_),
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawRequest, _impl_.pitch_deg_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawRequest, _impl_.yaw_deg_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchAndYawResponse, _impl_.gimbal_result_),
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest, _impl_.pitch_rate_deg_s_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest, _impl_.yaw_rate_deg_s_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse, _impl_.gimbal_result_),
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeRequest, _impl_.gimbal_mode_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetModeResponse, _impl_.gimbal_result_),
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationRequest, _impl_.latitude_deg_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationRequest, _impl_.longitude_deg_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationRequest, _impl_.altitude_m_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SetRoiLocationResponse, _impl_.gimbal_result_),
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlRequest, _impl_.control_mode_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::TakeControlResponse, _impl_.gimbal_result_),
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ReleaseControlResponse, _impl_.gimbal_result_),
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SubscribeControlRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlResponse, _impl_.control_status_),
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Quaternion, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Quaternion, _impl_.w_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Quaternion, _impl_.x_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Quaternion, _impl_.y_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Quaternion, _impl_.z_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::EulerAngle, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::EulerAngle, _impl_.roll_deg_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::EulerAngle, _impl_.pitch_deg_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::EulerAngle, _impl_.yaw_deg_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AngularVelocityBody, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AngularVelocityBody, _impl_.roll_rad_s_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AngularVelocityBody, _impl_.pitch_rad_s_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AngularVelocityBody, _impl_.yaw_rad_s_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.euler_angle_forward_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.quaternion_forward_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.euler_angle_north_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.quaternion_north_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.angular_velocity_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::Attitude, _impl_.timestamp_us_),
+        0,
+        1,
+        2,
+        3,
+        4,
+        ~0u,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::SubscribeAttitudeRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AttitudeResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AttitudeResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::AttitudeResponse, _impl_.attitude_),
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _impl_.control_mode_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _impl_.sysid_primary_control_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _impl_.compid_primary_control_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _impl_.sysid_secondary_control_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::ControlStatus, _impl_.compid_secondary_control_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::GimbalResult, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::GimbalResult, _impl_.result_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::gimbal::GimbalResult, _impl_.result_str_),
 };
 
-static const ::_pbi::MigrationSchema schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-    {0, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetAnglesRequest)},
-    {11, 20, -1, sizeof(::mavsdk::rpc::gimbal::SetAnglesResponse)},
-    {21, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetPitchAndYawRequest)},
-    {31, 40, -1, sizeof(::mavsdk::rpc::gimbal::SetPitchAndYawResponse)},
-    {41, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest)},
-    {51, 60, -1, sizeof(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse)},
-    {61, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetModeRequest)},
-    {70, 79, -1, sizeof(::mavsdk::rpc::gimbal::SetModeResponse)},
-    {80, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetRoiLocationRequest)},
-    {91, 100, -1, sizeof(::mavsdk::rpc::gimbal::SetRoiLocationResponse)},
-    {101, -1, -1, sizeof(::mavsdk::rpc::gimbal::TakeControlRequest)},
-    {110, 119, -1, sizeof(::mavsdk::rpc::gimbal::TakeControlResponse)},
-    {120, -1, -1, sizeof(::mavsdk::rpc::gimbal::ReleaseControlRequest)},
-    {128, 137, -1, sizeof(::mavsdk::rpc::gimbal::ReleaseControlResponse)},
-    {138, -1, -1, sizeof(::mavsdk::rpc::gimbal::SubscribeControlRequest)},
-    {146, 155, -1, sizeof(::mavsdk::rpc::gimbal::ControlResponse)},
-    {156, -1, -1, sizeof(::mavsdk::rpc::gimbal::Quaternion)},
-    {168, -1, -1, sizeof(::mavsdk::rpc::gimbal::EulerAngle)},
-    {179, -1, -1, sizeof(::mavsdk::rpc::gimbal::AngularVelocityBody)},
-    {190, 204, -1, sizeof(::mavsdk::rpc::gimbal::Attitude)},
-    {210, -1, -1, sizeof(::mavsdk::rpc::gimbal::SubscribeAttitudeRequest)},
-    {218, 227, -1, sizeof(::mavsdk::rpc::gimbal::AttitudeResponse)},
-    {228, -1, -1, sizeof(::mavsdk::rpc::gimbal::ControlStatus)},
-    {241, -1, -1, sizeof(::mavsdk::rpc::gimbal::GimbalResult)},
+static const ::_pbi::MigrationSchema
+    schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+        {0, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetAnglesRequest)},
+        {11, 20, -1, sizeof(::mavsdk::rpc::gimbal::SetAnglesResponse)},
+        {21, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetPitchAndYawRequest)},
+        {31, 40, -1, sizeof(::mavsdk::rpc::gimbal::SetPitchAndYawResponse)},
+        {41, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest)},
+        {51, 60, -1, sizeof(::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse)},
+        {61, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetModeRequest)},
+        {70, 79, -1, sizeof(::mavsdk::rpc::gimbal::SetModeResponse)},
+        {80, -1, -1, sizeof(::mavsdk::rpc::gimbal::SetRoiLocationRequest)},
+        {91, 100, -1, sizeof(::mavsdk::rpc::gimbal::SetRoiLocationResponse)},
+        {101, -1, -1, sizeof(::mavsdk::rpc::gimbal::TakeControlRequest)},
+        {110, 119, -1, sizeof(::mavsdk::rpc::gimbal::TakeControlResponse)},
+        {120, -1, -1, sizeof(::mavsdk::rpc::gimbal::ReleaseControlRequest)},
+        {128, 137, -1, sizeof(::mavsdk::rpc::gimbal::ReleaseControlResponse)},
+        {138, -1, -1, sizeof(::mavsdk::rpc::gimbal::SubscribeControlRequest)},
+        {146, 155, -1, sizeof(::mavsdk::rpc::gimbal::ControlResponse)},
+        {156, -1, -1, sizeof(::mavsdk::rpc::gimbal::Quaternion)},
+        {168, -1, -1, sizeof(::mavsdk::rpc::gimbal::EulerAngle)},
+        {179, -1, -1, sizeof(::mavsdk::rpc::gimbal::AngularVelocityBody)},
+        {190, 204, -1, sizeof(::mavsdk::rpc::gimbal::Attitude)},
+        {210, -1, -1, sizeof(::mavsdk::rpc::gimbal::SubscribeAttitudeRequest)},
+        {218, 227, -1, sizeof(::mavsdk::rpc::gimbal::AttitudeResponse)},
+        {228, -1, -1, sizeof(::mavsdk::rpc::gimbal::ControlStatus)},
+        {241, -1, -1, sizeof(::mavsdk::rpc::gimbal::GimbalResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::gimbal::_SetAnglesRequest_default_instance_._instance,
@@ -1133,9 +1035,11 @@ const char descriptor_table_protodef_gimbal_2fgimbal_2eproto[] ABSL_ATTRIBUTE_SE
     "nse\"\0000\001\022i\n\021SubscribeAttitude\022+.mavsdk.rp"
     "c.gimbal.SubscribeAttitudeRequest\032#.mavs"
     "dk.rpc.gimbal.AttitudeResponse\"\0000\001B\037\n\020io"
-    ".mavsdk.gimbalB\013GimbalProtob\006proto3"};
-static const ::_pbi::DescriptorTable* const descriptor_table_gimbal_2fgimbal_2eproto_deps[1] = {
-    &::descriptor_table_mavsdk_5foptions_2eproto,
+    ".mavsdk.gimbalB\013GimbalProtob\006proto3"
+};
+static const ::_pbi::DescriptorTable* const descriptor_table_gimbal_2fgimbal_2eproto_deps[1] =
+    {
+        &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::absl::once_flag descriptor_table_gimbal_2fgimbal_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_gimbal_2fgimbal_2eproto = {
@@ -1157,20 +1061,17 @@ PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_gimbal_2fgimba
 namespace mavsdk {
 namespace rpc {
 namespace gimbal {
-const ::google::protobuf::EnumDescriptor* GimbalResult_Result_descriptor()
-{
-    ::google::protobuf::internal::AssignDescriptors(&descriptor_table_gimbal_2fgimbal_2eproto);
-    return file_level_enum_descriptors_gimbal_2fgimbal_2eproto[0];
+const ::google::protobuf::EnumDescriptor* GimbalResult_Result_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_gimbal_2fgimbal_2eproto);
+  return file_level_enum_descriptors_gimbal_2fgimbal_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t GimbalResult_Result_internal_data_[] = {
-    393216u,
-    0u,
-};
-bool GimbalResult_Result_IsValid(int value)
-{
-    return 0 <= value && value <= 5;
+    393216u, 0u, };
+bool GimbalResult_Result_IsValid(int value) {
+  return 0 <= value && value <= 5;
 }
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
 constexpr GimbalResult_Result GimbalResult::RESULT_UNKNOWN;
 constexpr GimbalResult_Result GimbalResult::RESULT_SUCCESS;
@@ -1182,93 +1083,78 @@ constexpr GimbalResult_Result GimbalResult::Result_MIN;
 constexpr GimbalResult_Result GimbalResult::Result_MAX;
 constexpr int GimbalResult::Result_ARRAYSIZE;
 
-#endif // (__cplusplus < 201703) &&
-       // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
-const ::google::protobuf::EnumDescriptor* GimbalMode_descriptor()
-{
-    ::google::protobuf::internal::AssignDescriptors(&descriptor_table_gimbal_2fgimbal_2eproto);
-    return file_level_enum_descriptors_gimbal_2fgimbal_2eproto[1];
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+const ::google::protobuf::EnumDescriptor* GimbalMode_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_gimbal_2fgimbal_2eproto);
+  return file_level_enum_descriptors_gimbal_2fgimbal_2eproto[1];
 }
 PROTOBUF_CONSTINIT const uint32_t GimbalMode_internal_data_[] = {
-    131072u,
-    0u,
-};
-bool GimbalMode_IsValid(int value)
-{
-    return 0 <= value && value <= 1;
+    131072u, 0u, };
+bool GimbalMode_IsValid(int value) {
+  return 0 <= value && value <= 1;
 }
-const ::google::protobuf::EnumDescriptor* ControlMode_descriptor()
-{
-    ::google::protobuf::internal::AssignDescriptors(&descriptor_table_gimbal_2fgimbal_2eproto);
-    return file_level_enum_descriptors_gimbal_2fgimbal_2eproto[2];
+const ::google::protobuf::EnumDescriptor* ControlMode_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_gimbal_2fgimbal_2eproto);
+  return file_level_enum_descriptors_gimbal_2fgimbal_2eproto[2];
 }
 PROTOBUF_CONSTINIT const uint32_t ControlMode_internal_data_[] = {
-    196608u,
-    0u,
-};
-bool ControlMode_IsValid(int value)
-{
-    return 0 <= value && value <= 2;
+    196608u, 0u, };
+bool ControlMode_IsValid(int value) {
+  return 0 <= value && value <= 2;
 }
 // ===================================================================
 
 class SetAnglesRequest::_Internal {
-public:
+ public:
 };
 
 SetAnglesRequest::SetAnglesRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetAnglesRequest)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetAnglesRequest)
 }
-SetAnglesRequest::SetAnglesRequest(::google::protobuf::Arena* arena, const SetAnglesRequest& from) :
-    SetAnglesRequest(arena)
-{
-    MergeFrom(from);
+SetAnglesRequest::SetAnglesRequest(
+    ::google::protobuf::Arena* arena, const SetAnglesRequest& from)
+    : SetAnglesRequest(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE SetAnglesRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-inline void SetAnglesRequest::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    ::memset(
-        reinterpret_cast<char*>(&_impl_) + offsetof(Impl_, roll_deg_),
-        0,
-        offsetof(Impl_, yaw_deg_) - offsetof(Impl_, roll_deg_) + sizeof(Impl_::yaw_deg_));
+inline void SetAnglesRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, roll_deg_),
+           0,
+           offsetof(Impl_, yaw_deg_) -
+               offsetof(Impl_, roll_deg_) +
+               sizeof(Impl_::yaw_deg_));
 }
-SetAnglesRequest::~SetAnglesRequest()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetAnglesRequest)
-    SharedDtor(*this);
+SetAnglesRequest::~SetAnglesRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetAnglesRequest)
+  SharedDtor(*this);
 }
-inline void SetAnglesRequest::SharedDtor(MessageLite& self)
-{
-    SetAnglesRequest& this_ = static_cast<SetAnglesRequest&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.~Impl_();
+inline void SetAnglesRequest::SharedDtor(MessageLite& self) {
+  SetAnglesRequest& this_ = static_cast<SetAnglesRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
-inline void*
-SetAnglesRequest::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) SetAnglesRequest(arena);
+inline void* SetAnglesRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetAnglesRequest(arena);
 }
-constexpr auto SetAnglesRequest::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(SetAnglesRequest), alignof(SetAnglesRequest));
+constexpr auto SetAnglesRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetAnglesRequest),
+                                            alignof(SetAnglesRequest));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -1276,315 +1162,280 @@ const ::google::protobuf::internal::ClassDataFull SetAnglesRequest::_class_data_
     ::google::protobuf::internal::ClassData{
         &_SetAnglesRequest_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &SetAnglesRequest::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<SetAnglesRequest>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &SetAnglesRequest::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<SetAnglesRequest>(),
-        &SetAnglesRequest::ByteSizeLong,
-        &SetAnglesRequest::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<SetAnglesRequest>(), &SetAnglesRequest::ByteSizeLong,
+            &SetAnglesRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_._cached_size_),
         false,
     },
     &SetAnglesRequest::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* SetAnglesRequest::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* SetAnglesRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<2, 3, 0, 0, 2>
-    SetAnglesRequest::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            3,
-            24, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967288, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            3, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::SetAnglesRequest>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            {::_pbi::TcParser::MiniParse, {}},
-            // float roll_deg = 1;
-            {::_pbi::TcParser::FastF32S1,
-             {13, 63, 0, PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.roll_deg_)}},
-            // float pitch_deg = 2;
-            {::_pbi::TcParser::FastF32S1,
-             {21, 63, 0, PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.pitch_deg_)}},
-            // float yaw_deg = 3;
-            {::_pbi::TcParser::FastF32S1,
-             {29, 63, 0, PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.yaw_deg_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // float roll_deg = 1;
-            {PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.roll_deg_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-            // float pitch_deg = 2;
-            {PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.pitch_deg_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-            // float yaw_deg = 3;
-            {PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.yaw_deg_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-        }},
-        // no aux_entries
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void SetAnglesRequest::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetAnglesRequest)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    ::memset(
-        &_impl_.roll_deg_,
-        0,
-        static_cast<::size_t>(
-            reinterpret_cast<char*>(&_impl_.yaw_deg_) -
-            reinterpret_cast<char*>(&_impl_.roll_deg_)) +
-            sizeof(_impl_.yaw_deg_));
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* SetAnglesRequest::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const SetAnglesRequest& this_ = static_cast<const SetAnglesRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* SetAnglesRequest::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const SetAnglesRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetAnglesRequest)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> SetAnglesRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::SetAnglesRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
     // float roll_deg = 1;
-    if (::absl::bit_cast<::uint32_t>(this_._internal_roll_deg()) != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteFloatToArray(1, this_._internal_roll_deg(), target);
-    }
-
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.roll_deg_)}},
     // float pitch_deg = 2;
-    if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_deg()) != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this_._internal_pitch_deg(), target);
-    }
-
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.pitch_deg_)}},
     // float yaw_deg = 3;
-    if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_deg()) != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteFloatToArray(3, this_._internal_yaw_deg(), target);
-    }
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.yaw_deg_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float roll_deg = 1;
+    {PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.roll_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float pitch_deg = 2;
+    {PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.pitch_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float yaw_deg = 3;
+    {PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.yaw_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetAnglesRequest)
-    return target;
+PROTOBUF_NOINLINE void SetAnglesRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetAnglesRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.roll_deg_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.yaw_deg_) -
+      reinterpret_cast<char*>(&_impl_.roll_deg_)) + sizeof(_impl_.yaw_deg_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t SetAnglesRequest::ByteSizeLong(const MessageLite& base)
-{
-    const SetAnglesRequest& this_ = static_cast<const SetAnglesRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t SetAnglesRequest::ByteSizeLong() const
-{
-    const SetAnglesRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetAnglesRequest)
-    ::size_t total_size = 0;
+        ::uint8_t* SetAnglesRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SetAnglesRequest& this_ = static_cast<const SetAnglesRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SetAnglesRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SetAnglesRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetAnglesRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // float roll_deg = 1;
+          if (::absl::bit_cast<::uint32_t>(this_._internal_roll_deg()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                1, this_._internal_roll_deg(), target);
+          }
 
-    ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-    {
-        // float roll_deg = 1;
-        if (::absl::bit_cast<::uint32_t>(this_._internal_roll_deg()) != 0) {
-            total_size += 5;
+          // float pitch_deg = 2;
+          if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_deg()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                2, this_._internal_pitch_deg(), target);
+          }
+
+          // float yaw_deg = 3;
+          if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_deg()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                3, this_._internal_yaw_deg(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetAnglesRequest)
+          return target;
         }
-        // float pitch_deg = 2;
-        if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_deg()) != 0) {
-            total_size += 5;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SetAnglesRequest::ByteSizeLong(const MessageLite& base) {
+          const SetAnglesRequest& this_ = static_cast<const SetAnglesRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SetAnglesRequest::ByteSizeLong() const {
+          const SetAnglesRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetAnglesRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // float roll_deg = 1;
+            if (::absl::bit_cast<::uint32_t>(this_._internal_roll_deg()) != 0) {
+              total_size += 5;
+            }
+            // float pitch_deg = 2;
+            if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_deg()) != 0) {
+              total_size += 5;
+            }
+            // float yaw_deg = 3;
+            if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_deg()) != 0) {
+              total_size += 5;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
-        // float yaw_deg = 3;
-        if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_deg()) != 0) {
-            total_size += 5;
-        }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+void SetAnglesRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SetAnglesRequest*>(&to_msg);
+  auto& from = static_cast<const SetAnglesRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetAnglesRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (::absl::bit_cast<::uint32_t>(from._internal_roll_deg()) != 0) {
+    _this->_impl_.roll_deg_ = from._impl_.roll_deg_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_pitch_deg()) != 0) {
+    _this->_impl_.pitch_deg_ = from._impl_.pitch_deg_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_yaw_deg()) != 0) {
+    _this->_impl_.yaw_deg_ = from._impl_.yaw_deg_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void SetAnglesRequest::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<SetAnglesRequest*>(&to_msg);
-    auto& from = static_cast<const SetAnglesRequest&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetAnglesRequest)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (::absl::bit_cast<::uint32_t>(from._internal_roll_deg()) != 0) {
-        _this->_impl_.roll_deg_ = from._impl_.roll_deg_;
-    }
-    if (::absl::bit_cast<::uint32_t>(from._internal_pitch_deg()) != 0) {
-        _this->_impl_.pitch_deg_ = from._impl_.pitch_deg_;
-    }
-    if (::absl::bit_cast<::uint32_t>(from._internal_yaw_deg()) != 0) {
-        _this->_impl_.yaw_deg_ = from._impl_.yaw_deg_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void SetAnglesRequest::CopyFrom(const SetAnglesRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetAnglesRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void SetAnglesRequest::CopyFrom(const SetAnglesRequest& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetAnglesRequest)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void SetAnglesRequest::InternalSwap(SetAnglesRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.yaw_deg_)
+      + sizeof(SetAnglesRequest::_impl_.yaw_deg_)
+      - PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.roll_deg_)>(
+          reinterpret_cast<char*>(&_impl_.roll_deg_),
+          reinterpret_cast<char*>(&other->_impl_.roll_deg_));
 }
 
-void SetAnglesRequest::InternalSwap(SetAnglesRequest* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    ::google::protobuf::internal::memswap<
-        PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.yaw_deg_) +
-        sizeof(SetAnglesRequest::_impl_.yaw_deg_) -
-        PROTOBUF_FIELD_OFFSET(SetAnglesRequest, _impl_.roll_deg_)>(
-        reinterpret_cast<char*>(&_impl_.roll_deg_),
-        reinterpret_cast<char*>(&other->_impl_.roll_deg_));
-}
-
-::google::protobuf::Metadata SetAnglesRequest::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata SetAnglesRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class SetAnglesResponse::_Internal {
-public:
-    using HasBits = decltype(std::declval<SetAnglesResponse>()._impl_._has_bits_);
-    static constexpr ::int32_t kHasBitsOffset =
-        8 * PROTOBUF_FIELD_OFFSET(SetAnglesResponse, _impl_._has_bits_);
+ public:
+  using HasBits =
+      decltype(std::declval<SetAnglesResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(SetAnglesResponse, _impl_._has_bits_);
 };
 
 SetAnglesResponse::SetAnglesResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetAnglesResponse)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetAnglesResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE SetAnglesResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::gimbal::SetAnglesResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+SetAnglesResponse::SetAnglesResponse(
+    ::google::protobuf::Arena* arena,
+    const SetAnglesResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SetAnglesResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.gimbal_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
+                              arena, *from._impl_.gimbal_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetAnglesResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE SetAnglesResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::gimbal::SetAnglesResponse& from_msg) :
-    _has_bits_{from._has_bits_},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-SetAnglesResponse::SetAnglesResponse(
-    ::google::protobuf::Arena* arena, const SetAnglesResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SetAnglesResponse* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-    _impl_.gimbal_result_ =
-        (cached_has_bits & 0x00000001u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
-                arena, *from._impl_.gimbal_result_) :
-            nullptr;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetAnglesResponse)
+inline void SetAnglesResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.gimbal_result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE SetAnglesResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
-
-inline void SetAnglesResponse::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.gimbal_result_ = {};
+SetAnglesResponse::~SetAnglesResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetAnglesResponse)
+  SharedDtor(*this);
 }
-SetAnglesResponse::~SetAnglesResponse()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetAnglesResponse)
-    SharedDtor(*this);
-}
-inline void SetAnglesResponse::SharedDtor(MessageLite& self)
-{
-    SetAnglesResponse& this_ = static_cast<SetAnglesResponse&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    delete this_._impl_.gimbal_result_;
-    this_._impl_.~Impl_();
+inline void SetAnglesResponse::SharedDtor(MessageLite& self) {
+  SetAnglesResponse& this_ = static_cast<SetAnglesResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.gimbal_result_;
+  this_._impl_.~Impl_();
 }
 
-inline void*
-SetAnglesResponse::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) SetAnglesResponse(arena);
+inline void* SetAnglesResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetAnglesResponse(arena);
 }
-constexpr auto SetAnglesResponse::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(SetAnglesResponse), alignof(SetAnglesResponse));
+constexpr auto SetAnglesResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetAnglesResponse),
+                                            alignof(SetAnglesResponse));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -1592,257 +1443,228 @@ const ::google::protobuf::internal::ClassDataFull SetAnglesResponse::_class_data
     ::google::protobuf::internal::ClassData{
         &_SetAnglesResponse_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &SetAnglesResponse::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<SetAnglesResponse>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &SetAnglesResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<SetAnglesResponse>(),
-        &SetAnglesResponse::ByteSizeLong,
-        &SetAnglesResponse::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<SetAnglesResponse>(), &SetAnglesResponse::ByteSizeLong,
+            &SetAnglesResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(SetAnglesResponse, _impl_._cached_size_),
         false,
     },
     &SetAnglesResponse::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* SetAnglesResponse::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* SetAnglesResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-    SetAnglesResponse::_table_ = {
-        {
-            PROTOBUF_FIELD_OFFSET(SetAnglesResponse, _impl_._has_bits_),
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            1, // num_aux_entries
-            offsetof(decltype(_table_), aux_entries),
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::SetAnglesResponse>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-            {::_pbi::TcParser::FastMtS1,
-             {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetAnglesResponse, _impl_.gimbal_result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-            {PROTOBUF_FIELD_OFFSET(SetAnglesResponse, _impl_.gimbal_result_),
-             _Internal::kHasBitsOffset + 0,
-             0,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-        }},
-        {{
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::GimbalResult>()},
-        }},
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void SetAnglesResponse::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetAnglesResponse)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    cached_has_bits = _impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
-        _impl_.gimbal_result_->Clear();
-    }
-    _impl_._has_bits_.Clear();
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* SetAnglesResponse::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const SetAnglesResponse& this_ = static_cast<const SetAnglesResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* SetAnglesResponse::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const SetAnglesResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetAnglesResponse)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = this_._impl_._has_bits_[0];
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetAnglesResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(SetAnglesResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::SetAnglesResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-    if (cached_has_bits & 0x00000001u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1,
-            *this_._impl_.gimbal_result_,
-            this_._impl_.gimbal_result_->GetCachedSize(),
-            target,
-            stream);
-    }
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetAnglesResponse, _impl_.gimbal_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+    {PROTOBUF_FIELD_OFFSET(SetAnglesResponse, _impl_.gimbal_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::GimbalResult>()},
+  }}, {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetAnglesResponse)
-    return target;
+PROTOBUF_NOINLINE void SetAnglesResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetAnglesResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
+    _impl_.gimbal_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t SetAnglesResponse::ByteSizeLong(const MessageLite& base)
-{
-    const SetAnglesResponse& this_ = static_cast<const SetAnglesResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t SetAnglesResponse::ByteSizeLong() const
-{
-    const SetAnglesResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetAnglesResponse)
-    ::size_t total_size = 0;
+        ::uint8_t* SetAnglesResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SetAnglesResponse& this_ = static_cast<const SetAnglesResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SetAnglesResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SetAnglesResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetAnglesResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.gimbal_result_, this_._impl_.gimbal_result_->GetCachedSize(), target,
+                stream);
+          }
 
-    {
-        // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-        cached_has_bits = this_._impl_._has_bits_[0];
-        if (cached_has_bits & 0x00000001u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.gimbal_result_);
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetAnglesResponse)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
-}
 
-void SetAnglesResponse::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<SetAnglesResponse*>(&to_msg);
-    auto& from = static_cast<const SetAnglesResponse&>(from_msg);
-    ::google::protobuf::Arena* arena = _this->GetArena();
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetAnglesResponse)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SetAnglesResponse::ByteSizeLong(const MessageLite& base) {
+          const SetAnglesResponse& this_ = static_cast<const SetAnglesResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SetAnglesResponse::ByteSizeLong() const {
+          const SetAnglesResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetAnglesResponse)
+          ::size_t total_size = 0;
 
-    cached_has_bits = from._impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(from._impl_.gimbal_result_ != nullptr);
-        if (_this->_impl_.gimbal_result_ == nullptr) {
-            _this->_impl_.gimbal_result_ =
-                ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
-                    arena, *from._impl_.gimbal_result_);
-        } else {
-            _this->_impl_.gimbal_result_->MergeFrom(*from._impl_.gimbal_result_);
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.gimbal_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
+
+void SetAnglesResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SetAnglesResponse*>(&to_msg);
+  auto& from = static_cast<const SetAnglesResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetAnglesResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.gimbal_result_ != nullptr);
+    if (_this->_impl_.gimbal_result_ == nullptr) {
+      _this->_impl_.gimbal_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(arena, *from._impl_.gimbal_result_);
+    } else {
+      _this->_impl_.gimbal_result_->MergeFrom(*from._impl_.gimbal_result_);
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void SetAnglesResponse::CopyFrom(const SetAnglesResponse& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetAnglesResponse)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+void SetAnglesResponse::CopyFrom(const SetAnglesResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetAnglesResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void SetAnglesResponse::InternalSwap(SetAnglesResponse* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-    swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
+
+void SetAnglesResponse::InternalSwap(SetAnglesResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
 }
 
-::google::protobuf::Metadata SetAnglesResponse::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata SetAnglesResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class SetPitchAndYawRequest::_Internal {
-public:
+ public:
 };
 
 SetPitchAndYawRequest::SetPitchAndYawRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
 }
 SetPitchAndYawRequest::SetPitchAndYawRequest(
-    ::google::protobuf::Arena* arena, const SetPitchAndYawRequest& from) :
-    SetPitchAndYawRequest(arena)
-{
-    MergeFrom(from);
+    ::google::protobuf::Arena* arena, const SetPitchAndYawRequest& from)
+    : SetPitchAndYawRequest(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE SetPitchAndYawRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-inline void SetPitchAndYawRequest::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    ::memset(
-        reinterpret_cast<char*>(&_impl_) + offsetof(Impl_, pitch_deg_),
-        0,
-        offsetof(Impl_, yaw_deg_) - offsetof(Impl_, pitch_deg_) + sizeof(Impl_::yaw_deg_));
+inline void SetPitchAndYawRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, pitch_deg_),
+           0,
+           offsetof(Impl_, yaw_deg_) -
+               offsetof(Impl_, pitch_deg_) +
+               sizeof(Impl_::yaw_deg_));
 }
-SetPitchAndYawRequest::~SetPitchAndYawRequest()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
-    SharedDtor(*this);
+SetPitchAndYawRequest::~SetPitchAndYawRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
+  SharedDtor(*this);
 }
-inline void SetPitchAndYawRequest::SharedDtor(MessageLite& self)
-{
-    SetPitchAndYawRequest& this_ = static_cast<SetPitchAndYawRequest&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.~Impl_();
+inline void SetPitchAndYawRequest::SharedDtor(MessageLite& self) {
+  SetPitchAndYawRequest& this_ = static_cast<SetPitchAndYawRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
-inline void*
-SetPitchAndYawRequest::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) SetPitchAndYawRequest(arena);
+inline void* SetPitchAndYawRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetPitchAndYawRequest(arena);
 }
-constexpr auto SetPitchAndYawRequest::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(SetPitchAndYawRequest), alignof(SetPitchAndYawRequest));
+constexpr auto SetPitchAndYawRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetPitchAndYawRequest),
+                                            alignof(SetPitchAndYawRequest));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -1850,294 +1672,259 @@ const ::google::protobuf::internal::ClassDataFull SetPitchAndYawRequest::_class_
     ::google::protobuf::internal::ClassData{
         &_SetPitchAndYawRequest_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &SetPitchAndYawRequest::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<SetPitchAndYawRequest>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &SetPitchAndYawRequest::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<SetPitchAndYawRequest>(),
-        &SetPitchAndYawRequest::ByteSizeLong,
-        &SetPitchAndYawRequest::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<SetPitchAndYawRequest>(), &SetPitchAndYawRequest::ByteSizeLong,
+            &SetPitchAndYawRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(SetPitchAndYawRequest, _impl_._cached_size_),
         false,
     },
     &SetPitchAndYawRequest::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* SetPitchAndYawRequest::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* SetPitchAndYawRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<1, 2, 0, 0, 2>
-    SetPitchAndYawRequest::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            2,
-            8, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967292, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            2, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<
-                ::mavsdk::rpc::gimbal::SetPitchAndYawRequest>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // float yaw_deg = 2;
-            {::_pbi::TcParser::FastF32S1,
-             {21, 63, 0, PROTOBUF_FIELD_OFFSET(SetPitchAndYawRequest, _impl_.yaw_deg_)}},
-            // float pitch_deg = 1;
-            {::_pbi::TcParser::FastF32S1,
-             {13, 63, 0, PROTOBUF_FIELD_OFFSET(SetPitchAndYawRequest, _impl_.pitch_deg_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // float pitch_deg = 1;
-            {PROTOBUF_FIELD_OFFSET(SetPitchAndYawRequest, _impl_.pitch_deg_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-            // float yaw_deg = 2;
-            {PROTOBUF_FIELD_OFFSET(SetPitchAndYawRequest, _impl_.yaw_deg_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-        }},
-        // no aux_entries
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void SetPitchAndYawRequest::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    ::memset(
-        &_impl_.pitch_deg_,
-        0,
-        static_cast<::size_t>(
-            reinterpret_cast<char*>(&_impl_.yaw_deg_) -
-            reinterpret_cast<char*>(&_impl_.pitch_deg_)) +
-            sizeof(_impl_.yaw_deg_));
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* SetPitchAndYawRequest::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const SetPitchAndYawRequest& this_ = static_cast<const SetPitchAndYawRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* SetPitchAndYawRequest::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const SetPitchAndYawRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    // float pitch_deg = 1;
-    if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_deg()) != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteFloatToArray(1, this_._internal_pitch_deg(), target);
-    }
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2> SetPitchAndYawRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::SetPitchAndYawRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // float yaw_deg = 2;
-    if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_deg()) != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this_._internal_yaw_deg(), target);
-    }
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(SetPitchAndYawRequest, _impl_.yaw_deg_)}},
+    // float pitch_deg = 1;
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(SetPitchAndYawRequest, _impl_.pitch_deg_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float pitch_deg = 1;
+    {PROTOBUF_FIELD_OFFSET(SetPitchAndYawRequest, _impl_.pitch_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float yaw_deg = 2;
+    {PROTOBUF_FIELD_OFFSET(SetPitchAndYawRequest, _impl_.yaw_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
-    return target;
+PROTOBUF_NOINLINE void SetPitchAndYawRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.pitch_deg_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.yaw_deg_) -
+      reinterpret_cast<char*>(&_impl_.pitch_deg_)) + sizeof(_impl_.yaw_deg_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t SetPitchAndYawRequest::ByteSizeLong(const MessageLite& base)
-{
-    const SetPitchAndYawRequest& this_ = static_cast<const SetPitchAndYawRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t SetPitchAndYawRequest::ByteSizeLong() const
-{
-    const SetPitchAndYawRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
-    ::size_t total_size = 0;
+        ::uint8_t* SetPitchAndYawRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SetPitchAndYawRequest& this_ = static_cast<const SetPitchAndYawRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SetPitchAndYawRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SetPitchAndYawRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // float pitch_deg = 1;
+          if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_deg()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                1, this_._internal_pitch_deg(), target);
+          }
 
-    ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-    {
-        // float pitch_deg = 1;
-        if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_deg()) != 0) {
-            total_size += 5;
+          // float yaw_deg = 2;
+          if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_deg()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                2, this_._internal_yaw_deg(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
+          return target;
         }
-        // float yaw_deg = 2;
-        if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_deg()) != 0) {
-            total_size += 5;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SetPitchAndYawRequest::ByteSizeLong(const MessageLite& base) {
+          const SetPitchAndYawRequest& this_ = static_cast<const SetPitchAndYawRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SetPitchAndYawRequest::ByteSizeLong() const {
+          const SetPitchAndYawRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // float pitch_deg = 1;
+            if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_deg()) != 0) {
+              total_size += 5;
+            }
+            // float yaw_deg = 2;
+            if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_deg()) != 0) {
+              total_size += 5;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+void SetPitchAndYawRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SetPitchAndYawRequest*>(&to_msg);
+  auto& from = static_cast<const SetPitchAndYawRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (::absl::bit_cast<::uint32_t>(from._internal_pitch_deg()) != 0) {
+    _this->_impl_.pitch_deg_ = from._impl_.pitch_deg_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_yaw_deg()) != 0) {
+    _this->_impl_.yaw_deg_ = from._impl_.yaw_deg_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void SetPitchAndYawRequest::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<SetPitchAndYawRequest*>(&to_msg);
-    auto& from = static_cast<const SetPitchAndYawRequest&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (::absl::bit_cast<::uint32_t>(from._internal_pitch_deg()) != 0) {
-        _this->_impl_.pitch_deg_ = from._impl_.pitch_deg_;
-    }
-    if (::absl::bit_cast<::uint32_t>(from._internal_yaw_deg()) != 0) {
-        _this->_impl_.yaw_deg_ = from._impl_.yaw_deg_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void SetPitchAndYawRequest::CopyFrom(const SetPitchAndYawRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void SetPitchAndYawRequest::CopyFrom(const SetPitchAndYawRequest& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetPitchAndYawRequest)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void SetPitchAndYawRequest::InternalSwap(SetPitchAndYawRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SetPitchAndYawRequest, _impl_.yaw_deg_)
+      + sizeof(SetPitchAndYawRequest::_impl_.yaw_deg_)
+      - PROTOBUF_FIELD_OFFSET(SetPitchAndYawRequest, _impl_.pitch_deg_)>(
+          reinterpret_cast<char*>(&_impl_.pitch_deg_),
+          reinterpret_cast<char*>(&other->_impl_.pitch_deg_));
 }
 
-void SetPitchAndYawRequest::InternalSwap(SetPitchAndYawRequest* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    ::google::protobuf::internal::memswap<
-        PROTOBUF_FIELD_OFFSET(SetPitchAndYawRequest, _impl_.yaw_deg_) +
-        sizeof(SetPitchAndYawRequest::_impl_.yaw_deg_) -
-        PROTOBUF_FIELD_OFFSET(SetPitchAndYawRequest, _impl_.pitch_deg_)>(
-        reinterpret_cast<char*>(&_impl_.pitch_deg_),
-        reinterpret_cast<char*>(&other->_impl_.pitch_deg_));
-}
-
-::google::protobuf::Metadata SetPitchAndYawRequest::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata SetPitchAndYawRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class SetPitchAndYawResponse::_Internal {
-public:
-    using HasBits = decltype(std::declval<SetPitchAndYawResponse>()._impl_._has_bits_);
-    static constexpr ::int32_t kHasBitsOffset =
-        8 * PROTOBUF_FIELD_OFFSET(SetPitchAndYawResponse, _impl_._has_bits_);
+ public:
+  using HasBits =
+      decltype(std::declval<SetPitchAndYawResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(SetPitchAndYawResponse, _impl_._has_bits_);
 };
 
 SetPitchAndYawResponse::SetPitchAndYawResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE SetPitchAndYawResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::gimbal::SetPitchAndYawResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+SetPitchAndYawResponse::SetPitchAndYawResponse(
+    ::google::protobuf::Arena* arena,
+    const SetPitchAndYawResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SetPitchAndYawResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.gimbal_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
+                              arena, *from._impl_.gimbal_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE SetPitchAndYawResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::gimbal::SetPitchAndYawResponse& from_msg) :
-    _has_bits_{from._has_bits_},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-SetPitchAndYawResponse::SetPitchAndYawResponse(
-    ::google::protobuf::Arena* arena, const SetPitchAndYawResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SetPitchAndYawResponse* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-    _impl_.gimbal_result_ =
-        (cached_has_bits & 0x00000001u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
-                arena, *from._impl_.gimbal_result_) :
-            nullptr;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
+inline void SetPitchAndYawResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.gimbal_result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE SetPitchAndYawResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
-
-inline void SetPitchAndYawResponse::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.gimbal_result_ = {};
+SetPitchAndYawResponse::~SetPitchAndYawResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
+  SharedDtor(*this);
 }
-SetPitchAndYawResponse::~SetPitchAndYawResponse()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
-    SharedDtor(*this);
-}
-inline void SetPitchAndYawResponse::SharedDtor(MessageLite& self)
-{
-    SetPitchAndYawResponse& this_ = static_cast<SetPitchAndYawResponse&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    delete this_._impl_.gimbal_result_;
-    this_._impl_.~Impl_();
+inline void SetPitchAndYawResponse::SharedDtor(MessageLite& self) {
+  SetPitchAndYawResponse& this_ = static_cast<SetPitchAndYawResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.gimbal_result_;
+  this_._impl_.~Impl_();
 }
 
-inline void*
-SetPitchAndYawResponse::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) SetPitchAndYawResponse(arena);
+inline void* SetPitchAndYawResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetPitchAndYawResponse(arena);
 }
-constexpr auto SetPitchAndYawResponse::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(SetPitchAndYawResponse), alignof(SetPitchAndYawResponse));
+constexpr auto SetPitchAndYawResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetPitchAndYawResponse),
+                                            alignof(SetPitchAndYawResponse));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -2145,259 +1932,228 @@ const ::google::protobuf::internal::ClassDataFull SetPitchAndYawResponse::_class
     ::google::protobuf::internal::ClassData{
         &_SetPitchAndYawResponse_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &SetPitchAndYawResponse::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<SetPitchAndYawResponse>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &SetPitchAndYawResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<SetPitchAndYawResponse>(),
-        &SetPitchAndYawResponse::ByteSizeLong,
-        &SetPitchAndYawResponse::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<SetPitchAndYawResponse>(), &SetPitchAndYawResponse::ByteSizeLong,
+            &SetPitchAndYawResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(SetPitchAndYawResponse, _impl_._cached_size_),
         false,
     },
     &SetPitchAndYawResponse::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* SetPitchAndYawResponse::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* SetPitchAndYawResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-    SetPitchAndYawResponse::_table_ = {
-        {
-            PROTOBUF_FIELD_OFFSET(SetPitchAndYawResponse, _impl_._has_bits_),
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            1, // num_aux_entries
-            offsetof(decltype(_table_), aux_entries),
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<
-                ::mavsdk::rpc::gimbal::SetPitchAndYawResponse>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-            {::_pbi::TcParser::FastMtS1,
-             {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetPitchAndYawResponse, _impl_.gimbal_result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-            {PROTOBUF_FIELD_OFFSET(SetPitchAndYawResponse, _impl_.gimbal_result_),
-             _Internal::kHasBitsOffset + 0,
-             0,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-        }},
-        {{
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::GimbalResult>()},
-        }},
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void SetPitchAndYawResponse::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    cached_has_bits = _impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
-        _impl_.gimbal_result_->Clear();
-    }
-    _impl_._has_bits_.Clear();
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* SetPitchAndYawResponse::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const SetPitchAndYawResponse& this_ = static_cast<const SetPitchAndYawResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* SetPitchAndYawResponse::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const SetPitchAndYawResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = this_._impl_._has_bits_[0];
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetPitchAndYawResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(SetPitchAndYawResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::SetPitchAndYawResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-    if (cached_has_bits & 0x00000001u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1,
-            *this_._impl_.gimbal_result_,
-            this_._impl_.gimbal_result_->GetCachedSize(),
-            target,
-            stream);
-    }
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetPitchAndYawResponse, _impl_.gimbal_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+    {PROTOBUF_FIELD_OFFSET(SetPitchAndYawResponse, _impl_.gimbal_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::GimbalResult>()},
+  }}, {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
-    return target;
+PROTOBUF_NOINLINE void SetPitchAndYawResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
+    _impl_.gimbal_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t SetPitchAndYawResponse::ByteSizeLong(const MessageLite& base)
-{
-    const SetPitchAndYawResponse& this_ = static_cast<const SetPitchAndYawResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t SetPitchAndYawResponse::ByteSizeLong() const
-{
-    const SetPitchAndYawResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
-    ::size_t total_size = 0;
+        ::uint8_t* SetPitchAndYawResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SetPitchAndYawResponse& this_ = static_cast<const SetPitchAndYawResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SetPitchAndYawResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SetPitchAndYawResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.gimbal_result_, this_._impl_.gimbal_result_->GetCachedSize(), target,
+                stream);
+          }
 
-    {
-        // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-        cached_has_bits = this_._impl_._has_bits_[0];
-        if (cached_has_bits & 0x00000001u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.gimbal_result_);
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
-}
 
-void SetPitchAndYawResponse::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<SetPitchAndYawResponse*>(&to_msg);
-    auto& from = static_cast<const SetPitchAndYawResponse&>(from_msg);
-    ::google::protobuf::Arena* arena = _this->GetArena();
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SetPitchAndYawResponse::ByteSizeLong(const MessageLite& base) {
+          const SetPitchAndYawResponse& this_ = static_cast<const SetPitchAndYawResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SetPitchAndYawResponse::ByteSizeLong() const {
+          const SetPitchAndYawResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
+          ::size_t total_size = 0;
 
-    cached_has_bits = from._impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(from._impl_.gimbal_result_ != nullptr);
-        if (_this->_impl_.gimbal_result_ == nullptr) {
-            _this->_impl_.gimbal_result_ =
-                ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
-                    arena, *from._impl_.gimbal_result_);
-        } else {
-            _this->_impl_.gimbal_result_->MergeFrom(*from._impl_.gimbal_result_);
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.gimbal_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
+
+void SetPitchAndYawResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SetPitchAndYawResponse*>(&to_msg);
+  auto& from = static_cast<const SetPitchAndYawResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.gimbal_result_ != nullptr);
+    if (_this->_impl_.gimbal_result_ == nullptr) {
+      _this->_impl_.gimbal_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(arena, *from._impl_.gimbal_result_);
+    } else {
+      _this->_impl_.gimbal_result_->MergeFrom(*from._impl_.gimbal_result_);
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void SetPitchAndYawResponse::CopyFrom(const SetPitchAndYawResponse& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+void SetPitchAndYawResponse::CopyFrom(const SetPitchAndYawResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetPitchAndYawResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void SetPitchAndYawResponse::InternalSwap(SetPitchAndYawResponse* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-    swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
+
+void SetPitchAndYawResponse::InternalSwap(SetPitchAndYawResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
 }
 
-::google::protobuf::Metadata SetPitchAndYawResponse::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata SetPitchAndYawResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class SetPitchRateAndYawRateRequest::_Internal {
-public:
+ public:
 };
 
 SetPitchRateAndYawRateRequest::SetPitchRateAndYawRateRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
 }
 SetPitchRateAndYawRateRequest::SetPitchRateAndYawRateRequest(
-    ::google::protobuf::Arena* arena, const SetPitchRateAndYawRateRequest& from) :
-    SetPitchRateAndYawRateRequest(arena)
-{
-    MergeFrom(from);
+    ::google::protobuf::Arena* arena, const SetPitchRateAndYawRateRequest& from)
+    : SetPitchRateAndYawRateRequest(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE SetPitchRateAndYawRateRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-inline void SetPitchRateAndYawRateRequest::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    ::memset(
-        reinterpret_cast<char*>(&_impl_) + offsetof(Impl_, pitch_rate_deg_s_),
-        0,
-        offsetof(Impl_, yaw_rate_deg_s_) - offsetof(Impl_, pitch_rate_deg_s_) +
-            sizeof(Impl_::yaw_rate_deg_s_));
+inline void SetPitchRateAndYawRateRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, pitch_rate_deg_s_),
+           0,
+           offsetof(Impl_, yaw_rate_deg_s_) -
+               offsetof(Impl_, pitch_rate_deg_s_) +
+               sizeof(Impl_::yaw_rate_deg_s_));
 }
-SetPitchRateAndYawRateRequest::~SetPitchRateAndYawRateRequest()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
-    SharedDtor(*this);
+SetPitchRateAndYawRateRequest::~SetPitchRateAndYawRateRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
+  SharedDtor(*this);
 }
-inline void SetPitchRateAndYawRateRequest::SharedDtor(MessageLite& self)
-{
-    SetPitchRateAndYawRateRequest& this_ = static_cast<SetPitchRateAndYawRateRequest&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.~Impl_();
+inline void SetPitchRateAndYawRateRequest::SharedDtor(MessageLite& self) {
+  SetPitchRateAndYawRateRequest& this_ = static_cast<SetPitchRateAndYawRateRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
-inline void* SetPitchRateAndYawRateRequest::PlacementNew_(
-    const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) SetPitchRateAndYawRateRequest(arena);
+inline void* SetPitchRateAndYawRateRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetPitchRateAndYawRateRequest(arena);
 }
-constexpr auto SetPitchRateAndYawRateRequest::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(SetPitchRateAndYawRateRequest), alignof(SetPitchRateAndYawRateRequest));
+constexpr auto SetPitchRateAndYawRateRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetPitchRateAndYawRateRequest),
+                                            alignof(SetPitchRateAndYawRateRequest));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -2405,305 +2161,259 @@ const ::google::protobuf::internal::ClassDataFull SetPitchRateAndYawRateRequest:
     ::google::protobuf::internal::ClassData{
         &_SetPitchRateAndYawRateRequest_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &SetPitchRateAndYawRateRequest::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<SetPitchRateAndYawRateRequest>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &SetPitchRateAndYawRateRequest::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<SetPitchRateAndYawRateRequest>(),
-        &SetPitchRateAndYawRateRequest::ByteSizeLong,
-        &SetPitchRateAndYawRateRequest::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<SetPitchRateAndYawRateRequest>(), &SetPitchRateAndYawRateRequest::ByteSizeLong,
+            &SetPitchRateAndYawRateRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateRequest, _impl_._cached_size_),
         false,
     },
     &SetPitchRateAndYawRateRequest::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* SetPitchRateAndYawRateRequest::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* SetPitchRateAndYawRateRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<1, 2, 0, 0, 2>
-    SetPitchRateAndYawRateRequest::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            2,
-            8, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967292, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            2, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<
-                ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // float yaw_rate_deg_s = 2;
-            {::_pbi::TcParser::FastF32S1,
-             {21,
-              63,
-              0,
-              PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateRequest, _impl_.yaw_rate_deg_s_)}},
-            // float pitch_rate_deg_s = 1;
-            {::_pbi::TcParser::FastF32S1,
-             {13,
-              63,
-              0,
-              PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateRequest, _impl_.pitch_rate_deg_s_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // float pitch_rate_deg_s = 1;
-            {PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateRequest, _impl_.pitch_rate_deg_s_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-            // float yaw_rate_deg_s = 2;
-            {PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateRequest, _impl_.yaw_rate_deg_s_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-        }},
-        // no aux_entries
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void SetPitchRateAndYawRateRequest::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    ::memset(
-        &_impl_.pitch_rate_deg_s_,
-        0,
-        static_cast<::size_t>(
-            reinterpret_cast<char*>(&_impl_.yaw_rate_deg_s_) -
-            reinterpret_cast<char*>(&_impl_.pitch_rate_deg_s_)) +
-            sizeof(_impl_.yaw_rate_deg_s_));
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* SetPitchRateAndYawRateRequest::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const SetPitchRateAndYawRateRequest& this_ =
-        static_cast<const SetPitchRateAndYawRateRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* SetPitchRateAndYawRateRequest::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const SetPitchRateAndYawRateRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    // float pitch_rate_deg_s = 1;
-    if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_rate_deg_s()) != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteFloatToArray(
-            1, this_._internal_pitch_rate_deg_s(), target);
-    }
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2> SetPitchRateAndYawRateRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::SetPitchRateAndYawRateRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // float yaw_rate_deg_s = 2;
-    if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_rate_deg_s()) != 0) {
-        target = stream->EnsureSpace(target);
-        target =
-            ::_pbi::WireFormatLite::WriteFloatToArray(2, this_._internal_yaw_rate_deg_s(), target);
-    }
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateRequest, _impl_.yaw_rate_deg_s_)}},
+    // float pitch_rate_deg_s = 1;
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateRequest, _impl_.pitch_rate_deg_s_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float pitch_rate_deg_s = 1;
+    {PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateRequest, _impl_.pitch_rate_deg_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float yaw_rate_deg_s = 2;
+    {PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateRequest, _impl_.yaw_rate_deg_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
-    return target;
+PROTOBUF_NOINLINE void SetPitchRateAndYawRateRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.pitch_rate_deg_s_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.yaw_rate_deg_s_) -
+      reinterpret_cast<char*>(&_impl_.pitch_rate_deg_s_)) + sizeof(_impl_.yaw_rate_deg_s_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t SetPitchRateAndYawRateRequest::ByteSizeLong(const MessageLite& base)
-{
-    const SetPitchRateAndYawRateRequest& this_ =
-        static_cast<const SetPitchRateAndYawRateRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t SetPitchRateAndYawRateRequest::ByteSizeLong() const
-{
-    const SetPitchRateAndYawRateRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
-    ::size_t total_size = 0;
+        ::uint8_t* SetPitchRateAndYawRateRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SetPitchRateAndYawRateRequest& this_ = static_cast<const SetPitchRateAndYawRateRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SetPitchRateAndYawRateRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SetPitchRateAndYawRateRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // float pitch_rate_deg_s = 1;
+          if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_rate_deg_s()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                1, this_._internal_pitch_rate_deg_s(), target);
+          }
 
-    ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-    {
-        // float pitch_rate_deg_s = 1;
-        if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_rate_deg_s()) != 0) {
-            total_size += 5;
+          // float yaw_rate_deg_s = 2;
+          if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_rate_deg_s()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                2, this_._internal_yaw_rate_deg_s(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
+          return target;
         }
-        // float yaw_rate_deg_s = 2;
-        if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_rate_deg_s()) != 0) {
-            total_size += 5;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SetPitchRateAndYawRateRequest::ByteSizeLong(const MessageLite& base) {
+          const SetPitchRateAndYawRateRequest& this_ = static_cast<const SetPitchRateAndYawRateRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SetPitchRateAndYawRateRequest::ByteSizeLong() const {
+          const SetPitchRateAndYawRateRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // float pitch_rate_deg_s = 1;
+            if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_rate_deg_s()) != 0) {
+              total_size += 5;
+            }
+            // float yaw_rate_deg_s = 2;
+            if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_rate_deg_s()) != 0) {
+              total_size += 5;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+void SetPitchRateAndYawRateRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SetPitchRateAndYawRateRequest*>(&to_msg);
+  auto& from = static_cast<const SetPitchRateAndYawRateRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (::absl::bit_cast<::uint32_t>(from._internal_pitch_rate_deg_s()) != 0) {
+    _this->_impl_.pitch_rate_deg_s_ = from._impl_.pitch_rate_deg_s_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_yaw_rate_deg_s()) != 0) {
+    _this->_impl_.yaw_rate_deg_s_ = from._impl_.yaw_rate_deg_s_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void SetPitchRateAndYawRateRequest::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<SetPitchRateAndYawRateRequest*>(&to_msg);
-    auto& from = static_cast<const SetPitchRateAndYawRateRequest&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (::absl::bit_cast<::uint32_t>(from._internal_pitch_rate_deg_s()) != 0) {
-        _this->_impl_.pitch_rate_deg_s_ = from._impl_.pitch_rate_deg_s_;
-    }
-    if (::absl::bit_cast<::uint32_t>(from._internal_yaw_rate_deg_s()) != 0) {
-        _this->_impl_.yaw_rate_deg_s_ = from._impl_.yaw_rate_deg_s_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void SetPitchRateAndYawRateRequest::CopyFrom(const SetPitchRateAndYawRateRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void SetPitchRateAndYawRateRequest::CopyFrom(const SetPitchRateAndYawRateRequest& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateRequest)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void SetPitchRateAndYawRateRequest::InternalSwap(SetPitchRateAndYawRateRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateRequest, _impl_.yaw_rate_deg_s_)
+      + sizeof(SetPitchRateAndYawRateRequest::_impl_.yaw_rate_deg_s_)
+      - PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateRequest, _impl_.pitch_rate_deg_s_)>(
+          reinterpret_cast<char*>(&_impl_.pitch_rate_deg_s_),
+          reinterpret_cast<char*>(&other->_impl_.pitch_rate_deg_s_));
 }
 
-void SetPitchRateAndYawRateRequest::InternalSwap(
-    SetPitchRateAndYawRateRequest* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    ::google::protobuf::internal::memswap<
-        PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateRequest, _impl_.yaw_rate_deg_s_) +
-        sizeof(SetPitchRateAndYawRateRequest::_impl_.yaw_rate_deg_s_) -
-        PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateRequest, _impl_.pitch_rate_deg_s_)>(
-        reinterpret_cast<char*>(&_impl_.pitch_rate_deg_s_),
-        reinterpret_cast<char*>(&other->_impl_.pitch_rate_deg_s_));
-}
-
-::google::protobuf::Metadata SetPitchRateAndYawRateRequest::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata SetPitchRateAndYawRateRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class SetPitchRateAndYawRateResponse::_Internal {
-public:
-    using HasBits = decltype(std::declval<SetPitchRateAndYawRateResponse>()._impl_._has_bits_);
-    static constexpr ::int32_t kHasBitsOffset =
-        8 * PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateResponse, _impl_._has_bits_);
+ public:
+  using HasBits =
+      decltype(std::declval<SetPitchRateAndYawRateResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateResponse, _impl_._has_bits_);
 };
 
 SetPitchRateAndYawRateResponse::SetPitchRateAndYawRateResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE SetPitchRateAndYawRateResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+SetPitchRateAndYawRateResponse::SetPitchRateAndYawRateResponse(
+    ::google::protobuf::Arena* arena,
+    const SetPitchRateAndYawRateResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SetPitchRateAndYawRateResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.gimbal_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
+                              arena, *from._impl_.gimbal_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE SetPitchRateAndYawRateResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse& from_msg) :
-    _has_bits_{from._has_bits_},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-SetPitchRateAndYawRateResponse::SetPitchRateAndYawRateResponse(
-    ::google::protobuf::Arena* arena, const SetPitchRateAndYawRateResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SetPitchRateAndYawRateResponse* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-    _impl_.gimbal_result_ =
-        (cached_has_bits & 0x00000001u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
-                arena, *from._impl_.gimbal_result_) :
-            nullptr;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
+inline void SetPitchRateAndYawRateResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.gimbal_result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE SetPitchRateAndYawRateResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
-
-inline void SetPitchRateAndYawRateResponse::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.gimbal_result_ = {};
+SetPitchRateAndYawRateResponse::~SetPitchRateAndYawRateResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
+  SharedDtor(*this);
 }
-SetPitchRateAndYawRateResponse::~SetPitchRateAndYawRateResponse()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
-    SharedDtor(*this);
-}
-inline void SetPitchRateAndYawRateResponse::SharedDtor(MessageLite& self)
-{
-    SetPitchRateAndYawRateResponse& this_ = static_cast<SetPitchRateAndYawRateResponse&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    delete this_._impl_.gimbal_result_;
-    this_._impl_.~Impl_();
+inline void SetPitchRateAndYawRateResponse::SharedDtor(MessageLite& self) {
+  SetPitchRateAndYawRateResponse& this_ = static_cast<SetPitchRateAndYawRateResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.gimbal_result_;
+  this_._impl_.~Impl_();
 }
 
-inline void* SetPitchRateAndYawRateResponse::PlacementNew_(
-    const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) SetPitchRateAndYawRateResponse(arena);
+inline void* SetPitchRateAndYawRateResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetPitchRateAndYawRateResponse(arena);
 }
-constexpr auto SetPitchRateAndYawRateResponse::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(SetPitchRateAndYawRateResponse), alignof(SetPitchRateAndYawRateResponse));
+constexpr auto SetPitchRateAndYawRateResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetPitchRateAndYawRateResponse),
+                                            alignof(SetPitchRateAndYawRateResponse));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -2711,259 +2421,223 @@ const ::google::protobuf::internal::ClassDataFull SetPitchRateAndYawRateResponse
     ::google::protobuf::internal::ClassData{
         &_SetPitchRateAndYawRateResponse_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &SetPitchRateAndYawRateResponse::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<SetPitchRateAndYawRateResponse>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &SetPitchRateAndYawRateResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<SetPitchRateAndYawRateResponse>(),
-        &SetPitchRateAndYawRateResponse::ByteSizeLong,
-        &SetPitchRateAndYawRateResponse::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<SetPitchRateAndYawRateResponse>(), &SetPitchRateAndYawRateResponse::ByteSizeLong,
+            &SetPitchRateAndYawRateResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateResponse, _impl_._cached_size_),
         false,
     },
     &SetPitchRateAndYawRateResponse::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* SetPitchRateAndYawRateResponse::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* SetPitchRateAndYawRateResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-    SetPitchRateAndYawRateResponse::_table_ = {
-        {
-            PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateResponse, _impl_._has_bits_),
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            1, // num_aux_entries
-            offsetof(decltype(_table_), aux_entries),
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<
-                ::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-            {::_pbi::TcParser::FastMtS1,
-             {10,
-              0,
-              0,
-              PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateResponse, _impl_.gimbal_result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-            {PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateResponse, _impl_.gimbal_result_),
-             _Internal::kHasBitsOffset + 0,
-             0,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-        }},
-        {{
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::GimbalResult>()},
-        }},
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void SetPitchRateAndYawRateResponse::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    cached_has_bits = _impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
-        _impl_.gimbal_result_->Clear();
-    }
-    _impl_._has_bits_.Clear();
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* SetPitchRateAndYawRateResponse::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const SetPitchRateAndYawRateResponse& this_ =
-        static_cast<const SetPitchRateAndYawRateResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* SetPitchRateAndYawRateResponse::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const SetPitchRateAndYawRateResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = this_._impl_._has_bits_[0];
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetPitchRateAndYawRateResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::SetPitchRateAndYawRateResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-    if (cached_has_bits & 0x00000001u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1,
-            *this_._impl_.gimbal_result_,
-            this_._impl_.gimbal_result_->GetCachedSize(),
-            target,
-            stream);
-    }
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateResponse, _impl_.gimbal_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+    {PROTOBUF_FIELD_OFFSET(SetPitchRateAndYawRateResponse, _impl_.gimbal_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::GimbalResult>()},
+  }}, {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
-    return target;
+PROTOBUF_NOINLINE void SetPitchRateAndYawRateResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
+    _impl_.gimbal_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t SetPitchRateAndYawRateResponse::ByteSizeLong(const MessageLite& base)
-{
-    const SetPitchRateAndYawRateResponse& this_ =
-        static_cast<const SetPitchRateAndYawRateResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t SetPitchRateAndYawRateResponse::ByteSizeLong() const
-{
-    const SetPitchRateAndYawRateResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
-    ::size_t total_size = 0;
+        ::uint8_t* SetPitchRateAndYawRateResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SetPitchRateAndYawRateResponse& this_ = static_cast<const SetPitchRateAndYawRateResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SetPitchRateAndYawRateResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SetPitchRateAndYawRateResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.gimbal_result_, this_._impl_.gimbal_result_->GetCachedSize(), target,
+                stream);
+          }
 
-    {
-        // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-        cached_has_bits = this_._impl_._has_bits_[0];
-        if (cached_has_bits & 0x00000001u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.gimbal_result_);
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
-}
 
-void SetPitchRateAndYawRateResponse::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<SetPitchRateAndYawRateResponse*>(&to_msg);
-    auto& from = static_cast<const SetPitchRateAndYawRateResponse&>(from_msg);
-    ::google::protobuf::Arena* arena = _this->GetArena();
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SetPitchRateAndYawRateResponse::ByteSizeLong(const MessageLite& base) {
+          const SetPitchRateAndYawRateResponse& this_ = static_cast<const SetPitchRateAndYawRateResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SetPitchRateAndYawRateResponse::ByteSizeLong() const {
+          const SetPitchRateAndYawRateResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
+          ::size_t total_size = 0;
 
-    cached_has_bits = from._impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(from._impl_.gimbal_result_ != nullptr);
-        if (_this->_impl_.gimbal_result_ == nullptr) {
-            _this->_impl_.gimbal_result_ =
-                ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
-                    arena, *from._impl_.gimbal_result_);
-        } else {
-            _this->_impl_.gimbal_result_->MergeFrom(*from._impl_.gimbal_result_);
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.gimbal_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
+
+void SetPitchRateAndYawRateResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SetPitchRateAndYawRateResponse*>(&to_msg);
+  auto& from = static_cast<const SetPitchRateAndYawRateResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.gimbal_result_ != nullptr);
+    if (_this->_impl_.gimbal_result_ == nullptr) {
+      _this->_impl_.gimbal_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(arena, *from._impl_.gimbal_result_);
+    } else {
+      _this->_impl_.gimbal_result_->MergeFrom(*from._impl_.gimbal_result_);
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void SetPitchRateAndYawRateResponse::CopyFrom(const SetPitchRateAndYawRateResponse& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+void SetPitchRateAndYawRateResponse::CopyFrom(const SetPitchRateAndYawRateResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetPitchRateAndYawRateResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void SetPitchRateAndYawRateResponse::InternalSwap(
-    SetPitchRateAndYawRateResponse* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-    swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
+
+void SetPitchRateAndYawRateResponse::InternalSwap(SetPitchRateAndYawRateResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
 }
 
-::google::protobuf::Metadata SetPitchRateAndYawRateResponse::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata SetPitchRateAndYawRateResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class SetModeRequest::_Internal {
-public:
+ public:
 };
 
 SetModeRequest::SetModeRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetModeRequest)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetModeRequest)
 }
-SetModeRequest::SetModeRequest(::google::protobuf::Arena* arena, const SetModeRequest& from) :
-    SetModeRequest(arena)
-{
-    MergeFrom(from);
+SetModeRequest::SetModeRequest(
+    ::google::protobuf::Arena* arena, const SetModeRequest& from)
+    : SetModeRequest(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE SetModeRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-inline void SetModeRequest::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.gimbal_mode_ = {};
+inline void SetModeRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.gimbal_mode_ = {};
 }
-SetModeRequest::~SetModeRequest()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetModeRequest)
-    SharedDtor(*this);
+SetModeRequest::~SetModeRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetModeRequest)
+  SharedDtor(*this);
 }
-inline void SetModeRequest::SharedDtor(MessageLite& self)
-{
-    SetModeRequest& this_ = static_cast<SetModeRequest&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.~Impl_();
+inline void SetModeRequest::SharedDtor(MessageLite& self) {
+  SetModeRequest& this_ = static_cast<SetModeRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
-inline void* SetModeRequest::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) SetModeRequest(arena);
+inline void* SetModeRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetModeRequest(arena);
 }
-constexpr auto SetModeRequest::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(SetModeRequest), alignof(SetModeRequest));
+constexpr auto SetModeRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetModeRequest),
+                                            alignof(SetModeRequest));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -2971,262 +2645,232 @@ const ::google::protobuf::internal::ClassDataFull SetModeRequest::_class_data_ =
     ::google::protobuf::internal::ClassData{
         &_SetModeRequest_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &SetModeRequest::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<SetModeRequest>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &SetModeRequest::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<SetModeRequest>(),
-        &SetModeRequest::ByteSizeLong,
-        &SetModeRequest::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<SetModeRequest>(), &SetModeRequest::ByteSizeLong,
+            &SetModeRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(SetModeRequest, _impl_._cached_size_),
         false,
     },
     &SetModeRequest::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* SetModeRequest::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* SetModeRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 0, 0, 2>
-    SetModeRequest::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::SetModeRequest>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.gimbal.GimbalMode gimbal_mode = 1;
-            {::_pbi::TcParser::SingularVarintNoZag1<
-                 ::uint32_t,
-                 offsetof(SetModeRequest, _impl_.gimbal_mode_),
-                 63>(),
-             {8, 63, 0, PROTOBUF_FIELD_OFFSET(SetModeRequest, _impl_.gimbal_mode_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.gimbal.GimbalMode gimbal_mode = 1;
-            {PROTOBUF_FIELD_OFFSET(SetModeRequest, _impl_.gimbal_mode_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-        }},
-        // no aux_entries
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void SetModeRequest::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetModeRequest)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    _impl_.gimbal_mode_ = 0;
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* SetModeRequest::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const SetModeRequest& this_ = static_cast<const SetModeRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* SetModeRequest::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const SetModeRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetModeRequest)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> SetModeRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::SetModeRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.gimbal.GimbalMode gimbal_mode = 1;
-    if (this_._internal_gimbal_mode() != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteEnumToArray(1, this_._internal_gimbal_mode(), target);
-    }
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(SetModeRequest, _impl_.gimbal_mode_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(SetModeRequest, _impl_.gimbal_mode_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gimbal.GimbalMode gimbal_mode = 1;
+    {PROTOBUF_FIELD_OFFSET(SetModeRequest, _impl_.gimbal_mode_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetModeRequest)
-    return target;
+PROTOBUF_NOINLINE void SetModeRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetModeRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.gimbal_mode_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t SetModeRequest::ByteSizeLong(const MessageLite& base)
-{
-    const SetModeRequest& this_ = static_cast<const SetModeRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t SetModeRequest::ByteSizeLong() const
-{
-    const SetModeRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetModeRequest)
-    ::size_t total_size = 0;
+        ::uint8_t* SetModeRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SetModeRequest& this_ = static_cast<const SetModeRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SetModeRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SetModeRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetModeRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // .mavsdk.rpc.gimbal.GimbalMode gimbal_mode = 1;
+          if (this_._internal_gimbal_mode() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                1, this_._internal_gimbal_mode(), target);
+          }
 
-    {
-        // .mavsdk.rpc.gimbal.GimbalMode gimbal_mode = 1;
-        if (this_._internal_gimbal_mode() != 0) {
-            total_size += 1 + ::_pbi::WireFormatLite::EnumSize(this_._internal_gimbal_mode());
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetModeRequest)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SetModeRequest::ByteSizeLong(const MessageLite& base) {
+          const SetModeRequest& this_ = static_cast<const SetModeRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SetModeRequest::ByteSizeLong() const {
+          const SetModeRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetModeRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.gimbal.GimbalMode gimbal_mode = 1;
+            if (this_._internal_gimbal_mode() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_gimbal_mode());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void SetModeRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SetModeRequest*>(&to_msg);
+  auto& from = static_cast<const SetModeRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetModeRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_gimbal_mode() != 0) {
+    _this->_impl_.gimbal_mode_ = from._impl_.gimbal_mode_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void SetModeRequest::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<SetModeRequest*>(&to_msg);
-    auto& from = static_cast<const SetModeRequest&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetModeRequest)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (from._internal_gimbal_mode() != 0) {
-        _this->_impl_.gimbal_mode_ = from._impl_.gimbal_mode_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void SetModeRequest::CopyFrom(const SetModeRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetModeRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void SetModeRequest::CopyFrom(const SetModeRequest& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetModeRequest)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void SetModeRequest::InternalSwap(SetModeRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_.gimbal_mode_, other->_impl_.gimbal_mode_);
 }
 
-void SetModeRequest::InternalSwap(SetModeRequest* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_.gimbal_mode_, other->_impl_.gimbal_mode_);
-}
-
-::google::protobuf::Metadata SetModeRequest::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata SetModeRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class SetModeResponse::_Internal {
-public:
-    using HasBits = decltype(std::declval<SetModeResponse>()._impl_._has_bits_);
-    static constexpr ::int32_t kHasBitsOffset =
-        8 * PROTOBUF_FIELD_OFFSET(SetModeResponse, _impl_._has_bits_);
+ public:
+  using HasBits =
+      decltype(std::declval<SetModeResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(SetModeResponse, _impl_._has_bits_);
 };
 
 SetModeResponse::SetModeResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetModeResponse)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetModeResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE SetModeResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::gimbal::SetModeResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+SetModeResponse::SetModeResponse(
+    ::google::protobuf::Arena* arena,
+    const SetModeResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SetModeResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.gimbal_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
+                              arena, *from._impl_.gimbal_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetModeResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE SetModeResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::gimbal::SetModeResponse& from_msg) :
-    _has_bits_{from._has_bits_},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-SetModeResponse::SetModeResponse(::google::protobuf::Arena* arena, const SetModeResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SetModeResponse* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-    _impl_.gimbal_result_ =
-        (cached_has_bits & 0x00000001u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
-                arena, *from._impl_.gimbal_result_) :
-            nullptr;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetModeResponse)
+inline void SetModeResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.gimbal_result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE SetModeResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
-
-inline void SetModeResponse::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.gimbal_result_ = {};
+SetModeResponse::~SetModeResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetModeResponse)
+  SharedDtor(*this);
 }
-SetModeResponse::~SetModeResponse()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetModeResponse)
-    SharedDtor(*this);
-}
-inline void SetModeResponse::SharedDtor(MessageLite& self)
-{
-    SetModeResponse& this_ = static_cast<SetModeResponse&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    delete this_._impl_.gimbal_result_;
-    this_._impl_.~Impl_();
+inline void SetModeResponse::SharedDtor(MessageLite& self) {
+  SetModeResponse& this_ = static_cast<SetModeResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.gimbal_result_;
+  this_._impl_.~Impl_();
 }
 
-inline void*
-SetModeResponse::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) SetModeResponse(arena);
+inline void* SetModeResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetModeResponse(arena);
 }
-constexpr auto SetModeResponse::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(SetModeResponse), alignof(SetModeResponse));
+constexpr auto SetModeResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetModeResponse),
+                                            alignof(SetModeResponse));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -3234,257 +2878,228 @@ const ::google::protobuf::internal::ClassDataFull SetModeResponse::_class_data_ 
     ::google::protobuf::internal::ClassData{
         &_SetModeResponse_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &SetModeResponse::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<SetModeResponse>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &SetModeResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<SetModeResponse>(),
-        &SetModeResponse::ByteSizeLong,
-        &SetModeResponse::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<SetModeResponse>(), &SetModeResponse::ByteSizeLong,
+            &SetModeResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(SetModeResponse, _impl_._cached_size_),
         false,
     },
     &SetModeResponse::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* SetModeResponse::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* SetModeResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-    SetModeResponse::_table_ = {
-        {
-            PROTOBUF_FIELD_OFFSET(SetModeResponse, _impl_._has_bits_),
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            1, // num_aux_entries
-            offsetof(decltype(_table_), aux_entries),
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::SetModeResponse>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-            {::_pbi::TcParser::FastMtS1,
-             {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetModeResponse, _impl_.gimbal_result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-            {PROTOBUF_FIELD_OFFSET(SetModeResponse, _impl_.gimbal_result_),
-             _Internal::kHasBitsOffset + 0,
-             0,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-        }},
-        {{
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::GimbalResult>()},
-        }},
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void SetModeResponse::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetModeResponse)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    cached_has_bits = _impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
-        _impl_.gimbal_result_->Clear();
-    }
-    _impl_._has_bits_.Clear();
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* SetModeResponse::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const SetModeResponse& this_ = static_cast<const SetModeResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* SetModeResponse::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const SetModeResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetModeResponse)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = this_._impl_._has_bits_[0];
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetModeResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(SetModeResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::SetModeResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-    if (cached_has_bits & 0x00000001u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1,
-            *this_._impl_.gimbal_result_,
-            this_._impl_.gimbal_result_->GetCachedSize(),
-            target,
-            stream);
-    }
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetModeResponse, _impl_.gimbal_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+    {PROTOBUF_FIELD_OFFSET(SetModeResponse, _impl_.gimbal_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::GimbalResult>()},
+  }}, {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetModeResponse)
-    return target;
+PROTOBUF_NOINLINE void SetModeResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetModeResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
+    _impl_.gimbal_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t SetModeResponse::ByteSizeLong(const MessageLite& base)
-{
-    const SetModeResponse& this_ = static_cast<const SetModeResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t SetModeResponse::ByteSizeLong() const
-{
-    const SetModeResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetModeResponse)
-    ::size_t total_size = 0;
+        ::uint8_t* SetModeResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SetModeResponse& this_ = static_cast<const SetModeResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SetModeResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SetModeResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetModeResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.gimbal_result_, this_._impl_.gimbal_result_->GetCachedSize(), target,
+                stream);
+          }
 
-    {
-        // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-        cached_has_bits = this_._impl_._has_bits_[0];
-        if (cached_has_bits & 0x00000001u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.gimbal_result_);
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetModeResponse)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
-}
 
-void SetModeResponse::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<SetModeResponse*>(&to_msg);
-    auto& from = static_cast<const SetModeResponse&>(from_msg);
-    ::google::protobuf::Arena* arena = _this->GetArena();
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetModeResponse)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SetModeResponse::ByteSizeLong(const MessageLite& base) {
+          const SetModeResponse& this_ = static_cast<const SetModeResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SetModeResponse::ByteSizeLong() const {
+          const SetModeResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetModeResponse)
+          ::size_t total_size = 0;
 
-    cached_has_bits = from._impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(from._impl_.gimbal_result_ != nullptr);
-        if (_this->_impl_.gimbal_result_ == nullptr) {
-            _this->_impl_.gimbal_result_ =
-                ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
-                    arena, *from._impl_.gimbal_result_);
-        } else {
-            _this->_impl_.gimbal_result_->MergeFrom(*from._impl_.gimbal_result_);
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.gimbal_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
+
+void SetModeResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SetModeResponse*>(&to_msg);
+  auto& from = static_cast<const SetModeResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetModeResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.gimbal_result_ != nullptr);
+    if (_this->_impl_.gimbal_result_ == nullptr) {
+      _this->_impl_.gimbal_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(arena, *from._impl_.gimbal_result_);
+    } else {
+      _this->_impl_.gimbal_result_->MergeFrom(*from._impl_.gimbal_result_);
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void SetModeResponse::CopyFrom(const SetModeResponse& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetModeResponse)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+void SetModeResponse::CopyFrom(const SetModeResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetModeResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void SetModeResponse::InternalSwap(SetModeResponse* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-    swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
+
+void SetModeResponse::InternalSwap(SetModeResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
 }
 
-::google::protobuf::Metadata SetModeResponse::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata SetModeResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class SetRoiLocationRequest::_Internal {
-public:
+ public:
 };
 
 SetRoiLocationRequest::SetRoiLocationRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetRoiLocationRequest)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetRoiLocationRequest)
 }
 SetRoiLocationRequest::SetRoiLocationRequest(
-    ::google::protobuf::Arena* arena, const SetRoiLocationRequest& from) :
-    SetRoiLocationRequest(arena)
-{
-    MergeFrom(from);
+    ::google::protobuf::Arena* arena, const SetRoiLocationRequest& from)
+    : SetRoiLocationRequest(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE SetRoiLocationRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-inline void SetRoiLocationRequest::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    ::memset(
-        reinterpret_cast<char*>(&_impl_) + offsetof(Impl_, latitude_deg_),
-        0,
-        offsetof(Impl_, altitude_m_) - offsetof(Impl_, latitude_deg_) + sizeof(Impl_::altitude_m_));
+inline void SetRoiLocationRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, latitude_deg_),
+           0,
+           offsetof(Impl_, altitude_m_) -
+               offsetof(Impl_, latitude_deg_) +
+               sizeof(Impl_::altitude_m_));
 }
-SetRoiLocationRequest::~SetRoiLocationRequest()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetRoiLocationRequest)
-    SharedDtor(*this);
+SetRoiLocationRequest::~SetRoiLocationRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetRoiLocationRequest)
+  SharedDtor(*this);
 }
-inline void SetRoiLocationRequest::SharedDtor(MessageLite& self)
-{
-    SetRoiLocationRequest& this_ = static_cast<SetRoiLocationRequest&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.~Impl_();
+inline void SetRoiLocationRequest::SharedDtor(MessageLite& self) {
+  SetRoiLocationRequest& this_ = static_cast<SetRoiLocationRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
-inline void*
-SetRoiLocationRequest::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) SetRoiLocationRequest(arena);
+inline void* SetRoiLocationRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetRoiLocationRequest(arena);
 }
-constexpr auto SetRoiLocationRequest::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(SetRoiLocationRequest), alignof(SetRoiLocationRequest));
+constexpr auto SetRoiLocationRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetRoiLocationRequest),
+                                            alignof(SetRoiLocationRequest));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -3492,318 +3107,280 @@ const ::google::protobuf::internal::ClassDataFull SetRoiLocationRequest::_class_
     ::google::protobuf::internal::ClassData{
         &_SetRoiLocationRequest_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &SetRoiLocationRequest::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<SetRoiLocationRequest>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &SetRoiLocationRequest::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<SetRoiLocationRequest>(),
-        &SetRoiLocationRequest::ByteSizeLong,
-        &SetRoiLocationRequest::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<SetRoiLocationRequest>(), &SetRoiLocationRequest::ByteSizeLong,
+            &SetRoiLocationRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_._cached_size_),
         false,
     },
     &SetRoiLocationRequest::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* SetRoiLocationRequest::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* SetRoiLocationRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<2, 3, 0, 0, 2>
-    SetRoiLocationRequest::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            3,
-            24, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967288, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            3, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<
-                ::mavsdk::rpc::gimbal::SetRoiLocationRequest>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            {::_pbi::TcParser::MiniParse, {}},
-            // double latitude_deg = 1;
-            {::_pbi::TcParser::FastF64S1,
-             {9, 63, 0, PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.latitude_deg_)}},
-            // double longitude_deg = 2;
-            {::_pbi::TcParser::FastF64S1,
-             {17, 63, 0, PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.longitude_deg_)}},
-            // float altitude_m = 3;
-            {::_pbi::TcParser::FastF32S1,
-             {29, 63, 0, PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.altitude_m_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // double latitude_deg = 1;
-            {PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.latitude_deg_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
-            // double longitude_deg = 2;
-            {PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.longitude_deg_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
-            // float altitude_m = 3;
-            {PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.altitude_m_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-        }},
-        // no aux_entries
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void SetRoiLocationRequest::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetRoiLocationRequest)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    ::memset(
-        &_impl_.latitude_deg_,
-        0,
-        static_cast<::size_t>(
-            reinterpret_cast<char*>(&_impl_.altitude_m_) -
-            reinterpret_cast<char*>(&_impl_.latitude_deg_)) +
-            sizeof(_impl_.altitude_m_));
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* SetRoiLocationRequest::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const SetRoiLocationRequest& this_ = static_cast<const SetRoiLocationRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* SetRoiLocationRequest::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const SetRoiLocationRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetRoiLocationRequest)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> SetRoiLocationRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::SetRoiLocationRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
     // double latitude_deg = 1;
-    if (::absl::bit_cast<::uint64_t>(this_._internal_latitude_deg()) != 0) {
-        target = stream->EnsureSpace(target);
-        target =
-            ::_pbi::WireFormatLite::WriteDoubleToArray(1, this_._internal_latitude_deg(), target);
-    }
-
+    {::_pbi::TcParser::FastF64S1,
+     {9, 63, 0, PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.latitude_deg_)}},
     // double longitude_deg = 2;
-    if (::absl::bit_cast<::uint64_t>(this_._internal_longitude_deg()) != 0) {
-        target = stream->EnsureSpace(target);
-        target =
-            ::_pbi::WireFormatLite::WriteDoubleToArray(2, this_._internal_longitude_deg(), target);
-    }
-
+    {::_pbi::TcParser::FastF64S1,
+     {17, 63, 0, PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.longitude_deg_)}},
     // float altitude_m = 3;
-    if (::absl::bit_cast<::uint32_t>(this_._internal_altitude_m()) != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteFloatToArray(3, this_._internal_altitude_m(), target);
-    }
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.altitude_m_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // double latitude_deg = 1;
+    {PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.latitude_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
+    // double longitude_deg = 2;
+    {PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.longitude_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kDouble)},
+    // float altitude_m = 3;
+    {PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.altitude_m_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetRoiLocationRequest)
-    return target;
+PROTOBUF_NOINLINE void SetRoiLocationRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetRoiLocationRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.latitude_deg_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.altitude_m_) -
+      reinterpret_cast<char*>(&_impl_.latitude_deg_)) + sizeof(_impl_.altitude_m_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t SetRoiLocationRequest::ByteSizeLong(const MessageLite& base)
-{
-    const SetRoiLocationRequest& this_ = static_cast<const SetRoiLocationRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t SetRoiLocationRequest::ByteSizeLong() const
-{
-    const SetRoiLocationRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetRoiLocationRequest)
-    ::size_t total_size = 0;
+        ::uint8_t* SetRoiLocationRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SetRoiLocationRequest& this_ = static_cast<const SetRoiLocationRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SetRoiLocationRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SetRoiLocationRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetRoiLocationRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // double latitude_deg = 1;
+          if (::absl::bit_cast<::uint64_t>(this_._internal_latitude_deg()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+                1, this_._internal_latitude_deg(), target);
+          }
 
-    ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-    {
-        // double latitude_deg = 1;
-        if (::absl::bit_cast<::uint64_t>(this_._internal_latitude_deg()) != 0) {
-            total_size += 9;
+          // double longitude_deg = 2;
+          if (::absl::bit_cast<::uint64_t>(this_._internal_longitude_deg()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteDoubleToArray(
+                2, this_._internal_longitude_deg(), target);
+          }
+
+          // float altitude_m = 3;
+          if (::absl::bit_cast<::uint32_t>(this_._internal_altitude_m()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                3, this_._internal_altitude_m(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetRoiLocationRequest)
+          return target;
         }
-        // double longitude_deg = 2;
-        if (::absl::bit_cast<::uint64_t>(this_._internal_longitude_deg()) != 0) {
-            total_size += 9;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SetRoiLocationRequest::ByteSizeLong(const MessageLite& base) {
+          const SetRoiLocationRequest& this_ = static_cast<const SetRoiLocationRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SetRoiLocationRequest::ByteSizeLong() const {
+          const SetRoiLocationRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetRoiLocationRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // double latitude_deg = 1;
+            if (::absl::bit_cast<::uint64_t>(this_._internal_latitude_deg()) != 0) {
+              total_size += 9;
+            }
+            // double longitude_deg = 2;
+            if (::absl::bit_cast<::uint64_t>(this_._internal_longitude_deg()) != 0) {
+              total_size += 9;
+            }
+            // float altitude_m = 3;
+            if (::absl::bit_cast<::uint32_t>(this_._internal_altitude_m()) != 0) {
+              total_size += 5;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
-        // float altitude_m = 3;
-        if (::absl::bit_cast<::uint32_t>(this_._internal_altitude_m()) != 0) {
-            total_size += 5;
-        }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+void SetRoiLocationRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SetRoiLocationRequest*>(&to_msg);
+  auto& from = static_cast<const SetRoiLocationRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetRoiLocationRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (::absl::bit_cast<::uint64_t>(from._internal_latitude_deg()) != 0) {
+    _this->_impl_.latitude_deg_ = from._impl_.latitude_deg_;
+  }
+  if (::absl::bit_cast<::uint64_t>(from._internal_longitude_deg()) != 0) {
+    _this->_impl_.longitude_deg_ = from._impl_.longitude_deg_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_altitude_m()) != 0) {
+    _this->_impl_.altitude_m_ = from._impl_.altitude_m_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void SetRoiLocationRequest::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<SetRoiLocationRequest*>(&to_msg);
-    auto& from = static_cast<const SetRoiLocationRequest&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetRoiLocationRequest)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (::absl::bit_cast<::uint64_t>(from._internal_latitude_deg()) != 0) {
-        _this->_impl_.latitude_deg_ = from._impl_.latitude_deg_;
-    }
-    if (::absl::bit_cast<::uint64_t>(from._internal_longitude_deg()) != 0) {
-        _this->_impl_.longitude_deg_ = from._impl_.longitude_deg_;
-    }
-    if (::absl::bit_cast<::uint32_t>(from._internal_altitude_m()) != 0) {
-        _this->_impl_.altitude_m_ = from._impl_.altitude_m_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void SetRoiLocationRequest::CopyFrom(const SetRoiLocationRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetRoiLocationRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void SetRoiLocationRequest::CopyFrom(const SetRoiLocationRequest& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetRoiLocationRequest)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void SetRoiLocationRequest::InternalSwap(SetRoiLocationRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.altitude_m_)
+      + sizeof(SetRoiLocationRequest::_impl_.altitude_m_)
+      - PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.latitude_deg_)>(
+          reinterpret_cast<char*>(&_impl_.latitude_deg_),
+          reinterpret_cast<char*>(&other->_impl_.latitude_deg_));
 }
 
-void SetRoiLocationRequest::InternalSwap(SetRoiLocationRequest* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    ::google::protobuf::internal::memswap<
-        PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.altitude_m_) +
-        sizeof(SetRoiLocationRequest::_impl_.altitude_m_) -
-        PROTOBUF_FIELD_OFFSET(SetRoiLocationRequest, _impl_.latitude_deg_)>(
-        reinterpret_cast<char*>(&_impl_.latitude_deg_),
-        reinterpret_cast<char*>(&other->_impl_.latitude_deg_));
-}
-
-::google::protobuf::Metadata SetRoiLocationRequest::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata SetRoiLocationRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class SetRoiLocationResponse::_Internal {
-public:
-    using HasBits = decltype(std::declval<SetRoiLocationResponse>()._impl_._has_bits_);
-    static constexpr ::int32_t kHasBitsOffset =
-        8 * PROTOBUF_FIELD_OFFSET(SetRoiLocationResponse, _impl_._has_bits_);
+ public:
+  using HasBits =
+      decltype(std::declval<SetRoiLocationResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(SetRoiLocationResponse, _impl_._has_bits_);
 };
 
 SetRoiLocationResponse::SetRoiLocationResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetRoiLocationResponse)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SetRoiLocationResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE SetRoiLocationResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::gimbal::SetRoiLocationResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+SetRoiLocationResponse::SetRoiLocationResponse(
+    ::google::protobuf::Arena* arena,
+    const SetRoiLocationResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SetRoiLocationResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.gimbal_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
+                              arena, *from._impl_.gimbal_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetRoiLocationResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE SetRoiLocationResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::gimbal::SetRoiLocationResponse& from_msg) :
-    _has_bits_{from._has_bits_},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-SetRoiLocationResponse::SetRoiLocationResponse(
-    ::google::protobuf::Arena* arena, const SetRoiLocationResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SetRoiLocationResponse* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-    _impl_.gimbal_result_ =
-        (cached_has_bits & 0x00000001u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
-                arena, *from._impl_.gimbal_result_) :
-            nullptr;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SetRoiLocationResponse)
+inline void SetRoiLocationResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.gimbal_result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE SetRoiLocationResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
-
-inline void SetRoiLocationResponse::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.gimbal_result_ = {};
+SetRoiLocationResponse::~SetRoiLocationResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetRoiLocationResponse)
+  SharedDtor(*this);
 }
-SetRoiLocationResponse::~SetRoiLocationResponse()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.SetRoiLocationResponse)
-    SharedDtor(*this);
-}
-inline void SetRoiLocationResponse::SharedDtor(MessageLite& self)
-{
-    SetRoiLocationResponse& this_ = static_cast<SetRoiLocationResponse&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    delete this_._impl_.gimbal_result_;
-    this_._impl_.~Impl_();
+inline void SetRoiLocationResponse::SharedDtor(MessageLite& self) {
+  SetRoiLocationResponse& this_ = static_cast<SetRoiLocationResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.gimbal_result_;
+  this_._impl_.~Impl_();
 }
 
-inline void*
-SetRoiLocationResponse::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) SetRoiLocationResponse(arena);
+inline void* SetRoiLocationResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetRoiLocationResponse(arena);
 }
-constexpr auto SetRoiLocationResponse::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(SetRoiLocationResponse), alignof(SetRoiLocationResponse));
+constexpr auto SetRoiLocationResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetRoiLocationResponse),
+                                            alignof(SetRoiLocationResponse));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -3811,255 +3388,223 @@ const ::google::protobuf::internal::ClassDataFull SetRoiLocationResponse::_class
     ::google::protobuf::internal::ClassData{
         &_SetRoiLocationResponse_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &SetRoiLocationResponse::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<SetRoiLocationResponse>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &SetRoiLocationResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<SetRoiLocationResponse>(),
-        &SetRoiLocationResponse::ByteSizeLong,
-        &SetRoiLocationResponse::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<SetRoiLocationResponse>(), &SetRoiLocationResponse::ByteSizeLong,
+            &SetRoiLocationResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(SetRoiLocationResponse, _impl_._cached_size_),
         false,
     },
     &SetRoiLocationResponse::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* SetRoiLocationResponse::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* SetRoiLocationResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-    SetRoiLocationResponse::_table_ = {
-        {
-            PROTOBUF_FIELD_OFFSET(SetRoiLocationResponse, _impl_._has_bits_),
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            1, // num_aux_entries
-            offsetof(decltype(_table_), aux_entries),
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<
-                ::mavsdk::rpc::gimbal::SetRoiLocationResponse>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-            {::_pbi::TcParser::FastMtS1,
-             {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetRoiLocationResponse, _impl_.gimbal_result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-            {PROTOBUF_FIELD_OFFSET(SetRoiLocationResponse, _impl_.gimbal_result_),
-             _Internal::kHasBitsOffset + 0,
-             0,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-        }},
-        {{
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::GimbalResult>()},
-        }},
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void SetRoiLocationResponse::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetRoiLocationResponse)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    cached_has_bits = _impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
-        _impl_.gimbal_result_->Clear();
-    }
-    _impl_._has_bits_.Clear();
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* SetRoiLocationResponse::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const SetRoiLocationResponse& this_ = static_cast<const SetRoiLocationResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* SetRoiLocationResponse::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const SetRoiLocationResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetRoiLocationResponse)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = this_._impl_._has_bits_[0];
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetRoiLocationResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(SetRoiLocationResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::SetRoiLocationResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-    if (cached_has_bits & 0x00000001u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1,
-            *this_._impl_.gimbal_result_,
-            this_._impl_.gimbal_result_->GetCachedSize(),
-            target,
-            stream);
-    }
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetRoiLocationResponse, _impl_.gimbal_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+    {PROTOBUF_FIELD_OFFSET(SetRoiLocationResponse, _impl_.gimbal_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::GimbalResult>()},
+  }}, {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetRoiLocationResponse)
-    return target;
+PROTOBUF_NOINLINE void SetRoiLocationResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.SetRoiLocationResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
+    _impl_.gimbal_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t SetRoiLocationResponse::ByteSizeLong(const MessageLite& base)
-{
-    const SetRoiLocationResponse& this_ = static_cast<const SetRoiLocationResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t SetRoiLocationResponse::ByteSizeLong() const
-{
-    const SetRoiLocationResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetRoiLocationResponse)
-    ::size_t total_size = 0;
+        ::uint8_t* SetRoiLocationResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SetRoiLocationResponse& this_ = static_cast<const SetRoiLocationResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SetRoiLocationResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SetRoiLocationResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.SetRoiLocationResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.gimbal_result_, this_._impl_.gimbal_result_->GetCachedSize(), target,
+                stream);
+          }
 
-    {
-        // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-        cached_has_bits = this_._impl_._has_bits_[0];
-        if (cached_has_bits & 0x00000001u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.gimbal_result_);
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.SetRoiLocationResponse)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
-}
 
-void SetRoiLocationResponse::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<SetRoiLocationResponse*>(&to_msg);
-    auto& from = static_cast<const SetRoiLocationResponse&>(from_msg);
-    ::google::protobuf::Arena* arena = _this->GetArena();
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetRoiLocationResponse)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SetRoiLocationResponse::ByteSizeLong(const MessageLite& base) {
+          const SetRoiLocationResponse& this_ = static_cast<const SetRoiLocationResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SetRoiLocationResponse::ByteSizeLong() const {
+          const SetRoiLocationResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.SetRoiLocationResponse)
+          ::size_t total_size = 0;
 
-    cached_has_bits = from._impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(from._impl_.gimbal_result_ != nullptr);
-        if (_this->_impl_.gimbal_result_ == nullptr) {
-            _this->_impl_.gimbal_result_ =
-                ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
-                    arena, *from._impl_.gimbal_result_);
-        } else {
-            _this->_impl_.gimbal_result_->MergeFrom(*from._impl_.gimbal_result_);
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.gimbal_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
+
+void SetRoiLocationResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SetRoiLocationResponse*>(&to_msg);
+  auto& from = static_cast<const SetRoiLocationResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.SetRoiLocationResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.gimbal_result_ != nullptr);
+    if (_this->_impl_.gimbal_result_ == nullptr) {
+      _this->_impl_.gimbal_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(arena, *from._impl_.gimbal_result_);
+    } else {
+      _this->_impl_.gimbal_result_->MergeFrom(*from._impl_.gimbal_result_);
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void SetRoiLocationResponse::CopyFrom(const SetRoiLocationResponse& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetRoiLocationResponse)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+void SetRoiLocationResponse::CopyFrom(const SetRoiLocationResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.SetRoiLocationResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void SetRoiLocationResponse::InternalSwap(SetRoiLocationResponse* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-    swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
+
+void SetRoiLocationResponse::InternalSwap(SetRoiLocationResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
 }
 
-::google::protobuf::Metadata SetRoiLocationResponse::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata SetRoiLocationResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class TakeControlRequest::_Internal {
-public:
+ public:
 };
 
 TakeControlRequest::TakeControlRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.TakeControlRequest)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.TakeControlRequest)
 }
 TakeControlRequest::TakeControlRequest(
-    ::google::protobuf::Arena* arena, const TakeControlRequest& from) :
-    TakeControlRequest(arena)
-{
-    MergeFrom(from);
+    ::google::protobuf::Arena* arena, const TakeControlRequest& from)
+    : TakeControlRequest(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE TakeControlRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-inline void TakeControlRequest::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.control_mode_ = {};
+inline void TakeControlRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.control_mode_ = {};
 }
-TakeControlRequest::~TakeControlRequest()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.TakeControlRequest)
-    SharedDtor(*this);
+TakeControlRequest::~TakeControlRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.TakeControlRequest)
+  SharedDtor(*this);
 }
-inline void TakeControlRequest::SharedDtor(MessageLite& self)
-{
-    TakeControlRequest& this_ = static_cast<TakeControlRequest&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.~Impl_();
+inline void TakeControlRequest::SharedDtor(MessageLite& self) {
+  TakeControlRequest& this_ = static_cast<TakeControlRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
-inline void*
-TakeControlRequest::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) TakeControlRequest(arena);
+inline void* TakeControlRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) TakeControlRequest(arena);
 }
-constexpr auto TakeControlRequest::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(TakeControlRequest), alignof(TakeControlRequest));
+constexpr auto TakeControlRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(TakeControlRequest),
+                                            alignof(TakeControlRequest));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -4067,264 +3612,232 @@ const ::google::protobuf::internal::ClassDataFull TakeControlRequest::_class_dat
     ::google::protobuf::internal::ClassData{
         &_TakeControlRequest_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &TakeControlRequest::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<TakeControlRequest>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &TakeControlRequest::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<TakeControlRequest>(),
-        &TakeControlRequest::ByteSizeLong,
-        &TakeControlRequest::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<TakeControlRequest>(), &TakeControlRequest::ByteSizeLong,
+            &TakeControlRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(TakeControlRequest, _impl_._cached_size_),
         false,
     },
     &TakeControlRequest::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* TakeControlRequest::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* TakeControlRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 0, 0, 2>
-    TakeControlRequest::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::TakeControlRequest>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
-            {::_pbi::TcParser::SingularVarintNoZag1<
-                 ::uint32_t,
-                 offsetof(TakeControlRequest, _impl_.control_mode_),
-                 63>(),
-             {8, 63, 0, PROTOBUF_FIELD_OFFSET(TakeControlRequest, _impl_.control_mode_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
-            {PROTOBUF_FIELD_OFFSET(TakeControlRequest, _impl_.control_mode_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-        }},
-        // no aux_entries
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void TakeControlRequest::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.TakeControlRequest)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    _impl_.control_mode_ = 0;
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* TakeControlRequest::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const TakeControlRequest& this_ = static_cast<const TakeControlRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* TakeControlRequest::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const TakeControlRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.TakeControlRequest)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> TakeControlRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::TakeControlRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
-    if (this_._internal_control_mode() != 0) {
-        target = stream->EnsureSpace(target);
-        target =
-            ::_pbi::WireFormatLite::WriteEnumToArray(1, this_._internal_control_mode(), target);
-    }
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(TakeControlRequest, _impl_.control_mode_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(TakeControlRequest, _impl_.control_mode_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
+    {PROTOBUF_FIELD_OFFSET(TakeControlRequest, _impl_.control_mode_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.TakeControlRequest)
-    return target;
+PROTOBUF_NOINLINE void TakeControlRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.TakeControlRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.control_mode_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t TakeControlRequest::ByteSizeLong(const MessageLite& base)
-{
-    const TakeControlRequest& this_ = static_cast<const TakeControlRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t TakeControlRequest::ByteSizeLong() const
-{
-    const TakeControlRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.TakeControlRequest)
-    ::size_t total_size = 0;
+        ::uint8_t* TakeControlRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const TakeControlRequest& this_ = static_cast<const TakeControlRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* TakeControlRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const TakeControlRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.TakeControlRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
+          if (this_._internal_control_mode() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                1, this_._internal_control_mode(), target);
+          }
 
-    {
-        // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
-        if (this_._internal_control_mode() != 0) {
-            total_size += 1 + ::_pbi::WireFormatLite::EnumSize(this_._internal_control_mode());
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.TakeControlRequest)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t TakeControlRequest::ByteSizeLong(const MessageLite& base) {
+          const TakeControlRequest& this_ = static_cast<const TakeControlRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t TakeControlRequest::ByteSizeLong() const {
+          const TakeControlRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.TakeControlRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
+            if (this_._internal_control_mode() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_control_mode());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void TakeControlRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<TakeControlRequest*>(&to_msg);
+  auto& from = static_cast<const TakeControlRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.TakeControlRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_control_mode() != 0) {
+    _this->_impl_.control_mode_ = from._impl_.control_mode_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void TakeControlRequest::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<TakeControlRequest*>(&to_msg);
-    auto& from = static_cast<const TakeControlRequest&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.TakeControlRequest)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (from._internal_control_mode() != 0) {
-        _this->_impl_.control_mode_ = from._impl_.control_mode_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void TakeControlRequest::CopyFrom(const TakeControlRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.TakeControlRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void TakeControlRequest::CopyFrom(const TakeControlRequest& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.TakeControlRequest)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void TakeControlRequest::InternalSwap(TakeControlRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_.control_mode_, other->_impl_.control_mode_);
 }
 
-void TakeControlRequest::InternalSwap(TakeControlRequest* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_.control_mode_, other->_impl_.control_mode_);
-}
-
-::google::protobuf::Metadata TakeControlRequest::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata TakeControlRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class TakeControlResponse::_Internal {
-public:
-    using HasBits = decltype(std::declval<TakeControlResponse>()._impl_._has_bits_);
-    static constexpr ::int32_t kHasBitsOffset =
-        8 * PROTOBUF_FIELD_OFFSET(TakeControlResponse, _impl_._has_bits_);
+ public:
+  using HasBits =
+      decltype(std::declval<TakeControlResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(TakeControlResponse, _impl_._has_bits_);
 };
 
 TakeControlResponse::TakeControlResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.TakeControlResponse)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.TakeControlResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE TakeControlResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::gimbal::TakeControlResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+TakeControlResponse::TakeControlResponse(
+    ::google::protobuf::Arena* arena,
+    const TakeControlResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  TakeControlResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.gimbal_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
+                              arena, *from._impl_.gimbal_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.TakeControlResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE TakeControlResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::gimbal::TakeControlResponse& from_msg) :
-    _has_bits_{from._has_bits_},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-TakeControlResponse::TakeControlResponse(
-    ::google::protobuf::Arena* arena, const TakeControlResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    TakeControlResponse* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-    _impl_.gimbal_result_ =
-        (cached_has_bits & 0x00000001u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
-                arena, *from._impl_.gimbal_result_) :
-            nullptr;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.TakeControlResponse)
+inline void TakeControlResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.gimbal_result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE TakeControlResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
-
-inline void TakeControlResponse::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.gimbal_result_ = {};
+TakeControlResponse::~TakeControlResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.TakeControlResponse)
+  SharedDtor(*this);
 }
-TakeControlResponse::~TakeControlResponse()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.TakeControlResponse)
-    SharedDtor(*this);
-}
-inline void TakeControlResponse::SharedDtor(MessageLite& self)
-{
-    TakeControlResponse& this_ = static_cast<TakeControlResponse&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    delete this_._impl_.gimbal_result_;
-    this_._impl_.~Impl_();
+inline void TakeControlResponse::SharedDtor(MessageLite& self) {
+  TakeControlResponse& this_ = static_cast<TakeControlResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.gimbal_result_;
+  this_._impl_.~Impl_();
 }
 
-inline void*
-TakeControlResponse::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) TakeControlResponse(arena);
+inline void* TakeControlResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) TakeControlResponse(arena);
 }
-constexpr auto TakeControlResponse::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(TakeControlResponse), alignof(TakeControlResponse));
+constexpr auto TakeControlResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(TakeControlResponse),
+                                            alignof(TakeControlResponse));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -4332,242 +3845,213 @@ const ::google::protobuf::internal::ClassDataFull TakeControlResponse::_class_da
     ::google::protobuf::internal::ClassData{
         &_TakeControlResponse_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &TakeControlResponse::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<TakeControlResponse>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &TakeControlResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<TakeControlResponse>(),
-        &TakeControlResponse::ByteSizeLong,
-        &TakeControlResponse::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<TakeControlResponse>(), &TakeControlResponse::ByteSizeLong,
+            &TakeControlResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(TakeControlResponse, _impl_._cached_size_),
         false,
     },
     &TakeControlResponse::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* TakeControlResponse::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* TakeControlResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-    TakeControlResponse::_table_ = {
-        {
-            PROTOBUF_FIELD_OFFSET(TakeControlResponse, _impl_._has_bits_),
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            1, // num_aux_entries
-            offsetof(decltype(_table_), aux_entries),
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::TakeControlResponse>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-            {::_pbi::TcParser::FastMtS1,
-             {10, 0, 0, PROTOBUF_FIELD_OFFSET(TakeControlResponse, _impl_.gimbal_result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-            {PROTOBUF_FIELD_OFFSET(TakeControlResponse, _impl_.gimbal_result_),
-             _Internal::kHasBitsOffset + 0,
-             0,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-        }},
-        {{
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::GimbalResult>()},
-        }},
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void TakeControlResponse::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.TakeControlResponse)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    cached_has_bits = _impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
-        _impl_.gimbal_result_->Clear();
-    }
-    _impl_._has_bits_.Clear();
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* TakeControlResponse::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const TakeControlResponse& this_ = static_cast<const TakeControlResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* TakeControlResponse::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const TakeControlResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.TakeControlResponse)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = this_._impl_._has_bits_[0];
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> TakeControlResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(TakeControlResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::TakeControlResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-    if (cached_has_bits & 0x00000001u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1,
-            *this_._impl_.gimbal_result_,
-            this_._impl_.gimbal_result_->GetCachedSize(),
-            target,
-            stream);
-    }
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(TakeControlResponse, _impl_.gimbal_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+    {PROTOBUF_FIELD_OFFSET(TakeControlResponse, _impl_.gimbal_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::GimbalResult>()},
+  }}, {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.TakeControlResponse)
-    return target;
+PROTOBUF_NOINLINE void TakeControlResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.TakeControlResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
+    _impl_.gimbal_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t TakeControlResponse::ByteSizeLong(const MessageLite& base)
-{
-    const TakeControlResponse& this_ = static_cast<const TakeControlResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t TakeControlResponse::ByteSizeLong() const
-{
-    const TakeControlResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.TakeControlResponse)
-    ::size_t total_size = 0;
+        ::uint8_t* TakeControlResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const TakeControlResponse& this_ = static_cast<const TakeControlResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* TakeControlResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const TakeControlResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.TakeControlResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.gimbal_result_, this_._impl_.gimbal_result_->GetCachedSize(), target,
+                stream);
+          }
 
-    {
-        // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-        cached_has_bits = this_._impl_._has_bits_[0];
-        if (cached_has_bits & 0x00000001u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.gimbal_result_);
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.TakeControlResponse)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
-}
 
-void TakeControlResponse::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<TakeControlResponse*>(&to_msg);
-    auto& from = static_cast<const TakeControlResponse&>(from_msg);
-    ::google::protobuf::Arena* arena = _this->GetArena();
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.TakeControlResponse)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t TakeControlResponse::ByteSizeLong(const MessageLite& base) {
+          const TakeControlResponse& this_ = static_cast<const TakeControlResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t TakeControlResponse::ByteSizeLong() const {
+          const TakeControlResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.TakeControlResponse)
+          ::size_t total_size = 0;
 
-    cached_has_bits = from._impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(from._impl_.gimbal_result_ != nullptr);
-        if (_this->_impl_.gimbal_result_ == nullptr) {
-            _this->_impl_.gimbal_result_ =
-                ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
-                    arena, *from._impl_.gimbal_result_);
-        } else {
-            _this->_impl_.gimbal_result_->MergeFrom(*from._impl_.gimbal_result_);
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.gimbal_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
+
+void TakeControlResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<TakeControlResponse*>(&to_msg);
+  auto& from = static_cast<const TakeControlResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.TakeControlResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.gimbal_result_ != nullptr);
+    if (_this->_impl_.gimbal_result_ == nullptr) {
+      _this->_impl_.gimbal_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(arena, *from._impl_.gimbal_result_);
+    } else {
+      _this->_impl_.gimbal_result_->MergeFrom(*from._impl_.gimbal_result_);
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void TakeControlResponse::CopyFrom(const TakeControlResponse& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.TakeControlResponse)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+void TakeControlResponse::CopyFrom(const TakeControlResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.TakeControlResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void TakeControlResponse::InternalSwap(TakeControlResponse* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-    swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
+
+void TakeControlResponse::InternalSwap(TakeControlResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
 }
 
-::google::protobuf::Metadata TakeControlResponse::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata TakeControlResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class ReleaseControlRequest::_Internal {
-public:
+ public:
 };
 
 ReleaseControlRequest::ReleaseControlRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.ReleaseControlRequest)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.ReleaseControlRequest)
 }
 ReleaseControlRequest::ReleaseControlRequest(
-    ::google::protobuf::Arena* arena, const ReleaseControlRequest& from)
+    ::google::protobuf::Arena* arena,
+    const ReleaseControlRequest& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    ReleaseControlRequest* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  ReleaseControlRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
 
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.ReleaseControlRequest)
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.ReleaseControlRequest)
 }
 
-inline void*
-ReleaseControlRequest::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) ReleaseControlRequest(arena);
+inline void* ReleaseControlRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) ReleaseControlRequest(arena);
 }
-constexpr auto ReleaseControlRequest::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(ReleaseControlRequest), alignof(ReleaseControlRequest));
+constexpr auto ReleaseControlRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(ReleaseControlRequest),
+                                            alignof(ReleaseControlRequest));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -4575,150 +4059,138 @@ const ::google::protobuf::internal::ClassDataFull ReleaseControlRequest::_class_
     ::google::protobuf::internal::ClassData{
         &_ReleaseControlRequest_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &ReleaseControlRequest::MergeImpl,
         ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<ReleaseControlRequest>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &ReleaseControlRequest::SharedDtor,
-        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<ReleaseControlRequest>(),
-        &ReleaseControlRequest::ByteSizeLong,
-        &ReleaseControlRequest::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<ReleaseControlRequest>(), &ReleaseControlRequest::ByteSizeLong,
+            &ReleaseControlRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(ReleaseControlRequest, _impl_._cached_size_),
         false,
     },
     &ReleaseControlRequest::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* ReleaseControlRequest::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* ReleaseControlRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 0, 0, 0, 2>
-    ReleaseControlRequest::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            0,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967295, // skipmap
-            offsetof(decltype(_table_), field_names), // no field_entries
-            0, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<
-                ::mavsdk::rpc::gimbal::ReleaseControlRequest>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            {::_pbi::TcParser::MiniParse, {}},
-        }},
-        {{65535, 65535}},
-        // no field_entries, or aux_entries
-        {{}},
-    };
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> ReleaseControlRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::ReleaseControlRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }},
+  // no field_entries, or aux_entries
+  {{
+  }},
+};
 
-::google::protobuf::Metadata ReleaseControlRequest::GetMetadata() const
-{
-    return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+
+
+
+
+
+
+
+::google::protobuf::Metadata ReleaseControlRequest::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class ReleaseControlResponse::_Internal {
-public:
-    using HasBits = decltype(std::declval<ReleaseControlResponse>()._impl_._has_bits_);
-    static constexpr ::int32_t kHasBitsOffset =
-        8 * PROTOBUF_FIELD_OFFSET(ReleaseControlResponse, _impl_._has_bits_);
+ public:
+  using HasBits =
+      decltype(std::declval<ReleaseControlResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(ReleaseControlResponse, _impl_._has_bits_);
 };
 
 ReleaseControlResponse::ReleaseControlResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.ReleaseControlResponse)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.ReleaseControlResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE ReleaseControlResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::gimbal::ReleaseControlResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+ReleaseControlResponse::ReleaseControlResponse(
+    ::google::protobuf::Arena* arena,
+    const ReleaseControlResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  ReleaseControlResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.gimbal_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
+                              arena, *from._impl_.gimbal_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.ReleaseControlResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE ReleaseControlResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::gimbal::ReleaseControlResponse& from_msg) :
-    _has_bits_{from._has_bits_},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-ReleaseControlResponse::ReleaseControlResponse(
-    ::google::protobuf::Arena* arena, const ReleaseControlResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    ReleaseControlResponse* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-    _impl_.gimbal_result_ =
-        (cached_has_bits & 0x00000001u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
-                arena, *from._impl_.gimbal_result_) :
-            nullptr;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.ReleaseControlResponse)
+inline void ReleaseControlResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.gimbal_result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE ReleaseControlResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
-
-inline void ReleaseControlResponse::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.gimbal_result_ = {};
+ReleaseControlResponse::~ReleaseControlResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.ReleaseControlResponse)
+  SharedDtor(*this);
 }
-ReleaseControlResponse::~ReleaseControlResponse()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.ReleaseControlResponse)
-    SharedDtor(*this);
-}
-inline void ReleaseControlResponse::SharedDtor(MessageLite& self)
-{
-    ReleaseControlResponse& this_ = static_cast<ReleaseControlResponse&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    delete this_._impl_.gimbal_result_;
-    this_._impl_.~Impl_();
+inline void ReleaseControlResponse::SharedDtor(MessageLite& self) {
+  ReleaseControlResponse& this_ = static_cast<ReleaseControlResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.gimbal_result_;
+  this_._impl_.~Impl_();
 }
 
-inline void*
-ReleaseControlResponse::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) ReleaseControlResponse(arena);
+inline void* ReleaseControlResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) ReleaseControlResponse(arena);
 }
-constexpr auto ReleaseControlResponse::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(ReleaseControlResponse), alignof(ReleaseControlResponse));
+constexpr auto ReleaseControlResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(ReleaseControlResponse),
+                                            alignof(ReleaseControlResponse));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -4726,243 +4198,213 @@ const ::google::protobuf::internal::ClassDataFull ReleaseControlResponse::_class
     ::google::protobuf::internal::ClassData{
         &_ReleaseControlResponse_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &ReleaseControlResponse::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<ReleaseControlResponse>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &ReleaseControlResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<ReleaseControlResponse>(),
-        &ReleaseControlResponse::ByteSizeLong,
-        &ReleaseControlResponse::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<ReleaseControlResponse>(), &ReleaseControlResponse::ByteSizeLong,
+            &ReleaseControlResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(ReleaseControlResponse, _impl_._cached_size_),
         false,
     },
     &ReleaseControlResponse::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* ReleaseControlResponse::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* ReleaseControlResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-    ReleaseControlResponse::_table_ = {
-        {
-            PROTOBUF_FIELD_OFFSET(ReleaseControlResponse, _impl_._has_bits_),
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            1, // num_aux_entries
-            offsetof(decltype(_table_), aux_entries),
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<
-                ::mavsdk::rpc::gimbal::ReleaseControlResponse>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-            {::_pbi::TcParser::FastMtS1,
-             {10, 0, 0, PROTOBUF_FIELD_OFFSET(ReleaseControlResponse, _impl_.gimbal_result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-            {PROTOBUF_FIELD_OFFSET(ReleaseControlResponse, _impl_.gimbal_result_),
-             _Internal::kHasBitsOffset + 0,
-             0,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-        }},
-        {{
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::GimbalResult>()},
-        }},
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void ReleaseControlResponse::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    cached_has_bits = _impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
-        _impl_.gimbal_result_->Clear();
-    }
-    _impl_._has_bits_.Clear();
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* ReleaseControlResponse::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const ReleaseControlResponse& this_ = static_cast<const ReleaseControlResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* ReleaseControlResponse::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const ReleaseControlResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = this_._impl_._has_bits_[0];
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> ReleaseControlResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(ReleaseControlResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::ReleaseControlResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-    if (cached_has_bits & 0x00000001u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1,
-            *this_._impl_.gimbal_result_,
-            this_._impl_.gimbal_result_->GetCachedSize(),
-            target,
-            stream);
-    }
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(ReleaseControlResponse, _impl_.gimbal_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+    {PROTOBUF_FIELD_OFFSET(ReleaseControlResponse, _impl_.gimbal_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::GimbalResult>()},
+  }}, {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.ReleaseControlResponse)
-    return target;
+PROTOBUF_NOINLINE void ReleaseControlResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.gimbal_result_ != nullptr);
+    _impl_.gimbal_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t ReleaseControlResponse::ByteSizeLong(const MessageLite& base)
-{
-    const ReleaseControlResponse& this_ = static_cast<const ReleaseControlResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t ReleaseControlResponse::ByteSizeLong() const
-{
-    const ReleaseControlResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
-    ::size_t total_size = 0;
+        ::uint8_t* ReleaseControlResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const ReleaseControlResponse& this_ = static_cast<const ReleaseControlResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* ReleaseControlResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const ReleaseControlResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.gimbal_result_, this_._impl_.gimbal_result_->GetCachedSize(), target,
+                stream);
+          }
 
-    {
-        // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
-        cached_has_bits = this_._impl_._has_bits_[0];
-        if (cached_has_bits & 0x00000001u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.gimbal_result_);
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.ReleaseControlResponse)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
-}
 
-void ReleaseControlResponse::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<ReleaseControlResponse*>(&to_msg);
-    auto& from = static_cast<const ReleaseControlResponse&>(from_msg);
-    ::google::protobuf::Arena* arena = _this->GetArena();
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t ReleaseControlResponse::ByteSizeLong(const MessageLite& base) {
+          const ReleaseControlResponse& this_ = static_cast<const ReleaseControlResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t ReleaseControlResponse::ByteSizeLong() const {
+          const ReleaseControlResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
+          ::size_t total_size = 0;
 
-    cached_has_bits = from._impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(from._impl_.gimbal_result_ != nullptr);
-        if (_this->_impl_.gimbal_result_ == nullptr) {
-            _this->_impl_.gimbal_result_ =
-                ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(
-                    arena, *from._impl_.gimbal_result_);
-        } else {
-            _this->_impl_.gimbal_result_->MergeFrom(*from._impl_.gimbal_result_);
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.gimbal.GimbalResult gimbal_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.gimbal_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
+
+void ReleaseControlResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<ReleaseControlResponse*>(&to_msg);
+  auto& from = static_cast<const ReleaseControlResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.gimbal_result_ != nullptr);
+    if (_this->_impl_.gimbal_result_ == nullptr) {
+      _this->_impl_.gimbal_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::GimbalResult>(arena, *from._impl_.gimbal_result_);
+    } else {
+      _this->_impl_.gimbal_result_->MergeFrom(*from._impl_.gimbal_result_);
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void ReleaseControlResponse::CopyFrom(const ReleaseControlResponse& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+void ReleaseControlResponse::CopyFrom(const ReleaseControlResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.ReleaseControlResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void ReleaseControlResponse::InternalSwap(ReleaseControlResponse* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-    swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
+
+void ReleaseControlResponse::InternalSwap(ReleaseControlResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.gimbal_result_, other->_impl_.gimbal_result_);
 }
 
-::google::protobuf::Metadata ReleaseControlResponse::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata ReleaseControlResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class SubscribeControlRequest::_Internal {
-public:
+ public:
 };
 
 SubscribeControlRequest::SubscribeControlRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SubscribeControlRequest)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SubscribeControlRequest)
 }
 SubscribeControlRequest::SubscribeControlRequest(
-    ::google::protobuf::Arena* arena, const SubscribeControlRequest& from)
+    ::google::protobuf::Arena* arena,
+    const SubscribeControlRequest& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SubscribeControlRequest* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SubscribeControlRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
 
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SubscribeControlRequest)
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SubscribeControlRequest)
 }
 
-inline void*
-SubscribeControlRequest::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) SubscribeControlRequest(arena);
+inline void* SubscribeControlRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SubscribeControlRequest(arena);
 }
-constexpr auto SubscribeControlRequest::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(SubscribeControlRequest), alignof(SubscribeControlRequest));
+constexpr auto SubscribeControlRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SubscribeControlRequest),
+                                            alignof(SubscribeControlRequest));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -4970,149 +4412,138 @@ const ::google::protobuf::internal::ClassDataFull SubscribeControlRequest::_clas
     ::google::protobuf::internal::ClassData{
         &_SubscribeControlRequest_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &SubscribeControlRequest::MergeImpl,
         ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<SubscribeControlRequest>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &SubscribeControlRequest::SharedDtor,
-        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<SubscribeControlRequest>(),
-        &SubscribeControlRequest::ByteSizeLong,
-        &SubscribeControlRequest::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<SubscribeControlRequest>(), &SubscribeControlRequest::ByteSizeLong,
+            &SubscribeControlRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(SubscribeControlRequest, _impl_._cached_size_),
         false,
     },
     &SubscribeControlRequest::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* SubscribeControlRequest::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* SubscribeControlRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 0, 0, 0, 2>
-    SubscribeControlRequest::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            0,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967295, // skipmap
-            offsetof(decltype(_table_), field_names), // no field_entries
-            0, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<
-                ::mavsdk::rpc::gimbal::SubscribeControlRequest>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            {::_pbi::TcParser::MiniParse, {}},
-        }},
-        {{65535, 65535}},
-        // no field_entries, or aux_entries
-        {{}},
-    };
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> SubscribeControlRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::SubscribeControlRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }},
+  // no field_entries, or aux_entries
+  {{
+  }},
+};
 
-::google::protobuf::Metadata SubscribeControlRequest::GetMetadata() const
-{
-    return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+
+
+
+
+
+
+
+::google::protobuf::Metadata SubscribeControlRequest::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class ControlResponse::_Internal {
-public:
-    using HasBits = decltype(std::declval<ControlResponse>()._impl_._has_bits_);
-    static constexpr ::int32_t kHasBitsOffset =
-        8 * PROTOBUF_FIELD_OFFSET(ControlResponse, _impl_._has_bits_);
+ public:
+  using HasBits =
+      decltype(std::declval<ControlResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(ControlResponse, _impl_._has_bits_);
 };
 
 ControlResponse::ControlResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.ControlResponse)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.ControlResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE ControlResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::gimbal::ControlResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+ControlResponse::ControlResponse(
+    ::google::protobuf::Arena* arena,
+    const ControlResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  ControlResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.control_status_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::ControlStatus>(
+                              arena, *from._impl_.control_status_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.ControlResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE ControlResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::gimbal::ControlResponse& from_msg) :
-    _has_bits_{from._has_bits_},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-ControlResponse::ControlResponse(::google::protobuf::Arena* arena, const ControlResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    ControlResponse* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-    _impl_.control_status_ =
-        (cached_has_bits & 0x00000001u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::ControlStatus>(
-                arena, *from._impl_.control_status_) :
-            nullptr;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.ControlResponse)
+inline void ControlResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.control_status_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE ControlResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
-
-inline void ControlResponse::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.control_status_ = {};
+ControlResponse::~ControlResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.ControlResponse)
+  SharedDtor(*this);
 }
-ControlResponse::~ControlResponse()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.ControlResponse)
-    SharedDtor(*this);
-}
-inline void ControlResponse::SharedDtor(MessageLite& self)
-{
-    ControlResponse& this_ = static_cast<ControlResponse&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    delete this_._impl_.control_status_;
-    this_._impl_.~Impl_();
+inline void ControlResponse::SharedDtor(MessageLite& self) {
+  ControlResponse& this_ = static_cast<ControlResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.control_status_;
+  this_._impl_.~Impl_();
 }
 
-inline void*
-ControlResponse::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) ControlResponse(arena);
+inline void* ControlResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) ControlResponse(arena);
 }
-constexpr auto ControlResponse::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(ControlResponse), alignof(ControlResponse));
+constexpr auto ControlResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(ControlResponse),
+                                            alignof(ControlResponse));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -5120,254 +4551,228 @@ const ::google::protobuf::internal::ClassDataFull ControlResponse::_class_data_ 
     ::google::protobuf::internal::ClassData{
         &_ControlResponse_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &ControlResponse::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<ControlResponse>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &ControlResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<ControlResponse>(),
-        &ControlResponse::ByteSizeLong,
-        &ControlResponse::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<ControlResponse>(), &ControlResponse::ByteSizeLong,
+            &ControlResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(ControlResponse, _impl_._cached_size_),
         false,
     },
     &ControlResponse::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* ControlResponse::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* ControlResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-    ControlResponse::_table_ = {
-        {
-            PROTOBUF_FIELD_OFFSET(ControlResponse, _impl_._has_bits_),
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            1, // num_aux_entries
-            offsetof(decltype(_table_), aux_entries),
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::ControlResponse>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.gimbal.ControlStatus control_status = 1;
-            {::_pbi::TcParser::FastMtS1,
-             {10, 0, 0, PROTOBUF_FIELD_OFFSET(ControlResponse, _impl_.control_status_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.gimbal.ControlStatus control_status = 1;
-            {PROTOBUF_FIELD_OFFSET(ControlResponse, _impl_.control_status_),
-             _Internal::kHasBitsOffset + 0,
-             0,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-        }},
-        {{
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::ControlStatus>()},
-        }},
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void ControlResponse::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.ControlResponse)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    cached_has_bits = _impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(_impl_.control_status_ != nullptr);
-        _impl_.control_status_->Clear();
-    }
-    _impl_._has_bits_.Clear();
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* ControlResponse::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const ControlResponse& this_ = static_cast<const ControlResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* ControlResponse::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const ControlResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.ControlResponse)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = this_._impl_._has_bits_[0];
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> ControlResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(ControlResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::ControlResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.gimbal.ControlStatus control_status = 1;
-    if (cached_has_bits & 0x00000001u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1,
-            *this_._impl_.control_status_,
-            this_._impl_.control_status_->GetCachedSize(),
-            target,
-            stream);
-    }
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(ControlResponse, _impl_.control_status_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gimbal.ControlStatus control_status = 1;
+    {PROTOBUF_FIELD_OFFSET(ControlResponse, _impl_.control_status_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::ControlStatus>()},
+  }}, {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.ControlResponse)
-    return target;
+PROTOBUF_NOINLINE void ControlResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.ControlResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.control_status_ != nullptr);
+    _impl_.control_status_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t ControlResponse::ByteSizeLong(const MessageLite& base)
-{
-    const ControlResponse& this_ = static_cast<const ControlResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t ControlResponse::ByteSizeLong() const
-{
-    const ControlResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.ControlResponse)
-    ::size_t total_size = 0;
+        ::uint8_t* ControlResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const ControlResponse& this_ = static_cast<const ControlResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* ControlResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const ControlResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.ControlResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.gimbal.ControlStatus control_status = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.control_status_, this_._impl_.control_status_->GetCachedSize(), target,
+                stream);
+          }
 
-    {
-        // .mavsdk.rpc.gimbal.ControlStatus control_status = 1;
-        cached_has_bits = this_._impl_._has_bits_[0];
-        if (cached_has_bits & 0x00000001u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.control_status_);
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.ControlResponse)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
-}
 
-void ControlResponse::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<ControlResponse*>(&to_msg);
-    auto& from = static_cast<const ControlResponse&>(from_msg);
-    ::google::protobuf::Arena* arena = _this->GetArena();
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.ControlResponse)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t ControlResponse::ByteSizeLong(const MessageLite& base) {
+          const ControlResponse& this_ = static_cast<const ControlResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t ControlResponse::ByteSizeLong() const {
+          const ControlResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.ControlResponse)
+          ::size_t total_size = 0;
 
-    cached_has_bits = from._impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(from._impl_.control_status_ != nullptr);
-        if (_this->_impl_.control_status_ == nullptr) {
-            _this->_impl_.control_status_ =
-                ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::ControlStatus>(
-                    arena, *from._impl_.control_status_);
-        } else {
-            _this->_impl_.control_status_->MergeFrom(*from._impl_.control_status_);
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.gimbal.ControlStatus control_status = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.control_status_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
+
+void ControlResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<ControlResponse*>(&to_msg);
+  auto& from = static_cast<const ControlResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.ControlResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.control_status_ != nullptr);
+    if (_this->_impl_.control_status_ == nullptr) {
+      _this->_impl_.control_status_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::ControlStatus>(arena, *from._impl_.control_status_);
+    } else {
+      _this->_impl_.control_status_->MergeFrom(*from._impl_.control_status_);
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void ControlResponse::CopyFrom(const ControlResponse& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.ControlResponse)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+void ControlResponse::CopyFrom(const ControlResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.ControlResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void ControlResponse::InternalSwap(ControlResponse* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-    swap(_impl_.control_status_, other->_impl_.control_status_);
+
+void ControlResponse::InternalSwap(ControlResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.control_status_, other->_impl_.control_status_);
 }
 
-::google::protobuf::Metadata ControlResponse::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata ControlResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class Quaternion::_Internal {
-public:
+ public:
 };
 
 Quaternion::Quaternion(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.Quaternion)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.Quaternion)
 }
-Quaternion::Quaternion(::google::protobuf::Arena* arena, const Quaternion& from) : Quaternion(arena)
-{
-    MergeFrom(from);
+Quaternion::Quaternion(
+    ::google::protobuf::Arena* arena, const Quaternion& from)
+    : Quaternion(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE Quaternion::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-inline void Quaternion::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    ::memset(
-        reinterpret_cast<char*>(&_impl_) + offsetof(Impl_, w_),
-        0,
-        offsetof(Impl_, z_) - offsetof(Impl_, w_) + sizeof(Impl_::z_));
+inline void Quaternion::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, w_),
+           0,
+           offsetof(Impl_, z_) -
+               offsetof(Impl_, w_) +
+               sizeof(Impl_::z_));
 }
-Quaternion::~Quaternion()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.Quaternion)
-    SharedDtor(*this);
+Quaternion::~Quaternion() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.Quaternion)
+  SharedDtor(*this);
 }
-inline void Quaternion::SharedDtor(MessageLite& self)
-{
-    Quaternion& this_ = static_cast<Quaternion&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.~Impl_();
+inline void Quaternion::SharedDtor(MessageLite& self) {
+  Quaternion& this_ = static_cast<Quaternion&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
-inline void* Quaternion::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) Quaternion(arena);
+inline void* Quaternion::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) Quaternion(arena);
 }
-constexpr auto Quaternion::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(Quaternion), alignof(Quaternion));
+constexpr auto Quaternion::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(Quaternion),
+                                            alignof(Quaternion));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -5375,301 +4780,278 @@ const ::google::protobuf::internal::ClassDataFull Quaternion::_class_data_ = {
     ::google::protobuf::internal::ClassData{
         &_Quaternion_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &Quaternion::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<Quaternion>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &Quaternion::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<Quaternion>(),
-        &Quaternion::ByteSizeLong,
-        &Quaternion::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<Quaternion>(), &Quaternion::ByteSizeLong,
+            &Quaternion::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(Quaternion, _impl_._cached_size_),
         false,
     },
     &Quaternion::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* Quaternion::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* Quaternion::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<2, 4, 0, 0, 2>
-    Quaternion::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            4,
-            24, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967280, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            4, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::Quaternion>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
-            {::_pbi::TcParser::FastF32S1,
-             {37, 63, 0, PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.z_)}},
-            // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
-            {::_pbi::TcParser::FastF32S1,
-             {13, 63, 0, PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.w_)}},
-            // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
-            {::_pbi::TcParser::FastF32S1,
-             {21, 63, 0, PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.x_)}},
-            // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
-            {::_pbi::TcParser::FastF32S1,
-             {29, 63, 0, PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.y_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
-            {PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.w_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-            // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
-            {PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.x_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-            // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
-            {PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.y_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-            // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
-            {PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.z_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-        }},
-        // no aux_entries
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void Quaternion::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.Quaternion)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    ::memset(
-        &_impl_.w_,
-        0,
-        static_cast<::size_t>(
-            reinterpret_cast<char*>(&_impl_.z_) - reinterpret_cast<char*>(&_impl_.w_)) +
-            sizeof(_impl_.z_));
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* Quaternion::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const Quaternion& this_ = static_cast<const Quaternion&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* Quaternion::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const Quaternion& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.Quaternion)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
-    if (::absl::bit_cast<::uint32_t>(this_._internal_w()) != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteFloatToArray(1, this_._internal_w(), target);
-    }
-
-    // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
-    if (::absl::bit_cast<::uint32_t>(this_._internal_x()) != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this_._internal_x(), target);
-    }
-
-    // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
-    if (::absl::bit_cast<::uint32_t>(this_._internal_y()) != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteFloatToArray(3, this_._internal_y(), target);
-    }
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 4, 0, 0, 2> Quaternion::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    4, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967280,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    4,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::Quaternion>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
-    if (::absl::bit_cast<::uint32_t>(this_._internal_z()) != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteFloatToArray(4, this_._internal_z(), target);
-    }
+    {::_pbi::TcParser::FastF32S1,
+     {37, 63, 0, PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.z_)}},
+    // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.w_)}},
+    // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.x_)}},
+    // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.y_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.w_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.x_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.y_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.z_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.Quaternion)
-    return target;
+PROTOBUF_NOINLINE void Quaternion::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.Quaternion)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.w_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.z_) -
+      reinterpret_cast<char*>(&_impl_.w_)) + sizeof(_impl_.z_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t Quaternion::ByteSizeLong(const MessageLite& base)
-{
-    const Quaternion& this_ = static_cast<const Quaternion&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t Quaternion::ByteSizeLong() const
-{
-    const Quaternion& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.Quaternion)
-    ::size_t total_size = 0;
+        ::uint8_t* Quaternion::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const Quaternion& this_ = static_cast<const Quaternion&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* Quaternion::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const Quaternion& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.Quaternion)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_w()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                1, this_._internal_w(), target);
+          }
 
-    ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-    {
-        // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
-        if (::absl::bit_cast<::uint32_t>(this_._internal_w()) != 0) {
-            total_size += 5;
+          // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_x()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                2, this_._internal_x(), target);
+          }
+
+          // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_y()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                3, this_._internal_y(), target);
+          }
+
+          // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_z()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                4, this_._internal_z(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.Quaternion)
+          return target;
         }
-        // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
-        if (::absl::bit_cast<::uint32_t>(this_._internal_x()) != 0) {
-            total_size += 5;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t Quaternion::ByteSizeLong(const MessageLite& base) {
+          const Quaternion& this_ = static_cast<const Quaternion&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t Quaternion::ByteSizeLong() const {
+          const Quaternion& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.Quaternion)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // float w = 1 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_w()) != 0) {
+              total_size += 5;
+            }
+            // float x = 2 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_x()) != 0) {
+              total_size += 5;
+            }
+            // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_y()) != 0) {
+              total_size += 5;
+            }
+            // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_z()) != 0) {
+              total_size += 5;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
-        // float y = 3 [(.mavsdk.options.default_value) = "NaN"];
-        if (::absl::bit_cast<::uint32_t>(this_._internal_y()) != 0) {
-            total_size += 5;
-        }
-        // float z = 4 [(.mavsdk.options.default_value) = "NaN"];
-        if (::absl::bit_cast<::uint32_t>(this_._internal_z()) != 0) {
-            total_size += 5;
-        }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+void Quaternion::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<Quaternion*>(&to_msg);
+  auto& from = static_cast<const Quaternion&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.Quaternion)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (::absl::bit_cast<::uint32_t>(from._internal_w()) != 0) {
+    _this->_impl_.w_ = from._impl_.w_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_x()) != 0) {
+    _this->_impl_.x_ = from._impl_.x_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_y()) != 0) {
+    _this->_impl_.y_ = from._impl_.y_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_z()) != 0) {
+    _this->_impl_.z_ = from._impl_.z_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void Quaternion::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<Quaternion*>(&to_msg);
-    auto& from = static_cast<const Quaternion&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.Quaternion)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (::absl::bit_cast<::uint32_t>(from._internal_w()) != 0) {
-        _this->_impl_.w_ = from._impl_.w_;
-    }
-    if (::absl::bit_cast<::uint32_t>(from._internal_x()) != 0) {
-        _this->_impl_.x_ = from._impl_.x_;
-    }
-    if (::absl::bit_cast<::uint32_t>(from._internal_y()) != 0) {
-        _this->_impl_.y_ = from._impl_.y_;
-    }
-    if (::absl::bit_cast<::uint32_t>(from._internal_z()) != 0) {
-        _this->_impl_.z_ = from._impl_.z_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void Quaternion::CopyFrom(const Quaternion& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.Quaternion)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void Quaternion::CopyFrom(const Quaternion& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.Quaternion)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void Quaternion::InternalSwap(Quaternion* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.z_)
+      + sizeof(Quaternion::_impl_.z_)
+      - PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.w_)>(
+          reinterpret_cast<char*>(&_impl_.w_),
+          reinterpret_cast<char*>(&other->_impl_.w_));
 }
 
-void Quaternion::InternalSwap(Quaternion* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    ::google::protobuf::internal::memswap<
-        PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.z_) + sizeof(Quaternion::_impl_.z_) -
-        PROTOBUF_FIELD_OFFSET(Quaternion, _impl_.w_)>(
-        reinterpret_cast<char*>(&_impl_.w_), reinterpret_cast<char*>(&other->_impl_.w_));
-}
-
-::google::protobuf::Metadata Quaternion::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata Quaternion::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class EulerAngle::_Internal {
-public:
+ public:
 };
 
 EulerAngle::EulerAngle(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.EulerAngle)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.EulerAngle)
 }
-EulerAngle::EulerAngle(::google::protobuf::Arena* arena, const EulerAngle& from) : EulerAngle(arena)
-{
-    MergeFrom(from);
+EulerAngle::EulerAngle(
+    ::google::protobuf::Arena* arena, const EulerAngle& from)
+    : EulerAngle(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE EulerAngle::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-inline void EulerAngle::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    ::memset(
-        reinterpret_cast<char*>(&_impl_) + offsetof(Impl_, roll_deg_),
-        0,
-        offsetof(Impl_, yaw_deg_) - offsetof(Impl_, roll_deg_) + sizeof(Impl_::yaw_deg_));
+inline void EulerAngle::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, roll_deg_),
+           0,
+           offsetof(Impl_, yaw_deg_) -
+               offsetof(Impl_, roll_deg_) +
+               sizeof(Impl_::yaw_deg_));
 }
-EulerAngle::~EulerAngle()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.EulerAngle)
-    SharedDtor(*this);
+EulerAngle::~EulerAngle() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.EulerAngle)
+  SharedDtor(*this);
 }
-inline void EulerAngle::SharedDtor(MessageLite& self)
-{
-    EulerAngle& this_ = static_cast<EulerAngle&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.~Impl_();
+inline void EulerAngle::SharedDtor(MessageLite& self) {
+  EulerAngle& this_ = static_cast<EulerAngle&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
-inline void* EulerAngle::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) EulerAngle(arena);
+inline void* EulerAngle::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) EulerAngle(arena);
 }
-constexpr auto EulerAngle::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(EulerAngle), alignof(EulerAngle));
+constexpr auto EulerAngle::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(EulerAngle),
+                                            alignof(EulerAngle));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -5677,286 +5059,259 @@ const ::google::protobuf::internal::ClassDataFull EulerAngle::_class_data_ = {
     ::google::protobuf::internal::ClassData{
         &_EulerAngle_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &EulerAngle::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<EulerAngle>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &EulerAngle::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<EulerAngle>(),
-        &EulerAngle::ByteSizeLong,
-        &EulerAngle::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<EulerAngle>(), &EulerAngle::ByteSizeLong,
+            &EulerAngle::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_._cached_size_),
         false,
     },
     &EulerAngle::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* EulerAngle::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* EulerAngle::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<2, 3, 0, 0, 2>
-    EulerAngle::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            3,
-            24, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967288, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            3, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::EulerAngle>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            {::_pbi::TcParser::MiniParse, {}},
-            // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
-            {::_pbi::TcParser::FastF32S1,
-             {13, 63, 0, PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.roll_deg_)}},
-            // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
-            {::_pbi::TcParser::FastF32S1,
-             {21, 63, 0, PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.pitch_deg_)}},
-            // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
-            {::_pbi::TcParser::FastF32S1,
-             {29, 63, 0, PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.yaw_deg_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
-            {PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.roll_deg_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-            // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
-            {PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.pitch_deg_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-            // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
-            {PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.yaw_deg_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-        }},
-        // no aux_entries
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void EulerAngle::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.EulerAngle)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    ::memset(
-        &_impl_.roll_deg_,
-        0,
-        static_cast<::size_t>(
-            reinterpret_cast<char*>(&_impl_.yaw_deg_) -
-            reinterpret_cast<char*>(&_impl_.roll_deg_)) +
-            sizeof(_impl_.yaw_deg_));
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* EulerAngle::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const EulerAngle& this_ = static_cast<const EulerAngle&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* EulerAngle::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const EulerAngle& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.EulerAngle)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> EulerAngle::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::EulerAngle>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
     // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
-    if (::absl::bit_cast<::uint32_t>(this_._internal_roll_deg()) != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteFloatToArray(1, this_._internal_roll_deg(), target);
-    }
-
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.roll_deg_)}},
     // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
-    if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_deg()) != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteFloatToArray(2, this_._internal_pitch_deg(), target);
-    }
-
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.pitch_deg_)}},
     // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
-    if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_deg()) != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteFloatToArray(3, this_._internal_yaw_deg(), target);
-    }
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.yaw_deg_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.roll_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.pitch_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.yaw_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.EulerAngle)
-    return target;
+PROTOBUF_NOINLINE void EulerAngle::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.EulerAngle)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.roll_deg_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.yaw_deg_) -
+      reinterpret_cast<char*>(&_impl_.roll_deg_)) + sizeof(_impl_.yaw_deg_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t EulerAngle::ByteSizeLong(const MessageLite& base)
-{
-    const EulerAngle& this_ = static_cast<const EulerAngle&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t EulerAngle::ByteSizeLong() const
-{
-    const EulerAngle& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.EulerAngle)
-    ::size_t total_size = 0;
+        ::uint8_t* EulerAngle::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const EulerAngle& this_ = static_cast<const EulerAngle&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* EulerAngle::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const EulerAngle& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.EulerAngle)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_roll_deg()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                1, this_._internal_roll_deg(), target);
+          }
 
-    ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-    {
-        // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
-        if (::absl::bit_cast<::uint32_t>(this_._internal_roll_deg()) != 0) {
-            total_size += 5;
+          // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_deg()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                2, this_._internal_pitch_deg(), target);
+          }
+
+          // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_deg()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                3, this_._internal_yaw_deg(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.EulerAngle)
+          return target;
         }
-        // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
-        if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_deg()) != 0) {
-            total_size += 5;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t EulerAngle::ByteSizeLong(const MessageLite& base) {
+          const EulerAngle& this_ = static_cast<const EulerAngle&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t EulerAngle::ByteSizeLong() const {
+          const EulerAngle& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.EulerAngle)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // float roll_deg = 1 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_roll_deg()) != 0) {
+              total_size += 5;
+            }
+            // float pitch_deg = 2 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_deg()) != 0) {
+              total_size += 5;
+            }
+            // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_deg()) != 0) {
+              total_size += 5;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
-        // float yaw_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
-        if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_deg()) != 0) {
-            total_size += 5;
-        }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+void EulerAngle::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<EulerAngle*>(&to_msg);
+  auto& from = static_cast<const EulerAngle&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.EulerAngle)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (::absl::bit_cast<::uint32_t>(from._internal_roll_deg()) != 0) {
+    _this->_impl_.roll_deg_ = from._impl_.roll_deg_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_pitch_deg()) != 0) {
+    _this->_impl_.pitch_deg_ = from._impl_.pitch_deg_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_yaw_deg()) != 0) {
+    _this->_impl_.yaw_deg_ = from._impl_.yaw_deg_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void EulerAngle::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<EulerAngle*>(&to_msg);
-    auto& from = static_cast<const EulerAngle&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.EulerAngle)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (::absl::bit_cast<::uint32_t>(from._internal_roll_deg()) != 0) {
-        _this->_impl_.roll_deg_ = from._impl_.roll_deg_;
-    }
-    if (::absl::bit_cast<::uint32_t>(from._internal_pitch_deg()) != 0) {
-        _this->_impl_.pitch_deg_ = from._impl_.pitch_deg_;
-    }
-    if (::absl::bit_cast<::uint32_t>(from._internal_yaw_deg()) != 0) {
-        _this->_impl_.yaw_deg_ = from._impl_.yaw_deg_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void EulerAngle::CopyFrom(const EulerAngle& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.EulerAngle)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void EulerAngle::CopyFrom(const EulerAngle& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.EulerAngle)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void EulerAngle::InternalSwap(EulerAngle* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.yaw_deg_)
+      + sizeof(EulerAngle::_impl_.yaw_deg_)
+      - PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.roll_deg_)>(
+          reinterpret_cast<char*>(&_impl_.roll_deg_),
+          reinterpret_cast<char*>(&other->_impl_.roll_deg_));
 }
 
-void EulerAngle::InternalSwap(EulerAngle* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    ::google::protobuf::internal::memswap<
-        PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.yaw_deg_) + sizeof(EulerAngle::_impl_.yaw_deg_) -
-        PROTOBUF_FIELD_OFFSET(EulerAngle, _impl_.roll_deg_)>(
-        reinterpret_cast<char*>(&_impl_.roll_deg_),
-        reinterpret_cast<char*>(&other->_impl_.roll_deg_));
-}
-
-::google::protobuf::Metadata EulerAngle::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata EulerAngle::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class AngularVelocityBody::_Internal {
-public:
+ public:
 };
 
 AngularVelocityBody::AngularVelocityBody(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.AngularVelocityBody)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.AngularVelocityBody)
 }
 AngularVelocityBody::AngularVelocityBody(
-    ::google::protobuf::Arena* arena, const AngularVelocityBody& from) :
-    AngularVelocityBody(arena)
-{
-    MergeFrom(from);
+    ::google::protobuf::Arena* arena, const AngularVelocityBody& from)
+    : AngularVelocityBody(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE AngularVelocityBody::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-inline void AngularVelocityBody::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    ::memset(
-        reinterpret_cast<char*>(&_impl_) + offsetof(Impl_, roll_rad_s_),
-        0,
-        offsetof(Impl_, yaw_rad_s_) - offsetof(Impl_, roll_rad_s_) + sizeof(Impl_::yaw_rad_s_));
+inline void AngularVelocityBody::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, roll_rad_s_),
+           0,
+           offsetof(Impl_, yaw_rad_s_) -
+               offsetof(Impl_, roll_rad_s_) +
+               sizeof(Impl_::yaw_rad_s_));
 }
-AngularVelocityBody::~AngularVelocityBody()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.AngularVelocityBody)
-    SharedDtor(*this);
+AngularVelocityBody::~AngularVelocityBody() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.AngularVelocityBody)
+  SharedDtor(*this);
 }
-inline void AngularVelocityBody::SharedDtor(MessageLite& self)
-{
-    AngularVelocityBody& this_ = static_cast<AngularVelocityBody&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.~Impl_();
+inline void AngularVelocityBody::SharedDtor(MessageLite& self) {
+  AngularVelocityBody& this_ = static_cast<AngularVelocityBody&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
-inline void*
-AngularVelocityBody::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) AngularVelocityBody(arena);
+inline void* AngularVelocityBody::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) AngularVelocityBody(arena);
 }
-constexpr auto AngularVelocityBody::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(AngularVelocityBody), alignof(AngularVelocityBody));
+constexpr auto AngularVelocityBody::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(AngularVelocityBody),
+                                            alignof(AngularVelocityBody));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -5964,343 +5319,302 @@ const ::google::protobuf::internal::ClassDataFull AngularVelocityBody::_class_da
     ::google::protobuf::internal::ClassData{
         &_AngularVelocityBody_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &AngularVelocityBody::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<AngularVelocityBody>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &AngularVelocityBody::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<AngularVelocityBody>(),
-        &AngularVelocityBody::ByteSizeLong,
-        &AngularVelocityBody::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<AngularVelocityBody>(), &AngularVelocityBody::ByteSizeLong,
+            &AngularVelocityBody::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_._cached_size_),
         false,
     },
     &AngularVelocityBody::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* AngularVelocityBody::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* AngularVelocityBody::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<2, 3, 0, 0, 2>
-    AngularVelocityBody::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            3,
-            24, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967288, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            3, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::AngularVelocityBody>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            {::_pbi::TcParser::MiniParse, {}},
-            // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
-            {::_pbi::TcParser::FastF32S1,
-             {13, 63, 0, PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.roll_rad_s_)}},
-            // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
-            {::_pbi::TcParser::FastF32S1,
-             {21, 63, 0, PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.pitch_rad_s_)}},
-            // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
-            {::_pbi::TcParser::FastF32S1,
-             {29, 63, 0, PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.yaw_rad_s_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
-            {PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.roll_rad_s_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-            // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
-            {PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.pitch_rad_s_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-            // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
-            {PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.yaw_rad_s_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-        }},
-        // no aux_entries
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void AngularVelocityBody::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.AngularVelocityBody)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    ::memset(
-        &_impl_.roll_rad_s_,
-        0,
-        static_cast<::size_t>(
-            reinterpret_cast<char*>(&_impl_.yaw_rad_s_) -
-            reinterpret_cast<char*>(&_impl_.roll_rad_s_)) +
-            sizeof(_impl_.yaw_rad_s_));
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* AngularVelocityBody::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const AngularVelocityBody& this_ = static_cast<const AngularVelocityBody&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* AngularVelocityBody::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const AngularVelocityBody& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.AngularVelocityBody)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> AngularVelocityBody::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::AngularVelocityBody>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
     // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
-    if (::absl::bit_cast<::uint32_t>(this_._internal_roll_rad_s()) != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteFloatToArray(1, this_._internal_roll_rad_s(), target);
-    }
-
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.roll_rad_s_)}},
     // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
-    if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_rad_s()) != 0) {
-        target = stream->EnsureSpace(target);
-        target =
-            ::_pbi::WireFormatLite::WriteFloatToArray(2, this_._internal_pitch_rad_s(), target);
-    }
-
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.pitch_rad_s_)}},
     // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
-    if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_rad_s()) != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteFloatToArray(3, this_._internal_yaw_rad_s(), target);
-    }
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.yaw_rad_s_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.roll_rad_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.pitch_rad_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.yaw_rad_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.AngularVelocityBody)
-    return target;
+PROTOBUF_NOINLINE void AngularVelocityBody::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.AngularVelocityBody)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.roll_rad_s_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.yaw_rad_s_) -
+      reinterpret_cast<char*>(&_impl_.roll_rad_s_)) + sizeof(_impl_.yaw_rad_s_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t AngularVelocityBody::ByteSizeLong(const MessageLite& base)
-{
-    const AngularVelocityBody& this_ = static_cast<const AngularVelocityBody&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t AngularVelocityBody::ByteSizeLong() const
-{
-    const AngularVelocityBody& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.AngularVelocityBody)
-    ::size_t total_size = 0;
+        ::uint8_t* AngularVelocityBody::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const AngularVelocityBody& this_ = static_cast<const AngularVelocityBody&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* AngularVelocityBody::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const AngularVelocityBody& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.AngularVelocityBody)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_roll_rad_s()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                1, this_._internal_roll_rad_s(), target);
+          }
 
-    ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-    {
-        // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
-        if (::absl::bit_cast<::uint32_t>(this_._internal_roll_rad_s()) != 0) {
-            total_size += 5;
+          // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_rad_s()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                2, this_._internal_pitch_rad_s(), target);
+          }
+
+          // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_rad_s()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                3, this_._internal_yaw_rad_s(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.AngularVelocityBody)
+          return target;
         }
-        // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
-        if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_rad_s()) != 0) {
-            total_size += 5;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t AngularVelocityBody::ByteSizeLong(const MessageLite& base) {
+          const AngularVelocityBody& this_ = static_cast<const AngularVelocityBody&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t AngularVelocityBody::ByteSizeLong() const {
+          const AngularVelocityBody& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.AngularVelocityBody)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // float roll_rad_s = 1 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_roll_rad_s()) != 0) {
+              total_size += 5;
+            }
+            // float pitch_rad_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_pitch_rad_s()) != 0) {
+              total_size += 5;
+            }
+            // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_rad_s()) != 0) {
+              total_size += 5;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
-        // float yaw_rad_s = 3 [(.mavsdk.options.default_value) = "NaN"];
-        if (::absl::bit_cast<::uint32_t>(this_._internal_yaw_rad_s()) != 0) {
-            total_size += 5;
-        }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+void AngularVelocityBody::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<AngularVelocityBody*>(&to_msg);
+  auto& from = static_cast<const AngularVelocityBody&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.AngularVelocityBody)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (::absl::bit_cast<::uint32_t>(from._internal_roll_rad_s()) != 0) {
+    _this->_impl_.roll_rad_s_ = from._impl_.roll_rad_s_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_pitch_rad_s()) != 0) {
+    _this->_impl_.pitch_rad_s_ = from._impl_.pitch_rad_s_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_yaw_rad_s()) != 0) {
+    _this->_impl_.yaw_rad_s_ = from._impl_.yaw_rad_s_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void AngularVelocityBody::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<AngularVelocityBody*>(&to_msg);
-    auto& from = static_cast<const AngularVelocityBody&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.AngularVelocityBody)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (::absl::bit_cast<::uint32_t>(from._internal_roll_rad_s()) != 0) {
-        _this->_impl_.roll_rad_s_ = from._impl_.roll_rad_s_;
-    }
-    if (::absl::bit_cast<::uint32_t>(from._internal_pitch_rad_s()) != 0) {
-        _this->_impl_.pitch_rad_s_ = from._impl_.pitch_rad_s_;
-    }
-    if (::absl::bit_cast<::uint32_t>(from._internal_yaw_rad_s()) != 0) {
-        _this->_impl_.yaw_rad_s_ = from._impl_.yaw_rad_s_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void AngularVelocityBody::CopyFrom(const AngularVelocityBody& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.AngularVelocityBody)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void AngularVelocityBody::CopyFrom(const AngularVelocityBody& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.AngularVelocityBody)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void AngularVelocityBody::InternalSwap(AngularVelocityBody* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.yaw_rad_s_)
+      + sizeof(AngularVelocityBody::_impl_.yaw_rad_s_)
+      - PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.roll_rad_s_)>(
+          reinterpret_cast<char*>(&_impl_.roll_rad_s_),
+          reinterpret_cast<char*>(&other->_impl_.roll_rad_s_));
 }
 
-void AngularVelocityBody::InternalSwap(AngularVelocityBody* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    ::google::protobuf::internal::memswap<
-        PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.yaw_rad_s_) +
-        sizeof(AngularVelocityBody::_impl_.yaw_rad_s_) -
-        PROTOBUF_FIELD_OFFSET(AngularVelocityBody, _impl_.roll_rad_s_)>(
-        reinterpret_cast<char*>(&_impl_.roll_rad_s_),
-        reinterpret_cast<char*>(&other->_impl_.roll_rad_s_));
-}
-
-::google::protobuf::Metadata AngularVelocityBody::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata AngularVelocityBody::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class Attitude::_Internal {
-public:
-    using HasBits = decltype(std::declval<Attitude>()._impl_._has_bits_);
-    static constexpr ::int32_t kHasBitsOffset =
-        8 * PROTOBUF_FIELD_OFFSET(Attitude, _impl_._has_bits_);
+ public:
+  using HasBits =
+      decltype(std::declval<Attitude>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(Attitude, _impl_._has_bits_);
 };
 
 Attitude::Attitude(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.Attitude)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.Attitude)
+}
+inline PROTOBUF_NDEBUG_INLINE Attitude::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::gimbal::Attitude& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+Attitude::Attitude(
+    ::google::protobuf::Arena* arena,
+    const Attitude& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  Attitude* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.euler_angle_forward_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::EulerAngle>(
+                              arena, *from._impl_.euler_angle_forward_)
+                        : nullptr;
+  _impl_.quaternion_forward_ = (cached_has_bits & 0x00000002u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::Quaternion>(
+                              arena, *from._impl_.quaternion_forward_)
+                        : nullptr;
+  _impl_.euler_angle_north_ = (cached_has_bits & 0x00000004u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::EulerAngle>(
+                              arena, *from._impl_.euler_angle_north_)
+                        : nullptr;
+  _impl_.quaternion_north_ = (cached_has_bits & 0x00000008u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::Quaternion>(
+                              arena, *from._impl_.quaternion_north_)
+                        : nullptr;
+  _impl_.angular_velocity_ = (cached_has_bits & 0x00000010u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::AngularVelocityBody>(
+                              arena, *from._impl_.angular_velocity_)
+                        : nullptr;
+  _impl_.timestamp_us_ = from._impl_.timestamp_us_;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.Attitude)
 }
 inline PROTOBUF_NDEBUG_INLINE Attitude::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::gimbal::Attitude& from_msg) :
-    _has_bits_{from._has_bits_},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-Attitude::Attitude(::google::protobuf::Arena* arena, const Attitude& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    Attitude* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-    _impl_.euler_angle_forward_ =
-        (cached_has_bits & 0x00000001u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::EulerAngle>(
-                arena, *from._impl_.euler_angle_forward_) :
-            nullptr;
-    _impl_.quaternion_forward_ =
-        (cached_has_bits & 0x00000002u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::Quaternion>(
-                arena, *from._impl_.quaternion_forward_) :
-            nullptr;
-    _impl_.euler_angle_north_ =
-        (cached_has_bits & 0x00000004u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::EulerAngle>(
-                arena, *from._impl_.euler_angle_north_) :
-            nullptr;
-    _impl_.quaternion_north_ =
-        (cached_has_bits & 0x00000008u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::Quaternion>(
-                arena, *from._impl_.quaternion_north_) :
-            nullptr;
-    _impl_.angular_velocity_ =
-        (cached_has_bits & 0x00000010u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::AngularVelocityBody>(
-                arena, *from._impl_.angular_velocity_) :
-            nullptr;
-    _impl_.timestamp_us_ = from._impl_.timestamp_us_;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.Attitude)
+inline void Attitude::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, euler_angle_forward_),
+           0,
+           offsetof(Impl_, timestamp_us_) -
+               offsetof(Impl_, euler_angle_forward_) +
+               sizeof(Impl_::timestamp_us_));
 }
-inline PROTOBUF_NDEBUG_INLINE Attitude::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
-
-inline void Attitude::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    ::memset(
-        reinterpret_cast<char*>(&_impl_) + offsetof(Impl_, euler_angle_forward_),
-        0,
-        offsetof(Impl_, timestamp_us_) - offsetof(Impl_, euler_angle_forward_) +
-            sizeof(Impl_::timestamp_us_));
+Attitude::~Attitude() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.Attitude)
+  SharedDtor(*this);
 }
-Attitude::~Attitude()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.Attitude)
-    SharedDtor(*this);
-}
-inline void Attitude::SharedDtor(MessageLite& self)
-{
-    Attitude& this_ = static_cast<Attitude&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    delete this_._impl_.euler_angle_forward_;
-    delete this_._impl_.quaternion_forward_;
-    delete this_._impl_.euler_angle_north_;
-    delete this_._impl_.quaternion_north_;
-    delete this_._impl_.angular_velocity_;
-    this_._impl_.~Impl_();
+inline void Attitude::SharedDtor(MessageLite& self) {
+  Attitude& this_ = static_cast<Attitude&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.euler_angle_forward_;
+  delete this_._impl_.quaternion_forward_;
+  delete this_._impl_.euler_angle_north_;
+  delete this_._impl_.quaternion_north_;
+  delete this_._impl_.angular_velocity_;
+  this_._impl_.~Impl_();
 }
 
-inline void* Attitude::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) Attitude(arena);
+inline void* Attitude::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) Attitude(arena);
 }
-constexpr auto Attitude::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(Attitude), alignof(Attitude));
+constexpr auto Attitude::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(Attitude),
+                                            alignof(Attitude));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -6308,432 +5622,377 @@ const ::google::protobuf::internal::ClassDataFull Attitude::_class_data_ = {
     ::google::protobuf::internal::ClassData{
         &_Attitude_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &Attitude::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<Attitude>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &Attitude::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<Attitude>(),
-        &Attitude::ByteSizeLong,
-        &Attitude::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<Attitude>(), &Attitude::ByteSizeLong,
+            &Attitude::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(Attitude, _impl_._cached_size_),
         false,
     },
     &Attitude::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* Attitude::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* Attitude::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<3, 6, 5, 0, 2>
-    Attitude::_table_ = {
-        {
-            PROTOBUF_FIELD_OFFSET(Attitude, _impl_._has_bits_),
-            0, // no _extensions_
-            6,
-            56, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967232, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            6, // num_field_entries
-            5, // num_aux_entries
-            offsetof(decltype(_table_), aux_entries),
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::Attitude>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            {::_pbi::TcParser::MiniParse, {}},
-            // .mavsdk.rpc.gimbal.EulerAngle euler_angle_forward = 1;
-            {::_pbi::TcParser::FastMtS1,
-             {10, 0, 0, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.euler_angle_forward_)}},
-            // .mavsdk.rpc.gimbal.Quaternion quaternion_forward = 2;
-            {::_pbi::TcParser::FastMtS1,
-             {18, 1, 1, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.quaternion_forward_)}},
-            // .mavsdk.rpc.gimbal.EulerAngle euler_angle_north = 3;
-            {::_pbi::TcParser::FastMtS1,
-             {26, 2, 2, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.euler_angle_north_)}},
-            // .mavsdk.rpc.gimbal.Quaternion quaternion_north = 4;
-            {::_pbi::TcParser::FastMtS1,
-             {34, 3, 3, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.quaternion_north_)}},
-            // .mavsdk.rpc.gimbal.AngularVelocityBody angular_velocity = 5;
-            {::_pbi::TcParser::FastMtS1,
-             {42, 4, 4, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.angular_velocity_)}},
-            // uint64 timestamp_us = 6;
-            {::_pbi::TcParser::
-                 SingularVarintNoZag1<::uint64_t, offsetof(Attitude, _impl_.timestamp_us_), 63>(),
-             {48, 63, 0, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.timestamp_us_)}},
-            {::_pbi::TcParser::MiniParse, {}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.gimbal.EulerAngle euler_angle_forward = 1;
-            {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.euler_angle_forward_),
-             _Internal::kHasBitsOffset + 0,
-             0,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-            // .mavsdk.rpc.gimbal.Quaternion quaternion_forward = 2;
-            {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.quaternion_forward_),
-             _Internal::kHasBitsOffset + 1,
-             1,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-            // .mavsdk.rpc.gimbal.EulerAngle euler_angle_north = 3;
-            {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.euler_angle_north_),
-             _Internal::kHasBitsOffset + 2,
-             2,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-            // .mavsdk.rpc.gimbal.Quaternion quaternion_north = 4;
-            {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.quaternion_north_),
-             _Internal::kHasBitsOffset + 3,
-             3,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-            // .mavsdk.rpc.gimbal.AngularVelocityBody angular_velocity = 5;
-            {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.angular_velocity_),
-             _Internal::kHasBitsOffset + 4,
-             4,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-            // uint64 timestamp_us = 6;
-            {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.timestamp_us_),
-             -1,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
-        }},
-        {{
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::EulerAngle>()},
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::Quaternion>()},
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::EulerAngle>()},
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::Quaternion>()},
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::AngularVelocityBody>()},
-        }},
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void Attitude::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.Attitude)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    cached_has_bits = _impl_._has_bits_[0];
-    if (cached_has_bits & 0x0000001fu) {
-        if (cached_has_bits & 0x00000001u) {
-            ABSL_DCHECK(_impl_.euler_angle_forward_ != nullptr);
-            _impl_.euler_angle_forward_->Clear();
-        }
-        if (cached_has_bits & 0x00000002u) {
-            ABSL_DCHECK(_impl_.quaternion_forward_ != nullptr);
-            _impl_.quaternion_forward_->Clear();
-        }
-        if (cached_has_bits & 0x00000004u) {
-            ABSL_DCHECK(_impl_.euler_angle_north_ != nullptr);
-            _impl_.euler_angle_north_->Clear();
-        }
-        if (cached_has_bits & 0x00000008u) {
-            ABSL_DCHECK(_impl_.quaternion_north_ != nullptr);
-            _impl_.quaternion_north_->Clear();
-        }
-        if (cached_has_bits & 0x00000010u) {
-            ABSL_DCHECK(_impl_.angular_velocity_ != nullptr);
-            _impl_.angular_velocity_->Clear();
-        }
-    }
-    _impl_.timestamp_us_ = ::uint64_t{0u};
-    _impl_._has_bits_.Clear();
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* Attitude::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const Attitude& this_ = static_cast<const Attitude&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* Attitude::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const Attitude& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.Attitude)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = this_._impl_._has_bits_[0];
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 6, 5, 0, 2> Attitude::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(Attitude, _impl_._has_bits_),
+    0, // no _extensions_
+    6, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967232,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    6,  // num_field_entries
+    5,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::Attitude>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
     // .mavsdk.rpc.gimbal.EulerAngle euler_angle_forward = 1;
-    if (cached_has_bits & 0x00000001u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1,
-            *this_._impl_.euler_angle_forward_,
-            this_._impl_.euler_angle_forward_->GetCachedSize(),
-            target,
-            stream);
-    }
-
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.euler_angle_forward_)}},
     // .mavsdk.rpc.gimbal.Quaternion quaternion_forward = 2;
-    if (cached_has_bits & 0x00000002u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            2,
-            *this_._impl_.quaternion_forward_,
-            this_._impl_.quaternion_forward_->GetCachedSize(),
-            target,
-            stream);
-    }
-
+    {::_pbi::TcParser::FastMtS1,
+     {18, 1, 1, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.quaternion_forward_)}},
     // .mavsdk.rpc.gimbal.EulerAngle euler_angle_north = 3;
-    if (cached_has_bits & 0x00000004u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            3,
-            *this_._impl_.euler_angle_north_,
-            this_._impl_.euler_angle_north_->GetCachedSize(),
-            target,
-            stream);
-    }
-
+    {::_pbi::TcParser::FastMtS1,
+     {26, 2, 2, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.euler_angle_north_)}},
     // .mavsdk.rpc.gimbal.Quaternion quaternion_north = 4;
-    if (cached_has_bits & 0x00000008u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            4,
-            *this_._impl_.quaternion_north_,
-            this_._impl_.quaternion_north_->GetCachedSize(),
-            target,
-            stream);
-    }
-
+    {::_pbi::TcParser::FastMtS1,
+     {34, 3, 3, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.quaternion_north_)}},
     // .mavsdk.rpc.gimbal.AngularVelocityBody angular_velocity = 5;
-    if (cached_has_bits & 0x00000010u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            5,
-            *this_._impl_.angular_velocity_,
-            this_._impl_.angular_velocity_->GetCachedSize(),
-            target,
-            stream);
-    }
-
+    {::_pbi::TcParser::FastMtS1,
+     {42, 4, 4, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.angular_velocity_)}},
     // uint64 timestamp_us = 6;
-    if (this_._internal_timestamp_us() != 0) {
-        target = stream->EnsureSpace(target);
-        target =
-            ::_pbi::WireFormatLite::WriteUInt64ToArray(6, this_._internal_timestamp_us(), target);
-    }
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(Attitude, _impl_.timestamp_us_), 63>(),
+     {48, 63, 0, PROTOBUF_FIELD_OFFSET(Attitude, _impl_.timestamp_us_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gimbal.EulerAngle euler_angle_forward = 1;
+    {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.euler_angle_forward_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.gimbal.Quaternion quaternion_forward = 2;
+    {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.quaternion_forward_), _Internal::kHasBitsOffset + 1, 1,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.gimbal.EulerAngle euler_angle_north = 3;
+    {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.euler_angle_north_), _Internal::kHasBitsOffset + 2, 2,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.gimbal.Quaternion quaternion_north = 4;
+    {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.quaternion_north_), _Internal::kHasBitsOffset + 3, 3,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.gimbal.AngularVelocityBody angular_velocity = 5;
+    {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.angular_velocity_), _Internal::kHasBitsOffset + 4, 4,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // uint64 timestamp_us = 6;
+    {PROTOBUF_FIELD_OFFSET(Attitude, _impl_.timestamp_us_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::EulerAngle>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::Quaternion>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::EulerAngle>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::Quaternion>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::AngularVelocityBody>()},
+  }}, {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
+PROTOBUF_NOINLINE void Attitude::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.Attitude)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x0000001fu) {
+    if (cached_has_bits & 0x00000001u) {
+      ABSL_DCHECK(_impl_.euler_angle_forward_ != nullptr);
+      _impl_.euler_angle_forward_->Clear();
     }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.Attitude)
-    return target;
+    if (cached_has_bits & 0x00000002u) {
+      ABSL_DCHECK(_impl_.quaternion_forward_ != nullptr);
+      _impl_.quaternion_forward_->Clear();
+    }
+    if (cached_has_bits & 0x00000004u) {
+      ABSL_DCHECK(_impl_.euler_angle_north_ != nullptr);
+      _impl_.euler_angle_north_->Clear();
+    }
+    if (cached_has_bits & 0x00000008u) {
+      ABSL_DCHECK(_impl_.quaternion_north_ != nullptr);
+      _impl_.quaternion_north_->Clear();
+    }
+    if (cached_has_bits & 0x00000010u) {
+      ABSL_DCHECK(_impl_.angular_velocity_ != nullptr);
+      _impl_.angular_velocity_->Clear();
+    }
+  }
+  _impl_.timestamp_us_ = ::uint64_t{0u};
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t Attitude::ByteSizeLong(const MessageLite& base)
-{
-    const Attitude& this_ = static_cast<const Attitude&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t Attitude::ByteSizeLong() const
-{
-    const Attitude& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.Attitude)
-    ::size_t total_size = 0;
+        ::uint8_t* Attitude::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const Attitude& this_ = static_cast<const Attitude&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* Attitude::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const Attitude& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.Attitude)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.gimbal.EulerAngle euler_angle_forward = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.euler_angle_forward_, this_._impl_.euler_angle_forward_->GetCachedSize(), target,
+                stream);
+          }
 
-    ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-    cached_has_bits = this_._impl_._has_bits_[0];
-    if (cached_has_bits & 0x0000001fu) {
-        // .mavsdk.rpc.gimbal.EulerAngle euler_angle_forward = 1;
-        if (cached_has_bits & 0x00000001u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.euler_angle_forward_);
+          // .mavsdk.rpc.gimbal.Quaternion quaternion_forward = 2;
+          if (cached_has_bits & 0x00000002u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                2, *this_._impl_.quaternion_forward_, this_._impl_.quaternion_forward_->GetCachedSize(), target,
+                stream);
+          }
+
+          // .mavsdk.rpc.gimbal.EulerAngle euler_angle_north = 3;
+          if (cached_has_bits & 0x00000004u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                3, *this_._impl_.euler_angle_north_, this_._impl_.euler_angle_north_->GetCachedSize(), target,
+                stream);
+          }
+
+          // .mavsdk.rpc.gimbal.Quaternion quaternion_north = 4;
+          if (cached_has_bits & 0x00000008u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                4, *this_._impl_.quaternion_north_, this_._impl_.quaternion_north_->GetCachedSize(), target,
+                stream);
+          }
+
+          // .mavsdk.rpc.gimbal.AngularVelocityBody angular_velocity = 5;
+          if (cached_has_bits & 0x00000010u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                5, *this_._impl_.angular_velocity_, this_._impl_.angular_velocity_->GetCachedSize(), target,
+                stream);
+          }
+
+          // uint64 timestamp_us = 6;
+          if (this_._internal_timestamp_us() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+                6, this_._internal_timestamp_us(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.Attitude)
+          return target;
         }
-        // .mavsdk.rpc.gimbal.Quaternion quaternion_forward = 2;
-        if (cached_has_bits & 0x00000002u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.quaternion_forward_);
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t Attitude::ByteSizeLong(const MessageLite& base) {
+          const Attitude& this_ = static_cast<const Attitude&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t Attitude::ByteSizeLong() const {
+          const Attitude& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.Attitude)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+          cached_has_bits = this_._impl_._has_bits_[0];
+          if (cached_has_bits & 0x0000001fu) {
+            // .mavsdk.rpc.gimbal.EulerAngle euler_angle_forward = 1;
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.euler_angle_forward_);
+            }
+            // .mavsdk.rpc.gimbal.Quaternion quaternion_forward = 2;
+            if (cached_has_bits & 0x00000002u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.quaternion_forward_);
+            }
+            // .mavsdk.rpc.gimbal.EulerAngle euler_angle_north = 3;
+            if (cached_has_bits & 0x00000004u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.euler_angle_north_);
+            }
+            // .mavsdk.rpc.gimbal.Quaternion quaternion_north = 4;
+            if (cached_has_bits & 0x00000008u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.quaternion_north_);
+            }
+            // .mavsdk.rpc.gimbal.AngularVelocityBody angular_velocity = 5;
+            if (cached_has_bits & 0x00000010u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.angular_velocity_);
+            }
+          }
+           {
+            // uint64 timestamp_us = 6;
+            if (this_._internal_timestamp_us() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+                  this_._internal_timestamp_us());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
-        // .mavsdk.rpc.gimbal.EulerAngle euler_angle_north = 3;
-        if (cached_has_bits & 0x00000004u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.euler_angle_north_);
-        }
-        // .mavsdk.rpc.gimbal.Quaternion quaternion_north = 4;
-        if (cached_has_bits & 0x00000008u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.quaternion_north_);
-        }
-        // .mavsdk.rpc.gimbal.AngularVelocityBody angular_velocity = 5;
-        if (cached_has_bits & 0x00000010u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.angular_velocity_);
-        }
+
+void Attitude::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<Attitude*>(&to_msg);
+  auto& from = static_cast<const Attitude&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.Attitude)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x0000001fu) {
+    if (cached_has_bits & 0x00000001u) {
+      ABSL_DCHECK(from._impl_.euler_angle_forward_ != nullptr);
+      if (_this->_impl_.euler_angle_forward_ == nullptr) {
+        _this->_impl_.euler_angle_forward_ =
+            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::EulerAngle>(arena, *from._impl_.euler_angle_forward_);
+      } else {
+        _this->_impl_.euler_angle_forward_->MergeFrom(*from._impl_.euler_angle_forward_);
+      }
     }
-    {
-        // uint64 timestamp_us = 6;
-        if (this_._internal_timestamp_us() != 0) {
-            total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(this_._internal_timestamp_us());
-        }
+    if (cached_has_bits & 0x00000002u) {
+      ABSL_DCHECK(from._impl_.quaternion_forward_ != nullptr);
+      if (_this->_impl_.quaternion_forward_ == nullptr) {
+        _this->_impl_.quaternion_forward_ =
+            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::Quaternion>(arena, *from._impl_.quaternion_forward_);
+      } else {
+        _this->_impl_.quaternion_forward_->MergeFrom(*from._impl_.quaternion_forward_);
+      }
     }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+    if (cached_has_bits & 0x00000004u) {
+      ABSL_DCHECK(from._impl_.euler_angle_north_ != nullptr);
+      if (_this->_impl_.euler_angle_north_ == nullptr) {
+        _this->_impl_.euler_angle_north_ =
+            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::EulerAngle>(arena, *from._impl_.euler_angle_north_);
+      } else {
+        _this->_impl_.euler_angle_north_->MergeFrom(*from._impl_.euler_angle_north_);
+      }
+    }
+    if (cached_has_bits & 0x00000008u) {
+      ABSL_DCHECK(from._impl_.quaternion_north_ != nullptr);
+      if (_this->_impl_.quaternion_north_ == nullptr) {
+        _this->_impl_.quaternion_north_ =
+            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::Quaternion>(arena, *from._impl_.quaternion_north_);
+      } else {
+        _this->_impl_.quaternion_north_->MergeFrom(*from._impl_.quaternion_north_);
+      }
+    }
+    if (cached_has_bits & 0x00000010u) {
+      ABSL_DCHECK(from._impl_.angular_velocity_ != nullptr);
+      if (_this->_impl_.angular_velocity_ == nullptr) {
+        _this->_impl_.angular_velocity_ =
+            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::AngularVelocityBody>(arena, *from._impl_.angular_velocity_);
+      } else {
+        _this->_impl_.angular_velocity_->MergeFrom(*from._impl_.angular_velocity_);
+      }
+    }
+  }
+  if (from._internal_timestamp_us() != 0) {
+    _this->_impl_.timestamp_us_ = from._impl_.timestamp_us_;
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void Attitude::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<Attitude*>(&to_msg);
-    auto& from = static_cast<const Attitude&>(from_msg);
-    ::google::protobuf::Arena* arena = _this->GetArena();
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.Attitude)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = from._impl_._has_bits_[0];
-    if (cached_has_bits & 0x0000001fu) {
-        if (cached_has_bits & 0x00000001u) {
-            ABSL_DCHECK(from._impl_.euler_angle_forward_ != nullptr);
-            if (_this->_impl_.euler_angle_forward_ == nullptr) {
-                _this->_impl_.euler_angle_forward_ =
-                    ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::EulerAngle>(
-                        arena, *from._impl_.euler_angle_forward_);
-            } else {
-                _this->_impl_.euler_angle_forward_->MergeFrom(*from._impl_.euler_angle_forward_);
-            }
-        }
-        if (cached_has_bits & 0x00000002u) {
-            ABSL_DCHECK(from._impl_.quaternion_forward_ != nullptr);
-            if (_this->_impl_.quaternion_forward_ == nullptr) {
-                _this->_impl_.quaternion_forward_ =
-                    ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::Quaternion>(
-                        arena, *from._impl_.quaternion_forward_);
-            } else {
-                _this->_impl_.quaternion_forward_->MergeFrom(*from._impl_.quaternion_forward_);
-            }
-        }
-        if (cached_has_bits & 0x00000004u) {
-            ABSL_DCHECK(from._impl_.euler_angle_north_ != nullptr);
-            if (_this->_impl_.euler_angle_north_ == nullptr) {
-                _this->_impl_.euler_angle_north_ =
-                    ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::EulerAngle>(
-                        arena, *from._impl_.euler_angle_north_);
-            } else {
-                _this->_impl_.euler_angle_north_->MergeFrom(*from._impl_.euler_angle_north_);
-            }
-        }
-        if (cached_has_bits & 0x00000008u) {
-            ABSL_DCHECK(from._impl_.quaternion_north_ != nullptr);
-            if (_this->_impl_.quaternion_north_ == nullptr) {
-                _this->_impl_.quaternion_north_ =
-                    ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::Quaternion>(
-                        arena, *from._impl_.quaternion_north_);
-            } else {
-                _this->_impl_.quaternion_north_->MergeFrom(*from._impl_.quaternion_north_);
-            }
-        }
-        if (cached_has_bits & 0x00000010u) {
-            ABSL_DCHECK(from._impl_.angular_velocity_ != nullptr);
-            if (_this->_impl_.angular_velocity_ == nullptr) {
-                _this->_impl_.angular_velocity_ = ::google::protobuf::Message::CopyConstruct<
-                    ::mavsdk::rpc::gimbal::AngularVelocityBody>(
-                    arena, *from._impl_.angular_velocity_);
-            } else {
-                _this->_impl_.angular_velocity_->MergeFrom(*from._impl_.angular_velocity_);
-            }
-        }
-    }
-    if (from._internal_timestamp_us() != 0) {
-        _this->_impl_.timestamp_us_ = from._impl_.timestamp_us_;
-    }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void Attitude::CopyFrom(const Attitude& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.Attitude)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void Attitude::CopyFrom(const Attitude& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.Attitude)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void Attitude::InternalSwap(Attitude* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(Attitude, _impl_.timestamp_us_)
+      + sizeof(Attitude::_impl_.timestamp_us_)
+      - PROTOBUF_FIELD_OFFSET(Attitude, _impl_.euler_angle_forward_)>(
+          reinterpret_cast<char*>(&_impl_.euler_angle_forward_),
+          reinterpret_cast<char*>(&other->_impl_.euler_angle_forward_));
 }
 
-void Attitude::InternalSwap(Attitude* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-    ::google::protobuf::internal::memswap<
-        PROTOBUF_FIELD_OFFSET(Attitude, _impl_.timestamp_us_) +
-        sizeof(Attitude::_impl_.timestamp_us_) -
-        PROTOBUF_FIELD_OFFSET(Attitude, _impl_.euler_angle_forward_)>(
-        reinterpret_cast<char*>(&_impl_.euler_angle_forward_),
-        reinterpret_cast<char*>(&other->_impl_.euler_angle_forward_));
-}
-
-::google::protobuf::Metadata Attitude::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata Attitude::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class SubscribeAttitudeRequest::_Internal {
-public:
+ public:
 };
 
 SubscribeAttitudeRequest::SubscribeAttitudeRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SubscribeAttitudeRequest)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.SubscribeAttitudeRequest)
 }
 SubscribeAttitudeRequest::SubscribeAttitudeRequest(
-    ::google::protobuf::Arena* arena, const SubscribeAttitudeRequest& from)
+    ::google::protobuf::Arena* arena,
+    const SubscribeAttitudeRequest& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SubscribeAttitudeRequest* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SubscribeAttitudeRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
 
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SubscribeAttitudeRequest)
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.SubscribeAttitudeRequest)
 }
 
-inline void*
-SubscribeAttitudeRequest::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) SubscribeAttitudeRequest(arena);
+inline void* SubscribeAttitudeRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SubscribeAttitudeRequest(arena);
 }
-constexpr auto SubscribeAttitudeRequest::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(SubscribeAttitudeRequest), alignof(SubscribeAttitudeRequest));
+constexpr auto SubscribeAttitudeRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SubscribeAttitudeRequest),
+                                            alignof(SubscribeAttitudeRequest));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -6741,149 +6000,138 @@ const ::google::protobuf::internal::ClassDataFull SubscribeAttitudeRequest::_cla
     ::google::protobuf::internal::ClassData{
         &_SubscribeAttitudeRequest_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &SubscribeAttitudeRequest::MergeImpl,
         ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<SubscribeAttitudeRequest>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &SubscribeAttitudeRequest::SharedDtor,
-        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<SubscribeAttitudeRequest>(),
-        &SubscribeAttitudeRequest::ByteSizeLong,
-        &SubscribeAttitudeRequest::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<SubscribeAttitudeRequest>(), &SubscribeAttitudeRequest::ByteSizeLong,
+            &SubscribeAttitudeRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(SubscribeAttitudeRequest, _impl_._cached_size_),
         false,
     },
     &SubscribeAttitudeRequest::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* SubscribeAttitudeRequest::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* SubscribeAttitudeRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 0, 0, 0, 2>
-    SubscribeAttitudeRequest::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            0,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967295, // skipmap
-            offsetof(decltype(_table_), field_names), // no field_entries
-            0, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<
-                ::mavsdk::rpc::gimbal::SubscribeAttitudeRequest>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            {::_pbi::TcParser::MiniParse, {}},
-        }},
-        {{65535, 65535}},
-        // no field_entries, or aux_entries
-        {{}},
-    };
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> SubscribeAttitudeRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::SubscribeAttitudeRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }},
+  // no field_entries, or aux_entries
+  {{
+  }},
+};
 
-::google::protobuf::Metadata SubscribeAttitudeRequest::GetMetadata() const
-{
-    return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+
+
+
+
+
+
+
+::google::protobuf::Metadata SubscribeAttitudeRequest::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class AttitudeResponse::_Internal {
-public:
-    using HasBits = decltype(std::declval<AttitudeResponse>()._impl_._has_bits_);
-    static constexpr ::int32_t kHasBitsOffset =
-        8 * PROTOBUF_FIELD_OFFSET(AttitudeResponse, _impl_._has_bits_);
+ public:
+  using HasBits =
+      decltype(std::declval<AttitudeResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(AttitudeResponse, _impl_._has_bits_);
 };
 
 AttitudeResponse::AttitudeResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.AttitudeResponse)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.AttitudeResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE AttitudeResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::gimbal::AttitudeResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+AttitudeResponse::AttitudeResponse(
+    ::google::protobuf::Arena* arena,
+    const AttitudeResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  AttitudeResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.attitude_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::Attitude>(
+                              arena, *from._impl_.attitude_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.AttitudeResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE AttitudeResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::gimbal::AttitudeResponse& from_msg) :
-    _has_bits_{from._has_bits_},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-AttitudeResponse::AttitudeResponse(::google::protobuf::Arena* arena, const AttitudeResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    AttitudeResponse* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-    _impl_.attitude_ =
-        (cached_has_bits & 0x00000001u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::Attitude>(
-                arena, *from._impl_.attitude_) :
-            nullptr;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.AttitudeResponse)
+inline void AttitudeResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.attitude_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE AttitudeResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
-
-inline void AttitudeResponse::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.attitude_ = {};
+AttitudeResponse::~AttitudeResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.AttitudeResponse)
+  SharedDtor(*this);
 }
-AttitudeResponse::~AttitudeResponse()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.AttitudeResponse)
-    SharedDtor(*this);
-}
-inline void AttitudeResponse::SharedDtor(MessageLite& self)
-{
-    AttitudeResponse& this_ = static_cast<AttitudeResponse&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    delete this_._impl_.attitude_;
-    this_._impl_.~Impl_();
+inline void AttitudeResponse::SharedDtor(MessageLite& self) {
+  AttitudeResponse& this_ = static_cast<AttitudeResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.attitude_;
+  this_._impl_.~Impl_();
 }
 
-inline void*
-AttitudeResponse::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) AttitudeResponse(arena);
+inline void* AttitudeResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) AttitudeResponse(arena);
 }
-constexpr auto AttitudeResponse::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(AttitudeResponse), alignof(AttitudeResponse));
+constexpr auto AttitudeResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(AttitudeResponse),
+                                            alignof(AttitudeResponse));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -6891,252 +6139,228 @@ const ::google::protobuf::internal::ClassDataFull AttitudeResponse::_class_data_
     ::google::protobuf::internal::ClassData{
         &_AttitudeResponse_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &AttitudeResponse::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<AttitudeResponse>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &AttitudeResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<AttitudeResponse>(),
-        &AttitudeResponse::ByteSizeLong,
-        &AttitudeResponse::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<AttitudeResponse>(), &AttitudeResponse::ByteSizeLong,
+            &AttitudeResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(AttitudeResponse, _impl_._cached_size_),
         false,
     },
     &AttitudeResponse::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* AttitudeResponse::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* AttitudeResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-    AttitudeResponse::_table_ = {
-        {
-            PROTOBUF_FIELD_OFFSET(AttitudeResponse, _impl_._has_bits_),
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            1, // num_aux_entries
-            offsetof(decltype(_table_), aux_entries),
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::AttitudeResponse>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.gimbal.Attitude attitude = 1;
-            {::_pbi::TcParser::FastMtS1,
-             {10, 0, 0, PROTOBUF_FIELD_OFFSET(AttitudeResponse, _impl_.attitude_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.gimbal.Attitude attitude = 1;
-            {PROTOBUF_FIELD_OFFSET(AttitudeResponse, _impl_.attitude_),
-             _Internal::kHasBitsOffset + 0,
-             0,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-        }},
-        {{
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::Attitude>()},
-        }},
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void AttitudeResponse::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.AttitudeResponse)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    cached_has_bits = _impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(_impl_.attitude_ != nullptr);
-        _impl_.attitude_->Clear();
-    }
-    _impl_._has_bits_.Clear();
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* AttitudeResponse::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const AttitudeResponse& this_ = static_cast<const AttitudeResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* AttitudeResponse::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const AttitudeResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.AttitudeResponse)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = this_._impl_._has_bits_[0];
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> AttitudeResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(AttitudeResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::AttitudeResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.gimbal.Attitude attitude = 1;
-    if (cached_has_bits & 0x00000001u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1, *this_._impl_.attitude_, this_._impl_.attitude_->GetCachedSize(), target, stream);
-    }
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(AttitudeResponse, _impl_.attitude_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gimbal.Attitude attitude = 1;
+    {PROTOBUF_FIELD_OFFSET(AttitudeResponse, _impl_.attitude_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::Attitude>()},
+  }}, {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.AttitudeResponse)
-    return target;
+PROTOBUF_NOINLINE void AttitudeResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.AttitudeResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.attitude_ != nullptr);
+    _impl_.attitude_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t AttitudeResponse::ByteSizeLong(const MessageLite& base)
-{
-    const AttitudeResponse& this_ = static_cast<const AttitudeResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t AttitudeResponse::ByteSizeLong() const
-{
-    const AttitudeResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.AttitudeResponse)
-    ::size_t total_size = 0;
+        ::uint8_t* AttitudeResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const AttitudeResponse& this_ = static_cast<const AttitudeResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* AttitudeResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const AttitudeResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.AttitudeResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.gimbal.Attitude attitude = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.attitude_, this_._impl_.attitude_->GetCachedSize(), target,
+                stream);
+          }
 
-    {
-        // .mavsdk.rpc.gimbal.Attitude attitude = 1;
-        cached_has_bits = this_._impl_._has_bits_[0];
-        if (cached_has_bits & 0x00000001u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.attitude_);
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.AttitudeResponse)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
-}
 
-void AttitudeResponse::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<AttitudeResponse*>(&to_msg);
-    auto& from = static_cast<const AttitudeResponse&>(from_msg);
-    ::google::protobuf::Arena* arena = _this->GetArena();
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.AttitudeResponse)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t AttitudeResponse::ByteSizeLong(const MessageLite& base) {
+          const AttitudeResponse& this_ = static_cast<const AttitudeResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t AttitudeResponse::ByteSizeLong() const {
+          const AttitudeResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.AttitudeResponse)
+          ::size_t total_size = 0;
 
-    cached_has_bits = from._impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(from._impl_.attitude_ != nullptr);
-        if (_this->_impl_.attitude_ == nullptr) {
-            _this->_impl_.attitude_ =
-                ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::Attitude>(
-                    arena, *from._impl_.attitude_);
-        } else {
-            _this->_impl_.attitude_->MergeFrom(*from._impl_.attitude_);
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.gimbal.Attitude attitude = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.attitude_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
+
+void AttitudeResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<AttitudeResponse*>(&to_msg);
+  auto& from = static_cast<const AttitudeResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.AttitudeResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.attitude_ != nullptr);
+    if (_this->_impl_.attitude_ == nullptr) {
+      _this->_impl_.attitude_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::gimbal::Attitude>(arena, *from._impl_.attitude_);
+    } else {
+      _this->_impl_.attitude_->MergeFrom(*from._impl_.attitude_);
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void AttitudeResponse::CopyFrom(const AttitudeResponse& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.AttitudeResponse)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+void AttitudeResponse::CopyFrom(const AttitudeResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.AttitudeResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void AttitudeResponse::InternalSwap(AttitudeResponse* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-    swap(_impl_.attitude_, other->_impl_.attitude_);
+
+void AttitudeResponse::InternalSwap(AttitudeResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.attitude_, other->_impl_.attitude_);
 }
 
-::google::protobuf::Metadata AttitudeResponse::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata AttitudeResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class ControlStatus::_Internal {
-public:
+ public:
 };
 
 ControlStatus::ControlStatus(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.ControlStatus)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.ControlStatus)
 }
-ControlStatus::ControlStatus(::google::protobuf::Arena* arena, const ControlStatus& from) :
-    ControlStatus(arena)
-{
-    MergeFrom(from);
+ControlStatus::ControlStatus(
+    ::google::protobuf::Arena* arena, const ControlStatus& from)
+    : ControlStatus(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE ControlStatus::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-inline void ControlStatus::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    ::memset(
-        reinterpret_cast<char*>(&_impl_) + offsetof(Impl_, control_mode_),
-        0,
-        offsetof(Impl_, compid_secondary_control_) - offsetof(Impl_, control_mode_) +
-            sizeof(Impl_::compid_secondary_control_));
+inline void ControlStatus::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, control_mode_),
+           0,
+           offsetof(Impl_, compid_secondary_control_) -
+               offsetof(Impl_, control_mode_) +
+               sizeof(Impl_::compid_secondary_control_));
 }
-ControlStatus::~ControlStatus()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.ControlStatus)
-    SharedDtor(*this);
+ControlStatus::~ControlStatus() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.ControlStatus)
+  SharedDtor(*this);
 }
-inline void ControlStatus::SharedDtor(MessageLite& self)
-{
-    ControlStatus& this_ = static_cast<ControlStatus&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.~Impl_();
+inline void ControlStatus::SharedDtor(MessageLite& self) {
+  ControlStatus& this_ = static_cast<ControlStatus&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
-inline void* ControlStatus::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) ControlStatus(arena);
+inline void* ControlStatus::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) ControlStatus(arena);
 }
-constexpr auto ControlStatus::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(ControlStatus), alignof(ControlStatus));
+constexpr auto ControlStatus::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(ControlStatus),
+                                            alignof(ControlStatus));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -7144,370 +6368,321 @@ const ::google::protobuf::internal::ClassDataFull ControlStatus::_class_data_ = 
     ::google::protobuf::internal::ClassData{
         &_ControlStatus_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &ControlStatus::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<ControlStatus>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &ControlStatus::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<ControlStatus>(),
-        &ControlStatus::ByteSizeLong,
-        &ControlStatus::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<ControlStatus>(), &ControlStatus::ByteSizeLong,
+            &ControlStatus::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_._cached_size_),
         false,
     },
     &ControlStatus::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* ControlStatus::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* ControlStatus::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<3, 5, 0, 0, 2>
-    ControlStatus::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            5,
-            56, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967264, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            5, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::ControlStatus>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            {::_pbi::TcParser::MiniParse, {}},
-            // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
-            {::_pbi::TcParser::SingularVarintNoZag1<
-                 ::uint32_t,
-                 offsetof(ControlStatus, _impl_.control_mode_),
-                 63>(),
-             {8, 63, 0, PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.control_mode_)}},
-            // int32 sysid_primary_control = 2;
-            {::_pbi::TcParser::SingularVarintNoZag1<
-                 ::uint32_t,
-                 offsetof(ControlStatus, _impl_.sysid_primary_control_),
-                 63>(),
-             {16, 63, 0, PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.sysid_primary_control_)}},
-            // int32 compid_primary_control = 3;
-            {::_pbi::TcParser::SingularVarintNoZag1<
-                 ::uint32_t,
-                 offsetof(ControlStatus, _impl_.compid_primary_control_),
-                 63>(),
-             {24, 63, 0, PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.compid_primary_control_)}},
-            // int32 sysid_secondary_control = 4;
-            {::_pbi::TcParser::SingularVarintNoZag1<
-                 ::uint32_t,
-                 offsetof(ControlStatus, _impl_.sysid_secondary_control_),
-                 63>(),
-             {32, 63, 0, PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.sysid_secondary_control_)}},
-            // int32 compid_secondary_control = 5;
-            {::_pbi::TcParser::SingularVarintNoZag1<
-                 ::uint32_t,
-                 offsetof(ControlStatus, _impl_.compid_secondary_control_),
-                 63>(),
-             {40, 63, 0, PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.compid_secondary_control_)}},
-            {::_pbi::TcParser::MiniParse, {}},
-            {::_pbi::TcParser::MiniParse, {}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
-            {PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.control_mode_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-            // int32 sysid_primary_control = 2;
-            {PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.sysid_primary_control_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
-            // int32 compid_primary_control = 3;
-            {PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.compid_primary_control_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
-            // int32 sysid_secondary_control = 4;
-            {PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.sysid_secondary_control_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
-            // int32 compid_secondary_control = 5;
-            {PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.compid_secondary_control_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
-        }},
-        // no aux_entries
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void ControlStatus::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.ControlStatus)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    ::memset(
-        &_impl_.control_mode_,
-        0,
-        static_cast<::size_t>(
-            reinterpret_cast<char*>(&_impl_.compid_secondary_control_) -
-            reinterpret_cast<char*>(&_impl_.control_mode_)) +
-            sizeof(_impl_.compid_secondary_control_));
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* ControlStatus::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const ControlStatus& this_ = static_cast<const ControlStatus&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* ControlStatus::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const ControlStatus& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.ControlStatus)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 5, 0, 0, 2> ControlStatus::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    5, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967264,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    5,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::ControlStatus>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
     // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
-    if (this_._internal_control_mode() != 0) {
-        target = stream->EnsureSpace(target);
-        target =
-            ::_pbi::WireFormatLite::WriteEnumToArray(1, this_._internal_control_mode(), target);
-    }
-
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ControlStatus, _impl_.control_mode_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.control_mode_)}},
     // int32 sysid_primary_control = 2;
-    if (this_._internal_sysid_primary_control() != 0) {
-        target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<2>(
-            stream, this_._internal_sysid_primary_control(), target);
-    }
-
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ControlStatus, _impl_.sysid_primary_control_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.sysid_primary_control_)}},
     // int32 compid_primary_control = 3;
-    if (this_._internal_compid_primary_control() != 0) {
-        target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<3>(
-            stream, this_._internal_compid_primary_control(), target);
-    }
-
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ControlStatus, _impl_.compid_primary_control_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.compid_primary_control_)}},
     // int32 sysid_secondary_control = 4;
-    if (this_._internal_sysid_secondary_control() != 0) {
-        target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<4>(
-            stream, this_._internal_sysid_secondary_control(), target);
-    }
-
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ControlStatus, _impl_.sysid_secondary_control_), 63>(),
+     {32, 63, 0, PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.sysid_secondary_control_)}},
     // int32 compid_secondary_control = 5;
-    if (this_._internal_compid_secondary_control() != 0) {
-        target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<5>(
-            stream, this_._internal_compid_secondary_control(), target);
-    }
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ControlStatus, _impl_.compid_secondary_control_), 63>(),
+     {40, 63, 0, PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.compid_secondary_control_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
+    {PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.control_mode_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // int32 sysid_primary_control = 2;
+    {PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.sysid_primary_control_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // int32 compid_primary_control = 3;
+    {PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.compid_primary_control_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // int32 sysid_secondary_control = 4;
+    {PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.sysid_secondary_control_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // int32 compid_secondary_control = 5;
+    {PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.compid_secondary_control_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.ControlStatus)
-    return target;
+PROTOBUF_NOINLINE void ControlStatus::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.ControlStatus)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.control_mode_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.compid_secondary_control_) -
+      reinterpret_cast<char*>(&_impl_.control_mode_)) + sizeof(_impl_.compid_secondary_control_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t ControlStatus::ByteSizeLong(const MessageLite& base)
-{
-    const ControlStatus& this_ = static_cast<const ControlStatus&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t ControlStatus::ByteSizeLong() const
-{
-    const ControlStatus& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.ControlStatus)
-    ::size_t total_size = 0;
+        ::uint8_t* ControlStatus::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const ControlStatus& this_ = static_cast<const ControlStatus&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* ControlStatus::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const ControlStatus& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.ControlStatus)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
+          if (this_._internal_control_mode() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                1, this_._internal_control_mode(), target);
+          }
 
-    ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-    {
-        // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
-        if (this_._internal_control_mode() != 0) {
-            total_size += 1 + ::_pbi::WireFormatLite::EnumSize(this_._internal_control_mode());
+          // int32 sysid_primary_control = 2;
+          if (this_._internal_sysid_primary_control() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<2>(
+                    stream, this_._internal_sysid_primary_control(), target);
+          }
+
+          // int32 compid_primary_control = 3;
+          if (this_._internal_compid_primary_control() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<3>(
+                    stream, this_._internal_compid_primary_control(), target);
+          }
+
+          // int32 sysid_secondary_control = 4;
+          if (this_._internal_sysid_secondary_control() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<4>(
+                    stream, this_._internal_sysid_secondary_control(), target);
+          }
+
+          // int32 compid_secondary_control = 5;
+          if (this_._internal_compid_secondary_control() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<5>(
+                    stream, this_._internal_compid_secondary_control(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.ControlStatus)
+          return target;
         }
-        // int32 sysid_primary_control = 2;
-        if (this_._internal_sysid_primary_control() != 0) {
-            total_size +=
-                ::_pbi::WireFormatLite::Int32SizePlusOne(this_._internal_sysid_primary_control());
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t ControlStatus::ByteSizeLong(const MessageLite& base) {
+          const ControlStatus& this_ = static_cast<const ControlStatus&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t ControlStatus::ByteSizeLong() const {
+          const ControlStatus& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.ControlStatus)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // .mavsdk.rpc.gimbal.ControlMode control_mode = 1;
+            if (this_._internal_control_mode() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_control_mode());
+            }
+            // int32 sysid_primary_control = 2;
+            if (this_._internal_sysid_primary_control() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_sysid_primary_control());
+            }
+            // int32 compid_primary_control = 3;
+            if (this_._internal_compid_primary_control() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_compid_primary_control());
+            }
+            // int32 sysid_secondary_control = 4;
+            if (this_._internal_sysid_secondary_control() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_sysid_secondary_control());
+            }
+            // int32 compid_secondary_control = 5;
+            if (this_._internal_compid_secondary_control() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_compid_secondary_control());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
-        // int32 compid_primary_control = 3;
-        if (this_._internal_compid_primary_control() != 0) {
-            total_size +=
-                ::_pbi::WireFormatLite::Int32SizePlusOne(this_._internal_compid_primary_control());
-        }
-        // int32 sysid_secondary_control = 4;
-        if (this_._internal_sysid_secondary_control() != 0) {
-            total_size +=
-                ::_pbi::WireFormatLite::Int32SizePlusOne(this_._internal_sysid_secondary_control());
-        }
-        // int32 compid_secondary_control = 5;
-        if (this_._internal_compid_secondary_control() != 0) {
-            total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
-                this_._internal_compid_secondary_control());
-        }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+void ControlStatus::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<ControlStatus*>(&to_msg);
+  auto& from = static_cast<const ControlStatus&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.ControlStatus)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_control_mode() != 0) {
+    _this->_impl_.control_mode_ = from._impl_.control_mode_;
+  }
+  if (from._internal_sysid_primary_control() != 0) {
+    _this->_impl_.sysid_primary_control_ = from._impl_.sysid_primary_control_;
+  }
+  if (from._internal_compid_primary_control() != 0) {
+    _this->_impl_.compid_primary_control_ = from._impl_.compid_primary_control_;
+  }
+  if (from._internal_sysid_secondary_control() != 0) {
+    _this->_impl_.sysid_secondary_control_ = from._impl_.sysid_secondary_control_;
+  }
+  if (from._internal_compid_secondary_control() != 0) {
+    _this->_impl_.compid_secondary_control_ = from._impl_.compid_secondary_control_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void ControlStatus::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<ControlStatus*>(&to_msg);
-    auto& from = static_cast<const ControlStatus&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.ControlStatus)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (from._internal_control_mode() != 0) {
-        _this->_impl_.control_mode_ = from._impl_.control_mode_;
-    }
-    if (from._internal_sysid_primary_control() != 0) {
-        _this->_impl_.sysid_primary_control_ = from._impl_.sysid_primary_control_;
-    }
-    if (from._internal_compid_primary_control() != 0) {
-        _this->_impl_.compid_primary_control_ = from._impl_.compid_primary_control_;
-    }
-    if (from._internal_sysid_secondary_control() != 0) {
-        _this->_impl_.sysid_secondary_control_ = from._impl_.sysid_secondary_control_;
-    }
-    if (from._internal_compid_secondary_control() != 0) {
-        _this->_impl_.compid_secondary_control_ = from._impl_.compid_secondary_control_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void ControlStatus::CopyFrom(const ControlStatus& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.ControlStatus)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void ControlStatus::CopyFrom(const ControlStatus& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.ControlStatus)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void ControlStatus::InternalSwap(ControlStatus* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.compid_secondary_control_)
+      + sizeof(ControlStatus::_impl_.compid_secondary_control_)
+      - PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.control_mode_)>(
+          reinterpret_cast<char*>(&_impl_.control_mode_),
+          reinterpret_cast<char*>(&other->_impl_.control_mode_));
 }
 
-void ControlStatus::InternalSwap(ControlStatus* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    ::google::protobuf::internal::memswap<
-        PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.compid_secondary_control_) +
-        sizeof(ControlStatus::_impl_.compid_secondary_control_) -
-        PROTOBUF_FIELD_OFFSET(ControlStatus, _impl_.control_mode_)>(
-        reinterpret_cast<char*>(&_impl_.control_mode_),
-        reinterpret_cast<char*>(&other->_impl_.control_mode_));
-}
-
-::google::protobuf::Metadata ControlStatus::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata ControlStatus::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class GimbalResult::_Internal {
-public:
+ public:
 };
 
 GimbalResult::GimbalResult(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.GimbalResult)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.gimbal.GimbalResult)
+}
+inline PROTOBUF_NDEBUG_INLINE GimbalResult::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::gimbal::GimbalResult& from_msg)
+      : result_str_(arena, from.result_str_),
+        _cached_size_{0} {}
+
+GimbalResult::GimbalResult(
+    ::google::protobuf::Arena* arena,
+    const GimbalResult& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  GimbalResult* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.result_ = from._impl_.result_;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.GimbalResult)
 }
 inline PROTOBUF_NDEBUG_INLINE GimbalResult::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::gimbal::GimbalResult& from_msg) :
-    result_str_(arena, from.result_str_),
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : result_str_(arena),
+        _cached_size_{0} {}
 
-GimbalResult::GimbalResult(::google::protobuf::Arena* arena, const GimbalResult& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    GimbalResult* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    _impl_.result_ = from._impl_.result_;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.gimbal.GimbalResult)
+inline void GimbalResult::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE GimbalResult::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    result_str_(arena),
-    _cached_size_{0}
-{}
-
-inline void GimbalResult::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.result_ = {};
+GimbalResult::~GimbalResult() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.GimbalResult)
+  SharedDtor(*this);
 }
-GimbalResult::~GimbalResult()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.gimbal.GimbalResult)
-    SharedDtor(*this);
-}
-inline void GimbalResult::SharedDtor(MessageLite& self)
-{
-    GimbalResult& this_ = static_cast<GimbalResult&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.result_str_.Destroy();
-    this_._impl_.~Impl_();
+inline void GimbalResult::SharedDtor(MessageLite& self) {
+  GimbalResult& this_ = static_cast<GimbalResult&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.result_str_.Destroy();
+  this_._impl_.~Impl_();
 }
 
-inline void* GimbalResult::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) GimbalResult(arena);
+inline void* GimbalResult::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) GimbalResult(arena);
 }
-constexpr auto GimbalResult::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::CopyInit(
-        sizeof(GimbalResult), alignof(GimbalResult));
+constexpr auto GimbalResult::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(GimbalResult),
+                                            alignof(GimbalResult));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -7515,215 +6690,200 @@ const ::google::protobuf::internal::ClassDataFull GimbalResult::_class_data_ = {
     ::google::protobuf::internal::ClassData{
         &_GimbalResult_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &GimbalResult::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<GimbalResult>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &GimbalResult::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<GimbalResult>(),
-        &GimbalResult::ByteSizeLong,
-        &GimbalResult::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<GimbalResult>(), &GimbalResult::ByteSizeLong,
+            &GimbalResult::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(GimbalResult, _impl_._cached_size_),
         false,
     },
     &GimbalResult::kDescriptorMethods,
     &descriptor_table_gimbal_2fgimbal_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* GimbalResult::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* GimbalResult::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<1, 2, 0, 49, 2>
-    GimbalResult::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            2,
-            8, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967292, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            2, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::GimbalResult>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // string result_str = 2;
-            {::_pbi::TcParser::FastUS1,
-             {18, 63, 0, PROTOBUF_FIELD_OFFSET(GimbalResult, _impl_.result_str_)}},
-            // .mavsdk.rpc.gimbal.GimbalResult.Result result = 1;
-            {::_pbi::TcParser::
-                 SingularVarintNoZag1<::uint32_t, offsetof(GimbalResult, _impl_.result_), 63>(),
-             {8, 63, 0, PROTOBUF_FIELD_OFFSET(GimbalResult, _impl_.result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.gimbal.GimbalResult.Result result = 1;
-            {PROTOBUF_FIELD_OFFSET(GimbalResult, _impl_.result_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-            // string result_str = 2;
-            {PROTOBUF_FIELD_OFFSET(GimbalResult, _impl_.result_str_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-        }},
-        // no aux_entries
-        {{"\36\0\12\0\0\0\0\0"
-          "mavsdk.rpc.gimbal.GimbalResult"
-          "result_str"}},
-    };
-
-PROTOBUF_NOINLINE void GimbalResult::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.GimbalResult)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    _impl_.result_str_.ClearToEmpty();
-    _impl_.result_ = 0;
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* GimbalResult::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const GimbalResult& this_ = static_cast<const GimbalResult&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* GimbalResult::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const GimbalResult& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.GimbalResult)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    // .mavsdk.rpc.gimbal.GimbalResult.Result result = 1;
-    if (this_._internal_result() != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteEnumToArray(1, this_._internal_result(), target);
-    }
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 49, 2> GimbalResult::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::gimbal::GimbalResult>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // string result_str = 2;
-    if (!this_._internal_result_str().empty()) {
-        const std::string& _s = this_._internal_result_str();
-        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            _s.data(),
-            static_cast<int>(_s.length()),
-            ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-            "mavsdk.rpc.gimbal.GimbalResult.result_str");
-        target = stream->WriteStringMaybeAliased(2, _s, target);
-    }
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(GimbalResult, _impl_.result_str_)}},
+    // .mavsdk.rpc.gimbal.GimbalResult.Result result = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GimbalResult, _impl_.result_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(GimbalResult, _impl_.result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.gimbal.GimbalResult.Result result = 1;
+    {PROTOBUF_FIELD_OFFSET(GimbalResult, _impl_.result_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // string result_str = 2;
+    {PROTOBUF_FIELD_OFFSET(GimbalResult, _impl_.result_str_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\36\0\12\0\0\0\0\0"
+    "mavsdk.rpc.gimbal.GimbalResult"
+    "result_str"
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.GimbalResult)
-    return target;
+PROTOBUF_NOINLINE void GimbalResult::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.gimbal.GimbalResult)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.result_str_.ClearToEmpty();
+  _impl_.result_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t GimbalResult::ByteSizeLong(const MessageLite& base)
-{
-    const GimbalResult& this_ = static_cast<const GimbalResult&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t GimbalResult::ByteSizeLong() const
-{
-    const GimbalResult& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.GimbalResult)
-    ::size_t total_size = 0;
+        ::uint8_t* GimbalResult::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const GimbalResult& this_ = static_cast<const GimbalResult&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* GimbalResult::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const GimbalResult& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.gimbal.GimbalResult)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // .mavsdk.rpc.gimbal.GimbalResult.Result result = 1;
+          if (this_._internal_result() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                1, this_._internal_result(), target);
+          }
 
-    ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-    {
-        // string result_str = 2;
-        if (!this_._internal_result_str().empty()) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                  this_._internal_result_str());
+          // string result_str = 2;
+          if (!this_._internal_result_str().empty()) {
+            const std::string& _s = this_._internal_result_str();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.gimbal.GimbalResult.result_str");
+            target = stream->WriteStringMaybeAliased(2, _s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.gimbal.GimbalResult)
+          return target;
         }
-        // .mavsdk.rpc.gimbal.GimbalResult.Result result = 1;
-        if (this_._internal_result() != 0) {
-            total_size += 1 + ::_pbi::WireFormatLite::EnumSize(this_._internal_result());
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t GimbalResult::ByteSizeLong(const MessageLite& base) {
+          const GimbalResult& this_ = static_cast<const GimbalResult&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t GimbalResult::ByteSizeLong() const {
+          const GimbalResult& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.gimbal.GimbalResult)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string result_str = 2;
+            if (!this_._internal_result_str().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_result_str());
+            }
+            // .mavsdk.rpc.gimbal.GimbalResult.Result result = 1;
+            if (this_._internal_result() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_result());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+void GimbalResult::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<GimbalResult*>(&to_msg);
+  auto& from = static_cast<const GimbalResult&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.GimbalResult)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_result_str().empty()) {
+    _this->_internal_set_result_str(from._internal_result_str());
+  }
+  if (from._internal_result() != 0) {
+    _this->_impl_.result_ = from._impl_.result_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void GimbalResult::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<GimbalResult*>(&to_msg);
-    auto& from = static_cast<const GimbalResult&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.gimbal.GimbalResult)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (!from._internal_result_str().empty()) {
-        _this->_internal_set_result_str(from._internal_result_str());
-    }
-    if (from._internal_result() != 0) {
-        _this->_impl_.result_ = from._impl_.result_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void GimbalResult::CopyFrom(const GimbalResult& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.GimbalResult)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void GimbalResult::CopyFrom(const GimbalResult& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.gimbal.GimbalResult)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void GimbalResult::InternalSwap(GimbalResult* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, &other->_impl_.result_str_, arena);
+  swap(_impl_.result_, other->_impl_.result_);
 }
 
-void GimbalResult::InternalSwap(GimbalResult* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    auto* arena = GetArena();
-    ABSL_DCHECK_EQ(arena, other->GetArena());
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, &other->_impl_.result_str_, arena);
-    swap(_impl_.result_, other->_impl_.result_);
-}
-
-::google::protobuf::Metadata GimbalResult::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata GimbalResult::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)
-} // namespace gimbal
-} // namespace rpc
-} // namespace mavsdk
+}  // namespace gimbal
+}  // namespace rpc
+}  // namespace mavsdk
 namespace google {
-namespace protobuf {} // namespace protobuf
-} // namespace google
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 // @@protoc_insertion_point(global_scope)
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::std::false_type _static_init2_ PROTOBUF_UNUSED =
-    (::_pbi::AddDescriptors(&descriptor_table_gimbal_2fgimbal_2eproto), ::std::false_type{});
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::std::false_type
+    _static_init2_ PROTOBUF_UNUSED =
+        (::_pbi::AddDescriptors(&descriptor_table_gimbal_2fgimbal_2eproto),
+         ::std::false_type{});
 #include "google/protobuf/port_undef.inc"

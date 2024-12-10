@@ -27,8 +27,8 @@
 #include "google/protobuf/generated_message_reflection.h"
 #include "google/protobuf/message.h"
 #include "google/protobuf/message_lite.h"
-#include "google/protobuf/repeated_field.h" // IWYU pragma: export
-#include "google/protobuf/extension_set.h" // IWYU pragma: export
+#include "google/protobuf/repeated_field.h"  // IWYU pragma: export
+#include "google/protobuf/extension_set.h"  // IWYU pragma: export
 #include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
 // @@protoc_insertion_point(includes)
@@ -41,14 +41,15 @@
 namespace google {
 namespace protobuf {
 namespace internal {
-template<typename T>::absl::string_view GetAnyMessageName();
-} // namespace internal
-} // namespace protobuf
-} // namespace google
+template <typename T>
+::absl::string_view GetAnyMessageName();
+}  // namespace internal
+}  // namespace protobuf
+}  // namespace google
 
 // Internal implementation detail -- do not use these members.
 struct TableStruct_transponder_2ftransponder_2eproto {
-    static const ::uint32_t offsets[];
+  static const ::uint32_t offsets[];
 };
 extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_transponder_2ftransponder_2eproto;
@@ -66,86 +67,87 @@ struct SetRateTransponderResponseDefaultTypeInternal;
 extern SetRateTransponderResponseDefaultTypeInternal _SetRateTransponderResponse_default_instance_;
 class SubscribeTransponderRequest;
 struct SubscribeTransponderRequestDefaultTypeInternal;
-extern SubscribeTransponderRequestDefaultTypeInternal
-    _SubscribeTransponderRequest_default_instance_;
+extern SubscribeTransponderRequestDefaultTypeInternal _SubscribeTransponderRequest_default_instance_;
 class TransponderResponse;
 struct TransponderResponseDefaultTypeInternal;
 extern TransponderResponseDefaultTypeInternal _TransponderResponse_default_instance_;
 class TransponderResult;
 struct TransponderResultDefaultTypeInternal;
 extern TransponderResultDefaultTypeInternal _TransponderResult_default_instance_;
-} // namespace transponder
-} // namespace rpc
-} // namespace mavsdk
+}  // namespace transponder
+}  // namespace rpc
+}  // namespace mavsdk
 namespace google {
-namespace protobuf {} // namespace protobuf
-} // namespace google
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 
 namespace mavsdk {
 namespace rpc {
 namespace transponder {
 enum TransponderResult_Result : int {
-    TransponderResult_Result_RESULT_UNKNOWN = 0,
-    TransponderResult_Result_RESULT_SUCCESS = 1,
-    TransponderResult_Result_RESULT_NO_SYSTEM = 2,
-    TransponderResult_Result_RESULT_CONNECTION_ERROR = 3,
-    TransponderResult_Result_RESULT_BUSY = 4,
-    TransponderResult_Result_RESULT_COMMAND_DENIED = 5,
-    TransponderResult_Result_RESULT_TIMEOUT = 6,
-    TransponderResult_Result_TransponderResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
-        std::numeric_limits<::int32_t>::min(),
-    TransponderResult_Result_TransponderResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
-        std::numeric_limits<::int32_t>::max(),
+  TransponderResult_Result_RESULT_UNKNOWN = 0,
+  TransponderResult_Result_RESULT_SUCCESS = 1,
+  TransponderResult_Result_RESULT_NO_SYSTEM = 2,
+  TransponderResult_Result_RESULT_CONNECTION_ERROR = 3,
+  TransponderResult_Result_RESULT_BUSY = 4,
+  TransponderResult_Result_RESULT_COMMAND_DENIED = 5,
+  TransponderResult_Result_RESULT_TIMEOUT = 6,
+  TransponderResult_Result_TransponderResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  TransponderResult_Result_TransponderResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
 };
 
 bool TransponderResult_Result_IsValid(int value);
 extern const uint32_t TransponderResult_Result_internal_data_[];
-constexpr TransponderResult_Result TransponderResult_Result_Result_MIN =
-    static_cast<TransponderResult_Result>(0);
-constexpr TransponderResult_Result TransponderResult_Result_Result_MAX =
-    static_cast<TransponderResult_Result>(6);
+constexpr TransponderResult_Result TransponderResult_Result_Result_MIN = static_cast<TransponderResult_Result>(0);
+constexpr TransponderResult_Result TransponderResult_Result_Result_MAX = static_cast<TransponderResult_Result>(6);
 constexpr int TransponderResult_Result_Result_ARRAYSIZE = 6 + 1;
-const ::google::protobuf::EnumDescriptor* TransponderResult_Result_descriptor();
-template<typename T> const std::string& TransponderResult_Result_Name(T value)
-{
-    static_assert(
-        std::is_same<T, TransponderResult_Result>::value || std::is_integral<T>::value,
-        "Incorrect type passed to Result_Name().");
-    return TransponderResult_Result_Name(static_cast<TransponderResult_Result>(value));
+const ::google::protobuf::EnumDescriptor*
+TransponderResult_Result_descriptor();
+template <typename T>
+const std::string& TransponderResult_Result_Name(T value) {
+  static_assert(std::is_same<T, TransponderResult_Result>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to Result_Name().");
+  return TransponderResult_Result_Name(static_cast<TransponderResult_Result>(value));
 }
-template<> inline const std::string& TransponderResult_Result_Name(TransponderResult_Result value)
-{
-    return ::google::protobuf::internal::NameOfDenseEnum<TransponderResult_Result_descriptor, 0, 6>(
-        static_cast<int>(value));
+template <>
+inline const std::string& TransponderResult_Result_Name(TransponderResult_Result value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<TransponderResult_Result_descriptor,
+                                                 0, 6>(
+      static_cast<int>(value));
 }
-inline bool TransponderResult_Result_Parse(absl::string_view name, TransponderResult_Result* value)
-{
-    return ::google::protobuf::internal::ParseNamedEnum<TransponderResult_Result>(
-        TransponderResult_Result_descriptor(), name, value);
+inline bool TransponderResult_Result_Parse(absl::string_view name, TransponderResult_Result* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<TransponderResult_Result>(
+      TransponderResult_Result_descriptor(), name, value);
 }
 enum AdsbEmitterType : int {
-    ADSB_EMITTER_TYPE_NO_INFO = 0,
-    ADSB_EMITTER_TYPE_LIGHT = 1,
-    ADSB_EMITTER_TYPE_SMALL = 2,
-    ADSB_EMITTER_TYPE_LARGE = 3,
-    ADSB_EMITTER_TYPE_HIGH_VORTEX_LARGE = 4,
-    ADSB_EMITTER_TYPE_HEAVY = 5,
-    ADSB_EMITTER_TYPE_HIGHLY_MANUV = 6,
-    ADSB_EMITTER_TYPE_ROTOCRAFT = 7,
-    ADSB_EMITTER_TYPE_UNASSIGNED = 8,
-    ADSB_EMITTER_TYPE_GLIDER = 9,
-    ADSB_EMITTER_TYPE_LIGHTER_AIR = 10,
-    ADSB_EMITTER_TYPE_PARACHUTE = 11,
-    ADSB_EMITTER_TYPE_ULTRA_LIGHT = 12,
-    ADSB_EMITTER_TYPE_UNASSIGNED2 = 13,
-    ADSB_EMITTER_TYPE_UAV = 14,
-    ADSB_EMITTER_TYPE_SPACE = 15,
-    ADSB_EMITTER_TYPE_UNASSGINED3 = 16,
-    ADSB_EMITTER_TYPE_EMERGENCY_SURFACE = 17,
-    ADSB_EMITTER_TYPE_SERVICE_SURFACE = 18,
-    ADSB_EMITTER_TYPE_POINT_OBSTACLE = 19,
-    AdsbEmitterType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::int32_t>::min(),
-    AdsbEmitterType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::int32_t>::max(),
+  ADSB_EMITTER_TYPE_NO_INFO = 0,
+  ADSB_EMITTER_TYPE_LIGHT = 1,
+  ADSB_EMITTER_TYPE_SMALL = 2,
+  ADSB_EMITTER_TYPE_LARGE = 3,
+  ADSB_EMITTER_TYPE_HIGH_VORTEX_LARGE = 4,
+  ADSB_EMITTER_TYPE_HEAVY = 5,
+  ADSB_EMITTER_TYPE_HIGHLY_MANUV = 6,
+  ADSB_EMITTER_TYPE_ROTOCRAFT = 7,
+  ADSB_EMITTER_TYPE_UNASSIGNED = 8,
+  ADSB_EMITTER_TYPE_GLIDER = 9,
+  ADSB_EMITTER_TYPE_LIGHTER_AIR = 10,
+  ADSB_EMITTER_TYPE_PARACHUTE = 11,
+  ADSB_EMITTER_TYPE_ULTRA_LIGHT = 12,
+  ADSB_EMITTER_TYPE_UNASSIGNED2 = 13,
+  ADSB_EMITTER_TYPE_UAV = 14,
+  ADSB_EMITTER_TYPE_SPACE = 15,
+  ADSB_EMITTER_TYPE_UNASSGINED3 = 16,
+  ADSB_EMITTER_TYPE_EMERGENCY_SURFACE = 17,
+  ADSB_EMITTER_TYPE_SERVICE_SURFACE = 18,
+  ADSB_EMITTER_TYPE_POINT_OBSTACLE = 19,
+  AdsbEmitterType_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  AdsbEmitterType_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
 };
 
 bool AdsbEmitterType_IsValid(int value);
@@ -153,29 +155,32 @@ extern const uint32_t AdsbEmitterType_internal_data_[];
 constexpr AdsbEmitterType AdsbEmitterType_MIN = static_cast<AdsbEmitterType>(0);
 constexpr AdsbEmitterType AdsbEmitterType_MAX = static_cast<AdsbEmitterType>(19);
 constexpr int AdsbEmitterType_ARRAYSIZE = 19 + 1;
-const ::google::protobuf::EnumDescriptor* AdsbEmitterType_descriptor();
-template<typename T> const std::string& AdsbEmitterType_Name(T value)
-{
-    static_assert(
-        std::is_same<T, AdsbEmitterType>::value || std::is_integral<T>::value,
-        "Incorrect type passed to AdsbEmitterType_Name().");
-    return AdsbEmitterType_Name(static_cast<AdsbEmitterType>(value));
+const ::google::protobuf::EnumDescriptor*
+AdsbEmitterType_descriptor();
+template <typename T>
+const std::string& AdsbEmitterType_Name(T value) {
+  static_assert(std::is_same<T, AdsbEmitterType>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to AdsbEmitterType_Name().");
+  return AdsbEmitterType_Name(static_cast<AdsbEmitterType>(value));
 }
-template<> inline const std::string& AdsbEmitterType_Name(AdsbEmitterType value)
-{
-    return ::google::protobuf::internal::NameOfDenseEnum<AdsbEmitterType_descriptor, 0, 19>(
-        static_cast<int>(value));
+template <>
+inline const std::string& AdsbEmitterType_Name(AdsbEmitterType value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<AdsbEmitterType_descriptor,
+                                                 0, 19>(
+      static_cast<int>(value));
 }
-inline bool AdsbEmitterType_Parse(absl::string_view name, AdsbEmitterType* value)
-{
-    return ::google::protobuf::internal::ParseNamedEnum<AdsbEmitterType>(
-        AdsbEmitterType_descriptor(), name, value);
+inline bool AdsbEmitterType_Parse(absl::string_view name, AdsbEmitterType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<AdsbEmitterType>(
+      AdsbEmitterType_descriptor(), name, value);
 }
 enum AdsbAltitudeType : int {
-    ADSB_ALTITUDE_TYPE_PRESSURE_QNH = 0,
-    ADSB_ALTITUDE_TYPE_GEOMETRIC = 1,
-    AdsbAltitudeType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::int32_t>::min(),
-    AdsbAltitudeType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::int32_t>::max(),
+  ADSB_ALTITUDE_TYPE_PRESSURE_QNH = 0,
+  ADSB_ALTITUDE_TYPE_GEOMETRIC = 1,
+  AdsbAltitudeType_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  AdsbAltitudeType_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
 };
 
 bool AdsbAltitudeType_IsValid(int value);
@@ -183,1417 +188,1335 @@ extern const uint32_t AdsbAltitudeType_internal_data_[];
 constexpr AdsbAltitudeType AdsbAltitudeType_MIN = static_cast<AdsbAltitudeType>(0);
 constexpr AdsbAltitudeType AdsbAltitudeType_MAX = static_cast<AdsbAltitudeType>(1);
 constexpr int AdsbAltitudeType_ARRAYSIZE = 1 + 1;
-const ::google::protobuf::EnumDescriptor* AdsbAltitudeType_descriptor();
-template<typename T> const std::string& AdsbAltitudeType_Name(T value)
-{
-    static_assert(
-        std::is_same<T, AdsbAltitudeType>::value || std::is_integral<T>::value,
-        "Incorrect type passed to AdsbAltitudeType_Name().");
-    return AdsbAltitudeType_Name(static_cast<AdsbAltitudeType>(value));
+const ::google::protobuf::EnumDescriptor*
+AdsbAltitudeType_descriptor();
+template <typename T>
+const std::string& AdsbAltitudeType_Name(T value) {
+  static_assert(std::is_same<T, AdsbAltitudeType>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to AdsbAltitudeType_Name().");
+  return AdsbAltitudeType_Name(static_cast<AdsbAltitudeType>(value));
 }
-template<> inline const std::string& AdsbAltitudeType_Name(AdsbAltitudeType value)
-{
-    return ::google::protobuf::internal::NameOfDenseEnum<AdsbAltitudeType_descriptor, 0, 1>(
-        static_cast<int>(value));
+template <>
+inline const std::string& AdsbAltitudeType_Name(AdsbAltitudeType value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<AdsbAltitudeType_descriptor,
+                                                 0, 1>(
+      static_cast<int>(value));
 }
-inline bool AdsbAltitudeType_Parse(absl::string_view name, AdsbAltitudeType* value)
-{
-    return ::google::protobuf::internal::ParseNamedEnum<AdsbAltitudeType>(
-        AdsbAltitudeType_descriptor(), name, value);
+inline bool AdsbAltitudeType_Parse(absl::string_view name, AdsbAltitudeType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<AdsbAltitudeType>(
+      AdsbAltitudeType_descriptor(), name, value);
 }
 
 // ===================================================================
 
+
 // -------------------------------------------------------------------
 
-class TransponderResult final : public ::google::protobuf::Message
+class TransponderResult final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.transponder.TransponderResult) */ {
-public:
-    inline TransponderResult() : TransponderResult(nullptr) {}
-    ~TransponderResult() PROTOBUF_FINAL;
+ public:
+  inline TransponderResult() : TransponderResult(nullptr) {}
+  ~TransponderResult() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(TransponderResult* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(TransponderResult));
-    }
+  void operator delete(TransponderResult* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(TransponderResult));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        TransponderResult(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR TransponderResult(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline TransponderResult(const TransponderResult& from) : TransponderResult(nullptr, from) {}
-    inline TransponderResult(TransponderResult&& from) noexcept :
-        TransponderResult(nullptr, std::move(from))
-    {}
-    inline TransponderResult& operator=(const TransponderResult& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline TransponderResult(const TransponderResult& from) : TransponderResult(nullptr, from) {}
+  inline TransponderResult(TransponderResult&& from) noexcept
+      : TransponderResult(nullptr, std::move(from)) {}
+  inline TransponderResult& operator=(const TransponderResult& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TransponderResult& operator=(TransponderResult&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline TransponderResult& operator=(TransponderResult&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TransponderResult& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const TransponderResult* internal_default_instance() {
+    return reinterpret_cast<const TransponderResult*>(
+        &_TransponderResult_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 5;
+  friend void swap(TransponderResult& a, TransponderResult& b) { a.Swap(&b); }
+  inline void Swap(TransponderResult* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(TransponderResult* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const TransponderResult& default_instance() { return *internal_default_instance(); }
-    static inline const TransponderResult* internal_default_instance()
-    {
-        return reinterpret_cast<const TransponderResult*>(&_TransponderResult_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 5;
-    friend void swap(TransponderResult& a, TransponderResult& b) { a.Swap(&b); }
-    inline void Swap(TransponderResult* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(TransponderResult* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  TransponderResult* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<TransponderResult>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TransponderResult& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const TransponderResult& from) { TransponderResult::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    TransponderResult* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<TransponderResult>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const TransponderResult& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const TransponderResult& from) { TransponderResult::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(TransponderResult* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.transponder.TransponderResult"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit TransponderResult(::google::protobuf::Arena* arena);
+  TransponderResult(::google::protobuf::Arena* arena, const TransponderResult& from);
+  TransponderResult(::google::protobuf::Arena* arena, TransponderResult&& from) noexcept
+      : TransponderResult(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(TransponderResult* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+  using Result = TransponderResult_Result;
+  static constexpr Result RESULT_UNKNOWN = TransponderResult_Result_RESULT_UNKNOWN;
+  static constexpr Result RESULT_SUCCESS = TransponderResult_Result_RESULT_SUCCESS;
+  static constexpr Result RESULT_NO_SYSTEM = TransponderResult_Result_RESULT_NO_SYSTEM;
+  static constexpr Result RESULT_CONNECTION_ERROR = TransponderResult_Result_RESULT_CONNECTION_ERROR;
+  static constexpr Result RESULT_BUSY = TransponderResult_Result_RESULT_BUSY;
+  static constexpr Result RESULT_COMMAND_DENIED = TransponderResult_Result_RESULT_COMMAND_DENIED;
+  static constexpr Result RESULT_TIMEOUT = TransponderResult_Result_RESULT_TIMEOUT;
+  static inline bool Result_IsValid(int value) {
+    return TransponderResult_Result_IsValid(value);
+  }
+  static constexpr Result Result_MIN = TransponderResult_Result_Result_MIN;
+  static constexpr Result Result_MAX = TransponderResult_Result_Result_MAX;
+  static constexpr int Result_ARRAYSIZE = TransponderResult_Result_Result_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor* Result_descriptor() {
+    return TransponderResult_Result_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& Result_Name(T value) {
+    return TransponderResult_Result_Name(value);
+  }
+  static inline bool Result_Parse(absl::string_view name, Result* value) {
+    return TransponderResult_Result_Parse(name, value);
+  }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.transponder.TransponderResult";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kResultStrFieldNumber = 2,
+    kResultFieldNumber = 1,
+  };
+  // string result_str = 2;
+  void clear_result_str() ;
+  const std::string& result_str() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_result_str(Arg_&& arg, Args_... args);
+  std::string* mutable_result_str();
+  PROTOBUF_NODISCARD std::string* release_result_str();
+  void set_allocated_result_str(std::string* value);
 
-protected:
-    explicit TransponderResult(::google::protobuf::Arena* arena);
-    TransponderResult(::google::protobuf::Arena* arena, const TransponderResult& from);
-    TransponderResult(::google::protobuf::Arena* arena, TransponderResult&& from) noexcept :
-        TransponderResult(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const std::string& _internal_result_str() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_result_str(
+      const std::string& value);
+  std::string* _internal_mutable_result_str();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
-    using Result = TransponderResult_Result;
-    static constexpr Result RESULT_UNKNOWN = TransponderResult_Result_RESULT_UNKNOWN;
-    static constexpr Result RESULT_SUCCESS = TransponderResult_Result_RESULT_SUCCESS;
-    static constexpr Result RESULT_NO_SYSTEM = TransponderResult_Result_RESULT_NO_SYSTEM;
-    static constexpr Result RESULT_CONNECTION_ERROR =
-        TransponderResult_Result_RESULT_CONNECTION_ERROR;
-    static constexpr Result RESULT_BUSY = TransponderResult_Result_RESULT_BUSY;
-    static constexpr Result RESULT_COMMAND_DENIED = TransponderResult_Result_RESULT_COMMAND_DENIED;
-    static constexpr Result RESULT_TIMEOUT = TransponderResult_Result_RESULT_TIMEOUT;
-    static inline bool Result_IsValid(int value) { return TransponderResult_Result_IsValid(value); }
-    static constexpr Result Result_MIN = TransponderResult_Result_Result_MIN;
-    static constexpr Result Result_MAX = TransponderResult_Result_Result_MAX;
-    static constexpr int Result_ARRAYSIZE = TransponderResult_Result_Result_ARRAYSIZE;
-    static inline const ::google::protobuf::EnumDescriptor* Result_descriptor()
-    {
-        return TransponderResult_Result_descriptor();
-    }
-    template<typename T> static inline const std::string& Result_Name(T value)
-    {
-        return TransponderResult_Result_Name(value);
-    }
-    static inline bool Result_Parse(absl::string_view name, Result* value)
-    {
-        return TransponderResult_Result_Parse(name, value);
-    }
+  public:
+  // .mavsdk.rpc.transponder.TransponderResult.Result result = 1;
+  void clear_result() ;
+  ::mavsdk::rpc::transponder::TransponderResult_Result result() const;
+  void set_result(::mavsdk::rpc::transponder::TransponderResult_Result value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kResultStrFieldNumber = 2,
-        kResultFieldNumber = 1,
-    };
-    // string result_str = 2;
-    void clear_result_str();
-    const std::string& result_str() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_result_str(Arg_&& arg, Args_... args);
-    std::string* mutable_result_str();
-    PROTOBUF_NODISCARD std::string* release_result_str();
-    void set_allocated_result_str(std::string* value);
+  private:
+  ::mavsdk::rpc::transponder::TransponderResult_Result _internal_result() const;
+  void _internal_set_result(::mavsdk::rpc::transponder::TransponderResult_Result value);
 
-private:
-    const std::string& _internal_result_str() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_result_str(const std::string& value);
-    std::string* _internal_mutable_result_str();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.transponder.TransponderResult)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      59, 2>
+      _table_;
 
-public:
-    // .mavsdk.rpc.transponder.TransponderResult.Result result = 1;
-    void clear_result();
-    ::mavsdk::rpc::transponder::TransponderResult_Result result() const;
-    void set_result(::mavsdk::rpc::transponder::TransponderResult_Result value);
-
-private:
-    ::mavsdk::rpc::transponder::TransponderResult_Result _internal_result() const;
-    void _internal_set_result(::mavsdk::rpc::transponder::TransponderResult_Result value);
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.transponder.TransponderResult)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 0, 59, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const TransponderResult& from_msg);
-        ::google::protobuf::internal::ArenaStringPtr result_str_;
-        int result_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_transponder_2ftransponder_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const TransponderResult& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr result_str_;
+    int result_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_transponder_2ftransponder_2eproto;
 };
 // -------------------------------------------------------------------
 
-class SubscribeTransponderRequest final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:mavsdk.rpc.transponder.SubscribeTransponderRequest) */
-{
-public:
-    inline SubscribeTransponderRequest() : SubscribeTransponderRequest(nullptr) {}
+class SubscribeTransponderRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.transponder.SubscribeTransponderRequest) */ {
+ public:
+  inline SubscribeTransponderRequest() : SubscribeTransponderRequest(nullptr) {}
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(SubscribeTransponderRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeTransponderRequest));
-    }
+  void operator delete(SubscribeTransponderRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeTransponderRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        SubscribeTransponderRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeTransponderRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline SubscribeTransponderRequest(const SubscribeTransponderRequest& from) :
-        SubscribeTransponderRequest(nullptr, from)
-    {}
-    inline SubscribeTransponderRequest(SubscribeTransponderRequest&& from) noexcept :
-        SubscribeTransponderRequest(nullptr, std::move(from))
-    {}
-    inline SubscribeTransponderRequest& operator=(const SubscribeTransponderRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline SubscribeTransponderRequest(const SubscribeTransponderRequest& from) : SubscribeTransponderRequest(nullptr, from) {}
+  inline SubscribeTransponderRequest(SubscribeTransponderRequest&& from) noexcept
+      : SubscribeTransponderRequest(nullptr, std::move(from)) {}
+  inline SubscribeTransponderRequest& operator=(const SubscribeTransponderRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeTransponderRequest& operator=(SubscribeTransponderRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline SubscribeTransponderRequest& operator=(SubscribeTransponderRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeTransponderRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeTransponderRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeTransponderRequest*>(
+        &_SubscribeTransponderRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 0;
+  friend void swap(SubscribeTransponderRequest& a, SubscribeTransponderRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeTransponderRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const SubscribeTransponderRequest& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const SubscribeTransponderRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const SubscribeTransponderRequest*>(
-            &_SubscribeTransponderRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 0;
-    friend void swap(SubscribeTransponderRequest& a, SubscribeTransponderRequest& b) { a.Swap(&b); }
-    inline void Swap(SubscribeTransponderRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(SubscribeTransponderRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(SubscribeTransponderRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    SubscribeTransponderRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<
-            SubscribeTransponderRequest>(arena);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-    inline void CopyFrom(const SubscribeTransponderRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-    void MergeFrom(const SubscribeTransponderRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-    }
+  SubscribeTransponderRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<SubscribeTransponderRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeTransponderRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeTransponderRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
 
-public:
-    bool IsInitialized() const { return true; }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.transponder.SubscribeTransponderRequest"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.transponder.SubscribeTransponderRequest";
-    }
+ protected:
+  explicit SubscribeTransponderRequest(::google::protobuf::Arena* arena);
+  SubscribeTransponderRequest(::google::protobuf::Arena* arena, const SubscribeTransponderRequest& from);
+  SubscribeTransponderRequest(::google::protobuf::Arena* arena, SubscribeTransponderRequest&& from) noexcept
+      : SubscribeTransponderRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit SubscribeTransponderRequest(::google::protobuf::Arena* arena);
-    SubscribeTransponderRequest(
-        ::google::protobuf::Arena* arena, const SubscribeTransponderRequest& from);
-    SubscribeTransponderRequest(
-        ::google::protobuf::Arena* arena, SubscribeTransponderRequest&& from) noexcept :
-        SubscribeTransponderRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.transponder.SubscribeTransponderRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.transponder.SubscribeTransponderRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 0, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const SubscribeTransponderRequest& from_msg);
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    friend struct ::TableStruct_transponder_2ftransponder_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeTransponderRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_transponder_2ftransponder_2eproto;
 };
 // -------------------------------------------------------------------
 
-class SetRateTransponderRequest final : public ::google::protobuf::Message
+class SetRateTransponderRequest final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.transponder.SetRateTransponderRequest) */ {
-public:
-    inline SetRateTransponderRequest() : SetRateTransponderRequest(nullptr) {}
-    ~SetRateTransponderRequest() PROTOBUF_FINAL;
+ public:
+  inline SetRateTransponderRequest() : SetRateTransponderRequest(nullptr) {}
+  ~SetRateTransponderRequest() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(SetRateTransponderRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(SetRateTransponderRequest));
-    }
+  void operator delete(SetRateTransponderRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SetRateTransponderRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        SetRateTransponderRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SetRateTransponderRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline SetRateTransponderRequest(const SetRateTransponderRequest& from) :
-        SetRateTransponderRequest(nullptr, from)
-    {}
-    inline SetRateTransponderRequest(SetRateTransponderRequest&& from) noexcept :
-        SetRateTransponderRequest(nullptr, std::move(from))
-    {}
-    inline SetRateTransponderRequest& operator=(const SetRateTransponderRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline SetRateTransponderRequest(const SetRateTransponderRequest& from) : SetRateTransponderRequest(nullptr, from) {}
+  inline SetRateTransponderRequest(SetRateTransponderRequest&& from) noexcept
+      : SetRateTransponderRequest(nullptr, std::move(from)) {}
+  inline SetRateTransponderRequest& operator=(const SetRateTransponderRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetRateTransponderRequest& operator=(SetRateTransponderRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline SetRateTransponderRequest& operator=(SetRateTransponderRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetRateTransponderRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetRateTransponderRequest* internal_default_instance() {
+    return reinterpret_cast<const SetRateTransponderRequest*>(
+        &_SetRateTransponderRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 2;
+  friend void swap(SetRateTransponderRequest& a, SetRateTransponderRequest& b) { a.Swap(&b); }
+  inline void Swap(SetRateTransponderRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(SetRateTransponderRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const SetRateTransponderRequest& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const SetRateTransponderRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const SetRateTransponderRequest*>(
-            &_SetRateTransponderRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 2;
-    friend void swap(SetRateTransponderRequest& a, SetRateTransponderRequest& b) { a.Swap(&b); }
-    inline void Swap(SetRateTransponderRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(SetRateTransponderRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  SetRateTransponderRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SetRateTransponderRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SetRateTransponderRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SetRateTransponderRequest& from) { SetRateTransponderRequest::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    SetRateTransponderRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<SetRateTransponderRequest>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const SetRateTransponderRequest& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const SetRateTransponderRequest& from)
-    {
-        SetRateTransponderRequest::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SetRateTransponderRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.transponder.SetRateTransponderRequest"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit SetRateTransponderRequest(::google::protobuf::Arena* arena);
+  SetRateTransponderRequest(::google::protobuf::Arena* arena, const SetRateTransponderRequest& from);
+  SetRateTransponderRequest(::google::protobuf::Arena* arena, SetRateTransponderRequest&& from) noexcept
+      : SetRateTransponderRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(SetRateTransponderRequest* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.transponder.SetRateTransponderRequest";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kRateHzFieldNumber = 1,
+  };
+  // double rate_hz = 1;
+  void clear_rate_hz() ;
+  double rate_hz() const;
+  void set_rate_hz(double value);
 
-protected:
-    explicit SetRateTransponderRequest(::google::protobuf::Arena* arena);
-    SetRateTransponderRequest(
-        ::google::protobuf::Arena* arena, const SetRateTransponderRequest& from);
-    SetRateTransponderRequest(
-        ::google::protobuf::Arena* arena, SetRateTransponderRequest&& from) noexcept :
-        SetRateTransponderRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  double _internal_rate_hz() const;
+  void _internal_set_rate_hz(double value);
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.transponder.SetRateTransponderRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kRateHzFieldNumber = 1,
-    };
-    // double rate_hz = 1;
-    void clear_rate_hz();
-    double rate_hz() const;
-    void set_rate_hz(double value);
-
-private:
-    double _internal_rate_hz() const;
-    void _internal_set_rate_hz(double value);
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.transponder.SetRateTransponderRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const SetRateTransponderRequest& from_msg);
-        double rate_hz_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_transponder_2ftransponder_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SetRateTransponderRequest& from_msg);
+    double rate_hz_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_transponder_2ftransponder_2eproto;
 };
 // -------------------------------------------------------------------
 
-class AdsbVehicle final : public ::google::protobuf::Message
+class AdsbVehicle final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.transponder.AdsbVehicle) */ {
-public:
-    inline AdsbVehicle() : AdsbVehicle(nullptr) {}
-    ~AdsbVehicle() PROTOBUF_FINAL;
+ public:
+  inline AdsbVehicle() : AdsbVehicle(nullptr) {}
+  ~AdsbVehicle() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(AdsbVehicle* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(AdsbVehicle));
-    }
+  void operator delete(AdsbVehicle* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(AdsbVehicle));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR AdsbVehicle(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR AdsbVehicle(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline AdsbVehicle(const AdsbVehicle& from) : AdsbVehicle(nullptr, from) {}
-    inline AdsbVehicle(AdsbVehicle&& from) noexcept : AdsbVehicle(nullptr, std::move(from)) {}
-    inline AdsbVehicle& operator=(const AdsbVehicle& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline AdsbVehicle(const AdsbVehicle& from) : AdsbVehicle(nullptr, from) {}
+  inline AdsbVehicle(AdsbVehicle&& from) noexcept
+      : AdsbVehicle(nullptr, std::move(from)) {}
+  inline AdsbVehicle& operator=(const AdsbVehicle& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AdsbVehicle& operator=(AdsbVehicle&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline AdsbVehicle& operator=(AdsbVehicle&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const AdsbVehicle& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const AdsbVehicle* internal_default_instance() {
+    return reinterpret_cast<const AdsbVehicle*>(
+        &_AdsbVehicle_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 4;
+  friend void swap(AdsbVehicle& a, AdsbVehicle& b) { a.Swap(&b); }
+  inline void Swap(AdsbVehicle* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(AdsbVehicle* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const AdsbVehicle& default_instance() { return *internal_default_instance(); }
-    static inline const AdsbVehicle* internal_default_instance()
-    {
-        return reinterpret_cast<const AdsbVehicle*>(&_AdsbVehicle_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 4;
-    friend void swap(AdsbVehicle& a, AdsbVehicle& b) { a.Swap(&b); }
-    inline void Swap(AdsbVehicle* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(AdsbVehicle* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  AdsbVehicle* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<AdsbVehicle>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const AdsbVehicle& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const AdsbVehicle& from) { AdsbVehicle::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    AdsbVehicle* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<AdsbVehicle>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const AdsbVehicle& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const AdsbVehicle& from) { AdsbVehicle::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(AdsbVehicle* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.transponder.AdsbVehicle"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit AdsbVehicle(::google::protobuf::Arena* arena);
+  AdsbVehicle(::google::protobuf::Arena* arena, const AdsbVehicle& from);
+  AdsbVehicle(::google::protobuf::Arena* arena, AdsbVehicle&& from) noexcept
+      : AdsbVehicle(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(AdsbVehicle* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.transponder.AdsbVehicle"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kCallsignFieldNumber = 9,
+    kLatitudeDegFieldNumber = 2,
+    kIcaoAddressFieldNumber = 1,
+    kAltitudeTypeFieldNumber = 4,
+    kLongitudeDegFieldNumber = 3,
+    kAbsoluteAltitudeMFieldNumber = 5,
+    kHeadingDegFieldNumber = 6,
+    kHorizontalVelocityMSFieldNumber = 7,
+    kVerticalVelocityMSFieldNumber = 8,
+    kEmitterTypeFieldNumber = 10,
+    kSquawkFieldNumber = 13,
+    kTslcSFieldNumber = 14,
+  };
+  // string callsign = 9;
+  void clear_callsign() ;
+  const std::string& callsign() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_callsign(Arg_&& arg, Args_... args);
+  std::string* mutable_callsign();
+  PROTOBUF_NODISCARD std::string* release_callsign();
+  void set_allocated_callsign(std::string* value);
 
-protected:
-    explicit AdsbVehicle(::google::protobuf::Arena* arena);
-    AdsbVehicle(::google::protobuf::Arena* arena, const AdsbVehicle& from);
-    AdsbVehicle(::google::protobuf::Arena* arena, AdsbVehicle&& from) noexcept : AdsbVehicle(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const std::string& _internal_callsign() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_callsign(
+      const std::string& value);
+  std::string* _internal_mutable_callsign();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // double latitude_deg = 2;
+  void clear_latitude_deg() ;
+  double latitude_deg() const;
+  void set_latitude_deg(double value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kCallsignFieldNumber = 9,
-        kLatitudeDegFieldNumber = 2,
-        kIcaoAddressFieldNumber = 1,
-        kAltitudeTypeFieldNumber = 4,
-        kLongitudeDegFieldNumber = 3,
-        kAbsoluteAltitudeMFieldNumber = 5,
-        kHeadingDegFieldNumber = 6,
-        kHorizontalVelocityMSFieldNumber = 7,
-        kVerticalVelocityMSFieldNumber = 8,
-        kEmitterTypeFieldNumber = 10,
-        kSquawkFieldNumber = 13,
-        kTslcSFieldNumber = 14,
-    };
-    // string callsign = 9;
-    void clear_callsign();
-    const std::string& callsign() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_callsign(Arg_&& arg, Args_... args);
-    std::string* mutable_callsign();
-    PROTOBUF_NODISCARD std::string* release_callsign();
-    void set_allocated_callsign(std::string* value);
+  private:
+  double _internal_latitude_deg() const;
+  void _internal_set_latitude_deg(double value);
 
-private:
-    const std::string& _internal_callsign() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_callsign(const std::string& value);
-    std::string* _internal_mutable_callsign();
+  public:
+  // uint32 icao_address = 1;
+  void clear_icao_address() ;
+  ::uint32_t icao_address() const;
+  void set_icao_address(::uint32_t value);
 
-public:
-    // double latitude_deg = 2;
-    void clear_latitude_deg();
-    double latitude_deg() const;
-    void set_latitude_deg(double value);
+  private:
+  ::uint32_t _internal_icao_address() const;
+  void _internal_set_icao_address(::uint32_t value);
 
-private:
-    double _internal_latitude_deg() const;
-    void _internal_set_latitude_deg(double value);
+  public:
+  // .mavsdk.rpc.transponder.AdsbAltitudeType altitude_type = 4;
+  void clear_altitude_type() ;
+  ::mavsdk::rpc::transponder::AdsbAltitudeType altitude_type() const;
+  void set_altitude_type(::mavsdk::rpc::transponder::AdsbAltitudeType value);
 
-public:
-    // uint32 icao_address = 1;
-    void clear_icao_address();
-    ::uint32_t icao_address() const;
-    void set_icao_address(::uint32_t value);
+  private:
+  ::mavsdk::rpc::transponder::AdsbAltitudeType _internal_altitude_type() const;
+  void _internal_set_altitude_type(::mavsdk::rpc::transponder::AdsbAltitudeType value);
 
-private:
-    ::uint32_t _internal_icao_address() const;
-    void _internal_set_icao_address(::uint32_t value);
+  public:
+  // double longitude_deg = 3;
+  void clear_longitude_deg() ;
+  double longitude_deg() const;
+  void set_longitude_deg(double value);
 
-public:
-    // .mavsdk.rpc.transponder.AdsbAltitudeType altitude_type = 4;
-    void clear_altitude_type();
-    ::mavsdk::rpc::transponder::AdsbAltitudeType altitude_type() const;
-    void set_altitude_type(::mavsdk::rpc::transponder::AdsbAltitudeType value);
+  private:
+  double _internal_longitude_deg() const;
+  void _internal_set_longitude_deg(double value);
 
-private:
-    ::mavsdk::rpc::transponder::AdsbAltitudeType _internal_altitude_type() const;
-    void _internal_set_altitude_type(::mavsdk::rpc::transponder::AdsbAltitudeType value);
+  public:
+  // float absolute_altitude_m = 5;
+  void clear_absolute_altitude_m() ;
+  float absolute_altitude_m() const;
+  void set_absolute_altitude_m(float value);
 
-public:
-    // double longitude_deg = 3;
-    void clear_longitude_deg();
-    double longitude_deg() const;
-    void set_longitude_deg(double value);
+  private:
+  float _internal_absolute_altitude_m() const;
+  void _internal_set_absolute_altitude_m(float value);
 
-private:
-    double _internal_longitude_deg() const;
-    void _internal_set_longitude_deg(double value);
+  public:
+  // float heading_deg = 6;
+  void clear_heading_deg() ;
+  float heading_deg() const;
+  void set_heading_deg(float value);
 
-public:
-    // float absolute_altitude_m = 5;
-    void clear_absolute_altitude_m();
-    float absolute_altitude_m() const;
-    void set_absolute_altitude_m(float value);
+  private:
+  float _internal_heading_deg() const;
+  void _internal_set_heading_deg(float value);
 
-private:
-    float _internal_absolute_altitude_m() const;
-    void _internal_set_absolute_altitude_m(float value);
+  public:
+  // float horizontal_velocity_m_s = 7;
+  void clear_horizontal_velocity_m_s() ;
+  float horizontal_velocity_m_s() const;
+  void set_horizontal_velocity_m_s(float value);
 
-public:
-    // float heading_deg = 6;
-    void clear_heading_deg();
-    float heading_deg() const;
-    void set_heading_deg(float value);
+  private:
+  float _internal_horizontal_velocity_m_s() const;
+  void _internal_set_horizontal_velocity_m_s(float value);
 
-private:
-    float _internal_heading_deg() const;
-    void _internal_set_heading_deg(float value);
+  public:
+  // float vertical_velocity_m_s = 8;
+  void clear_vertical_velocity_m_s() ;
+  float vertical_velocity_m_s() const;
+  void set_vertical_velocity_m_s(float value);
 
-public:
-    // float horizontal_velocity_m_s = 7;
-    void clear_horizontal_velocity_m_s();
-    float horizontal_velocity_m_s() const;
-    void set_horizontal_velocity_m_s(float value);
+  private:
+  float _internal_vertical_velocity_m_s() const;
+  void _internal_set_vertical_velocity_m_s(float value);
 
-private:
-    float _internal_horizontal_velocity_m_s() const;
-    void _internal_set_horizontal_velocity_m_s(float value);
+  public:
+  // .mavsdk.rpc.transponder.AdsbEmitterType emitter_type = 10;
+  void clear_emitter_type() ;
+  ::mavsdk::rpc::transponder::AdsbEmitterType emitter_type() const;
+  void set_emitter_type(::mavsdk::rpc::transponder::AdsbEmitterType value);
 
-public:
-    // float vertical_velocity_m_s = 8;
-    void clear_vertical_velocity_m_s();
-    float vertical_velocity_m_s() const;
-    void set_vertical_velocity_m_s(float value);
+  private:
+  ::mavsdk::rpc::transponder::AdsbEmitterType _internal_emitter_type() const;
+  void _internal_set_emitter_type(::mavsdk::rpc::transponder::AdsbEmitterType value);
 
-private:
-    float _internal_vertical_velocity_m_s() const;
-    void _internal_set_vertical_velocity_m_s(float value);
+  public:
+  // uint32 squawk = 13;
+  void clear_squawk() ;
+  ::uint32_t squawk() const;
+  void set_squawk(::uint32_t value);
 
-public:
-    // .mavsdk.rpc.transponder.AdsbEmitterType emitter_type = 10;
-    void clear_emitter_type();
-    ::mavsdk::rpc::transponder::AdsbEmitterType emitter_type() const;
-    void set_emitter_type(::mavsdk::rpc::transponder::AdsbEmitterType value);
+  private:
+  ::uint32_t _internal_squawk() const;
+  void _internal_set_squawk(::uint32_t value);
 
-private:
-    ::mavsdk::rpc::transponder::AdsbEmitterType _internal_emitter_type() const;
-    void _internal_set_emitter_type(::mavsdk::rpc::transponder::AdsbEmitterType value);
+  public:
+  // uint32 tslc_s = 14;
+  void clear_tslc_s() ;
+  ::uint32_t tslc_s() const;
+  void set_tslc_s(::uint32_t value);
 
-public:
-    // uint32 squawk = 13;
-    void clear_squawk();
-    ::uint32_t squawk() const;
-    void set_squawk(::uint32_t value);
+  private:
+  ::uint32_t _internal_tslc_s() const;
+  void _internal_set_tslc_s(::uint32_t value);
 
-private:
-    ::uint32_t _internal_squawk() const;
-    void _internal_set_squawk(::uint32_t value);
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.transponder.AdsbVehicle)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      4, 12, 0,
+      59, 2>
+      _table_;
 
-public:
-    // uint32 tslc_s = 14;
-    void clear_tslc_s();
-    ::uint32_t tslc_s() const;
-    void set_tslc_s(::uint32_t value);
-
-private:
-    ::uint32_t _internal_tslc_s() const;
-    void _internal_set_tslc_s(::uint32_t value);
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.transponder.AdsbVehicle)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<4, 12, 0, 59, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const AdsbVehicle& from_msg);
-        ::google::protobuf::internal::ArenaStringPtr callsign_;
-        double latitude_deg_;
-        ::uint32_t icao_address_;
-        int altitude_type_;
-        double longitude_deg_;
-        float absolute_altitude_m_;
-        float heading_deg_;
-        float horizontal_velocity_m_s_;
-        float vertical_velocity_m_s_;
-        int emitter_type_;
-        ::uint32_t squawk_;
-        ::uint32_t tslc_s_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_transponder_2ftransponder_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const AdsbVehicle& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr callsign_;
+    double latitude_deg_;
+    ::uint32_t icao_address_;
+    int altitude_type_;
+    double longitude_deg_;
+    float absolute_altitude_m_;
+    float heading_deg_;
+    float horizontal_velocity_m_s_;
+    float vertical_velocity_m_s_;
+    int emitter_type_;
+    ::uint32_t squawk_;
+    ::uint32_t tslc_s_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_transponder_2ftransponder_2eproto;
 };
 // -------------------------------------------------------------------
 
-class TransponderResponse final : public ::google::protobuf::Message
+class TransponderResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.transponder.TransponderResponse) */ {
-public:
-    inline TransponderResponse() : TransponderResponse(nullptr) {}
-    ~TransponderResponse() PROTOBUF_FINAL;
+ public:
+  inline TransponderResponse() : TransponderResponse(nullptr) {}
+  ~TransponderResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(TransponderResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(TransponderResponse));
-    }
+  void operator delete(TransponderResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(TransponderResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        TransponderResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR TransponderResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline TransponderResponse(const TransponderResponse& from) : TransponderResponse(nullptr, from)
-    {}
-    inline TransponderResponse(TransponderResponse&& from) noexcept :
-        TransponderResponse(nullptr, std::move(from))
-    {}
-    inline TransponderResponse& operator=(const TransponderResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline TransponderResponse(const TransponderResponse& from) : TransponderResponse(nullptr, from) {}
+  inline TransponderResponse(TransponderResponse&& from) noexcept
+      : TransponderResponse(nullptr, std::move(from)) {}
+  inline TransponderResponse& operator=(const TransponderResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline TransponderResponse& operator=(TransponderResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline TransponderResponse& operator=(TransponderResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const TransponderResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const TransponderResponse* internal_default_instance() {
+    return reinterpret_cast<const TransponderResponse*>(
+        &_TransponderResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 1;
+  friend void swap(TransponderResponse& a, TransponderResponse& b) { a.Swap(&b); }
+  inline void Swap(TransponderResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(TransponderResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const TransponderResponse& default_instance() { return *internal_default_instance(); }
-    static inline const TransponderResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const TransponderResponse*>(
-            &_TransponderResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 1;
-    friend void swap(TransponderResponse& a, TransponderResponse& b) { a.Swap(&b); }
-    inline void Swap(TransponderResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(TransponderResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  TransponderResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<TransponderResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const TransponderResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const TransponderResponse& from) { TransponderResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    TransponderResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<TransponderResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const TransponderResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const TransponderResponse& from) { TransponderResponse::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(TransponderResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.transponder.TransponderResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit TransponderResponse(::google::protobuf::Arena* arena);
+  TransponderResponse(::google::protobuf::Arena* arena, const TransponderResponse& from);
+  TransponderResponse(::google::protobuf::Arena* arena, TransponderResponse&& from) noexcept
+      : TransponderResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(TransponderResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.transponder.TransponderResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kTransponderFieldNumber = 1,
+  };
+  // .mavsdk.rpc.transponder.AdsbVehicle transponder = 1;
+  bool has_transponder() const;
+  void clear_transponder() ;
+  const ::mavsdk::rpc::transponder::AdsbVehicle& transponder() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::transponder::AdsbVehicle* release_transponder();
+  ::mavsdk::rpc::transponder::AdsbVehicle* mutable_transponder();
+  void set_allocated_transponder(::mavsdk::rpc::transponder::AdsbVehicle* value);
+  void unsafe_arena_set_allocated_transponder(::mavsdk::rpc::transponder::AdsbVehicle* value);
+  ::mavsdk::rpc::transponder::AdsbVehicle* unsafe_arena_release_transponder();
 
-protected:
-    explicit TransponderResponse(::google::protobuf::Arena* arena);
-    TransponderResponse(::google::protobuf::Arena* arena, const TransponderResponse& from);
-    TransponderResponse(::google::protobuf::Arena* arena, TransponderResponse&& from) noexcept :
-        TransponderResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::transponder::AdsbVehicle& _internal_transponder() const;
+  ::mavsdk::rpc::transponder::AdsbVehicle* _internal_mutable_transponder();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.transponder.TransponderResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kTransponderFieldNumber = 1,
-    };
-    // .mavsdk.rpc.transponder.AdsbVehicle transponder = 1;
-    bool has_transponder() const;
-    void clear_transponder();
-    const ::mavsdk::rpc::transponder::AdsbVehicle& transponder() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::transponder::AdsbVehicle* release_transponder();
-    ::mavsdk::rpc::transponder::AdsbVehicle* mutable_transponder();
-    void set_allocated_transponder(::mavsdk::rpc::transponder::AdsbVehicle* value);
-    void unsafe_arena_set_allocated_transponder(::mavsdk::rpc::transponder::AdsbVehicle* value);
-    ::mavsdk::rpc::transponder::AdsbVehicle* unsafe_arena_release_transponder();
-
-private:
-    const ::mavsdk::rpc::transponder::AdsbVehicle& _internal_transponder() const;
-    ::mavsdk::rpc::transponder::AdsbVehicle* _internal_mutable_transponder();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.transponder.TransponderResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const TransponderResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::transponder::AdsbVehicle* transponder_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_transponder_2ftransponder_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const TransponderResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::transponder::AdsbVehicle* transponder_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_transponder_2ftransponder_2eproto;
 };
 // -------------------------------------------------------------------
 
-class SetRateTransponderResponse final : public ::google::protobuf::Message
+class SetRateTransponderResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.transponder.SetRateTransponderResponse) */ {
-public:
-    inline SetRateTransponderResponse() : SetRateTransponderResponse(nullptr) {}
-    ~SetRateTransponderResponse() PROTOBUF_FINAL;
+ public:
+  inline SetRateTransponderResponse() : SetRateTransponderResponse(nullptr) {}
+  ~SetRateTransponderResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(SetRateTransponderResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(SetRateTransponderResponse));
-    }
+  void operator delete(SetRateTransponderResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SetRateTransponderResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        SetRateTransponderResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SetRateTransponderResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline SetRateTransponderResponse(const SetRateTransponderResponse& from) :
-        SetRateTransponderResponse(nullptr, from)
-    {}
-    inline SetRateTransponderResponse(SetRateTransponderResponse&& from) noexcept :
-        SetRateTransponderResponse(nullptr, std::move(from))
-    {}
-    inline SetRateTransponderResponse& operator=(const SetRateTransponderResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline SetRateTransponderResponse(const SetRateTransponderResponse& from) : SetRateTransponderResponse(nullptr, from) {}
+  inline SetRateTransponderResponse(SetRateTransponderResponse&& from) noexcept
+      : SetRateTransponderResponse(nullptr, std::move(from)) {}
+  inline SetRateTransponderResponse& operator=(const SetRateTransponderResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetRateTransponderResponse& operator=(SetRateTransponderResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline SetRateTransponderResponse& operator=(SetRateTransponderResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetRateTransponderResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetRateTransponderResponse* internal_default_instance() {
+    return reinterpret_cast<const SetRateTransponderResponse*>(
+        &_SetRateTransponderResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 3;
+  friend void swap(SetRateTransponderResponse& a, SetRateTransponderResponse& b) { a.Swap(&b); }
+  inline void Swap(SetRateTransponderResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(SetRateTransponderResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const SetRateTransponderResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const SetRateTransponderResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const SetRateTransponderResponse*>(
-            &_SetRateTransponderResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 3;
-    friend void swap(SetRateTransponderResponse& a, SetRateTransponderResponse& b) { a.Swap(&b); }
-    inline void Swap(SetRateTransponderResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(SetRateTransponderResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  SetRateTransponderResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SetRateTransponderResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SetRateTransponderResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SetRateTransponderResponse& from) { SetRateTransponderResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    SetRateTransponderResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<SetRateTransponderResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const SetRateTransponderResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const SetRateTransponderResponse& from)
-    {
-        SetRateTransponderResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SetRateTransponderResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.transponder.SetRateTransponderResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit SetRateTransponderResponse(::google::protobuf::Arena* arena);
+  SetRateTransponderResponse(::google::protobuf::Arena* arena, const SetRateTransponderResponse& from);
+  SetRateTransponderResponse(::google::protobuf::Arena* arena, SetRateTransponderResponse&& from) noexcept
+      : SetRateTransponderResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(SetRateTransponderResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.transponder.SetRateTransponderResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kTransponderResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.transponder.TransponderResult transponder_result = 1;
+  bool has_transponder_result() const;
+  void clear_transponder_result() ;
+  const ::mavsdk::rpc::transponder::TransponderResult& transponder_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::transponder::TransponderResult* release_transponder_result();
+  ::mavsdk::rpc::transponder::TransponderResult* mutable_transponder_result();
+  void set_allocated_transponder_result(::mavsdk::rpc::transponder::TransponderResult* value);
+  void unsafe_arena_set_allocated_transponder_result(::mavsdk::rpc::transponder::TransponderResult* value);
+  ::mavsdk::rpc::transponder::TransponderResult* unsafe_arena_release_transponder_result();
 
-protected:
-    explicit SetRateTransponderResponse(::google::protobuf::Arena* arena);
-    SetRateTransponderResponse(
-        ::google::protobuf::Arena* arena, const SetRateTransponderResponse& from);
-    SetRateTransponderResponse(
-        ::google::protobuf::Arena* arena, SetRateTransponderResponse&& from) noexcept :
-        SetRateTransponderResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::transponder::TransponderResult& _internal_transponder_result() const;
+  ::mavsdk::rpc::transponder::TransponderResult* _internal_mutable_transponder_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.transponder.SetRateTransponderResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kTransponderResultFieldNumber = 1,
-    };
-    // .mavsdk.rpc.transponder.TransponderResult transponder_result = 1;
-    bool has_transponder_result() const;
-    void clear_transponder_result();
-    const ::mavsdk::rpc::transponder::TransponderResult& transponder_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::transponder::TransponderResult* release_transponder_result();
-    ::mavsdk::rpc::transponder::TransponderResult* mutable_transponder_result();
-    void set_allocated_transponder_result(::mavsdk::rpc::transponder::TransponderResult* value);
-    void unsafe_arena_set_allocated_transponder_result(
-        ::mavsdk::rpc::transponder::TransponderResult* value);
-    ::mavsdk::rpc::transponder::TransponderResult* unsafe_arena_release_transponder_result();
-
-private:
-    const ::mavsdk::rpc::transponder::TransponderResult& _internal_transponder_result() const;
-    ::mavsdk::rpc::transponder::TransponderResult* _internal_mutable_transponder_result();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.transponder.SetRateTransponderResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const SetRateTransponderResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::transponder::TransponderResult* transponder_result_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_transponder_2ftransponder_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SetRateTransponderResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::transponder::TransponderResult* transponder_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_transponder_2ftransponder_2eproto;
 };
 
 // ===================================================================
 
+
+
+
 // ===================================================================
+
 
 #ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-aliasing"
-#endif // __GNUC__
+#endif  // __GNUC__
 // -------------------------------------------------------------------
 
 // SubscribeTransponderRequest
@@ -1603,121 +1526,99 @@ private:
 // TransponderResponse
 
 // .mavsdk.rpc.transponder.AdsbVehicle transponder = 1;
-inline bool TransponderResponse::has_transponder() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.transponder_ != nullptr);
-    return value;
+inline bool TransponderResponse::has_transponder() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.transponder_ != nullptr);
+  return value;
 }
-inline void TransponderResponse::clear_transponder()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.transponder_ != nullptr)
-        _impl_.transponder_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void TransponderResponse::clear_transponder() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.transponder_ != nullptr) _impl_.transponder_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::transponder::AdsbVehicle&
-TransponderResponse::_internal_transponder() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::transponder::AdsbVehicle* p = _impl_.transponder_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::transponder::AdsbVehicle&>(
-                              ::mavsdk::rpc::transponder::_AdsbVehicle_default_instance_);
+inline const ::mavsdk::rpc::transponder::AdsbVehicle& TransponderResponse::_internal_transponder() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::transponder::AdsbVehicle* p = _impl_.transponder_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::transponder::AdsbVehicle&>(::mavsdk::rpc::transponder::_AdsbVehicle_default_instance_);
 }
-inline const ::mavsdk::rpc::transponder::AdsbVehicle&
-TransponderResponse::transponder() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.TransponderResponse.transponder)
-    return _internal_transponder();
+inline const ::mavsdk::rpc::transponder::AdsbVehicle& TransponderResponse::transponder() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.TransponderResponse.transponder)
+  return _internal_transponder();
 }
-inline void TransponderResponse::unsafe_arena_set_allocated_transponder(
-    ::mavsdk::rpc::transponder::AdsbVehicle* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.transponder_);
-    }
-    _impl_.transponder_ = reinterpret_cast<::mavsdk::rpc::transponder::AdsbVehicle*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.transponder.TransponderResponse.transponder)
-}
-inline ::mavsdk::rpc::transponder::AdsbVehicle* TransponderResponse::release_transponder()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::transponder::AdsbVehicle* released = _impl_.transponder_;
-    _impl_.transponder_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::transponder::AdsbVehicle*
-TransponderResponse::unsafe_arena_release_transponder()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.transponder.TransponderResponse.transponder)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::transponder::AdsbVehicle* temp = _impl_.transponder_;
-    _impl_.transponder_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::transponder::AdsbVehicle* TransponderResponse::_internal_mutable_transponder()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.transponder_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::transponder::AdsbVehicle>(
-                GetArena());
-        _impl_.transponder_ = reinterpret_cast<::mavsdk::rpc::transponder::AdsbVehicle*>(p);
-    }
-    return _impl_.transponder_;
-}
-inline ::mavsdk::rpc::transponder::AdsbVehicle*
-TransponderResponse::mutable_transponder() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void TransponderResponse::unsafe_arena_set_allocated_transponder(::mavsdk::rpc::transponder::AdsbVehicle* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.transponder_);
+  }
+  _impl_.transponder_ = reinterpret_cast<::mavsdk::rpc::transponder::AdsbVehicle*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::transponder::AdsbVehicle* _msg = _internal_mutable_transponder();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.transponder.TransponderResponse.transponder)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.transponder.TransponderResponse.transponder)
 }
-inline void
-TransponderResponse::set_allocated_transponder(::mavsdk::rpc::transponder::AdsbVehicle* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.transponder_);
-    }
+inline ::mavsdk::rpc::transponder::AdsbVehicle* TransponderResponse::release_transponder() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::transponder::AdsbVehicle* released = _impl_.transponder_;
+  _impl_.transponder_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::transponder::AdsbVehicle* TransponderResponse::unsafe_arena_release_transponder() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.transponder.TransponderResponse.transponder)
 
-    _impl_.transponder_ = reinterpret_cast<::mavsdk::rpc::transponder::AdsbVehicle*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.transponder.TransponderResponse.transponder)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::transponder::AdsbVehicle* temp = _impl_.transponder_;
+  _impl_.transponder_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::transponder::AdsbVehicle* TransponderResponse::_internal_mutable_transponder() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.transponder_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::transponder::AdsbVehicle>(GetArena());
+    _impl_.transponder_ = reinterpret_cast<::mavsdk::rpc::transponder::AdsbVehicle*>(p);
+  }
+  return _impl_.transponder_;
+}
+inline ::mavsdk::rpc::transponder::AdsbVehicle* TransponderResponse::mutable_transponder() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::transponder::AdsbVehicle* _msg = _internal_mutable_transponder();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.transponder.TransponderResponse.transponder)
+  return _msg;
+}
+inline void TransponderResponse::set_allocated_transponder(::mavsdk::rpc::transponder::AdsbVehicle* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.transponder_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.transponder_ = reinterpret_cast<::mavsdk::rpc::transponder::AdsbVehicle*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.transponder.TransponderResponse.transponder)
 }
 
 // -------------------------------------------------------------------
@@ -1725,30 +1626,25 @@ TransponderResponse::set_allocated_transponder(::mavsdk::rpc::transponder::AdsbV
 // SetRateTransponderRequest
 
 // double rate_hz = 1;
-inline void SetRateTransponderRequest::clear_rate_hz()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.rate_hz_ = 0;
+inline void SetRateTransponderRequest::clear_rate_hz() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.rate_hz_ = 0;
 }
-inline double SetRateTransponderRequest::rate_hz() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.SetRateTransponderRequest.rate_hz)
-    return _internal_rate_hz();
+inline double SetRateTransponderRequest::rate_hz() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.SetRateTransponderRequest.rate_hz)
+  return _internal_rate_hz();
 }
-inline void SetRateTransponderRequest::set_rate_hz(double value)
-{
-    _internal_set_rate_hz(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.SetRateTransponderRequest.rate_hz)
+inline void SetRateTransponderRequest::set_rate_hz(double value) {
+  _internal_set_rate_hz(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.SetRateTransponderRequest.rate_hz)
 }
-inline double SetRateTransponderRequest::_internal_rate_hz() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.rate_hz_;
+inline double SetRateTransponderRequest::_internal_rate_hz() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.rate_hz_;
 }
-inline void SetRateTransponderRequest::_internal_set_rate_hz(double value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.rate_hz_ = value;
+inline void SetRateTransponderRequest::_internal_set_rate_hz(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.rate_hz_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -1756,125 +1652,99 @@ inline void SetRateTransponderRequest::_internal_set_rate_hz(double value)
 // SetRateTransponderResponse
 
 // .mavsdk.rpc.transponder.TransponderResult transponder_result = 1;
-inline bool SetRateTransponderResponse::has_transponder_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.transponder_result_ != nullptr);
-    return value;
+inline bool SetRateTransponderResponse::has_transponder_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.transponder_result_ != nullptr);
+  return value;
 }
-inline void SetRateTransponderResponse::clear_transponder_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.transponder_result_ != nullptr)
-        _impl_.transponder_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void SetRateTransponderResponse::clear_transponder_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.transponder_result_ != nullptr) _impl_.transponder_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::transponder::TransponderResult&
-SetRateTransponderResponse::_internal_transponder_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::transponder::TransponderResult* p = _impl_.transponder_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::transponder::TransponderResult&>(
-                              ::mavsdk::rpc::transponder::_TransponderResult_default_instance_);
+inline const ::mavsdk::rpc::transponder::TransponderResult& SetRateTransponderResponse::_internal_transponder_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::transponder::TransponderResult* p = _impl_.transponder_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::transponder::TransponderResult&>(::mavsdk::rpc::transponder::_TransponderResult_default_instance_);
 }
-inline const ::mavsdk::rpc::transponder::TransponderResult&
-SetRateTransponderResponse::transponder_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.SetRateTransponderResponse.transponder_result)
-    return _internal_transponder_result();
+inline const ::mavsdk::rpc::transponder::TransponderResult& SetRateTransponderResponse::transponder_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.SetRateTransponderResponse.transponder_result)
+  return _internal_transponder_result();
 }
-inline void SetRateTransponderResponse::unsafe_arena_set_allocated_transponder_result(
-    ::mavsdk::rpc::transponder::TransponderResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.transponder_result_);
-    }
-    _impl_.transponder_result_ =
-        reinterpret_cast<::mavsdk::rpc::transponder::TransponderResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.transponder.SetRateTransponderResponse.transponder_result)
-}
-inline ::mavsdk::rpc::transponder::TransponderResult*
-SetRateTransponderResponse::release_transponder_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::transponder::TransponderResult* released = _impl_.transponder_result_;
-    _impl_.transponder_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::transponder::TransponderResult*
-SetRateTransponderResponse::unsafe_arena_release_transponder_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.transponder.SetRateTransponderResponse.transponder_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::transponder::TransponderResult* temp = _impl_.transponder_result_;
-    _impl_.transponder_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::transponder::TransponderResult*
-SetRateTransponderResponse::_internal_mutable_transponder_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.transponder_result_ == nullptr) {
-        auto* p = ::google::protobuf::Message::DefaultConstruct<
-            ::mavsdk::rpc::transponder::TransponderResult>(GetArena());
-        _impl_.transponder_result_ =
-            reinterpret_cast<::mavsdk::rpc::transponder::TransponderResult*>(p);
-    }
-    return _impl_.transponder_result_;
-}
-inline ::mavsdk::rpc::transponder::TransponderResult*
-SetRateTransponderResponse::mutable_transponder_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void SetRateTransponderResponse::unsafe_arena_set_allocated_transponder_result(::mavsdk::rpc::transponder::TransponderResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.transponder_result_);
+  }
+  _impl_.transponder_result_ = reinterpret_cast<::mavsdk::rpc::transponder::TransponderResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::transponder::TransponderResult* _msg = _internal_mutable_transponder_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.transponder.SetRateTransponderResponse.transponder_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.transponder.SetRateTransponderResponse.transponder_result)
 }
-inline void SetRateTransponderResponse::set_allocated_transponder_result(
-    ::mavsdk::rpc::transponder::TransponderResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.transponder_result_);
-    }
+inline ::mavsdk::rpc::transponder::TransponderResult* SetRateTransponderResponse::release_transponder_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::transponder::TransponderResult* released = _impl_.transponder_result_;
+  _impl_.transponder_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::transponder::TransponderResult* SetRateTransponderResponse::unsafe_arena_release_transponder_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.transponder.SetRateTransponderResponse.transponder_result)
 
-    _impl_.transponder_result_ =
-        reinterpret_cast<::mavsdk::rpc::transponder::TransponderResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.transponder.SetRateTransponderResponse.transponder_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::transponder::TransponderResult* temp = _impl_.transponder_result_;
+  _impl_.transponder_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::transponder::TransponderResult* SetRateTransponderResponse::_internal_mutable_transponder_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.transponder_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::transponder::TransponderResult>(GetArena());
+    _impl_.transponder_result_ = reinterpret_cast<::mavsdk::rpc::transponder::TransponderResult*>(p);
+  }
+  return _impl_.transponder_result_;
+}
+inline ::mavsdk::rpc::transponder::TransponderResult* SetRateTransponderResponse::mutable_transponder_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::transponder::TransponderResult* _msg = _internal_mutable_transponder_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.transponder.SetRateTransponderResponse.transponder_result)
+  return _msg;
+}
+inline void SetRateTransponderResponse::set_allocated_transponder_result(::mavsdk::rpc::transponder::TransponderResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.transponder_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.transponder_result_ = reinterpret_cast<::mavsdk::rpc::transponder::TransponderResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.transponder.SetRateTransponderResponse.transponder_result)
 }
 
 // -------------------------------------------------------------------
@@ -1882,358 +1752,293 @@ inline void SetRateTransponderResponse::set_allocated_transponder_result(
 // AdsbVehicle
 
 // uint32 icao_address = 1;
-inline void AdsbVehicle::clear_icao_address()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.icao_address_ = 0u;
+inline void AdsbVehicle::clear_icao_address() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.icao_address_ = 0u;
 }
-inline ::uint32_t AdsbVehicle::icao_address() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.icao_address)
-    return _internal_icao_address();
+inline ::uint32_t AdsbVehicle::icao_address() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.icao_address)
+  return _internal_icao_address();
 }
-inline void AdsbVehicle::set_icao_address(::uint32_t value)
-{
-    _internal_set_icao_address(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.icao_address)
+inline void AdsbVehicle::set_icao_address(::uint32_t value) {
+  _internal_set_icao_address(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.icao_address)
 }
-inline ::uint32_t AdsbVehicle::_internal_icao_address() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.icao_address_;
+inline ::uint32_t AdsbVehicle::_internal_icao_address() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.icao_address_;
 }
-inline void AdsbVehicle::_internal_set_icao_address(::uint32_t value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.icao_address_ = value;
+inline void AdsbVehicle::_internal_set_icao_address(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.icao_address_ = value;
 }
 
 // double latitude_deg = 2;
-inline void AdsbVehicle::clear_latitude_deg()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.latitude_deg_ = 0;
+inline void AdsbVehicle::clear_latitude_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.latitude_deg_ = 0;
 }
-inline double AdsbVehicle::latitude_deg() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.latitude_deg)
-    return _internal_latitude_deg();
+inline double AdsbVehicle::latitude_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.latitude_deg)
+  return _internal_latitude_deg();
 }
-inline void AdsbVehicle::set_latitude_deg(double value)
-{
-    _internal_set_latitude_deg(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.latitude_deg)
+inline void AdsbVehicle::set_latitude_deg(double value) {
+  _internal_set_latitude_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.latitude_deg)
 }
-inline double AdsbVehicle::_internal_latitude_deg() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.latitude_deg_;
+inline double AdsbVehicle::_internal_latitude_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.latitude_deg_;
 }
-inline void AdsbVehicle::_internal_set_latitude_deg(double value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.latitude_deg_ = value;
+inline void AdsbVehicle::_internal_set_latitude_deg(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.latitude_deg_ = value;
 }
 
 // double longitude_deg = 3;
-inline void AdsbVehicle::clear_longitude_deg()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.longitude_deg_ = 0;
+inline void AdsbVehicle::clear_longitude_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.longitude_deg_ = 0;
 }
-inline double AdsbVehicle::longitude_deg() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.longitude_deg)
-    return _internal_longitude_deg();
+inline double AdsbVehicle::longitude_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.longitude_deg)
+  return _internal_longitude_deg();
 }
-inline void AdsbVehicle::set_longitude_deg(double value)
-{
-    _internal_set_longitude_deg(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.longitude_deg)
+inline void AdsbVehicle::set_longitude_deg(double value) {
+  _internal_set_longitude_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.longitude_deg)
 }
-inline double AdsbVehicle::_internal_longitude_deg() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.longitude_deg_;
+inline double AdsbVehicle::_internal_longitude_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.longitude_deg_;
 }
-inline void AdsbVehicle::_internal_set_longitude_deg(double value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.longitude_deg_ = value;
+inline void AdsbVehicle::_internal_set_longitude_deg(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.longitude_deg_ = value;
 }
 
 // .mavsdk.rpc.transponder.AdsbAltitudeType altitude_type = 4;
-inline void AdsbVehicle::clear_altitude_type()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.altitude_type_ = 0;
+inline void AdsbVehicle::clear_altitude_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.altitude_type_ = 0;
 }
-inline ::mavsdk::rpc::transponder::AdsbAltitudeType AdsbVehicle::altitude_type() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.altitude_type)
-    return _internal_altitude_type();
+inline ::mavsdk::rpc::transponder::AdsbAltitudeType AdsbVehicle::altitude_type() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.altitude_type)
+  return _internal_altitude_type();
 }
-inline void AdsbVehicle::set_altitude_type(::mavsdk::rpc::transponder::AdsbAltitudeType value)
-{
-    _internal_set_altitude_type(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.altitude_type)
+inline void AdsbVehicle::set_altitude_type(::mavsdk::rpc::transponder::AdsbAltitudeType value) {
+  _internal_set_altitude_type(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.altitude_type)
 }
-inline ::mavsdk::rpc::transponder::AdsbAltitudeType AdsbVehicle::_internal_altitude_type() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return static_cast<::mavsdk::rpc::transponder::AdsbAltitudeType>(_impl_.altitude_type_);
+inline ::mavsdk::rpc::transponder::AdsbAltitudeType AdsbVehicle::_internal_altitude_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::transponder::AdsbAltitudeType>(_impl_.altitude_type_);
 }
-inline void
-AdsbVehicle::_internal_set_altitude_type(::mavsdk::rpc::transponder::AdsbAltitudeType value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.altitude_type_ = value;
+inline void AdsbVehicle::_internal_set_altitude_type(::mavsdk::rpc::transponder::AdsbAltitudeType value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.altitude_type_ = value;
 }
 
 // float absolute_altitude_m = 5;
-inline void AdsbVehicle::clear_absolute_altitude_m()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.absolute_altitude_m_ = 0;
+inline void AdsbVehicle::clear_absolute_altitude_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.absolute_altitude_m_ = 0;
 }
-inline float AdsbVehicle::absolute_altitude_m() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.absolute_altitude_m)
-    return _internal_absolute_altitude_m();
+inline float AdsbVehicle::absolute_altitude_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.absolute_altitude_m)
+  return _internal_absolute_altitude_m();
 }
-inline void AdsbVehicle::set_absolute_altitude_m(float value)
-{
-    _internal_set_absolute_altitude_m(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.absolute_altitude_m)
+inline void AdsbVehicle::set_absolute_altitude_m(float value) {
+  _internal_set_absolute_altitude_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.absolute_altitude_m)
 }
-inline float AdsbVehicle::_internal_absolute_altitude_m() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.absolute_altitude_m_;
+inline float AdsbVehicle::_internal_absolute_altitude_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.absolute_altitude_m_;
 }
-inline void AdsbVehicle::_internal_set_absolute_altitude_m(float value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.absolute_altitude_m_ = value;
+inline void AdsbVehicle::_internal_set_absolute_altitude_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.absolute_altitude_m_ = value;
 }
 
 // float heading_deg = 6;
-inline void AdsbVehicle::clear_heading_deg()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.heading_deg_ = 0;
+inline void AdsbVehicle::clear_heading_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.heading_deg_ = 0;
 }
-inline float AdsbVehicle::heading_deg() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.heading_deg)
-    return _internal_heading_deg();
+inline float AdsbVehicle::heading_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.heading_deg)
+  return _internal_heading_deg();
 }
-inline void AdsbVehicle::set_heading_deg(float value)
-{
-    _internal_set_heading_deg(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.heading_deg)
+inline void AdsbVehicle::set_heading_deg(float value) {
+  _internal_set_heading_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.heading_deg)
 }
-inline float AdsbVehicle::_internal_heading_deg() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.heading_deg_;
+inline float AdsbVehicle::_internal_heading_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.heading_deg_;
 }
-inline void AdsbVehicle::_internal_set_heading_deg(float value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.heading_deg_ = value;
+inline void AdsbVehicle::_internal_set_heading_deg(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.heading_deg_ = value;
 }
 
 // float horizontal_velocity_m_s = 7;
-inline void AdsbVehicle::clear_horizontal_velocity_m_s()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.horizontal_velocity_m_s_ = 0;
+inline void AdsbVehicle::clear_horizontal_velocity_m_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.horizontal_velocity_m_s_ = 0;
 }
-inline float AdsbVehicle::horizontal_velocity_m_s() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.horizontal_velocity_m_s)
-    return _internal_horizontal_velocity_m_s();
+inline float AdsbVehicle::horizontal_velocity_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.horizontal_velocity_m_s)
+  return _internal_horizontal_velocity_m_s();
 }
-inline void AdsbVehicle::set_horizontal_velocity_m_s(float value)
-{
-    _internal_set_horizontal_velocity_m_s(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.horizontal_velocity_m_s)
+inline void AdsbVehicle::set_horizontal_velocity_m_s(float value) {
+  _internal_set_horizontal_velocity_m_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.horizontal_velocity_m_s)
 }
-inline float AdsbVehicle::_internal_horizontal_velocity_m_s() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.horizontal_velocity_m_s_;
+inline float AdsbVehicle::_internal_horizontal_velocity_m_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.horizontal_velocity_m_s_;
 }
-inline void AdsbVehicle::_internal_set_horizontal_velocity_m_s(float value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.horizontal_velocity_m_s_ = value;
+inline void AdsbVehicle::_internal_set_horizontal_velocity_m_s(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.horizontal_velocity_m_s_ = value;
 }
 
 // float vertical_velocity_m_s = 8;
-inline void AdsbVehicle::clear_vertical_velocity_m_s()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.vertical_velocity_m_s_ = 0;
+inline void AdsbVehicle::clear_vertical_velocity_m_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.vertical_velocity_m_s_ = 0;
 }
-inline float AdsbVehicle::vertical_velocity_m_s() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.vertical_velocity_m_s)
-    return _internal_vertical_velocity_m_s();
+inline float AdsbVehicle::vertical_velocity_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.vertical_velocity_m_s)
+  return _internal_vertical_velocity_m_s();
 }
-inline void AdsbVehicle::set_vertical_velocity_m_s(float value)
-{
-    _internal_set_vertical_velocity_m_s(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.vertical_velocity_m_s)
+inline void AdsbVehicle::set_vertical_velocity_m_s(float value) {
+  _internal_set_vertical_velocity_m_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.vertical_velocity_m_s)
 }
-inline float AdsbVehicle::_internal_vertical_velocity_m_s() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.vertical_velocity_m_s_;
+inline float AdsbVehicle::_internal_vertical_velocity_m_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.vertical_velocity_m_s_;
 }
-inline void AdsbVehicle::_internal_set_vertical_velocity_m_s(float value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.vertical_velocity_m_s_ = value;
+inline void AdsbVehicle::_internal_set_vertical_velocity_m_s(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.vertical_velocity_m_s_ = value;
 }
 
 // string callsign = 9;
-inline void AdsbVehicle::clear_callsign()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.callsign_.ClearToEmpty();
+inline void AdsbVehicle::clear_callsign() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.callsign_.ClearToEmpty();
 }
-inline const std::string& AdsbVehicle::callsign() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.callsign)
-    return _internal_callsign();
+inline const std::string& AdsbVehicle::callsign() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.callsign)
+  return _internal_callsign();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void AdsbVehicle::set_callsign(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.callsign_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.callsign)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void AdsbVehicle::set_callsign(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.callsign_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.callsign)
 }
-inline std::string* AdsbVehicle::mutable_callsign() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_callsign();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.transponder.AdsbVehicle.callsign)
-    return _s;
+inline std::string* AdsbVehicle::mutable_callsign() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_callsign();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.transponder.AdsbVehicle.callsign)
+  return _s;
 }
-inline const std::string& AdsbVehicle::_internal_callsign() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.callsign_.Get();
+inline const std::string& AdsbVehicle::_internal_callsign() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.callsign_.Get();
 }
-inline void AdsbVehicle::_internal_set_callsign(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.callsign_.Set(value, GetArena());
+inline void AdsbVehicle::_internal_set_callsign(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.callsign_.Set(value, GetArena());
 }
-inline std::string* AdsbVehicle::_internal_mutable_callsign()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.callsign_.Mutable(GetArena());
+inline std::string* AdsbVehicle::_internal_mutable_callsign() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.callsign_.Mutable( GetArena());
 }
-inline std::string* AdsbVehicle::release_callsign()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.transponder.AdsbVehicle.callsign)
-    return _impl_.callsign_.Release();
+inline std::string* AdsbVehicle::release_callsign() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.transponder.AdsbVehicle.callsign)
+  return _impl_.callsign_.Release();
 }
-inline void AdsbVehicle::set_allocated_callsign(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.callsign_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.callsign_.IsDefault()) {
-        _impl_.callsign_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.transponder.AdsbVehicle.callsign)
+inline void AdsbVehicle::set_allocated_callsign(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.callsign_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.callsign_.IsDefault()) {
+    _impl_.callsign_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.transponder.AdsbVehicle.callsign)
 }
 
 // .mavsdk.rpc.transponder.AdsbEmitterType emitter_type = 10;
-inline void AdsbVehicle::clear_emitter_type()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.emitter_type_ = 0;
+inline void AdsbVehicle::clear_emitter_type() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.emitter_type_ = 0;
 }
-inline ::mavsdk::rpc::transponder::AdsbEmitterType AdsbVehicle::emitter_type() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.emitter_type)
-    return _internal_emitter_type();
+inline ::mavsdk::rpc::transponder::AdsbEmitterType AdsbVehicle::emitter_type() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.emitter_type)
+  return _internal_emitter_type();
 }
-inline void AdsbVehicle::set_emitter_type(::mavsdk::rpc::transponder::AdsbEmitterType value)
-{
-    _internal_set_emitter_type(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.emitter_type)
+inline void AdsbVehicle::set_emitter_type(::mavsdk::rpc::transponder::AdsbEmitterType value) {
+  _internal_set_emitter_type(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.emitter_type)
 }
-inline ::mavsdk::rpc::transponder::AdsbEmitterType AdsbVehicle::_internal_emitter_type() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return static_cast<::mavsdk::rpc::transponder::AdsbEmitterType>(_impl_.emitter_type_);
+inline ::mavsdk::rpc::transponder::AdsbEmitterType AdsbVehicle::_internal_emitter_type() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::transponder::AdsbEmitterType>(_impl_.emitter_type_);
 }
-inline void
-AdsbVehicle::_internal_set_emitter_type(::mavsdk::rpc::transponder::AdsbEmitterType value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.emitter_type_ = value;
+inline void AdsbVehicle::_internal_set_emitter_type(::mavsdk::rpc::transponder::AdsbEmitterType value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.emitter_type_ = value;
 }
 
 // uint32 squawk = 13;
-inline void AdsbVehicle::clear_squawk()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.squawk_ = 0u;
+inline void AdsbVehicle::clear_squawk() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.squawk_ = 0u;
 }
-inline ::uint32_t AdsbVehicle::squawk() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.squawk)
-    return _internal_squawk();
+inline ::uint32_t AdsbVehicle::squawk() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.squawk)
+  return _internal_squawk();
 }
-inline void AdsbVehicle::set_squawk(::uint32_t value)
-{
-    _internal_set_squawk(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.squawk)
+inline void AdsbVehicle::set_squawk(::uint32_t value) {
+  _internal_set_squawk(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.squawk)
 }
-inline ::uint32_t AdsbVehicle::_internal_squawk() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.squawk_;
+inline ::uint32_t AdsbVehicle::_internal_squawk() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.squawk_;
 }
-inline void AdsbVehicle::_internal_set_squawk(::uint32_t value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.squawk_ = value;
+inline void AdsbVehicle::_internal_set_squawk(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.squawk_ = value;
 }
 
 // uint32 tslc_s = 14;
-inline void AdsbVehicle::clear_tslc_s()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.tslc_s_ = 0u;
+inline void AdsbVehicle::clear_tslc_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.tslc_s_ = 0u;
 }
-inline ::uint32_t AdsbVehicle::tslc_s() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.tslc_s)
-    return _internal_tslc_s();
+inline ::uint32_t AdsbVehicle::tslc_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.AdsbVehicle.tslc_s)
+  return _internal_tslc_s();
 }
-inline void AdsbVehicle::set_tslc_s(::uint32_t value)
-{
-    _internal_set_tslc_s(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.tslc_s)
+inline void AdsbVehicle::set_tslc_s(::uint32_t value) {
+  _internal_set_tslc_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.AdsbVehicle.tslc_s)
 }
-inline ::uint32_t AdsbVehicle::_internal_tslc_s() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.tslc_s_;
+inline ::uint32_t AdsbVehicle::_internal_tslc_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.tslc_s_;
 }
-inline void AdsbVehicle::_internal_set_tslc_s(::uint32_t value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.tslc_s_ = value;
+inline void AdsbVehicle::_internal_set_tslc_s(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.tslc_s_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -2241,129 +2046,112 @@ inline void AdsbVehicle::_internal_set_tslc_s(::uint32_t value)
 // TransponderResult
 
 // .mavsdk.rpc.transponder.TransponderResult.Result result = 1;
-inline void TransponderResult::clear_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_ = 0;
+inline void TransponderResult::clear_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_ = 0;
 }
-inline ::mavsdk::rpc::transponder::TransponderResult_Result TransponderResult::result() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.TransponderResult.result)
-    return _internal_result();
+inline ::mavsdk::rpc::transponder::TransponderResult_Result TransponderResult::result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.TransponderResult.result)
+  return _internal_result();
 }
-inline void
-TransponderResult::set_result(::mavsdk::rpc::transponder::TransponderResult_Result value)
-{
-    _internal_set_result(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.TransponderResult.result)
+inline void TransponderResult::set_result(::mavsdk::rpc::transponder::TransponderResult_Result value) {
+  _internal_set_result(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.TransponderResult.result)
 }
-inline ::mavsdk::rpc::transponder::TransponderResult_Result
-TransponderResult::_internal_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return static_cast<::mavsdk::rpc::transponder::TransponderResult_Result>(_impl_.result_);
+inline ::mavsdk::rpc::transponder::TransponderResult_Result TransponderResult::_internal_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::transponder::TransponderResult_Result>(_impl_.result_);
 }
-inline void
-TransponderResult::_internal_set_result(::mavsdk::rpc::transponder::TransponderResult_Result value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_ = value;
+inline void TransponderResult::_internal_set_result(::mavsdk::rpc::transponder::TransponderResult_Result value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_ = value;
 }
 
 // string result_str = 2;
-inline void TransponderResult::clear_result_str()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.ClearToEmpty();
+inline void TransponderResult::clear_result_str() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.ClearToEmpty();
 }
-inline const std::string& TransponderResult::result_str() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.TransponderResult.result_str)
-    return _internal_result_str();
+inline const std::string& TransponderResult::result_str() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.transponder.TransponderResult.result_str)
+  return _internal_result_str();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void TransponderResult::set_result_str(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.TransponderResult.result_str)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void TransponderResult::set_result_str(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.transponder.TransponderResult.result_str)
 }
-inline std::string* TransponderResult::mutable_result_str() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_result_str();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.transponder.TransponderResult.result_str)
-    return _s;
+inline std::string* TransponderResult::mutable_result_str() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_result_str();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.transponder.TransponderResult.result_str)
+  return _s;
 }
-inline const std::string& TransponderResult::_internal_result_str() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.result_str_.Get();
+inline const std::string& TransponderResult::_internal_result_str() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.result_str_.Get();
 }
-inline void TransponderResult::_internal_set_result_str(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.Set(value, GetArena());
+inline void TransponderResult::_internal_set_result_str(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.Set(value, GetArena());
 }
-inline std::string* TransponderResult::_internal_mutable_result_str()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.result_str_.Mutable(GetArena());
+inline std::string* TransponderResult::_internal_mutable_result_str() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.result_str_.Mutable( GetArena());
 }
-inline std::string* TransponderResult::release_result_str()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.transponder.TransponderResult.result_str)
-    return _impl_.result_str_.Release();
+inline std::string* TransponderResult::release_result_str() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.transponder.TransponderResult.result_str)
+  return _impl_.result_str_.Release();
 }
-inline void TransponderResult::set_allocated_result_str(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.result_str_.IsDefault()) {
-        _impl_.result_str_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.transponder.TransponderResult.result_str)
+inline void TransponderResult::set_allocated_result_str(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.result_str_.IsDefault()) {
+    _impl_.result_str_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.transponder.TransponderResult.result_str)
 }
 
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
-#endif // __GNUC__
+#endif  // __GNUC__
 
 // @@protoc_insertion_point(namespace_scope)
-} // namespace transponder
-} // namespace rpc
-} // namespace mavsdk
+}  // namespace transponder
+}  // namespace rpc
+}  // namespace mavsdk
+
 
 namespace google {
 namespace protobuf {
 
-template<>
+template <>
 struct is_proto_enum<::mavsdk::rpc::transponder::TransponderResult_Result> : std::true_type {};
-template<>
-inline const EnumDescriptor*
-GetEnumDescriptor<::mavsdk::rpc::transponder::TransponderResult_Result>()
-{
-    return ::mavsdk::rpc::transponder::TransponderResult_Result_descriptor();
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::transponder::TransponderResult_Result>() {
+  return ::mavsdk::rpc::transponder::TransponderResult_Result_descriptor();
 }
-template<> struct is_proto_enum<::mavsdk::rpc::transponder::AdsbEmitterType> : std::true_type {};
-template<>
-inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::transponder::AdsbEmitterType>()
-{
-    return ::mavsdk::rpc::transponder::AdsbEmitterType_descriptor();
+template <>
+struct is_proto_enum<::mavsdk::rpc::transponder::AdsbEmitterType> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::transponder::AdsbEmitterType>() {
+  return ::mavsdk::rpc::transponder::AdsbEmitterType_descriptor();
 }
-template<> struct is_proto_enum<::mavsdk::rpc::transponder::AdsbAltitudeType> : std::true_type {};
-template<>
-inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::transponder::AdsbAltitudeType>()
-{
-    return ::mavsdk::rpc::transponder::AdsbAltitudeType_descriptor();
+template <>
+struct is_proto_enum<::mavsdk::rpc::transponder::AdsbAltitudeType> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::transponder::AdsbAltitudeType>() {
+  return ::mavsdk::rpc::transponder::AdsbAltitudeType_descriptor();
 }
 
-} // namespace protobuf
-} // namespace google
+}  // namespace protobuf
+}  // namespace google
 
 // @@protoc_insertion_point(global_scope)
 
 #include "google/protobuf/port_undef.inc"
 
-#endif // transponder_2ftransponder_2eproto_2epb_2eh
+#endif  // transponder_2ftransponder_2eproto_2epb_2eh

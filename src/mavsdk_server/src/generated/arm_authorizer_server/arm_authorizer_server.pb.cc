@@ -27,437 +27,356 @@ namespace _fl = ::google::protobuf::internal::field_layout;
 namespace mavsdk {
 namespace rpc {
 namespace arm_authorizer_server {
-template<typename>
-PROTOBUF_CONSTEXPR
-SubscribeArmAuthorizationRequest::SubscribeArmAuthorizationRequest(::_pbi::ConstantInitialized)
+              template <typename>
+PROTOBUF_CONSTEXPR SubscribeArmAuthorizationRequest::SubscribeArmAuthorizationRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::internal::ZeroFieldsBase()
-{
+    : ::google::protobuf::internal::ZeroFieldsBase(_class_data_.base()){}
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase() {
 }
-#endif // PROTOBUF_CUSTOM_VTABLE
-    struct SubscribeArmAuthorizationRequestDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR SubscribeArmAuthorizationRequestDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~SubscribeArmAuthorizationRequestDefaultTypeInternal() {}
-    union {
-        SubscribeArmAuthorizationRequest _instance;
-    };
+#endif  // PROTOBUF_CUSTOM_VTABLE
+struct SubscribeArmAuthorizationRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SubscribeArmAuthorizationRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SubscribeArmAuthorizationRequestDefaultTypeInternal() {}
+  union {
+    SubscribeArmAuthorizationRequest _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    SubscribeArmAuthorizationRequestDefaultTypeInternal
-        _SubscribeArmAuthorizationRequest_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SubscribeArmAuthorizationRequestDefaultTypeInternal _SubscribeArmAuthorizationRequest_default_instance_;
 
-inline constexpr RejectArmAuthorizationRequest::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    temporarily_{false},
-    reason_{static_cast<::mavsdk::rpc::arm_authorizer_server::RejectionReason>(0)},
-    extra_info_{0},
-    _cached_size_{0}
-{}
+inline constexpr RejectArmAuthorizationRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : temporarily_{false},
+        reason_{static_cast< ::mavsdk::rpc::arm_authorizer_server::RejectionReason >(0)},
+        extra_info_{0},
+        _cached_size_{0} {}
 
-template<typename>
-PROTOBUF_CONSTEXPR
-    RejectArmAuthorizationRequest::RejectArmAuthorizationRequest(::_pbi::ConstantInitialized)
+template <typename>
+PROTOBUF_CONSTEXPR RejectArmAuthorizationRequest::RejectArmAuthorizationRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct RejectArmAuthorizationRequestDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR RejectArmAuthorizationRequestDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~RejectArmAuthorizationRequestDefaultTypeInternal() {}
-    union {
-        RejectArmAuthorizationRequest _instance;
-    };
+  PROTOBUF_CONSTEXPR RejectArmAuthorizationRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RejectArmAuthorizationRequestDefaultTypeInternal() {}
+  union {
+    RejectArmAuthorizationRequest _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    RejectArmAuthorizationRequestDefaultTypeInternal
-        _RejectArmAuthorizationRequest_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RejectArmAuthorizationRequestDefaultTypeInternal _RejectArmAuthorizationRequest_default_instance_;
 
-inline constexpr ArmAuthorizerServerResult::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    result_str_(
-        &::google::protobuf::internal::fixed_address_empty_string, ::_pbi::ConstantInitialized()),
-    result_{static_cast<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result>(0)},
-    _cached_size_{0}
-{}
+inline constexpr ArmAuthorizerServerResult::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : result_str_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        result_{static_cast< ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult_Result >(0)},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR ArmAuthorizerServerResult::ArmAuthorizerServerResult(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct ArmAuthorizerServerResultDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR ArmAuthorizerServerResultDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~ArmAuthorizerServerResultDefaultTypeInternal() {}
-    union {
-        ArmAuthorizerServerResult _instance;
-    };
+  PROTOBUF_CONSTEXPR ArmAuthorizerServerResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ArmAuthorizerServerResultDefaultTypeInternal() {}
+  union {
+    ArmAuthorizerServerResult _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    ArmAuthorizerServerResultDefaultTypeInternal _ArmAuthorizerServerResult_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ArmAuthorizerServerResultDefaultTypeInternal _ArmAuthorizerServerResult_default_instance_;
 
-inline constexpr ArmAuthorizationResponse::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    system_id_{0u},
-    _cached_size_{0}
-{}
+inline constexpr ArmAuthorizationResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : system_id_{0u},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR ArmAuthorizationResponse::ArmAuthorizationResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct ArmAuthorizationResponseDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR ArmAuthorizationResponseDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~ArmAuthorizationResponseDefaultTypeInternal() {}
-    union {
-        ArmAuthorizationResponse _instance;
-    };
+  PROTOBUF_CONSTEXPR ArmAuthorizationResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ArmAuthorizationResponseDefaultTypeInternal() {}
+  union {
+    ArmAuthorizationResponse _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    ArmAuthorizationResponseDefaultTypeInternal _ArmAuthorizationResponse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ArmAuthorizationResponseDefaultTypeInternal _ArmAuthorizationResponse_default_instance_;
 
-inline constexpr AcceptArmAuthorizationRequest::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    valid_time_s_{0},
-    _cached_size_{0}
-{}
+inline constexpr AcceptArmAuthorizationRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : valid_time_s_{0},
+        _cached_size_{0} {}
 
-template<typename>
-PROTOBUF_CONSTEXPR
-    AcceptArmAuthorizationRequest::AcceptArmAuthorizationRequest(::_pbi::ConstantInitialized)
+template <typename>
+PROTOBUF_CONSTEXPR AcceptArmAuthorizationRequest::AcceptArmAuthorizationRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct AcceptArmAuthorizationRequestDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR AcceptArmAuthorizationRequestDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~AcceptArmAuthorizationRequestDefaultTypeInternal() {}
-    union {
-        AcceptArmAuthorizationRequest _instance;
-    };
+  PROTOBUF_CONSTEXPR AcceptArmAuthorizationRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~AcceptArmAuthorizationRequestDefaultTypeInternal() {}
+  union {
+    AcceptArmAuthorizationRequest _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    AcceptArmAuthorizationRequestDefaultTypeInternal
-        _AcceptArmAuthorizationRequest_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AcceptArmAuthorizationRequestDefaultTypeInternal _AcceptArmAuthorizationRequest_default_instance_;
 
-inline constexpr RejectArmAuthorizationResponse::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept
-    :
-    _cached_size_{0},
-    arm_authorizer_server_result_{nullptr}
-{}
+inline constexpr RejectArmAuthorizationResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        arm_authorizer_server_result_{nullptr} {}
 
-template<typename>
-PROTOBUF_CONSTEXPR
-    RejectArmAuthorizationResponse::RejectArmAuthorizationResponse(::_pbi::ConstantInitialized)
+template <typename>
+PROTOBUF_CONSTEXPR RejectArmAuthorizationResponse::RejectArmAuthorizationResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct RejectArmAuthorizationResponseDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR RejectArmAuthorizationResponseDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~RejectArmAuthorizationResponseDefaultTypeInternal() {}
-    union {
-        RejectArmAuthorizationResponse _instance;
-    };
+  PROTOBUF_CONSTEXPR RejectArmAuthorizationResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~RejectArmAuthorizationResponseDefaultTypeInternal() {}
+  union {
+    RejectArmAuthorizationResponse _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    RejectArmAuthorizationResponseDefaultTypeInternal
-        _RejectArmAuthorizationResponse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RejectArmAuthorizationResponseDefaultTypeInternal _RejectArmAuthorizationResponse_default_instance_;
 
-inline constexpr AcceptArmAuthorizationResponse::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept
-    :
-    _cached_size_{0},
-    arm_authorizer_server_result_{nullptr}
-{}
+inline constexpr AcceptArmAuthorizationResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        arm_authorizer_server_result_{nullptr} {}
 
-template<typename>
-PROTOBUF_CONSTEXPR
-    AcceptArmAuthorizationResponse::AcceptArmAuthorizationResponse(::_pbi::ConstantInitialized)
+template <typename>
+PROTOBUF_CONSTEXPR AcceptArmAuthorizationResponse::AcceptArmAuthorizationResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct AcceptArmAuthorizationResponseDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR AcceptArmAuthorizationResponseDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~AcceptArmAuthorizationResponseDefaultTypeInternal() {}
-    union {
-        AcceptArmAuthorizationResponse _instance;
-    };
+  PROTOBUF_CONSTEXPR AcceptArmAuthorizationResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~AcceptArmAuthorizationResponseDefaultTypeInternal() {}
+  union {
+    AcceptArmAuthorizationResponse _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    AcceptArmAuthorizationResponseDefaultTypeInternal
-        _AcceptArmAuthorizationResponse_default_instance_;
-} // namespace arm_authorizer_server
-} // namespace rpc
-} // namespace mavsdk
-static const ::_pb::EnumDescriptor*
-    file_level_enum_descriptors_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto[2];
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AcceptArmAuthorizationResponseDefaultTypeInternal _AcceptArmAuthorizationResponse_default_instance_;
+}  // namespace arm_authorizer_server
+}  // namespace rpc
+}  // namespace mavsdk
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto[2];
 static constexpr const ::_pb::ServiceDescriptor**
-    file_level_service_descriptors_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto =
-        nullptr;
-const ::uint32_t TableStruct_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto::offsets
-    [] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        ~0u, // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest,
-            _internal_metadata_),
-        ~0u, // no _extensions_
-        ~0u, // no _oneof_case_
-        ~0u, // no _weak_field_map_
-        ~0u, // no _inlined_string_donated_
-        ~0u, // no _split_
-        ~0u, // no sizeof(Split)
-        ~0u, // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse, _internal_metadata_),
-        ~0u, // no _extensions_
-        ~0u, // no _oneof_case_
-        ~0u, // no _weak_field_map_
-        ~0u, // no _inlined_string_donated_
-        ~0u, // no _split_
-        ~0u, // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse, _impl_.system_id_),
-        ~0u, // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest,
-            _internal_metadata_),
-        ~0u, // no _extensions_
-        ~0u, // no _oneof_case_
-        ~0u, // no _weak_field_map_
-        ~0u, // no _inlined_string_donated_
-        ~0u, // no _split_
-        ~0u, // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest,
-            _impl_.valid_time_s_),
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse,
-            _impl_._has_bits_),
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse,
-            _internal_metadata_),
-        ~0u, // no _extensions_
-        ~0u, // no _oneof_case_
-        ~0u, // no _weak_field_map_
-        ~0u, // no _inlined_string_donated_
-        ~0u, // no _split_
-        ~0u, // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse,
-            _impl_.arm_authorizer_server_result_),
+    file_level_service_descriptors_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto = nullptr;
+const ::uint32_t
+    TableStruct_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
+        protodesc_cold) = {
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse, _impl_.system_id_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest, _impl_.valid_time_s_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse, _impl_.arm_authorizer_server_result_),
         0,
-        ~0u, // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest,
-            _internal_metadata_),
-        ~0u, // no _extensions_
-        ~0u, // no _oneof_case_
-        ~0u, // no _weak_field_map_
-        ~0u, // no _inlined_string_donated_
-        ~0u, // no _split_
-        ~0u, // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest,
-            _impl_.temporarily_),
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest, _impl_.reason_),
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest,
-            _impl_.extra_info_),
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse,
-            _impl_._has_bits_),
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse,
-            _internal_metadata_),
-        ~0u, // no _extensions_
-        ~0u, // no _oneof_case_
-        ~0u, // no _weak_field_map_
-        ~0u, // no _inlined_string_donated_
-        ~0u, // no _split_
-        ~0u, // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse,
-            _impl_.arm_authorizer_server_result_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest, _impl_.temporarily_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest, _impl_.reason_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest, _impl_.extra_info_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse, _impl_.arm_authorizer_server_result_),
         0,
-        ~0u, // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult, _internal_metadata_),
-        ~0u, // no _extensions_
-        ~0u, // no _oneof_case_
-        ~0u, // no _weak_field_map_
-        ~0u, // no _inlined_string_donated_
-        ~0u, // no _split_
-        ~0u, // no sizeof(Split)
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult, _impl_.result_),
-        PROTOBUF_FIELD_OFFSET(
-            ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult, _impl_.result_str_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult, _impl_.result_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult, _impl_.result_str_),
 };
 
-static const ::_pbi::MigrationSchema schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-    {0, -1, -1, sizeof(::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest)},
-    {8, -1, -1, sizeof(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse)},
-    {17, -1, -1, sizeof(::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest)},
-    {26, 35, -1, sizeof(::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse)},
-    {36, -1, -1, sizeof(::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest)},
-    {47, 56, -1, sizeof(::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse)},
-    {57, -1, -1, sizeof(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult)},
+static const ::_pbi::MigrationSchema
+    schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+        {0, -1, -1, sizeof(::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest)},
+        {8, -1, -1, sizeof(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse)},
+        {17, -1, -1, sizeof(::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest)},
+        {26, 35, -1, sizeof(::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse)},
+        {36, -1, -1, sizeof(::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest)},
+        {47, 56, -1, sizeof(::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse)},
+        {57, -1, -1, sizeof(::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
-    &::mavsdk::rpc::arm_authorizer_server::_SubscribeArmAuthorizationRequest_default_instance_
-         ._instance,
+    &::mavsdk::rpc::arm_authorizer_server::_SubscribeArmAuthorizationRequest_default_instance_._instance,
     &::mavsdk::rpc::arm_authorizer_server::_ArmAuthorizationResponse_default_instance_._instance,
-    &::mavsdk::rpc::arm_authorizer_server::_AcceptArmAuthorizationRequest_default_instance_
-         ._instance,
-    &::mavsdk::rpc::arm_authorizer_server::_AcceptArmAuthorizationResponse_default_instance_
-         ._instance,
-    &::mavsdk::rpc::arm_authorizer_server::_RejectArmAuthorizationRequest_default_instance_
-         ._instance,
-    &::mavsdk::rpc::arm_authorizer_server::_RejectArmAuthorizationResponse_default_instance_
-         ._instance,
+    &::mavsdk::rpc::arm_authorizer_server::_AcceptArmAuthorizationRequest_default_instance_._instance,
+    &::mavsdk::rpc::arm_authorizer_server::_AcceptArmAuthorizationResponse_default_instance_._instance,
+    &::mavsdk::rpc::arm_authorizer_server::_RejectArmAuthorizationRequest_default_instance_._instance,
+    &::mavsdk::rpc::arm_authorizer_server::_RejectArmAuthorizationResponse_default_instance_._instance,
     &::mavsdk::rpc::arm_authorizer_server::_ArmAuthorizerServerResult_default_instance_._instance,
 };
-const char descriptor_table_protodef_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto
-    [] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        "\n1arm_authorizer_server/arm_authorizer_s"
-        "erver.proto\022 mavsdk.rpc.arm_authorizer_s"
-        "erver\032\024mavsdk_options.proto\"\"\n Subscribe"
-        "ArmAuthorizationRequest\"-\n\030ArmAuthorizat"
-        "ionResponse\022\021\n\tsystem_id\030\001 \001(\r\"5\n\035Accept"
-        "ArmAuthorizationRequest\022\024\n\014valid_time_s\030"
-        "\001 \001(\005\"\203\001\n\036AcceptArmAuthorizationResponse"
-        "\022a\n\034arm_authorizer_server_result\030\001 \001(\0132;"
-        ".mavsdk.rpc.arm_authorizer_server.ArmAut"
-        "horizerServerResult\"\213\001\n\035RejectArmAuthori"
-        "zationRequest\022\023\n\013temporarily\030\001 \001(\010\022A\n\006re"
-        "ason\030\002 \001(\01621.mavsdk.rpc.arm_authorizer_s"
-        "erver.RejectionReason\022\022\n\nextra_info\030\003 \001("
-        "\005\"\203\001\n\036RejectArmAuthorizationResponse\022a\n\034"
-        "arm_authorizer_server_result\030\001 \001(\0132;.mav"
-        "sdk.rpc.arm_authorizer_server.ArmAuthori"
-        "zerServerResult\"\310\001\n\031ArmAuthorizerServerR"
-        "esult\022R\n\006result\030\001 \001(\0162B.mavsdk.rpc.arm_a"
-        "uthorizer_server.ArmAuthorizerServerResu"
-        "lt.Result\022\022\n\nresult_str\030\002 \001(\t\"C\n\006Result\022"
-        "\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022"
-        "\021\n\rRESULT_FAILED\020\002*\327\001\n\017RejectionReason\022\034"
-        "\n\030REJECTION_REASON_GENERIC\020\000\022\031\n\025REJECTIO"
-        "N_REASON_NONE\020\001\022%\n!REJECTION_REASON_INVA"
-        "LID_WAYPOINT\020\002\022\034\n\030REJECTION_REASON_TIMEO"
-        "UT\020\003\022$\n REJECTION_REASON_AIRSPACE_IN_USE"
-        "\020\004\022 \n\034REJECTION_REASON_BAD_WEATHER\020\0052\212\004\n"
-        "\032ArmAuthorizerServerService\022\243\001\n\031Subscrib"
-        "eArmAuthorization\022B.mavsdk.rpc.arm_autho"
-        "rizer_server.SubscribeArmAuthorizationRe"
-        "quest\032:.mavsdk.rpc.arm_authorizer_server"
-        ".ArmAuthorizationResponse\"\004\200\265\030\0000\001\022\241\001\n\026Ac"
-        "ceptArmAuthorization\022\?.mavsdk.rpc.arm_au"
-        "thorizer_server.AcceptArmAuthorizationRe"
-        "quest\032@.mavsdk.rpc.arm_authorizer_server"
-        ".AcceptArmAuthorizationResponse\"\004\200\265\030\001\022\241\001"
-        "\n\026RejectArmAuthorization\022\?.mavsdk.rpc.ar"
-        "m_authorizer_server.RejectArmAuthorizati"
-        "onRequest\032@.mavsdk.rpc.arm_authorizer_se"
-        "rver.RejectArmAuthorizationResponse\"\004\200\265\030"
-        "\001B4\n\030io.mavsdk.arm_authorizerB\030ArmAuthor"
-        "izerServerProtob\006proto3"};
-static const ::_pbi::DescriptorTable* const
-    descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto_deps[1] = {
+const char descriptor_table_protodef_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
+    protodesc_cold) = {
+    "\n1arm_authorizer_server/arm_authorizer_s"
+    "erver.proto\022 mavsdk.rpc.arm_authorizer_s"
+    "erver\032\024mavsdk_options.proto\"\"\n Subscribe"
+    "ArmAuthorizationRequest\"-\n\030ArmAuthorizat"
+    "ionResponse\022\021\n\tsystem_id\030\001 \001(\r\"5\n\035Accept"
+    "ArmAuthorizationRequest\022\024\n\014valid_time_s\030"
+    "\001 \001(\005\"\203\001\n\036AcceptArmAuthorizationResponse"
+    "\022a\n\034arm_authorizer_server_result\030\001 \001(\0132;"
+    ".mavsdk.rpc.arm_authorizer_server.ArmAut"
+    "horizerServerResult\"\213\001\n\035RejectArmAuthori"
+    "zationRequest\022\023\n\013temporarily\030\001 \001(\010\022A\n\006re"
+    "ason\030\002 \001(\01621.mavsdk.rpc.arm_authorizer_s"
+    "erver.RejectionReason\022\022\n\nextra_info\030\003 \001("
+    "\005\"\203\001\n\036RejectArmAuthorizationResponse\022a\n\034"
+    "arm_authorizer_server_result\030\001 \001(\0132;.mav"
+    "sdk.rpc.arm_authorizer_server.ArmAuthori"
+    "zerServerResult\"\310\001\n\031ArmAuthorizerServerR"
+    "esult\022R\n\006result\030\001 \001(\0162B.mavsdk.rpc.arm_a"
+    "uthorizer_server.ArmAuthorizerServerResu"
+    "lt.Result\022\022\n\nresult_str\030\002 \001(\t\"C\n\006Result\022"
+    "\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022"
+    "\021\n\rRESULT_FAILED\020\002*\327\001\n\017RejectionReason\022\034"
+    "\n\030REJECTION_REASON_GENERIC\020\000\022\031\n\025REJECTIO"
+    "N_REASON_NONE\020\001\022%\n!REJECTION_REASON_INVA"
+    "LID_WAYPOINT\020\002\022\034\n\030REJECTION_REASON_TIMEO"
+    "UT\020\003\022$\n REJECTION_REASON_AIRSPACE_IN_USE"
+    "\020\004\022 \n\034REJECTION_REASON_BAD_WEATHER\020\0052\212\004\n"
+    "\032ArmAuthorizerServerService\022\243\001\n\031Subscrib"
+    "eArmAuthorization\022B.mavsdk.rpc.arm_autho"
+    "rizer_server.SubscribeArmAuthorizationRe"
+    "quest\032:.mavsdk.rpc.arm_authorizer_server"
+    ".ArmAuthorizationResponse\"\004\200\265\030\0000\001\022\241\001\n\026Ac"
+    "ceptArmAuthorization\022\?.mavsdk.rpc.arm_au"
+    "thorizer_server.AcceptArmAuthorizationRe"
+    "quest\032@.mavsdk.rpc.arm_authorizer_server"
+    ".AcceptArmAuthorizationResponse\"\004\200\265\030\001\022\241\001"
+    "\n\026RejectArmAuthorization\022\?.mavsdk.rpc.ar"
+    "m_authorizer_server.RejectArmAuthorizati"
+    "onRequest\032@.mavsdk.rpc.arm_authorizer_se"
+    "rver.RejectArmAuthorizationResponse\"\004\200\265\030"
+    "\001B4\n\030io.mavsdk.arm_authorizerB\030ArmAuthor"
+    "izerServerProtob\006proto3"
+};
+static const ::_pbi::DescriptorTable* const descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto_deps[1] =
+    {
         &::descriptor_table_mavsdk_5foptions_2eproto,
 };
-static ::absl::once_flag
-    descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto_once;
-PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable
-    descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto = {
-        false,
-        false,
-        1663,
-        descriptor_table_protodef_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto,
-        "arm_authorizer_server/arm_authorizer_server.proto",
-        &descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto_once,
-        descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto_deps,
-        1,
-        7,
-        schemas,
-        file_default_instances,
-        TableStruct_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto::offsets,
-        file_level_enum_descriptors_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto,
-        file_level_service_descriptors_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto,
+static ::absl::once_flag descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto_once;
+PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto = {
+    false,
+    false,
+    1663,
+    descriptor_table_protodef_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto,
+    "arm_authorizer_server/arm_authorizer_server.proto",
+    &descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto_once,
+    descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto_deps,
+    1,
+    7,
+    schemas,
+    file_default_instances,
+    TableStruct_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto::offsets,
+    file_level_enum_descriptors_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto,
+    file_level_service_descriptors_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto,
 };
 namespace mavsdk {
 namespace rpc {
 namespace arm_authorizer_server {
-const ::google::protobuf::EnumDescriptor* ArmAuthorizerServerResult_Result_descriptor()
-{
-    ::google::protobuf::internal::AssignDescriptors(
-        &descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto);
-    return file_level_enum_descriptors_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto
-        [0];
+const ::google::protobuf::EnumDescriptor* ArmAuthorizerServerResult_Result_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto);
+  return file_level_enum_descriptors_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t ArmAuthorizerServerResult_Result_internal_data_[] = {
-    196608u,
-    0u,
-};
-bool ArmAuthorizerServerResult_Result_IsValid(int value)
-{
-    return 0 <= value && value <= 2;
+    196608u, 0u, };
+bool ArmAuthorizerServerResult_Result_IsValid(int value) {
+  return 0 <= value && value <= 2;
 }
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
 constexpr ArmAuthorizerServerResult_Result ArmAuthorizerServerResult::RESULT_UNKNOWN;
 constexpr ArmAuthorizerServerResult_Result ArmAuthorizerServerResult::RESULT_SUCCESS;
@@ -466,68 +385,54 @@ constexpr ArmAuthorizerServerResult_Result ArmAuthorizerServerResult::Result_MIN
 constexpr ArmAuthorizerServerResult_Result ArmAuthorizerServerResult::Result_MAX;
 constexpr int ArmAuthorizerServerResult::Result_ARRAYSIZE;
 
-#endif // (__cplusplus < 201703) &&
-       // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
-const ::google::protobuf::EnumDescriptor* RejectionReason_descriptor()
-{
-    ::google::protobuf::internal::AssignDescriptors(
-        &descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto);
-    return file_level_enum_descriptors_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto
-        [1];
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+const ::google::protobuf::EnumDescriptor* RejectionReason_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto);
+  return file_level_enum_descriptors_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto[1];
 }
 PROTOBUF_CONSTINIT const uint32_t RejectionReason_internal_data_[] = {
-    393216u,
-    0u,
-};
-bool RejectionReason_IsValid(int value)
-{
-    return 0 <= value && value <= 5;
+    393216u, 0u, };
+bool RejectionReason_IsValid(int value) {
+  return 0 <= value && value <= 5;
 }
 // ===================================================================
 
 class SubscribeArmAuthorizationRequest::_Internal {
-public:
+ public:
 };
 
 SubscribeArmAuthorizationRequest::SubscribeArmAuthorizationRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.arm_authorizer_server.SubscribeArmAuthorizationRequest)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.arm_authorizer_server.SubscribeArmAuthorizationRequest)
 }
 SubscribeArmAuthorizationRequest::SubscribeArmAuthorizationRequest(
-    ::google::protobuf::Arena* arena, const SubscribeArmAuthorizationRequest& from)
+    ::google::protobuf::Arena* arena,
+    const SubscribeArmAuthorizationRequest& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::internal::ZeroFieldsBase(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SubscribeArmAuthorizationRequest* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SubscribeArmAuthorizationRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
 
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.arm_authorizer_server.SubscribeArmAuthorizationRequest)
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.arm_authorizer_server.SubscribeArmAuthorizationRequest)
 }
 
-inline void* SubscribeArmAuthorizationRequest::PlacementNew_(
-    const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) SubscribeArmAuthorizationRequest(arena);
+inline void* SubscribeArmAuthorizationRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SubscribeArmAuthorizationRequest(arena);
 }
-constexpr auto SubscribeArmAuthorizationRequest::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(SubscribeArmAuthorizationRequest), alignof(SubscribeArmAuthorizationRequest));
+constexpr auto SubscribeArmAuthorizationRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SubscribeArmAuthorizationRequest),
+                                            alignof(SubscribeArmAuthorizationRequest));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -535,122 +440,112 @@ const ::google::protobuf::internal::ClassDataFull SubscribeArmAuthorizationReque
     ::google::protobuf::internal::ClassData{
         &_SubscribeArmAuthorizationRequest_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &SubscribeArmAuthorizationRequest::MergeImpl,
-        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<
-            SubscribeArmAuthorizationRequest>(),
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<SubscribeArmAuthorizationRequest>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &SubscribeArmAuthorizationRequest::SharedDtor,
-        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<
-            SubscribeArmAuthorizationRequest>(),
-        &SubscribeArmAuthorizationRequest::ByteSizeLong,
-        &SubscribeArmAuthorizationRequest::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<SubscribeArmAuthorizationRequest>(), &SubscribeArmAuthorizationRequest::ByteSizeLong,
+            &SubscribeArmAuthorizationRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(SubscribeArmAuthorizationRequest, _impl_._cached_size_),
         false,
     },
     &SubscribeArmAuthorizationRequest::kDescriptorMethods,
     &descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData*
-SubscribeArmAuthorizationRequest::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* SubscribeArmAuthorizationRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 0, 0, 0, 2>
-    SubscribeArmAuthorizationRequest::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            0,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967295, // skipmap
-            offsetof(decltype(_table_), field_names), // no field_entries
-            0, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::arm_authorizer_server::
-                                           SubscribeArmAuthorizationRequest>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            {::_pbi::TcParser::MiniParse, {}},
-        }},
-        {{65535, 65535}},
-        // no field_entries, or aux_entries
-        {{}},
-    };
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> SubscribeArmAuthorizationRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::arm_authorizer_server::SubscribeArmAuthorizationRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }},
+  // no field_entries, or aux_entries
+  {{
+  }},
+};
 
-::google::protobuf::Metadata SubscribeArmAuthorizationRequest::GetMetadata() const
-{
-    return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
+
+
+
+
+
+
+
+::google::protobuf::Metadata SubscribeArmAuthorizationRequest::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class ArmAuthorizationResponse::_Internal {
-public:
+ public:
 };
 
 ArmAuthorizationResponse::ArmAuthorizationResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse)
 }
 ArmAuthorizationResponse::ArmAuthorizationResponse(
-    ::google::protobuf::Arena* arena, const ArmAuthorizationResponse& from) :
-    ArmAuthorizationResponse(arena)
-{
-    MergeFrom(from);
+    ::google::protobuf::Arena* arena, const ArmAuthorizationResponse& from)
+    : ArmAuthorizationResponse(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE ArmAuthorizationResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-inline void ArmAuthorizationResponse::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.system_id_ = {};
+inline void ArmAuthorizationResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.system_id_ = {};
 }
-ArmAuthorizationResponse::~ArmAuthorizationResponse()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse)
-    SharedDtor(*this);
+ArmAuthorizationResponse::~ArmAuthorizationResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse)
+  SharedDtor(*this);
 }
-inline void ArmAuthorizationResponse::SharedDtor(MessageLite& self)
-{
-    ArmAuthorizationResponse& this_ = static_cast<ArmAuthorizationResponse&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.~Impl_();
+inline void ArmAuthorizationResponse::SharedDtor(MessageLite& self) {
+  ArmAuthorizationResponse& this_ = static_cast<ArmAuthorizationResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
-inline void*
-ArmAuthorizationResponse::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) ArmAuthorizationResponse(arena);
+inline void* ArmAuthorizationResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) ArmAuthorizationResponse(arena);
 }
-constexpr auto ArmAuthorizationResponse::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(ArmAuthorizationResponse), alignof(ArmAuthorizationResponse));
+constexpr auto ArmAuthorizationResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(ArmAuthorizationResponse),
+                                            alignof(ArmAuthorizationResponse));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -658,233 +553,206 @@ const ::google::protobuf::internal::ClassDataFull ArmAuthorizationResponse::_cla
     ::google::protobuf::internal::ClassData{
         &_ArmAuthorizationResponse_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &ArmAuthorizationResponse::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<ArmAuthorizationResponse>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &ArmAuthorizationResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<ArmAuthorizationResponse>(),
-        &ArmAuthorizationResponse::ByteSizeLong,
-        &ArmAuthorizationResponse::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<ArmAuthorizationResponse>(), &ArmAuthorizationResponse::ByteSizeLong,
+            &ArmAuthorizationResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(ArmAuthorizationResponse, _impl_._cached_size_),
         false,
     },
     &ArmAuthorizationResponse::kDescriptorMethods,
     &descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* ArmAuthorizationResponse::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* ArmAuthorizationResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 0, 0, 2>
-    ArmAuthorizationResponse::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<
-                ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // uint32 system_id = 1;
-            {::_pbi::TcParser::SingularVarintNoZag1<
-                 ::uint32_t,
-                 offsetof(ArmAuthorizationResponse, _impl_.system_id_),
-                 63>(),
-             {8, 63, 0, PROTOBUF_FIELD_OFFSET(ArmAuthorizationResponse, _impl_.system_id_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // uint32 system_id = 1;
-            {PROTOBUF_FIELD_OFFSET(ArmAuthorizationResponse, _impl_.system_id_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
-        }},
-        // no aux_entries
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void ArmAuthorizationResponse::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    _impl_.system_id_ = 0u;
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* ArmAuthorizationResponse::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const ArmAuthorizationResponse& this_ = static_cast<const ArmAuthorizationResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* ArmAuthorizationResponse::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const ArmAuthorizationResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> ArmAuthorizationResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizationResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // uint32 system_id = 1;
-    if (this_._internal_system_id() != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this_._internal_system_id(), target);
-    }
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ArmAuthorizationResponse, _impl_.system_id_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(ArmAuthorizationResponse, _impl_.system_id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint32 system_id = 1;
+    {PROTOBUF_FIELD_OFFSET(ArmAuthorizationResponse, _impl_.system_id_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse)
-    return target;
+PROTOBUF_NOINLINE void ArmAuthorizationResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.system_id_ = 0u;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t ArmAuthorizationResponse::ByteSizeLong(const MessageLite& base)
-{
-    const ArmAuthorizationResponse& this_ = static_cast<const ArmAuthorizationResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t ArmAuthorizationResponse::ByteSizeLong() const
-{
-    const ArmAuthorizationResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse)
-    ::size_t total_size = 0;
+        ::uint8_t* ArmAuthorizationResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const ArmAuthorizationResponse& this_ = static_cast<const ArmAuthorizationResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* ArmAuthorizationResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const ArmAuthorizationResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // uint32 system_id = 1;
+          if (this_._internal_system_id() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+                1, this_._internal_system_id(), target);
+          }
 
-    {
-        // uint32 system_id = 1;
-        if (this_._internal_system_id() != 0) {
-            total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this_._internal_system_id());
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t ArmAuthorizationResponse::ByteSizeLong(const MessageLite& base) {
+          const ArmAuthorizationResponse& this_ = static_cast<const ArmAuthorizationResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t ArmAuthorizationResponse::ByteSizeLong() const {
+          const ArmAuthorizationResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // uint32 system_id = 1;
+            if (this_._internal_system_id() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+                  this_._internal_system_id());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void ArmAuthorizationResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<ArmAuthorizationResponse*>(&to_msg);
+  auto& from = static_cast<const ArmAuthorizationResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_system_id() != 0) {
+    _this->_impl_.system_id_ = from._impl_.system_id_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void ArmAuthorizationResponse::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<ArmAuthorizationResponse*>(&to_msg);
-    auto& from = static_cast<const ArmAuthorizationResponse&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (from._internal_system_id() != 0) {
-        _this->_impl_.system_id_ = from._impl_.system_id_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void ArmAuthorizationResponse::CopyFrom(const ArmAuthorizationResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void ArmAuthorizationResponse::CopyFrom(const ArmAuthorizationResponse& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizationResponse)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void ArmAuthorizationResponse::InternalSwap(ArmAuthorizationResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.system_id_, other->_impl_.system_id_);
 }
 
-void ArmAuthorizationResponse::InternalSwap(ArmAuthorizationResponse* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_.system_id_, other->_impl_.system_id_);
-}
-
-::google::protobuf::Metadata ArmAuthorizationResponse::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata ArmAuthorizationResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class AcceptArmAuthorizationRequest::_Internal {
-public:
+ public:
 };
 
 AcceptArmAuthorizationRequest::AcceptArmAuthorizationRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest)
 }
 AcceptArmAuthorizationRequest::AcceptArmAuthorizationRequest(
-    ::google::protobuf::Arena* arena, const AcceptArmAuthorizationRequest& from) :
-    AcceptArmAuthorizationRequest(arena)
-{
-    MergeFrom(from);
+    ::google::protobuf::Arena* arena, const AcceptArmAuthorizationRequest& from)
+    : AcceptArmAuthorizationRequest(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE AcceptArmAuthorizationRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-inline void AcceptArmAuthorizationRequest::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.valid_time_s_ = {};
+inline void AcceptArmAuthorizationRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.valid_time_s_ = {};
 }
-AcceptArmAuthorizationRequest::~AcceptArmAuthorizationRequest()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest)
-    SharedDtor(*this);
+AcceptArmAuthorizationRequest::~AcceptArmAuthorizationRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest)
+  SharedDtor(*this);
 }
-inline void AcceptArmAuthorizationRequest::SharedDtor(MessageLite& self)
-{
-    AcceptArmAuthorizationRequest& this_ = static_cast<AcceptArmAuthorizationRequest&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.~Impl_();
+inline void AcceptArmAuthorizationRequest::SharedDtor(MessageLite& self) {
+  AcceptArmAuthorizationRequest& this_ = static_cast<AcceptArmAuthorizationRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
-inline void* AcceptArmAuthorizationRequest::PlacementNew_(
-    const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) AcceptArmAuthorizationRequest(arena);
+inline void* AcceptArmAuthorizationRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) AcceptArmAuthorizationRequest(arena);
 }
-constexpr auto AcceptArmAuthorizationRequest::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(AcceptArmAuthorizationRequest), alignof(AcceptArmAuthorizationRequest));
+constexpr auto AcceptArmAuthorizationRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(AcceptArmAuthorizationRequest),
+                                            alignof(AcceptArmAuthorizationRequest));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -892,271 +760,232 @@ const ::google::protobuf::internal::ClassDataFull AcceptArmAuthorizationRequest:
     ::google::protobuf::internal::ClassData{
         &_AcceptArmAuthorizationRequest_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &AcceptArmAuthorizationRequest::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<AcceptArmAuthorizationRequest>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &AcceptArmAuthorizationRequest::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<AcceptArmAuthorizationRequest>(),
-        &AcceptArmAuthorizationRequest::ByteSizeLong,
-        &AcceptArmAuthorizationRequest::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<AcceptArmAuthorizationRequest>(), &AcceptArmAuthorizationRequest::ByteSizeLong,
+            &AcceptArmAuthorizationRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(AcceptArmAuthorizationRequest, _impl_._cached_size_),
         false,
     },
     &AcceptArmAuthorizationRequest::kDescriptorMethods,
     &descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* AcceptArmAuthorizationRequest::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* AcceptArmAuthorizationRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 0, 0, 2>
-    AcceptArmAuthorizationRequest::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::arm_authorizer_server::
-                                           AcceptArmAuthorizationRequest>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // int32 valid_time_s = 1;
-            {::_pbi::TcParser::SingularVarintNoZag1<
-                 ::uint32_t,
-                 offsetof(AcceptArmAuthorizationRequest, _impl_.valid_time_s_),
-                 63>(),
-             {8,
-              63,
-              0,
-              PROTOBUF_FIELD_OFFSET(AcceptArmAuthorizationRequest, _impl_.valid_time_s_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // int32 valid_time_s = 1;
-            {PROTOBUF_FIELD_OFFSET(AcceptArmAuthorizationRequest, _impl_.valid_time_s_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
-        }},
-        // no aux_entries
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void AcceptArmAuthorizationRequest::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    _impl_.valid_time_s_ = 0;
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* AcceptArmAuthorizationRequest::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const AcceptArmAuthorizationRequest& this_ =
-        static_cast<const AcceptArmAuthorizationRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* AcceptArmAuthorizationRequest::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const AcceptArmAuthorizationRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2> AcceptArmAuthorizationRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // int32 valid_time_s = 1;
-    if (this_._internal_valid_time_s() != 0) {
-        target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<1>(
-            stream, this_._internal_valid_time_s(), target);
-    }
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(AcceptArmAuthorizationRequest, _impl_.valid_time_s_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(AcceptArmAuthorizationRequest, _impl_.valid_time_s_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 valid_time_s = 1;
+    {PROTOBUF_FIELD_OFFSET(AcceptArmAuthorizationRequest, _impl_.valid_time_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest)
-    return target;
+PROTOBUF_NOINLINE void AcceptArmAuthorizationRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.valid_time_s_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t AcceptArmAuthorizationRequest::ByteSizeLong(const MessageLite& base)
-{
-    const AcceptArmAuthorizationRequest& this_ =
-        static_cast<const AcceptArmAuthorizationRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t AcceptArmAuthorizationRequest::ByteSizeLong() const
-{
-    const AcceptArmAuthorizationRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest)
-    ::size_t total_size = 0;
+        ::uint8_t* AcceptArmAuthorizationRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const AcceptArmAuthorizationRequest& this_ = static_cast<const AcceptArmAuthorizationRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* AcceptArmAuthorizationRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const AcceptArmAuthorizationRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // int32 valid_time_s = 1;
+          if (this_._internal_valid_time_s() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<1>(
+                    stream, this_._internal_valid_time_s(), target);
+          }
 
-    {
-        // int32 valid_time_s = 1;
-        if (this_._internal_valid_time_s() != 0) {
-            total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this_._internal_valid_time_s());
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t AcceptArmAuthorizationRequest::ByteSizeLong(const MessageLite& base) {
+          const AcceptArmAuthorizationRequest& this_ = static_cast<const AcceptArmAuthorizationRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t AcceptArmAuthorizationRequest::ByteSizeLong() const {
+          const AcceptArmAuthorizationRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // int32 valid_time_s = 1;
+            if (this_._internal_valid_time_s() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_valid_time_s());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void AcceptArmAuthorizationRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<AcceptArmAuthorizationRequest*>(&to_msg);
+  auto& from = static_cast<const AcceptArmAuthorizationRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_valid_time_s() != 0) {
+    _this->_impl_.valid_time_s_ = from._impl_.valid_time_s_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void AcceptArmAuthorizationRequest::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<AcceptArmAuthorizationRequest*>(&to_msg);
-    auto& from = static_cast<const AcceptArmAuthorizationRequest&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (from._internal_valid_time_s() != 0) {
-        _this->_impl_.valid_time_s_ = from._impl_.valid_time_s_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void AcceptArmAuthorizationRequest::CopyFrom(const AcceptArmAuthorizationRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void AcceptArmAuthorizationRequest::CopyFrom(const AcceptArmAuthorizationRequest& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationRequest)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void AcceptArmAuthorizationRequest::InternalSwap(AcceptArmAuthorizationRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+        swap(_impl_.valid_time_s_, other->_impl_.valid_time_s_);
 }
 
-void AcceptArmAuthorizationRequest::InternalSwap(
-    AcceptArmAuthorizationRequest* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_.valid_time_s_, other->_impl_.valid_time_s_);
-}
-
-::google::protobuf::Metadata AcceptArmAuthorizationRequest::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata AcceptArmAuthorizationRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class AcceptArmAuthorizationResponse::_Internal {
-public:
-    using HasBits = decltype(std::declval<AcceptArmAuthorizationResponse>()._impl_._has_bits_);
-    static constexpr ::int32_t kHasBitsOffset =
-        8 * PROTOBUF_FIELD_OFFSET(AcceptArmAuthorizationResponse, _impl_._has_bits_);
+ public:
+  using HasBits =
+      decltype(std::declval<AcceptArmAuthorizationResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(AcceptArmAuthorizationResponse, _impl_._has_bits_);
 };
 
 AcceptArmAuthorizationResponse::AcceptArmAuthorizationResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE AcceptArmAuthorizationResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+AcceptArmAuthorizationResponse::AcceptArmAuthorizationResponse(
+    ::google::protobuf::Arena* arena,
+    const AcceptArmAuthorizationResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  AcceptArmAuthorizationResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.arm_authorizer_server_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult>(
+                              arena, *from._impl_.arm_authorizer_server_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE AcceptArmAuthorizationResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse& from_msg) :
-    _has_bits_{from._has_bits_},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-AcceptArmAuthorizationResponse::AcceptArmAuthorizationResponse(
-    ::google::protobuf::Arena* arena, const AcceptArmAuthorizationResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    AcceptArmAuthorizationResponse* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-    _impl_.arm_authorizer_server_result_ =
-        (cached_has_bits & 0x00000001u) ?
-            ::google::protobuf::Message::CopyConstruct<
-                ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult>(
-                arena, *from._impl_.arm_authorizer_server_result_) :
-            nullptr;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
+inline void AcceptArmAuthorizationResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.arm_authorizer_server_result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE AcceptArmAuthorizationResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
-
-inline void AcceptArmAuthorizationResponse::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.arm_authorizer_server_result_ = {};
+AcceptArmAuthorizationResponse::~AcceptArmAuthorizationResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
+  SharedDtor(*this);
 }
-AcceptArmAuthorizationResponse::~AcceptArmAuthorizationResponse()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
-    SharedDtor(*this);
-}
-inline void AcceptArmAuthorizationResponse::SharedDtor(MessageLite& self)
-{
-    AcceptArmAuthorizationResponse& this_ = static_cast<AcceptArmAuthorizationResponse&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    delete this_._impl_.arm_authorizer_server_result_;
-    this_._impl_.~Impl_();
+inline void AcceptArmAuthorizationResponse::SharedDtor(MessageLite& self) {
+  AcceptArmAuthorizationResponse& this_ = static_cast<AcceptArmAuthorizationResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.arm_authorizer_server_result_;
+  this_._impl_.~Impl_();
 }
 
-inline void* AcceptArmAuthorizationResponse::PlacementNew_(
-    const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) AcceptArmAuthorizationResponse(arena);
+inline void* AcceptArmAuthorizationResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) AcceptArmAuthorizationResponse(arena);
 }
-constexpr auto AcceptArmAuthorizationResponse::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(AcceptArmAuthorizationResponse), alignof(AcceptArmAuthorizationResponse));
+constexpr auto AcceptArmAuthorizationResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(AcceptArmAuthorizationResponse),
+                                            alignof(AcceptArmAuthorizationResponse));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -1164,272 +993,228 @@ const ::google::protobuf::internal::ClassDataFull AcceptArmAuthorizationResponse
     ::google::protobuf::internal::ClassData{
         &_AcceptArmAuthorizationResponse_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &AcceptArmAuthorizationResponse::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<AcceptArmAuthorizationResponse>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &AcceptArmAuthorizationResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<AcceptArmAuthorizationResponse>(),
-        &AcceptArmAuthorizationResponse::ByteSizeLong,
-        &AcceptArmAuthorizationResponse::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<AcceptArmAuthorizationResponse>(), &AcceptArmAuthorizationResponse::ByteSizeLong,
+            &AcceptArmAuthorizationResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(AcceptArmAuthorizationResponse, _impl_._cached_size_),
         false,
     },
     &AcceptArmAuthorizationResponse::kDescriptorMethods,
     &descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* AcceptArmAuthorizationResponse::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* AcceptArmAuthorizationResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-    AcceptArmAuthorizationResponse::_table_ = {
-        {
-            PROTOBUF_FIELD_OFFSET(AcceptArmAuthorizationResponse, _impl_._has_bits_),
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            1, // num_aux_entries
-            offsetof(decltype(_table_), aux_entries),
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::arm_authorizer_server::
-                                           AcceptArmAuthorizationResponse>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult
-            // arm_authorizer_server_result = 1;
-            {::_pbi::TcParser::FastMtS1,
-             {10,
-              0,
-              0,
-              PROTOBUF_FIELD_OFFSET(
-                  AcceptArmAuthorizationResponse, _impl_.arm_authorizer_server_result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult
-            // arm_authorizer_server_result = 1;
-            {PROTOBUF_FIELD_OFFSET(
-                 AcceptArmAuthorizationResponse, _impl_.arm_authorizer_server_result_),
-             _Internal::kHasBitsOffset + 0,
-             0,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-        }},
-        {{
-            {::_pbi::TcParser::GetTable<
-                ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult>()},
-        }},
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void AcceptArmAuthorizationResponse::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    cached_has_bits = _impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(_impl_.arm_authorizer_server_result_ != nullptr);
-        _impl_.arm_authorizer_server_result_->Clear();
-    }
-    _impl_._has_bits_.Clear();
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* AcceptArmAuthorizationResponse::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const AcceptArmAuthorizationResponse& this_ =
-        static_cast<const AcceptArmAuthorizationResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* AcceptArmAuthorizationResponse::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const AcceptArmAuthorizationResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = this_._impl_._has_bits_[0];
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> AcceptArmAuthorizationResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(AcceptArmAuthorizationResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::arm_authorizer_server::AcceptArmAuthorizationResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult arm_authorizer_server_result = 1;
-    if (cached_has_bits & 0x00000001u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1,
-            *this_._impl_.arm_authorizer_server_result_,
-            this_._impl_.arm_authorizer_server_result_->GetCachedSize(),
-            target,
-            stream);
-    }
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(AcceptArmAuthorizationResponse, _impl_.arm_authorizer_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult arm_authorizer_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(AcceptArmAuthorizationResponse, _impl_.arm_authorizer_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult>()},
+  }}, {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
-    return target;
+PROTOBUF_NOINLINE void AcceptArmAuthorizationResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.arm_authorizer_server_result_ != nullptr);
+    _impl_.arm_authorizer_server_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t AcceptArmAuthorizationResponse::ByteSizeLong(const MessageLite& base)
-{
-    const AcceptArmAuthorizationResponse& this_ =
-        static_cast<const AcceptArmAuthorizationResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t AcceptArmAuthorizationResponse::ByteSizeLong() const
-{
-    const AcceptArmAuthorizationResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
-    ::size_t total_size = 0;
+        ::uint8_t* AcceptArmAuthorizationResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const AcceptArmAuthorizationResponse& this_ = static_cast<const AcceptArmAuthorizationResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* AcceptArmAuthorizationResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const AcceptArmAuthorizationResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult arm_authorizer_server_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.arm_authorizer_server_result_, this_._impl_.arm_authorizer_server_result_->GetCachedSize(), target,
+                stream);
+          }
 
-    {
-        // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult arm_authorizer_server_result
-        // = 1;
-        cached_has_bits = this_._impl_._has_bits_[0];
-        if (cached_has_bits & 0x00000001u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.arm_authorizer_server_result_);
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
-}
 
-void AcceptArmAuthorizationResponse::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<AcceptArmAuthorizationResponse*>(&to_msg);
-    auto& from = static_cast<const AcceptArmAuthorizationResponse&>(from_msg);
-    ::google::protobuf::Arena* arena = _this->GetArena();
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t AcceptArmAuthorizationResponse::ByteSizeLong(const MessageLite& base) {
+          const AcceptArmAuthorizationResponse& this_ = static_cast<const AcceptArmAuthorizationResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t AcceptArmAuthorizationResponse::ByteSizeLong() const {
+          const AcceptArmAuthorizationResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
+          ::size_t total_size = 0;
 
-    cached_has_bits = from._impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(from._impl_.arm_authorizer_server_result_ != nullptr);
-        if (_this->_impl_.arm_authorizer_server_result_ == nullptr) {
-            _this->_impl_.arm_authorizer_server_result_ =
-                ::google::protobuf::Message::CopyConstruct<
-                    ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult>(
-                    arena, *from._impl_.arm_authorizer_server_result_);
-        } else {
-            _this->_impl_.arm_authorizer_server_result_->MergeFrom(
-                *from._impl_.arm_authorizer_server_result_);
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult arm_authorizer_server_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.arm_authorizer_server_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
+
+void AcceptArmAuthorizationResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<AcceptArmAuthorizationResponse*>(&to_msg);
+  auto& from = static_cast<const AcceptArmAuthorizationResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.arm_authorizer_server_result_ != nullptr);
+    if (_this->_impl_.arm_authorizer_server_result_ == nullptr) {
+      _this->_impl_.arm_authorizer_server_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult>(arena, *from._impl_.arm_authorizer_server_result_);
+    } else {
+      _this->_impl_.arm_authorizer_server_result_->MergeFrom(*from._impl_.arm_authorizer_server_result_);
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void AcceptArmAuthorizationResponse::CopyFrom(const AcceptArmAuthorizationResponse& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+void AcceptArmAuthorizationResponse::CopyFrom(const AcceptArmAuthorizationResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.arm_authorizer_server.AcceptArmAuthorizationResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void AcceptArmAuthorizationResponse::InternalSwap(
-    AcceptArmAuthorizationResponse* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-    swap(_impl_.arm_authorizer_server_result_, other->_impl_.arm_authorizer_server_result_);
+
+void AcceptArmAuthorizationResponse::InternalSwap(AcceptArmAuthorizationResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.arm_authorizer_server_result_, other->_impl_.arm_authorizer_server_result_);
 }
 
-::google::protobuf::Metadata AcceptArmAuthorizationResponse::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata AcceptArmAuthorizationResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class RejectArmAuthorizationRequest::_Internal {
-public:
+ public:
 };
 
 RejectArmAuthorizationRequest::RejectArmAuthorizationRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest)
 }
 RejectArmAuthorizationRequest::RejectArmAuthorizationRequest(
-    ::google::protobuf::Arena* arena, const RejectArmAuthorizationRequest& from) :
-    RejectArmAuthorizationRequest(arena)
-{
-    MergeFrom(from);
+    ::google::protobuf::Arena* arena, const RejectArmAuthorizationRequest& from)
+    : RejectArmAuthorizationRequest(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE RejectArmAuthorizationRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-inline void RejectArmAuthorizationRequest::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    ::memset(
-        reinterpret_cast<char*>(&_impl_) + offsetof(Impl_, temporarily_),
-        0,
-        offsetof(Impl_, extra_info_) - offsetof(Impl_, temporarily_) + sizeof(Impl_::extra_info_));
+inline void RejectArmAuthorizationRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, temporarily_),
+           0,
+           offsetof(Impl_, extra_info_) -
+               offsetof(Impl_, temporarily_) +
+               sizeof(Impl_::extra_info_));
 }
-RejectArmAuthorizationRequest::~RejectArmAuthorizationRequest()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest)
-    SharedDtor(*this);
+RejectArmAuthorizationRequest::~RejectArmAuthorizationRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest)
+  SharedDtor(*this);
 }
-inline void RejectArmAuthorizationRequest::SharedDtor(MessageLite& self)
-{
-    RejectArmAuthorizationRequest& this_ = static_cast<RejectArmAuthorizationRequest&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.~Impl_();
+inline void RejectArmAuthorizationRequest::SharedDtor(MessageLite& self) {
+  RejectArmAuthorizationRequest& this_ = static_cast<RejectArmAuthorizationRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
-inline void* RejectArmAuthorizationRequest::PlacementNew_(
-    const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) RejectArmAuthorizationRequest(arena);
+inline void* RejectArmAuthorizationRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) RejectArmAuthorizationRequest(arena);
 }
-constexpr auto RejectArmAuthorizationRequest::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(RejectArmAuthorizationRequest), alignof(RejectArmAuthorizationRequest));
+constexpr auto RejectArmAuthorizationRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(RejectArmAuthorizationRequest),
+                                            alignof(RejectArmAuthorizationRequest));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -1437,329 +1222,282 @@ const ::google::protobuf::internal::ClassDataFull RejectArmAuthorizationRequest:
     ::google::protobuf::internal::ClassData{
         &_RejectArmAuthorizationRequest_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &RejectArmAuthorizationRequest::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<RejectArmAuthorizationRequest>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &RejectArmAuthorizationRequest::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<RejectArmAuthorizationRequest>(),
-        &RejectArmAuthorizationRequest::ByteSizeLong,
-        &RejectArmAuthorizationRequest::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<RejectArmAuthorizationRequest>(), &RejectArmAuthorizationRequest::ByteSizeLong,
+            &RejectArmAuthorizationRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationRequest, _impl_._cached_size_),
         false,
     },
     &RejectArmAuthorizationRequest::kDescriptorMethods,
     &descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* RejectArmAuthorizationRequest::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* RejectArmAuthorizationRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<2, 3, 0, 0, 2>
-    RejectArmAuthorizationRequest::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            3,
-            24, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967288, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            3, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::arm_authorizer_server::
-                                           RejectArmAuthorizationRequest>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            {::_pbi::TcParser::MiniParse, {}},
-            // bool temporarily = 1;
-            {::_pbi::TcParser::SingularVarintNoZag1<
-                 bool,
-                 offsetof(RejectArmAuthorizationRequest, _impl_.temporarily_),
-                 63>(),
-             {8, 63, 0, PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationRequest, _impl_.temporarily_)}},
-            // .mavsdk.rpc.arm_authorizer_server.RejectionReason reason = 2;
-            {::_pbi::TcParser::SingularVarintNoZag1<
-                 ::uint32_t,
-                 offsetof(RejectArmAuthorizationRequest, _impl_.reason_),
-                 63>(),
-             {16, 63, 0, PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationRequest, _impl_.reason_)}},
-            // int32 extra_info = 3;
-            {::_pbi::TcParser::SingularVarintNoZag1<
-                 ::uint32_t,
-                 offsetof(RejectArmAuthorizationRequest, _impl_.extra_info_),
-                 63>(),
-             {24, 63, 0, PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationRequest, _impl_.extra_info_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // bool temporarily = 1;
-            {PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationRequest, _impl_.temporarily_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kBool)},
-            // .mavsdk.rpc.arm_authorizer_server.RejectionReason reason = 2;
-            {PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationRequest, _impl_.reason_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-            // int32 extra_info = 3;
-            {PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationRequest, _impl_.extra_info_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
-        }},
-        // no aux_entries
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void RejectArmAuthorizationRequest::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    ::memset(
-        &_impl_.temporarily_,
-        0,
-        static_cast<::size_t>(
-            reinterpret_cast<char*>(&_impl_.extra_info_) -
-            reinterpret_cast<char*>(&_impl_.temporarily_)) +
-            sizeof(_impl_.extra_info_));
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* RejectArmAuthorizationRequest::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const RejectArmAuthorizationRequest& this_ =
-        static_cast<const RejectArmAuthorizationRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* RejectArmAuthorizationRequest::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const RejectArmAuthorizationRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> RejectArmAuthorizationRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
     // bool temporarily = 1;
-    if (this_._internal_temporarily() != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteBoolToArray(1, this_._internal_temporarily(), target);
-    }
-
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(RejectArmAuthorizationRequest, _impl_.temporarily_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationRequest, _impl_.temporarily_)}},
     // .mavsdk.rpc.arm_authorizer_server.RejectionReason reason = 2;
-    if (this_._internal_reason() != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteEnumToArray(2, this_._internal_reason(), target);
-    }
-
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(RejectArmAuthorizationRequest, _impl_.reason_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationRequest, _impl_.reason_)}},
     // int32 extra_info = 3;
-    if (this_._internal_extra_info() != 0) {
-        target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<3>(
-            stream, this_._internal_extra_info(), target);
-    }
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(RejectArmAuthorizationRequest, _impl_.extra_info_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationRequest, _impl_.extra_info_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // bool temporarily = 1;
+    {PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationRequest, _impl_.temporarily_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBool)},
+    // .mavsdk.rpc.arm_authorizer_server.RejectionReason reason = 2;
+    {PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationRequest, _impl_.reason_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // int32 extra_info = 3;
+    {PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationRequest, _impl_.extra_info_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest)
-    return target;
+PROTOBUF_NOINLINE void RejectArmAuthorizationRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.temporarily_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.extra_info_) -
+      reinterpret_cast<char*>(&_impl_.temporarily_)) + sizeof(_impl_.extra_info_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t RejectArmAuthorizationRequest::ByteSizeLong(const MessageLite& base)
-{
-    const RejectArmAuthorizationRequest& this_ =
-        static_cast<const RejectArmAuthorizationRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t RejectArmAuthorizationRequest::ByteSizeLong() const
-{
-    const RejectArmAuthorizationRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest)
-    ::size_t total_size = 0;
+        ::uint8_t* RejectArmAuthorizationRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const RejectArmAuthorizationRequest& this_ = static_cast<const RejectArmAuthorizationRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* RejectArmAuthorizationRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const RejectArmAuthorizationRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // bool temporarily = 1;
+          if (this_._internal_temporarily() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteBoolToArray(
+                1, this_._internal_temporarily(), target);
+          }
 
-    ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-    {
-        // bool temporarily = 1;
-        if (this_._internal_temporarily() != 0) {
-            total_size += 2;
+          // .mavsdk.rpc.arm_authorizer_server.RejectionReason reason = 2;
+          if (this_._internal_reason() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                2, this_._internal_reason(), target);
+          }
+
+          // int32 extra_info = 3;
+          if (this_._internal_extra_info() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<3>(
+                    stream, this_._internal_extra_info(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest)
+          return target;
         }
-        // .mavsdk.rpc.arm_authorizer_server.RejectionReason reason = 2;
-        if (this_._internal_reason() != 0) {
-            total_size += 1 + ::_pbi::WireFormatLite::EnumSize(this_._internal_reason());
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t RejectArmAuthorizationRequest::ByteSizeLong(const MessageLite& base) {
+          const RejectArmAuthorizationRequest& this_ = static_cast<const RejectArmAuthorizationRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t RejectArmAuthorizationRequest::ByteSizeLong() const {
+          const RejectArmAuthorizationRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // bool temporarily = 1;
+            if (this_._internal_temporarily() != 0) {
+              total_size += 2;
+            }
+            // .mavsdk.rpc.arm_authorizer_server.RejectionReason reason = 2;
+            if (this_._internal_reason() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_reason());
+            }
+            // int32 extra_info = 3;
+            if (this_._internal_extra_info() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_extra_info());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
-        // int32 extra_info = 3;
-        if (this_._internal_extra_info() != 0) {
-            total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this_._internal_extra_info());
-        }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+void RejectArmAuthorizationRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<RejectArmAuthorizationRequest*>(&to_msg);
+  auto& from = static_cast<const RejectArmAuthorizationRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_temporarily() != 0) {
+    _this->_impl_.temporarily_ = from._impl_.temporarily_;
+  }
+  if (from._internal_reason() != 0) {
+    _this->_impl_.reason_ = from._impl_.reason_;
+  }
+  if (from._internal_extra_info() != 0) {
+    _this->_impl_.extra_info_ = from._impl_.extra_info_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void RejectArmAuthorizationRequest::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<RejectArmAuthorizationRequest*>(&to_msg);
-    auto& from = static_cast<const RejectArmAuthorizationRequest&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (from._internal_temporarily() != 0) {
-        _this->_impl_.temporarily_ = from._impl_.temporarily_;
-    }
-    if (from._internal_reason() != 0) {
-        _this->_impl_.reason_ = from._impl_.reason_;
-    }
-    if (from._internal_extra_info() != 0) {
-        _this->_impl_.extra_info_ = from._impl_.extra_info_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void RejectArmAuthorizationRequest::CopyFrom(const RejectArmAuthorizationRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void RejectArmAuthorizationRequest::CopyFrom(const RejectArmAuthorizationRequest& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationRequest)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void RejectArmAuthorizationRequest::InternalSwap(RejectArmAuthorizationRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationRequest, _impl_.extra_info_)
+      + sizeof(RejectArmAuthorizationRequest::_impl_.extra_info_)
+      - PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationRequest, _impl_.temporarily_)>(
+          reinterpret_cast<char*>(&_impl_.temporarily_),
+          reinterpret_cast<char*>(&other->_impl_.temporarily_));
 }
 
-void RejectArmAuthorizationRequest::InternalSwap(
-    RejectArmAuthorizationRequest* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    ::google::protobuf::internal::memswap<
-        PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationRequest, _impl_.extra_info_) +
-        sizeof(RejectArmAuthorizationRequest::_impl_.extra_info_) -
-        PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationRequest, _impl_.temporarily_)>(
-        reinterpret_cast<char*>(&_impl_.temporarily_),
-        reinterpret_cast<char*>(&other->_impl_.temporarily_));
-}
-
-::google::protobuf::Metadata RejectArmAuthorizationRequest::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata RejectArmAuthorizationRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class RejectArmAuthorizationResponse::_Internal {
-public:
-    using HasBits = decltype(std::declval<RejectArmAuthorizationResponse>()._impl_._has_bits_);
-    static constexpr ::int32_t kHasBitsOffset =
-        8 * PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationResponse, _impl_._has_bits_);
+ public:
+  using HasBits =
+      decltype(std::declval<RejectArmAuthorizationResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationResponse, _impl_._has_bits_);
 };
 
 RejectArmAuthorizationResponse::RejectArmAuthorizationResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE RejectArmAuthorizationResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+RejectArmAuthorizationResponse::RejectArmAuthorizationResponse(
+    ::google::protobuf::Arena* arena,
+    const RejectArmAuthorizationResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  RejectArmAuthorizationResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.arm_authorizer_server_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult>(
+                              arena, *from._impl_.arm_authorizer_server_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE RejectArmAuthorizationResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse& from_msg) :
-    _has_bits_{from._has_bits_},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-RejectArmAuthorizationResponse::RejectArmAuthorizationResponse(
-    ::google::protobuf::Arena* arena, const RejectArmAuthorizationResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    RejectArmAuthorizationResponse* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-    _impl_.arm_authorizer_server_result_ =
-        (cached_has_bits & 0x00000001u) ?
-            ::google::protobuf::Message::CopyConstruct<
-                ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult>(
-                arena, *from._impl_.arm_authorizer_server_result_) :
-            nullptr;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
+inline void RejectArmAuthorizationResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.arm_authorizer_server_result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE RejectArmAuthorizationResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
-
-inline void RejectArmAuthorizationResponse::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.arm_authorizer_server_result_ = {};
+RejectArmAuthorizationResponse::~RejectArmAuthorizationResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
+  SharedDtor(*this);
 }
-RejectArmAuthorizationResponse::~RejectArmAuthorizationResponse()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
-    SharedDtor(*this);
-}
-inline void RejectArmAuthorizationResponse::SharedDtor(MessageLite& self)
-{
-    RejectArmAuthorizationResponse& this_ = static_cast<RejectArmAuthorizationResponse&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    delete this_._impl_.arm_authorizer_server_result_;
-    this_._impl_.~Impl_();
+inline void RejectArmAuthorizationResponse::SharedDtor(MessageLite& self) {
+  RejectArmAuthorizationResponse& this_ = static_cast<RejectArmAuthorizationResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.arm_authorizer_server_result_;
+  this_._impl_.~Impl_();
 }
 
-inline void* RejectArmAuthorizationResponse::PlacementNew_(
-    const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) RejectArmAuthorizationResponse(arena);
+inline void* RejectArmAuthorizationResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) RejectArmAuthorizationResponse(arena);
 }
-constexpr auto RejectArmAuthorizationResponse::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(RejectArmAuthorizationResponse), alignof(RejectArmAuthorizationResponse));
+constexpr auto RejectArmAuthorizationResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(RejectArmAuthorizationResponse),
+                                            alignof(RejectArmAuthorizationResponse));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -1767,293 +1505,243 @@ const ::google::protobuf::internal::ClassDataFull RejectArmAuthorizationResponse
     ::google::protobuf::internal::ClassData{
         &_RejectArmAuthorizationResponse_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &RejectArmAuthorizationResponse::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<RejectArmAuthorizationResponse>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &RejectArmAuthorizationResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<RejectArmAuthorizationResponse>(),
-        &RejectArmAuthorizationResponse::ByteSizeLong,
-        &RejectArmAuthorizationResponse::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<RejectArmAuthorizationResponse>(), &RejectArmAuthorizationResponse::ByteSizeLong,
+            &RejectArmAuthorizationResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationResponse, _impl_._cached_size_),
         false,
     },
     &RejectArmAuthorizationResponse::kDescriptorMethods,
     &descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* RejectArmAuthorizationResponse::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* RejectArmAuthorizationResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-    RejectArmAuthorizationResponse::_table_ = {
-        {
-            PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationResponse, _impl_._has_bits_),
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            1, // num_aux_entries
-            offsetof(decltype(_table_), aux_entries),
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::arm_authorizer_server::
-                                           RejectArmAuthorizationResponse>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult
-            // arm_authorizer_server_result = 1;
-            {::_pbi::TcParser::FastMtS1,
-             {10,
-              0,
-              0,
-              PROTOBUF_FIELD_OFFSET(
-                  RejectArmAuthorizationResponse, _impl_.arm_authorizer_server_result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult
-            // arm_authorizer_server_result = 1;
-            {PROTOBUF_FIELD_OFFSET(
-                 RejectArmAuthorizationResponse, _impl_.arm_authorizer_server_result_),
-             _Internal::kHasBitsOffset + 0,
-             0,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-        }},
-        {{
-            {::_pbi::TcParser::GetTable<
-                ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult>()},
-        }},
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void RejectArmAuthorizationResponse::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    cached_has_bits = _impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(_impl_.arm_authorizer_server_result_ != nullptr);
-        _impl_.arm_authorizer_server_result_->Clear();
-    }
-    _impl_._has_bits_.Clear();
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* RejectArmAuthorizationResponse::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const RejectArmAuthorizationResponse& this_ =
-        static_cast<const RejectArmAuthorizationResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* RejectArmAuthorizationResponse::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const RejectArmAuthorizationResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = this_._impl_._has_bits_[0];
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> RejectArmAuthorizationResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::arm_authorizer_server::RejectArmAuthorizationResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult arm_authorizer_server_result = 1;
-    if (cached_has_bits & 0x00000001u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1,
-            *this_._impl_.arm_authorizer_server_result_,
-            this_._impl_.arm_authorizer_server_result_->GetCachedSize(),
-            target,
-            stream);
-    }
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationResponse, _impl_.arm_authorizer_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult arm_authorizer_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(RejectArmAuthorizationResponse, _impl_.arm_authorizer_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult>()},
+  }}, {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
-    return target;
+PROTOBUF_NOINLINE void RejectArmAuthorizationResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.arm_authorizer_server_result_ != nullptr);
+    _impl_.arm_authorizer_server_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t RejectArmAuthorizationResponse::ByteSizeLong(const MessageLite& base)
-{
-    const RejectArmAuthorizationResponse& this_ =
-        static_cast<const RejectArmAuthorizationResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t RejectArmAuthorizationResponse::ByteSizeLong() const
-{
-    const RejectArmAuthorizationResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
-    ::size_t total_size = 0;
+        ::uint8_t* RejectArmAuthorizationResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const RejectArmAuthorizationResponse& this_ = static_cast<const RejectArmAuthorizationResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* RejectArmAuthorizationResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const RejectArmAuthorizationResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult arm_authorizer_server_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.arm_authorizer_server_result_, this_._impl_.arm_authorizer_server_result_->GetCachedSize(), target,
+                stream);
+          }
 
-    {
-        // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult arm_authorizer_server_result
-        // = 1;
-        cached_has_bits = this_._impl_._has_bits_[0];
-        if (cached_has_bits & 0x00000001u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.arm_authorizer_server_result_);
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
-}
 
-void RejectArmAuthorizationResponse::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<RejectArmAuthorizationResponse*>(&to_msg);
-    auto& from = static_cast<const RejectArmAuthorizationResponse&>(from_msg);
-    ::google::protobuf::Arena* arena = _this->GetArena();
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t RejectArmAuthorizationResponse::ByteSizeLong(const MessageLite& base) {
+          const RejectArmAuthorizationResponse& this_ = static_cast<const RejectArmAuthorizationResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t RejectArmAuthorizationResponse::ByteSizeLong() const {
+          const RejectArmAuthorizationResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
+          ::size_t total_size = 0;
 
-    cached_has_bits = from._impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(from._impl_.arm_authorizer_server_result_ != nullptr);
-        if (_this->_impl_.arm_authorizer_server_result_ == nullptr) {
-            _this->_impl_.arm_authorizer_server_result_ =
-                ::google::protobuf::Message::CopyConstruct<
-                    ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult>(
-                    arena, *from._impl_.arm_authorizer_server_result_);
-        } else {
-            _this->_impl_.arm_authorizer_server_result_->MergeFrom(
-                *from._impl_.arm_authorizer_server_result_);
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult arm_authorizer_server_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.arm_authorizer_server_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
+
+void RejectArmAuthorizationResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<RejectArmAuthorizationResponse*>(&to_msg);
+  auto& from = static_cast<const RejectArmAuthorizationResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.arm_authorizer_server_result_ != nullptr);
+    if (_this->_impl_.arm_authorizer_server_result_ == nullptr) {
+      _this->_impl_.arm_authorizer_server_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult>(arena, *from._impl_.arm_authorizer_server_result_);
+    } else {
+      _this->_impl_.arm_authorizer_server_result_->MergeFrom(*from._impl_.arm_authorizer_server_result_);
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void RejectArmAuthorizationResponse::CopyFrom(const RejectArmAuthorizationResponse& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+void RejectArmAuthorizationResponse::CopyFrom(const RejectArmAuthorizationResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.arm_authorizer_server.RejectArmAuthorizationResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void RejectArmAuthorizationResponse::InternalSwap(
-    RejectArmAuthorizationResponse* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-    swap(_impl_.arm_authorizer_server_result_, other->_impl_.arm_authorizer_server_result_);
+
+void RejectArmAuthorizationResponse::InternalSwap(RejectArmAuthorizationResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.arm_authorizer_server_result_, other->_impl_.arm_authorizer_server_result_);
 }
 
-::google::protobuf::Metadata RejectArmAuthorizationResponse::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata RejectArmAuthorizationResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class ArmAuthorizerServerResult::_Internal {
-public:
+ public:
 };
 
 ArmAuthorizerServerResult::ArmAuthorizerServerResult(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
+}
+inline PROTOBUF_NDEBUG_INLINE ArmAuthorizerServerResult::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult& from_msg)
+      : result_str_(arena, from.result_str_),
+        _cached_size_{0} {}
+
+ArmAuthorizerServerResult::ArmAuthorizerServerResult(
+    ::google::protobuf::Arena* arena,
+    const ArmAuthorizerServerResult& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  ArmAuthorizerServerResult* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.result_ = from._impl_.result_;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
 }
 inline PROTOBUF_NDEBUG_INLINE ArmAuthorizerServerResult::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult& from_msg) :
-    result_str_(arena, from.result_str_),
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : result_str_(arena),
+        _cached_size_{0} {}
 
-ArmAuthorizerServerResult::ArmAuthorizerServerResult(
-    ::google::protobuf::Arena* arena, const ArmAuthorizerServerResult& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    ArmAuthorizerServerResult* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    _impl_.result_ = from._impl_.result_;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
+inline void ArmAuthorizerServerResult::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE ArmAuthorizerServerResult::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    result_str_(arena),
-    _cached_size_{0}
-{}
-
-inline void ArmAuthorizerServerResult::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.result_ = {};
+ArmAuthorizerServerResult::~ArmAuthorizerServerResult() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
+  SharedDtor(*this);
 }
-ArmAuthorizerServerResult::~ArmAuthorizerServerResult()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
-    SharedDtor(*this);
-}
-inline void ArmAuthorizerServerResult::SharedDtor(MessageLite& self)
-{
-    ArmAuthorizerServerResult& this_ = static_cast<ArmAuthorizerServerResult&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.result_str_.Destroy();
-    this_._impl_.~Impl_();
+inline void ArmAuthorizerServerResult::SharedDtor(MessageLite& self) {
+  ArmAuthorizerServerResult& this_ = static_cast<ArmAuthorizerServerResult&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.result_str_.Destroy();
+  this_._impl_.~Impl_();
 }
 
-inline void*
-ArmAuthorizerServerResult::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) ArmAuthorizerServerResult(arena);
+inline void* ArmAuthorizerServerResult::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) ArmAuthorizerServerResult(arena);
 }
-constexpr auto ArmAuthorizerServerResult::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::CopyInit(
-        sizeof(ArmAuthorizerServerResult), alignof(ArmAuthorizerServerResult));
+constexpr auto ArmAuthorizerServerResult::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(ArmAuthorizerServerResult),
+                                            alignof(ArmAuthorizerServerResult));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -2061,220 +1749,200 @@ const ::google::protobuf::internal::ClassDataFull ArmAuthorizerServerResult::_cl
     ::google::protobuf::internal::ClassData{
         &_ArmAuthorizerServerResult_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &ArmAuthorizerServerResult::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<ArmAuthorizerServerResult>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &ArmAuthorizerServerResult::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<ArmAuthorizerServerResult>(),
-        &ArmAuthorizerServerResult::ByteSizeLong,
-        &ArmAuthorizerServerResult::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<ArmAuthorizerServerResult>(), &ArmAuthorizerServerResult::ByteSizeLong,
+            &ArmAuthorizerServerResult::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(ArmAuthorizerServerResult, _impl_._cached_size_),
         false,
     },
     &ArmAuthorizerServerResult::kDescriptorMethods,
     &descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* ArmAuthorizerServerResult::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* ArmAuthorizerServerResult::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<1, 2, 0, 77, 2>
-    ArmAuthorizerServerResult::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            2,
-            8, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967292, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            2, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<
-                ::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // string result_str = 2;
-            {::_pbi::TcParser::FastUS1,
-             {18, 63, 0, PROTOBUF_FIELD_OFFSET(ArmAuthorizerServerResult, _impl_.result_str_)}},
-            // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.Result result = 1;
-            {::_pbi::TcParser::SingularVarintNoZag1<
-                 ::uint32_t,
-                 offsetof(ArmAuthorizerServerResult, _impl_.result_),
-                 63>(),
-             {8, 63, 0, PROTOBUF_FIELD_OFFSET(ArmAuthorizerServerResult, _impl_.result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.Result result = 1;
-            {PROTOBUF_FIELD_OFFSET(ArmAuthorizerServerResult, _impl_.result_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-            // string result_str = 2;
-            {PROTOBUF_FIELD_OFFSET(ArmAuthorizerServerResult, _impl_.result_str_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-        }},
-        // no aux_entries
-        {{"\72\0\12\0\0\0\0\0"
-          "mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult"
-          "result_str"}},
-    };
-
-PROTOBUF_NOINLINE void ArmAuthorizerServerResult::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    _impl_.result_str_.ClearToEmpty();
-    _impl_.result_ = 0;
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* ArmAuthorizerServerResult::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const ArmAuthorizerServerResult& this_ = static_cast<const ArmAuthorizerServerResult&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* ArmAuthorizerServerResult::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const ArmAuthorizerServerResult& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.Result result = 1;
-    if (this_._internal_result() != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteEnumToArray(1, this_._internal_result(), target);
-    }
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 77, 2> ArmAuthorizerServerResult::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::arm_authorizer_server::ArmAuthorizerServerResult>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // string result_str = 2;
-    if (!this_._internal_result_str().empty()) {
-        const std::string& _s = this_._internal_result_str();
-        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            _s.data(),
-            static_cast<int>(_s.length()),
-            ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-            "mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.result_str");
-        target = stream->WriteStringMaybeAliased(2, _s, target);
-    }
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(ArmAuthorizerServerResult, _impl_.result_str_)}},
+    // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.Result result = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ArmAuthorizerServerResult, _impl_.result_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(ArmAuthorizerServerResult, _impl_.result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.Result result = 1;
+    {PROTOBUF_FIELD_OFFSET(ArmAuthorizerServerResult, _impl_.result_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // string result_str = 2;
+    {PROTOBUF_FIELD_OFFSET(ArmAuthorizerServerResult, _impl_.result_str_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\72\0\12\0\0\0\0\0"
+    "mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult"
+    "result_str"
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
-    return target;
+PROTOBUF_NOINLINE void ArmAuthorizerServerResult::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.result_str_.ClearToEmpty();
+  _impl_.result_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t ArmAuthorizerServerResult::ByteSizeLong(const MessageLite& base)
-{
-    const ArmAuthorizerServerResult& this_ = static_cast<const ArmAuthorizerServerResult&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t ArmAuthorizerServerResult::ByteSizeLong() const
-{
-    const ArmAuthorizerServerResult& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
-    ::size_t total_size = 0;
+        ::uint8_t* ArmAuthorizerServerResult::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const ArmAuthorizerServerResult& this_ = static_cast<const ArmAuthorizerServerResult&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* ArmAuthorizerServerResult::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const ArmAuthorizerServerResult& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.Result result = 1;
+          if (this_._internal_result() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                1, this_._internal_result(), target);
+          }
 
-    ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-    {
-        // string result_str = 2;
-        if (!this_._internal_result_str().empty()) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                  this_._internal_result_str());
+          // string result_str = 2;
+          if (!this_._internal_result_str().empty()) {
+            const std::string& _s = this_._internal_result_str();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.result_str");
+            target = stream->WriteStringMaybeAliased(2, _s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
+          return target;
         }
-        // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.Result result = 1;
-        if (this_._internal_result() != 0) {
-            total_size += 1 + ::_pbi::WireFormatLite::EnumSize(this_._internal_result());
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t ArmAuthorizerServerResult::ByteSizeLong(const MessageLite& base) {
+          const ArmAuthorizerServerResult& this_ = static_cast<const ArmAuthorizerServerResult&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t ArmAuthorizerServerResult::ByteSizeLong() const {
+          const ArmAuthorizerServerResult& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string result_str = 2;
+            if (!this_._internal_result_str().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_result_str());
+            }
+            // .mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult.Result result = 1;
+            if (this_._internal_result() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_result());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+void ArmAuthorizerServerResult::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<ArmAuthorizerServerResult*>(&to_msg);
+  auto& from = static_cast<const ArmAuthorizerServerResult&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_result_str().empty()) {
+    _this->_internal_set_result_str(from._internal_result_str());
+  }
+  if (from._internal_result() != 0) {
+    _this->_impl_.result_ = from._impl_.result_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void ArmAuthorizerServerResult::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<ArmAuthorizerServerResult*>(&to_msg);
-    auto& from = static_cast<const ArmAuthorizerServerResult&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (!from._internal_result_str().empty()) {
-        _this->_internal_set_result_str(from._internal_result_str());
-    }
-    if (from._internal_result() != 0) {
-        _this->_impl_.result_ = from._impl_.result_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void ArmAuthorizerServerResult::CopyFrom(const ArmAuthorizerServerResult& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void ArmAuthorizerServerResult::CopyFrom(const ArmAuthorizerServerResult& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.arm_authorizer_server.ArmAuthorizerServerResult)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void ArmAuthorizerServerResult::InternalSwap(ArmAuthorizerServerResult* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, &other->_impl_.result_str_, arena);
+  swap(_impl_.result_, other->_impl_.result_);
 }
 
-void ArmAuthorizerServerResult::InternalSwap(ArmAuthorizerServerResult* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    auto* arena = GetArena();
-    ABSL_DCHECK_EQ(arena, other->GetArena());
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, &other->_impl_.result_str_, arena);
-    swap(_impl_.result_, other->_impl_.result_);
-}
-
-::google::protobuf::Metadata ArmAuthorizerServerResult::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata ArmAuthorizerServerResult::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)
-} // namespace arm_authorizer_server
-} // namespace rpc
-} // namespace mavsdk
+}  // namespace arm_authorizer_server
+}  // namespace rpc
+}  // namespace mavsdk
 namespace google {
-namespace protobuf {} // namespace protobuf
-} // namespace google
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 // @@protoc_insertion_point(global_scope)
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::std::false_type _static_init2_ PROTOBUF_UNUSED =
-    (::_pbi::AddDescriptors(
-         &descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto),
-     ::std::false_type{});
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::std::false_type
+    _static_init2_ PROTOBUF_UNUSED =
+        (::_pbi::AddDescriptors(&descriptor_table_arm_5fauthorizer_5fserver_2farm_5fauthorizer_5fserver_2eproto),
+         ::std::false_type{});
 #include "google/protobuf/port_undef.inc"

@@ -27,8 +27,8 @@
 #include "google/protobuf/generated_message_reflection.h"
 #include "google/protobuf/message.h"
 #include "google/protobuf/message_lite.h"
-#include "google/protobuf/repeated_field.h" // IWYU pragma: export
-#include "google/protobuf/extension_set.h" // IWYU pragma: export
+#include "google/protobuf/repeated_field.h"  // IWYU pragma: export
+#include "google/protobuf/extension_set.h"  // IWYU pragma: export
 #include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
 #include "mavsdk_options.pb.h"
@@ -42,14 +42,15 @@
 namespace google {
 namespace protobuf {
 namespace internal {
-template<typename T>::absl::string_view GetAnyMessageName();
-} // namespace internal
-} // namespace protobuf
-} // namespace google
+template <typename T>
+::absl::string_view GetAnyMessageName();
+}  // namespace internal
+}  // namespace protobuf
+}  // namespace google
 
 // Internal implementation detail -- do not use these members.
 struct TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto {
-    static const ::uint32_t offsets[];
+  static const ::uint32_t offsets[];
 };
 extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_log_5fstreaming_2flog_5fstreaming_2eproto;
@@ -79,1687 +80,1534 @@ struct StopLogStreamingResponseDefaultTypeInternal;
 extern StopLogStreamingResponseDefaultTypeInternal _StopLogStreamingResponse_default_instance_;
 class SubscribeLogStreamingRawRequest;
 struct SubscribeLogStreamingRawRequestDefaultTypeInternal;
-extern SubscribeLogStreamingRawRequestDefaultTypeInternal
-    _SubscribeLogStreamingRawRequest_default_instance_;
-} // namespace log_streaming
-} // namespace rpc
-} // namespace mavsdk
+extern SubscribeLogStreamingRawRequestDefaultTypeInternal _SubscribeLogStreamingRawRequest_default_instance_;
+}  // namespace log_streaming
+}  // namespace rpc
+}  // namespace mavsdk
 namespace google {
-namespace protobuf {} // namespace protobuf
-} // namespace google
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 
 namespace mavsdk {
 namespace rpc {
 namespace log_streaming {
 enum LogStreamingResult_Result : int {
-    LogStreamingResult_Result_RESULT_SUCCESS = 0,
-    LogStreamingResult_Result_RESULT_NO_SYSTEM = 1,
-    LogStreamingResult_Result_RESULT_CONNECTION_ERROR = 2,
-    LogStreamingResult_Result_RESULT_BUSY = 3,
-    LogStreamingResult_Result_RESULT_COMMAND_DENIED = 4,
-    LogStreamingResult_Result_RESULT_TIMEOUT = 5,
-    LogStreamingResult_Result_RESULT_UNSUPPORTED = 6,
-    LogStreamingResult_Result_RESULT_UNKNOWN = 7,
-    LogStreamingResult_Result_LogStreamingResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
-        std::numeric_limits<::int32_t>::min(),
-    LogStreamingResult_Result_LogStreamingResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
-        std::numeric_limits<::int32_t>::max(),
+  LogStreamingResult_Result_RESULT_SUCCESS = 0,
+  LogStreamingResult_Result_RESULT_NO_SYSTEM = 1,
+  LogStreamingResult_Result_RESULT_CONNECTION_ERROR = 2,
+  LogStreamingResult_Result_RESULT_BUSY = 3,
+  LogStreamingResult_Result_RESULT_COMMAND_DENIED = 4,
+  LogStreamingResult_Result_RESULT_TIMEOUT = 5,
+  LogStreamingResult_Result_RESULT_UNSUPPORTED = 6,
+  LogStreamingResult_Result_RESULT_UNKNOWN = 7,
+  LogStreamingResult_Result_LogStreamingResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  LogStreamingResult_Result_LogStreamingResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
 };
 
 bool LogStreamingResult_Result_IsValid(int value);
 extern const uint32_t LogStreamingResult_Result_internal_data_[];
-constexpr LogStreamingResult_Result LogStreamingResult_Result_Result_MIN =
-    static_cast<LogStreamingResult_Result>(0);
-constexpr LogStreamingResult_Result LogStreamingResult_Result_Result_MAX =
-    static_cast<LogStreamingResult_Result>(7);
+constexpr LogStreamingResult_Result LogStreamingResult_Result_Result_MIN = static_cast<LogStreamingResult_Result>(0);
+constexpr LogStreamingResult_Result LogStreamingResult_Result_Result_MAX = static_cast<LogStreamingResult_Result>(7);
 constexpr int LogStreamingResult_Result_Result_ARRAYSIZE = 7 + 1;
-const ::google::protobuf::EnumDescriptor* LogStreamingResult_Result_descriptor();
-template<typename T> const std::string& LogStreamingResult_Result_Name(T value)
-{
-    static_assert(
-        std::is_same<T, LogStreamingResult_Result>::value || std::is_integral<T>::value,
-        "Incorrect type passed to Result_Name().");
-    return LogStreamingResult_Result_Name(static_cast<LogStreamingResult_Result>(value));
+const ::google::protobuf::EnumDescriptor*
+LogStreamingResult_Result_descriptor();
+template <typename T>
+const std::string& LogStreamingResult_Result_Name(T value) {
+  static_assert(std::is_same<T, LogStreamingResult_Result>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to Result_Name().");
+  return LogStreamingResult_Result_Name(static_cast<LogStreamingResult_Result>(value));
 }
-template<> inline const std::string& LogStreamingResult_Result_Name(LogStreamingResult_Result value)
-{
-    return ::google::protobuf::internal::
-        NameOfDenseEnum<LogStreamingResult_Result_descriptor, 0, 7>(static_cast<int>(value));
+template <>
+inline const std::string& LogStreamingResult_Result_Name(LogStreamingResult_Result value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<LogStreamingResult_Result_descriptor,
+                                                 0, 7>(
+      static_cast<int>(value));
 }
-inline bool
-LogStreamingResult_Result_Parse(absl::string_view name, LogStreamingResult_Result* value)
-{
-    return ::google::protobuf::internal::ParseNamedEnum<LogStreamingResult_Result>(
-        LogStreamingResult_Result_descriptor(), name, value);
+inline bool LogStreamingResult_Result_Parse(absl::string_view name, LogStreamingResult_Result* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<LogStreamingResult_Result>(
+      LogStreamingResult_Result_descriptor(), name, value);
 }
 
 // ===================================================================
 
+
 // -------------------------------------------------------------------
 
-class SubscribeLogStreamingRawRequest final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:mavsdk.rpc.log_streaming.SubscribeLogStreamingRawRequest)
- */
-{
-public:
-    inline SubscribeLogStreamingRawRequest() : SubscribeLogStreamingRawRequest(nullptr) {}
+class SubscribeLogStreamingRawRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.log_streaming.SubscribeLogStreamingRawRequest) */ {
+ public:
+  inline SubscribeLogStreamingRawRequest() : SubscribeLogStreamingRawRequest(nullptr) {}
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(SubscribeLogStreamingRawRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeLogStreamingRawRequest));
-    }
+  void operator delete(SubscribeLogStreamingRawRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeLogStreamingRawRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        SubscribeLogStreamingRawRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeLogStreamingRawRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline SubscribeLogStreamingRawRequest(const SubscribeLogStreamingRawRequest& from) :
-        SubscribeLogStreamingRawRequest(nullptr, from)
-    {}
-    inline SubscribeLogStreamingRawRequest(SubscribeLogStreamingRawRequest&& from) noexcept :
-        SubscribeLogStreamingRawRequest(nullptr, std::move(from))
-    {}
-    inline SubscribeLogStreamingRawRequest& operator=(const SubscribeLogStreamingRawRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline SubscribeLogStreamingRawRequest(const SubscribeLogStreamingRawRequest& from) : SubscribeLogStreamingRawRequest(nullptr, from) {}
+  inline SubscribeLogStreamingRawRequest(SubscribeLogStreamingRawRequest&& from) noexcept
+      : SubscribeLogStreamingRawRequest(nullptr, std::move(from)) {}
+  inline SubscribeLogStreamingRawRequest& operator=(const SubscribeLogStreamingRawRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeLogStreamingRawRequest& operator=(SubscribeLogStreamingRawRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline SubscribeLogStreamingRawRequest&
-    operator=(SubscribeLogStreamingRawRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeLogStreamingRawRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeLogStreamingRawRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeLogStreamingRawRequest*>(
+        &_SubscribeLogStreamingRawRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 4;
+  friend void swap(SubscribeLogStreamingRawRequest& a, SubscribeLogStreamingRawRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeLogStreamingRawRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const SubscribeLogStreamingRawRequest& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const SubscribeLogStreamingRawRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const SubscribeLogStreamingRawRequest*>(
-            &_SubscribeLogStreamingRawRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 4;
-    friend void swap(SubscribeLogStreamingRawRequest& a, SubscribeLogStreamingRawRequest& b)
-    {
-        a.Swap(&b);
-    }
-    inline void Swap(SubscribeLogStreamingRawRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(SubscribeLogStreamingRawRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(SubscribeLogStreamingRawRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    SubscribeLogStreamingRawRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<
-            SubscribeLogStreamingRawRequest>(arena);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-    inline void CopyFrom(const SubscribeLogStreamingRawRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-    void MergeFrom(const SubscribeLogStreamingRawRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-    }
+  SubscribeLogStreamingRawRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<SubscribeLogStreamingRawRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeLogStreamingRawRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeLogStreamingRawRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
 
-public:
-    bool IsInitialized() const { return true; }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.log_streaming.SubscribeLogStreamingRawRequest"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.log_streaming.SubscribeLogStreamingRawRequest";
-    }
+ protected:
+  explicit SubscribeLogStreamingRawRequest(::google::protobuf::Arena* arena);
+  SubscribeLogStreamingRawRequest(::google::protobuf::Arena* arena, const SubscribeLogStreamingRawRequest& from);
+  SubscribeLogStreamingRawRequest(::google::protobuf::Arena* arena, SubscribeLogStreamingRawRequest&& from) noexcept
+      : SubscribeLogStreamingRawRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit SubscribeLogStreamingRawRequest(::google::protobuf::Arena* arena);
-    SubscribeLogStreamingRawRequest(
-        ::google::protobuf::Arena* arena, const SubscribeLogStreamingRawRequest& from);
-    SubscribeLogStreamingRawRequest(
-        ::google::protobuf::Arena* arena, SubscribeLogStreamingRawRequest&& from) noexcept :
-        SubscribeLogStreamingRawRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_streaming.SubscribeLogStreamingRawRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_streaming.SubscribeLogStreamingRawRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 0, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const SubscribeLogStreamingRawRequest& from_msg);
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    friend struct ::TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeLogStreamingRawRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto;
 };
 // -------------------------------------------------------------------
 
-class StopLogStreamingRequest final : public ::google::protobuf::internal::ZeroFieldsBase
+class StopLogStreamingRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.log_streaming.StopLogStreamingRequest) */ {
-public:
-    inline StopLogStreamingRequest() : StopLogStreamingRequest(nullptr) {}
+ public:
+  inline StopLogStreamingRequest() : StopLogStreamingRequest(nullptr) {}
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(StopLogStreamingRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(StopLogStreamingRequest));
-    }
+  void operator delete(StopLogStreamingRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(StopLogStreamingRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        StopLogStreamingRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR StopLogStreamingRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline StopLogStreamingRequest(const StopLogStreamingRequest& from) :
-        StopLogStreamingRequest(nullptr, from)
-    {}
-    inline StopLogStreamingRequest(StopLogStreamingRequest&& from) noexcept :
-        StopLogStreamingRequest(nullptr, std::move(from))
-    {}
-    inline StopLogStreamingRequest& operator=(const StopLogStreamingRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline StopLogStreamingRequest(const StopLogStreamingRequest& from) : StopLogStreamingRequest(nullptr, from) {}
+  inline StopLogStreamingRequest(StopLogStreamingRequest&& from) noexcept
+      : StopLogStreamingRequest(nullptr, std::move(from)) {}
+  inline StopLogStreamingRequest& operator=(const StopLogStreamingRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline StopLogStreamingRequest& operator=(StopLogStreamingRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline StopLogStreamingRequest& operator=(StopLogStreamingRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const StopLogStreamingRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const StopLogStreamingRequest* internal_default_instance() {
+    return reinterpret_cast<const StopLogStreamingRequest*>(
+        &_StopLogStreamingRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 2;
+  friend void swap(StopLogStreamingRequest& a, StopLogStreamingRequest& b) { a.Swap(&b); }
+  inline void Swap(StopLogStreamingRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const StopLogStreamingRequest& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const StopLogStreamingRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const StopLogStreamingRequest*>(
-            &_StopLogStreamingRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 2;
-    friend void swap(StopLogStreamingRequest& a, StopLogStreamingRequest& b) { a.Swap(&b); }
-    inline void Swap(StopLogStreamingRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(StopLogStreamingRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(StopLogStreamingRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    StopLogStreamingRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<
-            StopLogStreamingRequest>(arena);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-    inline void CopyFrom(const StopLogStreamingRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-    void MergeFrom(const StopLogStreamingRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-    }
+  StopLogStreamingRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<StopLogStreamingRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const StopLogStreamingRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const StopLogStreamingRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
 
-public:
-    bool IsInitialized() const { return true; }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.log_streaming.StopLogStreamingRequest"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.log_streaming.StopLogStreamingRequest";
-    }
+ protected:
+  explicit StopLogStreamingRequest(::google::protobuf::Arena* arena);
+  StopLogStreamingRequest(::google::protobuf::Arena* arena, const StopLogStreamingRequest& from);
+  StopLogStreamingRequest(::google::protobuf::Arena* arena, StopLogStreamingRequest&& from) noexcept
+      : StopLogStreamingRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit StopLogStreamingRequest(::google::protobuf::Arena* arena);
-    StopLogStreamingRequest(::google::protobuf::Arena* arena, const StopLogStreamingRequest& from);
-    StopLogStreamingRequest(
-        ::google::protobuf::Arena* arena, StopLogStreamingRequest&& from) noexcept :
-        StopLogStreamingRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_streaming.StopLogStreamingRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_streaming.StopLogStreamingRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 0, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const StopLogStreamingRequest& from_msg);
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    friend struct ::TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const StopLogStreamingRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto;
 };
 // -------------------------------------------------------------------
 
-class StartLogStreamingRequest final : public ::google::protobuf::internal::ZeroFieldsBase
+class StartLogStreamingRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.log_streaming.StartLogStreamingRequest) */ {
-public:
-    inline StartLogStreamingRequest() : StartLogStreamingRequest(nullptr) {}
+ public:
+  inline StartLogStreamingRequest() : StartLogStreamingRequest(nullptr) {}
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(StartLogStreamingRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(StartLogStreamingRequest));
-    }
+  void operator delete(StartLogStreamingRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(StartLogStreamingRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        StartLogStreamingRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR StartLogStreamingRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline StartLogStreamingRequest(const StartLogStreamingRequest& from) :
-        StartLogStreamingRequest(nullptr, from)
-    {}
-    inline StartLogStreamingRequest(StartLogStreamingRequest&& from) noexcept :
-        StartLogStreamingRequest(nullptr, std::move(from))
-    {}
-    inline StartLogStreamingRequest& operator=(const StartLogStreamingRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline StartLogStreamingRequest(const StartLogStreamingRequest& from) : StartLogStreamingRequest(nullptr, from) {}
+  inline StartLogStreamingRequest(StartLogStreamingRequest&& from) noexcept
+      : StartLogStreamingRequest(nullptr, std::move(from)) {}
+  inline StartLogStreamingRequest& operator=(const StartLogStreamingRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline StartLogStreamingRequest& operator=(StartLogStreamingRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline StartLogStreamingRequest& operator=(StartLogStreamingRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const StartLogStreamingRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const StartLogStreamingRequest* internal_default_instance() {
+    return reinterpret_cast<const StartLogStreamingRequest*>(
+        &_StartLogStreamingRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 0;
+  friend void swap(StartLogStreamingRequest& a, StartLogStreamingRequest& b) { a.Swap(&b); }
+  inline void Swap(StartLogStreamingRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const StartLogStreamingRequest& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const StartLogStreamingRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const StartLogStreamingRequest*>(
-            &_StartLogStreamingRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 0;
-    friend void swap(StartLogStreamingRequest& a, StartLogStreamingRequest& b) { a.Swap(&b); }
-    inline void Swap(StartLogStreamingRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(StartLogStreamingRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(StartLogStreamingRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    StartLogStreamingRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<
-            StartLogStreamingRequest>(arena);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-    inline void CopyFrom(const StartLogStreamingRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-    void MergeFrom(const StartLogStreamingRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-    }
+  StartLogStreamingRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<StartLogStreamingRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const StartLogStreamingRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const StartLogStreamingRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
 
-public:
-    bool IsInitialized() const { return true; }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.log_streaming.StartLogStreamingRequest"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.log_streaming.StartLogStreamingRequest";
-    }
+ protected:
+  explicit StartLogStreamingRequest(::google::protobuf::Arena* arena);
+  StartLogStreamingRequest(::google::protobuf::Arena* arena, const StartLogStreamingRequest& from);
+  StartLogStreamingRequest(::google::protobuf::Arena* arena, StartLogStreamingRequest&& from) noexcept
+      : StartLogStreamingRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit StartLogStreamingRequest(::google::protobuf::Arena* arena);
-    StartLogStreamingRequest(
-        ::google::protobuf::Arena* arena, const StartLogStreamingRequest& from);
-    StartLogStreamingRequest(
-        ::google::protobuf::Arena* arena, StartLogStreamingRequest&& from) noexcept :
-        StartLogStreamingRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_streaming.StartLogStreamingRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_streaming.StartLogStreamingRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 0, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const StartLogStreamingRequest& from_msg);
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    friend struct ::TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const StartLogStreamingRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto;
 };
 // -------------------------------------------------------------------
 
-class LogStreamingResult final : public ::google::protobuf::Message
+class LogStreamingResult final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.log_streaming.LogStreamingResult) */ {
-public:
-    inline LogStreamingResult() : LogStreamingResult(nullptr) {}
-    ~LogStreamingResult() PROTOBUF_FINAL;
+ public:
+  inline LogStreamingResult() : LogStreamingResult(nullptr) {}
+  ~LogStreamingResult() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(LogStreamingResult* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(LogStreamingResult));
-    }
+  void operator delete(LogStreamingResult* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(LogStreamingResult));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        LogStreamingResult(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR LogStreamingResult(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline LogStreamingResult(const LogStreamingResult& from) : LogStreamingResult(nullptr, from) {}
-    inline LogStreamingResult(LogStreamingResult&& from) noexcept :
-        LogStreamingResult(nullptr, std::move(from))
-    {}
-    inline LogStreamingResult& operator=(const LogStreamingResult& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline LogStreamingResult(const LogStreamingResult& from) : LogStreamingResult(nullptr, from) {}
+  inline LogStreamingResult(LogStreamingResult&& from) noexcept
+      : LogStreamingResult(nullptr, std::move(from)) {}
+  inline LogStreamingResult& operator=(const LogStreamingResult& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline LogStreamingResult& operator=(LogStreamingResult&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline LogStreamingResult& operator=(LogStreamingResult&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const LogStreamingResult& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const LogStreamingResult* internal_default_instance() {
+    return reinterpret_cast<const LogStreamingResult*>(
+        &_LogStreamingResult_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 7;
+  friend void swap(LogStreamingResult& a, LogStreamingResult& b) { a.Swap(&b); }
+  inline void Swap(LogStreamingResult* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(LogStreamingResult* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const LogStreamingResult& default_instance() { return *internal_default_instance(); }
-    static inline const LogStreamingResult* internal_default_instance()
-    {
-        return reinterpret_cast<const LogStreamingResult*>(&_LogStreamingResult_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 7;
-    friend void swap(LogStreamingResult& a, LogStreamingResult& b) { a.Swap(&b); }
-    inline void Swap(LogStreamingResult* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(LogStreamingResult* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  LogStreamingResult* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<LogStreamingResult>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const LogStreamingResult& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const LogStreamingResult& from) { LogStreamingResult::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    LogStreamingResult* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<LogStreamingResult>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const LogStreamingResult& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const LogStreamingResult& from) { LogStreamingResult::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(LogStreamingResult* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.log_streaming.LogStreamingResult"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit LogStreamingResult(::google::protobuf::Arena* arena);
+  LogStreamingResult(::google::protobuf::Arena* arena, const LogStreamingResult& from);
+  LogStreamingResult(::google::protobuf::Arena* arena, LogStreamingResult&& from) noexcept
+      : LogStreamingResult(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(LogStreamingResult* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+  using Result = LogStreamingResult_Result;
+  static constexpr Result RESULT_SUCCESS = LogStreamingResult_Result_RESULT_SUCCESS;
+  static constexpr Result RESULT_NO_SYSTEM = LogStreamingResult_Result_RESULT_NO_SYSTEM;
+  static constexpr Result RESULT_CONNECTION_ERROR = LogStreamingResult_Result_RESULT_CONNECTION_ERROR;
+  static constexpr Result RESULT_BUSY = LogStreamingResult_Result_RESULT_BUSY;
+  static constexpr Result RESULT_COMMAND_DENIED = LogStreamingResult_Result_RESULT_COMMAND_DENIED;
+  static constexpr Result RESULT_TIMEOUT = LogStreamingResult_Result_RESULT_TIMEOUT;
+  static constexpr Result RESULT_UNSUPPORTED = LogStreamingResult_Result_RESULT_UNSUPPORTED;
+  static constexpr Result RESULT_UNKNOWN = LogStreamingResult_Result_RESULT_UNKNOWN;
+  static inline bool Result_IsValid(int value) {
+    return LogStreamingResult_Result_IsValid(value);
+  }
+  static constexpr Result Result_MIN = LogStreamingResult_Result_Result_MIN;
+  static constexpr Result Result_MAX = LogStreamingResult_Result_Result_MAX;
+  static constexpr int Result_ARRAYSIZE = LogStreamingResult_Result_Result_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor* Result_descriptor() {
+    return LogStreamingResult_Result_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& Result_Name(T value) {
+    return LogStreamingResult_Result_Name(value);
+  }
+  static inline bool Result_Parse(absl::string_view name, Result* value) {
+    return LogStreamingResult_Result_Parse(name, value);
+  }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.log_streaming.LogStreamingResult";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kResultStrFieldNumber = 2,
+    kResultFieldNumber = 1,
+  };
+  // string result_str = 2;
+  void clear_result_str() ;
+  const std::string& result_str() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_result_str(Arg_&& arg, Args_... args);
+  std::string* mutable_result_str();
+  PROTOBUF_NODISCARD std::string* release_result_str();
+  void set_allocated_result_str(std::string* value);
 
-protected:
-    explicit LogStreamingResult(::google::protobuf::Arena* arena);
-    LogStreamingResult(::google::protobuf::Arena* arena, const LogStreamingResult& from);
-    LogStreamingResult(::google::protobuf::Arena* arena, LogStreamingResult&& from) noexcept :
-        LogStreamingResult(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const std::string& _internal_result_str() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_result_str(
+      const std::string& value);
+  std::string* _internal_mutable_result_str();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
-    using Result = LogStreamingResult_Result;
-    static constexpr Result RESULT_SUCCESS = LogStreamingResult_Result_RESULT_SUCCESS;
-    static constexpr Result RESULT_NO_SYSTEM = LogStreamingResult_Result_RESULT_NO_SYSTEM;
-    static constexpr Result RESULT_CONNECTION_ERROR =
-        LogStreamingResult_Result_RESULT_CONNECTION_ERROR;
-    static constexpr Result RESULT_BUSY = LogStreamingResult_Result_RESULT_BUSY;
-    static constexpr Result RESULT_COMMAND_DENIED = LogStreamingResult_Result_RESULT_COMMAND_DENIED;
-    static constexpr Result RESULT_TIMEOUT = LogStreamingResult_Result_RESULT_TIMEOUT;
-    static constexpr Result RESULT_UNSUPPORTED = LogStreamingResult_Result_RESULT_UNSUPPORTED;
-    static constexpr Result RESULT_UNKNOWN = LogStreamingResult_Result_RESULT_UNKNOWN;
-    static inline bool Result_IsValid(int value)
-    {
-        return LogStreamingResult_Result_IsValid(value);
-    }
-    static constexpr Result Result_MIN = LogStreamingResult_Result_Result_MIN;
-    static constexpr Result Result_MAX = LogStreamingResult_Result_Result_MAX;
-    static constexpr int Result_ARRAYSIZE = LogStreamingResult_Result_Result_ARRAYSIZE;
-    static inline const ::google::protobuf::EnumDescriptor* Result_descriptor()
-    {
-        return LogStreamingResult_Result_descriptor();
-    }
-    template<typename T> static inline const std::string& Result_Name(T value)
-    {
-        return LogStreamingResult_Result_Name(value);
-    }
-    static inline bool Result_Parse(absl::string_view name, Result* value)
-    {
-        return LogStreamingResult_Result_Parse(name, value);
-    }
+  public:
+  // .mavsdk.rpc.log_streaming.LogStreamingResult.Result result = 1;
+  void clear_result() ;
+  ::mavsdk::rpc::log_streaming::LogStreamingResult_Result result() const;
+  void set_result(::mavsdk::rpc::log_streaming::LogStreamingResult_Result value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kResultStrFieldNumber = 2,
-        kResultFieldNumber = 1,
-    };
-    // string result_str = 2;
-    void clear_result_str();
-    const std::string& result_str() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_result_str(Arg_&& arg, Args_... args);
-    std::string* mutable_result_str();
-    PROTOBUF_NODISCARD std::string* release_result_str();
-    void set_allocated_result_str(std::string* value);
+  private:
+  ::mavsdk::rpc::log_streaming::LogStreamingResult_Result _internal_result() const;
+  void _internal_set_result(::mavsdk::rpc::log_streaming::LogStreamingResult_Result value);
 
-private:
-    const std::string& _internal_result_str() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_result_str(const std::string& value);
-    std::string* _internal_mutable_result_str();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_streaming.LogStreamingResult)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      62, 2>
+      _table_;
 
-public:
-    // .mavsdk.rpc.log_streaming.LogStreamingResult.Result result = 1;
-    void clear_result();
-    ::mavsdk::rpc::log_streaming::LogStreamingResult_Result result() const;
-    void set_result(::mavsdk::rpc::log_streaming::LogStreamingResult_Result value);
-
-private:
-    ::mavsdk::rpc::log_streaming::LogStreamingResult_Result _internal_result() const;
-    void _internal_set_result(::mavsdk::rpc::log_streaming::LogStreamingResult_Result value);
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_streaming.LogStreamingResult)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 0, 62, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const LogStreamingResult& from_msg);
-        ::google::protobuf::internal::ArenaStringPtr result_str_;
-        int result_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const LogStreamingResult& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr result_str_;
+    int result_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto;
 };
 // -------------------------------------------------------------------
 
-class LogStreamingRaw final : public ::google::protobuf::Message
+class LogStreamingRaw final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.log_streaming.LogStreamingRaw) */ {
-public:
-    inline LogStreamingRaw() : LogStreamingRaw(nullptr) {}
-    ~LogStreamingRaw() PROTOBUF_FINAL;
+ public:
+  inline LogStreamingRaw() : LogStreamingRaw(nullptr) {}
+  ~LogStreamingRaw() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(LogStreamingRaw* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(LogStreamingRaw));
-    }
+  void operator delete(LogStreamingRaw* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(LogStreamingRaw));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR LogStreamingRaw(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR LogStreamingRaw(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline LogStreamingRaw(const LogStreamingRaw& from) : LogStreamingRaw(nullptr, from) {}
-    inline LogStreamingRaw(LogStreamingRaw&& from) noexcept :
-        LogStreamingRaw(nullptr, std::move(from))
-    {}
-    inline LogStreamingRaw& operator=(const LogStreamingRaw& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline LogStreamingRaw(const LogStreamingRaw& from) : LogStreamingRaw(nullptr, from) {}
+  inline LogStreamingRaw(LogStreamingRaw&& from) noexcept
+      : LogStreamingRaw(nullptr, std::move(from)) {}
+  inline LogStreamingRaw& operator=(const LogStreamingRaw& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline LogStreamingRaw& operator=(LogStreamingRaw&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline LogStreamingRaw& operator=(LogStreamingRaw&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const LogStreamingRaw& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const LogStreamingRaw* internal_default_instance() {
+    return reinterpret_cast<const LogStreamingRaw*>(
+        &_LogStreamingRaw_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 6;
+  friend void swap(LogStreamingRaw& a, LogStreamingRaw& b) { a.Swap(&b); }
+  inline void Swap(LogStreamingRaw* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(LogStreamingRaw* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const LogStreamingRaw& default_instance() { return *internal_default_instance(); }
-    static inline const LogStreamingRaw* internal_default_instance()
-    {
-        return reinterpret_cast<const LogStreamingRaw*>(&_LogStreamingRaw_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 6;
-    friend void swap(LogStreamingRaw& a, LogStreamingRaw& b) { a.Swap(&b); }
-    inline void Swap(LogStreamingRaw* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(LogStreamingRaw* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  LogStreamingRaw* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<LogStreamingRaw>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const LogStreamingRaw& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const LogStreamingRaw& from) { LogStreamingRaw::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    LogStreamingRaw* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<LogStreamingRaw>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const LogStreamingRaw& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const LogStreamingRaw& from) { LogStreamingRaw::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(LogStreamingRaw* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.log_streaming.LogStreamingRaw"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit LogStreamingRaw(::google::protobuf::Arena* arena);
+  LogStreamingRaw(::google::protobuf::Arena* arena, const LogStreamingRaw& from);
+  LogStreamingRaw(::google::protobuf::Arena* arena, LogStreamingRaw&& from) noexcept
+      : LogStreamingRaw(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(LogStreamingRaw* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.log_streaming.LogStreamingRaw";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kDataFieldNumber = 1,
+  };
+  // string data = 1;
+  void clear_data() ;
+  const std::string& data() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_data(Arg_&& arg, Args_... args);
+  std::string* mutable_data();
+  PROTOBUF_NODISCARD std::string* release_data();
+  void set_allocated_data(std::string* value);
 
-protected:
-    explicit LogStreamingRaw(::google::protobuf::Arena* arena);
-    LogStreamingRaw(::google::protobuf::Arena* arena, const LogStreamingRaw& from);
-    LogStreamingRaw(::google::protobuf::Arena* arena, LogStreamingRaw&& from) noexcept :
-        LogStreamingRaw(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const std::string& _internal_data() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_data(
+      const std::string& value);
+  std::string* _internal_mutable_data();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_streaming.LogStreamingRaw)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      53, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kDataFieldNumber = 1,
-    };
-    // string data = 1;
-    void clear_data();
-    const std::string& data() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_data(Arg_&& arg, Args_... args);
-    std::string* mutable_data();
-    PROTOBUF_NODISCARD std::string* release_data();
-    void set_allocated_data(std::string* value);
-
-private:
-    const std::string& _internal_data() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_data(const std::string& value);
-    std::string* _internal_mutable_data();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_streaming.LogStreamingRaw)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 0, 53, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const LogStreamingRaw& from_msg);
-        ::google::protobuf::internal::ArenaStringPtr data_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const LogStreamingRaw& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr data_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto;
 };
 // -------------------------------------------------------------------
 
-class StopLogStreamingResponse final : public ::google::protobuf::Message
+class StopLogStreamingResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.log_streaming.StopLogStreamingResponse) */ {
-public:
-    inline StopLogStreamingResponse() : StopLogStreamingResponse(nullptr) {}
-    ~StopLogStreamingResponse() PROTOBUF_FINAL;
+ public:
+  inline StopLogStreamingResponse() : StopLogStreamingResponse(nullptr) {}
+  ~StopLogStreamingResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(StopLogStreamingResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(StopLogStreamingResponse));
-    }
+  void operator delete(StopLogStreamingResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(StopLogStreamingResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        StopLogStreamingResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR StopLogStreamingResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline StopLogStreamingResponse(const StopLogStreamingResponse& from) :
-        StopLogStreamingResponse(nullptr, from)
-    {}
-    inline StopLogStreamingResponse(StopLogStreamingResponse&& from) noexcept :
-        StopLogStreamingResponse(nullptr, std::move(from))
-    {}
-    inline StopLogStreamingResponse& operator=(const StopLogStreamingResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline StopLogStreamingResponse(const StopLogStreamingResponse& from) : StopLogStreamingResponse(nullptr, from) {}
+  inline StopLogStreamingResponse(StopLogStreamingResponse&& from) noexcept
+      : StopLogStreamingResponse(nullptr, std::move(from)) {}
+  inline StopLogStreamingResponse& operator=(const StopLogStreamingResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline StopLogStreamingResponse& operator=(StopLogStreamingResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline StopLogStreamingResponse& operator=(StopLogStreamingResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const StopLogStreamingResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const StopLogStreamingResponse* internal_default_instance() {
+    return reinterpret_cast<const StopLogStreamingResponse*>(
+        &_StopLogStreamingResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 3;
+  friend void swap(StopLogStreamingResponse& a, StopLogStreamingResponse& b) { a.Swap(&b); }
+  inline void Swap(StopLogStreamingResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(StopLogStreamingResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const StopLogStreamingResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const StopLogStreamingResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const StopLogStreamingResponse*>(
-            &_StopLogStreamingResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 3;
-    friend void swap(StopLogStreamingResponse& a, StopLogStreamingResponse& b) { a.Swap(&b); }
-    inline void Swap(StopLogStreamingResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(StopLogStreamingResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  StopLogStreamingResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<StopLogStreamingResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const StopLogStreamingResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const StopLogStreamingResponse& from) { StopLogStreamingResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    StopLogStreamingResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<StopLogStreamingResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const StopLogStreamingResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const StopLogStreamingResponse& from)
-    {
-        StopLogStreamingResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(StopLogStreamingResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.log_streaming.StopLogStreamingResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit StopLogStreamingResponse(::google::protobuf::Arena* arena);
+  StopLogStreamingResponse(::google::protobuf::Arena* arena, const StopLogStreamingResponse& from);
+  StopLogStreamingResponse(::google::protobuf::Arena* arena, StopLogStreamingResponse&& from) noexcept
+      : StopLogStreamingResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(StopLogStreamingResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.log_streaming.StopLogStreamingResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kLogStreamingResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.log_streaming.LogStreamingResult log_streaming_result = 1;
+  bool has_log_streaming_result() const;
+  void clear_log_streaming_result() ;
+  const ::mavsdk::rpc::log_streaming::LogStreamingResult& log_streaming_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::log_streaming::LogStreamingResult* release_log_streaming_result();
+  ::mavsdk::rpc::log_streaming::LogStreamingResult* mutable_log_streaming_result();
+  void set_allocated_log_streaming_result(::mavsdk::rpc::log_streaming::LogStreamingResult* value);
+  void unsafe_arena_set_allocated_log_streaming_result(::mavsdk::rpc::log_streaming::LogStreamingResult* value);
+  ::mavsdk::rpc::log_streaming::LogStreamingResult* unsafe_arena_release_log_streaming_result();
 
-protected:
-    explicit StopLogStreamingResponse(::google::protobuf::Arena* arena);
-    StopLogStreamingResponse(
-        ::google::protobuf::Arena* arena, const StopLogStreamingResponse& from);
-    StopLogStreamingResponse(
-        ::google::protobuf::Arena* arena, StopLogStreamingResponse&& from) noexcept :
-        StopLogStreamingResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::log_streaming::LogStreamingResult& _internal_log_streaming_result() const;
+  ::mavsdk::rpc::log_streaming::LogStreamingResult* _internal_mutable_log_streaming_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_streaming.StopLogStreamingResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kLogStreamingResultFieldNumber = 1,
-    };
-    // .mavsdk.rpc.log_streaming.LogStreamingResult log_streaming_result = 1;
-    bool has_log_streaming_result() const;
-    void clear_log_streaming_result();
-    const ::mavsdk::rpc::log_streaming::LogStreamingResult& log_streaming_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::log_streaming::LogStreamingResult*
-    release_log_streaming_result();
-    ::mavsdk::rpc::log_streaming::LogStreamingResult* mutable_log_streaming_result();
-    void
-    set_allocated_log_streaming_result(::mavsdk::rpc::log_streaming::LogStreamingResult* value);
-    void unsafe_arena_set_allocated_log_streaming_result(
-        ::mavsdk::rpc::log_streaming::LogStreamingResult* value);
-    ::mavsdk::rpc::log_streaming::LogStreamingResult* unsafe_arena_release_log_streaming_result();
-
-private:
-    const ::mavsdk::rpc::log_streaming::LogStreamingResult& _internal_log_streaming_result() const;
-    ::mavsdk::rpc::log_streaming::LogStreamingResult* _internal_mutable_log_streaming_result();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_streaming.StopLogStreamingResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const StopLogStreamingResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::log_streaming::LogStreamingResult* log_streaming_result_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const StopLogStreamingResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::log_streaming::LogStreamingResult* log_streaming_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto;
 };
 // -------------------------------------------------------------------
 
-class StartLogStreamingResponse final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:mavsdk.rpc.log_streaming.StartLogStreamingResponse) */
-{
-public:
-    inline StartLogStreamingResponse() : StartLogStreamingResponse(nullptr) {}
-    ~StartLogStreamingResponse() PROTOBUF_FINAL;
+class StartLogStreamingResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.log_streaming.StartLogStreamingResponse) */ {
+ public:
+  inline StartLogStreamingResponse() : StartLogStreamingResponse(nullptr) {}
+  ~StartLogStreamingResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(StartLogStreamingResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(StartLogStreamingResponse));
-    }
+  void operator delete(StartLogStreamingResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(StartLogStreamingResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        StartLogStreamingResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR StartLogStreamingResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline StartLogStreamingResponse(const StartLogStreamingResponse& from) :
-        StartLogStreamingResponse(nullptr, from)
-    {}
-    inline StartLogStreamingResponse(StartLogStreamingResponse&& from) noexcept :
-        StartLogStreamingResponse(nullptr, std::move(from))
-    {}
-    inline StartLogStreamingResponse& operator=(const StartLogStreamingResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline StartLogStreamingResponse(const StartLogStreamingResponse& from) : StartLogStreamingResponse(nullptr, from) {}
+  inline StartLogStreamingResponse(StartLogStreamingResponse&& from) noexcept
+      : StartLogStreamingResponse(nullptr, std::move(from)) {}
+  inline StartLogStreamingResponse& operator=(const StartLogStreamingResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline StartLogStreamingResponse& operator=(StartLogStreamingResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline StartLogStreamingResponse& operator=(StartLogStreamingResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const StartLogStreamingResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const StartLogStreamingResponse* internal_default_instance() {
+    return reinterpret_cast<const StartLogStreamingResponse*>(
+        &_StartLogStreamingResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 1;
+  friend void swap(StartLogStreamingResponse& a, StartLogStreamingResponse& b) { a.Swap(&b); }
+  inline void Swap(StartLogStreamingResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(StartLogStreamingResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const StartLogStreamingResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const StartLogStreamingResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const StartLogStreamingResponse*>(
-            &_StartLogStreamingResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 1;
-    friend void swap(StartLogStreamingResponse& a, StartLogStreamingResponse& b) { a.Swap(&b); }
-    inline void Swap(StartLogStreamingResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(StartLogStreamingResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  StartLogStreamingResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<StartLogStreamingResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const StartLogStreamingResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const StartLogStreamingResponse& from) { StartLogStreamingResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    StartLogStreamingResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<StartLogStreamingResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const StartLogStreamingResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const StartLogStreamingResponse& from)
-    {
-        StartLogStreamingResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(StartLogStreamingResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.log_streaming.StartLogStreamingResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit StartLogStreamingResponse(::google::protobuf::Arena* arena);
+  StartLogStreamingResponse(::google::protobuf::Arena* arena, const StartLogStreamingResponse& from);
+  StartLogStreamingResponse(::google::protobuf::Arena* arena, StartLogStreamingResponse&& from) noexcept
+      : StartLogStreamingResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(StartLogStreamingResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.log_streaming.StartLogStreamingResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kLogStreamingResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.log_streaming.LogStreamingResult log_streaming_result = 1;
+  bool has_log_streaming_result() const;
+  void clear_log_streaming_result() ;
+  const ::mavsdk::rpc::log_streaming::LogStreamingResult& log_streaming_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::log_streaming::LogStreamingResult* release_log_streaming_result();
+  ::mavsdk::rpc::log_streaming::LogStreamingResult* mutable_log_streaming_result();
+  void set_allocated_log_streaming_result(::mavsdk::rpc::log_streaming::LogStreamingResult* value);
+  void unsafe_arena_set_allocated_log_streaming_result(::mavsdk::rpc::log_streaming::LogStreamingResult* value);
+  ::mavsdk::rpc::log_streaming::LogStreamingResult* unsafe_arena_release_log_streaming_result();
 
-protected:
-    explicit StartLogStreamingResponse(::google::protobuf::Arena* arena);
-    StartLogStreamingResponse(
-        ::google::protobuf::Arena* arena, const StartLogStreamingResponse& from);
-    StartLogStreamingResponse(
-        ::google::protobuf::Arena* arena, StartLogStreamingResponse&& from) noexcept :
-        StartLogStreamingResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::log_streaming::LogStreamingResult& _internal_log_streaming_result() const;
+  ::mavsdk::rpc::log_streaming::LogStreamingResult* _internal_mutable_log_streaming_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_streaming.StartLogStreamingResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kLogStreamingResultFieldNumber = 1,
-    };
-    // .mavsdk.rpc.log_streaming.LogStreamingResult log_streaming_result = 1;
-    bool has_log_streaming_result() const;
-    void clear_log_streaming_result();
-    const ::mavsdk::rpc::log_streaming::LogStreamingResult& log_streaming_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::log_streaming::LogStreamingResult*
-    release_log_streaming_result();
-    ::mavsdk::rpc::log_streaming::LogStreamingResult* mutable_log_streaming_result();
-    void
-    set_allocated_log_streaming_result(::mavsdk::rpc::log_streaming::LogStreamingResult* value);
-    void unsafe_arena_set_allocated_log_streaming_result(
-        ::mavsdk::rpc::log_streaming::LogStreamingResult* value);
-    ::mavsdk::rpc::log_streaming::LogStreamingResult* unsafe_arena_release_log_streaming_result();
-
-private:
-    const ::mavsdk::rpc::log_streaming::LogStreamingResult& _internal_log_streaming_result() const;
-    ::mavsdk::rpc::log_streaming::LogStreamingResult* _internal_mutable_log_streaming_result();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_streaming.StartLogStreamingResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const StartLogStreamingResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::log_streaming::LogStreamingResult* log_streaming_result_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const StartLogStreamingResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::log_streaming::LogStreamingResult* log_streaming_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto;
 };
 // -------------------------------------------------------------------
 
-class LogStreamingRawResponse final : public ::google::protobuf::Message
+class LogStreamingRawResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.log_streaming.LogStreamingRawResponse) */ {
-public:
-    inline LogStreamingRawResponse() : LogStreamingRawResponse(nullptr) {}
-    ~LogStreamingRawResponse() PROTOBUF_FINAL;
+ public:
+  inline LogStreamingRawResponse() : LogStreamingRawResponse(nullptr) {}
+  ~LogStreamingRawResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(LogStreamingRawResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(LogStreamingRawResponse));
-    }
+  void operator delete(LogStreamingRawResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(LogStreamingRawResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        LogStreamingRawResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR LogStreamingRawResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline LogStreamingRawResponse(const LogStreamingRawResponse& from) :
-        LogStreamingRawResponse(nullptr, from)
-    {}
-    inline LogStreamingRawResponse(LogStreamingRawResponse&& from) noexcept :
-        LogStreamingRawResponse(nullptr, std::move(from))
-    {}
-    inline LogStreamingRawResponse& operator=(const LogStreamingRawResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline LogStreamingRawResponse(const LogStreamingRawResponse& from) : LogStreamingRawResponse(nullptr, from) {}
+  inline LogStreamingRawResponse(LogStreamingRawResponse&& from) noexcept
+      : LogStreamingRawResponse(nullptr, std::move(from)) {}
+  inline LogStreamingRawResponse& operator=(const LogStreamingRawResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline LogStreamingRawResponse& operator=(LogStreamingRawResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline LogStreamingRawResponse& operator=(LogStreamingRawResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const LogStreamingRawResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const LogStreamingRawResponse* internal_default_instance() {
+    return reinterpret_cast<const LogStreamingRawResponse*>(
+        &_LogStreamingRawResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 5;
+  friend void swap(LogStreamingRawResponse& a, LogStreamingRawResponse& b) { a.Swap(&b); }
+  inline void Swap(LogStreamingRawResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(LogStreamingRawResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const LogStreamingRawResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const LogStreamingRawResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const LogStreamingRawResponse*>(
-            &_LogStreamingRawResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 5;
-    friend void swap(LogStreamingRawResponse& a, LogStreamingRawResponse& b) { a.Swap(&b); }
-    inline void Swap(LogStreamingRawResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(LogStreamingRawResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  LogStreamingRawResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<LogStreamingRawResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const LogStreamingRawResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const LogStreamingRawResponse& from) { LogStreamingRawResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    LogStreamingRawResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<LogStreamingRawResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const LogStreamingRawResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const LogStreamingRawResponse& from)
-    {
-        LogStreamingRawResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(LogStreamingRawResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.log_streaming.LogStreamingRawResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit LogStreamingRawResponse(::google::protobuf::Arena* arena);
+  LogStreamingRawResponse(::google::protobuf::Arena* arena, const LogStreamingRawResponse& from);
+  LogStreamingRawResponse(::google::protobuf::Arena* arena, LogStreamingRawResponse&& from) noexcept
+      : LogStreamingRawResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(LogStreamingRawResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.log_streaming.LogStreamingRawResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kLoggingRawFieldNumber = 1,
+  };
+  // .mavsdk.rpc.log_streaming.LogStreamingRaw logging_raw = 1;
+  bool has_logging_raw() const;
+  void clear_logging_raw() ;
+  const ::mavsdk::rpc::log_streaming::LogStreamingRaw& logging_raw() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::log_streaming::LogStreamingRaw* release_logging_raw();
+  ::mavsdk::rpc::log_streaming::LogStreamingRaw* mutable_logging_raw();
+  void set_allocated_logging_raw(::mavsdk::rpc::log_streaming::LogStreamingRaw* value);
+  void unsafe_arena_set_allocated_logging_raw(::mavsdk::rpc::log_streaming::LogStreamingRaw* value);
+  ::mavsdk::rpc::log_streaming::LogStreamingRaw* unsafe_arena_release_logging_raw();
 
-protected:
-    explicit LogStreamingRawResponse(::google::protobuf::Arena* arena);
-    LogStreamingRawResponse(::google::protobuf::Arena* arena, const LogStreamingRawResponse& from);
-    LogStreamingRawResponse(
-        ::google::protobuf::Arena* arena, LogStreamingRawResponse&& from) noexcept :
-        LogStreamingRawResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::log_streaming::LogStreamingRaw& _internal_logging_raw() const;
+  ::mavsdk::rpc::log_streaming::LogStreamingRaw* _internal_mutable_logging_raw();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_streaming.LogStreamingRawResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kLoggingRawFieldNumber = 1,
-    };
-    // .mavsdk.rpc.log_streaming.LogStreamingRaw logging_raw = 1;
-    bool has_logging_raw() const;
-    void clear_logging_raw();
-    const ::mavsdk::rpc::log_streaming::LogStreamingRaw& logging_raw() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::log_streaming::LogStreamingRaw* release_logging_raw();
-    ::mavsdk::rpc::log_streaming::LogStreamingRaw* mutable_logging_raw();
-    void set_allocated_logging_raw(::mavsdk::rpc::log_streaming::LogStreamingRaw* value);
-    void
-    unsafe_arena_set_allocated_logging_raw(::mavsdk::rpc::log_streaming::LogStreamingRaw* value);
-    ::mavsdk::rpc::log_streaming::LogStreamingRaw* unsafe_arena_release_logging_raw();
-
-private:
-    const ::mavsdk::rpc::log_streaming::LogStreamingRaw& _internal_logging_raw() const;
-    ::mavsdk::rpc::log_streaming::LogStreamingRaw* _internal_mutable_logging_raw();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.log_streaming.LogStreamingRawResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const LogStreamingRawResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::log_streaming::LogStreamingRaw* logging_raw_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const LogStreamingRawResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::log_streaming::LogStreamingRaw* logging_raw_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_log_5fstreaming_2flog_5fstreaming_2eproto;
 };
 
 // ===================================================================
 
+
+
+
 // ===================================================================
+
 
 #ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-aliasing"
-#endif // __GNUC__
+#endif  // __GNUC__
 // -------------------------------------------------------------------
 
 // StartLogStreamingRequest
@@ -1769,126 +1617,99 @@ private:
 // StartLogStreamingResponse
 
 // .mavsdk.rpc.log_streaming.LogStreamingResult log_streaming_result = 1;
-inline bool StartLogStreamingResponse::has_log_streaming_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.log_streaming_result_ != nullptr);
-    return value;
+inline bool StartLogStreamingResponse::has_log_streaming_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.log_streaming_result_ != nullptr);
+  return value;
 }
-inline void StartLogStreamingResponse::clear_log_streaming_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.log_streaming_result_ != nullptr)
-        _impl_.log_streaming_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void StartLogStreamingResponse::clear_log_streaming_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.log_streaming_result_ != nullptr) _impl_.log_streaming_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::log_streaming::LogStreamingResult&
-StartLogStreamingResponse::_internal_log_streaming_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::log_streaming::LogStreamingResult* p = _impl_.log_streaming_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::log_streaming::LogStreamingResult&>(
-                              ::mavsdk::rpc::log_streaming::_LogStreamingResult_default_instance_);
+inline const ::mavsdk::rpc::log_streaming::LogStreamingResult& StartLogStreamingResponse::_internal_log_streaming_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::log_streaming::LogStreamingResult* p = _impl_.log_streaming_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::log_streaming::LogStreamingResult&>(::mavsdk::rpc::log_streaming::_LogStreamingResult_default_instance_);
 }
-inline const ::mavsdk::rpc::log_streaming::LogStreamingResult&
-StartLogStreamingResponse::log_streaming_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.log_streaming.StartLogStreamingResponse.log_streaming_result)
-    return _internal_log_streaming_result();
+inline const ::mavsdk::rpc::log_streaming::LogStreamingResult& StartLogStreamingResponse::log_streaming_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.log_streaming.StartLogStreamingResponse.log_streaming_result)
+  return _internal_log_streaming_result();
 }
-inline void StartLogStreamingResponse::unsafe_arena_set_allocated_log_streaming_result(
-    ::mavsdk::rpc::log_streaming::LogStreamingResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.log_streaming_result_);
-    }
-    _impl_.log_streaming_result_ =
-        reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.log_streaming.StartLogStreamingResponse.log_streaming_result)
-}
-inline ::mavsdk::rpc::log_streaming::LogStreamingResult*
-StartLogStreamingResponse::release_log_streaming_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::log_streaming::LogStreamingResult* released = _impl_.log_streaming_result_;
-    _impl_.log_streaming_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::log_streaming::LogStreamingResult*
-StartLogStreamingResponse::unsafe_arena_release_log_streaming_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.log_streaming.StartLogStreamingResponse.log_streaming_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::log_streaming::LogStreamingResult* temp = _impl_.log_streaming_result_;
-    _impl_.log_streaming_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::log_streaming::LogStreamingResult*
-StartLogStreamingResponse::_internal_mutable_log_streaming_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.log_streaming_result_ == nullptr) {
-        auto* p = ::google::protobuf::Message::DefaultConstruct<
-            ::mavsdk::rpc::log_streaming::LogStreamingResult>(GetArena());
-        _impl_.log_streaming_result_ =
-            reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingResult*>(p);
-    }
-    return _impl_.log_streaming_result_;
-}
-inline ::mavsdk::rpc::log_streaming::LogStreamingResult*
-StartLogStreamingResponse::mutable_log_streaming_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void StartLogStreamingResponse::unsafe_arena_set_allocated_log_streaming_result(::mavsdk::rpc::log_streaming::LogStreamingResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.log_streaming_result_);
+  }
+  _impl_.log_streaming_result_ = reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::log_streaming::LogStreamingResult* _msg =
-        _internal_mutable_log_streaming_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.log_streaming.StartLogStreamingResponse.log_streaming_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.log_streaming.StartLogStreamingResponse.log_streaming_result)
 }
-inline void StartLogStreamingResponse::set_allocated_log_streaming_result(
-    ::mavsdk::rpc::log_streaming::LogStreamingResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.log_streaming_result_);
-    }
+inline ::mavsdk::rpc::log_streaming::LogStreamingResult* StartLogStreamingResponse::release_log_streaming_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::log_streaming::LogStreamingResult* released = _impl_.log_streaming_result_;
+  _impl_.log_streaming_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::log_streaming::LogStreamingResult* StartLogStreamingResponse::unsafe_arena_release_log_streaming_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.log_streaming.StartLogStreamingResponse.log_streaming_result)
 
-    _impl_.log_streaming_result_ =
-        reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.log_streaming.StartLogStreamingResponse.log_streaming_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::log_streaming::LogStreamingResult* temp = _impl_.log_streaming_result_;
+  _impl_.log_streaming_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::log_streaming::LogStreamingResult* StartLogStreamingResponse::_internal_mutable_log_streaming_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.log_streaming_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::log_streaming::LogStreamingResult>(GetArena());
+    _impl_.log_streaming_result_ = reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingResult*>(p);
+  }
+  return _impl_.log_streaming_result_;
+}
+inline ::mavsdk::rpc::log_streaming::LogStreamingResult* StartLogStreamingResponse::mutable_log_streaming_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::log_streaming::LogStreamingResult* _msg = _internal_mutable_log_streaming_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.log_streaming.StartLogStreamingResponse.log_streaming_result)
+  return _msg;
+}
+inline void StartLogStreamingResponse::set_allocated_log_streaming_result(::mavsdk::rpc::log_streaming::LogStreamingResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.log_streaming_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.log_streaming_result_ = reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.log_streaming.StartLogStreamingResponse.log_streaming_result)
 }
 
 // -------------------------------------------------------------------
@@ -1900,126 +1721,99 @@ inline void StartLogStreamingResponse::set_allocated_log_streaming_result(
 // StopLogStreamingResponse
 
 // .mavsdk.rpc.log_streaming.LogStreamingResult log_streaming_result = 1;
-inline bool StopLogStreamingResponse::has_log_streaming_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.log_streaming_result_ != nullptr);
-    return value;
+inline bool StopLogStreamingResponse::has_log_streaming_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.log_streaming_result_ != nullptr);
+  return value;
 }
-inline void StopLogStreamingResponse::clear_log_streaming_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.log_streaming_result_ != nullptr)
-        _impl_.log_streaming_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void StopLogStreamingResponse::clear_log_streaming_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.log_streaming_result_ != nullptr) _impl_.log_streaming_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::log_streaming::LogStreamingResult&
-StopLogStreamingResponse::_internal_log_streaming_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::log_streaming::LogStreamingResult* p = _impl_.log_streaming_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::log_streaming::LogStreamingResult&>(
-                              ::mavsdk::rpc::log_streaming::_LogStreamingResult_default_instance_);
+inline const ::mavsdk::rpc::log_streaming::LogStreamingResult& StopLogStreamingResponse::_internal_log_streaming_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::log_streaming::LogStreamingResult* p = _impl_.log_streaming_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::log_streaming::LogStreamingResult&>(::mavsdk::rpc::log_streaming::_LogStreamingResult_default_instance_);
 }
-inline const ::mavsdk::rpc::log_streaming::LogStreamingResult&
-StopLogStreamingResponse::log_streaming_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.log_streaming.StopLogStreamingResponse.log_streaming_result)
-    return _internal_log_streaming_result();
+inline const ::mavsdk::rpc::log_streaming::LogStreamingResult& StopLogStreamingResponse::log_streaming_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.log_streaming.StopLogStreamingResponse.log_streaming_result)
+  return _internal_log_streaming_result();
 }
-inline void StopLogStreamingResponse::unsafe_arena_set_allocated_log_streaming_result(
-    ::mavsdk::rpc::log_streaming::LogStreamingResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.log_streaming_result_);
-    }
-    _impl_.log_streaming_result_ =
-        reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.log_streaming.StopLogStreamingResponse.log_streaming_result)
-}
-inline ::mavsdk::rpc::log_streaming::LogStreamingResult*
-StopLogStreamingResponse::release_log_streaming_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::log_streaming::LogStreamingResult* released = _impl_.log_streaming_result_;
-    _impl_.log_streaming_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::log_streaming::LogStreamingResult*
-StopLogStreamingResponse::unsafe_arena_release_log_streaming_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.log_streaming.StopLogStreamingResponse.log_streaming_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::log_streaming::LogStreamingResult* temp = _impl_.log_streaming_result_;
-    _impl_.log_streaming_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::log_streaming::LogStreamingResult*
-StopLogStreamingResponse::_internal_mutable_log_streaming_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.log_streaming_result_ == nullptr) {
-        auto* p = ::google::protobuf::Message::DefaultConstruct<
-            ::mavsdk::rpc::log_streaming::LogStreamingResult>(GetArena());
-        _impl_.log_streaming_result_ =
-            reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingResult*>(p);
-    }
-    return _impl_.log_streaming_result_;
-}
-inline ::mavsdk::rpc::log_streaming::LogStreamingResult*
-StopLogStreamingResponse::mutable_log_streaming_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void StopLogStreamingResponse::unsafe_arena_set_allocated_log_streaming_result(::mavsdk::rpc::log_streaming::LogStreamingResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.log_streaming_result_);
+  }
+  _impl_.log_streaming_result_ = reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::log_streaming::LogStreamingResult* _msg =
-        _internal_mutable_log_streaming_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.log_streaming.StopLogStreamingResponse.log_streaming_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.log_streaming.StopLogStreamingResponse.log_streaming_result)
 }
-inline void StopLogStreamingResponse::set_allocated_log_streaming_result(
-    ::mavsdk::rpc::log_streaming::LogStreamingResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.log_streaming_result_);
-    }
+inline ::mavsdk::rpc::log_streaming::LogStreamingResult* StopLogStreamingResponse::release_log_streaming_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::log_streaming::LogStreamingResult* released = _impl_.log_streaming_result_;
+  _impl_.log_streaming_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::log_streaming::LogStreamingResult* StopLogStreamingResponse::unsafe_arena_release_log_streaming_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.log_streaming.StopLogStreamingResponse.log_streaming_result)
 
-    _impl_.log_streaming_result_ =
-        reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.log_streaming.StopLogStreamingResponse.log_streaming_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::log_streaming::LogStreamingResult* temp = _impl_.log_streaming_result_;
+  _impl_.log_streaming_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::log_streaming::LogStreamingResult* StopLogStreamingResponse::_internal_mutable_log_streaming_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.log_streaming_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::log_streaming::LogStreamingResult>(GetArena());
+    _impl_.log_streaming_result_ = reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingResult*>(p);
+  }
+  return _impl_.log_streaming_result_;
+}
+inline ::mavsdk::rpc::log_streaming::LogStreamingResult* StopLogStreamingResponse::mutable_log_streaming_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::log_streaming::LogStreamingResult* _msg = _internal_mutable_log_streaming_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.log_streaming.StopLogStreamingResponse.log_streaming_result)
+  return _msg;
+}
+inline void StopLogStreamingResponse::set_allocated_log_streaming_result(::mavsdk::rpc::log_streaming::LogStreamingResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.log_streaming_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.log_streaming_result_ = reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.log_streaming.StopLogStreamingResponse.log_streaming_result)
 }
 
 // -------------------------------------------------------------------
@@ -2031,121 +1825,99 @@ inline void StopLogStreamingResponse::set_allocated_log_streaming_result(
 // LogStreamingRawResponse
 
 // .mavsdk.rpc.log_streaming.LogStreamingRaw logging_raw = 1;
-inline bool LogStreamingRawResponse::has_logging_raw() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.logging_raw_ != nullptr);
-    return value;
+inline bool LogStreamingRawResponse::has_logging_raw() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.logging_raw_ != nullptr);
+  return value;
 }
-inline void LogStreamingRawResponse::clear_logging_raw()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.logging_raw_ != nullptr)
-        _impl_.logging_raw_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void LogStreamingRawResponse::clear_logging_raw() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.logging_raw_ != nullptr) _impl_.logging_raw_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::log_streaming::LogStreamingRaw&
-LogStreamingRawResponse::_internal_logging_raw() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::log_streaming::LogStreamingRaw* p = _impl_.logging_raw_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::log_streaming::LogStreamingRaw&>(
-                              ::mavsdk::rpc::log_streaming::_LogStreamingRaw_default_instance_);
+inline const ::mavsdk::rpc::log_streaming::LogStreamingRaw& LogStreamingRawResponse::_internal_logging_raw() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::log_streaming::LogStreamingRaw* p = _impl_.logging_raw_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::log_streaming::LogStreamingRaw&>(::mavsdk::rpc::log_streaming::_LogStreamingRaw_default_instance_);
 }
-inline const ::mavsdk::rpc::log_streaming::LogStreamingRaw&
-LogStreamingRawResponse::logging_raw() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.log_streaming.LogStreamingRawResponse.logging_raw)
-    return _internal_logging_raw();
+inline const ::mavsdk::rpc::log_streaming::LogStreamingRaw& LogStreamingRawResponse::logging_raw() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.log_streaming.LogStreamingRawResponse.logging_raw)
+  return _internal_logging_raw();
 }
-inline void LogStreamingRawResponse::unsafe_arena_set_allocated_logging_raw(
-    ::mavsdk::rpc::log_streaming::LogStreamingRaw* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.logging_raw_);
-    }
-    _impl_.logging_raw_ = reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingRaw*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.log_streaming.LogStreamingRawResponse.logging_raw)
-}
-inline ::mavsdk::rpc::log_streaming::LogStreamingRaw* LogStreamingRawResponse::release_logging_raw()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::log_streaming::LogStreamingRaw* released = _impl_.logging_raw_;
-    _impl_.logging_raw_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::log_streaming::LogStreamingRaw*
-LogStreamingRawResponse::unsafe_arena_release_logging_raw()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.log_streaming.LogStreamingRawResponse.logging_raw)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::log_streaming::LogStreamingRaw* temp = _impl_.logging_raw_;
-    _impl_.logging_raw_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::log_streaming::LogStreamingRaw*
-LogStreamingRawResponse::_internal_mutable_logging_raw()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.logging_raw_ == nullptr) {
-        auto* p = ::google::protobuf::Message::DefaultConstruct<
-            ::mavsdk::rpc::log_streaming::LogStreamingRaw>(GetArena());
-        _impl_.logging_raw_ = reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingRaw*>(p);
-    }
-    return _impl_.logging_raw_;
-}
-inline ::mavsdk::rpc::log_streaming::LogStreamingRaw*
-LogStreamingRawResponse::mutable_logging_raw() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void LogStreamingRawResponse::unsafe_arena_set_allocated_logging_raw(::mavsdk::rpc::log_streaming::LogStreamingRaw* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.logging_raw_);
+  }
+  _impl_.logging_raw_ = reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingRaw*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::log_streaming::LogStreamingRaw* _msg = _internal_mutable_logging_raw();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.log_streaming.LogStreamingRawResponse.logging_raw)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.log_streaming.LogStreamingRawResponse.logging_raw)
 }
-inline void LogStreamingRawResponse::set_allocated_logging_raw(
-    ::mavsdk::rpc::log_streaming::LogStreamingRaw* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.logging_raw_);
-    }
+inline ::mavsdk::rpc::log_streaming::LogStreamingRaw* LogStreamingRawResponse::release_logging_raw() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::log_streaming::LogStreamingRaw* released = _impl_.logging_raw_;
+  _impl_.logging_raw_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::log_streaming::LogStreamingRaw* LogStreamingRawResponse::unsafe_arena_release_logging_raw() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.log_streaming.LogStreamingRawResponse.logging_raw)
 
-    _impl_.logging_raw_ = reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingRaw*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.log_streaming.LogStreamingRawResponse.logging_raw)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::log_streaming::LogStreamingRaw* temp = _impl_.logging_raw_;
+  _impl_.logging_raw_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::log_streaming::LogStreamingRaw* LogStreamingRawResponse::_internal_mutable_logging_raw() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.logging_raw_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::log_streaming::LogStreamingRaw>(GetArena());
+    _impl_.logging_raw_ = reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingRaw*>(p);
+  }
+  return _impl_.logging_raw_;
+}
+inline ::mavsdk::rpc::log_streaming::LogStreamingRaw* LogStreamingRawResponse::mutable_logging_raw() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::log_streaming::LogStreamingRaw* _msg = _internal_mutable_logging_raw();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.log_streaming.LogStreamingRawResponse.logging_raw)
+  return _msg;
+}
+inline void LogStreamingRawResponse::set_allocated_logging_raw(::mavsdk::rpc::log_streaming::LogStreamingRaw* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.logging_raw_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.logging_raw_ = reinterpret_cast<::mavsdk::rpc::log_streaming::LogStreamingRaw*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.log_streaming.LogStreamingRawResponse.logging_raw)
 }
 
 // -------------------------------------------------------------------
@@ -2153,59 +1925,51 @@ inline void LogStreamingRawResponse::set_allocated_logging_raw(
 // LogStreamingRaw
 
 // string data = 1;
-inline void LogStreamingRaw::clear_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.data_.ClearToEmpty();
+inline void LogStreamingRaw::clear_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.data_.ClearToEmpty();
 }
-inline const std::string& LogStreamingRaw::data() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.log_streaming.LogStreamingRaw.data)
-    return _internal_data();
+inline const std::string& LogStreamingRaw::data() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.log_streaming.LogStreamingRaw.data)
+  return _internal_data();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void LogStreamingRaw::set_data(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.data_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.log_streaming.LogStreamingRaw.data)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void LogStreamingRaw::set_data(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.data_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.log_streaming.LogStreamingRaw.data)
 }
-inline std::string* LogStreamingRaw::mutable_data() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_data();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.log_streaming.LogStreamingRaw.data)
-    return _s;
+inline std::string* LogStreamingRaw::mutable_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_data();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.log_streaming.LogStreamingRaw.data)
+  return _s;
 }
-inline const std::string& LogStreamingRaw::_internal_data() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.data_.Get();
+inline const std::string& LogStreamingRaw::_internal_data() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.data_.Get();
 }
-inline void LogStreamingRaw::_internal_set_data(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.data_.Set(value, GetArena());
+inline void LogStreamingRaw::_internal_set_data(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.data_.Set(value, GetArena());
 }
-inline std::string* LogStreamingRaw::_internal_mutable_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.data_.Mutable(GetArena());
+inline std::string* LogStreamingRaw::_internal_mutable_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.data_.Mutable( GetArena());
 }
-inline std::string* LogStreamingRaw::release_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.log_streaming.LogStreamingRaw.data)
-    return _impl_.data_.Release();
+inline std::string* LogStreamingRaw::release_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.log_streaming.LogStreamingRaw.data)
+  return _impl_.data_.Release();
 }
-inline void LogStreamingRaw::set_allocated_data(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.data_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.data_.IsDefault()) {
-        _impl_.data_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.log_streaming.LogStreamingRaw.data)
+inline void LogStreamingRaw::set_allocated_data(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.data_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.data_.IsDefault()) {
+    _impl_.data_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.log_streaming.LogStreamingRaw.data)
 }
 
 // -------------------------------------------------------------------
@@ -2213,117 +1977,100 @@ inline void LogStreamingRaw::set_allocated_data(std::string* value)
 // LogStreamingResult
 
 // .mavsdk.rpc.log_streaming.LogStreamingResult.Result result = 1;
-inline void LogStreamingResult::clear_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_ = 0;
+inline void LogStreamingResult::clear_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_ = 0;
 }
-inline ::mavsdk::rpc::log_streaming::LogStreamingResult_Result LogStreamingResult::result() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.log_streaming.LogStreamingResult.result)
-    return _internal_result();
+inline ::mavsdk::rpc::log_streaming::LogStreamingResult_Result LogStreamingResult::result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.log_streaming.LogStreamingResult.result)
+  return _internal_result();
 }
-inline void
-LogStreamingResult::set_result(::mavsdk::rpc::log_streaming::LogStreamingResult_Result value)
-{
-    _internal_set_result(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.log_streaming.LogStreamingResult.result)
+inline void LogStreamingResult::set_result(::mavsdk::rpc::log_streaming::LogStreamingResult_Result value) {
+  _internal_set_result(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.log_streaming.LogStreamingResult.result)
 }
-inline ::mavsdk::rpc::log_streaming::LogStreamingResult_Result
-LogStreamingResult::_internal_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return static_cast<::mavsdk::rpc::log_streaming::LogStreamingResult_Result>(_impl_.result_);
+inline ::mavsdk::rpc::log_streaming::LogStreamingResult_Result LogStreamingResult::_internal_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::log_streaming::LogStreamingResult_Result>(_impl_.result_);
 }
-inline void LogStreamingResult::_internal_set_result(
-    ::mavsdk::rpc::log_streaming::LogStreamingResult_Result value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_ = value;
+inline void LogStreamingResult::_internal_set_result(::mavsdk::rpc::log_streaming::LogStreamingResult_Result value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_ = value;
 }
 
 // string result_str = 2;
-inline void LogStreamingResult::clear_result_str()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.ClearToEmpty();
+inline void LogStreamingResult::clear_result_str() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.ClearToEmpty();
 }
-inline const std::string& LogStreamingResult::result_str() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.log_streaming.LogStreamingResult.result_str)
-    return _internal_result_str();
+inline const std::string& LogStreamingResult::result_str() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.log_streaming.LogStreamingResult.result_str)
+  return _internal_result_str();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void LogStreamingResult::set_result_str(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.log_streaming.LogStreamingResult.result_str)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void LogStreamingResult::set_result_str(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.log_streaming.LogStreamingResult.result_str)
 }
-inline std::string* LogStreamingResult::mutable_result_str() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_result_str();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.log_streaming.LogStreamingResult.result_str)
-    return _s;
+inline std::string* LogStreamingResult::mutable_result_str() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_result_str();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.log_streaming.LogStreamingResult.result_str)
+  return _s;
 }
-inline const std::string& LogStreamingResult::_internal_result_str() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.result_str_.Get();
+inline const std::string& LogStreamingResult::_internal_result_str() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.result_str_.Get();
 }
-inline void LogStreamingResult::_internal_set_result_str(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.Set(value, GetArena());
+inline void LogStreamingResult::_internal_set_result_str(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.Set(value, GetArena());
 }
-inline std::string* LogStreamingResult::_internal_mutable_result_str()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.result_str_.Mutable(GetArena());
+inline std::string* LogStreamingResult::_internal_mutable_result_str() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.result_str_.Mutable( GetArena());
 }
-inline std::string* LogStreamingResult::release_result_str()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.log_streaming.LogStreamingResult.result_str)
-    return _impl_.result_str_.Release();
+inline std::string* LogStreamingResult::release_result_str() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.log_streaming.LogStreamingResult.result_str)
+  return _impl_.result_str_.Release();
 }
-inline void LogStreamingResult::set_allocated_result_str(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.result_str_.IsDefault()) {
-        _impl_.result_str_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.log_streaming.LogStreamingResult.result_str)
+inline void LogStreamingResult::set_allocated_result_str(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.result_str_.IsDefault()) {
+    _impl_.result_str_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.log_streaming.LogStreamingResult.result_str)
 }
 
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
-#endif // __GNUC__
+#endif  // __GNUC__
 
 // @@protoc_insertion_point(namespace_scope)
-} // namespace log_streaming
-} // namespace rpc
-} // namespace mavsdk
+}  // namespace log_streaming
+}  // namespace rpc
+}  // namespace mavsdk
+
 
 namespace google {
 namespace protobuf {
 
-template<>
+template <>
 struct is_proto_enum<::mavsdk::rpc::log_streaming::LogStreamingResult_Result> : std::true_type {};
-template<>
-inline const EnumDescriptor*
-GetEnumDescriptor<::mavsdk::rpc::log_streaming::LogStreamingResult_Result>()
-{
-    return ::mavsdk::rpc::log_streaming::LogStreamingResult_Result_descriptor();
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::log_streaming::LogStreamingResult_Result>() {
+  return ::mavsdk::rpc::log_streaming::LogStreamingResult_Result_descriptor();
 }
 
-} // namespace protobuf
-} // namespace google
+}  // namespace protobuf
+}  // namespace google
 
 // @@protoc_insertion_point(global_scope)
 
 #include "google/protobuf/port_undef.inc"
 
-#endif // log_5fstreaming_2flog_5fstreaming_2eproto_2epb_2eh
+#endif  // log_5fstreaming_2flog_5fstreaming_2eproto_2epb_2eh
