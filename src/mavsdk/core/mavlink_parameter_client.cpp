@@ -5,6 +5,7 @@
 #include "plugin_base.h"
 #include <algorithm>
 #include <future>
+#include <limits>
 #include <utility>
 
 namespace mavsdk {
@@ -669,6 +670,10 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
 
     if (_parameter_debugging) {
         LogDebug() << "process_param_value: " << safe_param_id << " " << received_value;
+
+    if (param_value.param_index == std::numeric_limits<uint16_t>::max()) {
+        // Ignore PX4's _HASH_CHECK param.
+        return;
     }
 
     // We need to use a unique pointer here to remove the lock from the work queue manually "early"
