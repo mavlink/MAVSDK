@@ -37,6 +37,17 @@ MissionRawServer::MissionPlan MissionRawServer::incoming_mission() const
     return _impl->incoming_mission();
 }
 
+MissionRawServer::OutgoingMissionHandle
+MissionRawServer::subscribe_outgoing_mission(const OutgoingMissionCallback& callback)
+{
+    return _impl->subscribe_outgoing_mission(callback);
+}
+
+void MissionRawServer::unsubscribe_outgoing_mission(OutgoingMissionHandle handle)
+{
+    _impl->unsubscribe_outgoing_mission(handle);
+}
+
 MissionRawServer::CurrentItemChangedHandle
 MissionRawServer::subscribe_current_item_changed(const CurrentItemChangedCallback& callback)
 {
