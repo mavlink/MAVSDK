@@ -826,6 +826,8 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                                         assert(false);
                                     }
 
+                                    LogInfo() << "Requesting " << _param_cache.missing_count() << " parameters missed during initial burst.";
+
                                     if (_parameter_debugging) {
                                         LogDebug() << "Requesting missing parameter "
                                                    << (int)maybe_next_missing_index.value();

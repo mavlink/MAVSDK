@@ -2,6 +2,7 @@
 
 #include "param_value.h"
 
+#include <cstdint>
 #include <limits>
 #include <map>
 #include <string>
@@ -45,6 +46,8 @@ public:
     [[nodiscard]] uint16_t count(bool including_extended) const;
 
     [[nodiscard]] std::optional<uint16_t> next_missing_index(uint16_t count);
+
+    [[nodiscard]] uint16_t missing_count(uint16_t count) const;
 
     void print_missing(uint16_t count);
 
