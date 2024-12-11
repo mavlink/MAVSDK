@@ -130,6 +130,14 @@ bool MavlinkParameterCache::exists(const std::string& param_id) const
     return it != _all_params.end();
 }
 
+bool MavlinkParameterCache::exists(uint16_t param_index) const
+{
+    auto it = std::find_if(_all_params.begin(), _all_params.end(), [&](const auto& param) {
+        return (param_index == param.index);
+    });
+    return it != _all_params.end();
+}
+
 std::optional<uint16_t> MavlinkParameterCache::next_missing_index(uint16_t count)
 {
     // Extended doesn't matter here because we use this function in the sender
@@ -139,16 +147,38 @@ std::optional<uint16_t> MavlinkParameterCache::next_missing_index(uint16_t count
     });
 
     for (unsigned i = 0; i < count; ++i) {
-        if (_all_params.size() <= i) {
-            // We have reached the end but it's not complete yet.
-            return i;
-        }
-        if (_all_params[i].index > i) {
-            // We have found a hole to fill.
-            return i;
+        if (!exists(i)) {
+            return {i};
         }
     }
     return {};
+}
+
+void MavlinkParameterCache::print_missing(uint16_t count)
+{
+    // Extended doesn't matter here because we use this function in the sender
+    // which is always either all extended or not.
+    std::sort(_all_params.begin(), _all_params.end(), [](const auto& lhs, const auto& rhs) {
+        return lhs.index < rhs.index;
+    });
+
+    LogDebug() << "Available: ";
+    for (auto param : _all_params) {
+        LogDebug() << param.index << ": " << param.id;
+    }
+    LogDebug() << "Available count: " << _all_params.size();
+
+    unsigned missing = 0;
+    LogDebug() << "Missing: ";
+    for (unsigned i = 0; i < count; ++i) {
+        if (!exists(i)) {
+            // We have reached the end but it's not complete yet.
+            LogDebug() << i;
+            ++missing;
+        }
+    }
+
+    LogDebug() << "Missing count: " << missing;
 }
 
 } // namespace mavsdk

@@ -46,10 +46,13 @@ public:
 
     [[nodiscard]] std::optional<uint16_t> next_missing_index(uint16_t count);
 
+    void print_missing(uint16_t count);
+
     void clear();
 
 private:
     [[nodiscard]] bool exists(const std::string& param_id) const;
+    [[nodiscard]] bool exists(uint16_t param_index) const;
 
     std::vector<Param> _all_params;
 };
