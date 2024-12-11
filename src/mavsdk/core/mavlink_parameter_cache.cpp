@@ -138,6 +138,19 @@ bool MavlinkParameterCache::exists(uint16_t param_index) const
     return it != _all_params.end();
 }
 
+uint16_t MavlinkParameterCache::missing_count(uint16_t count) const
+{
+    uint16_t missing = 0;
+
+    for (uint16_t i = 0; i < count; ++i) {
+        if (!exists(i)) {
+            ++missing;
+        }
+    }
+
+    return missing;
+}
+
 std::optional<uint16_t> MavlinkParameterCache::next_missing_index(uint16_t count)
 {
     // Extended doesn't matter here because we use this function in the sender
