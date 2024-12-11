@@ -276,8 +276,12 @@ std::pair<bool, std::string> SerialConnection::send_message(const mavlink_messag
     send_len = static_cast<int>(write(_fd, buffer, buffer_len));
 #else
     if (!WriteFile(_handle, buffer, buffer_len, LPDWORD(&send_len), NULL)) {
-        LogErr() << "WriteFile failure: " << GET_ERROR();
-        return false;
+        std::stringstream ss;
+        ss << "WriteFile failure: " << GET_ERROR();
+        LogErr() << ss.str();
+        result.first = false;
+        result.second = ss.str();
+        return result;
     }
 #endif
 
