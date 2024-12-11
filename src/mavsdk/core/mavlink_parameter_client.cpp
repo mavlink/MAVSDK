@@ -494,8 +494,8 @@ void MavlinkParameterClient::do_work()
                 }
                 work->already_requested = true;
                 // We want to get notified if a timeout happens
-                _timeout_cookie =
-                    _timeout_handler.add([this] { receive_timeout(); }, _timeout_s_callback());
+                _timeout_cookie = _timeout_handler.add(
+                    [this] { receive_timeout(); }, _timeout_s_callback() * _get_all_timeout_factor);
             }},
         work->work_item_variant);
 }
@@ -1133,7 +1133,8 @@ void MavlinkParameterClient::receive_timeout()
 
                         // We want to get notified if a timeout happens
                         _timeout_cookie = _timeout_handler.add(
-                            [this] { receive_timeout(); }, _timeout_s_callback());
+                            [this] { receive_timeout(); },
+                            _timeout_s_callback() * _get_all_timeout_factor);
                     } else {
                         if (item.callback) {
                             auto callback = item.callback;

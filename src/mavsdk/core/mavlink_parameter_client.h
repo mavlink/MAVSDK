@@ -152,6 +152,8 @@ public:
     friend std::ostream& operator<<(std::ostream&, const Result&);
 
 private:
+    const double _get_all_timeout_factor = 4.0;
+
     struct WorkItemSet {
         const std::string param_name;
         const ParamValue param_value;
