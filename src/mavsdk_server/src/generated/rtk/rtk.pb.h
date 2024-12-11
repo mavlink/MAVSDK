@@ -26,8 +26,8 @@
 #include "google/protobuf/generated_message_reflection.h"
 #include "google/protobuf/message.h"
 #include "google/protobuf/message_lite.h"
-#include "google/protobuf/repeated_field.h" // IWYU pragma: export
-#include "google/protobuf/extension_set.h" // IWYU pragma: export
+#include "google/protobuf/repeated_field.h"  // IWYU pragma: export
+#include "google/protobuf/extension_set.h"  // IWYU pragma: export
 #include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
 #include "mavsdk_options.pb.h"
@@ -41,16 +41,18 @@
 namespace google {
 namespace protobuf {
 namespace internal {
-template<typename T>::absl::string_view GetAnyMessageName();
-} // namespace internal
-} // namespace protobuf
-} // namespace google
+template <typename T>
+::absl::string_view GetAnyMessageName();
+}  // namespace internal
+}  // namespace protobuf
+}  // namespace google
 
 // Internal implementation detail -- do not use these members.
 struct TableStruct_rtk_2frtk_2eproto {
-    static const ::uint32_t offsets[];
+  static const ::uint32_t offsets[];
 };
-extern const ::google::protobuf::internal::DescriptorTable descriptor_table_rtk_2frtk_2eproto;
+extern const ::google::protobuf::internal::DescriptorTable
+    descriptor_table_rtk_2frtk_2eproto;
 namespace mavsdk {
 namespace rpc {
 namespace rtk {
@@ -66,26 +68,27 @@ extern SendRtcmDataRequestDefaultTypeInternal _SendRtcmDataRequest_default_insta
 class SendRtcmDataResponse;
 struct SendRtcmDataResponseDefaultTypeInternal;
 extern SendRtcmDataResponseDefaultTypeInternal _SendRtcmDataResponse_default_instance_;
-} // namespace rtk
-} // namespace rpc
-} // namespace mavsdk
+}  // namespace rtk
+}  // namespace rpc
+}  // namespace mavsdk
 namespace google {
-namespace protobuf {} // namespace protobuf
-} // namespace google
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 
 namespace mavsdk {
 namespace rpc {
 namespace rtk {
 enum RtkResult_Result : int {
-    RtkResult_Result_RESULT_UNKNOWN = 0,
-    RtkResult_Result_RESULT_SUCCESS = 1,
-    RtkResult_Result_RESULT_TOO_LONG = 2,
-    RtkResult_Result_RESULT_NO_SYSTEM = 5,
-    RtkResult_Result_RESULT_CONNECTION_ERROR = 6,
-    RtkResult_Result_RtkResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
-        std::numeric_limits<::int32_t>::min(),
-    RtkResult_Result_RtkResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
-        std::numeric_limits<::int32_t>::max(),
+  RtkResult_Result_RESULT_UNKNOWN = 0,
+  RtkResult_Result_RESULT_SUCCESS = 1,
+  RtkResult_Result_RESULT_TOO_LONG = 2,
+  RtkResult_Result_RESULT_NO_SYSTEM = 5,
+  RtkResult_Result_RESULT_CONNECTION_ERROR = 6,
+  RtkResult_Result_RtkResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  RtkResult_Result_RtkResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
 };
 
 bool RtkResult_Result_IsValid(int value);
@@ -93,942 +96,914 @@ extern const uint32_t RtkResult_Result_internal_data_[];
 constexpr RtkResult_Result RtkResult_Result_Result_MIN = static_cast<RtkResult_Result>(0);
 constexpr RtkResult_Result RtkResult_Result_Result_MAX = static_cast<RtkResult_Result>(6);
 constexpr int RtkResult_Result_Result_ARRAYSIZE = 6 + 1;
-const ::google::protobuf::EnumDescriptor* RtkResult_Result_descriptor();
-template<typename T> const std::string& RtkResult_Result_Name(T value)
-{
-    static_assert(
-        std::is_same<T, RtkResult_Result>::value || std::is_integral<T>::value,
-        "Incorrect type passed to Result_Name().");
-    return RtkResult_Result_Name(static_cast<RtkResult_Result>(value));
+const ::google::protobuf::EnumDescriptor*
+RtkResult_Result_descriptor();
+template <typename T>
+const std::string& RtkResult_Result_Name(T value) {
+  static_assert(std::is_same<T, RtkResult_Result>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to Result_Name().");
+  return RtkResult_Result_Name(static_cast<RtkResult_Result>(value));
 }
-template<> inline const std::string& RtkResult_Result_Name(RtkResult_Result value)
-{
-    return ::google::protobuf::internal::NameOfDenseEnum<RtkResult_Result_descriptor, 0, 6>(
-        static_cast<int>(value));
+template <>
+inline const std::string& RtkResult_Result_Name(RtkResult_Result value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<RtkResult_Result_descriptor,
+                                                 0, 6>(
+      static_cast<int>(value));
 }
-inline bool RtkResult_Result_Parse(absl::string_view name, RtkResult_Result* value)
-{
-    return ::google::protobuf::internal::ParseNamedEnum<RtkResult_Result>(
-        RtkResult_Result_descriptor(), name, value);
+inline bool RtkResult_Result_Parse(absl::string_view name, RtkResult_Result* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<RtkResult_Result>(
+      RtkResult_Result_descriptor(), name, value);
 }
 
 // ===================================================================
 
+
 // -------------------------------------------------------------------
 
-class RtkResult final : public ::google::protobuf::Message
+class RtkResult final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.rtk.RtkResult) */ {
-public:
-    inline RtkResult() : RtkResult(nullptr) {}
-    ~RtkResult() PROTOBUF_FINAL;
+ public:
+  inline RtkResult() : RtkResult(nullptr) {}
+  ~RtkResult() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(RtkResult* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(RtkResult));
-    }
+  void operator delete(RtkResult* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RtkResult));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR RtkResult(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RtkResult(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline RtkResult(const RtkResult& from) : RtkResult(nullptr, from) {}
-    inline RtkResult(RtkResult&& from) noexcept : RtkResult(nullptr, std::move(from)) {}
-    inline RtkResult& operator=(const RtkResult& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline RtkResult(const RtkResult& from) : RtkResult(nullptr, from) {}
+  inline RtkResult(RtkResult&& from) noexcept
+      : RtkResult(nullptr, std::move(from)) {}
+  inline RtkResult& operator=(const RtkResult& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RtkResult& operator=(RtkResult&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline RtkResult& operator=(RtkResult&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RtkResult& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RtkResult* internal_default_instance() {
+    return reinterpret_cast<const RtkResult*>(
+        &_RtkResult_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 3;
+  friend void swap(RtkResult& a, RtkResult& b) { a.Swap(&b); }
+  inline void Swap(RtkResult* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(RtkResult* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const RtkResult& default_instance() { return *internal_default_instance(); }
-    static inline const RtkResult* internal_default_instance()
-    {
-        return reinterpret_cast<const RtkResult*>(&_RtkResult_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 3;
-    friend void swap(RtkResult& a, RtkResult& b) { a.Swap(&b); }
-    inline void Swap(RtkResult* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(RtkResult* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  RtkResult* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RtkResult>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RtkResult& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RtkResult& from) { RtkResult::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    RtkResult* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<RtkResult>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const RtkResult& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const RtkResult& from) { RtkResult::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RtkResult* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.rtk.RtkResult"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit RtkResult(::google::protobuf::Arena* arena);
+  RtkResult(::google::protobuf::Arena* arena, const RtkResult& from);
+  RtkResult(::google::protobuf::Arena* arena, RtkResult&& from) noexcept
+      : RtkResult(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(RtkResult* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+  using Result = RtkResult_Result;
+  static constexpr Result RESULT_UNKNOWN = RtkResult_Result_RESULT_UNKNOWN;
+  static constexpr Result RESULT_SUCCESS = RtkResult_Result_RESULT_SUCCESS;
+  static constexpr Result RESULT_TOO_LONG = RtkResult_Result_RESULT_TOO_LONG;
+  static constexpr Result RESULT_NO_SYSTEM = RtkResult_Result_RESULT_NO_SYSTEM;
+  static constexpr Result RESULT_CONNECTION_ERROR = RtkResult_Result_RESULT_CONNECTION_ERROR;
+  static inline bool Result_IsValid(int value) {
+    return RtkResult_Result_IsValid(value);
+  }
+  static constexpr Result Result_MIN = RtkResult_Result_Result_MIN;
+  static constexpr Result Result_MAX = RtkResult_Result_Result_MAX;
+  static constexpr int Result_ARRAYSIZE = RtkResult_Result_Result_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor* Result_descriptor() {
+    return RtkResult_Result_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& Result_Name(T value) {
+    return RtkResult_Result_Name(value);
+  }
+  static inline bool Result_Parse(absl::string_view name, Result* value) {
+    return RtkResult_Result_Parse(name, value);
+  }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.rtk.RtkResult"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kResultStrFieldNumber = 2,
+    kResultFieldNumber = 1,
+  };
+  // string result_str = 2;
+  void clear_result_str() ;
+  const std::string& result_str() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_result_str(Arg_&& arg, Args_... args);
+  std::string* mutable_result_str();
+  PROTOBUF_NODISCARD std::string* release_result_str();
+  void set_allocated_result_str(std::string* value);
 
-protected:
-    explicit RtkResult(::google::protobuf::Arena* arena);
-    RtkResult(::google::protobuf::Arena* arena, const RtkResult& from);
-    RtkResult(::google::protobuf::Arena* arena, RtkResult&& from) noexcept : RtkResult(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const std::string& _internal_result_str() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_result_str(
+      const std::string& value);
+  std::string* _internal_mutable_result_str();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
-    using Result = RtkResult_Result;
-    static constexpr Result RESULT_UNKNOWN = RtkResult_Result_RESULT_UNKNOWN;
-    static constexpr Result RESULT_SUCCESS = RtkResult_Result_RESULT_SUCCESS;
-    static constexpr Result RESULT_TOO_LONG = RtkResult_Result_RESULT_TOO_LONG;
-    static constexpr Result RESULT_NO_SYSTEM = RtkResult_Result_RESULT_NO_SYSTEM;
-    static constexpr Result RESULT_CONNECTION_ERROR = RtkResult_Result_RESULT_CONNECTION_ERROR;
-    static inline bool Result_IsValid(int value) { return RtkResult_Result_IsValid(value); }
-    static constexpr Result Result_MIN = RtkResult_Result_Result_MIN;
-    static constexpr Result Result_MAX = RtkResult_Result_Result_MAX;
-    static constexpr int Result_ARRAYSIZE = RtkResult_Result_Result_ARRAYSIZE;
-    static inline const ::google::protobuf::EnumDescriptor* Result_descriptor()
-    {
-        return RtkResult_Result_descriptor();
-    }
-    template<typename T> static inline const std::string& Result_Name(T value)
-    {
-        return RtkResult_Result_Name(value);
-    }
-    static inline bool Result_Parse(absl::string_view name, Result* value)
-    {
-        return RtkResult_Result_Parse(name, value);
-    }
+  public:
+  // .mavsdk.rpc.rtk.RtkResult.Result result = 1;
+  void clear_result() ;
+  ::mavsdk::rpc::rtk::RtkResult_Result result() const;
+  void set_result(::mavsdk::rpc::rtk::RtkResult_Result value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kResultStrFieldNumber = 2,
-        kResultFieldNumber = 1,
-    };
-    // string result_str = 2;
-    void clear_result_str();
-    const std::string& result_str() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_result_str(Arg_&& arg, Args_... args);
-    std::string* mutable_result_str();
-    PROTOBUF_NODISCARD std::string* release_result_str();
-    void set_allocated_result_str(std::string* value);
+  private:
+  ::mavsdk::rpc::rtk::RtkResult_Result _internal_result() const;
+  void _internal_set_result(::mavsdk::rpc::rtk::RtkResult_Result value);
 
-private:
-    const std::string& _internal_result_str() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_result_str(const std::string& value);
-    std::string* _internal_mutable_result_str();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.rtk.RtkResult)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      43, 2>
+      _table_;
 
-public:
-    // .mavsdk.rpc.rtk.RtkResult.Result result = 1;
-    void clear_result();
-    ::mavsdk::rpc::rtk::RtkResult_Result result() const;
-    void set_result(::mavsdk::rpc::rtk::RtkResult_Result value);
-
-private:
-    ::mavsdk::rpc::rtk::RtkResult_Result _internal_result() const;
-    void _internal_set_result(::mavsdk::rpc::rtk::RtkResult_Result value);
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.rtk.RtkResult)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 0, 43, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const RtkResult& from_msg);
-        ::google::protobuf::internal::ArenaStringPtr result_str_;
-        int result_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_rtk_2frtk_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RtkResult& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr result_str_;
+    int result_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_rtk_2frtk_2eproto;
 };
 // -------------------------------------------------------------------
 
-class RtcmData final : public ::google::protobuf::Message
+class RtcmData final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.rtk.RtcmData) */ {
-public:
-    inline RtcmData() : RtcmData(nullptr) {}
-    ~RtcmData() PROTOBUF_FINAL;
+ public:
+  inline RtcmData() : RtcmData(nullptr) {}
+  ~RtcmData() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(RtcmData* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(RtcmData));
-    }
+  void operator delete(RtcmData* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RtcmData));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR RtcmData(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RtcmData(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline RtcmData(const RtcmData& from) : RtcmData(nullptr, from) {}
-    inline RtcmData(RtcmData&& from) noexcept : RtcmData(nullptr, std::move(from)) {}
-    inline RtcmData& operator=(const RtcmData& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline RtcmData(const RtcmData& from) : RtcmData(nullptr, from) {}
+  inline RtcmData(RtcmData&& from) noexcept
+      : RtcmData(nullptr, std::move(from)) {}
+  inline RtcmData& operator=(const RtcmData& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RtcmData& operator=(RtcmData&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline RtcmData& operator=(RtcmData&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RtcmData& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RtcmData* internal_default_instance() {
+    return reinterpret_cast<const RtcmData*>(
+        &_RtcmData_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 0;
+  friend void swap(RtcmData& a, RtcmData& b) { a.Swap(&b); }
+  inline void Swap(RtcmData* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(RtcmData* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const RtcmData& default_instance() { return *internal_default_instance(); }
-    static inline const RtcmData* internal_default_instance()
-    {
-        return reinterpret_cast<const RtcmData*>(&_RtcmData_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 0;
-    friend void swap(RtcmData& a, RtcmData& b) { a.Swap(&b); }
-    inline void Swap(RtcmData* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(RtcmData* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  RtcmData* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RtcmData>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RtcmData& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RtcmData& from) { RtcmData::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    RtcmData* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<RtcmData>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const RtcmData& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const RtcmData& from) { RtcmData::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RtcmData* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.rtk.RtcmData"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit RtcmData(::google::protobuf::Arena* arena);
+  RtcmData(::google::protobuf::Arena* arena, const RtcmData& from);
+  RtcmData(::google::protobuf::Arena* arena, RtcmData&& from) noexcept
+      : RtcmData(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(RtcmData* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.rtk.RtcmData"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kDataBase64FieldNumber = 1,
+  };
+  // string data_base64 = 1;
+  void clear_data_base64() ;
+  const std::string& data_base64() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_data_base64(Arg_&& arg, Args_... args);
+  std::string* mutable_data_base64();
+  PROTOBUF_NODISCARD std::string* release_data_base64();
+  void set_allocated_data_base64(std::string* value);
 
-protected:
-    explicit RtcmData(::google::protobuf::Arena* arena);
-    RtcmData(::google::protobuf::Arena* arena, const RtcmData& from);
-    RtcmData(::google::protobuf::Arena* arena, RtcmData&& from) noexcept : RtcmData(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const std::string& _internal_data_base64() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_data_base64(
+      const std::string& value);
+  std::string* _internal_mutable_data_base64();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.rtk.RtcmData)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      43, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kDataBase64FieldNumber = 1,
-    };
-    // string data_base64 = 1;
-    void clear_data_base64();
-    const std::string& data_base64() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_data_base64(Arg_&& arg, Args_... args);
-    std::string* mutable_data_base64();
-    PROTOBUF_NODISCARD std::string* release_data_base64();
-    void set_allocated_data_base64(std::string* value);
-
-private:
-    const std::string& _internal_data_base64() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_data_base64(const std::string& value);
-    std::string* _internal_mutable_data_base64();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.rtk.RtcmData)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 0, 43, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const RtcmData& from_msg);
-        ::google::protobuf::internal::ArenaStringPtr data_base64_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_rtk_2frtk_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RtcmData& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr data_base64_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_rtk_2frtk_2eproto;
 };
 // -------------------------------------------------------------------
 
-class SendRtcmDataResponse final : public ::google::protobuf::Message
+class SendRtcmDataResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.rtk.SendRtcmDataResponse) */ {
-public:
-    inline SendRtcmDataResponse() : SendRtcmDataResponse(nullptr) {}
-    ~SendRtcmDataResponse() PROTOBUF_FINAL;
+ public:
+  inline SendRtcmDataResponse() : SendRtcmDataResponse(nullptr) {}
+  ~SendRtcmDataResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(SendRtcmDataResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(SendRtcmDataResponse));
-    }
+  void operator delete(SendRtcmDataResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SendRtcmDataResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        SendRtcmDataResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SendRtcmDataResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline SendRtcmDataResponse(const SendRtcmDataResponse& from) :
-        SendRtcmDataResponse(nullptr, from)
-    {}
-    inline SendRtcmDataResponse(SendRtcmDataResponse&& from) noexcept :
-        SendRtcmDataResponse(nullptr, std::move(from))
-    {}
-    inline SendRtcmDataResponse& operator=(const SendRtcmDataResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline SendRtcmDataResponse(const SendRtcmDataResponse& from) : SendRtcmDataResponse(nullptr, from) {}
+  inline SendRtcmDataResponse(SendRtcmDataResponse&& from) noexcept
+      : SendRtcmDataResponse(nullptr, std::move(from)) {}
+  inline SendRtcmDataResponse& operator=(const SendRtcmDataResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SendRtcmDataResponse& operator=(SendRtcmDataResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline SendRtcmDataResponse& operator=(SendRtcmDataResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SendRtcmDataResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SendRtcmDataResponse* internal_default_instance() {
+    return reinterpret_cast<const SendRtcmDataResponse*>(
+        &_SendRtcmDataResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 2;
+  friend void swap(SendRtcmDataResponse& a, SendRtcmDataResponse& b) { a.Swap(&b); }
+  inline void Swap(SendRtcmDataResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(SendRtcmDataResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const SendRtcmDataResponse& default_instance() { return *internal_default_instance(); }
-    static inline const SendRtcmDataResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const SendRtcmDataResponse*>(
-            &_SendRtcmDataResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 2;
-    friend void swap(SendRtcmDataResponse& a, SendRtcmDataResponse& b) { a.Swap(&b); }
-    inline void Swap(SendRtcmDataResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(SendRtcmDataResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  SendRtcmDataResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SendRtcmDataResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SendRtcmDataResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SendRtcmDataResponse& from) { SendRtcmDataResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    SendRtcmDataResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<SendRtcmDataResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const SendRtcmDataResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const SendRtcmDataResponse& from)
-    {
-        SendRtcmDataResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SendRtcmDataResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.rtk.SendRtcmDataResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit SendRtcmDataResponse(::google::protobuf::Arena* arena);
+  SendRtcmDataResponse(::google::protobuf::Arena* arena, const SendRtcmDataResponse& from);
+  SendRtcmDataResponse(::google::protobuf::Arena* arena, SendRtcmDataResponse&& from) noexcept
+      : SendRtcmDataResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(SendRtcmDataResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.rtk.SendRtcmDataResponse"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kRtkResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.rtk.RtkResult rtk_result = 1;
+  bool has_rtk_result() const;
+  void clear_rtk_result() ;
+  const ::mavsdk::rpc::rtk::RtkResult& rtk_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::rtk::RtkResult* release_rtk_result();
+  ::mavsdk::rpc::rtk::RtkResult* mutable_rtk_result();
+  void set_allocated_rtk_result(::mavsdk::rpc::rtk::RtkResult* value);
+  void unsafe_arena_set_allocated_rtk_result(::mavsdk::rpc::rtk::RtkResult* value);
+  ::mavsdk::rpc::rtk::RtkResult* unsafe_arena_release_rtk_result();
 
-protected:
-    explicit SendRtcmDataResponse(::google::protobuf::Arena* arena);
-    SendRtcmDataResponse(::google::protobuf::Arena* arena, const SendRtcmDataResponse& from);
-    SendRtcmDataResponse(::google::protobuf::Arena* arena, SendRtcmDataResponse&& from) noexcept :
-        SendRtcmDataResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::rtk::RtkResult& _internal_rtk_result() const;
+  ::mavsdk::rpc::rtk::RtkResult* _internal_mutable_rtk_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.rtk.SendRtcmDataResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kRtkResultFieldNumber = 1,
-    };
-    // .mavsdk.rpc.rtk.RtkResult rtk_result = 1;
-    bool has_rtk_result() const;
-    void clear_rtk_result();
-    const ::mavsdk::rpc::rtk::RtkResult& rtk_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::rtk::RtkResult* release_rtk_result();
-    ::mavsdk::rpc::rtk::RtkResult* mutable_rtk_result();
-    void set_allocated_rtk_result(::mavsdk::rpc::rtk::RtkResult* value);
-    void unsafe_arena_set_allocated_rtk_result(::mavsdk::rpc::rtk::RtkResult* value);
-    ::mavsdk::rpc::rtk::RtkResult* unsafe_arena_release_rtk_result();
-
-private:
-    const ::mavsdk::rpc::rtk::RtkResult& _internal_rtk_result() const;
-    ::mavsdk::rpc::rtk::RtkResult* _internal_mutable_rtk_result();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.rtk.SendRtcmDataResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const SendRtcmDataResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::rtk::RtkResult* rtk_result_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_rtk_2frtk_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SendRtcmDataResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::rtk::RtkResult* rtk_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_rtk_2frtk_2eproto;
 };
 // -------------------------------------------------------------------
 
-class SendRtcmDataRequest final : public ::google::protobuf::Message
+class SendRtcmDataRequest final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.rtk.SendRtcmDataRequest) */ {
-public:
-    inline SendRtcmDataRequest() : SendRtcmDataRequest(nullptr) {}
-    ~SendRtcmDataRequest() PROTOBUF_FINAL;
+ public:
+  inline SendRtcmDataRequest() : SendRtcmDataRequest(nullptr) {}
+  ~SendRtcmDataRequest() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(SendRtcmDataRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(SendRtcmDataRequest));
-    }
+  void operator delete(SendRtcmDataRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SendRtcmDataRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        SendRtcmDataRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SendRtcmDataRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline SendRtcmDataRequest(const SendRtcmDataRequest& from) : SendRtcmDataRequest(nullptr, from)
-    {}
-    inline SendRtcmDataRequest(SendRtcmDataRequest&& from) noexcept :
-        SendRtcmDataRequest(nullptr, std::move(from))
-    {}
-    inline SendRtcmDataRequest& operator=(const SendRtcmDataRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline SendRtcmDataRequest(const SendRtcmDataRequest& from) : SendRtcmDataRequest(nullptr, from) {}
+  inline SendRtcmDataRequest(SendRtcmDataRequest&& from) noexcept
+      : SendRtcmDataRequest(nullptr, std::move(from)) {}
+  inline SendRtcmDataRequest& operator=(const SendRtcmDataRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SendRtcmDataRequest& operator=(SendRtcmDataRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline SendRtcmDataRequest& operator=(SendRtcmDataRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SendRtcmDataRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SendRtcmDataRequest* internal_default_instance() {
+    return reinterpret_cast<const SendRtcmDataRequest*>(
+        &_SendRtcmDataRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 1;
+  friend void swap(SendRtcmDataRequest& a, SendRtcmDataRequest& b) { a.Swap(&b); }
+  inline void Swap(SendRtcmDataRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(SendRtcmDataRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const SendRtcmDataRequest& default_instance() { return *internal_default_instance(); }
-    static inline const SendRtcmDataRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const SendRtcmDataRequest*>(
-            &_SendRtcmDataRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 1;
-    friend void swap(SendRtcmDataRequest& a, SendRtcmDataRequest& b) { a.Swap(&b); }
-    inline void Swap(SendRtcmDataRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(SendRtcmDataRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  SendRtcmDataRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SendRtcmDataRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SendRtcmDataRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SendRtcmDataRequest& from) { SendRtcmDataRequest::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    SendRtcmDataRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<SendRtcmDataRequest>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const SendRtcmDataRequest& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const SendRtcmDataRequest& from) { SendRtcmDataRequest::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SendRtcmDataRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.rtk.SendRtcmDataRequest"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit SendRtcmDataRequest(::google::protobuf::Arena* arena);
+  SendRtcmDataRequest(::google::protobuf::Arena* arena, const SendRtcmDataRequest& from);
+  SendRtcmDataRequest(::google::protobuf::Arena* arena, SendRtcmDataRequest&& from) noexcept
+      : SendRtcmDataRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(SendRtcmDataRequest* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.rtk.SendRtcmDataRequest"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kRtcmDataFieldNumber = 1,
+  };
+  // .mavsdk.rpc.rtk.RtcmData rtcm_data = 1;
+  bool has_rtcm_data() const;
+  void clear_rtcm_data() ;
+  const ::mavsdk::rpc::rtk::RtcmData& rtcm_data() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::rtk::RtcmData* release_rtcm_data();
+  ::mavsdk::rpc::rtk::RtcmData* mutable_rtcm_data();
+  void set_allocated_rtcm_data(::mavsdk::rpc::rtk::RtcmData* value);
+  void unsafe_arena_set_allocated_rtcm_data(::mavsdk::rpc::rtk::RtcmData* value);
+  ::mavsdk::rpc::rtk::RtcmData* unsafe_arena_release_rtcm_data();
 
-protected:
-    explicit SendRtcmDataRequest(::google::protobuf::Arena* arena);
-    SendRtcmDataRequest(::google::protobuf::Arena* arena, const SendRtcmDataRequest& from);
-    SendRtcmDataRequest(::google::protobuf::Arena* arena, SendRtcmDataRequest&& from) noexcept :
-        SendRtcmDataRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::rtk::RtcmData& _internal_rtcm_data() const;
+  ::mavsdk::rpc::rtk::RtcmData* _internal_mutable_rtcm_data();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.rtk.SendRtcmDataRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kRtcmDataFieldNumber = 1,
-    };
-    // .mavsdk.rpc.rtk.RtcmData rtcm_data = 1;
-    bool has_rtcm_data() const;
-    void clear_rtcm_data();
-    const ::mavsdk::rpc::rtk::RtcmData& rtcm_data() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::rtk::RtcmData* release_rtcm_data();
-    ::mavsdk::rpc::rtk::RtcmData* mutable_rtcm_data();
-    void set_allocated_rtcm_data(::mavsdk::rpc::rtk::RtcmData* value);
-    void unsafe_arena_set_allocated_rtcm_data(::mavsdk::rpc::rtk::RtcmData* value);
-    ::mavsdk::rpc::rtk::RtcmData* unsafe_arena_release_rtcm_data();
-
-private:
-    const ::mavsdk::rpc::rtk::RtcmData& _internal_rtcm_data() const;
-    ::mavsdk::rpc::rtk::RtcmData* _internal_mutable_rtcm_data();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.rtk.SendRtcmDataRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const SendRtcmDataRequest& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::rtk::RtcmData* rtcm_data_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_rtk_2frtk_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SendRtcmDataRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::rtk::RtcmData* rtcm_data_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_rtk_2frtk_2eproto;
 };
 
 // ===================================================================
 
+
+
+
 // ===================================================================
+
 
 #ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-aliasing"
-#endif // __GNUC__
+#endif  // __GNUC__
 // -------------------------------------------------------------------
 
 // RtcmData
 
 // string data_base64 = 1;
-inline void RtcmData::clear_data_base64()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.data_base64_.ClearToEmpty();
+inline void RtcmData::clear_data_base64() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.data_base64_.ClearToEmpty();
 }
-inline const std::string& RtcmData::data_base64() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.rtk.RtcmData.data_base64)
-    return _internal_data_base64();
+inline const std::string& RtcmData::data_base64() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.rtk.RtcmData.data_base64)
+  return _internal_data_base64();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void RtcmData::set_data_base64(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.data_base64_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.rtk.RtcmData.data_base64)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void RtcmData::set_data_base64(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.data_base64_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.rtk.RtcmData.data_base64)
 }
-inline std::string* RtcmData::mutable_data_base64() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_data_base64();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.rtk.RtcmData.data_base64)
-    return _s;
+inline std::string* RtcmData::mutable_data_base64() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_data_base64();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.rtk.RtcmData.data_base64)
+  return _s;
 }
-inline const std::string& RtcmData::_internal_data_base64() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.data_base64_.Get();
+inline const std::string& RtcmData::_internal_data_base64() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.data_base64_.Get();
 }
-inline void RtcmData::_internal_set_data_base64(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.data_base64_.Set(value, GetArena());
+inline void RtcmData::_internal_set_data_base64(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.data_base64_.Set(value, GetArena());
 }
-inline std::string* RtcmData::_internal_mutable_data_base64()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.data_base64_.Mutable(GetArena());
+inline std::string* RtcmData::_internal_mutable_data_base64() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.data_base64_.Mutable( GetArena());
 }
-inline std::string* RtcmData::release_data_base64()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.rtk.RtcmData.data_base64)
-    return _impl_.data_base64_.Release();
+inline std::string* RtcmData::release_data_base64() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.rtk.RtcmData.data_base64)
+  return _impl_.data_base64_.Release();
 }
-inline void RtcmData::set_allocated_data_base64(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.data_base64_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.data_base64_.IsDefault()) {
-        _impl_.data_base64_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.rtk.RtcmData.data_base64)
+inline void RtcmData::set_allocated_data_base64(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.data_base64_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.data_base64_.IsDefault()) {
+    _impl_.data_base64_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.rtk.RtcmData.data_base64)
 }
 
 // -------------------------------------------------------------------
@@ -1036,117 +1011,99 @@ inline void RtcmData::set_allocated_data_base64(std::string* value)
 // SendRtcmDataRequest
 
 // .mavsdk.rpc.rtk.RtcmData rtcm_data = 1;
-inline bool SendRtcmDataRequest::has_rtcm_data() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.rtcm_data_ != nullptr);
-    return value;
+inline bool SendRtcmDataRequest::has_rtcm_data() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.rtcm_data_ != nullptr);
+  return value;
 }
-inline void SendRtcmDataRequest::clear_rtcm_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.rtcm_data_ != nullptr)
-        _impl_.rtcm_data_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void SendRtcmDataRequest::clear_rtcm_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.rtcm_data_ != nullptr) _impl_.rtcm_data_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::rtk::RtcmData& SendRtcmDataRequest::_internal_rtcm_data() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::rtk::RtcmData* p = _impl_.rtcm_data_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::rtk::RtcmData&>(
-                              ::mavsdk::rpc::rtk::_RtcmData_default_instance_);
+inline const ::mavsdk::rpc::rtk::RtcmData& SendRtcmDataRequest::_internal_rtcm_data() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::rtk::RtcmData* p = _impl_.rtcm_data_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::rtk::RtcmData&>(::mavsdk::rpc::rtk::_RtcmData_default_instance_);
 }
-inline const ::mavsdk::rpc::rtk::RtcmData&
-SendRtcmDataRequest::rtcm_data() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.rtk.SendRtcmDataRequest.rtcm_data)
-    return _internal_rtcm_data();
+inline const ::mavsdk::rpc::rtk::RtcmData& SendRtcmDataRequest::rtcm_data() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.rtk.SendRtcmDataRequest.rtcm_data)
+  return _internal_rtcm_data();
 }
-inline void
-SendRtcmDataRequest::unsafe_arena_set_allocated_rtcm_data(::mavsdk::rpc::rtk::RtcmData* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.rtcm_data_);
-    }
-    _impl_.rtcm_data_ = reinterpret_cast<::mavsdk::rpc::rtk::RtcmData*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.rtk.SendRtcmDataRequest.rtcm_data)
-}
-inline ::mavsdk::rpc::rtk::RtcmData* SendRtcmDataRequest::release_rtcm_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::rtk::RtcmData* released = _impl_.rtcm_data_;
-    _impl_.rtcm_data_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::rtk::RtcmData* SendRtcmDataRequest::unsafe_arena_release_rtcm_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.rtk.SendRtcmDataRequest.rtcm_data)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::rtk::RtcmData* temp = _impl_.rtcm_data_;
-    _impl_.rtcm_data_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::rtk::RtcmData* SendRtcmDataRequest::_internal_mutable_rtcm_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.rtcm_data_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::rtk::RtcmData>(GetArena());
-        _impl_.rtcm_data_ = reinterpret_cast<::mavsdk::rpc::rtk::RtcmData*>(p);
-    }
-    return _impl_.rtcm_data_;
-}
-inline ::mavsdk::rpc::rtk::RtcmData*
-SendRtcmDataRequest::mutable_rtcm_data() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void SendRtcmDataRequest::unsafe_arena_set_allocated_rtcm_data(::mavsdk::rpc::rtk::RtcmData* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.rtcm_data_);
+  }
+  _impl_.rtcm_data_ = reinterpret_cast<::mavsdk::rpc::rtk::RtcmData*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::rtk::RtcmData* _msg = _internal_mutable_rtcm_data();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.rtk.SendRtcmDataRequest.rtcm_data)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.rtk.SendRtcmDataRequest.rtcm_data)
 }
-inline void SendRtcmDataRequest::set_allocated_rtcm_data(::mavsdk::rpc::rtk::RtcmData* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.rtcm_data_);
-    }
+inline ::mavsdk::rpc::rtk::RtcmData* SendRtcmDataRequest::release_rtcm_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::rtk::RtcmData* released = _impl_.rtcm_data_;
+  _impl_.rtcm_data_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::rtk::RtcmData* SendRtcmDataRequest::unsafe_arena_release_rtcm_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.rtk.SendRtcmDataRequest.rtcm_data)
 
-    _impl_.rtcm_data_ = reinterpret_cast<::mavsdk::rpc::rtk::RtcmData*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.rtk.SendRtcmDataRequest.rtcm_data)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::rtk::RtcmData* temp = _impl_.rtcm_data_;
+  _impl_.rtcm_data_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::rtk::RtcmData* SendRtcmDataRequest::_internal_mutable_rtcm_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.rtcm_data_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::rtk::RtcmData>(GetArena());
+    _impl_.rtcm_data_ = reinterpret_cast<::mavsdk::rpc::rtk::RtcmData*>(p);
+  }
+  return _impl_.rtcm_data_;
+}
+inline ::mavsdk::rpc::rtk::RtcmData* SendRtcmDataRequest::mutable_rtcm_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::rtk::RtcmData* _msg = _internal_mutable_rtcm_data();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.rtk.SendRtcmDataRequest.rtcm_data)
+  return _msg;
+}
+inline void SendRtcmDataRequest::set_allocated_rtcm_data(::mavsdk::rpc::rtk::RtcmData* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.rtcm_data_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.rtcm_data_ = reinterpret_cast<::mavsdk::rpc::rtk::RtcmData*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.rtk.SendRtcmDataRequest.rtcm_data)
 }
 
 // -------------------------------------------------------------------
@@ -1154,117 +1111,99 @@ inline void SendRtcmDataRequest::set_allocated_rtcm_data(::mavsdk::rpc::rtk::Rtc
 // SendRtcmDataResponse
 
 // .mavsdk.rpc.rtk.RtkResult rtk_result = 1;
-inline bool SendRtcmDataResponse::has_rtk_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.rtk_result_ != nullptr);
-    return value;
+inline bool SendRtcmDataResponse::has_rtk_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.rtk_result_ != nullptr);
+  return value;
 }
-inline void SendRtcmDataResponse::clear_rtk_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.rtk_result_ != nullptr)
-        _impl_.rtk_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void SendRtcmDataResponse::clear_rtk_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.rtk_result_ != nullptr) _impl_.rtk_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::rtk::RtkResult& SendRtcmDataResponse::_internal_rtk_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::rtk::RtkResult* p = _impl_.rtk_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::rtk::RtkResult&>(
-                              ::mavsdk::rpc::rtk::_RtkResult_default_instance_);
+inline const ::mavsdk::rpc::rtk::RtkResult& SendRtcmDataResponse::_internal_rtk_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::rtk::RtkResult* p = _impl_.rtk_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::rtk::RtkResult&>(::mavsdk::rpc::rtk::_RtkResult_default_instance_);
 }
-inline const ::mavsdk::rpc::rtk::RtkResult&
-SendRtcmDataResponse::rtk_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.rtk.SendRtcmDataResponse.rtk_result)
-    return _internal_rtk_result();
+inline const ::mavsdk::rpc::rtk::RtkResult& SendRtcmDataResponse::rtk_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.rtk.SendRtcmDataResponse.rtk_result)
+  return _internal_rtk_result();
 }
-inline void
-SendRtcmDataResponse::unsafe_arena_set_allocated_rtk_result(::mavsdk::rpc::rtk::RtkResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.rtk_result_);
-    }
-    _impl_.rtk_result_ = reinterpret_cast<::mavsdk::rpc::rtk::RtkResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.rtk.SendRtcmDataResponse.rtk_result)
-}
-inline ::mavsdk::rpc::rtk::RtkResult* SendRtcmDataResponse::release_rtk_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::rtk::RtkResult* released = _impl_.rtk_result_;
-    _impl_.rtk_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::rtk::RtkResult* SendRtcmDataResponse::unsafe_arena_release_rtk_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.rtk.SendRtcmDataResponse.rtk_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::rtk::RtkResult* temp = _impl_.rtk_result_;
-    _impl_.rtk_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::rtk::RtkResult* SendRtcmDataResponse::_internal_mutable_rtk_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.rtk_result_ == nullptr) {
-        auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::rtk::RtkResult>(
-            GetArena());
-        _impl_.rtk_result_ = reinterpret_cast<::mavsdk::rpc::rtk::RtkResult*>(p);
-    }
-    return _impl_.rtk_result_;
-}
-inline ::mavsdk::rpc::rtk::RtkResult*
-SendRtcmDataResponse::mutable_rtk_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void SendRtcmDataResponse::unsafe_arena_set_allocated_rtk_result(::mavsdk::rpc::rtk::RtkResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.rtk_result_);
+  }
+  _impl_.rtk_result_ = reinterpret_cast<::mavsdk::rpc::rtk::RtkResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::rtk::RtkResult* _msg = _internal_mutable_rtk_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.rtk.SendRtcmDataResponse.rtk_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.rtk.SendRtcmDataResponse.rtk_result)
 }
-inline void SendRtcmDataResponse::set_allocated_rtk_result(::mavsdk::rpc::rtk::RtkResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.rtk_result_);
-    }
+inline ::mavsdk::rpc::rtk::RtkResult* SendRtcmDataResponse::release_rtk_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::rtk::RtkResult* released = _impl_.rtk_result_;
+  _impl_.rtk_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::rtk::RtkResult* SendRtcmDataResponse::unsafe_arena_release_rtk_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.rtk.SendRtcmDataResponse.rtk_result)
 
-    _impl_.rtk_result_ = reinterpret_cast<::mavsdk::rpc::rtk::RtkResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.rtk.SendRtcmDataResponse.rtk_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::rtk::RtkResult* temp = _impl_.rtk_result_;
+  _impl_.rtk_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::rtk::RtkResult* SendRtcmDataResponse::_internal_mutable_rtk_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.rtk_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::rtk::RtkResult>(GetArena());
+    _impl_.rtk_result_ = reinterpret_cast<::mavsdk::rpc::rtk::RtkResult*>(p);
+  }
+  return _impl_.rtk_result_;
+}
+inline ::mavsdk::rpc::rtk::RtkResult* SendRtcmDataResponse::mutable_rtk_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::rtk::RtkResult* _msg = _internal_mutable_rtk_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.rtk.SendRtcmDataResponse.rtk_result)
+  return _msg;
+}
+inline void SendRtcmDataResponse::set_allocated_rtk_result(::mavsdk::rpc::rtk::RtkResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.rtk_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.rtk_result_ = reinterpret_cast<::mavsdk::rpc::rtk::RtkResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.rtk.SendRtcmDataResponse.rtk_result)
 }
 
 // -------------------------------------------------------------------
@@ -1272,111 +1211,100 @@ inline void SendRtcmDataResponse::set_allocated_rtk_result(::mavsdk::rpc::rtk::R
 // RtkResult
 
 // .mavsdk.rpc.rtk.RtkResult.Result result = 1;
-inline void RtkResult::clear_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_ = 0;
+inline void RtkResult::clear_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_ = 0;
 }
-inline ::mavsdk::rpc::rtk::RtkResult_Result RtkResult::result() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.rtk.RtkResult.result)
-    return _internal_result();
+inline ::mavsdk::rpc::rtk::RtkResult_Result RtkResult::result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.rtk.RtkResult.result)
+  return _internal_result();
 }
-inline void RtkResult::set_result(::mavsdk::rpc::rtk::RtkResult_Result value)
-{
-    _internal_set_result(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.rtk.RtkResult.result)
+inline void RtkResult::set_result(::mavsdk::rpc::rtk::RtkResult_Result value) {
+  _internal_set_result(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.rtk.RtkResult.result)
 }
-inline ::mavsdk::rpc::rtk::RtkResult_Result RtkResult::_internal_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return static_cast<::mavsdk::rpc::rtk::RtkResult_Result>(_impl_.result_);
+inline ::mavsdk::rpc::rtk::RtkResult_Result RtkResult::_internal_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::rtk::RtkResult_Result>(_impl_.result_);
 }
-inline void RtkResult::_internal_set_result(::mavsdk::rpc::rtk::RtkResult_Result value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_ = value;
+inline void RtkResult::_internal_set_result(::mavsdk::rpc::rtk::RtkResult_Result value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_ = value;
 }
 
 // string result_str = 2;
-inline void RtkResult::clear_result_str()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.ClearToEmpty();
+inline void RtkResult::clear_result_str() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.ClearToEmpty();
 }
-inline const std::string& RtkResult::result_str() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.rtk.RtkResult.result_str)
-    return _internal_result_str();
+inline const std::string& RtkResult::result_str() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.rtk.RtkResult.result_str)
+  return _internal_result_str();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void RtkResult::set_result_str(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.rtk.RtkResult.result_str)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void RtkResult::set_result_str(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.rtk.RtkResult.result_str)
 }
-inline std::string* RtkResult::mutable_result_str() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_result_str();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.rtk.RtkResult.result_str)
-    return _s;
+inline std::string* RtkResult::mutable_result_str() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_result_str();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.rtk.RtkResult.result_str)
+  return _s;
 }
-inline const std::string& RtkResult::_internal_result_str() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.result_str_.Get();
+inline const std::string& RtkResult::_internal_result_str() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.result_str_.Get();
 }
-inline void RtkResult::_internal_set_result_str(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.Set(value, GetArena());
+inline void RtkResult::_internal_set_result_str(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.Set(value, GetArena());
 }
-inline std::string* RtkResult::_internal_mutable_result_str()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.result_str_.Mutable(GetArena());
+inline std::string* RtkResult::_internal_mutable_result_str() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.result_str_.Mutable( GetArena());
 }
-inline std::string* RtkResult::release_result_str()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.rtk.RtkResult.result_str)
-    return _impl_.result_str_.Release();
+inline std::string* RtkResult::release_result_str() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.rtk.RtkResult.result_str)
+  return _impl_.result_str_.Release();
 }
-inline void RtkResult::set_allocated_result_str(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.result_str_.IsDefault()) {
-        _impl_.result_str_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.rtk.RtkResult.result_str)
+inline void RtkResult::set_allocated_result_str(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.result_str_.IsDefault()) {
+    _impl_.result_str_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.rtk.RtkResult.result_str)
 }
 
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
-#endif // __GNUC__
+#endif  // __GNUC__
 
 // @@protoc_insertion_point(namespace_scope)
-} // namespace rtk
-} // namespace rpc
-} // namespace mavsdk
+}  // namespace rtk
+}  // namespace rpc
+}  // namespace mavsdk
+
 
 namespace google {
 namespace protobuf {
 
-template<> struct is_proto_enum<::mavsdk::rpc::rtk::RtkResult_Result> : std::true_type {};
-template<> inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::rtk::RtkResult_Result>()
-{
-    return ::mavsdk::rpc::rtk::RtkResult_Result_descriptor();
+template <>
+struct is_proto_enum<::mavsdk::rpc::rtk::RtkResult_Result> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::rtk::RtkResult_Result>() {
+  return ::mavsdk::rpc::rtk::RtkResult_Result_descriptor();
 }
 
-} // namespace protobuf
-} // namespace google
+}  // namespace protobuf
+}  // namespace google
 
 // @@protoc_insertion_point(global_scope)
 
 #include "google/protobuf/port_undef.inc"
 
-#endif // rtk_2frtk_2eproto_2epb_2eh
+#endif  // rtk_2frtk_2eproto_2epb_2eh

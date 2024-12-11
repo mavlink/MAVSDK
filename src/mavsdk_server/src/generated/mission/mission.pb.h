@@ -27,8 +27,8 @@
 #include "google/protobuf/generated_message_reflection.h"
 #include "google/protobuf/message.h"
 #include "google/protobuf/message_lite.h"
-#include "google/protobuf/repeated_field.h" // IWYU pragma: export
-#include "google/protobuf/extension_set.h" // IWYU pragma: export
+#include "google/protobuf/repeated_field.h"  // IWYU pragma: export
+#include "google/protobuf/extension_set.h"  // IWYU pragma: export
 #include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
 #include "mavsdk_options.pb.h"
@@ -42,14 +42,15 @@
 namespace google {
 namespace protobuf {
 namespace internal {
-template<typename T>::absl::string_view GetAnyMessageName();
-} // namespace internal
-} // namespace protobuf
-} // namespace google
+template <typename T>
+::absl::string_view GetAnyMessageName();
+}  // namespace internal
+}  // namespace protobuf
+}  // namespace google
 
 // Internal implementation detail -- do not use these members.
 struct TableStruct_mission_2fmission_2eproto {
-    static const ::uint32_t offsets[];
+  static const ::uint32_t offsets[];
 };
 extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_mission_2fmission_2eproto;
@@ -58,19 +59,16 @@ namespace rpc {
 namespace mission {
 class CancelMissionDownloadRequest;
 struct CancelMissionDownloadRequestDefaultTypeInternal;
-extern CancelMissionDownloadRequestDefaultTypeInternal
-    _CancelMissionDownloadRequest_default_instance_;
+extern CancelMissionDownloadRequestDefaultTypeInternal _CancelMissionDownloadRequest_default_instance_;
 class CancelMissionDownloadResponse;
 struct CancelMissionDownloadResponseDefaultTypeInternal;
-extern CancelMissionDownloadResponseDefaultTypeInternal
-    _CancelMissionDownloadResponse_default_instance_;
+extern CancelMissionDownloadResponseDefaultTypeInternal _CancelMissionDownloadResponse_default_instance_;
 class CancelMissionUploadRequest;
 struct CancelMissionUploadRequestDefaultTypeInternal;
 extern CancelMissionUploadRequestDefaultTypeInternal _CancelMissionUploadRequest_default_instance_;
 class CancelMissionUploadResponse;
 struct CancelMissionUploadResponseDefaultTypeInternal;
-extern CancelMissionUploadResponseDefaultTypeInternal
-    _CancelMissionUploadResponse_default_instance_;
+extern CancelMissionUploadResponseDefaultTypeInternal _CancelMissionUploadResponse_default_instance_;
 class ClearMissionRequest;
 struct ClearMissionRequestDefaultTypeInternal;
 extern ClearMissionRequestDefaultTypeInternal _ClearMissionRequest_default_instance_;
@@ -85,16 +83,13 @@ struct DownloadMissionResponseDefaultTypeInternal;
 extern DownloadMissionResponseDefaultTypeInternal _DownloadMissionResponse_default_instance_;
 class DownloadMissionWithProgressResponse;
 struct DownloadMissionWithProgressResponseDefaultTypeInternal;
-extern DownloadMissionWithProgressResponseDefaultTypeInternal
-    _DownloadMissionWithProgressResponse_default_instance_;
+extern DownloadMissionWithProgressResponseDefaultTypeInternal _DownloadMissionWithProgressResponse_default_instance_;
 class GetReturnToLaunchAfterMissionRequest;
 struct GetReturnToLaunchAfterMissionRequestDefaultTypeInternal;
-extern GetReturnToLaunchAfterMissionRequestDefaultTypeInternal
-    _GetReturnToLaunchAfterMissionRequest_default_instance_;
+extern GetReturnToLaunchAfterMissionRequestDefaultTypeInternal _GetReturnToLaunchAfterMissionRequest_default_instance_;
 class GetReturnToLaunchAfterMissionResponse;
 struct GetReturnToLaunchAfterMissionResponseDefaultTypeInternal;
-extern GetReturnToLaunchAfterMissionResponseDefaultTypeInternal
-    _GetReturnToLaunchAfterMissionResponse_default_instance_;
+extern GetReturnToLaunchAfterMissionResponseDefaultTypeInternal _GetReturnToLaunchAfterMissionResponse_default_instance_;
 class IsMissionFinishedRequest;
 struct IsMissionFinishedRequestDefaultTypeInternal;
 extern IsMissionFinishedRequestDefaultTypeInternal _IsMissionFinishedRequest_default_instance_;
@@ -130,20 +125,16 @@ struct ProgressDataOrMissionDefaultTypeInternal;
 extern ProgressDataOrMissionDefaultTypeInternal _ProgressDataOrMission_default_instance_;
 class SetCurrentMissionItemRequest;
 struct SetCurrentMissionItemRequestDefaultTypeInternal;
-extern SetCurrentMissionItemRequestDefaultTypeInternal
-    _SetCurrentMissionItemRequest_default_instance_;
+extern SetCurrentMissionItemRequestDefaultTypeInternal _SetCurrentMissionItemRequest_default_instance_;
 class SetCurrentMissionItemResponse;
 struct SetCurrentMissionItemResponseDefaultTypeInternal;
-extern SetCurrentMissionItemResponseDefaultTypeInternal
-    _SetCurrentMissionItemResponse_default_instance_;
+extern SetCurrentMissionItemResponseDefaultTypeInternal _SetCurrentMissionItemResponse_default_instance_;
 class SetReturnToLaunchAfterMissionRequest;
 struct SetReturnToLaunchAfterMissionRequestDefaultTypeInternal;
-extern SetReturnToLaunchAfterMissionRequestDefaultTypeInternal
-    _SetReturnToLaunchAfterMissionRequest_default_instance_;
+extern SetReturnToLaunchAfterMissionRequestDefaultTypeInternal _SetReturnToLaunchAfterMissionRequest_default_instance_;
 class SetReturnToLaunchAfterMissionResponse;
 struct SetReturnToLaunchAfterMissionResponseDefaultTypeInternal;
-extern SetReturnToLaunchAfterMissionResponseDefaultTypeInternal
-    _SetReturnToLaunchAfterMissionResponse_default_instance_;
+extern SetReturnToLaunchAfterMissionResponseDefaultTypeInternal _SetReturnToLaunchAfterMissionResponse_default_instance_;
 class StartMissionRequest;
 struct StartMissionRequestDefaultTypeInternal;
 extern StartMissionRequestDefaultTypeInternal _StartMissionRequest_default_instance_;
@@ -152,16 +143,13 @@ struct StartMissionResponseDefaultTypeInternal;
 extern StartMissionResponseDefaultTypeInternal _StartMissionResponse_default_instance_;
 class SubscribeDownloadMissionWithProgressRequest;
 struct SubscribeDownloadMissionWithProgressRequestDefaultTypeInternal;
-extern SubscribeDownloadMissionWithProgressRequestDefaultTypeInternal
-    _SubscribeDownloadMissionWithProgressRequest_default_instance_;
+extern SubscribeDownloadMissionWithProgressRequestDefaultTypeInternal _SubscribeDownloadMissionWithProgressRequest_default_instance_;
 class SubscribeMissionProgressRequest;
 struct SubscribeMissionProgressRequestDefaultTypeInternal;
-extern SubscribeMissionProgressRequestDefaultTypeInternal
-    _SubscribeMissionProgressRequest_default_instance_;
+extern SubscribeMissionProgressRequestDefaultTypeInternal _SubscribeMissionProgressRequest_default_instance_;
 class SubscribeUploadMissionWithProgressRequest;
 struct SubscribeUploadMissionWithProgressRequestDefaultTypeInternal;
-extern SubscribeUploadMissionWithProgressRequestDefaultTypeInternal
-    _SubscribeUploadMissionWithProgressRequest_default_instance_;
+extern SubscribeUploadMissionWithProgressRequestDefaultTypeInternal _SubscribeUploadMissionWithProgressRequest_default_instance_;
 class UploadMissionRequest;
 struct UploadMissionRequestDefaultTypeInternal;
 extern UploadMissionRequestDefaultTypeInternal _UploadMissionRequest_default_instance_;
@@ -170,7520 +158,6785 @@ struct UploadMissionResponseDefaultTypeInternal;
 extern UploadMissionResponseDefaultTypeInternal _UploadMissionResponse_default_instance_;
 class UploadMissionWithProgressResponse;
 struct UploadMissionWithProgressResponseDefaultTypeInternal;
-extern UploadMissionWithProgressResponseDefaultTypeInternal
-    _UploadMissionWithProgressResponse_default_instance_;
-} // namespace mission
-} // namespace rpc
-} // namespace mavsdk
+extern UploadMissionWithProgressResponseDefaultTypeInternal _UploadMissionWithProgressResponse_default_instance_;
+}  // namespace mission
+}  // namespace rpc
+}  // namespace mavsdk
 namespace google {
-namespace protobuf {} // namespace protobuf
-} // namespace google
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 
 namespace mavsdk {
 namespace rpc {
 namespace mission {
 enum MissionItem_CameraAction : int {
-    MissionItem_CameraAction_CAMERA_ACTION_NONE = 0,
-    MissionItem_CameraAction_CAMERA_ACTION_TAKE_PHOTO = 1,
-    MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_INTERVAL = 2,
-    MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_INTERVAL = 3,
-    MissionItem_CameraAction_CAMERA_ACTION_START_VIDEO = 4,
-    MissionItem_CameraAction_CAMERA_ACTION_STOP_VIDEO = 5,
-    MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_DISTANCE = 6,
-    MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_DISTANCE = 7,
-    MissionItem_CameraAction_MissionItem_CameraAction_INT_MIN_SENTINEL_DO_NOT_USE_ =
-        std::numeric_limits<::int32_t>::min(),
-    MissionItem_CameraAction_MissionItem_CameraAction_INT_MAX_SENTINEL_DO_NOT_USE_ =
-        std::numeric_limits<::int32_t>::max(),
+  MissionItem_CameraAction_CAMERA_ACTION_NONE = 0,
+  MissionItem_CameraAction_CAMERA_ACTION_TAKE_PHOTO = 1,
+  MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_INTERVAL = 2,
+  MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_INTERVAL = 3,
+  MissionItem_CameraAction_CAMERA_ACTION_START_VIDEO = 4,
+  MissionItem_CameraAction_CAMERA_ACTION_STOP_VIDEO = 5,
+  MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_DISTANCE = 6,
+  MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_DISTANCE = 7,
+  MissionItem_CameraAction_MissionItem_CameraAction_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  MissionItem_CameraAction_MissionItem_CameraAction_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
 };
 
 bool MissionItem_CameraAction_IsValid(int value);
 extern const uint32_t MissionItem_CameraAction_internal_data_[];
-constexpr MissionItem_CameraAction MissionItem_CameraAction_CameraAction_MIN =
-    static_cast<MissionItem_CameraAction>(0);
-constexpr MissionItem_CameraAction MissionItem_CameraAction_CameraAction_MAX =
-    static_cast<MissionItem_CameraAction>(7);
+constexpr MissionItem_CameraAction MissionItem_CameraAction_CameraAction_MIN = static_cast<MissionItem_CameraAction>(0);
+constexpr MissionItem_CameraAction MissionItem_CameraAction_CameraAction_MAX = static_cast<MissionItem_CameraAction>(7);
 constexpr int MissionItem_CameraAction_CameraAction_ARRAYSIZE = 7 + 1;
-const ::google::protobuf::EnumDescriptor* MissionItem_CameraAction_descriptor();
-template<typename T> const std::string& MissionItem_CameraAction_Name(T value)
-{
-    static_assert(
-        std::is_same<T, MissionItem_CameraAction>::value || std::is_integral<T>::value,
-        "Incorrect type passed to CameraAction_Name().");
-    return MissionItem_CameraAction_Name(static_cast<MissionItem_CameraAction>(value));
+const ::google::protobuf::EnumDescriptor*
+MissionItem_CameraAction_descriptor();
+template <typename T>
+const std::string& MissionItem_CameraAction_Name(T value) {
+  static_assert(std::is_same<T, MissionItem_CameraAction>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to CameraAction_Name().");
+  return MissionItem_CameraAction_Name(static_cast<MissionItem_CameraAction>(value));
 }
-template<> inline const std::string& MissionItem_CameraAction_Name(MissionItem_CameraAction value)
-{
-    return ::google::protobuf::internal::NameOfDenseEnum<MissionItem_CameraAction_descriptor, 0, 7>(
-        static_cast<int>(value));
+template <>
+inline const std::string& MissionItem_CameraAction_Name(MissionItem_CameraAction value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<MissionItem_CameraAction_descriptor,
+                                                 0, 7>(
+      static_cast<int>(value));
 }
-inline bool MissionItem_CameraAction_Parse(absl::string_view name, MissionItem_CameraAction* value)
-{
-    return ::google::protobuf::internal::ParseNamedEnum<MissionItem_CameraAction>(
-        MissionItem_CameraAction_descriptor(), name, value);
+inline bool MissionItem_CameraAction_Parse(absl::string_view name, MissionItem_CameraAction* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<MissionItem_CameraAction>(
+      MissionItem_CameraAction_descriptor(), name, value);
 }
 enum MissionItem_VehicleAction : int {
-    MissionItem_VehicleAction_VEHICLE_ACTION_NONE = 0,
-    MissionItem_VehicleAction_VEHICLE_ACTION_TAKEOFF = 1,
-    MissionItem_VehicleAction_VEHICLE_ACTION_LAND = 2,
-    MissionItem_VehicleAction_VEHICLE_ACTION_TRANSITION_TO_FW = 3,
-    MissionItem_VehicleAction_VEHICLE_ACTION_TRANSITION_TO_MC = 4,
-    MissionItem_VehicleAction_MissionItem_VehicleAction_INT_MIN_SENTINEL_DO_NOT_USE_ =
-        std::numeric_limits<::int32_t>::min(),
-    MissionItem_VehicleAction_MissionItem_VehicleAction_INT_MAX_SENTINEL_DO_NOT_USE_ =
-        std::numeric_limits<::int32_t>::max(),
+  MissionItem_VehicleAction_VEHICLE_ACTION_NONE = 0,
+  MissionItem_VehicleAction_VEHICLE_ACTION_TAKEOFF = 1,
+  MissionItem_VehicleAction_VEHICLE_ACTION_LAND = 2,
+  MissionItem_VehicleAction_VEHICLE_ACTION_TRANSITION_TO_FW = 3,
+  MissionItem_VehicleAction_VEHICLE_ACTION_TRANSITION_TO_MC = 4,
+  MissionItem_VehicleAction_MissionItem_VehicleAction_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  MissionItem_VehicleAction_MissionItem_VehicleAction_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
 };
 
 bool MissionItem_VehicleAction_IsValid(int value);
 extern const uint32_t MissionItem_VehicleAction_internal_data_[];
-constexpr MissionItem_VehicleAction MissionItem_VehicleAction_VehicleAction_MIN =
-    static_cast<MissionItem_VehicleAction>(0);
-constexpr MissionItem_VehicleAction MissionItem_VehicleAction_VehicleAction_MAX =
-    static_cast<MissionItem_VehicleAction>(4);
+constexpr MissionItem_VehicleAction MissionItem_VehicleAction_VehicleAction_MIN = static_cast<MissionItem_VehicleAction>(0);
+constexpr MissionItem_VehicleAction MissionItem_VehicleAction_VehicleAction_MAX = static_cast<MissionItem_VehicleAction>(4);
 constexpr int MissionItem_VehicleAction_VehicleAction_ARRAYSIZE = 4 + 1;
-const ::google::protobuf::EnumDescriptor* MissionItem_VehicleAction_descriptor();
-template<typename T> const std::string& MissionItem_VehicleAction_Name(T value)
-{
-    static_assert(
-        std::is_same<T, MissionItem_VehicleAction>::value || std::is_integral<T>::value,
-        "Incorrect type passed to VehicleAction_Name().");
-    return MissionItem_VehicleAction_Name(static_cast<MissionItem_VehicleAction>(value));
+const ::google::protobuf::EnumDescriptor*
+MissionItem_VehicleAction_descriptor();
+template <typename T>
+const std::string& MissionItem_VehicleAction_Name(T value) {
+  static_assert(std::is_same<T, MissionItem_VehicleAction>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to VehicleAction_Name().");
+  return MissionItem_VehicleAction_Name(static_cast<MissionItem_VehicleAction>(value));
 }
-template<> inline const std::string& MissionItem_VehicleAction_Name(MissionItem_VehicleAction value)
-{
-    return ::google::protobuf::internal::
-        NameOfDenseEnum<MissionItem_VehicleAction_descriptor, 0, 4>(static_cast<int>(value));
+template <>
+inline const std::string& MissionItem_VehicleAction_Name(MissionItem_VehicleAction value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<MissionItem_VehicleAction_descriptor,
+                                                 0, 4>(
+      static_cast<int>(value));
 }
-inline bool
-MissionItem_VehicleAction_Parse(absl::string_view name, MissionItem_VehicleAction* value)
-{
-    return ::google::protobuf::internal::ParseNamedEnum<MissionItem_VehicleAction>(
-        MissionItem_VehicleAction_descriptor(), name, value);
+inline bool MissionItem_VehicleAction_Parse(absl::string_view name, MissionItem_VehicleAction* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<MissionItem_VehicleAction>(
+      MissionItem_VehicleAction_descriptor(), name, value);
 }
 enum MissionResult_Result : int {
-    MissionResult_Result_RESULT_UNKNOWN = 0,
-    MissionResult_Result_RESULT_SUCCESS = 1,
-    MissionResult_Result_RESULT_ERROR = 2,
-    MissionResult_Result_RESULT_TOO_MANY_MISSION_ITEMS = 3,
-    MissionResult_Result_RESULT_BUSY = 4,
-    MissionResult_Result_RESULT_TIMEOUT = 5,
-    MissionResult_Result_RESULT_INVALID_ARGUMENT = 6,
-    MissionResult_Result_RESULT_UNSUPPORTED = 7,
-    MissionResult_Result_RESULT_NO_MISSION_AVAILABLE = 8,
-    MissionResult_Result_RESULT_UNSUPPORTED_MISSION_CMD = 11,
-    MissionResult_Result_RESULT_TRANSFER_CANCELLED = 12,
-    MissionResult_Result_RESULT_NO_SYSTEM = 13,
-    MissionResult_Result_RESULT_NEXT = 14,
-    MissionResult_Result_RESULT_DENIED = 15,
-    MissionResult_Result_RESULT_PROTOCOL_ERROR = 16,
-    MissionResult_Result_RESULT_INT_MESSAGES_NOT_SUPPORTED = 17,
-    MissionResult_Result_MissionResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
-        std::numeric_limits<::int32_t>::min(),
-    MissionResult_Result_MissionResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
-        std::numeric_limits<::int32_t>::max(),
+  MissionResult_Result_RESULT_UNKNOWN = 0,
+  MissionResult_Result_RESULT_SUCCESS = 1,
+  MissionResult_Result_RESULT_ERROR = 2,
+  MissionResult_Result_RESULT_TOO_MANY_MISSION_ITEMS = 3,
+  MissionResult_Result_RESULT_BUSY = 4,
+  MissionResult_Result_RESULT_TIMEOUT = 5,
+  MissionResult_Result_RESULT_INVALID_ARGUMENT = 6,
+  MissionResult_Result_RESULT_UNSUPPORTED = 7,
+  MissionResult_Result_RESULT_NO_MISSION_AVAILABLE = 8,
+  MissionResult_Result_RESULT_UNSUPPORTED_MISSION_CMD = 11,
+  MissionResult_Result_RESULT_TRANSFER_CANCELLED = 12,
+  MissionResult_Result_RESULT_NO_SYSTEM = 13,
+  MissionResult_Result_RESULT_NEXT = 14,
+  MissionResult_Result_RESULT_DENIED = 15,
+  MissionResult_Result_RESULT_PROTOCOL_ERROR = 16,
+  MissionResult_Result_RESULT_INT_MESSAGES_NOT_SUPPORTED = 17,
+  MissionResult_Result_MissionResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  MissionResult_Result_MissionResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
 };
 
 bool MissionResult_Result_IsValid(int value);
 extern const uint32_t MissionResult_Result_internal_data_[];
-constexpr MissionResult_Result MissionResult_Result_Result_MIN =
-    static_cast<MissionResult_Result>(0);
-constexpr MissionResult_Result MissionResult_Result_Result_MAX =
-    static_cast<MissionResult_Result>(17);
+constexpr MissionResult_Result MissionResult_Result_Result_MIN = static_cast<MissionResult_Result>(0);
+constexpr MissionResult_Result MissionResult_Result_Result_MAX = static_cast<MissionResult_Result>(17);
 constexpr int MissionResult_Result_Result_ARRAYSIZE = 17 + 1;
-const ::google::protobuf::EnumDescriptor* MissionResult_Result_descriptor();
-template<typename T> const std::string& MissionResult_Result_Name(T value)
-{
-    static_assert(
-        std::is_same<T, MissionResult_Result>::value || std::is_integral<T>::value,
-        "Incorrect type passed to Result_Name().");
-    return MissionResult_Result_Name(static_cast<MissionResult_Result>(value));
+const ::google::protobuf::EnumDescriptor*
+MissionResult_Result_descriptor();
+template <typename T>
+const std::string& MissionResult_Result_Name(T value) {
+  static_assert(std::is_same<T, MissionResult_Result>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to Result_Name().");
+  return MissionResult_Result_Name(static_cast<MissionResult_Result>(value));
 }
-template<> inline const std::string& MissionResult_Result_Name(MissionResult_Result value)
-{
-    return ::google::protobuf::internal::NameOfDenseEnum<MissionResult_Result_descriptor, 0, 17>(
-        static_cast<int>(value));
+template <>
+inline const std::string& MissionResult_Result_Name(MissionResult_Result value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<MissionResult_Result_descriptor,
+                                                 0, 17>(
+      static_cast<int>(value));
 }
-inline bool MissionResult_Result_Parse(absl::string_view name, MissionResult_Result* value)
-{
-    return ::google::protobuf::internal::ParseNamedEnum<MissionResult_Result>(
-        MissionResult_Result_descriptor(), name, value);
+inline bool MissionResult_Result_Parse(absl::string_view name, MissionResult_Result* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<MissionResult_Result>(
+      MissionResult_Result_descriptor(), name, value);
 }
 
 // ===================================================================
 
+
 // -------------------------------------------------------------------
 
-class SubscribeMissionProgressRequest final : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.SubscribeMissionProgressRequest) */
-{
-public:
-    inline SubscribeMissionProgressRequest() : SubscribeMissionProgressRequest(nullptr) {}
+class SubscribeMissionProgressRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.SubscribeMissionProgressRequest) */ {
+ public:
+  inline SubscribeMissionProgressRequest() : SubscribeMissionProgressRequest(nullptr) {}
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(SubscribeMissionProgressRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeMissionProgressRequest));
-    }
+  void operator delete(SubscribeMissionProgressRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeMissionProgressRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        SubscribeMissionProgressRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeMissionProgressRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline SubscribeMissionProgressRequest(const SubscribeMissionProgressRequest& from) :
-        SubscribeMissionProgressRequest(nullptr, from)
-    {}
-    inline SubscribeMissionProgressRequest(SubscribeMissionProgressRequest&& from) noexcept :
-        SubscribeMissionProgressRequest(nullptr, std::move(from))
-    {}
-    inline SubscribeMissionProgressRequest& operator=(const SubscribeMissionProgressRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline SubscribeMissionProgressRequest(const SubscribeMissionProgressRequest& from) : SubscribeMissionProgressRequest(nullptr, from) {}
+  inline SubscribeMissionProgressRequest(SubscribeMissionProgressRequest&& from) noexcept
+      : SubscribeMissionProgressRequest(nullptr, std::move(from)) {}
+  inline SubscribeMissionProgressRequest& operator=(const SubscribeMissionProgressRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeMissionProgressRequest& operator=(SubscribeMissionProgressRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline SubscribeMissionProgressRequest&
-    operator=(SubscribeMissionProgressRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeMissionProgressRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeMissionProgressRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeMissionProgressRequest*>(
+        &_SubscribeMissionProgressRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 22;
+  friend void swap(SubscribeMissionProgressRequest& a, SubscribeMissionProgressRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeMissionProgressRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const SubscribeMissionProgressRequest& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const SubscribeMissionProgressRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const SubscribeMissionProgressRequest*>(
-            &_SubscribeMissionProgressRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 22;
-    friend void swap(SubscribeMissionProgressRequest& a, SubscribeMissionProgressRequest& b)
-    {
-        a.Swap(&b);
-    }
-    inline void Swap(SubscribeMissionProgressRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(SubscribeMissionProgressRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(SubscribeMissionProgressRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    SubscribeMissionProgressRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<
-            SubscribeMissionProgressRequest>(arena);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-    inline void CopyFrom(const SubscribeMissionProgressRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-    void MergeFrom(const SubscribeMissionProgressRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-    }
+  SubscribeMissionProgressRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<SubscribeMissionProgressRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeMissionProgressRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeMissionProgressRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
 
-public:
-    bool IsInitialized() const { return true; }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.SubscribeMissionProgressRequest"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.SubscribeMissionProgressRequest";
-    }
+ protected:
+  explicit SubscribeMissionProgressRequest(::google::protobuf::Arena* arena);
+  SubscribeMissionProgressRequest(::google::protobuf::Arena* arena, const SubscribeMissionProgressRequest& from);
+  SubscribeMissionProgressRequest(::google::protobuf::Arena* arena, SubscribeMissionProgressRequest&& from) noexcept
+      : SubscribeMissionProgressRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit SubscribeMissionProgressRequest(::google::protobuf::Arena* arena);
-    SubscribeMissionProgressRequest(
-        ::google::protobuf::Arena* arena, const SubscribeMissionProgressRequest& from);
-    SubscribeMissionProgressRequest(
-        ::google::protobuf::Arena* arena, SubscribeMissionProgressRequest&& from) noexcept :
-        SubscribeMissionProgressRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.SubscribeMissionProgressRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.SubscribeMissionProgressRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 0, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const SubscribeMissionProgressRequest& from_msg);
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeMissionProgressRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
 class SubscribeDownloadMissionWithProgressRequest final
     : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.SubscribeDownloadMissionWithProgressRequest)
- */
-{
-public:
-    inline SubscribeDownloadMissionWithProgressRequest() :
-        SubscribeDownloadMissionWithProgressRequest(nullptr)
-    {}
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.SubscribeDownloadMissionWithProgressRequest) */ {
+ public:
+  inline SubscribeDownloadMissionWithProgressRequest() : SubscribeDownloadMissionWithProgressRequest(nullptr) {}
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(SubscribeDownloadMissionWithProgressRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(
-            msg, sizeof(SubscribeDownloadMissionWithProgressRequest));
-    }
+  void operator delete(SubscribeDownloadMissionWithProgressRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeDownloadMissionWithProgressRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR SubscribeDownloadMissionWithProgressRequest(
-        ::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeDownloadMissionWithProgressRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline SubscribeDownloadMissionWithProgressRequest(
-        const SubscribeDownloadMissionWithProgressRequest& from) :
-        SubscribeDownloadMissionWithProgressRequest(nullptr, from)
-    {}
-    inline SubscribeDownloadMissionWithProgressRequest(
-        SubscribeDownloadMissionWithProgressRequest&& from) noexcept :
-        SubscribeDownloadMissionWithProgressRequest(nullptr, std::move(from))
-    {}
-    inline SubscribeDownloadMissionWithProgressRequest&
-    operator=(const SubscribeDownloadMissionWithProgressRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline SubscribeDownloadMissionWithProgressRequest(const SubscribeDownloadMissionWithProgressRequest& from) : SubscribeDownloadMissionWithProgressRequest(nullptr, from) {}
+  inline SubscribeDownloadMissionWithProgressRequest(SubscribeDownloadMissionWithProgressRequest&& from) noexcept
+      : SubscribeDownloadMissionWithProgressRequest(nullptr, std::move(from)) {}
+  inline SubscribeDownloadMissionWithProgressRequest& operator=(const SubscribeDownloadMissionWithProgressRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeDownloadMissionWithProgressRequest& operator=(SubscribeDownloadMissionWithProgressRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline SubscribeDownloadMissionWithProgressRequest&
-    operator=(SubscribeDownloadMissionWithProgressRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeDownloadMissionWithProgressRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeDownloadMissionWithProgressRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeDownloadMissionWithProgressRequest*>(
+        &_SubscribeDownloadMissionWithProgressRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 8;
+  friend void swap(SubscribeDownloadMissionWithProgressRequest& a, SubscribeDownloadMissionWithProgressRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeDownloadMissionWithProgressRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const SubscribeDownloadMissionWithProgressRequest& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const SubscribeDownloadMissionWithProgressRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const SubscribeDownloadMissionWithProgressRequest*>(
-            &_SubscribeDownloadMissionWithProgressRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 8;
-    friend void swap(
-        SubscribeDownloadMissionWithProgressRequest& a,
-        SubscribeDownloadMissionWithProgressRequest& b)
-    {
-        a.Swap(&b);
-    }
-    inline void Swap(SubscribeDownloadMissionWithProgressRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(SubscribeDownloadMissionWithProgressRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(SubscribeDownloadMissionWithProgressRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    SubscribeDownloadMissionWithProgressRequest*
-    New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<
-            SubscribeDownloadMissionWithProgressRequest>(arena);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-    inline void CopyFrom(const SubscribeDownloadMissionWithProgressRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-    void MergeFrom(const SubscribeDownloadMissionWithProgressRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-    }
+  SubscribeDownloadMissionWithProgressRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<SubscribeDownloadMissionWithProgressRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeDownloadMissionWithProgressRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeDownloadMissionWithProgressRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
 
-public:
-    bool IsInitialized() const { return true; }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.SubscribeDownloadMissionWithProgressRequest"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.SubscribeDownloadMissionWithProgressRequest";
-    }
+ protected:
+  explicit SubscribeDownloadMissionWithProgressRequest(::google::protobuf::Arena* arena);
+  SubscribeDownloadMissionWithProgressRequest(::google::protobuf::Arena* arena, const SubscribeDownloadMissionWithProgressRequest& from);
+  SubscribeDownloadMissionWithProgressRequest(::google::protobuf::Arena* arena, SubscribeDownloadMissionWithProgressRequest&& from) noexcept
+      : SubscribeDownloadMissionWithProgressRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit SubscribeDownloadMissionWithProgressRequest(::google::protobuf::Arena* arena);
-    SubscribeDownloadMissionWithProgressRequest(
-        ::google::protobuf::Arena* arena, const SubscribeDownloadMissionWithProgressRequest& from);
-    SubscribeDownloadMissionWithProgressRequest(
-        ::google::protobuf::Arena* arena,
-        SubscribeDownloadMissionWithProgressRequest&& from) noexcept :
-        SubscribeDownloadMissionWithProgressRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.SubscribeDownloadMissionWithProgressRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.SubscribeDownloadMissionWithProgressRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 0, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const SubscribeDownloadMissionWithProgressRequest& from_msg);
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeDownloadMissionWithProgressRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class StartMissionRequest final : public ::google::protobuf::internal::ZeroFieldsBase
+class StartMissionRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.StartMissionRequest) */ {
-public:
-    inline StartMissionRequest() : StartMissionRequest(nullptr) {}
+ public:
+  inline StartMissionRequest() : StartMissionRequest(nullptr) {}
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(StartMissionRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(StartMissionRequest));
-    }
+  void operator delete(StartMissionRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(StartMissionRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        StartMissionRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR StartMissionRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline StartMissionRequest(const StartMissionRequest& from) : StartMissionRequest(nullptr, from)
-    {}
-    inline StartMissionRequest(StartMissionRequest&& from) noexcept :
-        StartMissionRequest(nullptr, std::move(from))
-    {}
-    inline StartMissionRequest& operator=(const StartMissionRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline StartMissionRequest(const StartMissionRequest& from) : StartMissionRequest(nullptr, from) {}
+  inline StartMissionRequest(StartMissionRequest&& from) noexcept
+      : StartMissionRequest(nullptr, std::move(from)) {}
+  inline StartMissionRequest& operator=(const StartMissionRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline StartMissionRequest& operator=(StartMissionRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline StartMissionRequest& operator=(StartMissionRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const StartMissionRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const StartMissionRequest* internal_default_instance() {
+    return reinterpret_cast<const StartMissionRequest*>(
+        &_StartMissionRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 12;
+  friend void swap(StartMissionRequest& a, StartMissionRequest& b) { a.Swap(&b); }
+  inline void Swap(StartMissionRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const StartMissionRequest& default_instance() { return *internal_default_instance(); }
-    static inline const StartMissionRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const StartMissionRequest*>(
-            &_StartMissionRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 12;
-    friend void swap(StartMissionRequest& a, StartMissionRequest& b) { a.Swap(&b); }
-    inline void Swap(StartMissionRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(StartMissionRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(StartMissionRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    StartMissionRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<StartMissionRequest>(
-            arena);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-    inline void CopyFrom(const StartMissionRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-    void MergeFrom(const StartMissionRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-    }
+  StartMissionRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<StartMissionRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const StartMissionRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const StartMissionRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
 
-public:
-    bool IsInitialized() const { return true; }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.StartMissionRequest"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.StartMissionRequest";
-    }
+ protected:
+  explicit StartMissionRequest(::google::protobuf::Arena* arena);
+  StartMissionRequest(::google::protobuf::Arena* arena, const StartMissionRequest& from);
+  StartMissionRequest(::google::protobuf::Arena* arena, StartMissionRequest&& from) noexcept
+      : StartMissionRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit StartMissionRequest(::google::protobuf::Arena* arena);
-    StartMissionRequest(::google::protobuf::Arena* arena, const StartMissionRequest& from);
-    StartMissionRequest(::google::protobuf::Arena* arena, StartMissionRequest&& from) noexcept :
-        StartMissionRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.StartMissionRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.StartMissionRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 0, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const StartMissionRequest& from_msg);
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const StartMissionRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class SetReturnToLaunchAfterMissionRequest final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionRequest)
- */
-{
-public:
-    inline SetReturnToLaunchAfterMissionRequest() : SetReturnToLaunchAfterMissionRequest(nullptr) {}
-    ~SetReturnToLaunchAfterMissionRequest() PROTOBUF_FINAL;
+class SetReturnToLaunchAfterMissionRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionRequest) */ {
+ public:
+  inline SetReturnToLaunchAfterMissionRequest() : SetReturnToLaunchAfterMissionRequest(nullptr) {}
+  ~SetReturnToLaunchAfterMissionRequest() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(SetReturnToLaunchAfterMissionRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(
-            msg, sizeof(SetReturnToLaunchAfterMissionRequest));
-    }
+  void operator delete(SetReturnToLaunchAfterMissionRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SetReturnToLaunchAfterMissionRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        SetReturnToLaunchAfterMissionRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SetReturnToLaunchAfterMissionRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline SetReturnToLaunchAfterMissionRequest(const SetReturnToLaunchAfterMissionRequest& from) :
-        SetReturnToLaunchAfterMissionRequest(nullptr, from)
-    {}
-    inline SetReturnToLaunchAfterMissionRequest(
-        SetReturnToLaunchAfterMissionRequest&& from) noexcept :
-        SetReturnToLaunchAfterMissionRequest(nullptr, std::move(from))
-    {}
-    inline SetReturnToLaunchAfterMissionRequest&
-    operator=(const SetReturnToLaunchAfterMissionRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline SetReturnToLaunchAfterMissionRequest(const SetReturnToLaunchAfterMissionRequest& from) : SetReturnToLaunchAfterMissionRequest(nullptr, from) {}
+  inline SetReturnToLaunchAfterMissionRequest(SetReturnToLaunchAfterMissionRequest&& from) noexcept
+      : SetReturnToLaunchAfterMissionRequest(nullptr, std::move(from)) {}
+  inline SetReturnToLaunchAfterMissionRequest& operator=(const SetReturnToLaunchAfterMissionRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetReturnToLaunchAfterMissionRequest& operator=(SetReturnToLaunchAfterMissionRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline SetReturnToLaunchAfterMissionRequest&
-    operator=(SetReturnToLaunchAfterMissionRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetReturnToLaunchAfterMissionRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetReturnToLaunchAfterMissionRequest* internal_default_instance() {
+    return reinterpret_cast<const SetReturnToLaunchAfterMissionRequest*>(
+        &_SetReturnToLaunchAfterMissionRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 26;
+  friend void swap(SetReturnToLaunchAfterMissionRequest& a, SetReturnToLaunchAfterMissionRequest& b) { a.Swap(&b); }
+  inline void Swap(SetReturnToLaunchAfterMissionRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const SetReturnToLaunchAfterMissionRequest& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const SetReturnToLaunchAfterMissionRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const SetReturnToLaunchAfterMissionRequest*>(
-            &_SetReturnToLaunchAfterMissionRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 26;
-    friend void
-    swap(SetReturnToLaunchAfterMissionRequest& a, SetReturnToLaunchAfterMissionRequest& b)
-    {
-        a.Swap(&b);
-    }
-    inline void Swap(SetReturnToLaunchAfterMissionRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(SetReturnToLaunchAfterMissionRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(SetReturnToLaunchAfterMissionRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    SetReturnToLaunchAfterMissionRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<SetReturnToLaunchAfterMissionRequest>(
-            arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const SetReturnToLaunchAfterMissionRequest& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const SetReturnToLaunchAfterMissionRequest& from)
-    {
-        SetReturnToLaunchAfterMissionRequest::MergeImpl(*this, from);
-    }
+  SetReturnToLaunchAfterMissionRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SetReturnToLaunchAfterMissionRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SetReturnToLaunchAfterMissionRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SetReturnToLaunchAfterMissionRequest& from) { SetReturnToLaunchAfterMissionRequest::MergeImpl(*this, from); }
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(SetReturnToLaunchAfterMissionRequest* other);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SetReturnToLaunchAfterMissionRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.SetReturnToLaunchAfterMissionRequest"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.SetReturnToLaunchAfterMissionRequest";
-    }
+ protected:
+  explicit SetReturnToLaunchAfterMissionRequest(::google::protobuf::Arena* arena);
+  SetReturnToLaunchAfterMissionRequest(::google::protobuf::Arena* arena, const SetReturnToLaunchAfterMissionRequest& from);
+  SetReturnToLaunchAfterMissionRequest(::google::protobuf::Arena* arena, SetReturnToLaunchAfterMissionRequest&& from) noexcept
+      : SetReturnToLaunchAfterMissionRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit SetReturnToLaunchAfterMissionRequest(::google::protobuf::Arena* arena);
-    SetReturnToLaunchAfterMissionRequest(
-        ::google::protobuf::Arena* arena, const SetReturnToLaunchAfterMissionRequest& from);
-    SetReturnToLaunchAfterMissionRequest(
-        ::google::protobuf::Arena* arena, SetReturnToLaunchAfterMissionRequest&& from) noexcept :
-        SetReturnToLaunchAfterMissionRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  enum : int {
+    kEnableFieldNumber = 1,
+  };
+  // bool enable = 1;
+  void clear_enable() ;
+  bool enable() const;
+  void set_enable(bool value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kEnableFieldNumber = 1,
-    };
-    // bool enable = 1;
-    void clear_enable();
-    bool enable() const;
-    void set_enable(bool value);
+  private:
+  bool _internal_enable() const;
+  void _internal_set_enable(bool value);
 
-private:
-    bool _internal_enable() const;
-    void _internal_set_enable(bool value);
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
 
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const SetReturnToLaunchAfterMissionRequest& from_msg);
-        bool enable_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SetReturnToLaunchAfterMissionRequest& from_msg);
+    bool enable_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class SetCurrentMissionItemRequest final : public ::google::protobuf::Message
+class SetCurrentMissionItemRequest final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.SetCurrentMissionItemRequest) */ {
-public:
-    inline SetCurrentMissionItemRequest() : SetCurrentMissionItemRequest(nullptr) {}
-    ~SetCurrentMissionItemRequest() PROTOBUF_FINAL;
+ public:
+  inline SetCurrentMissionItemRequest() : SetCurrentMissionItemRequest(nullptr) {}
+  ~SetCurrentMissionItemRequest() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(SetCurrentMissionItemRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(SetCurrentMissionItemRequest));
-    }
+  void operator delete(SetCurrentMissionItemRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SetCurrentMissionItemRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        SetCurrentMissionItemRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SetCurrentMissionItemRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline SetCurrentMissionItemRequest(const SetCurrentMissionItemRequest& from) :
-        SetCurrentMissionItemRequest(nullptr, from)
-    {}
-    inline SetCurrentMissionItemRequest(SetCurrentMissionItemRequest&& from) noexcept :
-        SetCurrentMissionItemRequest(nullptr, std::move(from))
-    {}
-    inline SetCurrentMissionItemRequest& operator=(const SetCurrentMissionItemRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline SetCurrentMissionItemRequest(const SetCurrentMissionItemRequest& from) : SetCurrentMissionItemRequest(nullptr, from) {}
+  inline SetCurrentMissionItemRequest(SetCurrentMissionItemRequest&& from) noexcept
+      : SetCurrentMissionItemRequest(nullptr, std::move(from)) {}
+  inline SetCurrentMissionItemRequest& operator=(const SetCurrentMissionItemRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetCurrentMissionItemRequest& operator=(SetCurrentMissionItemRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline SetCurrentMissionItemRequest& operator=(SetCurrentMissionItemRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetCurrentMissionItemRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetCurrentMissionItemRequest* internal_default_instance() {
+    return reinterpret_cast<const SetCurrentMissionItemRequest*>(
+        &_SetCurrentMissionItemRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 18;
+  friend void swap(SetCurrentMissionItemRequest& a, SetCurrentMissionItemRequest& b) { a.Swap(&b); }
+  inline void Swap(SetCurrentMissionItemRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const SetCurrentMissionItemRequest& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const SetCurrentMissionItemRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const SetCurrentMissionItemRequest*>(
-            &_SetCurrentMissionItemRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 18;
-    friend void swap(SetCurrentMissionItemRequest& a, SetCurrentMissionItemRequest& b)
-    {
-        a.Swap(&b);
-    }
-    inline void Swap(SetCurrentMissionItemRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(SetCurrentMissionItemRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(SetCurrentMissionItemRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    SetCurrentMissionItemRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<SetCurrentMissionItemRequest>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const SetCurrentMissionItemRequest& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const SetCurrentMissionItemRequest& from)
-    {
-        SetCurrentMissionItemRequest::MergeImpl(*this, from);
-    }
+  SetCurrentMissionItemRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SetCurrentMissionItemRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SetCurrentMissionItemRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SetCurrentMissionItemRequest& from) { SetCurrentMissionItemRequest::MergeImpl(*this, from); }
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(SetCurrentMissionItemRequest* other);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SetCurrentMissionItemRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.SetCurrentMissionItemRequest"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.SetCurrentMissionItemRequest";
-    }
+ protected:
+  explicit SetCurrentMissionItemRequest(::google::protobuf::Arena* arena);
+  SetCurrentMissionItemRequest(::google::protobuf::Arena* arena, const SetCurrentMissionItemRequest& from);
+  SetCurrentMissionItemRequest(::google::protobuf::Arena* arena, SetCurrentMissionItemRequest&& from) noexcept
+      : SetCurrentMissionItemRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit SetCurrentMissionItemRequest(::google::protobuf::Arena* arena);
-    SetCurrentMissionItemRequest(
-        ::google::protobuf::Arena* arena, const SetCurrentMissionItemRequest& from);
-    SetCurrentMissionItemRequest(
-        ::google::protobuf::Arena* arena, SetCurrentMissionItemRequest&& from) noexcept :
-        SetCurrentMissionItemRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  enum : int {
+    kIndexFieldNumber = 1,
+  };
+  // int32 index = 1;
+  void clear_index() ;
+  ::int32_t index() const;
+  void set_index(::int32_t value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kIndexFieldNumber = 1,
-    };
-    // int32 index = 1;
-    void clear_index();
-    ::int32_t index() const;
-    void set_index(::int32_t value);
+  private:
+  ::int32_t _internal_index() const;
+  void _internal_set_index(::int32_t value);
 
-private:
-    ::int32_t _internal_index() const;
-    void _internal_set_index(::int32_t value);
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.SetCurrentMissionItemRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
 
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.SetCurrentMissionItemRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const SetCurrentMissionItemRequest& from_msg);
-        ::int32_t index_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SetCurrentMissionItemRequest& from_msg);
+    ::int32_t index_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class ProgressData final : public ::google::protobuf::Message
+class ProgressData final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.ProgressData) */ {
-public:
-    inline ProgressData() : ProgressData(nullptr) {}
-    ~ProgressData() PROTOBUF_FINAL;
+ public:
+  inline ProgressData() : ProgressData(nullptr) {}
+  ~ProgressData() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(ProgressData* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(ProgressData));
-    }
+  void operator delete(ProgressData* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(ProgressData));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR ProgressData(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ProgressData(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline ProgressData(const ProgressData& from) : ProgressData(nullptr, from) {}
-    inline ProgressData(ProgressData&& from) noexcept : ProgressData(nullptr, std::move(from)) {}
-    inline ProgressData& operator=(const ProgressData& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline ProgressData(const ProgressData& from) : ProgressData(nullptr, from) {}
+  inline ProgressData(ProgressData&& from) noexcept
+      : ProgressData(nullptr, std::move(from)) {}
+  inline ProgressData& operator=(const ProgressData& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ProgressData& operator=(ProgressData&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline ProgressData& operator=(ProgressData&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ProgressData& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ProgressData* internal_default_instance() {
+    return reinterpret_cast<const ProgressData*>(
+        &_ProgressData_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 32;
+  friend void swap(ProgressData& a, ProgressData& b) { a.Swap(&b); }
+  inline void Swap(ProgressData* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(ProgressData* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const ProgressData& default_instance() { return *internal_default_instance(); }
-    static inline const ProgressData* internal_default_instance()
-    {
-        return reinterpret_cast<const ProgressData*>(&_ProgressData_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 32;
-    friend void swap(ProgressData& a, ProgressData& b) { a.Swap(&b); }
-    inline void Swap(ProgressData* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(ProgressData* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  ProgressData* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<ProgressData>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ProgressData& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ProgressData& from) { ProgressData::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    ProgressData* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<ProgressData>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const ProgressData& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const ProgressData& from) { ProgressData::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(ProgressData* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.ProgressData"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit ProgressData(::google::protobuf::Arena* arena);
+  ProgressData(::google::protobuf::Arena* arena, const ProgressData& from);
+  ProgressData(::google::protobuf::Arena* arena, ProgressData&& from) noexcept
+      : ProgressData(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(ProgressData* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.ProgressData"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kProgressFieldNumber = 1,
+  };
+  // float progress = 1 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_progress() ;
+  float progress() const;
+  void set_progress(float value);
 
-protected:
-    explicit ProgressData(::google::protobuf::Arena* arena);
-    ProgressData(::google::protobuf::Arena* arena, const ProgressData& from);
-    ProgressData(::google::protobuf::Arena* arena, ProgressData&& from) noexcept :
-        ProgressData(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  float _internal_progress() const;
+  void _internal_set_progress(float value);
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.ProgressData)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kProgressFieldNumber = 1,
-    };
-    // float progress = 1 [(.mavsdk.options.default_value) = "NaN"];
-    void clear_progress();
-    float progress() const;
-    void set_progress(float value);
-
-private:
-    float _internal_progress() const;
-    void _internal_set_progress(float value);
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.ProgressData)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const ProgressData& from_msg);
-        float progress_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ProgressData& from_msg);
+    float progress_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class PauseMissionRequest final : public ::google::protobuf::internal::ZeroFieldsBase
+class PauseMissionRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.PauseMissionRequest) */ {
-public:
-    inline PauseMissionRequest() : PauseMissionRequest(nullptr) {}
+ public:
+  inline PauseMissionRequest() : PauseMissionRequest(nullptr) {}
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(PauseMissionRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(PauseMissionRequest));
-    }
+  void operator delete(PauseMissionRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(PauseMissionRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        PauseMissionRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR PauseMissionRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline PauseMissionRequest(const PauseMissionRequest& from) : PauseMissionRequest(nullptr, from)
-    {}
-    inline PauseMissionRequest(PauseMissionRequest&& from) noexcept :
-        PauseMissionRequest(nullptr, std::move(from))
-    {}
-    inline PauseMissionRequest& operator=(const PauseMissionRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline PauseMissionRequest(const PauseMissionRequest& from) : PauseMissionRequest(nullptr, from) {}
+  inline PauseMissionRequest(PauseMissionRequest&& from) noexcept
+      : PauseMissionRequest(nullptr, std::move(from)) {}
+  inline PauseMissionRequest& operator=(const PauseMissionRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PauseMissionRequest& operator=(PauseMissionRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline PauseMissionRequest& operator=(PauseMissionRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PauseMissionRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PauseMissionRequest* internal_default_instance() {
+    return reinterpret_cast<const PauseMissionRequest*>(
+        &_PauseMissionRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 14;
+  friend void swap(PauseMissionRequest& a, PauseMissionRequest& b) { a.Swap(&b); }
+  inline void Swap(PauseMissionRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const PauseMissionRequest& default_instance() { return *internal_default_instance(); }
-    static inline const PauseMissionRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const PauseMissionRequest*>(
-            &_PauseMissionRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 14;
-    friend void swap(PauseMissionRequest& a, PauseMissionRequest& b) { a.Swap(&b); }
-    inline void Swap(PauseMissionRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(PauseMissionRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(PauseMissionRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    PauseMissionRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<PauseMissionRequest>(
-            arena);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-    inline void CopyFrom(const PauseMissionRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-    void MergeFrom(const PauseMissionRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-    }
+  PauseMissionRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<PauseMissionRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const PauseMissionRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const PauseMissionRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
 
-public:
-    bool IsInitialized() const { return true; }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.PauseMissionRequest"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.PauseMissionRequest";
-    }
+ protected:
+  explicit PauseMissionRequest(::google::protobuf::Arena* arena);
+  PauseMissionRequest(::google::protobuf::Arena* arena, const PauseMissionRequest& from);
+  PauseMissionRequest(::google::protobuf::Arena* arena, PauseMissionRequest&& from) noexcept
+      : PauseMissionRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit PauseMissionRequest(::google::protobuf::Arena* arena);
-    PauseMissionRequest(::google::protobuf::Arena* arena, const PauseMissionRequest& from);
-    PauseMissionRequest(::google::protobuf::Arena* arena, PauseMissionRequest&& from) noexcept :
-        PauseMissionRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.PauseMissionRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.PauseMissionRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 0, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const PauseMissionRequest& from_msg);
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const PauseMissionRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class MissionResult final : public ::google::protobuf::Message
+class MissionResult final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.MissionResult) */ {
-public:
-    inline MissionResult() : MissionResult(nullptr) {}
-    ~MissionResult() PROTOBUF_FINAL;
+ public:
+  inline MissionResult() : MissionResult(nullptr) {}
+  ~MissionResult() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(MissionResult* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(MissionResult));
-    }
+  void operator delete(MissionResult* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(MissionResult));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR MissionResult(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR MissionResult(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline MissionResult(const MissionResult& from) : MissionResult(nullptr, from) {}
-    inline MissionResult(MissionResult&& from) noexcept : MissionResult(nullptr, std::move(from)) {}
-    inline MissionResult& operator=(const MissionResult& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline MissionResult(const MissionResult& from) : MissionResult(nullptr, from) {}
+  inline MissionResult(MissionResult&& from) noexcept
+      : MissionResult(nullptr, std::move(from)) {}
+  inline MissionResult& operator=(const MissionResult& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline MissionResult& operator=(MissionResult&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline MissionResult& operator=(MissionResult&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const MissionResult& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const MissionResult* internal_default_instance() {
+    return reinterpret_cast<const MissionResult*>(
+        &_MissionResult_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 31;
+  friend void swap(MissionResult& a, MissionResult& b) { a.Swap(&b); }
+  inline void Swap(MissionResult* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(MissionResult* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const MissionResult& default_instance() { return *internal_default_instance(); }
-    static inline const MissionResult* internal_default_instance()
-    {
-        return reinterpret_cast<const MissionResult*>(&_MissionResult_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 31;
-    friend void swap(MissionResult& a, MissionResult& b) { a.Swap(&b); }
-    inline void Swap(MissionResult* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(MissionResult* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  MissionResult* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<MissionResult>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const MissionResult& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const MissionResult& from) { MissionResult::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    MissionResult* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<MissionResult>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const MissionResult& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const MissionResult& from) { MissionResult::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(MissionResult* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.MissionResult"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit MissionResult(::google::protobuf::Arena* arena);
+  MissionResult(::google::protobuf::Arena* arena, const MissionResult& from);
+  MissionResult(::google::protobuf::Arena* arena, MissionResult&& from) noexcept
+      : MissionResult(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(MissionResult* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+  using Result = MissionResult_Result;
+  static constexpr Result RESULT_UNKNOWN = MissionResult_Result_RESULT_UNKNOWN;
+  static constexpr Result RESULT_SUCCESS = MissionResult_Result_RESULT_SUCCESS;
+  static constexpr Result RESULT_ERROR = MissionResult_Result_RESULT_ERROR;
+  static constexpr Result RESULT_TOO_MANY_MISSION_ITEMS = MissionResult_Result_RESULT_TOO_MANY_MISSION_ITEMS;
+  static constexpr Result RESULT_BUSY = MissionResult_Result_RESULT_BUSY;
+  static constexpr Result RESULT_TIMEOUT = MissionResult_Result_RESULT_TIMEOUT;
+  static constexpr Result RESULT_INVALID_ARGUMENT = MissionResult_Result_RESULT_INVALID_ARGUMENT;
+  static constexpr Result RESULT_UNSUPPORTED = MissionResult_Result_RESULT_UNSUPPORTED;
+  static constexpr Result RESULT_NO_MISSION_AVAILABLE = MissionResult_Result_RESULT_NO_MISSION_AVAILABLE;
+  static constexpr Result RESULT_UNSUPPORTED_MISSION_CMD = MissionResult_Result_RESULT_UNSUPPORTED_MISSION_CMD;
+  static constexpr Result RESULT_TRANSFER_CANCELLED = MissionResult_Result_RESULT_TRANSFER_CANCELLED;
+  static constexpr Result RESULT_NO_SYSTEM = MissionResult_Result_RESULT_NO_SYSTEM;
+  static constexpr Result RESULT_NEXT = MissionResult_Result_RESULT_NEXT;
+  static constexpr Result RESULT_DENIED = MissionResult_Result_RESULT_DENIED;
+  static constexpr Result RESULT_PROTOCOL_ERROR = MissionResult_Result_RESULT_PROTOCOL_ERROR;
+  static constexpr Result RESULT_INT_MESSAGES_NOT_SUPPORTED = MissionResult_Result_RESULT_INT_MESSAGES_NOT_SUPPORTED;
+  static inline bool Result_IsValid(int value) {
+    return MissionResult_Result_IsValid(value);
+  }
+  static constexpr Result Result_MIN = MissionResult_Result_Result_MIN;
+  static constexpr Result Result_MAX = MissionResult_Result_Result_MAX;
+  static constexpr int Result_ARRAYSIZE = MissionResult_Result_Result_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor* Result_descriptor() {
+    return MissionResult_Result_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& Result_Name(T value) {
+    return MissionResult_Result_Name(value);
+  }
+  static inline bool Result_Parse(absl::string_view name, Result* value) {
+    return MissionResult_Result_Parse(name, value);
+  }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.MissionResult"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kResultStrFieldNumber = 2,
+    kResultFieldNumber = 1,
+  };
+  // string result_str = 2;
+  void clear_result_str() ;
+  const std::string& result_str() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_result_str(Arg_&& arg, Args_... args);
+  std::string* mutable_result_str();
+  PROTOBUF_NODISCARD std::string* release_result_str();
+  void set_allocated_result_str(std::string* value);
 
-protected:
-    explicit MissionResult(::google::protobuf::Arena* arena);
-    MissionResult(::google::protobuf::Arena* arena, const MissionResult& from);
-    MissionResult(::google::protobuf::Arena* arena, MissionResult&& from) noexcept :
-        MissionResult(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const std::string& _internal_result_str() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_result_str(
+      const std::string& value);
+  std::string* _internal_mutable_result_str();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
-    using Result = MissionResult_Result;
-    static constexpr Result RESULT_UNKNOWN = MissionResult_Result_RESULT_UNKNOWN;
-    static constexpr Result RESULT_SUCCESS = MissionResult_Result_RESULT_SUCCESS;
-    static constexpr Result RESULT_ERROR = MissionResult_Result_RESULT_ERROR;
-    static constexpr Result RESULT_TOO_MANY_MISSION_ITEMS =
-        MissionResult_Result_RESULT_TOO_MANY_MISSION_ITEMS;
-    static constexpr Result RESULT_BUSY = MissionResult_Result_RESULT_BUSY;
-    static constexpr Result RESULT_TIMEOUT = MissionResult_Result_RESULT_TIMEOUT;
-    static constexpr Result RESULT_INVALID_ARGUMENT = MissionResult_Result_RESULT_INVALID_ARGUMENT;
-    static constexpr Result RESULT_UNSUPPORTED = MissionResult_Result_RESULT_UNSUPPORTED;
-    static constexpr Result RESULT_NO_MISSION_AVAILABLE =
-        MissionResult_Result_RESULT_NO_MISSION_AVAILABLE;
-    static constexpr Result RESULT_UNSUPPORTED_MISSION_CMD =
-        MissionResult_Result_RESULT_UNSUPPORTED_MISSION_CMD;
-    static constexpr Result RESULT_TRANSFER_CANCELLED =
-        MissionResult_Result_RESULT_TRANSFER_CANCELLED;
-    static constexpr Result RESULT_NO_SYSTEM = MissionResult_Result_RESULT_NO_SYSTEM;
-    static constexpr Result RESULT_NEXT = MissionResult_Result_RESULT_NEXT;
-    static constexpr Result RESULT_DENIED = MissionResult_Result_RESULT_DENIED;
-    static constexpr Result RESULT_PROTOCOL_ERROR = MissionResult_Result_RESULT_PROTOCOL_ERROR;
-    static constexpr Result RESULT_INT_MESSAGES_NOT_SUPPORTED =
-        MissionResult_Result_RESULT_INT_MESSAGES_NOT_SUPPORTED;
-    static inline bool Result_IsValid(int value) { return MissionResult_Result_IsValid(value); }
-    static constexpr Result Result_MIN = MissionResult_Result_Result_MIN;
-    static constexpr Result Result_MAX = MissionResult_Result_Result_MAX;
-    static constexpr int Result_ARRAYSIZE = MissionResult_Result_Result_ARRAYSIZE;
-    static inline const ::google::protobuf::EnumDescriptor* Result_descriptor()
-    {
-        return MissionResult_Result_descriptor();
-    }
-    template<typename T> static inline const std::string& Result_Name(T value)
-    {
-        return MissionResult_Result_Name(value);
-    }
-    static inline bool Result_Parse(absl::string_view name, Result* value)
-    {
-        return MissionResult_Result_Parse(name, value);
-    }
+  public:
+  // .mavsdk.rpc.mission.MissionResult.Result result = 1;
+  void clear_result() ;
+  ::mavsdk::rpc::mission::MissionResult_Result result() const;
+  void set_result(::mavsdk::rpc::mission::MissionResult_Result value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kResultStrFieldNumber = 2,
-        kResultFieldNumber = 1,
-    };
-    // string result_str = 2;
-    void clear_result_str();
-    const std::string& result_str() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_result_str(Arg_&& arg, Args_... args);
-    std::string* mutable_result_str();
-    PROTOBUF_NODISCARD std::string* release_result_str();
-    void set_allocated_result_str(std::string* value);
+  private:
+  ::mavsdk::rpc::mission::MissionResult_Result _internal_result() const;
+  void _internal_set_result(::mavsdk::rpc::mission::MissionResult_Result value);
 
-private:
-    const std::string& _internal_result_str() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_result_str(const std::string& value);
-    std::string* _internal_mutable_result_str();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.MissionResult)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      51, 2>
+      _table_;
 
-public:
-    // .mavsdk.rpc.mission.MissionResult.Result result = 1;
-    void clear_result();
-    ::mavsdk::rpc::mission::MissionResult_Result result() const;
-    void set_result(::mavsdk::rpc::mission::MissionResult_Result value);
-
-private:
-    ::mavsdk::rpc::mission::MissionResult_Result _internal_result() const;
-    void _internal_set_result(::mavsdk::rpc::mission::MissionResult_Result value);
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.MissionResult)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 0, 51, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const MissionResult& from_msg);
-        ::google::protobuf::internal::ArenaStringPtr result_str_;
-        int result_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const MissionResult& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr result_str_;
+    int result_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class MissionProgress final : public ::google::protobuf::Message
+class MissionProgress final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.MissionProgress) */ {
-public:
-    inline MissionProgress() : MissionProgress(nullptr) {}
-    ~MissionProgress() PROTOBUF_FINAL;
+ public:
+  inline MissionProgress() : MissionProgress(nullptr) {}
+  ~MissionProgress() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(MissionProgress* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(MissionProgress));
-    }
+  void operator delete(MissionProgress* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(MissionProgress));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR MissionProgress(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR MissionProgress(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline MissionProgress(const MissionProgress& from) : MissionProgress(nullptr, from) {}
-    inline MissionProgress(MissionProgress&& from) noexcept :
-        MissionProgress(nullptr, std::move(from))
-    {}
-    inline MissionProgress& operator=(const MissionProgress& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline MissionProgress(const MissionProgress& from) : MissionProgress(nullptr, from) {}
+  inline MissionProgress(MissionProgress&& from) noexcept
+      : MissionProgress(nullptr, std::move(from)) {}
+  inline MissionProgress& operator=(const MissionProgress& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline MissionProgress& operator=(MissionProgress&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline MissionProgress& operator=(MissionProgress&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const MissionProgress& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const MissionProgress* internal_default_instance() {
+    return reinterpret_cast<const MissionProgress*>(
+        &_MissionProgress_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 30;
+  friend void swap(MissionProgress& a, MissionProgress& b) { a.Swap(&b); }
+  inline void Swap(MissionProgress* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(MissionProgress* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const MissionProgress& default_instance() { return *internal_default_instance(); }
-    static inline const MissionProgress* internal_default_instance()
-    {
-        return reinterpret_cast<const MissionProgress*>(&_MissionProgress_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 30;
-    friend void swap(MissionProgress& a, MissionProgress& b) { a.Swap(&b); }
-    inline void Swap(MissionProgress* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(MissionProgress* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  MissionProgress* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<MissionProgress>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const MissionProgress& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const MissionProgress& from) { MissionProgress::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    MissionProgress* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<MissionProgress>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const MissionProgress& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const MissionProgress& from) { MissionProgress::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(MissionProgress* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.MissionProgress"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit MissionProgress(::google::protobuf::Arena* arena);
+  MissionProgress(::google::protobuf::Arena* arena, const MissionProgress& from);
+  MissionProgress(::google::protobuf::Arena* arena, MissionProgress&& from) noexcept
+      : MissionProgress(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(MissionProgress* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.MissionProgress"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kCurrentFieldNumber = 1,
+    kTotalFieldNumber = 2,
+  };
+  // int32 current = 1;
+  void clear_current() ;
+  ::int32_t current() const;
+  void set_current(::int32_t value);
 
-protected:
-    explicit MissionProgress(::google::protobuf::Arena* arena);
-    MissionProgress(::google::protobuf::Arena* arena, const MissionProgress& from);
-    MissionProgress(::google::protobuf::Arena* arena, MissionProgress&& from) noexcept :
-        MissionProgress(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  ::int32_t _internal_current() const;
+  void _internal_set_current(::int32_t value);
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // int32 total = 2;
+  void clear_total() ;
+  ::int32_t total() const;
+  void set_total(::int32_t value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kCurrentFieldNumber = 1,
-        kTotalFieldNumber = 2,
-    };
-    // int32 current = 1;
-    void clear_current();
-    ::int32_t current() const;
-    void set_current(::int32_t value);
+  private:
+  ::int32_t _internal_total() const;
+  void _internal_set_total(::int32_t value);
 
-private:
-    ::int32_t _internal_current() const;
-    void _internal_set_current(::int32_t value);
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.MissionProgress)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      0, 2>
+      _table_;
 
-public:
-    // int32 total = 2;
-    void clear_total();
-    ::int32_t total() const;
-    void set_total(::int32_t value);
-
-private:
-    ::int32_t _internal_total() const;
-    void _internal_set_total(::int32_t value);
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.MissionProgress)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const MissionProgress& from_msg);
-        ::int32_t current_;
-        ::int32_t total_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const MissionProgress& from_msg);
+    ::int32_t current_;
+    ::int32_t total_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class MissionItem final : public ::google::protobuf::Message
+class MissionItem final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.MissionItem) */ {
-public:
-    inline MissionItem() : MissionItem(nullptr) {}
-    ~MissionItem() PROTOBUF_FINAL;
+ public:
+  inline MissionItem() : MissionItem(nullptr) {}
+  ~MissionItem() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(MissionItem* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(MissionItem));
-    }
+  void operator delete(MissionItem* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(MissionItem));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR MissionItem(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR MissionItem(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline MissionItem(const MissionItem& from) : MissionItem(nullptr, from) {}
-    inline MissionItem(MissionItem&& from) noexcept : MissionItem(nullptr, std::move(from)) {}
-    inline MissionItem& operator=(const MissionItem& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline MissionItem(const MissionItem& from) : MissionItem(nullptr, from) {}
+  inline MissionItem(MissionItem&& from) noexcept
+      : MissionItem(nullptr, std::move(from)) {}
+  inline MissionItem& operator=(const MissionItem& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline MissionItem& operator=(MissionItem&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline MissionItem& operator=(MissionItem&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const MissionItem& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const MissionItem* internal_default_instance() {
+    return reinterpret_cast<const MissionItem*>(
+        &_MissionItem_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 28;
+  friend void swap(MissionItem& a, MissionItem& b) { a.Swap(&b); }
+  inline void Swap(MissionItem* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(MissionItem* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const MissionItem& default_instance() { return *internal_default_instance(); }
-    static inline const MissionItem* internal_default_instance()
-    {
-        return reinterpret_cast<const MissionItem*>(&_MissionItem_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 28;
-    friend void swap(MissionItem& a, MissionItem& b) { a.Swap(&b); }
-    inline void Swap(MissionItem* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(MissionItem* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  MissionItem* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<MissionItem>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const MissionItem& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const MissionItem& from) { MissionItem::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    MissionItem* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<MissionItem>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const MissionItem& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const MissionItem& from) { MissionItem::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(MissionItem* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.MissionItem"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit MissionItem(::google::protobuf::Arena* arena);
+  MissionItem(::google::protobuf::Arena* arena, const MissionItem& from);
+  MissionItem(::google::protobuf::Arena* arena, MissionItem&& from) noexcept
+      : MissionItem(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(MissionItem* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+  using CameraAction = MissionItem_CameraAction;
+  static constexpr CameraAction CAMERA_ACTION_NONE = MissionItem_CameraAction_CAMERA_ACTION_NONE;
+  static constexpr CameraAction CAMERA_ACTION_TAKE_PHOTO = MissionItem_CameraAction_CAMERA_ACTION_TAKE_PHOTO;
+  static constexpr CameraAction CAMERA_ACTION_START_PHOTO_INTERVAL = MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_INTERVAL;
+  static constexpr CameraAction CAMERA_ACTION_STOP_PHOTO_INTERVAL = MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_INTERVAL;
+  static constexpr CameraAction CAMERA_ACTION_START_VIDEO = MissionItem_CameraAction_CAMERA_ACTION_START_VIDEO;
+  static constexpr CameraAction CAMERA_ACTION_STOP_VIDEO = MissionItem_CameraAction_CAMERA_ACTION_STOP_VIDEO;
+  static constexpr CameraAction CAMERA_ACTION_START_PHOTO_DISTANCE = MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_DISTANCE;
+  static constexpr CameraAction CAMERA_ACTION_STOP_PHOTO_DISTANCE = MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_DISTANCE;
+  static inline bool CameraAction_IsValid(int value) {
+    return MissionItem_CameraAction_IsValid(value);
+  }
+  static constexpr CameraAction CameraAction_MIN = MissionItem_CameraAction_CameraAction_MIN;
+  static constexpr CameraAction CameraAction_MAX = MissionItem_CameraAction_CameraAction_MAX;
+  static constexpr int CameraAction_ARRAYSIZE = MissionItem_CameraAction_CameraAction_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor* CameraAction_descriptor() {
+    return MissionItem_CameraAction_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& CameraAction_Name(T value) {
+    return MissionItem_CameraAction_Name(value);
+  }
+  static inline bool CameraAction_Parse(absl::string_view name, CameraAction* value) {
+    return MissionItem_CameraAction_Parse(name, value);
+  }
+  using VehicleAction = MissionItem_VehicleAction;
+  static constexpr VehicleAction VEHICLE_ACTION_NONE = MissionItem_VehicleAction_VEHICLE_ACTION_NONE;
+  static constexpr VehicleAction VEHICLE_ACTION_TAKEOFF = MissionItem_VehicleAction_VEHICLE_ACTION_TAKEOFF;
+  static constexpr VehicleAction VEHICLE_ACTION_LAND = MissionItem_VehicleAction_VEHICLE_ACTION_LAND;
+  static constexpr VehicleAction VEHICLE_ACTION_TRANSITION_TO_FW = MissionItem_VehicleAction_VEHICLE_ACTION_TRANSITION_TO_FW;
+  static constexpr VehicleAction VEHICLE_ACTION_TRANSITION_TO_MC = MissionItem_VehicleAction_VEHICLE_ACTION_TRANSITION_TO_MC;
+  static inline bool VehicleAction_IsValid(int value) {
+    return MissionItem_VehicleAction_IsValid(value);
+  }
+  static constexpr VehicleAction VehicleAction_MIN = MissionItem_VehicleAction_VehicleAction_MIN;
+  static constexpr VehicleAction VehicleAction_MAX = MissionItem_VehicleAction_VehicleAction_MAX;
+  static constexpr int VehicleAction_ARRAYSIZE = MissionItem_VehicleAction_VehicleAction_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor* VehicleAction_descriptor() {
+    return MissionItem_VehicleAction_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& VehicleAction_Name(T value) {
+    return MissionItem_VehicleAction_Name(value);
+  }
+  static inline bool VehicleAction_Parse(absl::string_view name, VehicleAction* value) {
+    return MissionItem_VehicleAction_Parse(name, value);
+  }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.MissionItem"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kLatitudeDegFieldNumber = 1,
+    kLongitudeDegFieldNumber = 2,
+    kRelativeAltitudeMFieldNumber = 3,
+    kSpeedMSFieldNumber = 4,
+    kIsFlyThroughFieldNumber = 5,
+    kGimbalPitchDegFieldNumber = 6,
+    kGimbalYawDegFieldNumber = 7,
+    kCameraActionFieldNumber = 8,
+    kCameraPhotoIntervalSFieldNumber = 10,
+    kLoiterTimeSFieldNumber = 9,
+    kAcceptanceRadiusMFieldNumber = 11,
+    kYawDegFieldNumber = 12,
+    kCameraPhotoDistanceMFieldNumber = 13,
+    kVehicleActionFieldNumber = 14,
+  };
+  // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 1e-07];
+  void clear_latitude_deg() ;
+  double latitude_deg() const;
+  void set_latitude_deg(double value);
 
-protected:
-    explicit MissionItem(::google::protobuf::Arena* arena);
-    MissionItem(::google::protobuf::Arena* arena, const MissionItem& from);
-    MissionItem(::google::protobuf::Arena* arena, MissionItem&& from) noexcept : MissionItem(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  double _internal_latitude_deg() const;
+  void _internal_set_latitude_deg(double value);
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
-    using CameraAction = MissionItem_CameraAction;
-    static constexpr CameraAction CAMERA_ACTION_NONE = MissionItem_CameraAction_CAMERA_ACTION_NONE;
-    static constexpr CameraAction CAMERA_ACTION_TAKE_PHOTO =
-        MissionItem_CameraAction_CAMERA_ACTION_TAKE_PHOTO;
-    static constexpr CameraAction CAMERA_ACTION_START_PHOTO_INTERVAL =
-        MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_INTERVAL;
-    static constexpr CameraAction CAMERA_ACTION_STOP_PHOTO_INTERVAL =
-        MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_INTERVAL;
-    static constexpr CameraAction CAMERA_ACTION_START_VIDEO =
-        MissionItem_CameraAction_CAMERA_ACTION_START_VIDEO;
-    static constexpr CameraAction CAMERA_ACTION_STOP_VIDEO =
-        MissionItem_CameraAction_CAMERA_ACTION_STOP_VIDEO;
-    static constexpr CameraAction CAMERA_ACTION_START_PHOTO_DISTANCE =
-        MissionItem_CameraAction_CAMERA_ACTION_START_PHOTO_DISTANCE;
-    static constexpr CameraAction CAMERA_ACTION_STOP_PHOTO_DISTANCE =
-        MissionItem_CameraAction_CAMERA_ACTION_STOP_PHOTO_DISTANCE;
-    static inline bool CameraAction_IsValid(int value)
-    {
-        return MissionItem_CameraAction_IsValid(value);
-    }
-    static constexpr CameraAction CameraAction_MIN = MissionItem_CameraAction_CameraAction_MIN;
-    static constexpr CameraAction CameraAction_MAX = MissionItem_CameraAction_CameraAction_MAX;
-    static constexpr int CameraAction_ARRAYSIZE = MissionItem_CameraAction_CameraAction_ARRAYSIZE;
-    static inline const ::google::protobuf::EnumDescriptor* CameraAction_descriptor()
-    {
-        return MissionItem_CameraAction_descriptor();
-    }
-    template<typename T> static inline const std::string& CameraAction_Name(T value)
-    {
-        return MissionItem_CameraAction_Name(value);
-    }
-    static inline bool CameraAction_Parse(absl::string_view name, CameraAction* value)
-    {
-        return MissionItem_CameraAction_Parse(name, value);
-    }
-    using VehicleAction = MissionItem_VehicleAction;
-    static constexpr VehicleAction VEHICLE_ACTION_NONE =
-        MissionItem_VehicleAction_VEHICLE_ACTION_NONE;
-    static constexpr VehicleAction VEHICLE_ACTION_TAKEOFF =
-        MissionItem_VehicleAction_VEHICLE_ACTION_TAKEOFF;
-    static constexpr VehicleAction VEHICLE_ACTION_LAND =
-        MissionItem_VehicleAction_VEHICLE_ACTION_LAND;
-    static constexpr VehicleAction VEHICLE_ACTION_TRANSITION_TO_FW =
-        MissionItem_VehicleAction_VEHICLE_ACTION_TRANSITION_TO_FW;
-    static constexpr VehicleAction VEHICLE_ACTION_TRANSITION_TO_MC =
-        MissionItem_VehicleAction_VEHICLE_ACTION_TRANSITION_TO_MC;
-    static inline bool VehicleAction_IsValid(int value)
-    {
-        return MissionItem_VehicleAction_IsValid(value);
-    }
-    static constexpr VehicleAction VehicleAction_MIN = MissionItem_VehicleAction_VehicleAction_MIN;
-    static constexpr VehicleAction VehicleAction_MAX = MissionItem_VehicleAction_VehicleAction_MAX;
-    static constexpr int VehicleAction_ARRAYSIZE =
-        MissionItem_VehicleAction_VehicleAction_ARRAYSIZE;
-    static inline const ::google::protobuf::EnumDescriptor* VehicleAction_descriptor()
-    {
-        return MissionItem_VehicleAction_descriptor();
-    }
-    template<typename T> static inline const std::string& VehicleAction_Name(T value)
-    {
-        return MissionItem_VehicleAction_Name(value);
-    }
-    static inline bool VehicleAction_Parse(absl::string_view name, VehicleAction* value)
-    {
-        return MissionItem_VehicleAction_Parse(name, value);
-    }
+  public:
+  // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 1e-07];
+  void clear_longitude_deg() ;
+  double longitude_deg() const;
+  void set_longitude_deg(double value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kLatitudeDegFieldNumber = 1,
-        kLongitudeDegFieldNumber = 2,
-        kRelativeAltitudeMFieldNumber = 3,
-        kSpeedMSFieldNumber = 4,
-        kIsFlyThroughFieldNumber = 5,
-        kGimbalPitchDegFieldNumber = 6,
-        kGimbalYawDegFieldNumber = 7,
-        kCameraActionFieldNumber = 8,
-        kCameraPhotoIntervalSFieldNumber = 10,
-        kLoiterTimeSFieldNumber = 9,
-        kAcceptanceRadiusMFieldNumber = 11,
-        kYawDegFieldNumber = 12,
-        kCameraPhotoDistanceMFieldNumber = 13,
-        kVehicleActionFieldNumber = 14,
-    };
-    // double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) =
-    // 1e-07];
-    void clear_latitude_deg();
-    double latitude_deg() const;
-    void set_latitude_deg(double value);
+  private:
+  double _internal_longitude_deg() const;
+  void _internal_set_longitude_deg(double value);
 
-private:
-    double _internal_latitude_deg() const;
-    void _internal_set_latitude_deg(double value);
+  public:
+  // float relative_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_relative_altitude_m() ;
+  float relative_altitude_m() const;
+  void set_relative_altitude_m(float value);
 
-public:
-    // double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon)
-    // = 1e-07];
-    void clear_longitude_deg();
-    double longitude_deg() const;
-    void set_longitude_deg(double value);
+  private:
+  float _internal_relative_altitude_m() const;
+  void _internal_set_relative_altitude_m(float value);
 
-private:
-    double _internal_longitude_deg() const;
-    void _internal_set_longitude_deg(double value);
+  public:
+  // float speed_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_speed_m_s() ;
+  float speed_m_s() const;
+  void set_speed_m_s(float value);
 
-public:
-    // float relative_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
-    void clear_relative_altitude_m();
-    float relative_altitude_m() const;
-    void set_relative_altitude_m(float value);
+  private:
+  float _internal_speed_m_s() const;
+  void _internal_set_speed_m_s(float value);
 
-private:
-    float _internal_relative_altitude_m() const;
-    void _internal_set_relative_altitude_m(float value);
+  public:
+  // bool is_fly_through = 5 [(.mavsdk.options.default_value) = "false"];
+  void clear_is_fly_through() ;
+  bool is_fly_through() const;
+  void set_is_fly_through(bool value);
 
-public:
-    // float speed_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
-    void clear_speed_m_s();
-    float speed_m_s() const;
-    void set_speed_m_s(float value);
+  private:
+  bool _internal_is_fly_through() const;
+  void _internal_set_is_fly_through(bool value);
 
-private:
-    float _internal_speed_m_s() const;
-    void _internal_set_speed_m_s(float value);
+  public:
+  // float gimbal_pitch_deg = 6 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 0.0001];
+  void clear_gimbal_pitch_deg() ;
+  float gimbal_pitch_deg() const;
+  void set_gimbal_pitch_deg(float value);
 
-public:
-    // bool is_fly_through = 5 [(.mavsdk.options.default_value) = "false"];
-    void clear_is_fly_through();
-    bool is_fly_through() const;
-    void set_is_fly_through(bool value);
+  private:
+  float _internal_gimbal_pitch_deg() const;
+  void _internal_set_gimbal_pitch_deg(float value);
 
-private:
-    bool _internal_is_fly_through() const;
-    void _internal_set_is_fly_through(bool value);
+  public:
+  // float gimbal_yaw_deg = 7 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 0.0001];
+  void clear_gimbal_yaw_deg() ;
+  float gimbal_yaw_deg() const;
+  void set_gimbal_yaw_deg(float value);
 
-public:
-    // float gimbal_pitch_deg = 6 [(.mavsdk.options.default_value) = "NaN",
-    // (.mavsdk.options.epsilon) = 0.0001];
-    void clear_gimbal_pitch_deg();
-    float gimbal_pitch_deg() const;
-    void set_gimbal_pitch_deg(float value);
+  private:
+  float _internal_gimbal_yaw_deg() const;
+  void _internal_set_gimbal_yaw_deg(float value);
 
-private:
-    float _internal_gimbal_pitch_deg() const;
-    void _internal_set_gimbal_pitch_deg(float value);
+  public:
+  // .mavsdk.rpc.mission.MissionItem.CameraAction camera_action = 8;
+  void clear_camera_action() ;
+  ::mavsdk::rpc::mission::MissionItem_CameraAction camera_action() const;
+  void set_camera_action(::mavsdk::rpc::mission::MissionItem_CameraAction value);
 
-public:
-    // float gimbal_yaw_deg = 7 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon)
-    // = 0.0001];
-    void clear_gimbal_yaw_deg();
-    float gimbal_yaw_deg() const;
-    void set_gimbal_yaw_deg(float value);
+  private:
+  ::mavsdk::rpc::mission::MissionItem_CameraAction _internal_camera_action() const;
+  void _internal_set_camera_action(::mavsdk::rpc::mission::MissionItem_CameraAction value);
 
-private:
-    float _internal_gimbal_yaw_deg() const;
-    void _internal_set_gimbal_yaw_deg(float value);
+  public:
+  // double camera_photo_interval_s = 10 [(.mavsdk.options.default_value) = "1.0"];
+  void clear_camera_photo_interval_s() ;
+  double camera_photo_interval_s() const;
+  void set_camera_photo_interval_s(double value);
 
-public:
-    // .mavsdk.rpc.mission.MissionItem.CameraAction camera_action = 8;
-    void clear_camera_action();
-    ::mavsdk::rpc::mission::MissionItem_CameraAction camera_action() const;
-    void set_camera_action(::mavsdk::rpc::mission::MissionItem_CameraAction value);
+  private:
+  double _internal_camera_photo_interval_s() const;
+  void _internal_set_camera_photo_interval_s(double value);
 
-private:
-    ::mavsdk::rpc::mission::MissionItem_CameraAction _internal_camera_action() const;
-    void _internal_set_camera_action(::mavsdk::rpc::mission::MissionItem_CameraAction value);
+  public:
+  // float loiter_time_s = 9 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_loiter_time_s() ;
+  float loiter_time_s() const;
+  void set_loiter_time_s(float value);
 
-public:
-    // double camera_photo_interval_s = 10 [(.mavsdk.options.default_value) = "1.0"];
-    void clear_camera_photo_interval_s();
-    double camera_photo_interval_s() const;
-    void set_camera_photo_interval_s(double value);
+  private:
+  float _internal_loiter_time_s() const;
+  void _internal_set_loiter_time_s(float value);
 
-private:
-    double _internal_camera_photo_interval_s() const;
-    void _internal_set_camera_photo_interval_s(double value);
+  public:
+  // float acceptance_radius_m = 11 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_acceptance_radius_m() ;
+  float acceptance_radius_m() const;
+  void set_acceptance_radius_m(float value);
 
-public:
-    // float loiter_time_s = 9 [(.mavsdk.options.default_value) = "NaN"];
-    void clear_loiter_time_s();
-    float loiter_time_s() const;
-    void set_loiter_time_s(float value);
+  private:
+  float _internal_acceptance_radius_m() const;
+  void _internal_set_acceptance_radius_m(float value);
 
-private:
-    float _internal_loiter_time_s() const;
-    void _internal_set_loiter_time_s(float value);
+  public:
+  // float yaw_deg = 12 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_yaw_deg() ;
+  float yaw_deg() const;
+  void set_yaw_deg(float value);
 
-public:
-    // float acceptance_radius_m = 11 [(.mavsdk.options.default_value) = "NaN"];
-    void clear_acceptance_radius_m();
-    float acceptance_radius_m() const;
-    void set_acceptance_radius_m(float value);
+  private:
+  float _internal_yaw_deg() const;
+  void _internal_set_yaw_deg(float value);
 
-private:
-    float _internal_acceptance_radius_m() const;
-    void _internal_set_acceptance_radius_m(float value);
+  public:
+  // float camera_photo_distance_m = 13 [(.mavsdk.options.default_value) = "NAN"];
+  void clear_camera_photo_distance_m() ;
+  float camera_photo_distance_m() const;
+  void set_camera_photo_distance_m(float value);
 
-public:
-    // float yaw_deg = 12 [(.mavsdk.options.default_value) = "NaN"];
-    void clear_yaw_deg();
-    float yaw_deg() const;
-    void set_yaw_deg(float value);
+  private:
+  float _internal_camera_photo_distance_m() const;
+  void _internal_set_camera_photo_distance_m(float value);
 
-private:
-    float _internal_yaw_deg() const;
-    void _internal_set_yaw_deg(float value);
+  public:
+  // .mavsdk.rpc.mission.MissionItem.VehicleAction vehicle_action = 14;
+  void clear_vehicle_action() ;
+  ::mavsdk::rpc::mission::MissionItem_VehicleAction vehicle_action() const;
+  void set_vehicle_action(::mavsdk::rpc::mission::MissionItem_VehicleAction value);
 
-public:
-    // float camera_photo_distance_m = 13 [(.mavsdk.options.default_value) = "NAN"];
-    void clear_camera_photo_distance_m();
-    float camera_photo_distance_m() const;
-    void set_camera_photo_distance_m(float value);
+  private:
+  ::mavsdk::rpc::mission::MissionItem_VehicleAction _internal_vehicle_action() const;
+  void _internal_set_vehicle_action(::mavsdk::rpc::mission::MissionItem_VehicleAction value);
 
-private:
-    float _internal_camera_photo_distance_m() const;
-    void _internal_set_camera_photo_distance_m(float value);
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.MissionItem)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      4, 14, 0,
+      0, 2>
+      _table_;
 
-public:
-    // .mavsdk.rpc.mission.MissionItem.VehicleAction vehicle_action = 14;
-    void clear_vehicle_action();
-    ::mavsdk::rpc::mission::MissionItem_VehicleAction vehicle_action() const;
-    void set_vehicle_action(::mavsdk::rpc::mission::MissionItem_VehicleAction value);
-
-private:
-    ::mavsdk::rpc::mission::MissionItem_VehicleAction _internal_vehicle_action() const;
-    void _internal_set_vehicle_action(::mavsdk::rpc::mission::MissionItem_VehicleAction value);
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.MissionItem)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<4, 14, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const MissionItem& from_msg);
-        double latitude_deg_;
-        double longitude_deg_;
-        float relative_altitude_m_;
-        float speed_m_s_;
-        bool is_fly_through_;
-        float gimbal_pitch_deg_;
-        float gimbal_yaw_deg_;
-        int camera_action_;
-        double camera_photo_interval_s_;
-        float loiter_time_s_;
-        float acceptance_radius_m_;
-        float yaw_deg_;
-        float camera_photo_distance_m_;
-        int vehicle_action_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const MissionItem& from_msg);
+    double latitude_deg_;
+    double longitude_deg_;
+    float relative_altitude_m_;
+    float speed_m_s_;
+    bool is_fly_through_;
+    float gimbal_pitch_deg_;
+    float gimbal_yaw_deg_;
+    int camera_action_;
+    double camera_photo_interval_s_;
+    float loiter_time_s_;
+    float acceptance_radius_m_;
+    float yaw_deg_;
+    float camera_photo_distance_m_;
+    int vehicle_action_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class IsMissionFinishedRequest final : public ::google::protobuf::internal::ZeroFieldsBase
+class IsMissionFinishedRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.IsMissionFinishedRequest) */ {
-public:
-    inline IsMissionFinishedRequest() : IsMissionFinishedRequest(nullptr) {}
+ public:
+  inline IsMissionFinishedRequest() : IsMissionFinishedRequest(nullptr) {}
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(IsMissionFinishedRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(IsMissionFinishedRequest));
-    }
+  void operator delete(IsMissionFinishedRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(IsMissionFinishedRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        IsMissionFinishedRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR IsMissionFinishedRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline IsMissionFinishedRequest(const IsMissionFinishedRequest& from) :
-        IsMissionFinishedRequest(nullptr, from)
-    {}
-    inline IsMissionFinishedRequest(IsMissionFinishedRequest&& from) noexcept :
-        IsMissionFinishedRequest(nullptr, std::move(from))
-    {}
-    inline IsMissionFinishedRequest& operator=(const IsMissionFinishedRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline IsMissionFinishedRequest(const IsMissionFinishedRequest& from) : IsMissionFinishedRequest(nullptr, from) {}
+  inline IsMissionFinishedRequest(IsMissionFinishedRequest&& from) noexcept
+      : IsMissionFinishedRequest(nullptr, std::move(from)) {}
+  inline IsMissionFinishedRequest& operator=(const IsMissionFinishedRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline IsMissionFinishedRequest& operator=(IsMissionFinishedRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline IsMissionFinishedRequest& operator=(IsMissionFinishedRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const IsMissionFinishedRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const IsMissionFinishedRequest* internal_default_instance() {
+    return reinterpret_cast<const IsMissionFinishedRequest*>(
+        &_IsMissionFinishedRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 20;
+  friend void swap(IsMissionFinishedRequest& a, IsMissionFinishedRequest& b) { a.Swap(&b); }
+  inline void Swap(IsMissionFinishedRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const IsMissionFinishedRequest& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const IsMissionFinishedRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const IsMissionFinishedRequest*>(
-            &_IsMissionFinishedRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 20;
-    friend void swap(IsMissionFinishedRequest& a, IsMissionFinishedRequest& b) { a.Swap(&b); }
-    inline void Swap(IsMissionFinishedRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(IsMissionFinishedRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(IsMissionFinishedRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    IsMissionFinishedRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<
-            IsMissionFinishedRequest>(arena);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-    inline void CopyFrom(const IsMissionFinishedRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-    void MergeFrom(const IsMissionFinishedRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-    }
+  IsMissionFinishedRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<IsMissionFinishedRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const IsMissionFinishedRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const IsMissionFinishedRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
 
-public:
-    bool IsInitialized() const { return true; }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.IsMissionFinishedRequest"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.IsMissionFinishedRequest";
-    }
+ protected:
+  explicit IsMissionFinishedRequest(::google::protobuf::Arena* arena);
+  IsMissionFinishedRequest(::google::protobuf::Arena* arena, const IsMissionFinishedRequest& from);
+  IsMissionFinishedRequest(::google::protobuf::Arena* arena, IsMissionFinishedRequest&& from) noexcept
+      : IsMissionFinishedRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit IsMissionFinishedRequest(::google::protobuf::Arena* arena);
-    IsMissionFinishedRequest(
-        ::google::protobuf::Arena* arena, const IsMissionFinishedRequest& from);
-    IsMissionFinishedRequest(
-        ::google::protobuf::Arena* arena, IsMissionFinishedRequest&& from) noexcept :
-        IsMissionFinishedRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.IsMissionFinishedRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.IsMissionFinishedRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 0, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const IsMissionFinishedRequest& from_msg);
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const IsMissionFinishedRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
 class GetReturnToLaunchAfterMissionRequest final
     : public ::google::protobuf::internal::ZeroFieldsBase
-/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionRequest)
- */
-{
-public:
-    inline GetReturnToLaunchAfterMissionRequest() : GetReturnToLaunchAfterMissionRequest(nullptr) {}
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionRequest) */ {
+ public:
+  inline GetReturnToLaunchAfterMissionRequest() : GetReturnToLaunchAfterMissionRequest(nullptr) {}
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(GetReturnToLaunchAfterMissionRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(
-            msg, sizeof(GetReturnToLaunchAfterMissionRequest));
-    }
+  void operator delete(GetReturnToLaunchAfterMissionRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(GetReturnToLaunchAfterMissionRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        GetReturnToLaunchAfterMissionRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR GetReturnToLaunchAfterMissionRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline GetReturnToLaunchAfterMissionRequest(const GetReturnToLaunchAfterMissionRequest& from) :
-        GetReturnToLaunchAfterMissionRequest(nullptr, from)
-    {}
-    inline GetReturnToLaunchAfterMissionRequest(
-        GetReturnToLaunchAfterMissionRequest&& from) noexcept :
-        GetReturnToLaunchAfterMissionRequest(nullptr, std::move(from))
-    {}
-    inline GetReturnToLaunchAfterMissionRequest&
-    operator=(const GetReturnToLaunchAfterMissionRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline GetReturnToLaunchAfterMissionRequest(const GetReturnToLaunchAfterMissionRequest& from) : GetReturnToLaunchAfterMissionRequest(nullptr, from) {}
+  inline GetReturnToLaunchAfterMissionRequest(GetReturnToLaunchAfterMissionRequest&& from) noexcept
+      : GetReturnToLaunchAfterMissionRequest(nullptr, std::move(from)) {}
+  inline GetReturnToLaunchAfterMissionRequest& operator=(const GetReturnToLaunchAfterMissionRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetReturnToLaunchAfterMissionRequest& operator=(GetReturnToLaunchAfterMissionRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline GetReturnToLaunchAfterMissionRequest&
-    operator=(GetReturnToLaunchAfterMissionRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetReturnToLaunchAfterMissionRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetReturnToLaunchAfterMissionRequest* internal_default_instance() {
+    return reinterpret_cast<const GetReturnToLaunchAfterMissionRequest*>(
+        &_GetReturnToLaunchAfterMissionRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 24;
+  friend void swap(GetReturnToLaunchAfterMissionRequest& a, GetReturnToLaunchAfterMissionRequest& b) { a.Swap(&b); }
+  inline void Swap(GetReturnToLaunchAfterMissionRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const GetReturnToLaunchAfterMissionRequest& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const GetReturnToLaunchAfterMissionRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const GetReturnToLaunchAfterMissionRequest*>(
-            &_GetReturnToLaunchAfterMissionRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 24;
-    friend void
-    swap(GetReturnToLaunchAfterMissionRequest& a, GetReturnToLaunchAfterMissionRequest& b)
-    {
-        a.Swap(&b);
-    }
-    inline void Swap(GetReturnToLaunchAfterMissionRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(GetReturnToLaunchAfterMissionRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(GetReturnToLaunchAfterMissionRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    GetReturnToLaunchAfterMissionRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<
-            GetReturnToLaunchAfterMissionRequest>(arena);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-    inline void CopyFrom(const GetReturnToLaunchAfterMissionRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-    void MergeFrom(const GetReturnToLaunchAfterMissionRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-    }
+  GetReturnToLaunchAfterMissionRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<GetReturnToLaunchAfterMissionRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const GetReturnToLaunchAfterMissionRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const GetReturnToLaunchAfterMissionRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
 
-public:
-    bool IsInitialized() const { return true; }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.GetReturnToLaunchAfterMissionRequest"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.GetReturnToLaunchAfterMissionRequest";
-    }
+ protected:
+  explicit GetReturnToLaunchAfterMissionRequest(::google::protobuf::Arena* arena);
+  GetReturnToLaunchAfterMissionRequest(::google::protobuf::Arena* arena, const GetReturnToLaunchAfterMissionRequest& from);
+  GetReturnToLaunchAfterMissionRequest(::google::protobuf::Arena* arena, GetReturnToLaunchAfterMissionRequest&& from) noexcept
+      : GetReturnToLaunchAfterMissionRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit GetReturnToLaunchAfterMissionRequest(::google::protobuf::Arena* arena);
-    GetReturnToLaunchAfterMissionRequest(
-        ::google::protobuf::Arena* arena, const GetReturnToLaunchAfterMissionRequest& from);
-    GetReturnToLaunchAfterMissionRequest(
-        ::google::protobuf::Arena* arena, GetReturnToLaunchAfterMissionRequest&& from) noexcept :
-        GetReturnToLaunchAfterMissionRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 0, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const GetReturnToLaunchAfterMissionRequest& from_msg);
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const GetReturnToLaunchAfterMissionRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class DownloadMissionRequest final : public ::google::protobuf::internal::ZeroFieldsBase
+class DownloadMissionRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.DownloadMissionRequest) */ {
-public:
-    inline DownloadMissionRequest() : DownloadMissionRequest(nullptr) {}
+ public:
+  inline DownloadMissionRequest() : DownloadMissionRequest(nullptr) {}
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(DownloadMissionRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(DownloadMissionRequest));
-    }
+  void operator delete(DownloadMissionRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(DownloadMissionRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        DownloadMissionRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR DownloadMissionRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline DownloadMissionRequest(const DownloadMissionRequest& from) :
-        DownloadMissionRequest(nullptr, from)
-    {}
-    inline DownloadMissionRequest(DownloadMissionRequest&& from) noexcept :
-        DownloadMissionRequest(nullptr, std::move(from))
-    {}
-    inline DownloadMissionRequest& operator=(const DownloadMissionRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline DownloadMissionRequest(const DownloadMissionRequest& from) : DownloadMissionRequest(nullptr, from) {}
+  inline DownloadMissionRequest(DownloadMissionRequest&& from) noexcept
+      : DownloadMissionRequest(nullptr, std::move(from)) {}
+  inline DownloadMissionRequest& operator=(const DownloadMissionRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DownloadMissionRequest& operator=(DownloadMissionRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline DownloadMissionRequest& operator=(DownloadMissionRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DownloadMissionRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DownloadMissionRequest* internal_default_instance() {
+    return reinterpret_cast<const DownloadMissionRequest*>(
+        &_DownloadMissionRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 6;
+  friend void swap(DownloadMissionRequest& a, DownloadMissionRequest& b) { a.Swap(&b); }
+  inline void Swap(DownloadMissionRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const DownloadMissionRequest& default_instance() { return *internal_default_instance(); }
-    static inline const DownloadMissionRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const DownloadMissionRequest*>(
-            &_DownloadMissionRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 6;
-    friend void swap(DownloadMissionRequest& a, DownloadMissionRequest& b) { a.Swap(&b); }
-    inline void Swap(DownloadMissionRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(DownloadMissionRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(DownloadMissionRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    DownloadMissionRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<
-            DownloadMissionRequest>(arena);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-    inline void CopyFrom(const DownloadMissionRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-    void MergeFrom(const DownloadMissionRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-    }
+  DownloadMissionRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<DownloadMissionRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const DownloadMissionRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const DownloadMissionRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
 
-public:
-    bool IsInitialized() const { return true; }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.DownloadMissionRequest"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.DownloadMissionRequest";
-    }
+ protected:
+  explicit DownloadMissionRequest(::google::protobuf::Arena* arena);
+  DownloadMissionRequest(::google::protobuf::Arena* arena, const DownloadMissionRequest& from);
+  DownloadMissionRequest(::google::protobuf::Arena* arena, DownloadMissionRequest&& from) noexcept
+      : DownloadMissionRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit DownloadMissionRequest(::google::protobuf::Arena* arena);
-    DownloadMissionRequest(::google::protobuf::Arena* arena, const DownloadMissionRequest& from);
-    DownloadMissionRequest(::google::protobuf::Arena* arena, DownloadMissionRequest&& from) noexcept
-        :
-        DownloadMissionRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.DownloadMissionRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.DownloadMissionRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 0, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const DownloadMissionRequest& from_msg);
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const DownloadMissionRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class ClearMissionRequest final : public ::google::protobuf::internal::ZeroFieldsBase
+class ClearMissionRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.ClearMissionRequest) */ {
-public:
-    inline ClearMissionRequest() : ClearMissionRequest(nullptr) {}
+ public:
+  inline ClearMissionRequest() : ClearMissionRequest(nullptr) {}
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(ClearMissionRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(ClearMissionRequest));
-    }
+  void operator delete(ClearMissionRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(ClearMissionRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        ClearMissionRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ClearMissionRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline ClearMissionRequest(const ClearMissionRequest& from) : ClearMissionRequest(nullptr, from)
-    {}
-    inline ClearMissionRequest(ClearMissionRequest&& from) noexcept :
-        ClearMissionRequest(nullptr, std::move(from))
-    {}
-    inline ClearMissionRequest& operator=(const ClearMissionRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline ClearMissionRequest(const ClearMissionRequest& from) : ClearMissionRequest(nullptr, from) {}
+  inline ClearMissionRequest(ClearMissionRequest&& from) noexcept
+      : ClearMissionRequest(nullptr, std::move(from)) {}
+  inline ClearMissionRequest& operator=(const ClearMissionRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ClearMissionRequest& operator=(ClearMissionRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline ClearMissionRequest& operator=(ClearMissionRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ClearMissionRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ClearMissionRequest* internal_default_instance() {
+    return reinterpret_cast<const ClearMissionRequest*>(
+        &_ClearMissionRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 16;
+  friend void swap(ClearMissionRequest& a, ClearMissionRequest& b) { a.Swap(&b); }
+  inline void Swap(ClearMissionRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const ClearMissionRequest& default_instance() { return *internal_default_instance(); }
-    static inline const ClearMissionRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const ClearMissionRequest*>(
-            &_ClearMissionRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 16;
-    friend void swap(ClearMissionRequest& a, ClearMissionRequest& b) { a.Swap(&b); }
-    inline void Swap(ClearMissionRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(ClearMissionRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(ClearMissionRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    ClearMissionRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<ClearMissionRequest>(
-            arena);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-    inline void CopyFrom(const ClearMissionRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-    void MergeFrom(const ClearMissionRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-    }
+  ClearMissionRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<ClearMissionRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const ClearMissionRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const ClearMissionRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
 
-public:
-    bool IsInitialized() const { return true; }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.ClearMissionRequest"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.ClearMissionRequest";
-    }
+ protected:
+  explicit ClearMissionRequest(::google::protobuf::Arena* arena);
+  ClearMissionRequest(::google::protobuf::Arena* arena, const ClearMissionRequest& from);
+  ClearMissionRequest(::google::protobuf::Arena* arena, ClearMissionRequest&& from) noexcept
+      : ClearMissionRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit ClearMissionRequest(::google::protobuf::Arena* arena);
-    ClearMissionRequest(::google::protobuf::Arena* arena, const ClearMissionRequest& from);
-    ClearMissionRequest(::google::protobuf::Arena* arena, ClearMissionRequest&& from) noexcept :
-        ClearMissionRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.ClearMissionRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.ClearMissionRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 0, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const ClearMissionRequest& from_msg);
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ClearMissionRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class CancelMissionUploadRequest final : public ::google::protobuf::internal::ZeroFieldsBase
+class CancelMissionUploadRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.CancelMissionUploadRequest) */ {
-public:
-    inline CancelMissionUploadRequest() : CancelMissionUploadRequest(nullptr) {}
+ public:
+  inline CancelMissionUploadRequest() : CancelMissionUploadRequest(nullptr) {}
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(CancelMissionUploadRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(CancelMissionUploadRequest));
-    }
+  void operator delete(CancelMissionUploadRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CancelMissionUploadRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        CancelMissionUploadRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR CancelMissionUploadRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline CancelMissionUploadRequest(const CancelMissionUploadRequest& from) :
-        CancelMissionUploadRequest(nullptr, from)
-    {}
-    inline CancelMissionUploadRequest(CancelMissionUploadRequest&& from) noexcept :
-        CancelMissionUploadRequest(nullptr, std::move(from))
-    {}
-    inline CancelMissionUploadRequest& operator=(const CancelMissionUploadRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline CancelMissionUploadRequest(const CancelMissionUploadRequest& from) : CancelMissionUploadRequest(nullptr, from) {}
+  inline CancelMissionUploadRequest(CancelMissionUploadRequest&& from) noexcept
+      : CancelMissionUploadRequest(nullptr, std::move(from)) {}
+  inline CancelMissionUploadRequest& operator=(const CancelMissionUploadRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CancelMissionUploadRequest& operator=(CancelMissionUploadRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline CancelMissionUploadRequest& operator=(CancelMissionUploadRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CancelMissionUploadRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CancelMissionUploadRequest* internal_default_instance() {
+    return reinterpret_cast<const CancelMissionUploadRequest*>(
+        &_CancelMissionUploadRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 4;
+  friend void swap(CancelMissionUploadRequest& a, CancelMissionUploadRequest& b) { a.Swap(&b); }
+  inline void Swap(CancelMissionUploadRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const CancelMissionUploadRequest& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const CancelMissionUploadRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const CancelMissionUploadRequest*>(
-            &_CancelMissionUploadRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 4;
-    friend void swap(CancelMissionUploadRequest& a, CancelMissionUploadRequest& b) { a.Swap(&b); }
-    inline void Swap(CancelMissionUploadRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(CancelMissionUploadRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(CancelMissionUploadRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    CancelMissionUploadRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<
-            CancelMissionUploadRequest>(arena);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-    inline void CopyFrom(const CancelMissionUploadRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-    void MergeFrom(const CancelMissionUploadRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-    }
+  CancelMissionUploadRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<CancelMissionUploadRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const CancelMissionUploadRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const CancelMissionUploadRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
 
-public:
-    bool IsInitialized() const { return true; }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.CancelMissionUploadRequest"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.CancelMissionUploadRequest";
-    }
+ protected:
+  explicit CancelMissionUploadRequest(::google::protobuf::Arena* arena);
+  CancelMissionUploadRequest(::google::protobuf::Arena* arena, const CancelMissionUploadRequest& from);
+  CancelMissionUploadRequest(::google::protobuf::Arena* arena, CancelMissionUploadRequest&& from) noexcept
+      : CancelMissionUploadRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit CancelMissionUploadRequest(::google::protobuf::Arena* arena);
-    CancelMissionUploadRequest(
-        ::google::protobuf::Arena* arena, const CancelMissionUploadRequest& from);
-    CancelMissionUploadRequest(
-        ::google::protobuf::Arena* arena, CancelMissionUploadRequest&& from) noexcept :
-        CancelMissionUploadRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.CancelMissionUploadRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.CancelMissionUploadRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 0, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const CancelMissionUploadRequest& from_msg);
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const CancelMissionUploadRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class CancelMissionDownloadRequest final : public ::google::protobuf::internal::ZeroFieldsBase
+class CancelMissionDownloadRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.CancelMissionDownloadRequest) */ {
-public:
-    inline CancelMissionDownloadRequest() : CancelMissionDownloadRequest(nullptr) {}
+ public:
+  inline CancelMissionDownloadRequest() : CancelMissionDownloadRequest(nullptr) {}
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(CancelMissionDownloadRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(CancelMissionDownloadRequest));
-    }
+  void operator delete(CancelMissionDownloadRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CancelMissionDownloadRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        CancelMissionDownloadRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR CancelMissionDownloadRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline CancelMissionDownloadRequest(const CancelMissionDownloadRequest& from) :
-        CancelMissionDownloadRequest(nullptr, from)
-    {}
-    inline CancelMissionDownloadRequest(CancelMissionDownloadRequest&& from) noexcept :
-        CancelMissionDownloadRequest(nullptr, std::move(from))
-    {}
-    inline CancelMissionDownloadRequest& operator=(const CancelMissionDownloadRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline CancelMissionDownloadRequest(const CancelMissionDownloadRequest& from) : CancelMissionDownloadRequest(nullptr, from) {}
+  inline CancelMissionDownloadRequest(CancelMissionDownloadRequest&& from) noexcept
+      : CancelMissionDownloadRequest(nullptr, std::move(from)) {}
+  inline CancelMissionDownloadRequest& operator=(const CancelMissionDownloadRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CancelMissionDownloadRequest& operator=(CancelMissionDownloadRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline CancelMissionDownloadRequest& operator=(CancelMissionDownloadRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CancelMissionDownloadRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CancelMissionDownloadRequest* internal_default_instance() {
+    return reinterpret_cast<const CancelMissionDownloadRequest*>(
+        &_CancelMissionDownloadRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 10;
+  friend void swap(CancelMissionDownloadRequest& a, CancelMissionDownloadRequest& b) { a.Swap(&b); }
+  inline void Swap(CancelMissionDownloadRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const CancelMissionDownloadRequest& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const CancelMissionDownloadRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const CancelMissionDownloadRequest*>(
-            &_CancelMissionDownloadRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 10;
-    friend void swap(CancelMissionDownloadRequest& a, CancelMissionDownloadRequest& b)
-    {
-        a.Swap(&b);
-    }
-    inline void Swap(CancelMissionDownloadRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(CancelMissionDownloadRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(CancelMissionDownloadRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    CancelMissionDownloadRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<
-            CancelMissionDownloadRequest>(arena);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
-    inline void CopyFrom(const CancelMissionDownloadRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
-    }
-    using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
-    void MergeFrom(const CancelMissionDownloadRequest& from)
-    {
-        ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
-    }
+  CancelMissionDownloadRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<CancelMissionDownloadRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const CancelMissionDownloadRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const CancelMissionDownloadRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
 
-public:
-    bool IsInitialized() const { return true; }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.CancelMissionDownloadRequest"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.CancelMissionDownloadRequest";
-    }
+ protected:
+  explicit CancelMissionDownloadRequest(::google::protobuf::Arena* arena);
+  CancelMissionDownloadRequest(::google::protobuf::Arena* arena, const CancelMissionDownloadRequest& from);
+  CancelMissionDownloadRequest(::google::protobuf::Arena* arena, CancelMissionDownloadRequest&& from) noexcept
+      : CancelMissionDownloadRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit CancelMissionDownloadRequest(::google::protobuf::Arena* arena);
-    CancelMissionDownloadRequest(
-        ::google::protobuf::Arena* arena, const CancelMissionDownloadRequest& from);
-    CancelMissionDownloadRequest(
-        ::google::protobuf::Arena* arena, CancelMissionDownloadRequest&& from) noexcept :
-        CancelMissionDownloadRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.CancelMissionDownloadRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.CancelMissionDownloadRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 0, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const CancelMissionDownloadRequest& from_msg);
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const CancelMissionDownloadRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class UploadMissionWithProgressResponse final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.UploadMissionWithProgressResponse)
- */
-{
-public:
-    inline UploadMissionWithProgressResponse() : UploadMissionWithProgressResponse(nullptr) {}
-    ~UploadMissionWithProgressResponse() PROTOBUF_FINAL;
+class UploadMissionWithProgressResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.UploadMissionWithProgressResponse) */ {
+ public:
+  inline UploadMissionWithProgressResponse() : UploadMissionWithProgressResponse(nullptr) {}
+  ~UploadMissionWithProgressResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(UploadMissionWithProgressResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(UploadMissionWithProgressResponse));
-    }
+  void operator delete(UploadMissionWithProgressResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(UploadMissionWithProgressResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        UploadMissionWithProgressResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR UploadMissionWithProgressResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline UploadMissionWithProgressResponse(const UploadMissionWithProgressResponse& from) :
-        UploadMissionWithProgressResponse(nullptr, from)
-    {}
-    inline UploadMissionWithProgressResponse(UploadMissionWithProgressResponse&& from) noexcept :
-        UploadMissionWithProgressResponse(nullptr, std::move(from))
-    {}
-    inline UploadMissionWithProgressResponse&
-    operator=(const UploadMissionWithProgressResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline UploadMissionWithProgressResponse(const UploadMissionWithProgressResponse& from) : UploadMissionWithProgressResponse(nullptr, from) {}
+  inline UploadMissionWithProgressResponse(UploadMissionWithProgressResponse&& from) noexcept
+      : UploadMissionWithProgressResponse(nullptr, std::move(from)) {}
+  inline UploadMissionWithProgressResponse& operator=(const UploadMissionWithProgressResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UploadMissionWithProgressResponse& operator=(UploadMissionWithProgressResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline UploadMissionWithProgressResponse&
-    operator=(UploadMissionWithProgressResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UploadMissionWithProgressResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UploadMissionWithProgressResponse* internal_default_instance() {
+    return reinterpret_cast<const UploadMissionWithProgressResponse*>(
+        &_UploadMissionWithProgressResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 3;
+  friend void swap(UploadMissionWithProgressResponse& a, UploadMissionWithProgressResponse& b) { a.Swap(&b); }
+  inline void Swap(UploadMissionWithProgressResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(UploadMissionWithProgressResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const UploadMissionWithProgressResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const UploadMissionWithProgressResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const UploadMissionWithProgressResponse*>(
-            &_UploadMissionWithProgressResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 3;
-    friend void swap(UploadMissionWithProgressResponse& a, UploadMissionWithProgressResponse& b)
-    {
-        a.Swap(&b);
-    }
-    inline void Swap(UploadMissionWithProgressResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(UploadMissionWithProgressResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  UploadMissionWithProgressResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<UploadMissionWithProgressResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const UploadMissionWithProgressResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const UploadMissionWithProgressResponse& from) { UploadMissionWithProgressResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    UploadMissionWithProgressResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<UploadMissionWithProgressResponse>(
-            arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const UploadMissionWithProgressResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const UploadMissionWithProgressResponse& from)
-    {
-        UploadMissionWithProgressResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(UploadMissionWithProgressResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.UploadMissionWithProgressResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit UploadMissionWithProgressResponse(::google::protobuf::Arena* arena);
+  UploadMissionWithProgressResponse(::google::protobuf::Arena* arena, const UploadMissionWithProgressResponse& from);
+  UploadMissionWithProgressResponse(::google::protobuf::Arena* arena, UploadMissionWithProgressResponse&& from) noexcept
+      : UploadMissionWithProgressResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(UploadMissionWithProgressResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.UploadMissionWithProgressResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionResultFieldNumber = 1,
+    kProgressDataFieldNumber = 2,
+  };
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  void clear_mission_result() ;
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
 
-protected:
-    explicit UploadMissionWithProgressResponse(::google::protobuf::Arena* arena);
-    UploadMissionWithProgressResponse(
-        ::google::protobuf::Arena* arena, const UploadMissionWithProgressResponse& from);
-    UploadMissionWithProgressResponse(
-        ::google::protobuf::Arena* arena, UploadMissionWithProgressResponse&& from) noexcept :
-        UploadMissionWithProgressResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // .mavsdk.rpc.mission.ProgressData progress_data = 2;
+  bool has_progress_data() const;
+  void clear_progress_data() ;
+  const ::mavsdk::rpc::mission::ProgressData& progress_data() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::ProgressData* release_progress_data();
+  ::mavsdk::rpc::mission::ProgressData* mutable_progress_data();
+  void set_allocated_progress_data(::mavsdk::rpc::mission::ProgressData* value);
+  void unsafe_arena_set_allocated_progress_data(::mavsdk::rpc::mission::ProgressData* value);
+  ::mavsdk::rpc::mission::ProgressData* unsafe_arena_release_progress_data();
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionResultFieldNumber = 1,
-        kProgressDataFieldNumber = 2,
-    };
-    // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-    bool has_mission_result() const;
-    void clear_mission_result();
-    const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
-    ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
-    void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
+  private:
+  const ::mavsdk::rpc::mission::ProgressData& _internal_progress_data() const;
+  ::mavsdk::rpc::mission::ProgressData* _internal_mutable_progress_data();
 
-private:
-    const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
-    ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.UploadMissionWithProgressResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 2,
+      0, 2>
+      _table_;
 
-public:
-    // .mavsdk.rpc.mission.ProgressData progress_data = 2;
-    bool has_progress_data() const;
-    void clear_progress_data();
-    const ::mavsdk::rpc::mission::ProgressData& progress_data() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::ProgressData* release_progress_data();
-    ::mavsdk::rpc::mission::ProgressData* mutable_progress_data();
-    void set_allocated_progress_data(::mavsdk::rpc::mission::ProgressData* value);
-    void unsafe_arena_set_allocated_progress_data(::mavsdk::rpc::mission::ProgressData* value);
-    ::mavsdk::rpc::mission::ProgressData* unsafe_arena_release_progress_data();
-
-private:
-    const ::mavsdk::rpc::mission::ProgressData& _internal_progress_data() const;
-    ::mavsdk::rpc::mission::ProgressData* _internal_mutable_progress_data();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.UploadMissionWithProgressResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 2, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const UploadMissionWithProgressResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::mission::MissionResult* mission_result_;
-        ::mavsdk::rpc::mission::ProgressData* progress_data_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const UploadMissionWithProgressResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission::MissionResult* mission_result_;
+    ::mavsdk::rpc::mission::ProgressData* progress_data_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class UploadMissionResponse final : public ::google::protobuf::Message
+class UploadMissionResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.UploadMissionResponse) */ {
-public:
-    inline UploadMissionResponse() : UploadMissionResponse(nullptr) {}
-    ~UploadMissionResponse() PROTOBUF_FINAL;
+ public:
+  inline UploadMissionResponse() : UploadMissionResponse(nullptr) {}
+  ~UploadMissionResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(UploadMissionResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(UploadMissionResponse));
-    }
+  void operator delete(UploadMissionResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(UploadMissionResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        UploadMissionResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR UploadMissionResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline UploadMissionResponse(const UploadMissionResponse& from) :
-        UploadMissionResponse(nullptr, from)
-    {}
-    inline UploadMissionResponse(UploadMissionResponse&& from) noexcept :
-        UploadMissionResponse(nullptr, std::move(from))
-    {}
-    inline UploadMissionResponse& operator=(const UploadMissionResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline UploadMissionResponse(const UploadMissionResponse& from) : UploadMissionResponse(nullptr, from) {}
+  inline UploadMissionResponse(UploadMissionResponse&& from) noexcept
+      : UploadMissionResponse(nullptr, std::move(from)) {}
+  inline UploadMissionResponse& operator=(const UploadMissionResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UploadMissionResponse& operator=(UploadMissionResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline UploadMissionResponse& operator=(UploadMissionResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UploadMissionResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UploadMissionResponse* internal_default_instance() {
+    return reinterpret_cast<const UploadMissionResponse*>(
+        &_UploadMissionResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 1;
+  friend void swap(UploadMissionResponse& a, UploadMissionResponse& b) { a.Swap(&b); }
+  inline void Swap(UploadMissionResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(UploadMissionResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const UploadMissionResponse& default_instance() { return *internal_default_instance(); }
-    static inline const UploadMissionResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const UploadMissionResponse*>(
-            &_UploadMissionResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 1;
-    friend void swap(UploadMissionResponse& a, UploadMissionResponse& b) { a.Swap(&b); }
-    inline void Swap(UploadMissionResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(UploadMissionResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  UploadMissionResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<UploadMissionResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const UploadMissionResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const UploadMissionResponse& from) { UploadMissionResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    UploadMissionResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<UploadMissionResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const UploadMissionResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const UploadMissionResponse& from)
-    {
-        UploadMissionResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(UploadMissionResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.UploadMissionResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit UploadMissionResponse(::google::protobuf::Arena* arena);
+  UploadMissionResponse(::google::protobuf::Arena* arena, const UploadMissionResponse& from);
+  UploadMissionResponse(::google::protobuf::Arena* arena, UploadMissionResponse&& from) noexcept
+      : UploadMissionResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(UploadMissionResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.UploadMissionResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  void clear_mission_result() ;
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
 
-protected:
-    explicit UploadMissionResponse(::google::protobuf::Arena* arena);
-    UploadMissionResponse(::google::protobuf::Arena* arena, const UploadMissionResponse& from);
-    UploadMissionResponse(::google::protobuf::Arena* arena, UploadMissionResponse&& from) noexcept :
-        UploadMissionResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.UploadMissionResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionResultFieldNumber = 1,
-    };
-    // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-    bool has_mission_result() const;
-    void clear_mission_result();
-    const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
-    ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
-    void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
-
-private:
-    const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
-    ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.UploadMissionResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const UploadMissionResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::mission::MissionResult* mission_result_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const UploadMissionResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission::MissionResult* mission_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class StartMissionResponse final : public ::google::protobuf::Message
+class StartMissionResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.StartMissionResponse) */ {
-public:
-    inline StartMissionResponse() : StartMissionResponse(nullptr) {}
-    ~StartMissionResponse() PROTOBUF_FINAL;
+ public:
+  inline StartMissionResponse() : StartMissionResponse(nullptr) {}
+  ~StartMissionResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(StartMissionResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(StartMissionResponse));
-    }
+  void operator delete(StartMissionResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(StartMissionResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        StartMissionResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR StartMissionResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline StartMissionResponse(const StartMissionResponse& from) :
-        StartMissionResponse(nullptr, from)
-    {}
-    inline StartMissionResponse(StartMissionResponse&& from) noexcept :
-        StartMissionResponse(nullptr, std::move(from))
-    {}
-    inline StartMissionResponse& operator=(const StartMissionResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline StartMissionResponse(const StartMissionResponse& from) : StartMissionResponse(nullptr, from) {}
+  inline StartMissionResponse(StartMissionResponse&& from) noexcept
+      : StartMissionResponse(nullptr, std::move(from)) {}
+  inline StartMissionResponse& operator=(const StartMissionResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline StartMissionResponse& operator=(StartMissionResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline StartMissionResponse& operator=(StartMissionResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const StartMissionResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const StartMissionResponse* internal_default_instance() {
+    return reinterpret_cast<const StartMissionResponse*>(
+        &_StartMissionResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 13;
+  friend void swap(StartMissionResponse& a, StartMissionResponse& b) { a.Swap(&b); }
+  inline void Swap(StartMissionResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(StartMissionResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const StartMissionResponse& default_instance() { return *internal_default_instance(); }
-    static inline const StartMissionResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const StartMissionResponse*>(
-            &_StartMissionResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 13;
-    friend void swap(StartMissionResponse& a, StartMissionResponse& b) { a.Swap(&b); }
-    inline void Swap(StartMissionResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(StartMissionResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  StartMissionResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<StartMissionResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const StartMissionResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const StartMissionResponse& from) { StartMissionResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    StartMissionResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<StartMissionResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const StartMissionResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const StartMissionResponse& from)
-    {
-        StartMissionResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(StartMissionResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.StartMissionResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit StartMissionResponse(::google::protobuf::Arena* arena);
+  StartMissionResponse(::google::protobuf::Arena* arena, const StartMissionResponse& from);
+  StartMissionResponse(::google::protobuf::Arena* arena, StartMissionResponse&& from) noexcept
+      : StartMissionResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(StartMissionResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.StartMissionResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  void clear_mission_result() ;
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
 
-protected:
-    explicit StartMissionResponse(::google::protobuf::Arena* arena);
-    StartMissionResponse(::google::protobuf::Arena* arena, const StartMissionResponse& from);
-    StartMissionResponse(::google::protobuf::Arena* arena, StartMissionResponse&& from) noexcept :
-        StartMissionResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.StartMissionResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionResultFieldNumber = 1,
-    };
-    // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-    bool has_mission_result() const;
-    void clear_mission_result();
-    const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
-    ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
-    void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
-
-private:
-    const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
-    ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.StartMissionResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const StartMissionResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::mission::MissionResult* mission_result_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const StartMissionResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission::MissionResult* mission_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class SetReturnToLaunchAfterMissionResponse final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse)
- */
-{
-public:
-    inline SetReturnToLaunchAfterMissionResponse() : SetReturnToLaunchAfterMissionResponse(nullptr)
-    {}
-    ~SetReturnToLaunchAfterMissionResponse() PROTOBUF_FINAL;
+class SetReturnToLaunchAfterMissionResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse) */ {
+ public:
+  inline SetReturnToLaunchAfterMissionResponse() : SetReturnToLaunchAfterMissionResponse(nullptr) {}
+  ~SetReturnToLaunchAfterMissionResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(SetReturnToLaunchAfterMissionResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(
-            msg, sizeof(SetReturnToLaunchAfterMissionResponse));
-    }
+  void operator delete(SetReturnToLaunchAfterMissionResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SetReturnToLaunchAfterMissionResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        SetReturnToLaunchAfterMissionResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SetReturnToLaunchAfterMissionResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline SetReturnToLaunchAfterMissionResponse(
-        const SetReturnToLaunchAfterMissionResponse& from) :
-        SetReturnToLaunchAfterMissionResponse(nullptr, from)
-    {}
-    inline SetReturnToLaunchAfterMissionResponse(
-        SetReturnToLaunchAfterMissionResponse&& from) noexcept :
-        SetReturnToLaunchAfterMissionResponse(nullptr, std::move(from))
-    {}
-    inline SetReturnToLaunchAfterMissionResponse&
-    operator=(const SetReturnToLaunchAfterMissionResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline SetReturnToLaunchAfterMissionResponse(const SetReturnToLaunchAfterMissionResponse& from) : SetReturnToLaunchAfterMissionResponse(nullptr, from) {}
+  inline SetReturnToLaunchAfterMissionResponse(SetReturnToLaunchAfterMissionResponse&& from) noexcept
+      : SetReturnToLaunchAfterMissionResponse(nullptr, std::move(from)) {}
+  inline SetReturnToLaunchAfterMissionResponse& operator=(const SetReturnToLaunchAfterMissionResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetReturnToLaunchAfterMissionResponse& operator=(SetReturnToLaunchAfterMissionResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline SetReturnToLaunchAfterMissionResponse&
-    operator=(SetReturnToLaunchAfterMissionResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetReturnToLaunchAfterMissionResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetReturnToLaunchAfterMissionResponse* internal_default_instance() {
+    return reinterpret_cast<const SetReturnToLaunchAfterMissionResponse*>(
+        &_SetReturnToLaunchAfterMissionResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 27;
+  friend void swap(SetReturnToLaunchAfterMissionResponse& a, SetReturnToLaunchAfterMissionResponse& b) { a.Swap(&b); }
+  inline void Swap(SetReturnToLaunchAfterMissionResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const SetReturnToLaunchAfterMissionResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const SetReturnToLaunchAfterMissionResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const SetReturnToLaunchAfterMissionResponse*>(
-            &_SetReturnToLaunchAfterMissionResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 27;
-    friend void
-    swap(SetReturnToLaunchAfterMissionResponse& a, SetReturnToLaunchAfterMissionResponse& b)
-    {
-        a.Swap(&b);
-    }
-    inline void Swap(SetReturnToLaunchAfterMissionResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(SetReturnToLaunchAfterMissionResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(SetReturnToLaunchAfterMissionResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    SetReturnToLaunchAfterMissionResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<SetReturnToLaunchAfterMissionResponse>(
-            arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const SetReturnToLaunchAfterMissionResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const SetReturnToLaunchAfterMissionResponse& from)
-    {
-        SetReturnToLaunchAfterMissionResponse::MergeImpl(*this, from);
-    }
+  SetReturnToLaunchAfterMissionResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SetReturnToLaunchAfterMissionResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SetReturnToLaunchAfterMissionResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SetReturnToLaunchAfterMissionResponse& from) { SetReturnToLaunchAfterMissionResponse::MergeImpl(*this, from); }
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(SetReturnToLaunchAfterMissionResponse* other);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SetReturnToLaunchAfterMissionResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse";
-    }
+ protected:
+  explicit SetReturnToLaunchAfterMissionResponse(::google::protobuf::Arena* arena);
+  SetReturnToLaunchAfterMissionResponse(::google::protobuf::Arena* arena, const SetReturnToLaunchAfterMissionResponse& from);
+  SetReturnToLaunchAfterMissionResponse(::google::protobuf::Arena* arena, SetReturnToLaunchAfterMissionResponse&& from) noexcept
+      : SetReturnToLaunchAfterMissionResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit SetReturnToLaunchAfterMissionResponse(::google::protobuf::Arena* arena);
-    SetReturnToLaunchAfterMissionResponse(
-        ::google::protobuf::Arena* arena, const SetReturnToLaunchAfterMissionResponse& from);
-    SetReturnToLaunchAfterMissionResponse(
-        ::google::protobuf::Arena* arena, SetReturnToLaunchAfterMissionResponse&& from) noexcept :
-        SetReturnToLaunchAfterMissionResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  void clear_mission_result() ;
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionResultFieldNumber = 1,
-    };
-    // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-    bool has_mission_result() const;
-    void clear_mission_result();
-    const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
-    ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
-    void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
 
-private:
-    const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
-    ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const SetReturnToLaunchAfterMissionResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::mission::MissionResult* mission_result_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SetReturnToLaunchAfterMissionResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission::MissionResult* mission_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class SetCurrentMissionItemResponse final : public ::google::protobuf::Message
+class SetCurrentMissionItemResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.SetCurrentMissionItemResponse) */ {
-public:
-    inline SetCurrentMissionItemResponse() : SetCurrentMissionItemResponse(nullptr) {}
-    ~SetCurrentMissionItemResponse() PROTOBUF_FINAL;
+ public:
+  inline SetCurrentMissionItemResponse() : SetCurrentMissionItemResponse(nullptr) {}
+  ~SetCurrentMissionItemResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(SetCurrentMissionItemResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(SetCurrentMissionItemResponse));
-    }
+  void operator delete(SetCurrentMissionItemResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SetCurrentMissionItemResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        SetCurrentMissionItemResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SetCurrentMissionItemResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline SetCurrentMissionItemResponse(const SetCurrentMissionItemResponse& from) :
-        SetCurrentMissionItemResponse(nullptr, from)
-    {}
-    inline SetCurrentMissionItemResponse(SetCurrentMissionItemResponse&& from) noexcept :
-        SetCurrentMissionItemResponse(nullptr, std::move(from))
-    {}
-    inline SetCurrentMissionItemResponse& operator=(const SetCurrentMissionItemResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline SetCurrentMissionItemResponse(const SetCurrentMissionItemResponse& from) : SetCurrentMissionItemResponse(nullptr, from) {}
+  inline SetCurrentMissionItemResponse(SetCurrentMissionItemResponse&& from) noexcept
+      : SetCurrentMissionItemResponse(nullptr, std::move(from)) {}
+  inline SetCurrentMissionItemResponse& operator=(const SetCurrentMissionItemResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetCurrentMissionItemResponse& operator=(SetCurrentMissionItemResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline SetCurrentMissionItemResponse& operator=(SetCurrentMissionItemResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetCurrentMissionItemResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetCurrentMissionItemResponse* internal_default_instance() {
+    return reinterpret_cast<const SetCurrentMissionItemResponse*>(
+        &_SetCurrentMissionItemResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 19;
+  friend void swap(SetCurrentMissionItemResponse& a, SetCurrentMissionItemResponse& b) { a.Swap(&b); }
+  inline void Swap(SetCurrentMissionItemResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const SetCurrentMissionItemResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const SetCurrentMissionItemResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const SetCurrentMissionItemResponse*>(
-            &_SetCurrentMissionItemResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 19;
-    friend void swap(SetCurrentMissionItemResponse& a, SetCurrentMissionItemResponse& b)
-    {
-        a.Swap(&b);
-    }
-    inline void Swap(SetCurrentMissionItemResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(SetCurrentMissionItemResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(SetCurrentMissionItemResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    SetCurrentMissionItemResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<SetCurrentMissionItemResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const SetCurrentMissionItemResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const SetCurrentMissionItemResponse& from)
-    {
-        SetCurrentMissionItemResponse::MergeImpl(*this, from);
-    }
+  SetCurrentMissionItemResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SetCurrentMissionItemResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SetCurrentMissionItemResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SetCurrentMissionItemResponse& from) { SetCurrentMissionItemResponse::MergeImpl(*this, from); }
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(SetCurrentMissionItemResponse* other);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SetCurrentMissionItemResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.SetCurrentMissionItemResponse"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.SetCurrentMissionItemResponse";
-    }
+ protected:
+  explicit SetCurrentMissionItemResponse(::google::protobuf::Arena* arena);
+  SetCurrentMissionItemResponse(::google::protobuf::Arena* arena, const SetCurrentMissionItemResponse& from);
+  SetCurrentMissionItemResponse(::google::protobuf::Arena* arena, SetCurrentMissionItemResponse&& from) noexcept
+      : SetCurrentMissionItemResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit SetCurrentMissionItemResponse(::google::protobuf::Arena* arena);
-    SetCurrentMissionItemResponse(
-        ::google::protobuf::Arena* arena, const SetCurrentMissionItemResponse& from);
-    SetCurrentMissionItemResponse(
-        ::google::protobuf::Arena* arena, SetCurrentMissionItemResponse&& from) noexcept :
-        SetCurrentMissionItemResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  void clear_mission_result() ;
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionResultFieldNumber = 1,
-    };
-    // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-    bool has_mission_result() const;
-    void clear_mission_result();
-    const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
-    ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
-    void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
 
-private:
-    const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
-    ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.SetCurrentMissionItemResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.SetCurrentMissionItemResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const SetCurrentMissionItemResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::mission::MissionResult* mission_result_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SetCurrentMissionItemResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission::MissionResult* mission_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class PauseMissionResponse final : public ::google::protobuf::Message
+class PauseMissionResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.PauseMissionResponse) */ {
-public:
-    inline PauseMissionResponse() : PauseMissionResponse(nullptr) {}
-    ~PauseMissionResponse() PROTOBUF_FINAL;
+ public:
+  inline PauseMissionResponse() : PauseMissionResponse(nullptr) {}
+  ~PauseMissionResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(PauseMissionResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(PauseMissionResponse));
-    }
+  void operator delete(PauseMissionResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(PauseMissionResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        PauseMissionResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR PauseMissionResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline PauseMissionResponse(const PauseMissionResponse& from) :
-        PauseMissionResponse(nullptr, from)
-    {}
-    inline PauseMissionResponse(PauseMissionResponse&& from) noexcept :
-        PauseMissionResponse(nullptr, std::move(from))
-    {}
-    inline PauseMissionResponse& operator=(const PauseMissionResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline PauseMissionResponse(const PauseMissionResponse& from) : PauseMissionResponse(nullptr, from) {}
+  inline PauseMissionResponse(PauseMissionResponse&& from) noexcept
+      : PauseMissionResponse(nullptr, std::move(from)) {}
+  inline PauseMissionResponse& operator=(const PauseMissionResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PauseMissionResponse& operator=(PauseMissionResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline PauseMissionResponse& operator=(PauseMissionResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PauseMissionResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PauseMissionResponse* internal_default_instance() {
+    return reinterpret_cast<const PauseMissionResponse*>(
+        &_PauseMissionResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 15;
+  friend void swap(PauseMissionResponse& a, PauseMissionResponse& b) { a.Swap(&b); }
+  inline void Swap(PauseMissionResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(PauseMissionResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const PauseMissionResponse& default_instance() { return *internal_default_instance(); }
-    static inline const PauseMissionResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const PauseMissionResponse*>(
-            &_PauseMissionResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 15;
-    friend void swap(PauseMissionResponse& a, PauseMissionResponse& b) { a.Swap(&b); }
-    inline void Swap(PauseMissionResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(PauseMissionResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  PauseMissionResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<PauseMissionResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const PauseMissionResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const PauseMissionResponse& from) { PauseMissionResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    PauseMissionResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<PauseMissionResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const PauseMissionResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const PauseMissionResponse& from)
-    {
-        PauseMissionResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(PauseMissionResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.PauseMissionResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit PauseMissionResponse(::google::protobuf::Arena* arena);
+  PauseMissionResponse(::google::protobuf::Arena* arena, const PauseMissionResponse& from);
+  PauseMissionResponse(::google::protobuf::Arena* arena, PauseMissionResponse&& from) noexcept
+      : PauseMissionResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(PauseMissionResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.PauseMissionResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  void clear_mission_result() ;
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
 
-protected:
-    explicit PauseMissionResponse(::google::protobuf::Arena* arena);
-    PauseMissionResponse(::google::protobuf::Arena* arena, const PauseMissionResponse& from);
-    PauseMissionResponse(::google::protobuf::Arena* arena, PauseMissionResponse&& from) noexcept :
-        PauseMissionResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.PauseMissionResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionResultFieldNumber = 1,
-    };
-    // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-    bool has_mission_result() const;
-    void clear_mission_result();
-    const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
-    ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
-    void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
-
-private:
-    const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
-    ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.PauseMissionResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const PauseMissionResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::mission::MissionResult* mission_result_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const PauseMissionResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission::MissionResult* mission_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class MissionProgressResponse final : public ::google::protobuf::Message
+class MissionProgressResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.MissionProgressResponse) */ {
-public:
-    inline MissionProgressResponse() : MissionProgressResponse(nullptr) {}
-    ~MissionProgressResponse() PROTOBUF_FINAL;
+ public:
+  inline MissionProgressResponse() : MissionProgressResponse(nullptr) {}
+  ~MissionProgressResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(MissionProgressResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(MissionProgressResponse));
-    }
+  void operator delete(MissionProgressResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(MissionProgressResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        MissionProgressResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR MissionProgressResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline MissionProgressResponse(const MissionProgressResponse& from) :
-        MissionProgressResponse(nullptr, from)
-    {}
-    inline MissionProgressResponse(MissionProgressResponse&& from) noexcept :
-        MissionProgressResponse(nullptr, std::move(from))
-    {}
-    inline MissionProgressResponse& operator=(const MissionProgressResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline MissionProgressResponse(const MissionProgressResponse& from) : MissionProgressResponse(nullptr, from) {}
+  inline MissionProgressResponse(MissionProgressResponse&& from) noexcept
+      : MissionProgressResponse(nullptr, std::move(from)) {}
+  inline MissionProgressResponse& operator=(const MissionProgressResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline MissionProgressResponse& operator=(MissionProgressResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline MissionProgressResponse& operator=(MissionProgressResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const MissionProgressResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const MissionProgressResponse* internal_default_instance() {
+    return reinterpret_cast<const MissionProgressResponse*>(
+        &_MissionProgressResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 23;
+  friend void swap(MissionProgressResponse& a, MissionProgressResponse& b) { a.Swap(&b); }
+  inline void Swap(MissionProgressResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(MissionProgressResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const MissionProgressResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const MissionProgressResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const MissionProgressResponse*>(
-            &_MissionProgressResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 23;
-    friend void swap(MissionProgressResponse& a, MissionProgressResponse& b) { a.Swap(&b); }
-    inline void Swap(MissionProgressResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(MissionProgressResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  MissionProgressResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<MissionProgressResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const MissionProgressResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const MissionProgressResponse& from) { MissionProgressResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    MissionProgressResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<MissionProgressResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const MissionProgressResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const MissionProgressResponse& from)
-    {
-        MissionProgressResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(MissionProgressResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.MissionProgressResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit MissionProgressResponse(::google::protobuf::Arena* arena);
+  MissionProgressResponse(::google::protobuf::Arena* arena, const MissionProgressResponse& from);
+  MissionProgressResponse(::google::protobuf::Arena* arena, MissionProgressResponse&& from) noexcept
+      : MissionProgressResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(MissionProgressResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.MissionProgressResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionProgressFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission.MissionProgress mission_progress = 1;
+  bool has_mission_progress() const;
+  void clear_mission_progress() ;
+  const ::mavsdk::rpc::mission::MissionProgress& mission_progress() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionProgress* release_mission_progress();
+  ::mavsdk::rpc::mission::MissionProgress* mutable_mission_progress();
+  void set_allocated_mission_progress(::mavsdk::rpc::mission::MissionProgress* value);
+  void unsafe_arena_set_allocated_mission_progress(::mavsdk::rpc::mission::MissionProgress* value);
+  ::mavsdk::rpc::mission::MissionProgress* unsafe_arena_release_mission_progress();
 
-protected:
-    explicit MissionProgressResponse(::google::protobuf::Arena* arena);
-    MissionProgressResponse(::google::protobuf::Arena* arena, const MissionProgressResponse& from);
-    MissionProgressResponse(
-        ::google::protobuf::Arena* arena, MissionProgressResponse&& from) noexcept :
-        MissionProgressResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::mission::MissionProgress& _internal_mission_progress() const;
+  ::mavsdk::rpc::mission::MissionProgress* _internal_mutable_mission_progress();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.MissionProgressResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionProgressFieldNumber = 1,
-    };
-    // .mavsdk.rpc.mission.MissionProgress mission_progress = 1;
-    bool has_mission_progress() const;
-    void clear_mission_progress();
-    const ::mavsdk::rpc::mission::MissionProgress& mission_progress() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionProgress* release_mission_progress();
-    ::mavsdk::rpc::mission::MissionProgress* mutable_mission_progress();
-    void set_allocated_mission_progress(::mavsdk::rpc::mission::MissionProgress* value);
-    void
-    unsafe_arena_set_allocated_mission_progress(::mavsdk::rpc::mission::MissionProgress* value);
-    ::mavsdk::rpc::mission::MissionProgress* unsafe_arena_release_mission_progress();
-
-private:
-    const ::mavsdk::rpc::mission::MissionProgress& _internal_mission_progress() const;
-    ::mavsdk::rpc::mission::MissionProgress* _internal_mutable_mission_progress();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.MissionProgressResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const MissionProgressResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::mission::MissionProgress* mission_progress_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const MissionProgressResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission::MissionProgress* mission_progress_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class MissionPlan final : public ::google::protobuf::Message
+class MissionPlan final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.MissionPlan) */ {
-public:
-    inline MissionPlan() : MissionPlan(nullptr) {}
-    ~MissionPlan() PROTOBUF_FINAL;
+ public:
+  inline MissionPlan() : MissionPlan(nullptr) {}
+  ~MissionPlan() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(MissionPlan* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(MissionPlan));
-    }
+  void operator delete(MissionPlan* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(MissionPlan));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR MissionPlan(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR MissionPlan(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline MissionPlan(const MissionPlan& from) : MissionPlan(nullptr, from) {}
-    inline MissionPlan(MissionPlan&& from) noexcept : MissionPlan(nullptr, std::move(from)) {}
-    inline MissionPlan& operator=(const MissionPlan& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline MissionPlan(const MissionPlan& from) : MissionPlan(nullptr, from) {}
+  inline MissionPlan(MissionPlan&& from) noexcept
+      : MissionPlan(nullptr, std::move(from)) {}
+  inline MissionPlan& operator=(const MissionPlan& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline MissionPlan& operator=(MissionPlan&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline MissionPlan& operator=(MissionPlan&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const MissionPlan& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const MissionPlan* internal_default_instance() {
+    return reinterpret_cast<const MissionPlan*>(
+        &_MissionPlan_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 29;
+  friend void swap(MissionPlan& a, MissionPlan& b) { a.Swap(&b); }
+  inline void Swap(MissionPlan* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(MissionPlan* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const MissionPlan& default_instance() { return *internal_default_instance(); }
-    static inline const MissionPlan* internal_default_instance()
-    {
-        return reinterpret_cast<const MissionPlan*>(&_MissionPlan_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 29;
-    friend void swap(MissionPlan& a, MissionPlan& b) { a.Swap(&b); }
-    inline void Swap(MissionPlan* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(MissionPlan* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  MissionPlan* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<MissionPlan>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const MissionPlan& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const MissionPlan& from) { MissionPlan::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    MissionPlan* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<MissionPlan>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const MissionPlan& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const MissionPlan& from) { MissionPlan::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(MissionPlan* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.MissionPlan"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit MissionPlan(::google::protobuf::Arena* arena);
+  MissionPlan(::google::protobuf::Arena* arena, const MissionPlan& from);
+  MissionPlan(::google::protobuf::Arena* arena, MissionPlan&& from) noexcept
+      : MissionPlan(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(MissionPlan* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.MissionPlan"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionItemsFieldNumber = 1,
+  };
+  // repeated .mavsdk.rpc.mission.MissionItem mission_items = 1;
+  int mission_items_size() const;
+  private:
+  int _internal_mission_items_size() const;
 
-protected:
-    explicit MissionPlan(::google::protobuf::Arena* arena);
-    MissionPlan(::google::protobuf::Arena* arena, const MissionPlan& from);
-    MissionPlan(::google::protobuf::Arena* arena, MissionPlan&& from) noexcept : MissionPlan(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  public:
+  void clear_mission_items() ;
+  ::mavsdk::rpc::mission::MissionItem* mutable_mission_items(int index);
+  ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission::MissionItem>* mutable_mission_items();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  private:
+  const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission::MissionItem>& _internal_mission_items() const;
+  ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission::MissionItem>* _internal_mutable_mission_items();
+  public:
+  const ::mavsdk::rpc::mission::MissionItem& mission_items(int index) const;
+  ::mavsdk::rpc::mission::MissionItem* add_mission_items();
+  const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission::MissionItem>& mission_items() const;
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.MissionPlan)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionItemsFieldNumber = 1,
-    };
-    // repeated .mavsdk.rpc.mission.MissionItem mission_items = 1;
-    int mission_items_size() const;
-
-private:
-    int _internal_mission_items_size() const;
-
-public:
-    void clear_mission_items();
-    ::mavsdk::rpc::mission::MissionItem* mutable_mission_items(int index);
-    ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission::MissionItem>*
-    mutable_mission_items();
-
-private:
-    const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission::MissionItem>&
-    _internal_mission_items() const;
-    ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission::MissionItem>*
-    _internal_mutable_mission_items();
-
-public:
-    const ::mavsdk::rpc::mission::MissionItem& mission_items(int index) const;
-    ::mavsdk::rpc::mission::MissionItem* add_mission_items();
-    const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission::MissionItem>&
-    mission_items() const;
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.MissionPlan)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const MissionPlan& from_msg);
-        ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission::MissionItem> mission_items_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const MissionPlan& from_msg);
+    ::google::protobuf::RepeatedPtrField< ::mavsdk::rpc::mission::MissionItem > mission_items_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class IsMissionFinishedResponse final : public ::google::protobuf::Message
+class IsMissionFinishedResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.IsMissionFinishedResponse) */ {
-public:
-    inline IsMissionFinishedResponse() : IsMissionFinishedResponse(nullptr) {}
-    ~IsMissionFinishedResponse() PROTOBUF_FINAL;
+ public:
+  inline IsMissionFinishedResponse() : IsMissionFinishedResponse(nullptr) {}
+  ~IsMissionFinishedResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(IsMissionFinishedResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(IsMissionFinishedResponse));
-    }
+  void operator delete(IsMissionFinishedResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(IsMissionFinishedResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        IsMissionFinishedResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR IsMissionFinishedResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline IsMissionFinishedResponse(const IsMissionFinishedResponse& from) :
-        IsMissionFinishedResponse(nullptr, from)
-    {}
-    inline IsMissionFinishedResponse(IsMissionFinishedResponse&& from) noexcept :
-        IsMissionFinishedResponse(nullptr, std::move(from))
-    {}
-    inline IsMissionFinishedResponse& operator=(const IsMissionFinishedResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline IsMissionFinishedResponse(const IsMissionFinishedResponse& from) : IsMissionFinishedResponse(nullptr, from) {}
+  inline IsMissionFinishedResponse(IsMissionFinishedResponse&& from) noexcept
+      : IsMissionFinishedResponse(nullptr, std::move(from)) {}
+  inline IsMissionFinishedResponse& operator=(const IsMissionFinishedResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline IsMissionFinishedResponse& operator=(IsMissionFinishedResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline IsMissionFinishedResponse& operator=(IsMissionFinishedResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const IsMissionFinishedResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const IsMissionFinishedResponse* internal_default_instance() {
+    return reinterpret_cast<const IsMissionFinishedResponse*>(
+        &_IsMissionFinishedResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 21;
+  friend void swap(IsMissionFinishedResponse& a, IsMissionFinishedResponse& b) { a.Swap(&b); }
+  inline void Swap(IsMissionFinishedResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(IsMissionFinishedResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const IsMissionFinishedResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const IsMissionFinishedResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const IsMissionFinishedResponse*>(
-            &_IsMissionFinishedResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 21;
-    friend void swap(IsMissionFinishedResponse& a, IsMissionFinishedResponse& b) { a.Swap(&b); }
-    inline void Swap(IsMissionFinishedResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(IsMissionFinishedResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  IsMissionFinishedResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<IsMissionFinishedResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const IsMissionFinishedResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const IsMissionFinishedResponse& from) { IsMissionFinishedResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    IsMissionFinishedResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<IsMissionFinishedResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const IsMissionFinishedResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const IsMissionFinishedResponse& from)
-    {
-        IsMissionFinishedResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(IsMissionFinishedResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.IsMissionFinishedResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit IsMissionFinishedResponse(::google::protobuf::Arena* arena);
+  IsMissionFinishedResponse(::google::protobuf::Arena* arena, const IsMissionFinishedResponse& from);
+  IsMissionFinishedResponse(::google::protobuf::Arena* arena, IsMissionFinishedResponse&& from) noexcept
+      : IsMissionFinishedResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(IsMissionFinishedResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.IsMissionFinishedResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionResultFieldNumber = 1,
+    kIsFinishedFieldNumber = 2,
+  };
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  void clear_mission_result() ;
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
 
-protected:
-    explicit IsMissionFinishedResponse(::google::protobuf::Arena* arena);
-    IsMissionFinishedResponse(
-        ::google::protobuf::Arena* arena, const IsMissionFinishedResponse& from);
-    IsMissionFinishedResponse(
-        ::google::protobuf::Arena* arena, IsMissionFinishedResponse&& from) noexcept :
-        IsMissionFinishedResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // bool is_finished = 2;
+  void clear_is_finished() ;
+  bool is_finished() const;
+  void set_is_finished(bool value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionResultFieldNumber = 1,
-        kIsFinishedFieldNumber = 2,
-    };
-    // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-    bool has_mission_result() const;
-    void clear_mission_result();
-    const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
-    ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
-    void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
+  private:
+  bool _internal_is_finished() const;
+  void _internal_set_is_finished(bool value);
 
-private:
-    const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
-    ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.IsMissionFinishedResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 1,
+      0, 2>
+      _table_;
 
-public:
-    // bool is_finished = 2;
-    void clear_is_finished();
-    bool is_finished() const;
-    void set_is_finished(bool value);
-
-private:
-    bool _internal_is_finished() const;
-    void _internal_set_is_finished(bool value);
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.IsMissionFinishedResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const IsMissionFinishedResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::mission::MissionResult* mission_result_;
-        bool is_finished_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const IsMissionFinishedResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission::MissionResult* mission_result_;
+    bool is_finished_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class GetReturnToLaunchAfterMissionResponse final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse)
- */
-{
-public:
-    inline GetReturnToLaunchAfterMissionResponse() : GetReturnToLaunchAfterMissionResponse(nullptr)
-    {}
-    ~GetReturnToLaunchAfterMissionResponse() PROTOBUF_FINAL;
+class GetReturnToLaunchAfterMissionResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse) */ {
+ public:
+  inline GetReturnToLaunchAfterMissionResponse() : GetReturnToLaunchAfterMissionResponse(nullptr) {}
+  ~GetReturnToLaunchAfterMissionResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(GetReturnToLaunchAfterMissionResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(
-            msg, sizeof(GetReturnToLaunchAfterMissionResponse));
-    }
+  void operator delete(GetReturnToLaunchAfterMissionResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(GetReturnToLaunchAfterMissionResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        GetReturnToLaunchAfterMissionResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR GetReturnToLaunchAfterMissionResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline GetReturnToLaunchAfterMissionResponse(
-        const GetReturnToLaunchAfterMissionResponse& from) :
-        GetReturnToLaunchAfterMissionResponse(nullptr, from)
-    {}
-    inline GetReturnToLaunchAfterMissionResponse(
-        GetReturnToLaunchAfterMissionResponse&& from) noexcept :
-        GetReturnToLaunchAfterMissionResponse(nullptr, std::move(from))
-    {}
-    inline GetReturnToLaunchAfterMissionResponse&
-    operator=(const GetReturnToLaunchAfterMissionResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline GetReturnToLaunchAfterMissionResponse(const GetReturnToLaunchAfterMissionResponse& from) : GetReturnToLaunchAfterMissionResponse(nullptr, from) {}
+  inline GetReturnToLaunchAfterMissionResponse(GetReturnToLaunchAfterMissionResponse&& from) noexcept
+      : GetReturnToLaunchAfterMissionResponse(nullptr, std::move(from)) {}
+  inline GetReturnToLaunchAfterMissionResponse& operator=(const GetReturnToLaunchAfterMissionResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GetReturnToLaunchAfterMissionResponse& operator=(GetReturnToLaunchAfterMissionResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline GetReturnToLaunchAfterMissionResponse&
-    operator=(GetReturnToLaunchAfterMissionResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GetReturnToLaunchAfterMissionResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GetReturnToLaunchAfterMissionResponse* internal_default_instance() {
+    return reinterpret_cast<const GetReturnToLaunchAfterMissionResponse*>(
+        &_GetReturnToLaunchAfterMissionResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 25;
+  friend void swap(GetReturnToLaunchAfterMissionResponse& a, GetReturnToLaunchAfterMissionResponse& b) { a.Swap(&b); }
+  inline void Swap(GetReturnToLaunchAfterMissionResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(GetReturnToLaunchAfterMissionResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const GetReturnToLaunchAfterMissionResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const GetReturnToLaunchAfterMissionResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const GetReturnToLaunchAfterMissionResponse*>(
-            &_GetReturnToLaunchAfterMissionResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 25;
-    friend void
-    swap(GetReturnToLaunchAfterMissionResponse& a, GetReturnToLaunchAfterMissionResponse& b)
-    {
-        a.Swap(&b);
-    }
-    inline void Swap(GetReturnToLaunchAfterMissionResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(GetReturnToLaunchAfterMissionResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  GetReturnToLaunchAfterMissionResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<GetReturnToLaunchAfterMissionResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const GetReturnToLaunchAfterMissionResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const GetReturnToLaunchAfterMissionResponse& from) { GetReturnToLaunchAfterMissionResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    GetReturnToLaunchAfterMissionResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<GetReturnToLaunchAfterMissionResponse>(
-            arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const GetReturnToLaunchAfterMissionResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const GetReturnToLaunchAfterMissionResponse& from)
-    {
-        GetReturnToLaunchAfterMissionResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(GetReturnToLaunchAfterMissionResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit GetReturnToLaunchAfterMissionResponse(::google::protobuf::Arena* arena);
+  GetReturnToLaunchAfterMissionResponse(::google::protobuf::Arena* arena, const GetReturnToLaunchAfterMissionResponse& from);
+  GetReturnToLaunchAfterMissionResponse(::google::protobuf::Arena* arena, GetReturnToLaunchAfterMissionResponse&& from) noexcept
+      : GetReturnToLaunchAfterMissionResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(GetReturnToLaunchAfterMissionResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionResultFieldNumber = 1,
+    kEnableFieldNumber = 2,
+  };
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  void clear_mission_result() ;
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
 
-protected:
-    explicit GetReturnToLaunchAfterMissionResponse(::google::protobuf::Arena* arena);
-    GetReturnToLaunchAfterMissionResponse(
-        ::google::protobuf::Arena* arena, const GetReturnToLaunchAfterMissionResponse& from);
-    GetReturnToLaunchAfterMissionResponse(
-        ::google::protobuf::Arena* arena, GetReturnToLaunchAfterMissionResponse&& from) noexcept :
-        GetReturnToLaunchAfterMissionResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // bool enable = 2;
+  void clear_enable() ;
+  bool enable() const;
+  void set_enable(bool value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionResultFieldNumber = 1,
-        kEnableFieldNumber = 2,
-    };
-    // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-    bool has_mission_result() const;
-    void clear_mission_result();
-    const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
-    ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
-    void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
+  private:
+  bool _internal_enable() const;
+  void _internal_set_enable(bool value);
 
-private:
-    const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
-    ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 1,
+      0, 2>
+      _table_;
 
-public:
-    // bool enable = 2;
-    void clear_enable();
-    bool enable() const;
-    void set_enable(bool value);
-
-private:
-    bool _internal_enable() const;
-    void _internal_set_enable(bool value);
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const GetReturnToLaunchAfterMissionResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::mission::MissionResult* mission_result_;
-        bool enable_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const GetReturnToLaunchAfterMissionResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission::MissionResult* mission_result_;
+    bool enable_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class ClearMissionResponse final : public ::google::protobuf::Message
+class ClearMissionResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.ClearMissionResponse) */ {
-public:
-    inline ClearMissionResponse() : ClearMissionResponse(nullptr) {}
-    ~ClearMissionResponse() PROTOBUF_FINAL;
+ public:
+  inline ClearMissionResponse() : ClearMissionResponse(nullptr) {}
+  ~ClearMissionResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(ClearMissionResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(ClearMissionResponse));
-    }
+  void operator delete(ClearMissionResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(ClearMissionResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        ClearMissionResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ClearMissionResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline ClearMissionResponse(const ClearMissionResponse& from) :
-        ClearMissionResponse(nullptr, from)
-    {}
-    inline ClearMissionResponse(ClearMissionResponse&& from) noexcept :
-        ClearMissionResponse(nullptr, std::move(from))
-    {}
-    inline ClearMissionResponse& operator=(const ClearMissionResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline ClearMissionResponse(const ClearMissionResponse& from) : ClearMissionResponse(nullptr, from) {}
+  inline ClearMissionResponse(ClearMissionResponse&& from) noexcept
+      : ClearMissionResponse(nullptr, std::move(from)) {}
+  inline ClearMissionResponse& operator=(const ClearMissionResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ClearMissionResponse& operator=(ClearMissionResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline ClearMissionResponse& operator=(ClearMissionResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ClearMissionResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ClearMissionResponse* internal_default_instance() {
+    return reinterpret_cast<const ClearMissionResponse*>(
+        &_ClearMissionResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 17;
+  friend void swap(ClearMissionResponse& a, ClearMissionResponse& b) { a.Swap(&b); }
+  inline void Swap(ClearMissionResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(ClearMissionResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const ClearMissionResponse& default_instance() { return *internal_default_instance(); }
-    static inline const ClearMissionResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const ClearMissionResponse*>(
-            &_ClearMissionResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 17;
-    friend void swap(ClearMissionResponse& a, ClearMissionResponse& b) { a.Swap(&b); }
-    inline void Swap(ClearMissionResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(ClearMissionResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  ClearMissionResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<ClearMissionResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ClearMissionResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ClearMissionResponse& from) { ClearMissionResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    ClearMissionResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<ClearMissionResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const ClearMissionResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const ClearMissionResponse& from)
-    {
-        ClearMissionResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(ClearMissionResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.ClearMissionResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit ClearMissionResponse(::google::protobuf::Arena* arena);
+  ClearMissionResponse(::google::protobuf::Arena* arena, const ClearMissionResponse& from);
+  ClearMissionResponse(::google::protobuf::Arena* arena, ClearMissionResponse&& from) noexcept
+      : ClearMissionResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(ClearMissionResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.ClearMissionResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  void clear_mission_result() ;
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
 
-protected:
-    explicit ClearMissionResponse(::google::protobuf::Arena* arena);
-    ClearMissionResponse(::google::protobuf::Arena* arena, const ClearMissionResponse& from);
-    ClearMissionResponse(::google::protobuf::Arena* arena, ClearMissionResponse&& from) noexcept :
-        ClearMissionResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.ClearMissionResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionResultFieldNumber = 1,
-    };
-    // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-    bool has_mission_result() const;
-    void clear_mission_result();
-    const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
-    ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
-    void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
-
-private:
-    const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
-    ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.ClearMissionResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const ClearMissionResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::mission::MissionResult* mission_result_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ClearMissionResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission::MissionResult* mission_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class CancelMissionUploadResponse final : public ::google::protobuf::Message
+class CancelMissionUploadResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.CancelMissionUploadResponse) */ {
-public:
-    inline CancelMissionUploadResponse() : CancelMissionUploadResponse(nullptr) {}
-    ~CancelMissionUploadResponse() PROTOBUF_FINAL;
+ public:
+  inline CancelMissionUploadResponse() : CancelMissionUploadResponse(nullptr) {}
+  ~CancelMissionUploadResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(CancelMissionUploadResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(CancelMissionUploadResponse));
-    }
+  void operator delete(CancelMissionUploadResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CancelMissionUploadResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        CancelMissionUploadResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR CancelMissionUploadResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline CancelMissionUploadResponse(const CancelMissionUploadResponse& from) :
-        CancelMissionUploadResponse(nullptr, from)
-    {}
-    inline CancelMissionUploadResponse(CancelMissionUploadResponse&& from) noexcept :
-        CancelMissionUploadResponse(nullptr, std::move(from))
-    {}
-    inline CancelMissionUploadResponse& operator=(const CancelMissionUploadResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline CancelMissionUploadResponse(const CancelMissionUploadResponse& from) : CancelMissionUploadResponse(nullptr, from) {}
+  inline CancelMissionUploadResponse(CancelMissionUploadResponse&& from) noexcept
+      : CancelMissionUploadResponse(nullptr, std::move(from)) {}
+  inline CancelMissionUploadResponse& operator=(const CancelMissionUploadResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CancelMissionUploadResponse& operator=(CancelMissionUploadResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline CancelMissionUploadResponse& operator=(CancelMissionUploadResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CancelMissionUploadResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CancelMissionUploadResponse* internal_default_instance() {
+    return reinterpret_cast<const CancelMissionUploadResponse*>(
+        &_CancelMissionUploadResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 5;
+  friend void swap(CancelMissionUploadResponse& a, CancelMissionUploadResponse& b) { a.Swap(&b); }
+  inline void Swap(CancelMissionUploadResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(CancelMissionUploadResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const CancelMissionUploadResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const CancelMissionUploadResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const CancelMissionUploadResponse*>(
-            &_CancelMissionUploadResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 5;
-    friend void swap(CancelMissionUploadResponse& a, CancelMissionUploadResponse& b) { a.Swap(&b); }
-    inline void Swap(CancelMissionUploadResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(CancelMissionUploadResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  CancelMissionUploadResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<CancelMissionUploadResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CancelMissionUploadResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const CancelMissionUploadResponse& from) { CancelMissionUploadResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    CancelMissionUploadResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<CancelMissionUploadResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const CancelMissionUploadResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const CancelMissionUploadResponse& from)
-    {
-        CancelMissionUploadResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(CancelMissionUploadResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.CancelMissionUploadResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit CancelMissionUploadResponse(::google::protobuf::Arena* arena);
+  CancelMissionUploadResponse(::google::protobuf::Arena* arena, const CancelMissionUploadResponse& from);
+  CancelMissionUploadResponse(::google::protobuf::Arena* arena, CancelMissionUploadResponse&& from) noexcept
+      : CancelMissionUploadResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(CancelMissionUploadResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.CancelMissionUploadResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  void clear_mission_result() ;
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
 
-protected:
-    explicit CancelMissionUploadResponse(::google::protobuf::Arena* arena);
-    CancelMissionUploadResponse(
-        ::google::protobuf::Arena* arena, const CancelMissionUploadResponse& from);
-    CancelMissionUploadResponse(
-        ::google::protobuf::Arena* arena, CancelMissionUploadResponse&& from) noexcept :
-        CancelMissionUploadResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.CancelMissionUploadResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionResultFieldNumber = 1,
-    };
-    // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-    bool has_mission_result() const;
-    void clear_mission_result();
-    const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
-    ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
-    void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
-
-private:
-    const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
-    ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.CancelMissionUploadResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const CancelMissionUploadResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::mission::MissionResult* mission_result_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const CancelMissionUploadResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission::MissionResult* mission_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class CancelMissionDownloadResponse final : public ::google::protobuf::Message
+class CancelMissionDownloadResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.CancelMissionDownloadResponse) */ {
-public:
-    inline CancelMissionDownloadResponse() : CancelMissionDownloadResponse(nullptr) {}
-    ~CancelMissionDownloadResponse() PROTOBUF_FINAL;
+ public:
+  inline CancelMissionDownloadResponse() : CancelMissionDownloadResponse(nullptr) {}
+  ~CancelMissionDownloadResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(CancelMissionDownloadResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(CancelMissionDownloadResponse));
-    }
+  void operator delete(CancelMissionDownloadResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CancelMissionDownloadResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        CancelMissionDownloadResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR CancelMissionDownloadResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline CancelMissionDownloadResponse(const CancelMissionDownloadResponse& from) :
-        CancelMissionDownloadResponse(nullptr, from)
-    {}
-    inline CancelMissionDownloadResponse(CancelMissionDownloadResponse&& from) noexcept :
-        CancelMissionDownloadResponse(nullptr, std::move(from))
-    {}
-    inline CancelMissionDownloadResponse& operator=(const CancelMissionDownloadResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline CancelMissionDownloadResponse(const CancelMissionDownloadResponse& from) : CancelMissionDownloadResponse(nullptr, from) {}
+  inline CancelMissionDownloadResponse(CancelMissionDownloadResponse&& from) noexcept
+      : CancelMissionDownloadResponse(nullptr, std::move(from)) {}
+  inline CancelMissionDownloadResponse& operator=(const CancelMissionDownloadResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CancelMissionDownloadResponse& operator=(CancelMissionDownloadResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline CancelMissionDownloadResponse& operator=(CancelMissionDownloadResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CancelMissionDownloadResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CancelMissionDownloadResponse* internal_default_instance() {
+    return reinterpret_cast<const CancelMissionDownloadResponse*>(
+        &_CancelMissionDownloadResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 11;
+  friend void swap(CancelMissionDownloadResponse& a, CancelMissionDownloadResponse& b) { a.Swap(&b); }
+  inline void Swap(CancelMissionDownloadResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const CancelMissionDownloadResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const CancelMissionDownloadResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const CancelMissionDownloadResponse*>(
-            &_CancelMissionDownloadResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 11;
-    friend void swap(CancelMissionDownloadResponse& a, CancelMissionDownloadResponse& b)
-    {
-        a.Swap(&b);
-    }
-    inline void Swap(CancelMissionDownloadResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(CancelMissionDownloadResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(CancelMissionDownloadResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    CancelMissionDownloadResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<CancelMissionDownloadResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const CancelMissionDownloadResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const CancelMissionDownloadResponse& from)
-    {
-        CancelMissionDownloadResponse::MergeImpl(*this, from);
-    }
+  CancelMissionDownloadResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<CancelMissionDownloadResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CancelMissionDownloadResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const CancelMissionDownloadResponse& from) { CancelMissionDownloadResponse::MergeImpl(*this, from); }
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(CancelMissionDownloadResponse* other);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(CancelMissionDownloadResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.CancelMissionDownloadResponse"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.CancelMissionDownloadResponse";
-    }
+ protected:
+  explicit CancelMissionDownloadResponse(::google::protobuf::Arena* arena);
+  CancelMissionDownloadResponse(::google::protobuf::Arena* arena, const CancelMissionDownloadResponse& from);
+  CancelMissionDownloadResponse(::google::protobuf::Arena* arena, CancelMissionDownloadResponse&& from) noexcept
+      : CancelMissionDownloadResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit CancelMissionDownloadResponse(::google::protobuf::Arena* arena);
-    CancelMissionDownloadResponse(
-        ::google::protobuf::Arena* arena, const CancelMissionDownloadResponse& from);
-    CancelMissionDownloadResponse(
-        ::google::protobuf::Arena* arena, CancelMissionDownloadResponse&& from) noexcept :
-        CancelMissionDownloadResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  void clear_mission_result() ;
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionResultFieldNumber = 1,
-    };
-    // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-    bool has_mission_result() const;
-    void clear_mission_result();
-    const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
-    ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
-    void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
 
-private:
-    const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
-    ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.CancelMissionDownloadResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.CancelMissionDownloadResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const CancelMissionDownloadResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::mission::MissionResult* mission_result_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const CancelMissionDownloadResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission::MissionResult* mission_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class UploadMissionRequest final : public ::google::protobuf::Message
+class UploadMissionRequest final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.UploadMissionRequest) */ {
-public:
-    inline UploadMissionRequest() : UploadMissionRequest(nullptr) {}
-    ~UploadMissionRequest() PROTOBUF_FINAL;
+ public:
+  inline UploadMissionRequest() : UploadMissionRequest(nullptr) {}
+  ~UploadMissionRequest() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(UploadMissionRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(UploadMissionRequest));
-    }
+  void operator delete(UploadMissionRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(UploadMissionRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        UploadMissionRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR UploadMissionRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline UploadMissionRequest(const UploadMissionRequest& from) :
-        UploadMissionRequest(nullptr, from)
-    {}
-    inline UploadMissionRequest(UploadMissionRequest&& from) noexcept :
-        UploadMissionRequest(nullptr, std::move(from))
-    {}
-    inline UploadMissionRequest& operator=(const UploadMissionRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline UploadMissionRequest(const UploadMissionRequest& from) : UploadMissionRequest(nullptr, from) {}
+  inline UploadMissionRequest(UploadMissionRequest&& from) noexcept
+      : UploadMissionRequest(nullptr, std::move(from)) {}
+  inline UploadMissionRequest& operator=(const UploadMissionRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UploadMissionRequest& operator=(UploadMissionRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline UploadMissionRequest& operator=(UploadMissionRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UploadMissionRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UploadMissionRequest* internal_default_instance() {
+    return reinterpret_cast<const UploadMissionRequest*>(
+        &_UploadMissionRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 0;
+  friend void swap(UploadMissionRequest& a, UploadMissionRequest& b) { a.Swap(&b); }
+  inline void Swap(UploadMissionRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(UploadMissionRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const UploadMissionRequest& default_instance() { return *internal_default_instance(); }
-    static inline const UploadMissionRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const UploadMissionRequest*>(
-            &_UploadMissionRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 0;
-    friend void swap(UploadMissionRequest& a, UploadMissionRequest& b) { a.Swap(&b); }
-    inline void Swap(UploadMissionRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(UploadMissionRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  UploadMissionRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<UploadMissionRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const UploadMissionRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const UploadMissionRequest& from) { UploadMissionRequest::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    UploadMissionRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<UploadMissionRequest>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const UploadMissionRequest& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const UploadMissionRequest& from)
-    {
-        UploadMissionRequest::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(UploadMissionRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.UploadMissionRequest"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit UploadMissionRequest(::google::protobuf::Arena* arena);
+  UploadMissionRequest(::google::protobuf::Arena* arena, const UploadMissionRequest& from);
+  UploadMissionRequest(::google::protobuf::Arena* arena, UploadMissionRequest&& from) noexcept
+      : UploadMissionRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(UploadMissionRequest* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.UploadMissionRequest";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionPlanFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission.MissionPlan mission_plan = 1;
+  bool has_mission_plan() const;
+  void clear_mission_plan() ;
+  const ::mavsdk::rpc::mission::MissionPlan& mission_plan() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionPlan* release_mission_plan();
+  ::mavsdk::rpc::mission::MissionPlan* mutable_mission_plan();
+  void set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value);
+  void unsafe_arena_set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value);
+  ::mavsdk::rpc::mission::MissionPlan* unsafe_arena_release_mission_plan();
 
-protected:
-    explicit UploadMissionRequest(::google::protobuf::Arena* arena);
-    UploadMissionRequest(::google::protobuf::Arena* arena, const UploadMissionRequest& from);
-    UploadMissionRequest(::google::protobuf::Arena* arena, UploadMissionRequest&& from) noexcept :
-        UploadMissionRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::mission::MissionPlan& _internal_mission_plan() const;
+  ::mavsdk::rpc::mission::MissionPlan* _internal_mutable_mission_plan();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.UploadMissionRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionPlanFieldNumber = 1,
-    };
-    // .mavsdk.rpc.mission.MissionPlan mission_plan = 1;
-    bool has_mission_plan() const;
-    void clear_mission_plan();
-    const ::mavsdk::rpc::mission::MissionPlan& mission_plan() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionPlan* release_mission_plan();
-    ::mavsdk::rpc::mission::MissionPlan* mutable_mission_plan();
-    void set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value);
-    void unsafe_arena_set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value);
-    ::mavsdk::rpc::mission::MissionPlan* unsafe_arena_release_mission_plan();
-
-private:
-    const ::mavsdk::rpc::mission::MissionPlan& _internal_mission_plan() const;
-    ::mavsdk::rpc::mission::MissionPlan* _internal_mutable_mission_plan();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.UploadMissionRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const UploadMissionRequest& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::mission::MissionPlan* mission_plan_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const UploadMissionRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission::MissionPlan* mission_plan_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class SubscribeUploadMissionWithProgressRequest final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.SubscribeUploadMissionWithProgressRequest)
- */
-{
-public:
-    inline SubscribeUploadMissionWithProgressRequest() :
-        SubscribeUploadMissionWithProgressRequest(nullptr)
-    {}
-    ~SubscribeUploadMissionWithProgressRequest() PROTOBUF_FINAL;
+class SubscribeUploadMissionWithProgressRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.SubscribeUploadMissionWithProgressRequest) */ {
+ public:
+  inline SubscribeUploadMissionWithProgressRequest() : SubscribeUploadMissionWithProgressRequest(nullptr) {}
+  ~SubscribeUploadMissionWithProgressRequest() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(SubscribeUploadMissionWithProgressRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(
-            msg, sizeof(SubscribeUploadMissionWithProgressRequest));
-    }
+  void operator delete(SubscribeUploadMissionWithProgressRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeUploadMissionWithProgressRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR SubscribeUploadMissionWithProgressRequest(
-        ::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeUploadMissionWithProgressRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline SubscribeUploadMissionWithProgressRequest(
-        const SubscribeUploadMissionWithProgressRequest& from) :
-        SubscribeUploadMissionWithProgressRequest(nullptr, from)
-    {}
-    inline SubscribeUploadMissionWithProgressRequest(
-        SubscribeUploadMissionWithProgressRequest&& from) noexcept :
-        SubscribeUploadMissionWithProgressRequest(nullptr, std::move(from))
-    {}
-    inline SubscribeUploadMissionWithProgressRequest&
-    operator=(const SubscribeUploadMissionWithProgressRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline SubscribeUploadMissionWithProgressRequest(const SubscribeUploadMissionWithProgressRequest& from) : SubscribeUploadMissionWithProgressRequest(nullptr, from) {}
+  inline SubscribeUploadMissionWithProgressRequest(SubscribeUploadMissionWithProgressRequest&& from) noexcept
+      : SubscribeUploadMissionWithProgressRequest(nullptr, std::move(from)) {}
+  inline SubscribeUploadMissionWithProgressRequest& operator=(const SubscribeUploadMissionWithProgressRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeUploadMissionWithProgressRequest& operator=(SubscribeUploadMissionWithProgressRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline SubscribeUploadMissionWithProgressRequest&
-    operator=(SubscribeUploadMissionWithProgressRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
-    }
+    return *this;
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeUploadMissionWithProgressRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeUploadMissionWithProgressRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeUploadMissionWithProgressRequest*>(
+        &_SubscribeUploadMissionWithProgressRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 2;
+  friend void swap(SubscribeUploadMissionWithProgressRequest& a, SubscribeUploadMissionWithProgressRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeUploadMissionWithProgressRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const SubscribeUploadMissionWithProgressRequest& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const SubscribeUploadMissionWithProgressRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const SubscribeUploadMissionWithProgressRequest*>(
-            &_SubscribeUploadMissionWithProgressRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 2;
-    friend void
-    swap(SubscribeUploadMissionWithProgressRequest& a, SubscribeUploadMissionWithProgressRequest& b)
-    {
-        a.Swap(&b);
-    }
-    inline void Swap(SubscribeUploadMissionWithProgressRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(SubscribeUploadMissionWithProgressRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  }
+  void UnsafeArenaSwap(SubscribeUploadMissionWithProgressRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    // implements Message ----------------------------------------------
+  // implements Message ----------------------------------------------
 
-    SubscribeUploadMissionWithProgressRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<
-            SubscribeUploadMissionWithProgressRequest>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const SubscribeUploadMissionWithProgressRequest& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const SubscribeUploadMissionWithProgressRequest& from)
-    {
-        SubscribeUploadMissionWithProgressRequest::MergeImpl(*this, from);
-    }
+  SubscribeUploadMissionWithProgressRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SubscribeUploadMissionWithProgressRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SubscribeUploadMissionWithProgressRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SubscribeUploadMissionWithProgressRequest& from) { SubscribeUploadMissionWithProgressRequest::MergeImpl(*this, from); }
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(SubscribeUploadMissionWithProgressRequest* other);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SubscribeUploadMissionWithProgressRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.SubscribeUploadMissionWithProgressRequest"; }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.SubscribeUploadMissionWithProgressRequest";
-    }
+ protected:
+  explicit SubscribeUploadMissionWithProgressRequest(::google::protobuf::Arena* arena);
+  SubscribeUploadMissionWithProgressRequest(::google::protobuf::Arena* arena, const SubscribeUploadMissionWithProgressRequest& from);
+  SubscribeUploadMissionWithProgressRequest(::google::protobuf::Arena* arena, SubscribeUploadMissionWithProgressRequest&& from) noexcept
+      : SubscribeUploadMissionWithProgressRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-protected:
-    explicit SubscribeUploadMissionWithProgressRequest(::google::protobuf::Arena* arena);
-    SubscribeUploadMissionWithProgressRequest(
-        ::google::protobuf::Arena* arena, const SubscribeUploadMissionWithProgressRequest& from);
-    SubscribeUploadMissionWithProgressRequest(
-        ::google::protobuf::Arena* arena, SubscribeUploadMissionWithProgressRequest&& from) noexcept
-        :
-        SubscribeUploadMissionWithProgressRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionPlanFieldNumber = 1,
+  };
+  // .mavsdk.rpc.mission.MissionPlan mission_plan = 1;
+  bool has_mission_plan() const;
+  void clear_mission_plan() ;
+  const ::mavsdk::rpc::mission::MissionPlan& mission_plan() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionPlan* release_mission_plan();
+  ::mavsdk::rpc::mission::MissionPlan* mutable_mission_plan();
+  void set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value);
+  void unsafe_arena_set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value);
+  ::mavsdk::rpc::mission::MissionPlan* unsafe_arena_release_mission_plan();
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionPlanFieldNumber = 1,
-    };
-    // .mavsdk.rpc.mission.MissionPlan mission_plan = 1;
-    bool has_mission_plan() const;
-    void clear_mission_plan();
-    const ::mavsdk::rpc::mission::MissionPlan& mission_plan() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionPlan* release_mission_plan();
-    ::mavsdk::rpc::mission::MissionPlan* mutable_mission_plan();
-    void set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value);
-    void unsafe_arena_set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value);
-    ::mavsdk::rpc::mission::MissionPlan* unsafe_arena_release_mission_plan();
+  private:
+  const ::mavsdk::rpc::mission::MissionPlan& _internal_mission_plan() const;
+  ::mavsdk::rpc::mission::MissionPlan* _internal_mutable_mission_plan();
 
-private:
-    const ::mavsdk::rpc::mission::MissionPlan& _internal_mission_plan() const;
-    ::mavsdk::rpc::mission::MissionPlan* _internal_mutable_mission_plan();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.SubscribeUploadMissionWithProgressRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.SubscribeUploadMissionWithProgressRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const SubscribeUploadMissionWithProgressRequest& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::mission::MissionPlan* mission_plan_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeUploadMissionWithProgressRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission::MissionPlan* mission_plan_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class ProgressDataOrMission final : public ::google::protobuf::Message
+class ProgressDataOrMission final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.ProgressDataOrMission) */ {
-public:
-    inline ProgressDataOrMission() : ProgressDataOrMission(nullptr) {}
-    ~ProgressDataOrMission() PROTOBUF_FINAL;
+ public:
+  inline ProgressDataOrMission() : ProgressDataOrMission(nullptr) {}
+  ~ProgressDataOrMission() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(ProgressDataOrMission* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(ProgressDataOrMission));
-    }
+  void operator delete(ProgressDataOrMission* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(ProgressDataOrMission));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        ProgressDataOrMission(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ProgressDataOrMission(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline ProgressDataOrMission(const ProgressDataOrMission& from) :
-        ProgressDataOrMission(nullptr, from)
-    {}
-    inline ProgressDataOrMission(ProgressDataOrMission&& from) noexcept :
-        ProgressDataOrMission(nullptr, std::move(from))
-    {}
-    inline ProgressDataOrMission& operator=(const ProgressDataOrMission& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline ProgressDataOrMission(const ProgressDataOrMission& from) : ProgressDataOrMission(nullptr, from) {}
+  inline ProgressDataOrMission(ProgressDataOrMission&& from) noexcept
+      : ProgressDataOrMission(nullptr, std::move(from)) {}
+  inline ProgressDataOrMission& operator=(const ProgressDataOrMission& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ProgressDataOrMission& operator=(ProgressDataOrMission&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline ProgressDataOrMission& operator=(ProgressDataOrMission&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ProgressDataOrMission& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ProgressDataOrMission* internal_default_instance() {
+    return reinterpret_cast<const ProgressDataOrMission*>(
+        &_ProgressDataOrMission_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 33;
+  friend void swap(ProgressDataOrMission& a, ProgressDataOrMission& b) { a.Swap(&b); }
+  inline void Swap(ProgressDataOrMission* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(ProgressDataOrMission* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const ProgressDataOrMission& default_instance() { return *internal_default_instance(); }
-    static inline const ProgressDataOrMission* internal_default_instance()
-    {
-        return reinterpret_cast<const ProgressDataOrMission*>(
-            &_ProgressDataOrMission_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 33;
-    friend void swap(ProgressDataOrMission& a, ProgressDataOrMission& b) { a.Swap(&b); }
-    inline void Swap(ProgressDataOrMission* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(ProgressDataOrMission* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  ProgressDataOrMission* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<ProgressDataOrMission>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ProgressDataOrMission& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ProgressDataOrMission& from) { ProgressDataOrMission::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    ProgressDataOrMission* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<ProgressDataOrMission>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const ProgressDataOrMission& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const ProgressDataOrMission& from)
-    {
-        ProgressDataOrMission::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(ProgressDataOrMission* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.ProgressDataOrMission"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit ProgressDataOrMission(::google::protobuf::Arena* arena);
+  ProgressDataOrMission(::google::protobuf::Arena* arena, const ProgressDataOrMission& from);
+  ProgressDataOrMission(::google::protobuf::Arena* arena, ProgressDataOrMission&& from) noexcept
+      : ProgressDataOrMission(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(ProgressDataOrMission* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.ProgressDataOrMission";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionPlanFieldNumber = 4,
+    kProgressFieldNumber = 2,
+    kHasProgressFieldNumber = 1,
+    kHasMissionFieldNumber = 3,
+  };
+  // .mavsdk.rpc.mission.MissionPlan mission_plan = 4;
+  bool has_mission_plan() const;
+  void clear_mission_plan() ;
+  const ::mavsdk::rpc::mission::MissionPlan& mission_plan() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionPlan* release_mission_plan();
+  ::mavsdk::rpc::mission::MissionPlan* mutable_mission_plan();
+  void set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value);
+  void unsafe_arena_set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value);
+  ::mavsdk::rpc::mission::MissionPlan* unsafe_arena_release_mission_plan();
 
-protected:
-    explicit ProgressDataOrMission(::google::protobuf::Arena* arena);
-    ProgressDataOrMission(::google::protobuf::Arena* arena, const ProgressDataOrMission& from);
-    ProgressDataOrMission(::google::protobuf::Arena* arena, ProgressDataOrMission&& from) noexcept :
-        ProgressDataOrMission(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::mission::MissionPlan& _internal_mission_plan() const;
+  ::mavsdk::rpc::mission::MissionPlan* _internal_mutable_mission_plan();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // float progress = 2 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_progress() ;
+  float progress() const;
+  void set_progress(float value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionPlanFieldNumber = 4,
-        kProgressFieldNumber = 2,
-        kHasProgressFieldNumber = 1,
-        kHasMissionFieldNumber = 3,
-    };
-    // .mavsdk.rpc.mission.MissionPlan mission_plan = 4;
-    bool has_mission_plan() const;
-    void clear_mission_plan();
-    const ::mavsdk::rpc::mission::MissionPlan& mission_plan() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionPlan* release_mission_plan();
-    ::mavsdk::rpc::mission::MissionPlan* mutable_mission_plan();
-    void set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value);
-    void unsafe_arena_set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value);
-    ::mavsdk::rpc::mission::MissionPlan* unsafe_arena_release_mission_plan();
+  private:
+  float _internal_progress() const;
+  void _internal_set_progress(float value);
 
-private:
-    const ::mavsdk::rpc::mission::MissionPlan& _internal_mission_plan() const;
-    ::mavsdk::rpc::mission::MissionPlan* _internal_mutable_mission_plan();
+  public:
+  // bool has_progress = 1 [(.mavsdk.options.default_value) = "false"];
+  void clear_has_progress() ;
+  bool has_progress() const;
+  void set_has_progress(bool value);
 
-public:
-    // float progress = 2 [(.mavsdk.options.default_value) = "NaN"];
-    void clear_progress();
-    float progress() const;
-    void set_progress(float value);
+  private:
+  bool _internal_has_progress() const;
+  void _internal_set_has_progress(bool value);
 
-private:
-    float _internal_progress() const;
-    void _internal_set_progress(float value);
+  public:
+  // bool has_mission = 3;
+  void clear_has_mission() ;
+  bool has_mission() const;
+  void set_has_mission(bool value);
 
-public:
-    // bool has_progress = 1 [(.mavsdk.options.default_value) = "false"];
-    void clear_has_progress();
-    bool has_progress() const;
-    void set_has_progress(bool value);
+  private:
+  bool _internal_has_mission() const;
+  void _internal_set_has_mission(bool value);
 
-private:
-    bool _internal_has_progress() const;
-    void _internal_set_has_progress(bool value);
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.ProgressDataOrMission)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      2, 4, 1,
+      0, 2>
+      _table_;
 
-public:
-    // bool has_mission = 3;
-    void clear_has_mission();
-    bool has_mission() const;
-    void set_has_mission(bool value);
-
-private:
-    bool _internal_has_mission() const;
-    void _internal_set_has_mission(bool value);
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.ProgressDataOrMission)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<2, 4, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const ProgressDataOrMission& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::mission::MissionPlan* mission_plan_;
-        float progress_;
-        bool has_progress_;
-        bool has_mission_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ProgressDataOrMission& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission::MissionPlan* mission_plan_;
+    float progress_;
+    bool has_progress_;
+    bool has_mission_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class DownloadMissionResponse final : public ::google::protobuf::Message
+class DownloadMissionResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.DownloadMissionResponse) */ {
-public:
-    inline DownloadMissionResponse() : DownloadMissionResponse(nullptr) {}
-    ~DownloadMissionResponse() PROTOBUF_FINAL;
+ public:
+  inline DownloadMissionResponse() : DownloadMissionResponse(nullptr) {}
+  ~DownloadMissionResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(DownloadMissionResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(DownloadMissionResponse));
-    }
+  void operator delete(DownloadMissionResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(DownloadMissionResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        DownloadMissionResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR DownloadMissionResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline DownloadMissionResponse(const DownloadMissionResponse& from) :
-        DownloadMissionResponse(nullptr, from)
-    {}
-    inline DownloadMissionResponse(DownloadMissionResponse&& from) noexcept :
-        DownloadMissionResponse(nullptr, std::move(from))
-    {}
-    inline DownloadMissionResponse& operator=(const DownloadMissionResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline DownloadMissionResponse(const DownloadMissionResponse& from) : DownloadMissionResponse(nullptr, from) {}
+  inline DownloadMissionResponse(DownloadMissionResponse&& from) noexcept
+      : DownloadMissionResponse(nullptr, std::move(from)) {}
+  inline DownloadMissionResponse& operator=(const DownloadMissionResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DownloadMissionResponse& operator=(DownloadMissionResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline DownloadMissionResponse& operator=(DownloadMissionResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DownloadMissionResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DownloadMissionResponse* internal_default_instance() {
+    return reinterpret_cast<const DownloadMissionResponse*>(
+        &_DownloadMissionResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 7;
+  friend void swap(DownloadMissionResponse& a, DownloadMissionResponse& b) { a.Swap(&b); }
+  inline void Swap(DownloadMissionResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(DownloadMissionResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const DownloadMissionResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const DownloadMissionResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const DownloadMissionResponse*>(
-            &_DownloadMissionResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 7;
-    friend void swap(DownloadMissionResponse& a, DownloadMissionResponse& b) { a.Swap(&b); }
-    inline void Swap(DownloadMissionResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(DownloadMissionResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  DownloadMissionResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<DownloadMissionResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const DownloadMissionResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const DownloadMissionResponse& from) { DownloadMissionResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    DownloadMissionResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<DownloadMissionResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const DownloadMissionResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const DownloadMissionResponse& from)
-    {
-        DownloadMissionResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(DownloadMissionResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.DownloadMissionResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit DownloadMissionResponse(::google::protobuf::Arena* arena);
+  DownloadMissionResponse(::google::protobuf::Arena* arena, const DownloadMissionResponse& from);
+  DownloadMissionResponse(::google::protobuf::Arena* arena, DownloadMissionResponse&& from) noexcept
+      : DownloadMissionResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(DownloadMissionResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.DownloadMissionResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionResultFieldNumber = 1,
+    kMissionPlanFieldNumber = 2,
+  };
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  void clear_mission_result() ;
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
 
-protected:
-    explicit DownloadMissionResponse(::google::protobuf::Arena* arena);
-    DownloadMissionResponse(::google::protobuf::Arena* arena, const DownloadMissionResponse& from);
-    DownloadMissionResponse(
-        ::google::protobuf::Arena* arena, DownloadMissionResponse&& from) noexcept :
-        DownloadMissionResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // .mavsdk.rpc.mission.MissionPlan mission_plan = 2;
+  bool has_mission_plan() const;
+  void clear_mission_plan() ;
+  const ::mavsdk::rpc::mission::MissionPlan& mission_plan() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionPlan* release_mission_plan();
+  ::mavsdk::rpc::mission::MissionPlan* mutable_mission_plan();
+  void set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value);
+  void unsafe_arena_set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value);
+  ::mavsdk::rpc::mission::MissionPlan* unsafe_arena_release_mission_plan();
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionResultFieldNumber = 1,
-        kMissionPlanFieldNumber = 2,
-    };
-    // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-    bool has_mission_result() const;
-    void clear_mission_result();
-    const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
-    ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
-    void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
+  private:
+  const ::mavsdk::rpc::mission::MissionPlan& _internal_mission_plan() const;
+  ::mavsdk::rpc::mission::MissionPlan* _internal_mutable_mission_plan();
 
-private:
-    const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
-    ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.DownloadMissionResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 2,
+      0, 2>
+      _table_;
 
-public:
-    // .mavsdk.rpc.mission.MissionPlan mission_plan = 2;
-    bool has_mission_plan() const;
-    void clear_mission_plan();
-    const ::mavsdk::rpc::mission::MissionPlan& mission_plan() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionPlan* release_mission_plan();
-    ::mavsdk::rpc::mission::MissionPlan* mutable_mission_plan();
-    void set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value);
-    void unsafe_arena_set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value);
-    ::mavsdk::rpc::mission::MissionPlan* unsafe_arena_release_mission_plan();
-
-private:
-    const ::mavsdk::rpc::mission::MissionPlan& _internal_mission_plan() const;
-    ::mavsdk::rpc::mission::MissionPlan* _internal_mutable_mission_plan();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.DownloadMissionResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 2, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const DownloadMissionResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::mission::MissionResult* mission_result_;
-        ::mavsdk::rpc::mission::MissionPlan* mission_plan_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const DownloadMissionResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission::MissionResult* mission_result_;
+    ::mavsdk::rpc::mission::MissionPlan* mission_plan_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 // -------------------------------------------------------------------
 
-class DownloadMissionWithProgressResponse final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.DownloadMissionWithProgressResponse)
- */
-{
-public:
-    inline DownloadMissionWithProgressResponse() : DownloadMissionWithProgressResponse(nullptr) {}
-    ~DownloadMissionWithProgressResponse() PROTOBUF_FINAL;
+class DownloadMissionWithProgressResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.mission.DownloadMissionWithProgressResponse) */ {
+ public:
+  inline DownloadMissionWithProgressResponse() : DownloadMissionWithProgressResponse(nullptr) {}
+  ~DownloadMissionWithProgressResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(DownloadMissionWithProgressResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(DownloadMissionWithProgressResponse));
-    }
+  void operator delete(DownloadMissionWithProgressResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(DownloadMissionWithProgressResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        DownloadMissionWithProgressResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR DownloadMissionWithProgressResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline DownloadMissionWithProgressResponse(const DownloadMissionWithProgressResponse& from) :
-        DownloadMissionWithProgressResponse(nullptr, from)
-    {}
-    inline DownloadMissionWithProgressResponse(DownloadMissionWithProgressResponse&& from) noexcept
-        :
-        DownloadMissionWithProgressResponse(nullptr, std::move(from))
-    {}
-    inline DownloadMissionWithProgressResponse&
-    operator=(const DownloadMissionWithProgressResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline DownloadMissionWithProgressResponse(const DownloadMissionWithProgressResponse& from) : DownloadMissionWithProgressResponse(nullptr, from) {}
+  inline DownloadMissionWithProgressResponse(DownloadMissionWithProgressResponse&& from) noexcept
+      : DownloadMissionWithProgressResponse(nullptr, std::move(from)) {}
+  inline DownloadMissionWithProgressResponse& operator=(const DownloadMissionWithProgressResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DownloadMissionWithProgressResponse& operator=(DownloadMissionWithProgressResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline DownloadMissionWithProgressResponse&
-    operator=(DownloadMissionWithProgressResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DownloadMissionWithProgressResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DownloadMissionWithProgressResponse* internal_default_instance() {
+    return reinterpret_cast<const DownloadMissionWithProgressResponse*>(
+        &_DownloadMissionWithProgressResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 9;
+  friend void swap(DownloadMissionWithProgressResponse& a, DownloadMissionWithProgressResponse& b) { a.Swap(&b); }
+  inline void Swap(DownloadMissionWithProgressResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(DownloadMissionWithProgressResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const DownloadMissionWithProgressResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const DownloadMissionWithProgressResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const DownloadMissionWithProgressResponse*>(
-            &_DownloadMissionWithProgressResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 9;
-    friend void swap(DownloadMissionWithProgressResponse& a, DownloadMissionWithProgressResponse& b)
-    {
-        a.Swap(&b);
-    }
-    inline void Swap(DownloadMissionWithProgressResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(DownloadMissionWithProgressResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  DownloadMissionWithProgressResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<DownloadMissionWithProgressResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const DownloadMissionWithProgressResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const DownloadMissionWithProgressResponse& from) { DownloadMissionWithProgressResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    DownloadMissionWithProgressResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<DownloadMissionWithProgressResponse>(
-            arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const DownloadMissionWithProgressResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const DownloadMissionWithProgressResponse& from)
-    {
-        DownloadMissionWithProgressResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(DownloadMissionWithProgressResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.mission.DownloadMissionWithProgressResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit DownloadMissionWithProgressResponse(::google::protobuf::Arena* arena);
+  DownloadMissionWithProgressResponse(::google::protobuf::Arena* arena, const DownloadMissionWithProgressResponse& from);
+  DownloadMissionWithProgressResponse(::google::protobuf::Arena* arena, DownloadMissionWithProgressResponse&& from) noexcept
+      : DownloadMissionWithProgressResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(DownloadMissionWithProgressResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.mission.DownloadMissionWithProgressResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMissionResultFieldNumber = 1,
+    kProgressDataFieldNumber = 2,
+  };
+  // .mavsdk.rpc.mission.MissionResult mission_result = 1;
+  bool has_mission_result() const;
+  void clear_mission_result() ;
+  const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
+  ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
+  void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
+  ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
 
-protected:
-    explicit DownloadMissionWithProgressResponse(::google::protobuf::Arena* arena);
-    DownloadMissionWithProgressResponse(
-        ::google::protobuf::Arena* arena, const DownloadMissionWithProgressResponse& from);
-    DownloadMissionWithProgressResponse(
-        ::google::protobuf::Arena* arena, DownloadMissionWithProgressResponse&& from) noexcept :
-        DownloadMissionWithProgressResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
+  ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // .mavsdk.rpc.mission.ProgressDataOrMission progress_data = 2;
+  bool has_progress_data() const;
+  void clear_progress_data() ;
+  const ::mavsdk::rpc::mission::ProgressDataOrMission& progress_data() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::mission::ProgressDataOrMission* release_progress_data();
+  ::mavsdk::rpc::mission::ProgressDataOrMission* mutable_progress_data();
+  void set_allocated_progress_data(::mavsdk::rpc::mission::ProgressDataOrMission* value);
+  void unsafe_arena_set_allocated_progress_data(::mavsdk::rpc::mission::ProgressDataOrMission* value);
+  ::mavsdk::rpc::mission::ProgressDataOrMission* unsafe_arena_release_progress_data();
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kMissionResultFieldNumber = 1,
-        kProgressDataFieldNumber = 2,
-    };
-    // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-    bool has_mission_result() const;
-    void clear_mission_result();
-    const ::mavsdk::rpc::mission::MissionResult& mission_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::MissionResult* release_mission_result();
-    ::mavsdk::rpc::mission::MissionResult* mutable_mission_result();
-    void set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    void unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value);
-    ::mavsdk::rpc::mission::MissionResult* unsafe_arena_release_mission_result();
+  private:
+  const ::mavsdk::rpc::mission::ProgressDataOrMission& _internal_progress_data() const;
+  ::mavsdk::rpc::mission::ProgressDataOrMission* _internal_mutable_progress_data();
 
-private:
-    const ::mavsdk::rpc::mission::MissionResult& _internal_mission_result() const;
-    ::mavsdk::rpc::mission::MissionResult* _internal_mutable_mission_result();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.DownloadMissionWithProgressResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 2,
+      0, 2>
+      _table_;
 
-public:
-    // .mavsdk.rpc.mission.ProgressDataOrMission progress_data = 2;
-    bool has_progress_data() const;
-    void clear_progress_data();
-    const ::mavsdk::rpc::mission::ProgressDataOrMission& progress_data() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::mission::ProgressDataOrMission* release_progress_data();
-    ::mavsdk::rpc::mission::ProgressDataOrMission* mutable_progress_data();
-    void set_allocated_progress_data(::mavsdk::rpc::mission::ProgressDataOrMission* value);
-    void
-    unsafe_arena_set_allocated_progress_data(::mavsdk::rpc::mission::ProgressDataOrMission* value);
-    ::mavsdk::rpc::mission::ProgressDataOrMission* unsafe_arena_release_progress_data();
-
-private:
-    const ::mavsdk::rpc::mission::ProgressDataOrMission& _internal_progress_data() const;
-    ::mavsdk::rpc::mission::ProgressDataOrMission* _internal_mutable_progress_data();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.mission.DownloadMissionWithProgressResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 2, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const DownloadMissionWithProgressResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::mission::MissionResult* mission_result_;
-        ::mavsdk::rpc::mission::ProgressDataOrMission* progress_data_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_mission_2fmission_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const DownloadMissionWithProgressResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::mission::MissionResult* mission_result_;
+    ::mavsdk::rpc::mission::ProgressDataOrMission* progress_data_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_mission_2fmission_2eproto;
 };
 
 // ===================================================================
 
+
+
+
 // ===================================================================
+
 
 #ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-aliasing"
-#endif // __GNUC__
+#endif  // __GNUC__
 // -------------------------------------------------------------------
 
 // UploadMissionRequest
 
 // .mavsdk.rpc.mission.MissionPlan mission_plan = 1;
-inline bool UploadMissionRequest::has_mission_plan() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_plan_ != nullptr);
-    return value;
+inline bool UploadMissionRequest::has_mission_plan() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_plan_ != nullptr);
+  return value;
 }
-inline void UploadMissionRequest::clear_mission_plan()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_plan_ != nullptr)
-        _impl_.mission_plan_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void UploadMissionRequest::clear_mission_plan() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_plan_ != nullptr) _impl_.mission_plan_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::mission::MissionPlan&
-UploadMissionRequest::_internal_mission_plan() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionPlan* p = _impl_.mission_plan_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionPlan&>(
-                              ::mavsdk::rpc::mission::_MissionPlan_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionPlan& UploadMissionRequest::_internal_mission_plan() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionPlan* p = _impl_.mission_plan_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionPlan&>(::mavsdk::rpc::mission::_MissionPlan_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionPlan&
-UploadMissionRequest::mission_plan() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.UploadMissionRequest.mission_plan)
-    return _internal_mission_plan();
+inline const ::mavsdk::rpc::mission::MissionPlan& UploadMissionRequest::mission_plan() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.UploadMissionRequest.mission_plan)
+  return _internal_mission_plan();
 }
-inline void UploadMissionRequest::unsafe_arena_set_allocated_mission_plan(
-    ::mavsdk::rpc::mission::MissionPlan* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_plan_);
-    }
-    _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.UploadMissionRequest.mission_plan)
-}
-inline ::mavsdk::rpc::mission::MissionPlan* UploadMissionRequest::release_mission_plan()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionPlan* released = _impl_.mission_plan_;
-    _impl_.mission_plan_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionPlan*
-UploadMissionRequest::unsafe_arena_release_mission_plan()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.UploadMissionRequest.mission_plan)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionPlan* temp = _impl_.mission_plan_;
-    _impl_.mission_plan_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionPlan* UploadMissionRequest::_internal_mutable_mission_plan()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_plan_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionPlan>(
-                GetArena());
-        _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(p);
-    }
-    return _impl_.mission_plan_;
-}
-inline ::mavsdk::rpc::mission::MissionPlan*
-UploadMissionRequest::mutable_mission_plan() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void UploadMissionRequest::unsafe_arena_set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_plan_);
+  }
+  _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::mission::MissionPlan* _msg = _internal_mutable_mission_plan();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.UploadMissionRequest.mission_plan)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.UploadMissionRequest.mission_plan)
 }
-inline void
-UploadMissionRequest::set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_plan_);
-    }
+inline ::mavsdk::rpc::mission::MissionPlan* UploadMissionRequest::release_mission_plan() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionPlan* released = _impl_.mission_plan_;
+  _impl_.mission_plan_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionPlan* UploadMissionRequest::unsafe_arena_release_mission_plan() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.UploadMissionRequest.mission_plan)
 
-    _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.UploadMissionRequest.mission_plan)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionPlan* temp = _impl_.mission_plan_;
+  _impl_.mission_plan_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionPlan* UploadMissionRequest::_internal_mutable_mission_plan() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_plan_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionPlan>(GetArena());
+    _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(p);
+  }
+  return _impl_.mission_plan_;
+}
+inline ::mavsdk::rpc::mission::MissionPlan* UploadMissionRequest::mutable_mission_plan() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission::MissionPlan* _msg = _internal_mutable_mission_plan();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.UploadMissionRequest.mission_plan)
+  return _msg;
+}
+inline void UploadMissionRequest::set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_plan_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.UploadMissionRequest.mission_plan)
 }
 
 // -------------------------------------------------------------------
@@ -7691,122 +6944,99 @@ UploadMissionRequest::set_allocated_mission_plan(::mavsdk::rpc::mission::Mission
 // UploadMissionResponse
 
 // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-inline bool UploadMissionResponse::has_mission_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
-    return value;
+inline bool UploadMissionResponse::has_mission_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
+  return value;
 }
-inline void UploadMissionResponse::clear_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ != nullptr)
-        _impl_.mission_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void UploadMissionResponse::clear_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ != nullptr) _impl_.mission_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-UploadMissionResponse::_internal_mission_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(
-                              ::mavsdk::rpc::mission::_MissionResult_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionResult& UploadMissionResponse::_internal_mission_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(::mavsdk::rpc::mission::_MissionResult_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-UploadMissionResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.UploadMissionResponse.mission_result)
-    return _internal_mission_result();
+inline const ::mavsdk::rpc::mission::MissionResult& UploadMissionResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.UploadMissionResponse.mission_result)
+  return _internal_mission_result();
 }
-inline void UploadMissionResponse::unsafe_arena_set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
-    }
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.UploadMissionResponse.mission_result)
-}
-inline ::mavsdk::rpc::mission::MissionResult* UploadMissionResponse::release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-UploadMissionResponse::unsafe_arena_release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.UploadMissionResponse.mission_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-UploadMissionResponse::_internal_mutable_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(
-                GetArena());
-        _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
-    }
-    return _impl_.mission_result_;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-UploadMissionResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void UploadMissionResponse::unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
+  }
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.UploadMissionResponse.mission_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.UploadMissionResponse.mission_result)
 }
-inline void
-UploadMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_result_);
-    }
+inline ::mavsdk::rpc::mission::MissionResult* UploadMissionResponse::release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionResult* UploadMissionResponse::unsafe_arena_release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.UploadMissionResponse.mission_result)
 
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.UploadMissionResponse.mission_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* UploadMissionResponse::_internal_mutable_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(GetArena());
+    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
+  }
+  return _impl_.mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* UploadMissionResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.UploadMissionResponse.mission_result)
+  return _msg;
+}
+inline void UploadMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.UploadMissionResponse.mission_result)
 }
 
 // -------------------------------------------------------------------
@@ -7814,123 +7044,99 @@ UploadMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::Miss
 // SubscribeUploadMissionWithProgressRequest
 
 // .mavsdk.rpc.mission.MissionPlan mission_plan = 1;
-inline bool SubscribeUploadMissionWithProgressRequest::has_mission_plan() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_plan_ != nullptr);
-    return value;
+inline bool SubscribeUploadMissionWithProgressRequest::has_mission_plan() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_plan_ != nullptr);
+  return value;
 }
-inline void SubscribeUploadMissionWithProgressRequest::clear_mission_plan()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_plan_ != nullptr)
-        _impl_.mission_plan_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void SubscribeUploadMissionWithProgressRequest::clear_mission_plan() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_plan_ != nullptr) _impl_.mission_plan_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::mission::MissionPlan&
-SubscribeUploadMissionWithProgressRequest::_internal_mission_plan() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionPlan* p = _impl_.mission_plan_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionPlan&>(
-                              ::mavsdk::rpc::mission::_MissionPlan_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionPlan& SubscribeUploadMissionWithProgressRequest::_internal_mission_plan() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionPlan* p = _impl_.mission_plan_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionPlan&>(::mavsdk::rpc::mission::_MissionPlan_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionPlan&
-SubscribeUploadMissionWithProgressRequest::mission_plan() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.SubscribeUploadMissionWithProgressRequest.mission_plan)
-    return _internal_mission_plan();
+inline const ::mavsdk::rpc::mission::MissionPlan& SubscribeUploadMissionWithProgressRequest::mission_plan() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.SubscribeUploadMissionWithProgressRequest.mission_plan)
+  return _internal_mission_plan();
 }
-inline void SubscribeUploadMissionWithProgressRequest::unsafe_arena_set_allocated_mission_plan(
-    ::mavsdk::rpc::mission::MissionPlan* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_plan_);
-    }
-    _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.SubscribeUploadMissionWithProgressRequest.mission_plan)
-}
-inline ::mavsdk::rpc::mission::MissionPlan*
-SubscribeUploadMissionWithProgressRequest::release_mission_plan()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionPlan* released = _impl_.mission_plan_;
-    _impl_.mission_plan_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionPlan*
-SubscribeUploadMissionWithProgressRequest::unsafe_arena_release_mission_plan()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.SubscribeUploadMissionWithProgressRequest.mission_plan)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionPlan* temp = _impl_.mission_plan_;
-    _impl_.mission_plan_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionPlan*
-SubscribeUploadMissionWithProgressRequest::_internal_mutable_mission_plan()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_plan_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionPlan>(
-                GetArena());
-        _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(p);
-    }
-    return _impl_.mission_plan_;
-}
-inline ::mavsdk::rpc::mission::MissionPlan*
-SubscribeUploadMissionWithProgressRequest::mutable_mission_plan() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void SubscribeUploadMissionWithProgressRequest::unsafe_arena_set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_plan_);
+  }
+  _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::mission::MissionPlan* _msg = _internal_mutable_mission_plan();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.SubscribeUploadMissionWithProgressRequest.mission_plan)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.SubscribeUploadMissionWithProgressRequest.mission_plan)
 }
-inline void SubscribeUploadMissionWithProgressRequest::set_allocated_mission_plan(
-    ::mavsdk::rpc::mission::MissionPlan* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_plan_);
-    }
+inline ::mavsdk::rpc::mission::MissionPlan* SubscribeUploadMissionWithProgressRequest::release_mission_plan() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionPlan* released = _impl_.mission_plan_;
+  _impl_.mission_plan_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionPlan* SubscribeUploadMissionWithProgressRequest::unsafe_arena_release_mission_plan() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.SubscribeUploadMissionWithProgressRequest.mission_plan)
 
-    _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.SubscribeUploadMissionWithProgressRequest.mission_plan)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionPlan* temp = _impl_.mission_plan_;
+  _impl_.mission_plan_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionPlan* SubscribeUploadMissionWithProgressRequest::_internal_mutable_mission_plan() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_plan_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionPlan>(GetArena());
+    _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(p);
+  }
+  return _impl_.mission_plan_;
+}
+inline ::mavsdk::rpc::mission::MissionPlan* SubscribeUploadMissionWithProgressRequest::mutable_mission_plan() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission::MissionPlan* _msg = _internal_mutable_mission_plan();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.SubscribeUploadMissionWithProgressRequest.mission_plan)
+  return _msg;
+}
+inline void SubscribeUploadMissionWithProgressRequest::set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_plan_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.SubscribeUploadMissionWithProgressRequest.mission_plan)
 }
 
 // -------------------------------------------------------------------
@@ -7938,243 +7144,195 @@ inline void SubscribeUploadMissionWithProgressRequest::set_allocated_mission_pla
 // UploadMissionWithProgressResponse
 
 // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-inline bool UploadMissionWithProgressResponse::has_mission_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
-    return value;
+inline bool UploadMissionWithProgressResponse::has_mission_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
+  return value;
 }
-inline void UploadMissionWithProgressResponse::clear_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ != nullptr)
-        _impl_.mission_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void UploadMissionWithProgressResponse::clear_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ != nullptr) _impl_.mission_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-UploadMissionWithProgressResponse::_internal_mission_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(
-                              ::mavsdk::rpc::mission::_MissionResult_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionResult& UploadMissionWithProgressResponse::_internal_mission_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(::mavsdk::rpc::mission::_MissionResult_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-UploadMissionWithProgressResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.UploadMissionWithProgressResponse.mission_result)
-    return _internal_mission_result();
+inline const ::mavsdk::rpc::mission::MissionResult& UploadMissionWithProgressResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.UploadMissionWithProgressResponse.mission_result)
+  return _internal_mission_result();
 }
-inline void UploadMissionWithProgressResponse::unsafe_arena_set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
-    }
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.UploadMissionWithProgressResponse.mission_result)
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-UploadMissionWithProgressResponse::release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-UploadMissionWithProgressResponse::unsafe_arena_release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.UploadMissionWithProgressResponse.mission_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-UploadMissionWithProgressResponse::_internal_mutable_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(
-                GetArena());
-        _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
-    }
-    return _impl_.mission_result_;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-UploadMissionWithProgressResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void UploadMissionWithProgressResponse::unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
+  }
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.UploadMissionWithProgressResponse.mission_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.UploadMissionWithProgressResponse.mission_result)
 }
-inline void UploadMissionWithProgressResponse::set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_result_);
-    }
+inline ::mavsdk::rpc::mission::MissionResult* UploadMissionWithProgressResponse::release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionResult* UploadMissionWithProgressResponse::unsafe_arena_release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.UploadMissionWithProgressResponse.mission_result)
 
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.UploadMissionWithProgressResponse.mission_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* UploadMissionWithProgressResponse::_internal_mutable_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(GetArena());
+    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
+  }
+  return _impl_.mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* UploadMissionWithProgressResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.UploadMissionWithProgressResponse.mission_result)
+  return _msg;
+}
+inline void UploadMissionWithProgressResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.UploadMissionWithProgressResponse.mission_result)
 }
 
 // .mavsdk.rpc.mission.ProgressData progress_data = 2;
-inline bool UploadMissionWithProgressResponse::has_progress_data() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.progress_data_ != nullptr);
-    return value;
+inline bool UploadMissionWithProgressResponse::has_progress_data() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.progress_data_ != nullptr);
+  return value;
 }
-inline void UploadMissionWithProgressResponse::clear_progress_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.progress_data_ != nullptr)
-        _impl_.progress_data_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000002u;
+inline void UploadMissionWithProgressResponse::clear_progress_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.progress_data_ != nullptr) _impl_.progress_data_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline const ::mavsdk::rpc::mission::ProgressData&
-UploadMissionWithProgressResponse::_internal_progress_data() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::ProgressData* p = _impl_.progress_data_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::ProgressData&>(
-                              ::mavsdk::rpc::mission::_ProgressData_default_instance_);
+inline const ::mavsdk::rpc::mission::ProgressData& UploadMissionWithProgressResponse::_internal_progress_data() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::ProgressData* p = _impl_.progress_data_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::ProgressData&>(::mavsdk::rpc::mission::_ProgressData_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::ProgressData&
-UploadMissionWithProgressResponse::progress_data() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.UploadMissionWithProgressResponse.progress_data)
-    return _internal_progress_data();
+inline const ::mavsdk::rpc::mission::ProgressData& UploadMissionWithProgressResponse::progress_data() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.UploadMissionWithProgressResponse.progress_data)
+  return _internal_progress_data();
 }
-inline void UploadMissionWithProgressResponse::unsafe_arena_set_allocated_progress_data(
-    ::mavsdk::rpc::mission::ProgressData* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.progress_data_);
-    }
-    _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::mission::ProgressData*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000002u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000002u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.UploadMissionWithProgressResponse.progress_data)
-}
-inline ::mavsdk::rpc::mission::ProgressData*
-UploadMissionWithProgressResponse::release_progress_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000002u;
-    ::mavsdk::rpc::mission::ProgressData* released = _impl_.progress_data_;
-    _impl_.progress_data_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::ProgressData*
-UploadMissionWithProgressResponse::unsafe_arena_release_progress_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.UploadMissionWithProgressResponse.progress_data)
-
-    _impl_._has_bits_[0] &= ~0x00000002u;
-    ::mavsdk::rpc::mission::ProgressData* temp = _impl_.progress_data_;
-    _impl_.progress_data_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::ProgressData*
-UploadMissionWithProgressResponse::_internal_mutable_progress_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.progress_data_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::ProgressData>(
-                GetArena());
-        _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::mission::ProgressData*>(p);
-    }
-    return _impl_.progress_data_;
-}
-inline ::mavsdk::rpc::mission::ProgressData*
-UploadMissionWithProgressResponse::mutable_progress_data() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void UploadMissionWithProgressResponse::unsafe_arena_set_allocated_progress_data(::mavsdk::rpc::mission::ProgressData* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.progress_data_);
+  }
+  _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::mission::ProgressData*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000002u;
-    ::mavsdk::rpc::mission::ProgressData* _msg = _internal_mutable_progress_data();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.UploadMissionWithProgressResponse.progress_data)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.UploadMissionWithProgressResponse.progress_data)
 }
-inline void UploadMissionWithProgressResponse::set_allocated_progress_data(
-    ::mavsdk::rpc::mission::ProgressData* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.progress_data_);
-    }
+inline ::mavsdk::rpc::mission::ProgressData* UploadMissionWithProgressResponse::release_progress_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000002u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000002u;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::mission::ProgressData* released = _impl_.progress_data_;
+  _impl_.progress_data_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::ProgressData* UploadMissionWithProgressResponse::unsafe_arena_release_progress_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.UploadMissionWithProgressResponse.progress_data)
 
-    _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::mission::ProgressData*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.UploadMissionWithProgressResponse.progress_data)
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::mission::ProgressData* temp = _impl_.progress_data_;
+  _impl_.progress_data_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::ProgressData* UploadMissionWithProgressResponse::_internal_mutable_progress_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.progress_data_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::ProgressData>(GetArena());
+    _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::mission::ProgressData*>(p);
+  }
+  return _impl_.progress_data_;
+}
+inline ::mavsdk::rpc::mission::ProgressData* UploadMissionWithProgressResponse::mutable_progress_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  ::mavsdk::rpc::mission::ProgressData* _msg = _internal_mutable_progress_data();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.UploadMissionWithProgressResponse.progress_data)
+  return _msg;
+}
+inline void UploadMissionWithProgressResponse::set_allocated_progress_data(::mavsdk::rpc::mission::ProgressData* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.progress_data_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+
+  _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::mission::ProgressData*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.UploadMissionWithProgressResponse.progress_data)
 }
 
 // -------------------------------------------------------------------
@@ -8186,122 +7344,99 @@ inline void UploadMissionWithProgressResponse::set_allocated_progress_data(
 // CancelMissionUploadResponse
 
 // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-inline bool CancelMissionUploadResponse::has_mission_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
-    return value;
+inline bool CancelMissionUploadResponse::has_mission_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
+  return value;
 }
-inline void CancelMissionUploadResponse::clear_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ != nullptr)
-        _impl_.mission_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void CancelMissionUploadResponse::clear_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ != nullptr) _impl_.mission_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-CancelMissionUploadResponse::_internal_mission_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(
-                              ::mavsdk::rpc::mission::_MissionResult_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionResult& CancelMissionUploadResponse::_internal_mission_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(::mavsdk::rpc::mission::_MissionResult_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-CancelMissionUploadResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.CancelMissionUploadResponse.mission_result)
-    return _internal_mission_result();
+inline const ::mavsdk::rpc::mission::MissionResult& CancelMissionUploadResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.CancelMissionUploadResponse.mission_result)
+  return _internal_mission_result();
 }
-inline void CancelMissionUploadResponse::unsafe_arena_set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
-    }
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.CancelMissionUploadResponse.mission_result)
-}
-inline ::mavsdk::rpc::mission::MissionResult* CancelMissionUploadResponse::release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-CancelMissionUploadResponse::unsafe_arena_release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.CancelMissionUploadResponse.mission_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-CancelMissionUploadResponse::_internal_mutable_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(
-                GetArena());
-        _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
-    }
-    return _impl_.mission_result_;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-CancelMissionUploadResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void CancelMissionUploadResponse::unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
+  }
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.CancelMissionUploadResponse.mission_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.CancelMissionUploadResponse.mission_result)
 }
-inline void CancelMissionUploadResponse::set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_result_);
-    }
+inline ::mavsdk::rpc::mission::MissionResult* CancelMissionUploadResponse::release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionResult* CancelMissionUploadResponse::unsafe_arena_release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.CancelMissionUploadResponse.mission_result)
 
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.CancelMissionUploadResponse.mission_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* CancelMissionUploadResponse::_internal_mutable_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(GetArena());
+    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
+  }
+  return _impl_.mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* CancelMissionUploadResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.CancelMissionUploadResponse.mission_result)
+  return _msg;
+}
+inline void CancelMissionUploadResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.CancelMissionUploadResponse.mission_result)
 }
 
 // -------------------------------------------------------------------
@@ -8313,241 +7448,195 @@ inline void CancelMissionUploadResponse::set_allocated_mission_result(
 // DownloadMissionResponse
 
 // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-inline bool DownloadMissionResponse::has_mission_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
-    return value;
+inline bool DownloadMissionResponse::has_mission_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
+  return value;
 }
-inline void DownloadMissionResponse::clear_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ != nullptr)
-        _impl_.mission_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void DownloadMissionResponse::clear_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ != nullptr) _impl_.mission_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-DownloadMissionResponse::_internal_mission_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(
-                              ::mavsdk::rpc::mission::_MissionResult_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionResult& DownloadMissionResponse::_internal_mission_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(::mavsdk::rpc::mission::_MissionResult_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-DownloadMissionResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.DownloadMissionResponse.mission_result)
-    return _internal_mission_result();
+inline const ::mavsdk::rpc::mission::MissionResult& DownloadMissionResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.DownloadMissionResponse.mission_result)
+  return _internal_mission_result();
 }
-inline void DownloadMissionResponse::unsafe_arena_set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
-    }
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.DownloadMissionResponse.mission_result)
-}
-inline ::mavsdk::rpc::mission::MissionResult* DownloadMissionResponse::release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-DownloadMissionResponse::unsafe_arena_release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.DownloadMissionResponse.mission_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-DownloadMissionResponse::_internal_mutable_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(
-                GetArena());
-        _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
-    }
-    return _impl_.mission_result_;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-DownloadMissionResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void DownloadMissionResponse::unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
+  }
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.DownloadMissionResponse.mission_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.DownloadMissionResponse.mission_result)
 }
-inline void
-DownloadMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_result_);
-    }
+inline ::mavsdk::rpc::mission::MissionResult* DownloadMissionResponse::release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionResult* DownloadMissionResponse::unsafe_arena_release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.DownloadMissionResponse.mission_result)
 
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.DownloadMissionResponse.mission_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* DownloadMissionResponse::_internal_mutable_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(GetArena());
+    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
+  }
+  return _impl_.mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* DownloadMissionResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.DownloadMissionResponse.mission_result)
+  return _msg;
+}
+inline void DownloadMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.DownloadMissionResponse.mission_result)
 }
 
 // .mavsdk.rpc.mission.MissionPlan mission_plan = 2;
-inline bool DownloadMissionResponse::has_mission_plan() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_plan_ != nullptr);
-    return value;
+inline bool DownloadMissionResponse::has_mission_plan() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_plan_ != nullptr);
+  return value;
 }
-inline void DownloadMissionResponse::clear_mission_plan()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_plan_ != nullptr)
-        _impl_.mission_plan_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000002u;
+inline void DownloadMissionResponse::clear_mission_plan() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_plan_ != nullptr) _impl_.mission_plan_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline const ::mavsdk::rpc::mission::MissionPlan&
-DownloadMissionResponse::_internal_mission_plan() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionPlan* p = _impl_.mission_plan_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionPlan&>(
-                              ::mavsdk::rpc::mission::_MissionPlan_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionPlan& DownloadMissionResponse::_internal_mission_plan() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionPlan* p = _impl_.mission_plan_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionPlan&>(::mavsdk::rpc::mission::_MissionPlan_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionPlan&
-DownloadMissionResponse::mission_plan() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.DownloadMissionResponse.mission_plan)
-    return _internal_mission_plan();
+inline const ::mavsdk::rpc::mission::MissionPlan& DownloadMissionResponse::mission_plan() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.DownloadMissionResponse.mission_plan)
+  return _internal_mission_plan();
 }
-inline void DownloadMissionResponse::unsafe_arena_set_allocated_mission_plan(
-    ::mavsdk::rpc::mission::MissionPlan* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_plan_);
-    }
-    _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000002u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000002u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.DownloadMissionResponse.mission_plan)
-}
-inline ::mavsdk::rpc::mission::MissionPlan* DownloadMissionResponse::release_mission_plan()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000002u;
-    ::mavsdk::rpc::mission::MissionPlan* released = _impl_.mission_plan_;
-    _impl_.mission_plan_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionPlan*
-DownloadMissionResponse::unsafe_arena_release_mission_plan()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.DownloadMissionResponse.mission_plan)
-
-    _impl_._has_bits_[0] &= ~0x00000002u;
-    ::mavsdk::rpc::mission::MissionPlan* temp = _impl_.mission_plan_;
-    _impl_.mission_plan_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionPlan*
-DownloadMissionResponse::_internal_mutable_mission_plan()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_plan_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionPlan>(
-                GetArena());
-        _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(p);
-    }
-    return _impl_.mission_plan_;
-}
-inline ::mavsdk::rpc::mission::MissionPlan*
-DownloadMissionResponse::mutable_mission_plan() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void DownloadMissionResponse::unsafe_arena_set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_plan_);
+  }
+  _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000002u;
-    ::mavsdk::rpc::mission::MissionPlan* _msg = _internal_mutable_mission_plan();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.DownloadMissionResponse.mission_plan)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.DownloadMissionResponse.mission_plan)
 }
-inline void
-DownloadMissionResponse::set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_plan_);
-    }
+inline ::mavsdk::rpc::mission::MissionPlan* DownloadMissionResponse::release_mission_plan() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000002u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000002u;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::mission::MissionPlan* released = _impl_.mission_plan_;
+  _impl_.mission_plan_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionPlan* DownloadMissionResponse::unsafe_arena_release_mission_plan() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.DownloadMissionResponse.mission_plan)
 
-    _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.DownloadMissionResponse.mission_plan)
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::mission::MissionPlan* temp = _impl_.mission_plan_;
+  _impl_.mission_plan_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionPlan* DownloadMissionResponse::_internal_mutable_mission_plan() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_plan_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionPlan>(GetArena());
+    _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(p);
+  }
+  return _impl_.mission_plan_;
+}
+inline ::mavsdk::rpc::mission::MissionPlan* DownloadMissionResponse::mutable_mission_plan() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  ::mavsdk::rpc::mission::MissionPlan* _msg = _internal_mutable_mission_plan();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.DownloadMissionResponse.mission_plan)
+  return _msg;
+}
+inline void DownloadMissionResponse::set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_plan_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+
+  _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.DownloadMissionResponse.mission_plan)
 }
 
 // -------------------------------------------------------------------
@@ -8559,242 +7648,195 @@ DownloadMissionResponse::set_allocated_mission_plan(::mavsdk::rpc::mission::Miss
 // DownloadMissionWithProgressResponse
 
 // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-inline bool DownloadMissionWithProgressResponse::has_mission_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
-    return value;
+inline bool DownloadMissionWithProgressResponse::has_mission_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
+  return value;
 }
-inline void DownloadMissionWithProgressResponse::clear_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ != nullptr)
-        _impl_.mission_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void DownloadMissionWithProgressResponse::clear_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ != nullptr) _impl_.mission_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-DownloadMissionWithProgressResponse::_internal_mission_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(
-                              ::mavsdk::rpc::mission::_MissionResult_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionResult& DownloadMissionWithProgressResponse::_internal_mission_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(::mavsdk::rpc::mission::_MissionResult_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-DownloadMissionWithProgressResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.mission_result)
-    return _internal_mission_result();
+inline const ::mavsdk::rpc::mission::MissionResult& DownloadMissionWithProgressResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.mission_result)
+  return _internal_mission_result();
 }
-inline void DownloadMissionWithProgressResponse::unsafe_arena_set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
-    }
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.mission_result)
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-DownloadMissionWithProgressResponse::release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-DownloadMissionWithProgressResponse::unsafe_arena_release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.mission_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-DownloadMissionWithProgressResponse::_internal_mutable_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(
-                GetArena());
-        _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
-    }
-    return _impl_.mission_result_;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-DownloadMissionWithProgressResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void DownloadMissionWithProgressResponse::unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
+  }
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.mission_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.mission_result)
 }
-inline void DownloadMissionWithProgressResponse::set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_result_);
-    }
+inline ::mavsdk::rpc::mission::MissionResult* DownloadMissionWithProgressResponse::release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionResult* DownloadMissionWithProgressResponse::unsafe_arena_release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.mission_result)
 
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.mission_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* DownloadMissionWithProgressResponse::_internal_mutable_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(GetArena());
+    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
+  }
+  return _impl_.mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* DownloadMissionWithProgressResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.mission_result)
+  return _msg;
+}
+inline void DownloadMissionWithProgressResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.mission_result)
 }
 
 // .mavsdk.rpc.mission.ProgressDataOrMission progress_data = 2;
-inline bool DownloadMissionWithProgressResponse::has_progress_data() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.progress_data_ != nullptr);
-    return value;
+inline bool DownloadMissionWithProgressResponse::has_progress_data() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.progress_data_ != nullptr);
+  return value;
 }
-inline void DownloadMissionWithProgressResponse::clear_progress_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.progress_data_ != nullptr)
-        _impl_.progress_data_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000002u;
+inline void DownloadMissionWithProgressResponse::clear_progress_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.progress_data_ != nullptr) _impl_.progress_data_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline const ::mavsdk::rpc::mission::ProgressDataOrMission&
-DownloadMissionWithProgressResponse::_internal_progress_data() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::ProgressDataOrMission* p = _impl_.progress_data_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::ProgressDataOrMission&>(
-                              ::mavsdk::rpc::mission::_ProgressDataOrMission_default_instance_);
+inline const ::mavsdk::rpc::mission::ProgressDataOrMission& DownloadMissionWithProgressResponse::_internal_progress_data() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::ProgressDataOrMission* p = _impl_.progress_data_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::ProgressDataOrMission&>(::mavsdk::rpc::mission::_ProgressDataOrMission_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::ProgressDataOrMission&
-DownloadMissionWithProgressResponse::progress_data() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.progress_data)
-    return _internal_progress_data();
+inline const ::mavsdk::rpc::mission::ProgressDataOrMission& DownloadMissionWithProgressResponse::progress_data() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.progress_data)
+  return _internal_progress_data();
 }
-inline void DownloadMissionWithProgressResponse::unsafe_arena_set_allocated_progress_data(
-    ::mavsdk::rpc::mission::ProgressDataOrMission* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.progress_data_);
-    }
-    _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::mission::ProgressDataOrMission*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000002u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000002u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.progress_data)
-}
-inline ::mavsdk::rpc::mission::ProgressDataOrMission*
-DownloadMissionWithProgressResponse::release_progress_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000002u;
-    ::mavsdk::rpc::mission::ProgressDataOrMission* released = _impl_.progress_data_;
-    _impl_.progress_data_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::ProgressDataOrMission*
-DownloadMissionWithProgressResponse::unsafe_arena_release_progress_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.progress_data)
-
-    _impl_._has_bits_[0] &= ~0x00000002u;
-    ::mavsdk::rpc::mission::ProgressDataOrMission* temp = _impl_.progress_data_;
-    _impl_.progress_data_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::ProgressDataOrMission*
-DownloadMissionWithProgressResponse::_internal_mutable_progress_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.progress_data_ == nullptr) {
-        auto* p = ::google::protobuf::Message::DefaultConstruct<
-            ::mavsdk::rpc::mission::ProgressDataOrMission>(GetArena());
-        _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::mission::ProgressDataOrMission*>(p);
-    }
-    return _impl_.progress_data_;
-}
-inline ::mavsdk::rpc::mission::ProgressDataOrMission*
-DownloadMissionWithProgressResponse::mutable_progress_data() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void DownloadMissionWithProgressResponse::unsafe_arena_set_allocated_progress_data(::mavsdk::rpc::mission::ProgressDataOrMission* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.progress_data_);
+  }
+  _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::mission::ProgressDataOrMission*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000002u;
-    ::mavsdk::rpc::mission::ProgressDataOrMission* _msg = _internal_mutable_progress_data();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.progress_data)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.progress_data)
 }
-inline void DownloadMissionWithProgressResponse::set_allocated_progress_data(
-    ::mavsdk::rpc::mission::ProgressDataOrMission* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.progress_data_);
-    }
+inline ::mavsdk::rpc::mission::ProgressDataOrMission* DownloadMissionWithProgressResponse::release_progress_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000002u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000002u;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::mission::ProgressDataOrMission* released = _impl_.progress_data_;
+  _impl_.progress_data_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::ProgressDataOrMission* DownloadMissionWithProgressResponse::unsafe_arena_release_progress_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.progress_data)
 
-    _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::mission::ProgressDataOrMission*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.progress_data)
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::mission::ProgressDataOrMission* temp = _impl_.progress_data_;
+  _impl_.progress_data_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::ProgressDataOrMission* DownloadMissionWithProgressResponse::_internal_mutable_progress_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.progress_data_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::ProgressDataOrMission>(GetArena());
+    _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::mission::ProgressDataOrMission*>(p);
+  }
+  return _impl_.progress_data_;
+}
+inline ::mavsdk::rpc::mission::ProgressDataOrMission* DownloadMissionWithProgressResponse::mutable_progress_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  ::mavsdk::rpc::mission::ProgressDataOrMission* _msg = _internal_mutable_progress_data();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.progress_data)
+  return _msg;
+}
+inline void DownloadMissionWithProgressResponse::set_allocated_progress_data(::mavsdk::rpc::mission::ProgressDataOrMission* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.progress_data_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+
+  _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::mission::ProgressDataOrMission*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.DownloadMissionWithProgressResponse.progress_data)
 }
 
 // -------------------------------------------------------------------
@@ -8806,123 +7848,99 @@ inline void DownloadMissionWithProgressResponse::set_allocated_progress_data(
 // CancelMissionDownloadResponse
 
 // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-inline bool CancelMissionDownloadResponse::has_mission_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
-    return value;
+inline bool CancelMissionDownloadResponse::has_mission_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
+  return value;
 }
-inline void CancelMissionDownloadResponse::clear_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ != nullptr)
-        _impl_.mission_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void CancelMissionDownloadResponse::clear_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ != nullptr) _impl_.mission_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-CancelMissionDownloadResponse::_internal_mission_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(
-                              ::mavsdk::rpc::mission::_MissionResult_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionResult& CancelMissionDownloadResponse::_internal_mission_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(::mavsdk::rpc::mission::_MissionResult_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-CancelMissionDownloadResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.CancelMissionDownloadResponse.mission_result)
-    return _internal_mission_result();
+inline const ::mavsdk::rpc::mission::MissionResult& CancelMissionDownloadResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.CancelMissionDownloadResponse.mission_result)
+  return _internal_mission_result();
 }
-inline void CancelMissionDownloadResponse::unsafe_arena_set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
-    }
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.CancelMissionDownloadResponse.mission_result)
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-CancelMissionDownloadResponse::release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-CancelMissionDownloadResponse::unsafe_arena_release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.CancelMissionDownloadResponse.mission_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-CancelMissionDownloadResponse::_internal_mutable_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(
-                GetArena());
-        _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
-    }
-    return _impl_.mission_result_;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-CancelMissionDownloadResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void CancelMissionDownloadResponse::unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
+  }
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.CancelMissionDownloadResponse.mission_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.CancelMissionDownloadResponse.mission_result)
 }
-inline void CancelMissionDownloadResponse::set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_result_);
-    }
+inline ::mavsdk::rpc::mission::MissionResult* CancelMissionDownloadResponse::release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionResult* CancelMissionDownloadResponse::unsafe_arena_release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.CancelMissionDownloadResponse.mission_result)
 
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.CancelMissionDownloadResponse.mission_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* CancelMissionDownloadResponse::_internal_mutable_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(GetArena());
+    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
+  }
+  return _impl_.mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* CancelMissionDownloadResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.CancelMissionDownloadResponse.mission_result)
+  return _msg;
+}
+inline void CancelMissionDownloadResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.CancelMissionDownloadResponse.mission_result)
 }
 
 // -------------------------------------------------------------------
@@ -8934,122 +7952,99 @@ inline void CancelMissionDownloadResponse::set_allocated_mission_result(
 // StartMissionResponse
 
 // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-inline bool StartMissionResponse::has_mission_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
-    return value;
+inline bool StartMissionResponse::has_mission_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
+  return value;
 }
-inline void StartMissionResponse::clear_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ != nullptr)
-        _impl_.mission_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void StartMissionResponse::clear_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ != nullptr) _impl_.mission_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-StartMissionResponse::_internal_mission_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(
-                              ::mavsdk::rpc::mission::_MissionResult_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionResult& StartMissionResponse::_internal_mission_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(::mavsdk::rpc::mission::_MissionResult_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-StartMissionResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.StartMissionResponse.mission_result)
-    return _internal_mission_result();
+inline const ::mavsdk::rpc::mission::MissionResult& StartMissionResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.StartMissionResponse.mission_result)
+  return _internal_mission_result();
 }
-inline void StartMissionResponse::unsafe_arena_set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
-    }
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.StartMissionResponse.mission_result)
-}
-inline ::mavsdk::rpc::mission::MissionResult* StartMissionResponse::release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-StartMissionResponse::unsafe_arena_release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.StartMissionResponse.mission_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-StartMissionResponse::_internal_mutable_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(
-                GetArena());
-        _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
-    }
-    return _impl_.mission_result_;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-StartMissionResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void StartMissionResponse::unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
+  }
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.StartMissionResponse.mission_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.StartMissionResponse.mission_result)
 }
-inline void
-StartMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_result_);
-    }
+inline ::mavsdk::rpc::mission::MissionResult* StartMissionResponse::release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionResult* StartMissionResponse::unsafe_arena_release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.StartMissionResponse.mission_result)
 
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.StartMissionResponse.mission_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* StartMissionResponse::_internal_mutable_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(GetArena());
+    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
+  }
+  return _impl_.mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* StartMissionResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.StartMissionResponse.mission_result)
+  return _msg;
+}
+inline void StartMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.StartMissionResponse.mission_result)
 }
 
 // -------------------------------------------------------------------
@@ -9061,122 +8056,99 @@ StartMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::Missi
 // PauseMissionResponse
 
 // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-inline bool PauseMissionResponse::has_mission_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
-    return value;
+inline bool PauseMissionResponse::has_mission_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
+  return value;
 }
-inline void PauseMissionResponse::clear_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ != nullptr)
-        _impl_.mission_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void PauseMissionResponse::clear_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ != nullptr) _impl_.mission_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-PauseMissionResponse::_internal_mission_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(
-                              ::mavsdk::rpc::mission::_MissionResult_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionResult& PauseMissionResponse::_internal_mission_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(::mavsdk::rpc::mission::_MissionResult_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-PauseMissionResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.PauseMissionResponse.mission_result)
-    return _internal_mission_result();
+inline const ::mavsdk::rpc::mission::MissionResult& PauseMissionResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.PauseMissionResponse.mission_result)
+  return _internal_mission_result();
 }
-inline void PauseMissionResponse::unsafe_arena_set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
-    }
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.PauseMissionResponse.mission_result)
-}
-inline ::mavsdk::rpc::mission::MissionResult* PauseMissionResponse::release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-PauseMissionResponse::unsafe_arena_release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.PauseMissionResponse.mission_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-PauseMissionResponse::_internal_mutable_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(
-                GetArena());
-        _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
-    }
-    return _impl_.mission_result_;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-PauseMissionResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void PauseMissionResponse::unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
+  }
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.PauseMissionResponse.mission_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.PauseMissionResponse.mission_result)
 }
-inline void
-PauseMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_result_);
-    }
+inline ::mavsdk::rpc::mission::MissionResult* PauseMissionResponse::release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionResult* PauseMissionResponse::unsafe_arena_release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.PauseMissionResponse.mission_result)
 
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.PauseMissionResponse.mission_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* PauseMissionResponse::_internal_mutable_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(GetArena());
+    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
+  }
+  return _impl_.mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* PauseMissionResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.PauseMissionResponse.mission_result)
+  return _msg;
+}
+inline void PauseMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.PauseMissionResponse.mission_result)
 }
 
 // -------------------------------------------------------------------
@@ -9188,122 +8160,99 @@ PauseMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::Missi
 // ClearMissionResponse
 
 // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-inline bool ClearMissionResponse::has_mission_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
-    return value;
+inline bool ClearMissionResponse::has_mission_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
+  return value;
 }
-inline void ClearMissionResponse::clear_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ != nullptr)
-        _impl_.mission_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void ClearMissionResponse::clear_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ != nullptr) _impl_.mission_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-ClearMissionResponse::_internal_mission_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(
-                              ::mavsdk::rpc::mission::_MissionResult_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionResult& ClearMissionResponse::_internal_mission_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(::mavsdk::rpc::mission::_MissionResult_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-ClearMissionResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.ClearMissionResponse.mission_result)
-    return _internal_mission_result();
+inline const ::mavsdk::rpc::mission::MissionResult& ClearMissionResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.ClearMissionResponse.mission_result)
+  return _internal_mission_result();
 }
-inline void ClearMissionResponse::unsafe_arena_set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
-    }
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.ClearMissionResponse.mission_result)
-}
-inline ::mavsdk::rpc::mission::MissionResult* ClearMissionResponse::release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-ClearMissionResponse::unsafe_arena_release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.ClearMissionResponse.mission_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-ClearMissionResponse::_internal_mutable_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(
-                GetArena());
-        _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
-    }
-    return _impl_.mission_result_;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-ClearMissionResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void ClearMissionResponse::unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
+  }
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.ClearMissionResponse.mission_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.ClearMissionResponse.mission_result)
 }
-inline void
-ClearMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_result_);
-    }
+inline ::mavsdk::rpc::mission::MissionResult* ClearMissionResponse::release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionResult* ClearMissionResponse::unsafe_arena_release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.ClearMissionResponse.mission_result)
 
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.ClearMissionResponse.mission_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* ClearMissionResponse::_internal_mutable_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(GetArena());
+    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
+  }
+  return _impl_.mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* ClearMissionResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.ClearMissionResponse.mission_result)
+  return _msg;
+}
+inline void ClearMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.ClearMissionResponse.mission_result)
 }
 
 // -------------------------------------------------------------------
@@ -9311,30 +8260,25 @@ ClearMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::Missi
 // SetCurrentMissionItemRequest
 
 // int32 index = 1;
-inline void SetCurrentMissionItemRequest::clear_index()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.index_ = 0;
+inline void SetCurrentMissionItemRequest::clear_index() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.index_ = 0;
 }
-inline ::int32_t SetCurrentMissionItemRequest::index() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.SetCurrentMissionItemRequest.index)
-    return _internal_index();
+inline ::int32_t SetCurrentMissionItemRequest::index() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.SetCurrentMissionItemRequest.index)
+  return _internal_index();
 }
-inline void SetCurrentMissionItemRequest::set_index(::int32_t value)
-{
-    _internal_set_index(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.SetCurrentMissionItemRequest.index)
+inline void SetCurrentMissionItemRequest::set_index(::int32_t value) {
+  _internal_set_index(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.SetCurrentMissionItemRequest.index)
 }
-inline ::int32_t SetCurrentMissionItemRequest::_internal_index() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.index_;
+inline ::int32_t SetCurrentMissionItemRequest::_internal_index() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.index_;
 }
-inline void SetCurrentMissionItemRequest::_internal_set_index(::int32_t value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.index_ = value;
+inline void SetCurrentMissionItemRequest::_internal_set_index(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.index_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -9342,123 +8286,99 @@ inline void SetCurrentMissionItemRequest::_internal_set_index(::int32_t value)
 // SetCurrentMissionItemResponse
 
 // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-inline bool SetCurrentMissionItemResponse::has_mission_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
-    return value;
+inline bool SetCurrentMissionItemResponse::has_mission_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
+  return value;
 }
-inline void SetCurrentMissionItemResponse::clear_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ != nullptr)
-        _impl_.mission_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void SetCurrentMissionItemResponse::clear_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ != nullptr) _impl_.mission_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-SetCurrentMissionItemResponse::_internal_mission_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(
-                              ::mavsdk::rpc::mission::_MissionResult_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionResult& SetCurrentMissionItemResponse::_internal_mission_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(::mavsdk::rpc::mission::_MissionResult_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-SetCurrentMissionItemResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.SetCurrentMissionItemResponse.mission_result)
-    return _internal_mission_result();
+inline const ::mavsdk::rpc::mission::MissionResult& SetCurrentMissionItemResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.SetCurrentMissionItemResponse.mission_result)
+  return _internal_mission_result();
 }
-inline void SetCurrentMissionItemResponse::unsafe_arena_set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
-    }
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.SetCurrentMissionItemResponse.mission_result)
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-SetCurrentMissionItemResponse::release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-SetCurrentMissionItemResponse::unsafe_arena_release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.SetCurrentMissionItemResponse.mission_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-SetCurrentMissionItemResponse::_internal_mutable_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(
-                GetArena());
-        _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
-    }
-    return _impl_.mission_result_;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-SetCurrentMissionItemResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void SetCurrentMissionItemResponse::unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
+  }
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.SetCurrentMissionItemResponse.mission_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.SetCurrentMissionItemResponse.mission_result)
 }
-inline void SetCurrentMissionItemResponse::set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_result_);
-    }
+inline ::mavsdk::rpc::mission::MissionResult* SetCurrentMissionItemResponse::release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionResult* SetCurrentMissionItemResponse::unsafe_arena_release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.SetCurrentMissionItemResponse.mission_result)
 
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.SetCurrentMissionItemResponse.mission_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* SetCurrentMissionItemResponse::_internal_mutable_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(GetArena());
+    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
+  }
+  return _impl_.mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* SetCurrentMissionItemResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.SetCurrentMissionItemResponse.mission_result)
+  return _msg;
+}
+inline void SetCurrentMissionItemResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.SetCurrentMissionItemResponse.mission_result)
 }
 
 // -------------------------------------------------------------------
@@ -9470,149 +8390,121 @@ inline void SetCurrentMissionItemResponse::set_allocated_mission_result(
 // IsMissionFinishedResponse
 
 // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-inline bool IsMissionFinishedResponse::has_mission_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
-    return value;
+inline bool IsMissionFinishedResponse::has_mission_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
+  return value;
 }
-inline void IsMissionFinishedResponse::clear_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ != nullptr)
-        _impl_.mission_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void IsMissionFinishedResponse::clear_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ != nullptr) _impl_.mission_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-IsMissionFinishedResponse::_internal_mission_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(
-                              ::mavsdk::rpc::mission::_MissionResult_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionResult& IsMissionFinishedResponse::_internal_mission_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(::mavsdk::rpc::mission::_MissionResult_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-IsMissionFinishedResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.IsMissionFinishedResponse.mission_result)
-    return _internal_mission_result();
+inline const ::mavsdk::rpc::mission::MissionResult& IsMissionFinishedResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.IsMissionFinishedResponse.mission_result)
+  return _internal_mission_result();
 }
-inline void IsMissionFinishedResponse::unsafe_arena_set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
-    }
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.IsMissionFinishedResponse.mission_result)
-}
-inline ::mavsdk::rpc::mission::MissionResult* IsMissionFinishedResponse::release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-IsMissionFinishedResponse::unsafe_arena_release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.IsMissionFinishedResponse.mission_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-IsMissionFinishedResponse::_internal_mutable_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(
-                GetArena());
-        _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
-    }
-    return _impl_.mission_result_;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-IsMissionFinishedResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void IsMissionFinishedResponse::unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
+  }
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.IsMissionFinishedResponse.mission_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.IsMissionFinishedResponse.mission_result)
 }
-inline void IsMissionFinishedResponse::set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_result_);
-    }
+inline ::mavsdk::rpc::mission::MissionResult* IsMissionFinishedResponse::release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionResult* IsMissionFinishedResponse::unsafe_arena_release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.IsMissionFinishedResponse.mission_result)
 
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.IsMissionFinishedResponse.mission_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* IsMissionFinishedResponse::_internal_mutable_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(GetArena());
+    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
+  }
+  return _impl_.mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* IsMissionFinishedResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.IsMissionFinishedResponse.mission_result)
+  return _msg;
+}
+inline void IsMissionFinishedResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.IsMissionFinishedResponse.mission_result)
 }
 
 // bool is_finished = 2;
-inline void IsMissionFinishedResponse::clear_is_finished()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.is_finished_ = false;
+inline void IsMissionFinishedResponse::clear_is_finished() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_finished_ = false;
 }
-inline bool IsMissionFinishedResponse::is_finished() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.IsMissionFinishedResponse.is_finished)
-    return _internal_is_finished();
+inline bool IsMissionFinishedResponse::is_finished() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.IsMissionFinishedResponse.is_finished)
+  return _internal_is_finished();
 }
-inline void IsMissionFinishedResponse::set_is_finished(bool value)
-{
-    _internal_set_is_finished(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.IsMissionFinishedResponse.is_finished)
+inline void IsMissionFinishedResponse::set_is_finished(bool value) {
+  _internal_set_is_finished(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.IsMissionFinishedResponse.is_finished)
 }
-inline bool IsMissionFinishedResponse::_internal_is_finished() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.is_finished_;
+inline bool IsMissionFinishedResponse::_internal_is_finished() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.is_finished_;
 }
-inline void IsMissionFinishedResponse::_internal_set_is_finished(bool value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.is_finished_ = value;
+inline void IsMissionFinishedResponse::_internal_set_is_finished(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_finished_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -9624,122 +8516,99 @@ inline void IsMissionFinishedResponse::_internal_set_is_finished(bool value)
 // MissionProgressResponse
 
 // .mavsdk.rpc.mission.MissionProgress mission_progress = 1;
-inline bool MissionProgressResponse::has_mission_progress() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_progress_ != nullptr);
-    return value;
+inline bool MissionProgressResponse::has_mission_progress() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_progress_ != nullptr);
+  return value;
 }
-inline void MissionProgressResponse::clear_mission_progress()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_progress_ != nullptr)
-        _impl_.mission_progress_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void MissionProgressResponse::clear_mission_progress() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_progress_ != nullptr) _impl_.mission_progress_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::mission::MissionProgress&
-MissionProgressResponse::_internal_mission_progress() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionProgress* p = _impl_.mission_progress_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionProgress&>(
-                              ::mavsdk::rpc::mission::_MissionProgress_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionProgress& MissionProgressResponse::_internal_mission_progress() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionProgress* p = _impl_.mission_progress_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionProgress&>(::mavsdk::rpc::mission::_MissionProgress_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionProgress&
-MissionProgressResponse::mission_progress() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionProgressResponse.mission_progress)
-    return _internal_mission_progress();
+inline const ::mavsdk::rpc::mission::MissionProgress& MissionProgressResponse::mission_progress() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionProgressResponse.mission_progress)
+  return _internal_mission_progress();
 }
-inline void MissionProgressResponse::unsafe_arena_set_allocated_mission_progress(
-    ::mavsdk::rpc::mission::MissionProgress* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_progress_);
-    }
-    _impl_.mission_progress_ = reinterpret_cast<::mavsdk::rpc::mission::MissionProgress*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.MissionProgressResponse.mission_progress)
-}
-inline ::mavsdk::rpc::mission::MissionProgress* MissionProgressResponse::release_mission_progress()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionProgress* released = _impl_.mission_progress_;
-    _impl_.mission_progress_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionProgress*
-MissionProgressResponse::unsafe_arena_release_mission_progress()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.MissionProgressResponse.mission_progress)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionProgress* temp = _impl_.mission_progress_;
-    _impl_.mission_progress_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionProgress*
-MissionProgressResponse::_internal_mutable_mission_progress()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_progress_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionProgress>(
-                GetArena());
-        _impl_.mission_progress_ = reinterpret_cast<::mavsdk::rpc::mission::MissionProgress*>(p);
-    }
-    return _impl_.mission_progress_;
-}
-inline ::mavsdk::rpc::mission::MissionProgress*
-MissionProgressResponse::mutable_mission_progress() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void MissionProgressResponse::unsafe_arena_set_allocated_mission_progress(::mavsdk::rpc::mission::MissionProgress* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_progress_);
+  }
+  _impl_.mission_progress_ = reinterpret_cast<::mavsdk::rpc::mission::MissionProgress*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::mission::MissionProgress* _msg = _internal_mutable_mission_progress();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.MissionProgressResponse.mission_progress)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.MissionProgressResponse.mission_progress)
 }
-inline void MissionProgressResponse::set_allocated_mission_progress(
-    ::mavsdk::rpc::mission::MissionProgress* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_progress_);
-    }
+inline ::mavsdk::rpc::mission::MissionProgress* MissionProgressResponse::release_mission_progress() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionProgress* released = _impl_.mission_progress_;
+  _impl_.mission_progress_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionProgress* MissionProgressResponse::unsafe_arena_release_mission_progress() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.MissionProgressResponse.mission_progress)
 
-    _impl_.mission_progress_ = reinterpret_cast<::mavsdk::rpc::mission::MissionProgress*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.MissionProgressResponse.mission_progress)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionProgress* temp = _impl_.mission_progress_;
+  _impl_.mission_progress_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionProgress* MissionProgressResponse::_internal_mutable_mission_progress() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_progress_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionProgress>(GetArena());
+    _impl_.mission_progress_ = reinterpret_cast<::mavsdk::rpc::mission::MissionProgress*>(p);
+  }
+  return _impl_.mission_progress_;
+}
+inline ::mavsdk::rpc::mission::MissionProgress* MissionProgressResponse::mutable_mission_progress() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission::MissionProgress* _msg = _internal_mutable_mission_progress();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.MissionProgressResponse.mission_progress)
+  return _msg;
+}
+inline void MissionProgressResponse::set_allocated_mission_progress(::mavsdk::rpc::mission::MissionProgress* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_progress_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_progress_ = reinterpret_cast<::mavsdk::rpc::mission::MissionProgress*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.MissionProgressResponse.mission_progress)
 }
 
 // -------------------------------------------------------------------
@@ -9751,150 +8620,121 @@ inline void MissionProgressResponse::set_allocated_mission_progress(
 // GetReturnToLaunchAfterMissionResponse
 
 // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-inline bool GetReturnToLaunchAfterMissionResponse::has_mission_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
-    return value;
+inline bool GetReturnToLaunchAfterMissionResponse::has_mission_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
+  return value;
 }
-inline void GetReturnToLaunchAfterMissionResponse::clear_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ != nullptr)
-        _impl_.mission_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void GetReturnToLaunchAfterMissionResponse::clear_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ != nullptr) _impl_.mission_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-GetReturnToLaunchAfterMissionResponse::_internal_mission_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(
-                              ::mavsdk::rpc::mission::_MissionResult_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionResult& GetReturnToLaunchAfterMissionResponse::_internal_mission_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(::mavsdk::rpc::mission::_MissionResult_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-GetReturnToLaunchAfterMissionResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.mission_result)
-    return _internal_mission_result();
+inline const ::mavsdk::rpc::mission::MissionResult& GetReturnToLaunchAfterMissionResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.mission_result)
+  return _internal_mission_result();
 }
-inline void GetReturnToLaunchAfterMissionResponse::unsafe_arena_set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
-    }
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.mission_result)
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-GetReturnToLaunchAfterMissionResponse::release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-GetReturnToLaunchAfterMissionResponse::unsafe_arena_release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.mission_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-GetReturnToLaunchAfterMissionResponse::_internal_mutable_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(
-                GetArena());
-        _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
-    }
-    return _impl_.mission_result_;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-GetReturnToLaunchAfterMissionResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void GetReturnToLaunchAfterMissionResponse::unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
+  }
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.mission_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.mission_result)
 }
-inline void GetReturnToLaunchAfterMissionResponse::set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_result_);
-    }
+inline ::mavsdk::rpc::mission::MissionResult* GetReturnToLaunchAfterMissionResponse::release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionResult* GetReturnToLaunchAfterMissionResponse::unsafe_arena_release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.mission_result)
 
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.mission_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* GetReturnToLaunchAfterMissionResponse::_internal_mutable_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(GetArena());
+    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
+  }
+  return _impl_.mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* GetReturnToLaunchAfterMissionResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.mission_result)
+  return _msg;
+}
+inline void GetReturnToLaunchAfterMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.mission_result)
 }
 
 // bool enable = 2;
-inline void GetReturnToLaunchAfterMissionResponse::clear_enable()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.enable_ = false;
+inline void GetReturnToLaunchAfterMissionResponse::clear_enable() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_ = false;
 }
-inline bool GetReturnToLaunchAfterMissionResponse::enable() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.enable)
-    return _internal_enable();
+inline bool GetReturnToLaunchAfterMissionResponse::enable() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.enable)
+  return _internal_enable();
 }
-inline void GetReturnToLaunchAfterMissionResponse::set_enable(bool value)
-{
-    _internal_set_enable(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.enable)
+inline void GetReturnToLaunchAfterMissionResponse::set_enable(bool value) {
+  _internal_set_enable(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.GetReturnToLaunchAfterMissionResponse.enable)
 }
-inline bool GetReturnToLaunchAfterMissionResponse::_internal_enable() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.enable_;
+inline bool GetReturnToLaunchAfterMissionResponse::_internal_enable() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_;
 }
-inline void GetReturnToLaunchAfterMissionResponse::_internal_set_enable(bool value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.enable_ = value;
+inline void GetReturnToLaunchAfterMissionResponse::_internal_set_enable(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -9902,30 +8742,25 @@ inline void GetReturnToLaunchAfterMissionResponse::_internal_set_enable(bool val
 // SetReturnToLaunchAfterMissionRequest
 
 // bool enable = 1;
-inline void SetReturnToLaunchAfterMissionRequest::clear_enable()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.enable_ = false;
+inline void SetReturnToLaunchAfterMissionRequest::clear_enable() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_ = false;
 }
-inline bool SetReturnToLaunchAfterMissionRequest::enable() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionRequest.enable)
-    return _internal_enable();
+inline bool SetReturnToLaunchAfterMissionRequest::enable() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionRequest.enable)
+  return _internal_enable();
 }
-inline void SetReturnToLaunchAfterMissionRequest::set_enable(bool value)
-{
-    _internal_set_enable(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionRequest.enable)
+inline void SetReturnToLaunchAfterMissionRequest::set_enable(bool value) {
+  _internal_set_enable(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionRequest.enable)
 }
-inline bool SetReturnToLaunchAfterMissionRequest::_internal_enable() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.enable_;
+inline bool SetReturnToLaunchAfterMissionRequest::_internal_enable() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.enable_;
 }
-inline void SetReturnToLaunchAfterMissionRequest::_internal_set_enable(bool value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.enable_ = value;
+inline void SetReturnToLaunchAfterMissionRequest::_internal_set_enable(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.enable_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -9933,512 +8768,411 @@ inline void SetReturnToLaunchAfterMissionRequest::_internal_set_enable(bool valu
 // SetReturnToLaunchAfterMissionResponse
 
 // .mavsdk.rpc.mission.MissionResult mission_result = 1;
-inline bool SetReturnToLaunchAfterMissionResponse::has_mission_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
-    return value;
+inline bool SetReturnToLaunchAfterMissionResponse::has_mission_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_result_ != nullptr);
+  return value;
 }
-inline void SetReturnToLaunchAfterMissionResponse::clear_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ != nullptr)
-        _impl_.mission_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void SetReturnToLaunchAfterMissionResponse::clear_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ != nullptr) _impl_.mission_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-SetReturnToLaunchAfterMissionResponse::_internal_mission_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(
-                              ::mavsdk::rpc::mission::_MissionResult_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionResult& SetReturnToLaunchAfterMissionResponse::_internal_mission_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionResult* p = _impl_.mission_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionResult&>(::mavsdk::rpc::mission::_MissionResult_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionResult&
-SetReturnToLaunchAfterMissionResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse.mission_result)
-    return _internal_mission_result();
+inline const ::mavsdk::rpc::mission::MissionResult& SetReturnToLaunchAfterMissionResponse::mission_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse.mission_result)
+  return _internal_mission_result();
 }
-inline void SetReturnToLaunchAfterMissionResponse::unsafe_arena_set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
-    }
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse.mission_result)
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-SetReturnToLaunchAfterMissionResponse::release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-SetReturnToLaunchAfterMissionResponse::unsafe_arena_release_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse.mission_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
-    _impl_.mission_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-SetReturnToLaunchAfterMissionResponse::_internal_mutable_mission_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_result_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(
-                GetArena());
-        _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
-    }
-    return _impl_.mission_result_;
-}
-inline ::mavsdk::rpc::mission::MissionResult*
-SetReturnToLaunchAfterMissionResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void SetReturnToLaunchAfterMissionResponse::unsafe_arena_set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_result_);
+  }
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse.mission_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse.mission_result)
 }
-inline void SetReturnToLaunchAfterMissionResponse::set_allocated_mission_result(
-    ::mavsdk::rpc::mission::MissionResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_result_);
-    }
+inline ::mavsdk::rpc::mission::MissionResult* SetReturnToLaunchAfterMissionResponse::release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* released = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionResult* SetReturnToLaunchAfterMissionResponse::unsafe_arena_release_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse.mission_result)
 
-    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse.mission_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* temp = _impl_.mission_result_;
+  _impl_.mission_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionResult* SetReturnToLaunchAfterMissionResponse::_internal_mutable_mission_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionResult>(GetArena());
+    _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(p);
+  }
+  return _impl_.mission_result_;
+}
+inline ::mavsdk::rpc::mission::MissionResult* SetReturnToLaunchAfterMissionResponse::mutable_mission_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission::MissionResult* _msg = _internal_mutable_mission_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse.mission_result)
+  return _msg;
+}
+inline void SetReturnToLaunchAfterMissionResponse::set_allocated_mission_result(::mavsdk::rpc::mission::MissionResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_result_ = reinterpret_cast<::mavsdk::rpc::mission::MissionResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.SetReturnToLaunchAfterMissionResponse.mission_result)
 }
 
 // -------------------------------------------------------------------
 
 // MissionItem
 
-// double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) =
-// 1e-07];
-inline void MissionItem::clear_latitude_deg()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.latitude_deg_ = 0;
+// double latitude_deg = 1 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 1e-07];
+inline void MissionItem::clear_latitude_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.latitude_deg_ = 0;
 }
-inline double MissionItem::latitude_deg() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.latitude_deg)
-    return _internal_latitude_deg();
+inline double MissionItem::latitude_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.latitude_deg)
+  return _internal_latitude_deg();
 }
-inline void MissionItem::set_latitude_deg(double value)
-{
-    _internal_set_latitude_deg(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.latitude_deg)
+inline void MissionItem::set_latitude_deg(double value) {
+  _internal_set_latitude_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.latitude_deg)
 }
-inline double MissionItem::_internal_latitude_deg() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.latitude_deg_;
+inline double MissionItem::_internal_latitude_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.latitude_deg_;
 }
-inline void MissionItem::_internal_set_latitude_deg(double value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.latitude_deg_ = value;
+inline void MissionItem::_internal_set_latitude_deg(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.latitude_deg_ = value;
 }
 
-// double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) =
-// 1e-07];
-inline void MissionItem::clear_longitude_deg()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.longitude_deg_ = 0;
+// double longitude_deg = 2 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 1e-07];
+inline void MissionItem::clear_longitude_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.longitude_deg_ = 0;
 }
-inline double MissionItem::longitude_deg() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.longitude_deg)
-    return _internal_longitude_deg();
+inline double MissionItem::longitude_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.longitude_deg)
+  return _internal_longitude_deg();
 }
-inline void MissionItem::set_longitude_deg(double value)
-{
-    _internal_set_longitude_deg(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.longitude_deg)
+inline void MissionItem::set_longitude_deg(double value) {
+  _internal_set_longitude_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.longitude_deg)
 }
-inline double MissionItem::_internal_longitude_deg() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.longitude_deg_;
+inline double MissionItem::_internal_longitude_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.longitude_deg_;
 }
-inline void MissionItem::_internal_set_longitude_deg(double value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.longitude_deg_ = value;
+inline void MissionItem::_internal_set_longitude_deg(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.longitude_deg_ = value;
 }
 
 // float relative_altitude_m = 3 [(.mavsdk.options.default_value) = "NaN"];
-inline void MissionItem::clear_relative_altitude_m()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.relative_altitude_m_ = 0;
+inline void MissionItem::clear_relative_altitude_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.relative_altitude_m_ = 0;
 }
-inline float MissionItem::relative_altitude_m() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.relative_altitude_m)
-    return _internal_relative_altitude_m();
+inline float MissionItem::relative_altitude_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.relative_altitude_m)
+  return _internal_relative_altitude_m();
 }
-inline void MissionItem::set_relative_altitude_m(float value)
-{
-    _internal_set_relative_altitude_m(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.relative_altitude_m)
+inline void MissionItem::set_relative_altitude_m(float value) {
+  _internal_set_relative_altitude_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.relative_altitude_m)
 }
-inline float MissionItem::_internal_relative_altitude_m() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.relative_altitude_m_;
+inline float MissionItem::_internal_relative_altitude_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.relative_altitude_m_;
 }
-inline void MissionItem::_internal_set_relative_altitude_m(float value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.relative_altitude_m_ = value;
+inline void MissionItem::_internal_set_relative_altitude_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.relative_altitude_m_ = value;
 }
 
 // float speed_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
-inline void MissionItem::clear_speed_m_s()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.speed_m_s_ = 0;
+inline void MissionItem::clear_speed_m_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.speed_m_s_ = 0;
 }
-inline float MissionItem::speed_m_s() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.speed_m_s)
-    return _internal_speed_m_s();
+inline float MissionItem::speed_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.speed_m_s)
+  return _internal_speed_m_s();
 }
-inline void MissionItem::set_speed_m_s(float value)
-{
-    _internal_set_speed_m_s(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.speed_m_s)
+inline void MissionItem::set_speed_m_s(float value) {
+  _internal_set_speed_m_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.speed_m_s)
 }
-inline float MissionItem::_internal_speed_m_s() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.speed_m_s_;
+inline float MissionItem::_internal_speed_m_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.speed_m_s_;
 }
-inline void MissionItem::_internal_set_speed_m_s(float value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.speed_m_s_ = value;
+inline void MissionItem::_internal_set_speed_m_s(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.speed_m_s_ = value;
 }
 
 // bool is_fly_through = 5 [(.mavsdk.options.default_value) = "false"];
-inline void MissionItem::clear_is_fly_through()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.is_fly_through_ = false;
+inline void MissionItem::clear_is_fly_through() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_fly_through_ = false;
 }
-inline bool MissionItem::is_fly_through() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.is_fly_through)
-    return _internal_is_fly_through();
+inline bool MissionItem::is_fly_through() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.is_fly_through)
+  return _internal_is_fly_through();
 }
-inline void MissionItem::set_is_fly_through(bool value)
-{
-    _internal_set_is_fly_through(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.is_fly_through)
+inline void MissionItem::set_is_fly_through(bool value) {
+  _internal_set_is_fly_through(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.is_fly_through)
 }
-inline bool MissionItem::_internal_is_fly_through() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.is_fly_through_;
+inline bool MissionItem::_internal_is_fly_through() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.is_fly_through_;
 }
-inline void MissionItem::_internal_set_is_fly_through(bool value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.is_fly_through_ = value;
+inline void MissionItem::_internal_set_is_fly_through(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.is_fly_through_ = value;
 }
 
-// float gimbal_pitch_deg = 6 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) =
-// 0.0001];
-inline void MissionItem::clear_gimbal_pitch_deg()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.gimbal_pitch_deg_ = 0;
+// float gimbal_pitch_deg = 6 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 0.0001];
+inline void MissionItem::clear_gimbal_pitch_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.gimbal_pitch_deg_ = 0;
 }
-inline float MissionItem::gimbal_pitch_deg() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.gimbal_pitch_deg)
-    return _internal_gimbal_pitch_deg();
+inline float MissionItem::gimbal_pitch_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.gimbal_pitch_deg)
+  return _internal_gimbal_pitch_deg();
 }
-inline void MissionItem::set_gimbal_pitch_deg(float value)
-{
-    _internal_set_gimbal_pitch_deg(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.gimbal_pitch_deg)
+inline void MissionItem::set_gimbal_pitch_deg(float value) {
+  _internal_set_gimbal_pitch_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.gimbal_pitch_deg)
 }
-inline float MissionItem::_internal_gimbal_pitch_deg() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.gimbal_pitch_deg_;
+inline float MissionItem::_internal_gimbal_pitch_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.gimbal_pitch_deg_;
 }
-inline void MissionItem::_internal_set_gimbal_pitch_deg(float value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.gimbal_pitch_deg_ = value;
+inline void MissionItem::_internal_set_gimbal_pitch_deg(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.gimbal_pitch_deg_ = value;
 }
 
-// float gimbal_yaw_deg = 7 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) =
-// 0.0001];
-inline void MissionItem::clear_gimbal_yaw_deg()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.gimbal_yaw_deg_ = 0;
+// float gimbal_yaw_deg = 7 [(.mavsdk.options.default_value) = "NaN", (.mavsdk.options.epsilon) = 0.0001];
+inline void MissionItem::clear_gimbal_yaw_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.gimbal_yaw_deg_ = 0;
 }
-inline float MissionItem::gimbal_yaw_deg() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.gimbal_yaw_deg)
-    return _internal_gimbal_yaw_deg();
+inline float MissionItem::gimbal_yaw_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.gimbal_yaw_deg)
+  return _internal_gimbal_yaw_deg();
 }
-inline void MissionItem::set_gimbal_yaw_deg(float value)
-{
-    _internal_set_gimbal_yaw_deg(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.gimbal_yaw_deg)
+inline void MissionItem::set_gimbal_yaw_deg(float value) {
+  _internal_set_gimbal_yaw_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.gimbal_yaw_deg)
 }
-inline float MissionItem::_internal_gimbal_yaw_deg() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.gimbal_yaw_deg_;
+inline float MissionItem::_internal_gimbal_yaw_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.gimbal_yaw_deg_;
 }
-inline void MissionItem::_internal_set_gimbal_yaw_deg(float value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.gimbal_yaw_deg_ = value;
+inline void MissionItem::_internal_set_gimbal_yaw_deg(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.gimbal_yaw_deg_ = value;
 }
 
 // .mavsdk.rpc.mission.MissionItem.CameraAction camera_action = 8;
-inline void MissionItem::clear_camera_action()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.camera_action_ = 0;
+inline void MissionItem::clear_camera_action() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.camera_action_ = 0;
 }
-inline ::mavsdk::rpc::mission::MissionItem_CameraAction MissionItem::camera_action() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.camera_action)
-    return _internal_camera_action();
+inline ::mavsdk::rpc::mission::MissionItem_CameraAction MissionItem::camera_action() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.camera_action)
+  return _internal_camera_action();
 }
-inline void MissionItem::set_camera_action(::mavsdk::rpc::mission::MissionItem_CameraAction value)
-{
-    _internal_set_camera_action(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.camera_action)
+inline void MissionItem::set_camera_action(::mavsdk::rpc::mission::MissionItem_CameraAction value) {
+  _internal_set_camera_action(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.camera_action)
 }
-inline ::mavsdk::rpc::mission::MissionItem_CameraAction MissionItem::_internal_camera_action() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return static_cast<::mavsdk::rpc::mission::MissionItem_CameraAction>(_impl_.camera_action_);
+inline ::mavsdk::rpc::mission::MissionItem_CameraAction MissionItem::_internal_camera_action() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::mission::MissionItem_CameraAction>(_impl_.camera_action_);
 }
-inline void
-MissionItem::_internal_set_camera_action(::mavsdk::rpc::mission::MissionItem_CameraAction value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.camera_action_ = value;
+inline void MissionItem::_internal_set_camera_action(::mavsdk::rpc::mission::MissionItem_CameraAction value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.camera_action_ = value;
 }
 
 // float loiter_time_s = 9 [(.mavsdk.options.default_value) = "NaN"];
-inline void MissionItem::clear_loiter_time_s()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.loiter_time_s_ = 0;
+inline void MissionItem::clear_loiter_time_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.loiter_time_s_ = 0;
 }
-inline float MissionItem::loiter_time_s() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.loiter_time_s)
-    return _internal_loiter_time_s();
+inline float MissionItem::loiter_time_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.loiter_time_s)
+  return _internal_loiter_time_s();
 }
-inline void MissionItem::set_loiter_time_s(float value)
-{
-    _internal_set_loiter_time_s(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.loiter_time_s)
+inline void MissionItem::set_loiter_time_s(float value) {
+  _internal_set_loiter_time_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.loiter_time_s)
 }
-inline float MissionItem::_internal_loiter_time_s() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.loiter_time_s_;
+inline float MissionItem::_internal_loiter_time_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.loiter_time_s_;
 }
-inline void MissionItem::_internal_set_loiter_time_s(float value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.loiter_time_s_ = value;
+inline void MissionItem::_internal_set_loiter_time_s(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.loiter_time_s_ = value;
 }
 
 // double camera_photo_interval_s = 10 [(.mavsdk.options.default_value) = "1.0"];
-inline void MissionItem::clear_camera_photo_interval_s()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.camera_photo_interval_s_ = 0;
+inline void MissionItem::clear_camera_photo_interval_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.camera_photo_interval_s_ = 0;
 }
-inline double MissionItem::camera_photo_interval_s() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.camera_photo_interval_s)
-    return _internal_camera_photo_interval_s();
+inline double MissionItem::camera_photo_interval_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.camera_photo_interval_s)
+  return _internal_camera_photo_interval_s();
 }
-inline void MissionItem::set_camera_photo_interval_s(double value)
-{
-    _internal_set_camera_photo_interval_s(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.camera_photo_interval_s)
+inline void MissionItem::set_camera_photo_interval_s(double value) {
+  _internal_set_camera_photo_interval_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.camera_photo_interval_s)
 }
-inline double MissionItem::_internal_camera_photo_interval_s() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.camera_photo_interval_s_;
+inline double MissionItem::_internal_camera_photo_interval_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.camera_photo_interval_s_;
 }
-inline void MissionItem::_internal_set_camera_photo_interval_s(double value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.camera_photo_interval_s_ = value;
+inline void MissionItem::_internal_set_camera_photo_interval_s(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.camera_photo_interval_s_ = value;
 }
 
 // float acceptance_radius_m = 11 [(.mavsdk.options.default_value) = "NaN"];
-inline void MissionItem::clear_acceptance_radius_m()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.acceptance_radius_m_ = 0;
+inline void MissionItem::clear_acceptance_radius_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.acceptance_radius_m_ = 0;
 }
-inline float MissionItem::acceptance_radius_m() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.acceptance_radius_m)
-    return _internal_acceptance_radius_m();
+inline float MissionItem::acceptance_radius_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.acceptance_radius_m)
+  return _internal_acceptance_radius_m();
 }
-inline void MissionItem::set_acceptance_radius_m(float value)
-{
-    _internal_set_acceptance_radius_m(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.acceptance_radius_m)
+inline void MissionItem::set_acceptance_radius_m(float value) {
+  _internal_set_acceptance_radius_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.acceptance_radius_m)
 }
-inline float MissionItem::_internal_acceptance_radius_m() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.acceptance_radius_m_;
+inline float MissionItem::_internal_acceptance_radius_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.acceptance_radius_m_;
 }
-inline void MissionItem::_internal_set_acceptance_radius_m(float value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.acceptance_radius_m_ = value;
+inline void MissionItem::_internal_set_acceptance_radius_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.acceptance_radius_m_ = value;
 }
 
 // float yaw_deg = 12 [(.mavsdk.options.default_value) = "NaN"];
-inline void MissionItem::clear_yaw_deg()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.yaw_deg_ = 0;
+inline void MissionItem::clear_yaw_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.yaw_deg_ = 0;
 }
-inline float MissionItem::yaw_deg() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.yaw_deg)
-    return _internal_yaw_deg();
+inline float MissionItem::yaw_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.yaw_deg)
+  return _internal_yaw_deg();
 }
-inline void MissionItem::set_yaw_deg(float value)
-{
-    _internal_set_yaw_deg(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.yaw_deg)
+inline void MissionItem::set_yaw_deg(float value) {
+  _internal_set_yaw_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.yaw_deg)
 }
-inline float MissionItem::_internal_yaw_deg() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.yaw_deg_;
+inline float MissionItem::_internal_yaw_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.yaw_deg_;
 }
-inline void MissionItem::_internal_set_yaw_deg(float value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.yaw_deg_ = value;
+inline void MissionItem::_internal_set_yaw_deg(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.yaw_deg_ = value;
 }
 
 // float camera_photo_distance_m = 13 [(.mavsdk.options.default_value) = "NAN"];
-inline void MissionItem::clear_camera_photo_distance_m()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.camera_photo_distance_m_ = 0;
+inline void MissionItem::clear_camera_photo_distance_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.camera_photo_distance_m_ = 0;
 }
-inline float MissionItem::camera_photo_distance_m() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.camera_photo_distance_m)
-    return _internal_camera_photo_distance_m();
+inline float MissionItem::camera_photo_distance_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.camera_photo_distance_m)
+  return _internal_camera_photo_distance_m();
 }
-inline void MissionItem::set_camera_photo_distance_m(float value)
-{
-    _internal_set_camera_photo_distance_m(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.camera_photo_distance_m)
+inline void MissionItem::set_camera_photo_distance_m(float value) {
+  _internal_set_camera_photo_distance_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.camera_photo_distance_m)
 }
-inline float MissionItem::_internal_camera_photo_distance_m() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.camera_photo_distance_m_;
+inline float MissionItem::_internal_camera_photo_distance_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.camera_photo_distance_m_;
 }
-inline void MissionItem::_internal_set_camera_photo_distance_m(float value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.camera_photo_distance_m_ = value;
+inline void MissionItem::_internal_set_camera_photo_distance_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.camera_photo_distance_m_ = value;
 }
 
 // .mavsdk.rpc.mission.MissionItem.VehicleAction vehicle_action = 14;
-inline void MissionItem::clear_vehicle_action()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.vehicle_action_ = 0;
+inline void MissionItem::clear_vehicle_action() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.vehicle_action_ = 0;
 }
-inline ::mavsdk::rpc::mission::MissionItem_VehicleAction MissionItem::vehicle_action() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.vehicle_action)
-    return _internal_vehicle_action();
+inline ::mavsdk::rpc::mission::MissionItem_VehicleAction MissionItem::vehicle_action() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionItem.vehicle_action)
+  return _internal_vehicle_action();
 }
-inline void MissionItem::set_vehicle_action(::mavsdk::rpc::mission::MissionItem_VehicleAction value)
-{
-    _internal_set_vehicle_action(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.vehicle_action)
+inline void MissionItem::set_vehicle_action(::mavsdk::rpc::mission::MissionItem_VehicleAction value) {
+  _internal_set_vehicle_action(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionItem.vehicle_action)
 }
-inline ::mavsdk::rpc::mission::MissionItem_VehicleAction
-MissionItem::_internal_vehicle_action() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return static_cast<::mavsdk::rpc::mission::MissionItem_VehicleAction>(_impl_.vehicle_action_);
+inline ::mavsdk::rpc::mission::MissionItem_VehicleAction MissionItem::_internal_vehicle_action() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::mission::MissionItem_VehicleAction>(_impl_.vehicle_action_);
 }
-inline void
-MissionItem::_internal_set_vehicle_action(::mavsdk::rpc::mission::MissionItem_VehicleAction value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.vehicle_action_ = value;
+inline void MissionItem::_internal_set_vehicle_action(::mavsdk::rpc::mission::MissionItem_VehicleAction value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.vehicle_action_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -10446,63 +9180,52 @@ MissionItem::_internal_set_vehicle_action(::mavsdk::rpc::mission::MissionItem_Ve
 // MissionPlan
 
 // repeated .mavsdk.rpc.mission.MissionItem mission_items = 1;
-inline int MissionPlan::_internal_mission_items_size() const
-{
-    return _internal_mission_items().size();
+inline int MissionPlan::_internal_mission_items_size() const {
+  return _internal_mission_items().size();
 }
-inline int MissionPlan::mission_items_size() const
-{
-    return _internal_mission_items_size();
+inline int MissionPlan::mission_items_size() const {
+  return _internal_mission_items_size();
 }
-inline void MissionPlan::clear_mission_items()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.mission_items_.Clear();
+inline void MissionPlan::clear_mission_items() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.mission_items_.Clear();
 }
-inline ::mavsdk::rpc::mission::MissionItem*
-MissionPlan::mutable_mission_items(int index) ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.MissionPlan.mission_items)
-    return _internal_mutable_mission_items()->Mutable(index);
+inline ::mavsdk::rpc::mission::MissionItem* MissionPlan::mutable_mission_items(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.MissionPlan.mission_items)
+  return _internal_mutable_mission_items()->Mutable(index);
 }
-inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission::MissionItem>*
-MissionPlan::mutable_mission_items() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.mission.MissionPlan.mission_items)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _internal_mutable_mission_items();
+inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission::MissionItem>* MissionPlan::mutable_mission_items()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.mission.MissionPlan.mission_items)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_mission_items();
 }
-inline const ::mavsdk::rpc::mission::MissionItem&
-MissionPlan::mission_items(int index) const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionPlan.mission_items)
-    return _internal_mission_items().Get(index);
+inline const ::mavsdk::rpc::mission::MissionItem& MissionPlan::mission_items(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionPlan.mission_items)
+  return _internal_mission_items().Get(index);
 }
-inline ::mavsdk::rpc::mission::MissionItem*
-MissionPlan::add_mission_items() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::mavsdk::rpc::mission::MissionItem* _add = _internal_mutable_mission_items()->Add();
-    // @@protoc_insertion_point(field_add:mavsdk.rpc.mission.MissionPlan.mission_items)
-    return _add;
+inline ::mavsdk::rpc::mission::MissionItem* MissionPlan::add_mission_items() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::mavsdk::rpc::mission::MissionItem* _add = _internal_mutable_mission_items()->Add();
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.mission.MissionPlan.mission_items)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission::MissionItem>& MissionPlan::mission_items() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.mission.MissionPlan.mission_items)
+  return _internal_mission_items();
 }
 inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission::MissionItem>&
-MissionPlan::mission_items() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_list:mavsdk.rpc.mission.MissionPlan.mission_items)
-    return _internal_mission_items();
-}
-inline const ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission::MissionItem>&
-MissionPlan::_internal_mission_items() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.mission_items_;
+MissionPlan::_internal_mission_items() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.mission_items_;
 }
 inline ::google::protobuf::RepeatedPtrField<::mavsdk::rpc::mission::MissionItem>*
-MissionPlan::_internal_mutable_mission_items()
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return &_impl_.mission_items_;
+MissionPlan::_internal_mutable_mission_items() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.mission_items_;
 }
 
 // -------------------------------------------------------------------
@@ -10510,57 +9233,47 @@ MissionPlan::_internal_mutable_mission_items()
 // MissionProgress
 
 // int32 current = 1;
-inline void MissionProgress::clear_current()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.current_ = 0;
+inline void MissionProgress::clear_current() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.current_ = 0;
 }
-inline ::int32_t MissionProgress::current() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionProgress.current)
-    return _internal_current();
+inline ::int32_t MissionProgress::current() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionProgress.current)
+  return _internal_current();
 }
-inline void MissionProgress::set_current(::int32_t value)
-{
-    _internal_set_current(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionProgress.current)
+inline void MissionProgress::set_current(::int32_t value) {
+  _internal_set_current(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionProgress.current)
 }
-inline ::int32_t MissionProgress::_internal_current() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.current_;
+inline ::int32_t MissionProgress::_internal_current() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.current_;
 }
-inline void MissionProgress::_internal_set_current(::int32_t value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.current_ = value;
+inline void MissionProgress::_internal_set_current(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.current_ = value;
 }
 
 // int32 total = 2;
-inline void MissionProgress::clear_total()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.total_ = 0;
+inline void MissionProgress::clear_total() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.total_ = 0;
 }
-inline ::int32_t MissionProgress::total() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionProgress.total)
-    return _internal_total();
+inline ::int32_t MissionProgress::total() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionProgress.total)
+  return _internal_total();
 }
-inline void MissionProgress::set_total(::int32_t value)
-{
-    _internal_set_total(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionProgress.total)
+inline void MissionProgress::set_total(::int32_t value) {
+  _internal_set_total(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionProgress.total)
 }
-inline ::int32_t MissionProgress::_internal_total() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.total_;
+inline ::int32_t MissionProgress::_internal_total() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.total_;
 }
-inline void MissionProgress::_internal_set_total(::int32_t value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.total_ = value;
+inline void MissionProgress::_internal_set_total(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.total_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -10568,86 +9281,73 @@ inline void MissionProgress::_internal_set_total(::int32_t value)
 // MissionResult
 
 // .mavsdk.rpc.mission.MissionResult.Result result = 1;
-inline void MissionResult::clear_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_ = 0;
+inline void MissionResult::clear_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_ = 0;
 }
-inline ::mavsdk::rpc::mission::MissionResult_Result MissionResult::result() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionResult.result)
-    return _internal_result();
+inline ::mavsdk::rpc::mission::MissionResult_Result MissionResult::result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionResult.result)
+  return _internal_result();
 }
-inline void MissionResult::set_result(::mavsdk::rpc::mission::MissionResult_Result value)
-{
-    _internal_set_result(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionResult.result)
+inline void MissionResult::set_result(::mavsdk::rpc::mission::MissionResult_Result value) {
+  _internal_set_result(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionResult.result)
 }
-inline ::mavsdk::rpc::mission::MissionResult_Result MissionResult::_internal_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return static_cast<::mavsdk::rpc::mission::MissionResult_Result>(_impl_.result_);
+inline ::mavsdk::rpc::mission::MissionResult_Result MissionResult::_internal_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::mission::MissionResult_Result>(_impl_.result_);
 }
-inline void MissionResult::_internal_set_result(::mavsdk::rpc::mission::MissionResult_Result value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_ = value;
+inline void MissionResult::_internal_set_result(::mavsdk::rpc::mission::MissionResult_Result value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_ = value;
 }
 
 // string result_str = 2;
-inline void MissionResult::clear_result_str()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.ClearToEmpty();
+inline void MissionResult::clear_result_str() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.ClearToEmpty();
 }
-inline const std::string& MissionResult::result_str() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionResult.result_str)
-    return _internal_result_str();
+inline const std::string& MissionResult::result_str() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.MissionResult.result_str)
+  return _internal_result_str();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void MissionResult::set_result_str(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionResult.result_str)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void MissionResult::set_result_str(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.MissionResult.result_str)
 }
-inline std::string* MissionResult::mutable_result_str() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_result_str();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.MissionResult.result_str)
-    return _s;
+inline std::string* MissionResult::mutable_result_str() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_result_str();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.MissionResult.result_str)
+  return _s;
 }
-inline const std::string& MissionResult::_internal_result_str() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.result_str_.Get();
+inline const std::string& MissionResult::_internal_result_str() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.result_str_.Get();
 }
-inline void MissionResult::_internal_set_result_str(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.Set(value, GetArena());
+inline void MissionResult::_internal_set_result_str(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.Set(value, GetArena());
 }
-inline std::string* MissionResult::_internal_mutable_result_str()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.result_str_.Mutable(GetArena());
+inline std::string* MissionResult::_internal_mutable_result_str() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.result_str_.Mutable( GetArena());
 }
-inline std::string* MissionResult::release_result_str()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.MissionResult.result_str)
-    return _impl_.result_str_.Release();
+inline std::string* MissionResult::release_result_str() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.MissionResult.result_str)
+  return _impl_.result_str_.Release();
 }
-inline void MissionResult::set_allocated_result_str(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.result_str_.IsDefault()) {
-        _impl_.result_str_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.MissionResult.result_str)
+inline void MissionResult::set_allocated_result_str(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.result_str_.IsDefault()) {
+    _impl_.result_str_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.MissionResult.result_str)
 }
 
 // -------------------------------------------------------------------
@@ -10655,30 +9355,25 @@ inline void MissionResult::set_allocated_result_str(std::string* value)
 // ProgressData
 
 // float progress = 1 [(.mavsdk.options.default_value) = "NaN"];
-inline void ProgressData::clear_progress()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.progress_ = 0;
+inline void ProgressData::clear_progress() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.progress_ = 0;
 }
-inline float ProgressData::progress() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.ProgressData.progress)
-    return _internal_progress();
+inline float ProgressData::progress() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.ProgressData.progress)
+  return _internal_progress();
 }
-inline void ProgressData::set_progress(float value)
-{
-    _internal_set_progress(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.ProgressData.progress)
+inline void ProgressData::set_progress(float value) {
+  _internal_set_progress(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.ProgressData.progress)
 }
-inline float ProgressData::_internal_progress() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.progress_;
+inline float ProgressData::_internal_progress() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.progress_;
 }
-inline void ProgressData::_internal_set_progress(float value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.progress_ = value;
+inline void ProgressData::_internal_set_progress(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.progress_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -10686,242 +9381,204 @@ inline void ProgressData::_internal_set_progress(float value)
 // ProgressDataOrMission
 
 // bool has_progress = 1 [(.mavsdk.options.default_value) = "false"];
-inline void ProgressDataOrMission::clear_has_progress()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.has_progress_ = false;
+inline void ProgressDataOrMission::clear_has_progress() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.has_progress_ = false;
 }
-inline bool ProgressDataOrMission::has_progress() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.ProgressDataOrMission.has_progress)
-    return _internal_has_progress();
+inline bool ProgressDataOrMission::has_progress() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.ProgressDataOrMission.has_progress)
+  return _internal_has_progress();
 }
-inline void ProgressDataOrMission::set_has_progress(bool value)
-{
-    _internal_set_has_progress(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.ProgressDataOrMission.has_progress)
+inline void ProgressDataOrMission::set_has_progress(bool value) {
+  _internal_set_has_progress(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.ProgressDataOrMission.has_progress)
 }
-inline bool ProgressDataOrMission::_internal_has_progress() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.has_progress_;
+inline bool ProgressDataOrMission::_internal_has_progress() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.has_progress_;
 }
-inline void ProgressDataOrMission::_internal_set_has_progress(bool value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.has_progress_ = value;
+inline void ProgressDataOrMission::_internal_set_has_progress(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.has_progress_ = value;
 }
 
 // float progress = 2 [(.mavsdk.options.default_value) = "NaN"];
-inline void ProgressDataOrMission::clear_progress()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.progress_ = 0;
+inline void ProgressDataOrMission::clear_progress() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.progress_ = 0;
 }
-inline float ProgressDataOrMission::progress() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.ProgressDataOrMission.progress)
-    return _internal_progress();
+inline float ProgressDataOrMission::progress() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.ProgressDataOrMission.progress)
+  return _internal_progress();
 }
-inline void ProgressDataOrMission::set_progress(float value)
-{
-    _internal_set_progress(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.ProgressDataOrMission.progress)
+inline void ProgressDataOrMission::set_progress(float value) {
+  _internal_set_progress(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.ProgressDataOrMission.progress)
 }
-inline float ProgressDataOrMission::_internal_progress() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.progress_;
+inline float ProgressDataOrMission::_internal_progress() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.progress_;
 }
-inline void ProgressDataOrMission::_internal_set_progress(float value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.progress_ = value;
+inline void ProgressDataOrMission::_internal_set_progress(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.progress_ = value;
 }
 
 // bool has_mission = 3;
-inline void ProgressDataOrMission::clear_has_mission()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.has_mission_ = false;
+inline void ProgressDataOrMission::clear_has_mission() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.has_mission_ = false;
 }
-inline bool ProgressDataOrMission::has_mission() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.ProgressDataOrMission.has_mission)
-    return _internal_has_mission();
+inline bool ProgressDataOrMission::has_mission() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.ProgressDataOrMission.has_mission)
+  return _internal_has_mission();
 }
-inline void ProgressDataOrMission::set_has_mission(bool value)
-{
-    _internal_set_has_mission(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.ProgressDataOrMission.has_mission)
+inline void ProgressDataOrMission::set_has_mission(bool value) {
+  _internal_set_has_mission(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.mission.ProgressDataOrMission.has_mission)
 }
-inline bool ProgressDataOrMission::_internal_has_mission() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.has_mission_;
+inline bool ProgressDataOrMission::_internal_has_mission() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.has_mission_;
 }
-inline void ProgressDataOrMission::_internal_set_has_mission(bool value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.has_mission_ = value;
+inline void ProgressDataOrMission::_internal_set_has_mission(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.has_mission_ = value;
 }
 
 // .mavsdk.rpc.mission.MissionPlan mission_plan = 4;
-inline bool ProgressDataOrMission::has_mission_plan() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.mission_plan_ != nullptr);
-    return value;
+inline bool ProgressDataOrMission::has_mission_plan() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.mission_plan_ != nullptr);
+  return value;
 }
-inline void ProgressDataOrMission::clear_mission_plan()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_plan_ != nullptr)
-        _impl_.mission_plan_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void ProgressDataOrMission::clear_mission_plan() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_plan_ != nullptr) _impl_.mission_plan_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::mission::MissionPlan&
-ProgressDataOrMission::_internal_mission_plan() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::mission::MissionPlan* p = _impl_.mission_plan_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::mission::MissionPlan&>(
-                              ::mavsdk::rpc::mission::_MissionPlan_default_instance_);
+inline const ::mavsdk::rpc::mission::MissionPlan& ProgressDataOrMission::_internal_mission_plan() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::mission::MissionPlan* p = _impl_.mission_plan_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::mission::MissionPlan&>(::mavsdk::rpc::mission::_MissionPlan_default_instance_);
 }
-inline const ::mavsdk::rpc::mission::MissionPlan&
-ProgressDataOrMission::mission_plan() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.ProgressDataOrMission.mission_plan)
-    return _internal_mission_plan();
+inline const ::mavsdk::rpc::mission::MissionPlan& ProgressDataOrMission::mission_plan() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.mission.ProgressDataOrMission.mission_plan)
+  return _internal_mission_plan();
 }
-inline void ProgressDataOrMission::unsafe_arena_set_allocated_mission_plan(
-    ::mavsdk::rpc::mission::MissionPlan* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_plan_);
-    }
-    _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.ProgressDataOrMission.mission_plan)
-}
-inline ::mavsdk::rpc::mission::MissionPlan* ProgressDataOrMission::release_mission_plan()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionPlan* released = _impl_.mission_plan_;
-    _impl_.mission_plan_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::mission::MissionPlan*
-ProgressDataOrMission::unsafe_arena_release_mission_plan()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.ProgressDataOrMission.mission_plan)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::mission::MissionPlan* temp = _impl_.mission_plan_;
-    _impl_.mission_plan_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::mission::MissionPlan* ProgressDataOrMission::_internal_mutable_mission_plan()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.mission_plan_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionPlan>(
-                GetArena());
-        _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(p);
-    }
-    return _impl_.mission_plan_;
-}
-inline ::mavsdk::rpc::mission::MissionPlan*
-ProgressDataOrMission::mutable_mission_plan() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void ProgressDataOrMission::unsafe_arena_set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.mission_plan_);
+  }
+  _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::mission::MissionPlan* _msg = _internal_mutable_mission_plan();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.ProgressDataOrMission.mission_plan)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.mission.ProgressDataOrMission.mission_plan)
 }
-inline void
-ProgressDataOrMission::set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.mission_plan_);
-    }
+inline ::mavsdk::rpc::mission::MissionPlan* ProgressDataOrMission::release_mission_plan() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionPlan* released = _impl_.mission_plan_;
+  _impl_.mission_plan_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::mission::MissionPlan* ProgressDataOrMission::unsafe_arena_release_mission_plan() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.mission.ProgressDataOrMission.mission_plan)
 
-    _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.ProgressDataOrMission.mission_plan)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::mission::MissionPlan* temp = _impl_.mission_plan_;
+  _impl_.mission_plan_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::mission::MissionPlan* ProgressDataOrMission::_internal_mutable_mission_plan() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.mission_plan_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::mission::MissionPlan>(GetArena());
+    _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(p);
+  }
+  return _impl_.mission_plan_;
+}
+inline ::mavsdk::rpc::mission::MissionPlan* ProgressDataOrMission::mutable_mission_plan() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::mission::MissionPlan* _msg = _internal_mutable_mission_plan();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.mission.ProgressDataOrMission.mission_plan)
+  return _msg;
+}
+inline void ProgressDataOrMission::set_allocated_mission_plan(::mavsdk::rpc::mission::MissionPlan* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.mission_plan_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.mission_plan_ = reinterpret_cast<::mavsdk::rpc::mission::MissionPlan*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.mission.ProgressDataOrMission.mission_plan)
 }
 
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
-#endif // __GNUC__
+#endif  // __GNUC__
 
 // @@protoc_insertion_point(namespace_scope)
-} // namespace mission
-} // namespace rpc
-} // namespace mavsdk
+}  // namespace mission
+}  // namespace rpc
+}  // namespace mavsdk
+
 
 namespace google {
 namespace protobuf {
 
-template<>
+template <>
 struct is_proto_enum<::mavsdk::rpc::mission::MissionItem_CameraAction> : std::true_type {};
-template<>
-inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::mission::MissionItem_CameraAction>()
-{
-    return ::mavsdk::rpc::mission::MissionItem_CameraAction_descriptor();
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::mission::MissionItem_CameraAction>() {
+  return ::mavsdk::rpc::mission::MissionItem_CameraAction_descriptor();
 }
-template<>
+template <>
 struct is_proto_enum<::mavsdk::rpc::mission::MissionItem_VehicleAction> : std::true_type {};
-template<>
-inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::mission::MissionItem_VehicleAction>()
-{
-    return ::mavsdk::rpc::mission::MissionItem_VehicleAction_descriptor();
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::mission::MissionItem_VehicleAction>() {
+  return ::mavsdk::rpc::mission::MissionItem_VehicleAction_descriptor();
 }
-template<> struct is_proto_enum<::mavsdk::rpc::mission::MissionResult_Result> : std::true_type {};
-template<>
-inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::mission::MissionResult_Result>()
-{
-    return ::mavsdk::rpc::mission::MissionResult_Result_descriptor();
+template <>
+struct is_proto_enum<::mavsdk::rpc::mission::MissionResult_Result> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::mission::MissionResult_Result>() {
+  return ::mavsdk::rpc::mission::MissionResult_Result_descriptor();
 }
 
-} // namespace protobuf
-} // namespace google
+}  // namespace protobuf
+}  // namespace google
 
 // @@protoc_insertion_point(global_scope)
 
 #include "google/protobuf/port_undef.inc"
 
-#endif // mission_2fmission_2eproto_2epb_2eh
+#endif  // mission_2fmission_2eproto_2epb_2eh

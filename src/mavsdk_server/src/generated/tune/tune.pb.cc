@@ -28,178 +28,167 @@ namespace mavsdk {
 namespace rpc {
 namespace tune {
 
-inline constexpr TuneResult::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    result_str_(
-        &::google::protobuf::internal::fixed_address_empty_string, ::_pbi::ConstantInitialized()),
-    result_{static_cast<::mavsdk::rpc::tune::TuneResult_Result>(0)},
-    _cached_size_{0}
-{}
+inline constexpr TuneResult::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : result_str_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        result_{static_cast< ::mavsdk::rpc::tune::TuneResult_Result >(0)},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR TuneResult::TuneResult(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct TuneResultDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR TuneResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-    ~TuneResultDefaultTypeInternal() {}
-    union {
-        TuneResult _instance;
-    };
+  PROTOBUF_CONSTEXPR TuneResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~TuneResultDefaultTypeInternal() {}
+  union {
+    TuneResult _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    TuneResultDefaultTypeInternal _TuneResult_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TuneResultDefaultTypeInternal _TuneResult_default_instance_;
 
-inline constexpr TuneDescription::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    song_elements_{},
-    _song_elements_cached_byte_size_{0},
-    tempo_{0},
-    _cached_size_{0}
-{}
+inline constexpr TuneDescription::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : song_elements_{},
+        _song_elements_cached_byte_size_{0},
+        tempo_{0},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR TuneDescription::TuneDescription(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct TuneDescriptionDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR TuneDescriptionDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~TuneDescriptionDefaultTypeInternal() {}
-    union {
-        TuneDescription _instance;
-    };
+  PROTOBUF_CONSTEXPR TuneDescriptionDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~TuneDescriptionDefaultTypeInternal() {}
+  union {
+    TuneDescription _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    TuneDescriptionDefaultTypeInternal _TuneDescription_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TuneDescriptionDefaultTypeInternal _TuneDescription_default_instance_;
 
-inline constexpr PlayTuneResponse::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    _cached_size_{0},
-    tune_result_{nullptr}
-{}
+inline constexpr PlayTuneResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        tune_result_{nullptr} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR PlayTuneResponse::PlayTuneResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct PlayTuneResponseDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR PlayTuneResponseDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~PlayTuneResponseDefaultTypeInternal() {}
-    union {
-        PlayTuneResponse _instance;
-    };
+  PROTOBUF_CONSTEXPR PlayTuneResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PlayTuneResponseDefaultTypeInternal() {}
+  union {
+    PlayTuneResponse _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    PlayTuneResponseDefaultTypeInternal _PlayTuneResponse_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PlayTuneResponseDefaultTypeInternal _PlayTuneResponse_default_instance_;
 
-inline constexpr PlayTuneRequest::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    _cached_size_{0},
-    tune_description_{nullptr}
-{}
+inline constexpr PlayTuneRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        tune_description_{nullptr} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR PlayTuneRequest::PlayTuneRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct PlayTuneRequestDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR PlayTuneRequestDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~PlayTuneRequestDefaultTypeInternal() {}
-    union {
-        PlayTuneRequest _instance;
-    };
+  PROTOBUF_CONSTEXPR PlayTuneRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PlayTuneRequestDefaultTypeInternal() {}
+  union {
+    PlayTuneRequest _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    PlayTuneRequestDefaultTypeInternal _PlayTuneRequest_default_instance_;
-} // namespace tune
-} // namespace rpc
-} // namespace mavsdk
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PlayTuneRequestDefaultTypeInternal _PlayTuneRequest_default_instance_;
+}  // namespace tune
+}  // namespace rpc
+}  // namespace mavsdk
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_tune_2ftune_2eproto[2];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_tune_2ftune_2eproto = nullptr;
 const ::uint32_t
-    TableStruct_tune_2ftune_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+    TableStruct_tune_2ftune_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
+        protodesc_cold) = {
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tune::PlayTuneRequest, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tune::PlayTuneRequest, _internal_metadata_),
-        ~0u, // no _extensions_
-        ~0u, // no _oneof_case_
-        ~0u, // no _weak_field_map_
-        ~0u, // no _inlined_string_donated_
-        ~0u, // no _split_
-        ~0u, // no sizeof(Split)
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tune::PlayTuneRequest, _impl_.tune_description_),
         0,
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tune::PlayTuneResponse, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tune::PlayTuneResponse, _internal_metadata_),
-        ~0u, // no _extensions_
-        ~0u, // no _oneof_case_
-        ~0u, // no _weak_field_map_
-        ~0u, // no _inlined_string_donated_
-        ~0u, // no _split_
-        ~0u, // no sizeof(Split)
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tune::PlayTuneResponse, _impl_.tune_result_),
         0,
-        ~0u, // no _has_bits_
+        ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tune::TuneDescription, _internal_metadata_),
-        ~0u, // no _extensions_
-        ~0u, // no _oneof_case_
-        ~0u, // no _weak_field_map_
-        ~0u, // no _inlined_string_donated_
-        ~0u, // no _split_
-        ~0u, // no sizeof(Split)
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tune::TuneDescription, _impl_.song_elements_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tune::TuneDescription, _impl_.tempo_),
-        ~0u, // no _has_bits_
+        ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tune::TuneResult, _internal_metadata_),
-        ~0u, // no _extensions_
-        ~0u, // no _oneof_case_
-        ~0u, // no _weak_field_map_
-        ~0u, // no _inlined_string_donated_
-        ~0u, // no _split_
-        ~0u, // no sizeof(Split)
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tune::TuneResult, _impl_.result_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::tune::TuneResult, _impl_.result_str_),
 };
 
-static const ::_pbi::MigrationSchema schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-    {0, 9, -1, sizeof(::mavsdk::rpc::tune::PlayTuneRequest)},
-    {10, 19, -1, sizeof(::mavsdk::rpc::tune::PlayTuneResponse)},
-    {20, -1, -1, sizeof(::mavsdk::rpc::tune::TuneDescription)},
-    {30, -1, -1, sizeof(::mavsdk::rpc::tune::TuneResult)},
+static const ::_pbi::MigrationSchema
+    schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+        {0, 9, -1, sizeof(::mavsdk::rpc::tune::PlayTuneRequest)},
+        {10, 19, -1, sizeof(::mavsdk::rpc::tune::PlayTuneResponse)},
+        {20, -1, -1, sizeof(::mavsdk::rpc::tune::TuneDescription)},
+        {30, -1, -1, sizeof(::mavsdk::rpc::tune::TuneResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::tune::_PlayTuneRequest_default_instance_._instance,
@@ -208,37 +197,39 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::tune::_TuneResult_default_instance_._instance,
 };
 const char descriptor_table_protodef_tune_2ftune_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
-    protodesc_cold) = {"\n\017tune/tune.proto\022\017mavsdk.rpc.tune\"M\n\017Pl"
-                       "ayTuneRequest\022:\n\020tune_description\030\001 \001(\0132"
-                       " .mavsdk.rpc.tune.TuneDescription\"D\n\020Pla"
-                       "yTuneResponse\0220\n\013tune_result\030\001 \001(\0132\033.mav"
-                       "sdk.rpc.tune.TuneResult\"U\n\017TuneDescripti"
-                       "on\0223\n\rsong_elements\030\001 \003(\0162\034.mavsdk.rpc.t"
-                       "une.SongElement\022\r\n\005tempo\030\002 \001(\005\"\343\001\n\nTuneR"
-                       "esult\0222\n\006result\030\001 \001(\0162\".mavsdk.rpc.tune."
-                       "TuneResult.Result\022\022\n\nresult_str\030\002 \001(\t\"\214\001"
-                       "\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_S"
-                       "UCCESS\020\001\022\030\n\024RESULT_INVALID_TEMPO\020\002\022\030\n\024RE"
-                       "SULT_TUNE_TOO_LONG\020\003\022\020\n\014RESULT_ERROR\020\004\022\024"
-                       "\n\020RESULT_NO_SYSTEM\020\005*\321\004\n\013SongElement\022\035\n\031"
-                       "SONG_ELEMENT_STYLE_LEGATO\020\000\022\035\n\031SONG_ELEM"
-                       "ENT_STYLE_NORMAL\020\001\022\037\n\033SONG_ELEMENT_STYLE"
-                       "_STACCATO\020\002\022\033\n\027SONG_ELEMENT_DURATION_1\020\003"
-                       "\022\033\n\027SONG_ELEMENT_DURATION_2\020\004\022\033\n\027SONG_EL"
-                       "EMENT_DURATION_4\020\005\022\033\n\027SONG_ELEMENT_DURAT"
-                       "ION_8\020\006\022\034\n\030SONG_ELEMENT_DURATION_16\020\007\022\034\n"
-                       "\030SONG_ELEMENT_DURATION_32\020\010\022\027\n\023SONG_ELEM"
-                       "ENT_NOTE_A\020\t\022\027\n\023SONG_ELEMENT_NOTE_B\020\n\022\027\n"
-                       "\023SONG_ELEMENT_NOTE_C\020\013\022\027\n\023SONG_ELEMENT_N"
-                       "OTE_D\020\014\022\027\n\023SONG_ELEMENT_NOTE_E\020\r\022\027\n\023SONG"
-                       "_ELEMENT_NOTE_F\020\016\022\027\n\023SONG_ELEMENT_NOTE_G"
-                       "\020\017\022\033\n\027SONG_ELEMENT_NOTE_PAUSE\020\020\022\026\n\022SONG_"
-                       "ELEMENT_SHARP\020\021\022\025\n\021SONG_ELEMENT_FLAT\020\022\022\032"
-                       "\n\026SONG_ELEMENT_OCTAVE_UP\020\023\022\034\n\030SONG_ELEME"
-                       "NT_OCTAVE_DOWN\020\0242`\n\013TuneService\022Q\n\010PlayT"
-                       "une\022 .mavsdk.rpc.tune.PlayTuneRequest\032!."
-                       "mavsdk.rpc.tune.PlayTuneResponse\"\000B\033\n\016io"
-                       ".mavsdk.tuneB\tTuneProtob\006proto3"};
+    protodesc_cold) = {
+    "\n\017tune/tune.proto\022\017mavsdk.rpc.tune\"M\n\017Pl"
+    "ayTuneRequest\022:\n\020tune_description\030\001 \001(\0132"
+    " .mavsdk.rpc.tune.TuneDescription\"D\n\020Pla"
+    "yTuneResponse\0220\n\013tune_result\030\001 \001(\0132\033.mav"
+    "sdk.rpc.tune.TuneResult\"U\n\017TuneDescripti"
+    "on\0223\n\rsong_elements\030\001 \003(\0162\034.mavsdk.rpc.t"
+    "une.SongElement\022\r\n\005tempo\030\002 \001(\005\"\343\001\n\nTuneR"
+    "esult\0222\n\006result\030\001 \001(\0162\".mavsdk.rpc.tune."
+    "TuneResult.Result\022\022\n\nresult_str\030\002 \001(\t\"\214\001"
+    "\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RESULT_S"
+    "UCCESS\020\001\022\030\n\024RESULT_INVALID_TEMPO\020\002\022\030\n\024RE"
+    "SULT_TUNE_TOO_LONG\020\003\022\020\n\014RESULT_ERROR\020\004\022\024"
+    "\n\020RESULT_NO_SYSTEM\020\005*\321\004\n\013SongElement\022\035\n\031"
+    "SONG_ELEMENT_STYLE_LEGATO\020\000\022\035\n\031SONG_ELEM"
+    "ENT_STYLE_NORMAL\020\001\022\037\n\033SONG_ELEMENT_STYLE"
+    "_STACCATO\020\002\022\033\n\027SONG_ELEMENT_DURATION_1\020\003"
+    "\022\033\n\027SONG_ELEMENT_DURATION_2\020\004\022\033\n\027SONG_EL"
+    "EMENT_DURATION_4\020\005\022\033\n\027SONG_ELEMENT_DURAT"
+    "ION_8\020\006\022\034\n\030SONG_ELEMENT_DURATION_16\020\007\022\034\n"
+    "\030SONG_ELEMENT_DURATION_32\020\010\022\027\n\023SONG_ELEM"
+    "ENT_NOTE_A\020\t\022\027\n\023SONG_ELEMENT_NOTE_B\020\n\022\027\n"
+    "\023SONG_ELEMENT_NOTE_C\020\013\022\027\n\023SONG_ELEMENT_N"
+    "OTE_D\020\014\022\027\n\023SONG_ELEMENT_NOTE_E\020\r\022\027\n\023SONG"
+    "_ELEMENT_NOTE_F\020\016\022\027\n\023SONG_ELEMENT_NOTE_G"
+    "\020\017\022\033\n\027SONG_ELEMENT_NOTE_PAUSE\020\020\022\026\n\022SONG_"
+    "ELEMENT_SHARP\020\021\022\025\n\021SONG_ELEMENT_FLAT\020\022\022\032"
+    "\n\026SONG_ELEMENT_OCTAVE_UP\020\023\022\034\n\030SONG_ELEME"
+    "NT_OCTAVE_DOWN\020\0242`\n\013TuneService\022Q\n\010PlayT"
+    "une\022 .mavsdk.rpc.tune.PlayTuneRequest\032!."
+    "mavsdk.rpc.tune.PlayTuneResponse\"\000B\033\n\016io"
+    ".mavsdk.tuneB\tTuneProtob\006proto3"
+};
 static ::absl::once_flag descriptor_table_tune_2ftune_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_tune_2ftune_2eproto = {
     false,
@@ -259,20 +250,17 @@ PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_tune_2ftune_2e
 namespace mavsdk {
 namespace rpc {
 namespace tune {
-const ::google::protobuf::EnumDescriptor* TuneResult_Result_descriptor()
-{
-    ::google::protobuf::internal::AssignDescriptors(&descriptor_table_tune_2ftune_2eproto);
-    return file_level_enum_descriptors_tune_2ftune_2eproto[0];
+const ::google::protobuf::EnumDescriptor* TuneResult_Result_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_tune_2ftune_2eproto);
+  return file_level_enum_descriptors_tune_2ftune_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t TuneResult_Result_internal_data_[] = {
-    393216u,
-    0u,
-};
-bool TuneResult_Result_IsValid(int value)
-{
-    return 0 <= value && value <= 5;
+    393216u, 0u, };
+bool TuneResult_Result_IsValid(int value) {
+  return 0 <= value && value <= 5;
 }
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
 constexpr TuneResult_Result TuneResult::RESULT_UNKNOWN;
 constexpr TuneResult_Result TuneResult::RESULT_SUCCESS;
@@ -284,108 +272,90 @@ constexpr TuneResult_Result TuneResult::Result_MIN;
 constexpr TuneResult_Result TuneResult::Result_MAX;
 constexpr int TuneResult::Result_ARRAYSIZE;
 
-#endif // (__cplusplus < 201703) &&
-       // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
-const ::google::protobuf::EnumDescriptor* SongElement_descriptor()
-{
-    ::google::protobuf::internal::AssignDescriptors(&descriptor_table_tune_2ftune_2eproto);
-    return file_level_enum_descriptors_tune_2ftune_2eproto[1];
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+const ::google::protobuf::EnumDescriptor* SongElement_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_tune_2ftune_2eproto);
+  return file_level_enum_descriptors_tune_2ftune_2eproto[1];
 }
 PROTOBUF_CONSTINIT const uint32_t SongElement_internal_data_[] = {
-    1376256u,
-    0u,
-};
-bool SongElement_IsValid(int value)
-{
-    return 0 <= value && value <= 20;
+    1376256u, 0u, };
+bool SongElement_IsValid(int value) {
+  return 0 <= value && value <= 20;
 }
 // ===================================================================
 
 class PlayTuneRequest::_Internal {
-public:
-    using HasBits = decltype(std::declval<PlayTuneRequest>()._impl_._has_bits_);
-    static constexpr ::int32_t kHasBitsOffset =
-        8 * PROTOBUF_FIELD_OFFSET(PlayTuneRequest, _impl_._has_bits_);
+ public:
+  using HasBits =
+      decltype(std::declval<PlayTuneRequest>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(PlayTuneRequest, _impl_._has_bits_);
 };
 
 PlayTuneRequest::PlayTuneRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.tune.PlayTuneRequest)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.tune.PlayTuneRequest)
+}
+inline PROTOBUF_NDEBUG_INLINE PlayTuneRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::tune::PlayTuneRequest& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+PlayTuneRequest::PlayTuneRequest(
+    ::google::protobuf::Arena* arena,
+    const PlayTuneRequest& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  PlayTuneRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.tune_description_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::tune::TuneDescription>(
+                              arena, *from._impl_.tune_description_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.tune.PlayTuneRequest)
 }
 inline PROTOBUF_NDEBUG_INLINE PlayTuneRequest::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::tune::PlayTuneRequest& from_msg) :
-    _has_bits_{from._has_bits_},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-PlayTuneRequest::PlayTuneRequest(::google::protobuf::Arena* arena, const PlayTuneRequest& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    PlayTuneRequest* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-    _impl_.tune_description_ =
-        (cached_has_bits & 0x00000001u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::tune::TuneDescription>(
-                arena, *from._impl_.tune_description_) :
-            nullptr;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.tune.PlayTuneRequest)
+inline void PlayTuneRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.tune_description_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE PlayTuneRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
-
-inline void PlayTuneRequest::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.tune_description_ = {};
+PlayTuneRequest::~PlayTuneRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.tune.PlayTuneRequest)
+  SharedDtor(*this);
 }
-PlayTuneRequest::~PlayTuneRequest()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.tune.PlayTuneRequest)
-    SharedDtor(*this);
-}
-inline void PlayTuneRequest::SharedDtor(MessageLite& self)
-{
-    PlayTuneRequest& this_ = static_cast<PlayTuneRequest&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    delete this_._impl_.tune_description_;
-    this_._impl_.~Impl_();
+inline void PlayTuneRequest::SharedDtor(MessageLite& self) {
+  PlayTuneRequest& this_ = static_cast<PlayTuneRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.tune_description_;
+  this_._impl_.~Impl_();
 }
 
-inline void*
-PlayTuneRequest::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) PlayTuneRequest(arena);
+inline void* PlayTuneRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) PlayTuneRequest(arena);
 }
-constexpr auto PlayTuneRequest::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(PlayTuneRequest), alignof(PlayTuneRequest));
+constexpr auto PlayTuneRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(PlayTuneRequest),
+                                            alignof(PlayTuneRequest));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -393,284 +363,249 @@ const ::google::protobuf::internal::ClassDataFull PlayTuneRequest::_class_data_ 
     ::google::protobuf::internal::ClassData{
         &_PlayTuneRequest_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &PlayTuneRequest::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<PlayTuneRequest>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &PlayTuneRequest::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<PlayTuneRequest>(),
-        &PlayTuneRequest::ByteSizeLong,
-        &PlayTuneRequest::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<PlayTuneRequest>(), &PlayTuneRequest::ByteSizeLong,
+            &PlayTuneRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(PlayTuneRequest, _impl_._cached_size_),
         false,
     },
     &PlayTuneRequest::kDescriptorMethods,
     &descriptor_table_tune_2ftune_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* PlayTuneRequest::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* PlayTuneRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-    PlayTuneRequest::_table_ = {
-        {
-            PROTOBUF_FIELD_OFFSET(PlayTuneRequest, _impl_._has_bits_),
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            1, // num_aux_entries
-            offsetof(decltype(_table_), aux_entries),
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::tune::PlayTuneRequest>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.tune.TuneDescription tune_description = 1;
-            {::_pbi::TcParser::FastMtS1,
-             {10, 0, 0, PROTOBUF_FIELD_OFFSET(PlayTuneRequest, _impl_.tune_description_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.tune.TuneDescription tune_description = 1;
-            {PROTOBUF_FIELD_OFFSET(PlayTuneRequest, _impl_.tune_description_),
-             _Internal::kHasBitsOffset + 0,
-             0,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-        }},
-        {{
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::tune::TuneDescription>()},
-        }},
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void PlayTuneRequest::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tune.PlayTuneRequest)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    cached_has_bits = _impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(_impl_.tune_description_ != nullptr);
-        _impl_.tune_description_->Clear();
-    }
-    _impl_._has_bits_.Clear();
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* PlayTuneRequest::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const PlayTuneRequest& this_ = static_cast<const PlayTuneRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* PlayTuneRequest::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const PlayTuneRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.tune.PlayTuneRequest)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = this_._impl_._has_bits_[0];
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PlayTuneRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PlayTuneRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::tune::PlayTuneRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.tune.TuneDescription tune_description = 1;
-    if (cached_has_bits & 0x00000001u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1,
-            *this_._impl_.tune_description_,
-            this_._impl_.tune_description_->GetCachedSize(),
-            target,
-            stream);
-    }
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PlayTuneRequest, _impl_.tune_description_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.tune.TuneDescription tune_description = 1;
+    {PROTOBUF_FIELD_OFFSET(PlayTuneRequest, _impl_.tune_description_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::tune::TuneDescription>()},
+  }}, {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.tune.PlayTuneRequest)
-    return target;
+PROTOBUF_NOINLINE void PlayTuneRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tune.PlayTuneRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.tune_description_ != nullptr);
+    _impl_.tune_description_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t PlayTuneRequest::ByteSizeLong(const MessageLite& base)
-{
-    const PlayTuneRequest& this_ = static_cast<const PlayTuneRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t PlayTuneRequest::ByteSizeLong() const
-{
-    const PlayTuneRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.tune.PlayTuneRequest)
-    ::size_t total_size = 0;
+        ::uint8_t* PlayTuneRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const PlayTuneRequest& this_ = static_cast<const PlayTuneRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* PlayTuneRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const PlayTuneRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.tune.PlayTuneRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.tune.TuneDescription tune_description = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.tune_description_, this_._impl_.tune_description_->GetCachedSize(), target,
+                stream);
+          }
 
-    {
-        // .mavsdk.rpc.tune.TuneDescription tune_description = 1;
-        cached_has_bits = this_._impl_._has_bits_[0];
-        if (cached_has_bits & 0x00000001u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.tune_description_);
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.tune.PlayTuneRequest)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
-}
 
-void PlayTuneRequest::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<PlayTuneRequest*>(&to_msg);
-    auto& from = static_cast<const PlayTuneRequest&>(from_msg);
-    ::google::protobuf::Arena* arena = _this->GetArena();
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.tune.PlayTuneRequest)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t PlayTuneRequest::ByteSizeLong(const MessageLite& base) {
+          const PlayTuneRequest& this_ = static_cast<const PlayTuneRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t PlayTuneRequest::ByteSizeLong() const {
+          const PlayTuneRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.tune.PlayTuneRequest)
+          ::size_t total_size = 0;
 
-    cached_has_bits = from._impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(from._impl_.tune_description_ != nullptr);
-        if (_this->_impl_.tune_description_ == nullptr) {
-            _this->_impl_.tune_description_ =
-                ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::tune::TuneDescription>(
-                    arena, *from._impl_.tune_description_);
-        } else {
-            _this->_impl_.tune_description_->MergeFrom(*from._impl_.tune_description_);
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.tune.TuneDescription tune_description = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.tune_description_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
+
+void PlayTuneRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<PlayTuneRequest*>(&to_msg);
+  auto& from = static_cast<const PlayTuneRequest&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.tune.PlayTuneRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.tune_description_ != nullptr);
+    if (_this->_impl_.tune_description_ == nullptr) {
+      _this->_impl_.tune_description_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::tune::TuneDescription>(arena, *from._impl_.tune_description_);
+    } else {
+      _this->_impl_.tune_description_->MergeFrom(*from._impl_.tune_description_);
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void PlayTuneRequest::CopyFrom(const PlayTuneRequest& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.tune.PlayTuneRequest)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+void PlayTuneRequest::CopyFrom(const PlayTuneRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.tune.PlayTuneRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void PlayTuneRequest::InternalSwap(PlayTuneRequest* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-    swap(_impl_.tune_description_, other->_impl_.tune_description_);
+
+void PlayTuneRequest::InternalSwap(PlayTuneRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.tune_description_, other->_impl_.tune_description_);
 }
 
-::google::protobuf::Metadata PlayTuneRequest::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata PlayTuneRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class PlayTuneResponse::_Internal {
-public:
-    using HasBits = decltype(std::declval<PlayTuneResponse>()._impl_._has_bits_);
-    static constexpr ::int32_t kHasBitsOffset =
-        8 * PROTOBUF_FIELD_OFFSET(PlayTuneResponse, _impl_._has_bits_);
+ public:
+  using HasBits =
+      decltype(std::declval<PlayTuneResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(PlayTuneResponse, _impl_._has_bits_);
 };
 
 PlayTuneResponse::PlayTuneResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.tune.PlayTuneResponse)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.tune.PlayTuneResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE PlayTuneResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::tune::PlayTuneResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+PlayTuneResponse::PlayTuneResponse(
+    ::google::protobuf::Arena* arena,
+    const PlayTuneResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  PlayTuneResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.tune_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::tune::TuneResult>(
+                              arena, *from._impl_.tune_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.tune.PlayTuneResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE PlayTuneResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::tune::PlayTuneResponse& from_msg) :
-    _has_bits_{from._has_bits_},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-PlayTuneResponse::PlayTuneResponse(::google::protobuf::Arena* arena, const PlayTuneResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    PlayTuneResponse* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-    _impl_.tune_result_ =
-        (cached_has_bits & 0x00000001u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::tune::TuneResult>(
-                arena, *from._impl_.tune_result_) :
-            nullptr;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.tune.PlayTuneResponse)
+inline void PlayTuneResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.tune_result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE PlayTuneResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
-
-inline void PlayTuneResponse::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.tune_result_ = {};
+PlayTuneResponse::~PlayTuneResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.tune.PlayTuneResponse)
+  SharedDtor(*this);
 }
-PlayTuneResponse::~PlayTuneResponse()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.tune.PlayTuneResponse)
-    SharedDtor(*this);
-}
-inline void PlayTuneResponse::SharedDtor(MessageLite& self)
-{
-    PlayTuneResponse& this_ = static_cast<PlayTuneResponse&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    delete this_._impl_.tune_result_;
-    this_._impl_.~Impl_();
+inline void PlayTuneResponse::SharedDtor(MessageLite& self) {
+  PlayTuneResponse& this_ = static_cast<PlayTuneResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.tune_result_;
+  this_._impl_.~Impl_();
 }
 
-inline void*
-PlayTuneResponse::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) PlayTuneResponse(arena);
+inline void* PlayTuneResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) PlayTuneResponse(arena);
 }
-constexpr auto PlayTuneResponse::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(PlayTuneResponse), alignof(PlayTuneResponse));
+constexpr auto PlayTuneResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(PlayTuneResponse),
+                                            alignof(PlayTuneResponse));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -678,288 +613,256 @@ const ::google::protobuf::internal::ClassDataFull PlayTuneResponse::_class_data_
     ::google::protobuf::internal::ClassData{
         &_PlayTuneResponse_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &PlayTuneResponse::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<PlayTuneResponse>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &PlayTuneResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<PlayTuneResponse>(),
-        &PlayTuneResponse::ByteSizeLong,
-        &PlayTuneResponse::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<PlayTuneResponse>(), &PlayTuneResponse::ByteSizeLong,
+            &PlayTuneResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(PlayTuneResponse, _impl_._cached_size_),
         false,
     },
     &PlayTuneResponse::kDescriptorMethods,
     &descriptor_table_tune_2ftune_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* PlayTuneResponse::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* PlayTuneResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-    PlayTuneResponse::_table_ = {
-        {
-            PROTOBUF_FIELD_OFFSET(PlayTuneResponse, _impl_._has_bits_),
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            1, // num_aux_entries
-            offsetof(decltype(_table_), aux_entries),
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::tune::PlayTuneResponse>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.tune.TuneResult tune_result = 1;
-            {::_pbi::TcParser::FastMtS1,
-             {10, 0, 0, PROTOBUF_FIELD_OFFSET(PlayTuneResponse, _impl_.tune_result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.tune.TuneResult tune_result = 1;
-            {PROTOBUF_FIELD_OFFSET(PlayTuneResponse, _impl_.tune_result_),
-             _Internal::kHasBitsOffset + 0,
-             0,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-        }},
-        {{
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::tune::TuneResult>()},
-        }},
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void PlayTuneResponse::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tune.PlayTuneResponse)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    cached_has_bits = _impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(_impl_.tune_result_ != nullptr);
-        _impl_.tune_result_->Clear();
-    }
-    _impl_._has_bits_.Clear();
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* PlayTuneResponse::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const PlayTuneResponse& this_ = static_cast<const PlayTuneResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* PlayTuneResponse::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const PlayTuneResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.tune.PlayTuneResponse)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = this_._impl_._has_bits_[0];
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PlayTuneResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PlayTuneResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::tune::PlayTuneResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.tune.TuneResult tune_result = 1;
-    if (cached_has_bits & 0x00000001u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1,
-            *this_._impl_.tune_result_,
-            this_._impl_.tune_result_->GetCachedSize(),
-            target,
-            stream);
-    }
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PlayTuneResponse, _impl_.tune_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.tune.TuneResult tune_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PlayTuneResponse, _impl_.tune_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::tune::TuneResult>()},
+  }}, {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.tune.PlayTuneResponse)
-    return target;
+PROTOBUF_NOINLINE void PlayTuneResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tune.PlayTuneResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.tune_result_ != nullptr);
+    _impl_.tune_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t PlayTuneResponse::ByteSizeLong(const MessageLite& base)
-{
-    const PlayTuneResponse& this_ = static_cast<const PlayTuneResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t PlayTuneResponse::ByteSizeLong() const
-{
-    const PlayTuneResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.tune.PlayTuneResponse)
-    ::size_t total_size = 0;
+        ::uint8_t* PlayTuneResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const PlayTuneResponse& this_ = static_cast<const PlayTuneResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* PlayTuneResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const PlayTuneResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.tune.PlayTuneResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.tune.TuneResult tune_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.tune_result_, this_._impl_.tune_result_->GetCachedSize(), target,
+                stream);
+          }
 
-    {
-        // .mavsdk.rpc.tune.TuneResult tune_result = 1;
-        cached_has_bits = this_._impl_._has_bits_[0];
-        if (cached_has_bits & 0x00000001u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.tune_result_);
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.tune.PlayTuneResponse)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
-}
 
-void PlayTuneResponse::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<PlayTuneResponse*>(&to_msg);
-    auto& from = static_cast<const PlayTuneResponse&>(from_msg);
-    ::google::protobuf::Arena* arena = _this->GetArena();
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.tune.PlayTuneResponse)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t PlayTuneResponse::ByteSizeLong(const MessageLite& base) {
+          const PlayTuneResponse& this_ = static_cast<const PlayTuneResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t PlayTuneResponse::ByteSizeLong() const {
+          const PlayTuneResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.tune.PlayTuneResponse)
+          ::size_t total_size = 0;
 
-    cached_has_bits = from._impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(from._impl_.tune_result_ != nullptr);
-        if (_this->_impl_.tune_result_ == nullptr) {
-            _this->_impl_.tune_result_ =
-                ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::tune::TuneResult>(
-                    arena, *from._impl_.tune_result_);
-        } else {
-            _this->_impl_.tune_result_->MergeFrom(*from._impl_.tune_result_);
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.tune.TuneResult tune_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.tune_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
+
+void PlayTuneResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<PlayTuneResponse*>(&to_msg);
+  auto& from = static_cast<const PlayTuneResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.tune.PlayTuneResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.tune_result_ != nullptr);
+    if (_this->_impl_.tune_result_ == nullptr) {
+      _this->_impl_.tune_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::tune::TuneResult>(arena, *from._impl_.tune_result_);
+    } else {
+      _this->_impl_.tune_result_->MergeFrom(*from._impl_.tune_result_);
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void PlayTuneResponse::CopyFrom(const PlayTuneResponse& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.tune.PlayTuneResponse)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+void PlayTuneResponse::CopyFrom(const PlayTuneResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.tune.PlayTuneResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void PlayTuneResponse::InternalSwap(PlayTuneResponse* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-    swap(_impl_.tune_result_, other->_impl_.tune_result_);
+
+void PlayTuneResponse::InternalSwap(PlayTuneResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.tune_result_, other->_impl_.tune_result_);
 }
 
-::google::protobuf::Metadata PlayTuneResponse::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata PlayTuneResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class TuneDescription::_Internal {
-public:
+ public:
 };
 
 TuneDescription::TuneDescription(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.tune.TuneDescription)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.tune.TuneDescription)
+}
+inline PROTOBUF_NDEBUG_INLINE TuneDescription::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::tune::TuneDescription& from_msg)
+      : song_elements_{visibility, arena, from.song_elements_},
+        _song_elements_cached_byte_size_{0},
+        _cached_size_{0} {}
+
+TuneDescription::TuneDescription(
+    ::google::protobuf::Arena* arena,
+    const TuneDescription& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  TuneDescription* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.tempo_ = from._impl_.tempo_;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.tune.TuneDescription)
 }
 inline PROTOBUF_NDEBUG_INLINE TuneDescription::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::tune::TuneDescription& from_msg) :
-    song_elements_{visibility, arena, from.song_elements_},
-    _song_elements_cached_byte_size_{0},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : song_elements_{visibility, arena},
+        _song_elements_cached_byte_size_{0},
+        _cached_size_{0} {}
 
-TuneDescription::TuneDescription(::google::protobuf::Arena* arena, const TuneDescription& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    TuneDescription* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    _impl_.tempo_ = from._impl_.tempo_;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.tune.TuneDescription)
+inline void TuneDescription::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.tempo_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE TuneDescription::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    song_elements_{visibility, arena},
-    _song_elements_cached_byte_size_{0},
-    _cached_size_{0}
-{}
-
-inline void TuneDescription::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.tempo_ = {};
+TuneDescription::~TuneDescription() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.tune.TuneDescription)
+  SharedDtor(*this);
 }
-TuneDescription::~TuneDescription()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.tune.TuneDescription)
-    SharedDtor(*this);
-}
-inline void TuneDescription::SharedDtor(MessageLite& self)
-{
-    TuneDescription& this_ = static_cast<TuneDescription&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.~Impl_();
+inline void TuneDescription::SharedDtor(MessageLite& self) {
+  TuneDescription& this_ = static_cast<TuneDescription&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
-inline void*
-TuneDescription::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) TuneDescription(arena);
+inline void* TuneDescription::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) TuneDescription(arena);
 }
-constexpr auto TuneDescription::InternalNewImpl_()
-{
-    constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
-        PROTOBUF_FIELD_OFFSET(TuneDescription, _impl_.song_elements_) +
-            decltype(TuneDescription::_impl_.song_elements_)::InternalGetArenaOffset(
-                ::google::protobuf::Message::internal_visibility()),
-    });
-    if (arena_bits.has_value()) {
-        return ::google::protobuf::internal::MessageCreator::ZeroInit(
-            sizeof(TuneDescription), alignof(TuneDescription), *arena_bits);
-    } else {
-        return ::google::protobuf::internal::MessageCreator(
-            &TuneDescription::PlacementNew_, sizeof(TuneDescription), alignof(TuneDescription));
-    }
+constexpr auto TuneDescription::InternalNewImpl_() {
+  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
+      PROTOBUF_FIELD_OFFSET(TuneDescription, _impl_.song_elements_) +
+          decltype(TuneDescription::_impl_.song_elements_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+  });
+  if (arena_bits.has_value()) {
+    return ::google::protobuf::internal::MessageCreator::ZeroInit(
+        sizeof(TuneDescription), alignof(TuneDescription), *arena_bits);
+  } else {
+    return ::google::protobuf::internal::MessageCreator(&TuneDescription::PlacementNew_,
+                                 sizeof(TuneDescription),
+                                 alignof(TuneDescription));
+  }
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -967,279 +870,253 @@ const ::google::protobuf::internal::ClassDataFull TuneDescription::_class_data_ 
     ::google::protobuf::internal::ClassData{
         &_TuneDescription_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &TuneDescription::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<TuneDescription>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &TuneDescription::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<TuneDescription>(),
-        &TuneDescription::ByteSizeLong,
-        &TuneDescription::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<TuneDescription>(), &TuneDescription::ByteSizeLong,
+            &TuneDescription::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(TuneDescription, _impl_._cached_size_),
         false,
     },
     &TuneDescription::kDescriptorMethods,
     &descriptor_table_tune_2ftune_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* TuneDescription::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* TuneDescription::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<1, 2, 0, 0, 2>
-    TuneDescription::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            2,
-            8, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967292, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            2, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::tune::TuneDescription>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // int32 tempo = 2;
-            {::_pbi::TcParser::
-                 SingularVarintNoZag1<::uint32_t, offsetof(TuneDescription, _impl_.tempo_), 63>(),
-             {16, 63, 0, PROTOBUF_FIELD_OFFSET(TuneDescription, _impl_.tempo_)}},
-            // repeated .mavsdk.rpc.tune.SongElement song_elements = 1;
-            {::_pbi::TcParser::FastV32P1,
-             {10, 63, 0, PROTOBUF_FIELD_OFFSET(TuneDescription, _impl_.song_elements_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // repeated .mavsdk.rpc.tune.SongElement song_elements = 1;
-            {PROTOBUF_FIELD_OFFSET(TuneDescription, _impl_.song_elements_),
-             0,
-             0,
-             (0 | ::_fl::kFcRepeated | ::_fl::kPackedOpenEnum)},
-            // int32 tempo = 2;
-            {PROTOBUF_FIELD_OFFSET(TuneDescription, _impl_.tempo_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
-        }},
-        // no aux_entries
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void TuneDescription::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tune.TuneDescription)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    _impl_.song_elements_.Clear();
-    _impl_.tempo_ = 0;
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* TuneDescription::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const TuneDescription& this_ = static_cast<const TuneDescription&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* TuneDescription::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const TuneDescription& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.tune.TuneDescription)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    // repeated .mavsdk.rpc.tune.SongElement song_elements = 1;
-    {
-        std::size_t byte_size = this_._impl_._song_elements_cached_byte_size_.Get();
-        if (byte_size > 0) {
-            target = stream->WriteEnumPacked(1, this_._internal_song_elements(), byte_size, target);
-        }
-    }
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2> TuneDescription::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::tune::TuneDescription>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // int32 tempo = 2;
-    if (this_._internal_tempo() != 0) {
-        target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<2>(
-            stream, this_._internal_tempo(), target);
-    }
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(TuneDescription, _impl_.tempo_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(TuneDescription, _impl_.tempo_)}},
+    // repeated .mavsdk.rpc.tune.SongElement song_elements = 1;
+    {::_pbi::TcParser::FastV32P1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(TuneDescription, _impl_.song_elements_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // repeated .mavsdk.rpc.tune.SongElement song_elements = 1;
+    {PROTOBUF_FIELD_OFFSET(TuneDescription, _impl_.song_elements_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kPackedOpenEnum)},
+    // int32 tempo = 2;
+    {PROTOBUF_FIELD_OFFSET(TuneDescription, _impl_.tempo_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.tune.TuneDescription)
-    return target;
+PROTOBUF_NOINLINE void TuneDescription::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tune.TuneDescription)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.song_elements_.Clear();
+  _impl_.tempo_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t TuneDescription::ByteSizeLong(const MessageLite& base)
-{
-    const TuneDescription& this_ = static_cast<const TuneDescription&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t TuneDescription::ByteSizeLong() const
-{
-    const TuneDescription& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.tune.TuneDescription)
-    ::size_t total_size = 0;
+        ::uint8_t* TuneDescription::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const TuneDescription& this_ = static_cast<const TuneDescription&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* TuneDescription::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const TuneDescription& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.tune.TuneDescription)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // repeated .mavsdk.rpc.tune.SongElement song_elements = 1;
+          {
+            std::size_t byte_size =
+                                              this_._impl_._song_elements_cached_byte_size_.Get();
+            if (byte_size > 0) {
+              target = stream->WriteEnumPacked(
+                  1, this_._internal_song_elements(), byte_size, target);
+            }
+          }
 
-    ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-    {
-        // repeated .mavsdk.rpc.tune.SongElement song_elements = 1;
-        {
-            total_size += ::_pbi::WireFormatLite::EnumSizeWithPackedTagSize(
-                this_._internal_song_elements(), 1, this_._impl_._song_elements_cached_byte_size_);
+          // int32 tempo = 2;
+          if (this_._internal_tempo() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<2>(
+                    stream, this_._internal_tempo(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.tune.TuneDescription)
+          return target;
         }
-    }
-    {
-        // int32 tempo = 2;
-        if (this_._internal_tempo() != 0) {
-            total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this_._internal_tempo());
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t TuneDescription::ByteSizeLong(const MessageLite& base) {
+          const TuneDescription& this_ = static_cast<const TuneDescription&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t TuneDescription::ByteSizeLong() const {
+          const TuneDescription& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.tune.TuneDescription)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // repeated .mavsdk.rpc.tune.SongElement song_elements = 1;
+            {
+              total_size += ::_pbi::WireFormatLite::EnumSizeWithPackedTagSize(
+                  this_._internal_song_elements(), 1, this_._impl_._song_elements_cached_byte_size_);
+            }
+          }
+           {
+            // int32 tempo = 2;
+            if (this_._internal_tempo() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_tempo());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+void TuneDescription::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<TuneDescription*>(&to_msg);
+  auto& from = static_cast<const TuneDescription&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.tune.TuneDescription)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_internal_mutable_song_elements()->MergeFrom(from._internal_song_elements());
+  if (from._internal_tempo() != 0) {
+    _this->_impl_.tempo_ = from._impl_.tempo_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void TuneDescription::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<TuneDescription*>(&to_msg);
-    auto& from = static_cast<const TuneDescription&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.tune.TuneDescription)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    _this->_internal_mutable_song_elements()->MergeFrom(from._internal_song_elements());
-    if (from._internal_tempo() != 0) {
-        _this->_impl_.tempo_ = from._impl_.tempo_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void TuneDescription::CopyFrom(const TuneDescription& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.tune.TuneDescription)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void TuneDescription::CopyFrom(const TuneDescription& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.tune.TuneDescription)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void TuneDescription::InternalSwap(TuneDescription* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.song_elements_.InternalSwap(&other->_impl_.song_elements_);
+        swap(_impl_.tempo_, other->_impl_.tempo_);
 }
 
-void TuneDescription::InternalSwap(TuneDescription* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    _impl_.song_elements_.InternalSwap(&other->_impl_.song_elements_);
-    swap(_impl_.tempo_, other->_impl_.tempo_);
-}
-
-::google::protobuf::Metadata TuneDescription::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata TuneDescription::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class TuneResult::_Internal {
-public:
+ public:
 };
 
 TuneResult::TuneResult(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.tune.TuneResult)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.tune.TuneResult)
+}
+inline PROTOBUF_NDEBUG_INLINE TuneResult::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::tune::TuneResult& from_msg)
+      : result_str_(arena, from.result_str_),
+        _cached_size_{0} {}
+
+TuneResult::TuneResult(
+    ::google::protobuf::Arena* arena,
+    const TuneResult& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  TuneResult* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.result_ = from._impl_.result_;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.tune.TuneResult)
 }
 inline PROTOBUF_NDEBUG_INLINE TuneResult::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::tune::TuneResult& from_msg) :
-    result_str_(arena, from.result_str_),
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : result_str_(arena),
+        _cached_size_{0} {}
 
-TuneResult::TuneResult(::google::protobuf::Arena* arena, const TuneResult& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    TuneResult* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    _impl_.result_ = from._impl_.result_;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.tune.TuneResult)
+inline void TuneResult::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE TuneResult::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    result_str_(arena),
-    _cached_size_{0}
-{}
-
-inline void TuneResult::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.result_ = {};
+TuneResult::~TuneResult() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.tune.TuneResult)
+  SharedDtor(*this);
 }
-TuneResult::~TuneResult()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.tune.TuneResult)
-    SharedDtor(*this);
-}
-inline void TuneResult::SharedDtor(MessageLite& self)
-{
-    TuneResult& this_ = static_cast<TuneResult&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.result_str_.Destroy();
-    this_._impl_.~Impl_();
+inline void TuneResult::SharedDtor(MessageLite& self) {
+  TuneResult& this_ = static_cast<TuneResult&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.result_str_.Destroy();
+  this_._impl_.~Impl_();
 }
 
-inline void* TuneResult::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) TuneResult(arena);
+inline void* TuneResult::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) TuneResult(arena);
 }
-constexpr auto TuneResult::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::CopyInit(
-        sizeof(TuneResult), alignof(TuneResult));
+constexpr auto TuneResult::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(TuneResult),
+                                            alignof(TuneResult));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -1247,215 +1124,200 @@ const ::google::protobuf::internal::ClassDataFull TuneResult::_class_data_ = {
     ::google::protobuf::internal::ClassData{
         &_TuneResult_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &TuneResult::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<TuneResult>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &TuneResult::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<TuneResult>(),
-        &TuneResult::ByteSizeLong,
-        &TuneResult::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<TuneResult>(), &TuneResult::ByteSizeLong,
+            &TuneResult::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(TuneResult, _impl_._cached_size_),
         false,
     },
     &TuneResult::kDescriptorMethods,
     &descriptor_table_tune_2ftune_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* TuneResult::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* TuneResult::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<1, 2, 0, 45, 2>
-    TuneResult::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            2,
-            8, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967292, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            2, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::tune::TuneResult>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // string result_str = 2;
-            {::_pbi::TcParser::FastUS1,
-             {18, 63, 0, PROTOBUF_FIELD_OFFSET(TuneResult, _impl_.result_str_)}},
-            // .mavsdk.rpc.tune.TuneResult.Result result = 1;
-            {::_pbi::TcParser::
-                 SingularVarintNoZag1<::uint32_t, offsetof(TuneResult, _impl_.result_), 63>(),
-             {8, 63, 0, PROTOBUF_FIELD_OFFSET(TuneResult, _impl_.result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.tune.TuneResult.Result result = 1;
-            {PROTOBUF_FIELD_OFFSET(TuneResult, _impl_.result_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-            // string result_str = 2;
-            {PROTOBUF_FIELD_OFFSET(TuneResult, _impl_.result_str_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-        }},
-        // no aux_entries
-        {{"\32\0\12\0\0\0\0\0"
-          "mavsdk.rpc.tune.TuneResult"
-          "result_str"}},
-    };
-
-PROTOBUF_NOINLINE void TuneResult::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tune.TuneResult)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    _impl_.result_str_.ClearToEmpty();
-    _impl_.result_ = 0;
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* TuneResult::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const TuneResult& this_ = static_cast<const TuneResult&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* TuneResult::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const TuneResult& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.tune.TuneResult)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    // .mavsdk.rpc.tune.TuneResult.Result result = 1;
-    if (this_._internal_result() != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteEnumToArray(1, this_._internal_result(), target);
-    }
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 45, 2> TuneResult::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::tune::TuneResult>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // string result_str = 2;
-    if (!this_._internal_result_str().empty()) {
-        const std::string& _s = this_._internal_result_str();
-        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            _s.data(),
-            static_cast<int>(_s.length()),
-            ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-            "mavsdk.rpc.tune.TuneResult.result_str");
-        target = stream->WriteStringMaybeAliased(2, _s, target);
-    }
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(TuneResult, _impl_.result_str_)}},
+    // .mavsdk.rpc.tune.TuneResult.Result result = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(TuneResult, _impl_.result_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(TuneResult, _impl_.result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.tune.TuneResult.Result result = 1;
+    {PROTOBUF_FIELD_OFFSET(TuneResult, _impl_.result_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // string result_str = 2;
+    {PROTOBUF_FIELD_OFFSET(TuneResult, _impl_.result_str_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\32\0\12\0\0\0\0\0"
+    "mavsdk.rpc.tune.TuneResult"
+    "result_str"
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.tune.TuneResult)
-    return target;
+PROTOBUF_NOINLINE void TuneResult::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.tune.TuneResult)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.result_str_.ClearToEmpty();
+  _impl_.result_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t TuneResult::ByteSizeLong(const MessageLite& base)
-{
-    const TuneResult& this_ = static_cast<const TuneResult&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t TuneResult::ByteSizeLong() const
-{
-    const TuneResult& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.tune.TuneResult)
-    ::size_t total_size = 0;
+        ::uint8_t* TuneResult::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const TuneResult& this_ = static_cast<const TuneResult&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* TuneResult::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const TuneResult& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.tune.TuneResult)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // .mavsdk.rpc.tune.TuneResult.Result result = 1;
+          if (this_._internal_result() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                1, this_._internal_result(), target);
+          }
 
-    ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-    {
-        // string result_str = 2;
-        if (!this_._internal_result_str().empty()) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                  this_._internal_result_str());
+          // string result_str = 2;
+          if (!this_._internal_result_str().empty()) {
+            const std::string& _s = this_._internal_result_str();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.tune.TuneResult.result_str");
+            target = stream->WriteStringMaybeAliased(2, _s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.tune.TuneResult)
+          return target;
         }
-        // .mavsdk.rpc.tune.TuneResult.Result result = 1;
-        if (this_._internal_result() != 0) {
-            total_size += 1 + ::_pbi::WireFormatLite::EnumSize(this_._internal_result());
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t TuneResult::ByteSizeLong(const MessageLite& base) {
+          const TuneResult& this_ = static_cast<const TuneResult&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t TuneResult::ByteSizeLong() const {
+          const TuneResult& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.tune.TuneResult)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string result_str = 2;
+            if (!this_._internal_result_str().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_result_str());
+            }
+            // .mavsdk.rpc.tune.TuneResult.Result result = 1;
+            if (this_._internal_result() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_result());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+void TuneResult::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<TuneResult*>(&to_msg);
+  auto& from = static_cast<const TuneResult&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.tune.TuneResult)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_result_str().empty()) {
+    _this->_internal_set_result_str(from._internal_result_str());
+  }
+  if (from._internal_result() != 0) {
+    _this->_impl_.result_ = from._impl_.result_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void TuneResult::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<TuneResult*>(&to_msg);
-    auto& from = static_cast<const TuneResult&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.tune.TuneResult)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (!from._internal_result_str().empty()) {
-        _this->_internal_set_result_str(from._internal_result_str());
-    }
-    if (from._internal_result() != 0) {
-        _this->_impl_.result_ = from._impl_.result_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void TuneResult::CopyFrom(const TuneResult& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.tune.TuneResult)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void TuneResult::CopyFrom(const TuneResult& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.tune.TuneResult)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void TuneResult::InternalSwap(TuneResult* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, &other->_impl_.result_str_, arena);
+  swap(_impl_.result_, other->_impl_.result_);
 }
 
-void TuneResult::InternalSwap(TuneResult* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    auto* arena = GetArena();
-    ABSL_DCHECK_EQ(arena, other->GetArena());
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, &other->_impl_.result_str_, arena);
-    swap(_impl_.result_, other->_impl_.result_);
-}
-
-::google::protobuf::Metadata TuneResult::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata TuneResult::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)
-} // namespace tune
-} // namespace rpc
-} // namespace mavsdk
+}  // namespace tune
+}  // namespace rpc
+}  // namespace mavsdk
 namespace google {
-namespace protobuf {} // namespace protobuf
-} // namespace google
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 // @@protoc_insertion_point(global_scope)
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::std::false_type _static_init2_ PROTOBUF_UNUSED =
-    (::_pbi::AddDescriptors(&descriptor_table_tune_2ftune_2eproto), ::std::false_type{});
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::std::false_type
+    _static_init2_ PROTOBUF_UNUSED =
+        (::_pbi::AddDescriptors(&descriptor_table_tune_2ftune_2eproto),
+         ::std::false_type{});
 #include "google/protobuf/port_undef.inc"

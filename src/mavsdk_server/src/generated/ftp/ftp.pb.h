@@ -26,8 +26,8 @@
 #include "google/protobuf/generated_message_reflection.h"
 #include "google/protobuf/message.h"
 #include "google/protobuf/message_lite.h"
-#include "google/protobuf/repeated_field.h" // IWYU pragma: export
-#include "google/protobuf/extension_set.h" // IWYU pragma: export
+#include "google/protobuf/repeated_field.h"  // IWYU pragma: export
+#include "google/protobuf/extension_set.h"  // IWYU pragma: export
 #include "google/protobuf/generated_enum_reflection.h"
 #include "google/protobuf/unknown_field_set.h"
 #include "mavsdk_options.pb.h"
@@ -41,16 +41,18 @@
 namespace google {
 namespace protobuf {
 namespace internal {
-template<typename T>::absl::string_view GetAnyMessageName();
-} // namespace internal
-} // namespace protobuf
-} // namespace google
+template <typename T>
+::absl::string_view GetAnyMessageName();
+}  // namespace internal
+}  // namespace protobuf
+}  // namespace google
 
 // Internal implementation detail -- do not use these members.
 struct TableStruct_ftp_2fftp_2eproto {
-    static const ::uint32_t offsets[];
+  static const ::uint32_t offsets[];
 };
-extern const ::google::protobuf::internal::DescriptorTable descriptor_table_ftp_2fftp_2eproto;
+extern const ::google::protobuf::internal::DescriptorTable
+    descriptor_table_ftp_2fftp_2eproto;
 namespace mavsdk {
 namespace rpc {
 namespace ftp {
@@ -117,34 +119,35 @@ extern SubscribeUploadRequestDefaultTypeInternal _SubscribeUploadRequest_default
 class UploadResponse;
 struct UploadResponseDefaultTypeInternal;
 extern UploadResponseDefaultTypeInternal _UploadResponse_default_instance_;
-} // namespace ftp
-} // namespace rpc
-} // namespace mavsdk
+}  // namespace ftp
+}  // namespace rpc
+}  // namespace mavsdk
 namespace google {
-namespace protobuf {} // namespace protobuf
-} // namespace google
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 
 namespace mavsdk {
 namespace rpc {
 namespace ftp {
 enum FtpResult_Result : int {
-    FtpResult_Result_RESULT_UNKNOWN = 0,
-    FtpResult_Result_RESULT_SUCCESS = 1,
-    FtpResult_Result_RESULT_NEXT = 2,
-    FtpResult_Result_RESULT_TIMEOUT = 3,
-    FtpResult_Result_RESULT_BUSY = 4,
-    FtpResult_Result_RESULT_FILE_IO_ERROR = 5,
-    FtpResult_Result_RESULT_FILE_EXISTS = 6,
-    FtpResult_Result_RESULT_FILE_DOES_NOT_EXIST = 7,
-    FtpResult_Result_RESULT_FILE_PROTECTED = 8,
-    FtpResult_Result_RESULT_INVALID_PARAMETER = 9,
-    FtpResult_Result_RESULT_UNSUPPORTED = 10,
-    FtpResult_Result_RESULT_PROTOCOL_ERROR = 11,
-    FtpResult_Result_RESULT_NO_SYSTEM = 12,
-    FtpResult_Result_FtpResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
-        std::numeric_limits<::int32_t>::min(),
-    FtpResult_Result_FtpResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
-        std::numeric_limits<::int32_t>::max(),
+  FtpResult_Result_RESULT_UNKNOWN = 0,
+  FtpResult_Result_RESULT_SUCCESS = 1,
+  FtpResult_Result_RESULT_NEXT = 2,
+  FtpResult_Result_RESULT_TIMEOUT = 3,
+  FtpResult_Result_RESULT_BUSY = 4,
+  FtpResult_Result_RESULT_FILE_IO_ERROR = 5,
+  FtpResult_Result_RESULT_FILE_EXISTS = 6,
+  FtpResult_Result_RESULT_FILE_DOES_NOT_EXIST = 7,
+  FtpResult_Result_RESULT_FILE_PROTECTED = 8,
+  FtpResult_Result_RESULT_INVALID_PARAMETER = 9,
+  FtpResult_Result_RESULT_UNSUPPORTED = 10,
+  FtpResult_Result_RESULT_PROTOCOL_ERROR = 11,
+  FtpResult_Result_RESULT_NO_SYSTEM = 12,
+  FtpResult_Result_FtpResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  FtpResult_Result_FtpResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
 };
 
 bool FtpResult_Result_IsValid(int value);
@@ -152,4780 +155,4518 @@ extern const uint32_t FtpResult_Result_internal_data_[];
 constexpr FtpResult_Result FtpResult_Result_Result_MIN = static_cast<FtpResult_Result>(0);
 constexpr FtpResult_Result FtpResult_Result_Result_MAX = static_cast<FtpResult_Result>(12);
 constexpr int FtpResult_Result_Result_ARRAYSIZE = 12 + 1;
-const ::google::protobuf::EnumDescriptor* FtpResult_Result_descriptor();
-template<typename T> const std::string& FtpResult_Result_Name(T value)
-{
-    static_assert(
-        std::is_same<T, FtpResult_Result>::value || std::is_integral<T>::value,
-        "Incorrect type passed to Result_Name().");
-    return FtpResult_Result_Name(static_cast<FtpResult_Result>(value));
+const ::google::protobuf::EnumDescriptor*
+FtpResult_Result_descriptor();
+template <typename T>
+const std::string& FtpResult_Result_Name(T value) {
+  static_assert(std::is_same<T, FtpResult_Result>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to Result_Name().");
+  return FtpResult_Result_Name(static_cast<FtpResult_Result>(value));
 }
-template<> inline const std::string& FtpResult_Result_Name(FtpResult_Result value)
-{
-    return ::google::protobuf::internal::NameOfDenseEnum<FtpResult_Result_descriptor, 0, 12>(
-        static_cast<int>(value));
+template <>
+inline const std::string& FtpResult_Result_Name(FtpResult_Result value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<FtpResult_Result_descriptor,
+                                                 0, 12>(
+      static_cast<int>(value));
 }
-inline bool FtpResult_Result_Parse(absl::string_view name, FtpResult_Result* value)
-{
-    return ::google::protobuf::internal::ParseNamedEnum<FtpResult_Result>(
-        FtpResult_Result_descriptor(), name, value);
+inline bool FtpResult_Result_Parse(absl::string_view name, FtpResult_Result* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<FtpResult_Result>(
+      FtpResult_Result_descriptor(), name, value);
 }
 
 // ===================================================================
 
+
 // -------------------------------------------------------------------
 
-class SubscribeUploadRequest final : public ::google::protobuf::Message
+class SubscribeUploadRequest final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.SubscribeUploadRequest) */ {
-public:
-    inline SubscribeUploadRequest() : SubscribeUploadRequest(nullptr) {}
-    ~SubscribeUploadRequest() PROTOBUF_FINAL;
+ public:
+  inline SubscribeUploadRequest() : SubscribeUploadRequest(nullptr) {}
+  ~SubscribeUploadRequest() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(SubscribeUploadRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeUploadRequest));
-    }
+  void operator delete(SubscribeUploadRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeUploadRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        SubscribeUploadRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeUploadRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline SubscribeUploadRequest(const SubscribeUploadRequest& from) :
-        SubscribeUploadRequest(nullptr, from)
-    {}
-    inline SubscribeUploadRequest(SubscribeUploadRequest&& from) noexcept :
-        SubscribeUploadRequest(nullptr, std::move(from))
-    {}
-    inline SubscribeUploadRequest& operator=(const SubscribeUploadRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline SubscribeUploadRequest(const SubscribeUploadRequest& from) : SubscribeUploadRequest(nullptr, from) {}
+  inline SubscribeUploadRequest(SubscribeUploadRequest&& from) noexcept
+      : SubscribeUploadRequest(nullptr, std::move(from)) {}
+  inline SubscribeUploadRequest& operator=(const SubscribeUploadRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeUploadRequest& operator=(SubscribeUploadRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline SubscribeUploadRequest& operator=(SubscribeUploadRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeUploadRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeUploadRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeUploadRequest*>(
+        &_SubscribeUploadRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 2;
+  friend void swap(SubscribeUploadRequest& a, SubscribeUploadRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeUploadRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(SubscribeUploadRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const SubscribeUploadRequest& default_instance() { return *internal_default_instance(); }
-    static inline const SubscribeUploadRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const SubscribeUploadRequest*>(
-            &_SubscribeUploadRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 2;
-    friend void swap(SubscribeUploadRequest& a, SubscribeUploadRequest& b) { a.Swap(&b); }
-    inline void Swap(SubscribeUploadRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(SubscribeUploadRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  SubscribeUploadRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SubscribeUploadRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SubscribeUploadRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SubscribeUploadRequest& from) { SubscribeUploadRequest::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    SubscribeUploadRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<SubscribeUploadRequest>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const SubscribeUploadRequest& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const SubscribeUploadRequest& from)
-    {
-        SubscribeUploadRequest::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SubscribeUploadRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.SubscribeUploadRequest"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit SubscribeUploadRequest(::google::protobuf::Arena* arena);
+  SubscribeUploadRequest(::google::protobuf::Arena* arena, const SubscribeUploadRequest& from);
+  SubscribeUploadRequest(::google::protobuf::Arena* arena, SubscribeUploadRequest&& from) noexcept
+      : SubscribeUploadRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(SubscribeUploadRequest* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.SubscribeUploadRequest"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kLocalFilePathFieldNumber = 1,
+    kRemoteDirFieldNumber = 2,
+  };
+  // string local_file_path = 1;
+  void clear_local_file_path() ;
+  const std::string& local_file_path() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_local_file_path(Arg_&& arg, Args_... args);
+  std::string* mutable_local_file_path();
+  PROTOBUF_NODISCARD std::string* release_local_file_path();
+  void set_allocated_local_file_path(std::string* value);
 
-protected:
-    explicit SubscribeUploadRequest(::google::protobuf::Arena* arena);
-    SubscribeUploadRequest(::google::protobuf::Arena* arena, const SubscribeUploadRequest& from);
-    SubscribeUploadRequest(::google::protobuf::Arena* arena, SubscribeUploadRequest&& from) noexcept
-        :
-        SubscribeUploadRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const std::string& _internal_local_file_path() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_local_file_path(
+      const std::string& value);
+  std::string* _internal_mutable_local_file_path();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // string remote_dir = 2;
+  void clear_remote_dir() ;
+  const std::string& remote_dir() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_remote_dir(Arg_&& arg, Args_... args);
+  std::string* mutable_remote_dir();
+  PROTOBUF_NODISCARD std::string* release_remote_dir();
+  void set_allocated_remote_dir(std::string* value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kLocalFilePathFieldNumber = 1,
-        kRemoteDirFieldNumber = 2,
-    };
-    // string local_file_path = 1;
-    void clear_local_file_path();
-    const std::string& local_file_path() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_local_file_path(Arg_&& arg, Args_... args);
-    std::string* mutable_local_file_path();
-    PROTOBUF_NODISCARD std::string* release_local_file_path();
-    void set_allocated_local_file_path(std::string* value);
+  private:
+  const std::string& _internal_remote_dir() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_dir(
+      const std::string& value);
+  std::string* _internal_mutable_remote_dir();
 
-private:
-    const std::string& _internal_local_file_path() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_local_file_path(const std::string& value);
-    std::string* _internal_mutable_local_file_path();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.SubscribeUploadRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      71, 2>
+      _table_;
 
-public:
-    // string remote_dir = 2;
-    void clear_remote_dir();
-    const std::string& remote_dir() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_remote_dir(Arg_&& arg, Args_... args);
-    std::string* mutable_remote_dir();
-    PROTOBUF_NODISCARD std::string* release_remote_dir();
-    void set_allocated_remote_dir(std::string* value);
-
-private:
-    const std::string& _internal_remote_dir() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_dir(const std::string& value);
-    std::string* _internal_mutable_remote_dir();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.SubscribeUploadRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 0, 71, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const SubscribeUploadRequest& from_msg);
-        ::google::protobuf::internal::ArenaStringPtr local_file_path_;
-        ::google::protobuf::internal::ArenaStringPtr remote_dir_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeUploadRequest& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr local_file_path_;
+    ::google::protobuf::internal::ArenaStringPtr remote_dir_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class SubscribeDownloadRequest final : public ::google::protobuf::Message
+class SubscribeDownloadRequest final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.SubscribeDownloadRequest) */ {
-public:
-    inline SubscribeDownloadRequest() : SubscribeDownloadRequest(nullptr) {}
-    ~SubscribeDownloadRequest() PROTOBUF_FINAL;
+ public:
+  inline SubscribeDownloadRequest() : SubscribeDownloadRequest(nullptr) {}
+  ~SubscribeDownloadRequest() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(SubscribeDownloadRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeDownloadRequest));
-    }
+  void operator delete(SubscribeDownloadRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeDownloadRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        SubscribeDownloadRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeDownloadRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline SubscribeDownloadRequest(const SubscribeDownloadRequest& from) :
-        SubscribeDownloadRequest(nullptr, from)
-    {}
-    inline SubscribeDownloadRequest(SubscribeDownloadRequest&& from) noexcept :
-        SubscribeDownloadRequest(nullptr, std::move(from))
-    {}
-    inline SubscribeDownloadRequest& operator=(const SubscribeDownloadRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline SubscribeDownloadRequest(const SubscribeDownloadRequest& from) : SubscribeDownloadRequest(nullptr, from) {}
+  inline SubscribeDownloadRequest(SubscribeDownloadRequest&& from) noexcept
+      : SubscribeDownloadRequest(nullptr, std::move(from)) {}
+  inline SubscribeDownloadRequest& operator=(const SubscribeDownloadRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeDownloadRequest& operator=(SubscribeDownloadRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline SubscribeDownloadRequest& operator=(SubscribeDownloadRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeDownloadRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeDownloadRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeDownloadRequest*>(
+        &_SubscribeDownloadRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 0;
+  friend void swap(SubscribeDownloadRequest& a, SubscribeDownloadRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeDownloadRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(SubscribeDownloadRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const SubscribeDownloadRequest& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const SubscribeDownloadRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const SubscribeDownloadRequest*>(
-            &_SubscribeDownloadRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 0;
-    friend void swap(SubscribeDownloadRequest& a, SubscribeDownloadRequest& b) { a.Swap(&b); }
-    inline void Swap(SubscribeDownloadRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(SubscribeDownloadRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  SubscribeDownloadRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SubscribeDownloadRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SubscribeDownloadRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SubscribeDownloadRequest& from) { SubscribeDownloadRequest::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    SubscribeDownloadRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<SubscribeDownloadRequest>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const SubscribeDownloadRequest& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const SubscribeDownloadRequest& from)
-    {
-        SubscribeDownloadRequest::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SubscribeDownloadRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.SubscribeDownloadRequest"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit SubscribeDownloadRequest(::google::protobuf::Arena* arena);
+  SubscribeDownloadRequest(::google::protobuf::Arena* arena, const SubscribeDownloadRequest& from);
+  SubscribeDownloadRequest(::google::protobuf::Arena* arena, SubscribeDownloadRequest&& from) noexcept
+      : SubscribeDownloadRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(SubscribeDownloadRequest* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.ftp.SubscribeDownloadRequest";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kRemoteFilePathFieldNumber = 1,
+    kLocalDirFieldNumber = 2,
+    kUseBurstFieldNumber = 3,
+  };
+  // string remote_file_path = 1;
+  void clear_remote_file_path() ;
+  const std::string& remote_file_path() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_remote_file_path(Arg_&& arg, Args_... args);
+  std::string* mutable_remote_file_path();
+  PROTOBUF_NODISCARD std::string* release_remote_file_path();
+  void set_allocated_remote_file_path(std::string* value);
 
-protected:
-    explicit SubscribeDownloadRequest(::google::protobuf::Arena* arena);
-    SubscribeDownloadRequest(
-        ::google::protobuf::Arena* arena, const SubscribeDownloadRequest& from);
-    SubscribeDownloadRequest(
-        ::google::protobuf::Arena* arena, SubscribeDownloadRequest&& from) noexcept :
-        SubscribeDownloadRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const std::string& _internal_remote_file_path() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_file_path(
+      const std::string& value);
+  std::string* _internal_mutable_remote_file_path();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // string local_dir = 2;
+  void clear_local_dir() ;
+  const std::string& local_dir() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_local_dir(Arg_&& arg, Args_... args);
+  std::string* mutable_local_dir();
+  PROTOBUF_NODISCARD std::string* release_local_dir();
+  void set_allocated_local_dir(std::string* value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kRemoteFilePathFieldNumber = 1,
-        kLocalDirFieldNumber = 2,
-        kUseBurstFieldNumber = 3,
-    };
-    // string remote_file_path = 1;
-    void clear_remote_file_path();
-    const std::string& remote_file_path() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_remote_file_path(Arg_&& arg, Args_... args);
-    std::string* mutable_remote_file_path();
-    PROTOBUF_NODISCARD std::string* release_remote_file_path();
-    void set_allocated_remote_file_path(std::string* value);
+  private:
+  const std::string& _internal_local_dir() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_local_dir(
+      const std::string& value);
+  std::string* _internal_mutable_local_dir();
 
-private:
-    const std::string& _internal_remote_file_path() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_file_path(const std::string& value);
-    std::string* _internal_mutable_remote_file_path();
+  public:
+  // bool use_burst = 3;
+  void clear_use_burst() ;
+  bool use_burst() const;
+  void set_use_burst(bool value);
 
-public:
-    // string local_dir = 2;
-    void clear_local_dir();
-    const std::string& local_dir() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_local_dir(Arg_&& arg, Args_... args);
-    std::string* mutable_local_dir();
-    PROTOBUF_NODISCARD std::string* release_local_dir();
-    void set_allocated_local_dir(std::string* value);
+  private:
+  bool _internal_use_burst() const;
+  void _internal_set_use_burst(bool value);
 
-private:
-    const std::string& _internal_local_dir() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_local_dir(const std::string& value);
-    std::string* _internal_mutable_local_dir();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.SubscribeDownloadRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      2, 3, 0,
+      73, 2>
+      _table_;
 
-public:
-    // bool use_burst = 3;
-    void clear_use_burst();
-    bool use_burst() const;
-    void set_use_burst(bool value);
-
-private:
-    bool _internal_use_burst() const;
-    void _internal_set_use_burst(bool value);
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.SubscribeDownloadRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<2, 3, 0, 73, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const SubscribeDownloadRequest& from_msg);
-        ::google::protobuf::internal::ArenaStringPtr remote_file_path_;
-        ::google::protobuf::internal::ArenaStringPtr local_dir_;
-        bool use_burst_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeDownloadRequest& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr remote_file_path_;
+    ::google::protobuf::internal::ArenaStringPtr local_dir_;
+    bool use_burst_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class SetTargetCompidRequest final : public ::google::protobuf::Message
+class SetTargetCompidRequest final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.SetTargetCompidRequest) */ {
-public:
-    inline SetTargetCompidRequest() : SetTargetCompidRequest(nullptr) {}
-    ~SetTargetCompidRequest() PROTOBUF_FINAL;
+ public:
+  inline SetTargetCompidRequest() : SetTargetCompidRequest(nullptr) {}
+  ~SetTargetCompidRequest() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(SetTargetCompidRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(SetTargetCompidRequest));
-    }
+  void operator delete(SetTargetCompidRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SetTargetCompidRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        SetTargetCompidRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SetTargetCompidRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline SetTargetCompidRequest(const SetTargetCompidRequest& from) :
-        SetTargetCompidRequest(nullptr, from)
-    {}
-    inline SetTargetCompidRequest(SetTargetCompidRequest&& from) noexcept :
-        SetTargetCompidRequest(nullptr, std::move(from))
-    {}
-    inline SetTargetCompidRequest& operator=(const SetTargetCompidRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline SetTargetCompidRequest(const SetTargetCompidRequest& from) : SetTargetCompidRequest(nullptr, from) {}
+  inline SetTargetCompidRequest(SetTargetCompidRequest&& from) noexcept
+      : SetTargetCompidRequest(nullptr, std::move(from)) {}
+  inline SetTargetCompidRequest& operator=(const SetTargetCompidRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetTargetCompidRequest& operator=(SetTargetCompidRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline SetTargetCompidRequest& operator=(SetTargetCompidRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetTargetCompidRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetTargetCompidRequest* internal_default_instance() {
+    return reinterpret_cast<const SetTargetCompidRequest*>(
+        &_SetTargetCompidRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 17;
+  friend void swap(SetTargetCompidRequest& a, SetTargetCompidRequest& b) { a.Swap(&b); }
+  inline void Swap(SetTargetCompidRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(SetTargetCompidRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const SetTargetCompidRequest& default_instance() { return *internal_default_instance(); }
-    static inline const SetTargetCompidRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const SetTargetCompidRequest*>(
-            &_SetTargetCompidRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 17;
-    friend void swap(SetTargetCompidRequest& a, SetTargetCompidRequest& b) { a.Swap(&b); }
-    inline void Swap(SetTargetCompidRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(SetTargetCompidRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  SetTargetCompidRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SetTargetCompidRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SetTargetCompidRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SetTargetCompidRequest& from) { SetTargetCompidRequest::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    SetTargetCompidRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<SetTargetCompidRequest>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const SetTargetCompidRequest& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const SetTargetCompidRequest& from)
-    {
-        SetTargetCompidRequest::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SetTargetCompidRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.SetTargetCompidRequest"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit SetTargetCompidRequest(::google::protobuf::Arena* arena);
+  SetTargetCompidRequest(::google::protobuf::Arena* arena, const SetTargetCompidRequest& from);
+  SetTargetCompidRequest(::google::protobuf::Arena* arena, SetTargetCompidRequest&& from) noexcept
+      : SetTargetCompidRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(SetTargetCompidRequest* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.SetTargetCompidRequest"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kCompidFieldNumber = 1,
+  };
+  // uint32 compid = 1;
+  void clear_compid() ;
+  ::uint32_t compid() const;
+  void set_compid(::uint32_t value);
 
-protected:
-    explicit SetTargetCompidRequest(::google::protobuf::Arena* arena);
-    SetTargetCompidRequest(::google::protobuf::Arena* arena, const SetTargetCompidRequest& from);
-    SetTargetCompidRequest(::google::protobuf::Arena* arena, SetTargetCompidRequest&& from) noexcept
-        :
-        SetTargetCompidRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  ::uint32_t _internal_compid() const;
+  void _internal_set_compid(::uint32_t value);
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.SetTargetCompidRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kCompidFieldNumber = 1,
-    };
-    // uint32 compid = 1;
-    void clear_compid();
-    ::uint32_t compid() const;
-    void set_compid(::uint32_t value);
-
-private:
-    ::uint32_t _internal_compid() const;
-    void _internal_set_compid(::uint32_t value);
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.SetTargetCompidRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const SetTargetCompidRequest& from_msg);
-        ::uint32_t compid_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SetTargetCompidRequest& from_msg);
+    ::uint32_t compid_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class RenameRequest final : public ::google::protobuf::Message
+class RenameRequest final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.RenameRequest) */ {
-public:
-    inline RenameRequest() : RenameRequest(nullptr) {}
-    ~RenameRequest() PROTOBUF_FINAL;
+ public:
+  inline RenameRequest() : RenameRequest(nullptr) {}
+  ~RenameRequest() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(RenameRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(RenameRequest));
-    }
+  void operator delete(RenameRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RenameRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR RenameRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RenameRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline RenameRequest(const RenameRequest& from) : RenameRequest(nullptr, from) {}
-    inline RenameRequest(RenameRequest&& from) noexcept : RenameRequest(nullptr, std::move(from)) {}
-    inline RenameRequest& operator=(const RenameRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline RenameRequest(const RenameRequest& from) : RenameRequest(nullptr, from) {}
+  inline RenameRequest(RenameRequest&& from) noexcept
+      : RenameRequest(nullptr, std::move(from)) {}
+  inline RenameRequest& operator=(const RenameRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RenameRequest& operator=(RenameRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline RenameRequest& operator=(RenameRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RenameRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RenameRequest* internal_default_instance() {
+    return reinterpret_cast<const RenameRequest*>(
+        &_RenameRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 13;
+  friend void swap(RenameRequest& a, RenameRequest& b) { a.Swap(&b); }
+  inline void Swap(RenameRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(RenameRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const RenameRequest& default_instance() { return *internal_default_instance(); }
-    static inline const RenameRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const RenameRequest*>(&_RenameRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 13;
-    friend void swap(RenameRequest& a, RenameRequest& b) { a.Swap(&b); }
-    inline void Swap(RenameRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(RenameRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  RenameRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RenameRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RenameRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RenameRequest& from) { RenameRequest::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    RenameRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<RenameRequest>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const RenameRequest& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const RenameRequest& from) { RenameRequest::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RenameRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.RenameRequest"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit RenameRequest(::google::protobuf::Arena* arena);
+  RenameRequest(::google::protobuf::Arena* arena, const RenameRequest& from);
+  RenameRequest(::google::protobuf::Arena* arena, RenameRequest&& from) noexcept
+      : RenameRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(RenameRequest* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.RenameRequest"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kRemoteFromPathFieldNumber = 1,
+    kRemoteToPathFieldNumber = 2,
+  };
+  // string remote_from_path = 1;
+  void clear_remote_from_path() ;
+  const std::string& remote_from_path() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_remote_from_path(Arg_&& arg, Args_... args);
+  std::string* mutable_remote_from_path();
+  PROTOBUF_NODISCARD std::string* release_remote_from_path();
+  void set_allocated_remote_from_path(std::string* value);
 
-protected:
-    explicit RenameRequest(::google::protobuf::Arena* arena);
-    RenameRequest(::google::protobuf::Arena* arena, const RenameRequest& from);
-    RenameRequest(::google::protobuf::Arena* arena, RenameRequest&& from) noexcept :
-        RenameRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const std::string& _internal_remote_from_path() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_from_path(
+      const std::string& value);
+  std::string* _internal_mutable_remote_from_path();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // string remote_to_path = 2;
+  void clear_remote_to_path() ;
+  const std::string& remote_to_path() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_remote_to_path(Arg_&& arg, Args_... args);
+  std::string* mutable_remote_to_path();
+  PROTOBUF_NODISCARD std::string* release_remote_to_path();
+  void set_allocated_remote_to_path(std::string* value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kRemoteFromPathFieldNumber = 1,
-        kRemoteToPathFieldNumber = 2,
-    };
-    // string remote_from_path = 1;
-    void clear_remote_from_path();
-    const std::string& remote_from_path() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_remote_from_path(Arg_&& arg, Args_... args);
-    std::string* mutable_remote_from_path();
-    PROTOBUF_NODISCARD std::string* release_remote_from_path();
-    void set_allocated_remote_from_path(std::string* value);
+  private:
+  const std::string& _internal_remote_to_path() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_to_path(
+      const std::string& value);
+  std::string* _internal_mutable_remote_to_path();
 
-private:
-    const std::string& _internal_remote_from_path() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_from_path(const std::string& value);
-    std::string* _internal_mutable_remote_from_path();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.RenameRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      67, 2>
+      _table_;
 
-public:
-    // string remote_to_path = 2;
-    void clear_remote_to_path();
-    const std::string& remote_to_path() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_remote_to_path(Arg_&& arg, Args_... args);
-    std::string* mutable_remote_to_path();
-    PROTOBUF_NODISCARD std::string* release_remote_to_path();
-    void set_allocated_remote_to_path(std::string* value);
-
-private:
-    const std::string& _internal_remote_to_path() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_to_path(const std::string& value);
-    std::string* _internal_mutable_remote_to_path();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.RenameRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 0, 67, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const RenameRequest& from_msg);
-        ::google::protobuf::internal::ArenaStringPtr remote_from_path_;
-        ::google::protobuf::internal::ArenaStringPtr remote_to_path_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RenameRequest& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr remote_from_path_;
+    ::google::protobuf::internal::ArenaStringPtr remote_to_path_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class RemoveFileRequest final : public ::google::protobuf::Message
+class RemoveFileRequest final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.RemoveFileRequest) */ {
-public:
-    inline RemoveFileRequest() : RemoveFileRequest(nullptr) {}
-    ~RemoveFileRequest() PROTOBUF_FINAL;
+ public:
+  inline RemoveFileRequest() : RemoveFileRequest(nullptr) {}
+  ~RemoveFileRequest() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(RemoveFileRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(RemoveFileRequest));
-    }
+  void operator delete(RemoveFileRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RemoveFileRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        RemoveFileRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RemoveFileRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline RemoveFileRequest(const RemoveFileRequest& from) : RemoveFileRequest(nullptr, from) {}
-    inline RemoveFileRequest(RemoveFileRequest&& from) noexcept :
-        RemoveFileRequest(nullptr, std::move(from))
-    {}
-    inline RemoveFileRequest& operator=(const RemoveFileRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline RemoveFileRequest(const RemoveFileRequest& from) : RemoveFileRequest(nullptr, from) {}
+  inline RemoveFileRequest(RemoveFileRequest&& from) noexcept
+      : RemoveFileRequest(nullptr, std::move(from)) {}
+  inline RemoveFileRequest& operator=(const RemoveFileRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RemoveFileRequest& operator=(RemoveFileRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline RemoveFileRequest& operator=(RemoveFileRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RemoveFileRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RemoveFileRequest* internal_default_instance() {
+    return reinterpret_cast<const RemoveFileRequest*>(
+        &_RemoveFileRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 11;
+  friend void swap(RemoveFileRequest& a, RemoveFileRequest& b) { a.Swap(&b); }
+  inline void Swap(RemoveFileRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(RemoveFileRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const RemoveFileRequest& default_instance() { return *internal_default_instance(); }
-    static inline const RemoveFileRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const RemoveFileRequest*>(&_RemoveFileRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 11;
-    friend void swap(RemoveFileRequest& a, RemoveFileRequest& b) { a.Swap(&b); }
-    inline void Swap(RemoveFileRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(RemoveFileRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  RemoveFileRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RemoveFileRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RemoveFileRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RemoveFileRequest& from) { RemoveFileRequest::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    RemoveFileRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<RemoveFileRequest>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const RemoveFileRequest& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const RemoveFileRequest& from) { RemoveFileRequest::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RemoveFileRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.RemoveFileRequest"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit RemoveFileRequest(::google::protobuf::Arena* arena);
+  RemoveFileRequest(::google::protobuf::Arena* arena, const RemoveFileRequest& from);
+  RemoveFileRequest(::google::protobuf::Arena* arena, RemoveFileRequest&& from) noexcept
+      : RemoveFileRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(RemoveFileRequest* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.RemoveFileRequest"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kRemoteFilePathFieldNumber = 1,
+  };
+  // string remote_file_path = 1;
+  void clear_remote_file_path() ;
+  const std::string& remote_file_path() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_remote_file_path(Arg_&& arg, Args_... args);
+  std::string* mutable_remote_file_path();
+  PROTOBUF_NODISCARD std::string* release_remote_file_path();
+  void set_allocated_remote_file_path(std::string* value);
 
-protected:
-    explicit RemoveFileRequest(::google::protobuf::Arena* arena);
-    RemoveFileRequest(::google::protobuf::Arena* arena, const RemoveFileRequest& from);
-    RemoveFileRequest(::google::protobuf::Arena* arena, RemoveFileRequest&& from) noexcept :
-        RemoveFileRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const std::string& _internal_remote_file_path() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_file_path(
+      const std::string& value);
+  std::string* _internal_mutable_remote_file_path();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.RemoveFileRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      57, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kRemoteFilePathFieldNumber = 1,
-    };
-    // string remote_file_path = 1;
-    void clear_remote_file_path();
-    const std::string& remote_file_path() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_remote_file_path(Arg_&& arg, Args_... args);
-    std::string* mutable_remote_file_path();
-    PROTOBUF_NODISCARD std::string* release_remote_file_path();
-    void set_allocated_remote_file_path(std::string* value);
-
-private:
-    const std::string& _internal_remote_file_path() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_file_path(const std::string& value);
-    std::string* _internal_mutable_remote_file_path();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.RemoveFileRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 0, 57, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const RemoveFileRequest& from_msg);
-        ::google::protobuf::internal::ArenaStringPtr remote_file_path_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RemoveFileRequest& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr remote_file_path_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class RemoveDirectoryRequest final : public ::google::protobuf::Message
+class RemoveDirectoryRequest final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.RemoveDirectoryRequest) */ {
-public:
-    inline RemoveDirectoryRequest() : RemoveDirectoryRequest(nullptr) {}
-    ~RemoveDirectoryRequest() PROTOBUF_FINAL;
+ public:
+  inline RemoveDirectoryRequest() : RemoveDirectoryRequest(nullptr) {}
+  ~RemoveDirectoryRequest() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(RemoveDirectoryRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(RemoveDirectoryRequest));
-    }
+  void operator delete(RemoveDirectoryRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RemoveDirectoryRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        RemoveDirectoryRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RemoveDirectoryRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline RemoveDirectoryRequest(const RemoveDirectoryRequest& from) :
-        RemoveDirectoryRequest(nullptr, from)
-    {}
-    inline RemoveDirectoryRequest(RemoveDirectoryRequest&& from) noexcept :
-        RemoveDirectoryRequest(nullptr, std::move(from))
-    {}
-    inline RemoveDirectoryRequest& operator=(const RemoveDirectoryRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline RemoveDirectoryRequest(const RemoveDirectoryRequest& from) : RemoveDirectoryRequest(nullptr, from) {}
+  inline RemoveDirectoryRequest(RemoveDirectoryRequest&& from) noexcept
+      : RemoveDirectoryRequest(nullptr, std::move(from)) {}
+  inline RemoveDirectoryRequest& operator=(const RemoveDirectoryRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RemoveDirectoryRequest& operator=(RemoveDirectoryRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline RemoveDirectoryRequest& operator=(RemoveDirectoryRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RemoveDirectoryRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RemoveDirectoryRequest* internal_default_instance() {
+    return reinterpret_cast<const RemoveDirectoryRequest*>(
+        &_RemoveDirectoryRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 9;
+  friend void swap(RemoveDirectoryRequest& a, RemoveDirectoryRequest& b) { a.Swap(&b); }
+  inline void Swap(RemoveDirectoryRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(RemoveDirectoryRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const RemoveDirectoryRequest& default_instance() { return *internal_default_instance(); }
-    static inline const RemoveDirectoryRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const RemoveDirectoryRequest*>(
-            &_RemoveDirectoryRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 9;
-    friend void swap(RemoveDirectoryRequest& a, RemoveDirectoryRequest& b) { a.Swap(&b); }
-    inline void Swap(RemoveDirectoryRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(RemoveDirectoryRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  RemoveDirectoryRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RemoveDirectoryRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RemoveDirectoryRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RemoveDirectoryRequest& from) { RemoveDirectoryRequest::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    RemoveDirectoryRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<RemoveDirectoryRequest>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const RemoveDirectoryRequest& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const RemoveDirectoryRequest& from)
-    {
-        RemoveDirectoryRequest::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RemoveDirectoryRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.RemoveDirectoryRequest"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit RemoveDirectoryRequest(::google::protobuf::Arena* arena);
+  RemoveDirectoryRequest(::google::protobuf::Arena* arena, const RemoveDirectoryRequest& from);
+  RemoveDirectoryRequest(::google::protobuf::Arena* arena, RemoveDirectoryRequest&& from) noexcept
+      : RemoveDirectoryRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(RemoveDirectoryRequest* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.RemoveDirectoryRequest"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kRemoteDirFieldNumber = 1,
+  };
+  // string remote_dir = 1;
+  void clear_remote_dir() ;
+  const std::string& remote_dir() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_remote_dir(Arg_&& arg, Args_... args);
+  std::string* mutable_remote_dir();
+  PROTOBUF_NODISCARD std::string* release_remote_dir();
+  void set_allocated_remote_dir(std::string* value);
 
-protected:
-    explicit RemoveDirectoryRequest(::google::protobuf::Arena* arena);
-    RemoveDirectoryRequest(::google::protobuf::Arena* arena, const RemoveDirectoryRequest& from);
-    RemoveDirectoryRequest(::google::protobuf::Arena* arena, RemoveDirectoryRequest&& from) noexcept
-        :
-        RemoveDirectoryRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const std::string& _internal_remote_dir() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_dir(
+      const std::string& value);
+  std::string* _internal_mutable_remote_dir();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.RemoveDirectoryRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      56, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kRemoteDirFieldNumber = 1,
-    };
-    // string remote_dir = 1;
-    void clear_remote_dir();
-    const std::string& remote_dir() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_remote_dir(Arg_&& arg, Args_... args);
-    std::string* mutable_remote_dir();
-    PROTOBUF_NODISCARD std::string* release_remote_dir();
-    void set_allocated_remote_dir(std::string* value);
-
-private:
-    const std::string& _internal_remote_dir() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_dir(const std::string& value);
-    std::string* _internal_mutable_remote_dir();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.RemoveDirectoryRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 0, 56, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const RemoveDirectoryRequest& from_msg);
-        ::google::protobuf::internal::ArenaStringPtr remote_dir_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RemoveDirectoryRequest& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr remote_dir_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class ProgressData final : public ::google::protobuf::Message
+class ProgressData final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.ProgressData) */ {
-public:
-    inline ProgressData() : ProgressData(nullptr) {}
-    ~ProgressData() PROTOBUF_FINAL;
+ public:
+  inline ProgressData() : ProgressData(nullptr) {}
+  ~ProgressData() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(ProgressData* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(ProgressData));
-    }
+  void operator delete(ProgressData* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(ProgressData));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR ProgressData(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ProgressData(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline ProgressData(const ProgressData& from) : ProgressData(nullptr, from) {}
-    inline ProgressData(ProgressData&& from) noexcept : ProgressData(nullptr, std::move(from)) {}
-    inline ProgressData& operator=(const ProgressData& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline ProgressData(const ProgressData& from) : ProgressData(nullptr, from) {}
+  inline ProgressData(ProgressData&& from) noexcept
+      : ProgressData(nullptr, std::move(from)) {}
+  inline ProgressData& operator=(const ProgressData& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ProgressData& operator=(ProgressData&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline ProgressData& operator=(ProgressData&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ProgressData& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ProgressData* internal_default_instance() {
+    return reinterpret_cast<const ProgressData*>(
+        &_ProgressData_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 19;
+  friend void swap(ProgressData& a, ProgressData& b) { a.Swap(&b); }
+  inline void Swap(ProgressData* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(ProgressData* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const ProgressData& default_instance() { return *internal_default_instance(); }
-    static inline const ProgressData* internal_default_instance()
-    {
-        return reinterpret_cast<const ProgressData*>(&_ProgressData_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 19;
-    friend void swap(ProgressData& a, ProgressData& b) { a.Swap(&b); }
-    inline void Swap(ProgressData* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(ProgressData* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  ProgressData* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<ProgressData>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ProgressData& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ProgressData& from) { ProgressData::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    ProgressData* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<ProgressData>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const ProgressData& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const ProgressData& from) { ProgressData::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(ProgressData* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.ProgressData"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit ProgressData(::google::protobuf::Arena* arena);
+  ProgressData(::google::protobuf::Arena* arena, const ProgressData& from);
+  ProgressData(::google::protobuf::Arena* arena, ProgressData&& from) noexcept
+      : ProgressData(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(ProgressData* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.ProgressData"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kBytesTransferredFieldNumber = 1,
+    kTotalBytesFieldNumber = 2,
+  };
+  // uint32 bytes_transferred = 1;
+  void clear_bytes_transferred() ;
+  ::uint32_t bytes_transferred() const;
+  void set_bytes_transferred(::uint32_t value);
 
-protected:
-    explicit ProgressData(::google::protobuf::Arena* arena);
-    ProgressData(::google::protobuf::Arena* arena, const ProgressData& from);
-    ProgressData(::google::protobuf::Arena* arena, ProgressData&& from) noexcept :
-        ProgressData(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  ::uint32_t _internal_bytes_transferred() const;
+  void _internal_set_bytes_transferred(::uint32_t value);
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // uint32 total_bytes = 2;
+  void clear_total_bytes() ;
+  ::uint32_t total_bytes() const;
+  void set_total_bytes(::uint32_t value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kBytesTransferredFieldNumber = 1,
-        kTotalBytesFieldNumber = 2,
-    };
-    // uint32 bytes_transferred = 1;
-    void clear_bytes_transferred();
-    ::uint32_t bytes_transferred() const;
-    void set_bytes_transferred(::uint32_t value);
+  private:
+  ::uint32_t _internal_total_bytes() const;
+  void _internal_set_total_bytes(::uint32_t value);
 
-private:
-    ::uint32_t _internal_bytes_transferred() const;
-    void _internal_set_bytes_transferred(::uint32_t value);
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.ProgressData)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      0, 2>
+      _table_;
 
-public:
-    // uint32 total_bytes = 2;
-    void clear_total_bytes();
-    ::uint32_t total_bytes() const;
-    void set_total_bytes(::uint32_t value);
-
-private:
-    ::uint32_t _internal_total_bytes() const;
-    void _internal_set_total_bytes(::uint32_t value);
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.ProgressData)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 0, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const ProgressData& from_msg);
-        ::uint32_t bytes_transferred_;
-        ::uint32_t total_bytes_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ProgressData& from_msg);
+    ::uint32_t bytes_transferred_;
+    ::uint32_t total_bytes_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class ListDirectoryRequest final : public ::google::protobuf::Message
+class ListDirectoryRequest final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.ListDirectoryRequest) */ {
-public:
-    inline ListDirectoryRequest() : ListDirectoryRequest(nullptr) {}
-    ~ListDirectoryRequest() PROTOBUF_FINAL;
+ public:
+  inline ListDirectoryRequest() : ListDirectoryRequest(nullptr) {}
+  ~ListDirectoryRequest() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(ListDirectoryRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(ListDirectoryRequest));
-    }
+  void operator delete(ListDirectoryRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(ListDirectoryRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        ListDirectoryRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ListDirectoryRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline ListDirectoryRequest(const ListDirectoryRequest& from) :
-        ListDirectoryRequest(nullptr, from)
-    {}
-    inline ListDirectoryRequest(ListDirectoryRequest&& from) noexcept :
-        ListDirectoryRequest(nullptr, std::move(from))
-    {}
-    inline ListDirectoryRequest& operator=(const ListDirectoryRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline ListDirectoryRequest(const ListDirectoryRequest& from) : ListDirectoryRequest(nullptr, from) {}
+  inline ListDirectoryRequest(ListDirectoryRequest&& from) noexcept
+      : ListDirectoryRequest(nullptr, std::move(from)) {}
+  inline ListDirectoryRequest& operator=(const ListDirectoryRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ListDirectoryRequest& operator=(ListDirectoryRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline ListDirectoryRequest& operator=(ListDirectoryRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ListDirectoryRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ListDirectoryRequest* internal_default_instance() {
+    return reinterpret_cast<const ListDirectoryRequest*>(
+        &_ListDirectoryRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 4;
+  friend void swap(ListDirectoryRequest& a, ListDirectoryRequest& b) { a.Swap(&b); }
+  inline void Swap(ListDirectoryRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(ListDirectoryRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const ListDirectoryRequest& default_instance() { return *internal_default_instance(); }
-    static inline const ListDirectoryRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const ListDirectoryRequest*>(
-            &_ListDirectoryRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 4;
-    friend void swap(ListDirectoryRequest& a, ListDirectoryRequest& b) { a.Swap(&b); }
-    inline void Swap(ListDirectoryRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(ListDirectoryRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  ListDirectoryRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<ListDirectoryRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ListDirectoryRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ListDirectoryRequest& from) { ListDirectoryRequest::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    ListDirectoryRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<ListDirectoryRequest>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const ListDirectoryRequest& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const ListDirectoryRequest& from)
-    {
-        ListDirectoryRequest::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(ListDirectoryRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.ListDirectoryRequest"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit ListDirectoryRequest(::google::protobuf::Arena* arena);
+  ListDirectoryRequest(::google::protobuf::Arena* arena, const ListDirectoryRequest& from);
+  ListDirectoryRequest(::google::protobuf::Arena* arena, ListDirectoryRequest&& from) noexcept
+      : ListDirectoryRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(ListDirectoryRequest* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.ListDirectoryRequest"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kRemoteDirFieldNumber = 1,
+  };
+  // string remote_dir = 1;
+  void clear_remote_dir() ;
+  const std::string& remote_dir() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_remote_dir(Arg_&& arg, Args_... args);
+  std::string* mutable_remote_dir();
+  PROTOBUF_NODISCARD std::string* release_remote_dir();
+  void set_allocated_remote_dir(std::string* value);
 
-protected:
-    explicit ListDirectoryRequest(::google::protobuf::Arena* arena);
-    ListDirectoryRequest(::google::protobuf::Arena* arena, const ListDirectoryRequest& from);
-    ListDirectoryRequest(::google::protobuf::Arena* arena, ListDirectoryRequest&& from) noexcept :
-        ListDirectoryRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const std::string& _internal_remote_dir() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_dir(
+      const std::string& value);
+  std::string* _internal_mutable_remote_dir();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.ListDirectoryRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      54, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kRemoteDirFieldNumber = 1,
-    };
-    // string remote_dir = 1;
-    void clear_remote_dir();
-    const std::string& remote_dir() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_remote_dir(Arg_&& arg, Args_... args);
-    std::string* mutable_remote_dir();
-    PROTOBUF_NODISCARD std::string* release_remote_dir();
-    void set_allocated_remote_dir(std::string* value);
-
-private:
-    const std::string& _internal_remote_dir() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_dir(const std::string& value);
-    std::string* _internal_mutable_remote_dir();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.ListDirectoryRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 0, 54, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const ListDirectoryRequest& from_msg);
-        ::google::protobuf::internal::ArenaStringPtr remote_dir_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ListDirectoryRequest& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr remote_dir_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class ListDirectoryData final : public ::google::protobuf::Message
+class ListDirectoryData final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.ListDirectoryData) */ {
-public:
-    inline ListDirectoryData() : ListDirectoryData(nullptr) {}
-    ~ListDirectoryData() PROTOBUF_FINAL;
+ public:
+  inline ListDirectoryData() : ListDirectoryData(nullptr) {}
+  ~ListDirectoryData() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(ListDirectoryData* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(ListDirectoryData));
-    }
+  void operator delete(ListDirectoryData* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(ListDirectoryData));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        ListDirectoryData(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ListDirectoryData(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline ListDirectoryData(const ListDirectoryData& from) : ListDirectoryData(nullptr, from) {}
-    inline ListDirectoryData(ListDirectoryData&& from) noexcept :
-        ListDirectoryData(nullptr, std::move(from))
-    {}
-    inline ListDirectoryData& operator=(const ListDirectoryData& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline ListDirectoryData(const ListDirectoryData& from) : ListDirectoryData(nullptr, from) {}
+  inline ListDirectoryData(ListDirectoryData&& from) noexcept
+      : ListDirectoryData(nullptr, std::move(from)) {}
+  inline ListDirectoryData& operator=(const ListDirectoryData& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ListDirectoryData& operator=(ListDirectoryData&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline ListDirectoryData& operator=(ListDirectoryData&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ListDirectoryData& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ListDirectoryData* internal_default_instance() {
+    return reinterpret_cast<const ListDirectoryData*>(
+        &_ListDirectoryData_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 5;
+  friend void swap(ListDirectoryData& a, ListDirectoryData& b) { a.Swap(&b); }
+  inline void Swap(ListDirectoryData* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(ListDirectoryData* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const ListDirectoryData& default_instance() { return *internal_default_instance(); }
-    static inline const ListDirectoryData* internal_default_instance()
-    {
-        return reinterpret_cast<const ListDirectoryData*>(&_ListDirectoryData_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 5;
-    friend void swap(ListDirectoryData& a, ListDirectoryData& b) { a.Swap(&b); }
-    inline void Swap(ListDirectoryData* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(ListDirectoryData* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  ListDirectoryData* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<ListDirectoryData>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ListDirectoryData& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ListDirectoryData& from) { ListDirectoryData::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    ListDirectoryData* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<ListDirectoryData>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const ListDirectoryData& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const ListDirectoryData& from) { ListDirectoryData::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(ListDirectoryData* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.ListDirectoryData"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit ListDirectoryData(::google::protobuf::Arena* arena);
+  ListDirectoryData(::google::protobuf::Arena* arena, const ListDirectoryData& from);
+  ListDirectoryData(::google::protobuf::Arena* arena, ListDirectoryData&& from) noexcept
+      : ListDirectoryData(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(ListDirectoryData* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.ListDirectoryData"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kDirsFieldNumber = 1,
+    kFilesFieldNumber = 2,
+  };
+  // repeated string dirs = 1;
+  int dirs_size() const;
+  private:
+  int _internal_dirs_size() const;
 
-protected:
-    explicit ListDirectoryData(::google::protobuf::Arena* arena);
-    ListDirectoryData(::google::protobuf::Arena* arena, const ListDirectoryData& from);
-    ListDirectoryData(::google::protobuf::Arena* arena, ListDirectoryData&& from) noexcept :
-        ListDirectoryData(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  public:
+  void clear_dirs() ;
+  const std::string& dirs(int index) const;
+  std::string* mutable_dirs(int index);
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_dirs(int index, Arg_&& value, Args_... args);
+  std::string* add_dirs();
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void add_dirs(Arg_&& value, Args_... args);
+  const ::google::protobuf::RepeatedPtrField<std::string>& dirs() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* mutable_dirs();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  private:
+  const ::google::protobuf::RepeatedPtrField<std::string>& _internal_dirs() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_dirs();
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kDirsFieldNumber = 1,
-        kFilesFieldNumber = 2,
-    };
-    // repeated string dirs = 1;
-    int dirs_size() const;
+  public:
+  // repeated string files = 2;
+  int files_size() const;
+  private:
+  int _internal_files_size() const;
 
-private:
-    int _internal_dirs_size() const;
+  public:
+  void clear_files() ;
+  const std::string& files(int index) const;
+  std::string* mutable_files(int index);
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_files(int index, Arg_&& value, Args_... args);
+  std::string* add_files();
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void add_files(Arg_&& value, Args_... args);
+  const ::google::protobuf::RepeatedPtrField<std::string>& files() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* mutable_files();
 
-public:
-    void clear_dirs();
-    const std::string& dirs(int index) const;
-    std::string* mutable_dirs(int index);
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_dirs(int index, Arg_&& value, Args_... args);
-    std::string* add_dirs();
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void add_dirs(Arg_&& value, Args_... args);
-    const ::google::protobuf::RepeatedPtrField<std::string>& dirs() const;
-    ::google::protobuf::RepeatedPtrField<std::string>* mutable_dirs();
+  private:
+  const ::google::protobuf::RepeatedPtrField<std::string>& _internal_files() const;
+  ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_files();
 
-private:
-    const ::google::protobuf::RepeatedPtrField<std::string>& _internal_dirs() const;
-    ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_dirs();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.ListDirectoryData)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      50, 2>
+      _table_;
 
-public:
-    // repeated string files = 2;
-    int files_size() const;
-
-private:
-    int _internal_files_size() const;
-
-public:
-    void clear_files();
-    const std::string& files(int index) const;
-    std::string* mutable_files(int index);
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_files(int index, Arg_&& value, Args_... args);
-    std::string* add_files();
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void add_files(Arg_&& value, Args_... args);
-    const ::google::protobuf::RepeatedPtrField<std::string>& files() const;
-    ::google::protobuf::RepeatedPtrField<std::string>* mutable_files();
-
-private:
-    const ::google::protobuf::RepeatedPtrField<std::string>& _internal_files() const;
-    ::google::protobuf::RepeatedPtrField<std::string>* _internal_mutable_files();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.ListDirectoryData)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 0, 50, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const ListDirectoryData& from_msg);
-        ::google::protobuf::RepeatedPtrField<std::string> dirs_;
-        ::google::protobuf::RepeatedPtrField<std::string> files_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ListDirectoryData& from_msg);
+    ::google::protobuf::RepeatedPtrField<std::string> dirs_;
+    ::google::protobuf::RepeatedPtrField<std::string> files_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class FtpResult final : public ::google::protobuf::Message
+class FtpResult final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.FtpResult) */ {
-public:
-    inline FtpResult() : FtpResult(nullptr) {}
-    ~FtpResult() PROTOBUF_FINAL;
+ public:
+  inline FtpResult() : FtpResult(nullptr) {}
+  ~FtpResult() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(FtpResult* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(FtpResult));
-    }
+  void operator delete(FtpResult* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(FtpResult));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR FtpResult(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR FtpResult(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline FtpResult(const FtpResult& from) : FtpResult(nullptr, from) {}
-    inline FtpResult(FtpResult&& from) noexcept : FtpResult(nullptr, std::move(from)) {}
-    inline FtpResult& operator=(const FtpResult& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline FtpResult(const FtpResult& from) : FtpResult(nullptr, from) {}
+  inline FtpResult(FtpResult&& from) noexcept
+      : FtpResult(nullptr, std::move(from)) {}
+  inline FtpResult& operator=(const FtpResult& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline FtpResult& operator=(FtpResult&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline FtpResult& operator=(FtpResult&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const FtpResult& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const FtpResult* internal_default_instance() {
+    return reinterpret_cast<const FtpResult*>(
+        &_FtpResult_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 20;
+  friend void swap(FtpResult& a, FtpResult& b) { a.Swap(&b); }
+  inline void Swap(FtpResult* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(FtpResult* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const FtpResult& default_instance() { return *internal_default_instance(); }
-    static inline const FtpResult* internal_default_instance()
-    {
-        return reinterpret_cast<const FtpResult*>(&_FtpResult_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 20;
-    friend void swap(FtpResult& a, FtpResult& b) { a.Swap(&b); }
-    inline void Swap(FtpResult* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(FtpResult* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  FtpResult* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<FtpResult>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const FtpResult& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const FtpResult& from) { FtpResult::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    FtpResult* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<FtpResult>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const FtpResult& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const FtpResult& from) { FtpResult::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(FtpResult* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.FtpResult"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit FtpResult(::google::protobuf::Arena* arena);
+  FtpResult(::google::protobuf::Arena* arena, const FtpResult& from);
+  FtpResult(::google::protobuf::Arena* arena, FtpResult&& from) noexcept
+      : FtpResult(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(FtpResult* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+  using Result = FtpResult_Result;
+  static constexpr Result RESULT_UNKNOWN = FtpResult_Result_RESULT_UNKNOWN;
+  static constexpr Result RESULT_SUCCESS = FtpResult_Result_RESULT_SUCCESS;
+  static constexpr Result RESULT_NEXT = FtpResult_Result_RESULT_NEXT;
+  static constexpr Result RESULT_TIMEOUT = FtpResult_Result_RESULT_TIMEOUT;
+  static constexpr Result RESULT_BUSY = FtpResult_Result_RESULT_BUSY;
+  static constexpr Result RESULT_FILE_IO_ERROR = FtpResult_Result_RESULT_FILE_IO_ERROR;
+  static constexpr Result RESULT_FILE_EXISTS = FtpResult_Result_RESULT_FILE_EXISTS;
+  static constexpr Result RESULT_FILE_DOES_NOT_EXIST = FtpResult_Result_RESULT_FILE_DOES_NOT_EXIST;
+  static constexpr Result RESULT_FILE_PROTECTED = FtpResult_Result_RESULT_FILE_PROTECTED;
+  static constexpr Result RESULT_INVALID_PARAMETER = FtpResult_Result_RESULT_INVALID_PARAMETER;
+  static constexpr Result RESULT_UNSUPPORTED = FtpResult_Result_RESULT_UNSUPPORTED;
+  static constexpr Result RESULT_PROTOCOL_ERROR = FtpResult_Result_RESULT_PROTOCOL_ERROR;
+  static constexpr Result RESULT_NO_SYSTEM = FtpResult_Result_RESULT_NO_SYSTEM;
+  static inline bool Result_IsValid(int value) {
+    return FtpResult_Result_IsValid(value);
+  }
+  static constexpr Result Result_MIN = FtpResult_Result_Result_MIN;
+  static constexpr Result Result_MAX = FtpResult_Result_Result_MAX;
+  static constexpr int Result_ARRAYSIZE = FtpResult_Result_Result_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor* Result_descriptor() {
+    return FtpResult_Result_descriptor();
+  }
+  template <typename T>
+  static inline const std::string& Result_Name(T value) {
+    return FtpResult_Result_Name(value);
+  }
+  static inline bool Result_Parse(absl::string_view name, Result* value) {
+    return FtpResult_Result_Parse(name, value);
+  }
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.FtpResult"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kResultStrFieldNumber = 2,
+    kResultFieldNumber = 1,
+  };
+  // string result_str = 2;
+  void clear_result_str() ;
+  const std::string& result_str() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_result_str(Arg_&& arg, Args_... args);
+  std::string* mutable_result_str();
+  PROTOBUF_NODISCARD std::string* release_result_str();
+  void set_allocated_result_str(std::string* value);
 
-protected:
-    explicit FtpResult(::google::protobuf::Arena* arena);
-    FtpResult(::google::protobuf::Arena* arena, const FtpResult& from);
-    FtpResult(::google::protobuf::Arena* arena, FtpResult&& from) noexcept : FtpResult(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const std::string& _internal_result_str() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_result_str(
+      const std::string& value);
+  std::string* _internal_mutable_result_str();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
-    using Result = FtpResult_Result;
-    static constexpr Result RESULT_UNKNOWN = FtpResult_Result_RESULT_UNKNOWN;
-    static constexpr Result RESULT_SUCCESS = FtpResult_Result_RESULT_SUCCESS;
-    static constexpr Result RESULT_NEXT = FtpResult_Result_RESULT_NEXT;
-    static constexpr Result RESULT_TIMEOUT = FtpResult_Result_RESULT_TIMEOUT;
-    static constexpr Result RESULT_BUSY = FtpResult_Result_RESULT_BUSY;
-    static constexpr Result RESULT_FILE_IO_ERROR = FtpResult_Result_RESULT_FILE_IO_ERROR;
-    static constexpr Result RESULT_FILE_EXISTS = FtpResult_Result_RESULT_FILE_EXISTS;
-    static constexpr Result RESULT_FILE_DOES_NOT_EXIST =
-        FtpResult_Result_RESULT_FILE_DOES_NOT_EXIST;
-    static constexpr Result RESULT_FILE_PROTECTED = FtpResult_Result_RESULT_FILE_PROTECTED;
-    static constexpr Result RESULT_INVALID_PARAMETER = FtpResult_Result_RESULT_INVALID_PARAMETER;
-    static constexpr Result RESULT_UNSUPPORTED = FtpResult_Result_RESULT_UNSUPPORTED;
-    static constexpr Result RESULT_PROTOCOL_ERROR = FtpResult_Result_RESULT_PROTOCOL_ERROR;
-    static constexpr Result RESULT_NO_SYSTEM = FtpResult_Result_RESULT_NO_SYSTEM;
-    static inline bool Result_IsValid(int value) { return FtpResult_Result_IsValid(value); }
-    static constexpr Result Result_MIN = FtpResult_Result_Result_MIN;
-    static constexpr Result Result_MAX = FtpResult_Result_Result_MAX;
-    static constexpr int Result_ARRAYSIZE = FtpResult_Result_Result_ARRAYSIZE;
-    static inline const ::google::protobuf::EnumDescriptor* Result_descriptor()
-    {
-        return FtpResult_Result_descriptor();
-    }
-    template<typename T> static inline const std::string& Result_Name(T value)
-    {
-        return FtpResult_Result_Name(value);
-    }
-    static inline bool Result_Parse(absl::string_view name, Result* value)
-    {
-        return FtpResult_Result_Parse(name, value);
-    }
+  public:
+  // .mavsdk.rpc.ftp.FtpResult.Result result = 1;
+  void clear_result() ;
+  ::mavsdk::rpc::ftp::FtpResult_Result result() const;
+  void set_result(::mavsdk::rpc::ftp::FtpResult_Result value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kResultStrFieldNumber = 2,
-        kResultFieldNumber = 1,
-    };
-    // string result_str = 2;
-    void clear_result_str();
-    const std::string& result_str() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_result_str(Arg_&& arg, Args_... args);
-    std::string* mutable_result_str();
-    PROTOBUF_NODISCARD std::string* release_result_str();
-    void set_allocated_result_str(std::string* value);
+  private:
+  ::mavsdk::rpc::ftp::FtpResult_Result _internal_result() const;
+  void _internal_set_result(::mavsdk::rpc::ftp::FtpResult_Result value);
 
-private:
-    const std::string& _internal_result_str() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_result_str(const std::string& value);
-    std::string* _internal_mutable_result_str();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.FtpResult)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      43, 2>
+      _table_;
 
-public:
-    // .mavsdk.rpc.ftp.FtpResult.Result result = 1;
-    void clear_result();
-    ::mavsdk::rpc::ftp::FtpResult_Result result() const;
-    void set_result(::mavsdk::rpc::ftp::FtpResult_Result value);
-
-private:
-    ::mavsdk::rpc::ftp::FtpResult_Result _internal_result() const;
-    void _internal_set_result(::mavsdk::rpc::ftp::FtpResult_Result value);
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.FtpResult)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 0, 43, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const FtpResult& from_msg);
-        ::google::protobuf::internal::ArenaStringPtr result_str_;
-        int result_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const FtpResult& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr result_str_;
+    int result_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class CreateDirectoryRequest final : public ::google::protobuf::Message
+class CreateDirectoryRequest final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.CreateDirectoryRequest) */ {
-public:
-    inline CreateDirectoryRequest() : CreateDirectoryRequest(nullptr) {}
-    ~CreateDirectoryRequest() PROTOBUF_FINAL;
+ public:
+  inline CreateDirectoryRequest() : CreateDirectoryRequest(nullptr) {}
+  ~CreateDirectoryRequest() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(CreateDirectoryRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(CreateDirectoryRequest));
-    }
+  void operator delete(CreateDirectoryRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CreateDirectoryRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        CreateDirectoryRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR CreateDirectoryRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline CreateDirectoryRequest(const CreateDirectoryRequest& from) :
-        CreateDirectoryRequest(nullptr, from)
-    {}
-    inline CreateDirectoryRequest(CreateDirectoryRequest&& from) noexcept :
-        CreateDirectoryRequest(nullptr, std::move(from))
-    {}
-    inline CreateDirectoryRequest& operator=(const CreateDirectoryRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline CreateDirectoryRequest(const CreateDirectoryRequest& from) : CreateDirectoryRequest(nullptr, from) {}
+  inline CreateDirectoryRequest(CreateDirectoryRequest&& from) noexcept
+      : CreateDirectoryRequest(nullptr, std::move(from)) {}
+  inline CreateDirectoryRequest& operator=(const CreateDirectoryRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CreateDirectoryRequest& operator=(CreateDirectoryRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline CreateDirectoryRequest& operator=(CreateDirectoryRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CreateDirectoryRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CreateDirectoryRequest* internal_default_instance() {
+    return reinterpret_cast<const CreateDirectoryRequest*>(
+        &_CreateDirectoryRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 7;
+  friend void swap(CreateDirectoryRequest& a, CreateDirectoryRequest& b) { a.Swap(&b); }
+  inline void Swap(CreateDirectoryRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(CreateDirectoryRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const CreateDirectoryRequest& default_instance() { return *internal_default_instance(); }
-    static inline const CreateDirectoryRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const CreateDirectoryRequest*>(
-            &_CreateDirectoryRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 7;
-    friend void swap(CreateDirectoryRequest& a, CreateDirectoryRequest& b) { a.Swap(&b); }
-    inline void Swap(CreateDirectoryRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(CreateDirectoryRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  CreateDirectoryRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<CreateDirectoryRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CreateDirectoryRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const CreateDirectoryRequest& from) { CreateDirectoryRequest::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    CreateDirectoryRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<CreateDirectoryRequest>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const CreateDirectoryRequest& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const CreateDirectoryRequest& from)
-    {
-        CreateDirectoryRequest::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(CreateDirectoryRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.CreateDirectoryRequest"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit CreateDirectoryRequest(::google::protobuf::Arena* arena);
+  CreateDirectoryRequest(::google::protobuf::Arena* arena, const CreateDirectoryRequest& from);
+  CreateDirectoryRequest(::google::protobuf::Arena* arena, CreateDirectoryRequest&& from) noexcept
+      : CreateDirectoryRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(CreateDirectoryRequest* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.CreateDirectoryRequest"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kRemoteDirFieldNumber = 1,
+  };
+  // string remote_dir = 1;
+  void clear_remote_dir() ;
+  const std::string& remote_dir() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_remote_dir(Arg_&& arg, Args_... args);
+  std::string* mutable_remote_dir();
+  PROTOBUF_NODISCARD std::string* release_remote_dir();
+  void set_allocated_remote_dir(std::string* value);
 
-protected:
-    explicit CreateDirectoryRequest(::google::protobuf::Arena* arena);
-    CreateDirectoryRequest(::google::protobuf::Arena* arena, const CreateDirectoryRequest& from);
-    CreateDirectoryRequest(::google::protobuf::Arena* arena, CreateDirectoryRequest&& from) noexcept
-        :
-        CreateDirectoryRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const std::string& _internal_remote_dir() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_dir(
+      const std::string& value);
+  std::string* _internal_mutable_remote_dir();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.CreateDirectoryRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      56, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kRemoteDirFieldNumber = 1,
-    };
-    // string remote_dir = 1;
-    void clear_remote_dir();
-    const std::string& remote_dir() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_remote_dir(Arg_&& arg, Args_... args);
-    std::string* mutable_remote_dir();
-    PROTOBUF_NODISCARD std::string* release_remote_dir();
-    void set_allocated_remote_dir(std::string* value);
-
-private:
-    const std::string& _internal_remote_dir() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_dir(const std::string& value);
-    std::string* _internal_mutable_remote_dir();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.CreateDirectoryRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 0, 56, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const CreateDirectoryRequest& from_msg);
-        ::google::protobuf::internal::ArenaStringPtr remote_dir_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const CreateDirectoryRequest& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr remote_dir_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class AreFilesIdenticalRequest final : public ::google::protobuf::Message
+class AreFilesIdenticalRequest final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.AreFilesIdenticalRequest) */ {
-public:
-    inline AreFilesIdenticalRequest() : AreFilesIdenticalRequest(nullptr) {}
-    ~AreFilesIdenticalRequest() PROTOBUF_FINAL;
+ public:
+  inline AreFilesIdenticalRequest() : AreFilesIdenticalRequest(nullptr) {}
+  ~AreFilesIdenticalRequest() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(AreFilesIdenticalRequest* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(AreFilesIdenticalRequest));
-    }
+  void operator delete(AreFilesIdenticalRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(AreFilesIdenticalRequest));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        AreFilesIdenticalRequest(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR AreFilesIdenticalRequest(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline AreFilesIdenticalRequest(const AreFilesIdenticalRequest& from) :
-        AreFilesIdenticalRequest(nullptr, from)
-    {}
-    inline AreFilesIdenticalRequest(AreFilesIdenticalRequest&& from) noexcept :
-        AreFilesIdenticalRequest(nullptr, std::move(from))
-    {}
-    inline AreFilesIdenticalRequest& operator=(const AreFilesIdenticalRequest& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline AreFilesIdenticalRequest(const AreFilesIdenticalRequest& from) : AreFilesIdenticalRequest(nullptr, from) {}
+  inline AreFilesIdenticalRequest(AreFilesIdenticalRequest&& from) noexcept
+      : AreFilesIdenticalRequest(nullptr, std::move(from)) {}
+  inline AreFilesIdenticalRequest& operator=(const AreFilesIdenticalRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AreFilesIdenticalRequest& operator=(AreFilesIdenticalRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline AreFilesIdenticalRequest& operator=(AreFilesIdenticalRequest&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const AreFilesIdenticalRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const AreFilesIdenticalRequest* internal_default_instance() {
+    return reinterpret_cast<const AreFilesIdenticalRequest*>(
+        &_AreFilesIdenticalRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 15;
+  friend void swap(AreFilesIdenticalRequest& a, AreFilesIdenticalRequest& b) { a.Swap(&b); }
+  inline void Swap(AreFilesIdenticalRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(AreFilesIdenticalRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const AreFilesIdenticalRequest& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const AreFilesIdenticalRequest* internal_default_instance()
-    {
-        return reinterpret_cast<const AreFilesIdenticalRequest*>(
-            &_AreFilesIdenticalRequest_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 15;
-    friend void swap(AreFilesIdenticalRequest& a, AreFilesIdenticalRequest& b) { a.Swap(&b); }
-    inline void Swap(AreFilesIdenticalRequest* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(AreFilesIdenticalRequest* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  AreFilesIdenticalRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<AreFilesIdenticalRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const AreFilesIdenticalRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const AreFilesIdenticalRequest& from) { AreFilesIdenticalRequest::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    AreFilesIdenticalRequest* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<AreFilesIdenticalRequest>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const AreFilesIdenticalRequest& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const AreFilesIdenticalRequest& from)
-    {
-        AreFilesIdenticalRequest::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(AreFilesIdenticalRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.AreFilesIdenticalRequest"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit AreFilesIdenticalRequest(::google::protobuf::Arena* arena);
+  AreFilesIdenticalRequest(::google::protobuf::Arena* arena, const AreFilesIdenticalRequest& from);
+  AreFilesIdenticalRequest(::google::protobuf::Arena* arena, AreFilesIdenticalRequest&& from) noexcept
+      : AreFilesIdenticalRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(AreFilesIdenticalRequest* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.ftp.AreFilesIdenticalRequest";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kLocalFilePathFieldNumber = 1,
+    kRemoteFilePathFieldNumber = 2,
+  };
+  // string local_file_path = 1;
+  void clear_local_file_path() ;
+  const std::string& local_file_path() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_local_file_path(Arg_&& arg, Args_... args);
+  std::string* mutable_local_file_path();
+  PROTOBUF_NODISCARD std::string* release_local_file_path();
+  void set_allocated_local_file_path(std::string* value);
 
-protected:
-    explicit AreFilesIdenticalRequest(::google::protobuf::Arena* arena);
-    AreFilesIdenticalRequest(
-        ::google::protobuf::Arena* arena, const AreFilesIdenticalRequest& from);
-    AreFilesIdenticalRequest(
-        ::google::protobuf::Arena* arena, AreFilesIdenticalRequest&& from) noexcept :
-        AreFilesIdenticalRequest(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const std::string& _internal_local_file_path() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_local_file_path(
+      const std::string& value);
+  std::string* _internal_mutable_local_file_path();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // string remote_file_path = 2;
+  void clear_remote_file_path() ;
+  const std::string& remote_file_path() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_remote_file_path(Arg_&& arg, Args_... args);
+  std::string* mutable_remote_file_path();
+  PROTOBUF_NODISCARD std::string* release_remote_file_path();
+  void set_allocated_remote_file_path(std::string* value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kLocalFilePathFieldNumber = 1,
-        kRemoteFilePathFieldNumber = 2,
-    };
-    // string local_file_path = 1;
-    void clear_local_file_path();
-    const std::string& local_file_path() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_local_file_path(Arg_&& arg, Args_... args);
-    std::string* mutable_local_file_path();
-    PROTOBUF_NODISCARD std::string* release_local_file_path();
-    void set_allocated_local_file_path(std::string* value);
+  private:
+  const std::string& _internal_remote_file_path() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_file_path(
+      const std::string& value);
+  std::string* _internal_mutable_remote_file_path();
 
-private:
-    const std::string& _internal_local_file_path() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_local_file_path(const std::string& value);
-    std::string* _internal_mutable_local_file_path();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.AreFilesIdenticalRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 0,
+      79, 2>
+      _table_;
 
-public:
-    // string remote_file_path = 2;
-    void clear_remote_file_path();
-    const std::string& remote_file_path() const;
-    template<typename Arg_ = const std::string&, typename... Args_>
-    void set_remote_file_path(Arg_&& arg, Args_... args);
-    std::string* mutable_remote_file_path();
-    PROTOBUF_NODISCARD std::string* release_remote_file_path();
-    void set_allocated_remote_file_path(std::string* value);
-
-private:
-    const std::string& _internal_remote_file_path() const;
-    inline PROTOBUF_ALWAYS_INLINE void _internal_set_remote_file_path(const std::string& value);
-    std::string* _internal_mutable_remote_file_path();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.AreFilesIdenticalRequest)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 0, 79, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const AreFilesIdenticalRequest& from_msg);
-        ::google::protobuf::internal::ArenaStringPtr local_file_path_;
-        ::google::protobuf::internal::ArenaStringPtr remote_file_path_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const AreFilesIdenticalRequest& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr local_file_path_;
+    ::google::protobuf::internal::ArenaStringPtr remote_file_path_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class UploadResponse final : public ::google::protobuf::Message
+class UploadResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.UploadResponse) */ {
-public:
-    inline UploadResponse() : UploadResponse(nullptr) {}
-    ~UploadResponse() PROTOBUF_FINAL;
+ public:
+  inline UploadResponse() : UploadResponse(nullptr) {}
+  ~UploadResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(UploadResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(UploadResponse));
-    }
+  void operator delete(UploadResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(UploadResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR UploadResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR UploadResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline UploadResponse(const UploadResponse& from) : UploadResponse(nullptr, from) {}
-    inline UploadResponse(UploadResponse&& from) noexcept : UploadResponse(nullptr, std::move(from))
-    {}
-    inline UploadResponse& operator=(const UploadResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline UploadResponse(const UploadResponse& from) : UploadResponse(nullptr, from) {}
+  inline UploadResponse(UploadResponse&& from) noexcept
+      : UploadResponse(nullptr, std::move(from)) {}
+  inline UploadResponse& operator=(const UploadResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline UploadResponse& operator=(UploadResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline UploadResponse& operator=(UploadResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const UploadResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const UploadResponse* internal_default_instance() {
+    return reinterpret_cast<const UploadResponse*>(
+        &_UploadResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 3;
+  friend void swap(UploadResponse& a, UploadResponse& b) { a.Swap(&b); }
+  inline void Swap(UploadResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(UploadResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const UploadResponse& default_instance() { return *internal_default_instance(); }
-    static inline const UploadResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const UploadResponse*>(&_UploadResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 3;
-    friend void swap(UploadResponse& a, UploadResponse& b) { a.Swap(&b); }
-    inline void Swap(UploadResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(UploadResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  UploadResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<UploadResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const UploadResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const UploadResponse& from) { UploadResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    UploadResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<UploadResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const UploadResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const UploadResponse& from) { UploadResponse::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(UploadResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.UploadResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit UploadResponse(::google::protobuf::Arena* arena);
+  UploadResponse(::google::protobuf::Arena* arena, const UploadResponse& from);
+  UploadResponse(::google::protobuf::Arena* arena, UploadResponse&& from) noexcept
+      : UploadResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(UploadResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.UploadResponse"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFtpResultFieldNumber = 1,
+    kProgressDataFieldNumber = 2,
+  };
+  // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
+  bool has_ftp_result() const;
+  void clear_ftp_result() ;
+  const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
+  ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
+  void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
 
-protected:
-    explicit UploadResponse(::google::protobuf::Arena* arena);
-    UploadResponse(::google::protobuf::Arena* arena, const UploadResponse& from);
-    UploadResponse(::google::protobuf::Arena* arena, UploadResponse&& from) noexcept :
-        UploadResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
+  ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // .mavsdk.rpc.ftp.ProgressData progress_data = 2;
+  bool has_progress_data() const;
+  void clear_progress_data() ;
+  const ::mavsdk::rpc::ftp::ProgressData& progress_data() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::ProgressData* release_progress_data();
+  ::mavsdk::rpc::ftp::ProgressData* mutable_progress_data();
+  void set_allocated_progress_data(::mavsdk::rpc::ftp::ProgressData* value);
+  void unsafe_arena_set_allocated_progress_data(::mavsdk::rpc::ftp::ProgressData* value);
+  ::mavsdk::rpc::ftp::ProgressData* unsafe_arena_release_progress_data();
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kFtpResultFieldNumber = 1,
-        kProgressDataFieldNumber = 2,
-    };
-    // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-    bool has_ftp_result() const;
-    void clear_ftp_result();
-    const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
-    ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
-    void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
+  private:
+  const ::mavsdk::rpc::ftp::ProgressData& _internal_progress_data() const;
+  ::mavsdk::rpc::ftp::ProgressData* _internal_mutable_progress_data();
 
-private:
-    const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
-    ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.UploadResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 2,
+      0, 2>
+      _table_;
 
-public:
-    // .mavsdk.rpc.ftp.ProgressData progress_data = 2;
-    bool has_progress_data() const;
-    void clear_progress_data();
-    const ::mavsdk::rpc::ftp::ProgressData& progress_data() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::ProgressData* release_progress_data();
-    ::mavsdk::rpc::ftp::ProgressData* mutable_progress_data();
-    void set_allocated_progress_data(::mavsdk::rpc::ftp::ProgressData* value);
-    void unsafe_arena_set_allocated_progress_data(::mavsdk::rpc::ftp::ProgressData* value);
-    ::mavsdk::rpc::ftp::ProgressData* unsafe_arena_release_progress_data();
-
-private:
-    const ::mavsdk::rpc::ftp::ProgressData& _internal_progress_data() const;
-    ::mavsdk::rpc::ftp::ProgressData* _internal_mutable_progress_data();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.UploadResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 2, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const UploadResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
-        ::mavsdk::rpc::ftp::ProgressData* progress_data_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const UploadResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
+    ::mavsdk::rpc::ftp::ProgressData* progress_data_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class SetTargetCompidResponse final : public ::google::protobuf::Message
+class SetTargetCompidResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.SetTargetCompidResponse) */ {
-public:
-    inline SetTargetCompidResponse() : SetTargetCompidResponse(nullptr) {}
-    ~SetTargetCompidResponse() PROTOBUF_FINAL;
+ public:
+  inline SetTargetCompidResponse() : SetTargetCompidResponse(nullptr) {}
+  ~SetTargetCompidResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(SetTargetCompidResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(SetTargetCompidResponse));
-    }
+  void operator delete(SetTargetCompidResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SetTargetCompidResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        SetTargetCompidResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SetTargetCompidResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline SetTargetCompidResponse(const SetTargetCompidResponse& from) :
-        SetTargetCompidResponse(nullptr, from)
-    {}
-    inline SetTargetCompidResponse(SetTargetCompidResponse&& from) noexcept :
-        SetTargetCompidResponse(nullptr, std::move(from))
-    {}
-    inline SetTargetCompidResponse& operator=(const SetTargetCompidResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline SetTargetCompidResponse(const SetTargetCompidResponse& from) : SetTargetCompidResponse(nullptr, from) {}
+  inline SetTargetCompidResponse(SetTargetCompidResponse&& from) noexcept
+      : SetTargetCompidResponse(nullptr, std::move(from)) {}
+  inline SetTargetCompidResponse& operator=(const SetTargetCompidResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetTargetCompidResponse& operator=(SetTargetCompidResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline SetTargetCompidResponse& operator=(SetTargetCompidResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetTargetCompidResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetTargetCompidResponse* internal_default_instance() {
+    return reinterpret_cast<const SetTargetCompidResponse*>(
+        &_SetTargetCompidResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 18;
+  friend void swap(SetTargetCompidResponse& a, SetTargetCompidResponse& b) { a.Swap(&b); }
+  inline void Swap(SetTargetCompidResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(SetTargetCompidResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const SetTargetCompidResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const SetTargetCompidResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const SetTargetCompidResponse*>(
-            &_SetTargetCompidResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 18;
-    friend void swap(SetTargetCompidResponse& a, SetTargetCompidResponse& b) { a.Swap(&b); }
-    inline void Swap(SetTargetCompidResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(SetTargetCompidResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  SetTargetCompidResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SetTargetCompidResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SetTargetCompidResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SetTargetCompidResponse& from) { SetTargetCompidResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    SetTargetCompidResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<SetTargetCompidResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const SetTargetCompidResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const SetTargetCompidResponse& from)
-    {
-        SetTargetCompidResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SetTargetCompidResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.SetTargetCompidResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit SetTargetCompidResponse(::google::protobuf::Arena* arena);
+  SetTargetCompidResponse(::google::protobuf::Arena* arena, const SetTargetCompidResponse& from);
+  SetTargetCompidResponse(::google::protobuf::Arena* arena, SetTargetCompidResponse&& from) noexcept
+      : SetTargetCompidResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(SetTargetCompidResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.ftp.SetTargetCompidResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFtpResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
+  bool has_ftp_result() const;
+  void clear_ftp_result() ;
+  const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
+  ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
+  void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
 
-protected:
-    explicit SetTargetCompidResponse(::google::protobuf::Arena* arena);
-    SetTargetCompidResponse(::google::protobuf::Arena* arena, const SetTargetCompidResponse& from);
-    SetTargetCompidResponse(
-        ::google::protobuf::Arena* arena, SetTargetCompidResponse&& from) noexcept :
-        SetTargetCompidResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
+  ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.SetTargetCompidResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kFtpResultFieldNumber = 1,
-    };
-    // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-    bool has_ftp_result() const;
-    void clear_ftp_result();
-    const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
-    ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
-    void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
-
-private:
-    const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
-    ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.SetTargetCompidResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const SetTargetCompidResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SetTargetCompidResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class RenameResponse final : public ::google::protobuf::Message
+class RenameResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.RenameResponse) */ {
-public:
-    inline RenameResponse() : RenameResponse(nullptr) {}
-    ~RenameResponse() PROTOBUF_FINAL;
+ public:
+  inline RenameResponse() : RenameResponse(nullptr) {}
+  ~RenameResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(RenameResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(RenameResponse));
-    }
+  void operator delete(RenameResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RenameResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR RenameResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RenameResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline RenameResponse(const RenameResponse& from) : RenameResponse(nullptr, from) {}
-    inline RenameResponse(RenameResponse&& from) noexcept : RenameResponse(nullptr, std::move(from))
-    {}
-    inline RenameResponse& operator=(const RenameResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline RenameResponse(const RenameResponse& from) : RenameResponse(nullptr, from) {}
+  inline RenameResponse(RenameResponse&& from) noexcept
+      : RenameResponse(nullptr, std::move(from)) {}
+  inline RenameResponse& operator=(const RenameResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RenameResponse& operator=(RenameResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline RenameResponse& operator=(RenameResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RenameResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RenameResponse* internal_default_instance() {
+    return reinterpret_cast<const RenameResponse*>(
+        &_RenameResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 14;
+  friend void swap(RenameResponse& a, RenameResponse& b) { a.Swap(&b); }
+  inline void Swap(RenameResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(RenameResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const RenameResponse& default_instance() { return *internal_default_instance(); }
-    static inline const RenameResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const RenameResponse*>(&_RenameResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 14;
-    friend void swap(RenameResponse& a, RenameResponse& b) { a.Swap(&b); }
-    inline void Swap(RenameResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(RenameResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  RenameResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RenameResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RenameResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RenameResponse& from) { RenameResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    RenameResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<RenameResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const RenameResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const RenameResponse& from) { RenameResponse::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RenameResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.RenameResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit RenameResponse(::google::protobuf::Arena* arena);
+  RenameResponse(::google::protobuf::Arena* arena, const RenameResponse& from);
+  RenameResponse(::google::protobuf::Arena* arena, RenameResponse&& from) noexcept
+      : RenameResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(RenameResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.RenameResponse"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFtpResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
+  bool has_ftp_result() const;
+  void clear_ftp_result() ;
+  const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
+  ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
+  void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
 
-protected:
-    explicit RenameResponse(::google::protobuf::Arena* arena);
-    RenameResponse(::google::protobuf::Arena* arena, const RenameResponse& from);
-    RenameResponse(::google::protobuf::Arena* arena, RenameResponse&& from) noexcept :
-        RenameResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
+  ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.RenameResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kFtpResultFieldNumber = 1,
-    };
-    // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-    bool has_ftp_result() const;
-    void clear_ftp_result();
-    const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
-    ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
-    void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
-
-private:
-    const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
-    ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.RenameResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const RenameResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RenameResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class RemoveFileResponse final : public ::google::protobuf::Message
+class RemoveFileResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.RemoveFileResponse) */ {
-public:
-    inline RemoveFileResponse() : RemoveFileResponse(nullptr) {}
-    ~RemoveFileResponse() PROTOBUF_FINAL;
+ public:
+  inline RemoveFileResponse() : RemoveFileResponse(nullptr) {}
+  ~RemoveFileResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(RemoveFileResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(RemoveFileResponse));
-    }
+  void operator delete(RemoveFileResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RemoveFileResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        RemoveFileResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RemoveFileResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline RemoveFileResponse(const RemoveFileResponse& from) : RemoveFileResponse(nullptr, from) {}
-    inline RemoveFileResponse(RemoveFileResponse&& from) noexcept :
-        RemoveFileResponse(nullptr, std::move(from))
-    {}
-    inline RemoveFileResponse& operator=(const RemoveFileResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline RemoveFileResponse(const RemoveFileResponse& from) : RemoveFileResponse(nullptr, from) {}
+  inline RemoveFileResponse(RemoveFileResponse&& from) noexcept
+      : RemoveFileResponse(nullptr, std::move(from)) {}
+  inline RemoveFileResponse& operator=(const RemoveFileResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RemoveFileResponse& operator=(RemoveFileResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline RemoveFileResponse& operator=(RemoveFileResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RemoveFileResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RemoveFileResponse* internal_default_instance() {
+    return reinterpret_cast<const RemoveFileResponse*>(
+        &_RemoveFileResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 12;
+  friend void swap(RemoveFileResponse& a, RemoveFileResponse& b) { a.Swap(&b); }
+  inline void Swap(RemoveFileResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(RemoveFileResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const RemoveFileResponse& default_instance() { return *internal_default_instance(); }
-    static inline const RemoveFileResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const RemoveFileResponse*>(&_RemoveFileResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 12;
-    friend void swap(RemoveFileResponse& a, RemoveFileResponse& b) { a.Swap(&b); }
-    inline void Swap(RemoveFileResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(RemoveFileResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  RemoveFileResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RemoveFileResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RemoveFileResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RemoveFileResponse& from) { RemoveFileResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    RemoveFileResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<RemoveFileResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const RemoveFileResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const RemoveFileResponse& from) { RemoveFileResponse::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RemoveFileResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.RemoveFileResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit RemoveFileResponse(::google::protobuf::Arena* arena);
+  RemoveFileResponse(::google::protobuf::Arena* arena, const RemoveFileResponse& from);
+  RemoveFileResponse(::google::protobuf::Arena* arena, RemoveFileResponse&& from) noexcept
+      : RemoveFileResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(RemoveFileResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.RemoveFileResponse"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFtpResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
+  bool has_ftp_result() const;
+  void clear_ftp_result() ;
+  const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
+  ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
+  void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
 
-protected:
-    explicit RemoveFileResponse(::google::protobuf::Arena* arena);
-    RemoveFileResponse(::google::protobuf::Arena* arena, const RemoveFileResponse& from);
-    RemoveFileResponse(::google::protobuf::Arena* arena, RemoveFileResponse&& from) noexcept :
-        RemoveFileResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
+  ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.RemoveFileResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kFtpResultFieldNumber = 1,
-    };
-    // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-    bool has_ftp_result() const;
-    void clear_ftp_result();
-    const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
-    ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
-    void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
-
-private:
-    const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
-    ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.RemoveFileResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const RemoveFileResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RemoveFileResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class RemoveDirectoryResponse final : public ::google::protobuf::Message
+class RemoveDirectoryResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.RemoveDirectoryResponse) */ {
-public:
-    inline RemoveDirectoryResponse() : RemoveDirectoryResponse(nullptr) {}
-    ~RemoveDirectoryResponse() PROTOBUF_FINAL;
+ public:
+  inline RemoveDirectoryResponse() : RemoveDirectoryResponse(nullptr) {}
+  ~RemoveDirectoryResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(RemoveDirectoryResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(RemoveDirectoryResponse));
-    }
+  void operator delete(RemoveDirectoryResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(RemoveDirectoryResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        RemoveDirectoryResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR RemoveDirectoryResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline RemoveDirectoryResponse(const RemoveDirectoryResponse& from) :
-        RemoveDirectoryResponse(nullptr, from)
-    {}
-    inline RemoveDirectoryResponse(RemoveDirectoryResponse&& from) noexcept :
-        RemoveDirectoryResponse(nullptr, std::move(from))
-    {}
-    inline RemoveDirectoryResponse& operator=(const RemoveDirectoryResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline RemoveDirectoryResponse(const RemoveDirectoryResponse& from) : RemoveDirectoryResponse(nullptr, from) {}
+  inline RemoveDirectoryResponse(RemoveDirectoryResponse&& from) noexcept
+      : RemoveDirectoryResponse(nullptr, std::move(from)) {}
+  inline RemoveDirectoryResponse& operator=(const RemoveDirectoryResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline RemoveDirectoryResponse& operator=(RemoveDirectoryResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline RemoveDirectoryResponse& operator=(RemoveDirectoryResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const RemoveDirectoryResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const RemoveDirectoryResponse* internal_default_instance() {
+    return reinterpret_cast<const RemoveDirectoryResponse*>(
+        &_RemoveDirectoryResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 10;
+  friend void swap(RemoveDirectoryResponse& a, RemoveDirectoryResponse& b) { a.Swap(&b); }
+  inline void Swap(RemoveDirectoryResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(RemoveDirectoryResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const RemoveDirectoryResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const RemoveDirectoryResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const RemoveDirectoryResponse*>(
-            &_RemoveDirectoryResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 10;
-    friend void swap(RemoveDirectoryResponse& a, RemoveDirectoryResponse& b) { a.Swap(&b); }
-    inline void Swap(RemoveDirectoryResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(RemoveDirectoryResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  RemoveDirectoryResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<RemoveDirectoryResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const RemoveDirectoryResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const RemoveDirectoryResponse& from) { RemoveDirectoryResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    RemoveDirectoryResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<RemoveDirectoryResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const RemoveDirectoryResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const RemoveDirectoryResponse& from)
-    {
-        RemoveDirectoryResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(RemoveDirectoryResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.RemoveDirectoryResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit RemoveDirectoryResponse(::google::protobuf::Arena* arena);
+  RemoveDirectoryResponse(::google::protobuf::Arena* arena, const RemoveDirectoryResponse& from);
+  RemoveDirectoryResponse(::google::protobuf::Arena* arena, RemoveDirectoryResponse&& from) noexcept
+      : RemoveDirectoryResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(RemoveDirectoryResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.ftp.RemoveDirectoryResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFtpResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
+  bool has_ftp_result() const;
+  void clear_ftp_result() ;
+  const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
+  ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
+  void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
 
-protected:
-    explicit RemoveDirectoryResponse(::google::protobuf::Arena* arena);
-    RemoveDirectoryResponse(::google::protobuf::Arena* arena, const RemoveDirectoryResponse& from);
-    RemoveDirectoryResponse(
-        ::google::protobuf::Arena* arena, RemoveDirectoryResponse&& from) noexcept :
-        RemoveDirectoryResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
+  ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.RemoveDirectoryResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kFtpResultFieldNumber = 1,
-    };
-    // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-    bool has_ftp_result() const;
-    void clear_ftp_result();
-    const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
-    ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
-    void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
-
-private:
-    const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
-    ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.RemoveDirectoryResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const RemoveDirectoryResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const RemoveDirectoryResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class ListDirectoryResponse final : public ::google::protobuf::Message
+class ListDirectoryResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.ListDirectoryResponse) */ {
-public:
-    inline ListDirectoryResponse() : ListDirectoryResponse(nullptr) {}
-    ~ListDirectoryResponse() PROTOBUF_FINAL;
+ public:
+  inline ListDirectoryResponse() : ListDirectoryResponse(nullptr) {}
+  ~ListDirectoryResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(ListDirectoryResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(ListDirectoryResponse));
-    }
+  void operator delete(ListDirectoryResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(ListDirectoryResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        ListDirectoryResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR ListDirectoryResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline ListDirectoryResponse(const ListDirectoryResponse& from) :
-        ListDirectoryResponse(nullptr, from)
-    {}
-    inline ListDirectoryResponse(ListDirectoryResponse&& from) noexcept :
-        ListDirectoryResponse(nullptr, std::move(from))
-    {}
-    inline ListDirectoryResponse& operator=(const ListDirectoryResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline ListDirectoryResponse(const ListDirectoryResponse& from) : ListDirectoryResponse(nullptr, from) {}
+  inline ListDirectoryResponse(ListDirectoryResponse&& from) noexcept
+      : ListDirectoryResponse(nullptr, std::move(from)) {}
+  inline ListDirectoryResponse& operator=(const ListDirectoryResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ListDirectoryResponse& operator=(ListDirectoryResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline ListDirectoryResponse& operator=(ListDirectoryResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const ListDirectoryResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const ListDirectoryResponse* internal_default_instance() {
+    return reinterpret_cast<const ListDirectoryResponse*>(
+        &_ListDirectoryResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 6;
+  friend void swap(ListDirectoryResponse& a, ListDirectoryResponse& b) { a.Swap(&b); }
+  inline void Swap(ListDirectoryResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(ListDirectoryResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const ListDirectoryResponse& default_instance() { return *internal_default_instance(); }
-    static inline const ListDirectoryResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const ListDirectoryResponse*>(
-            &_ListDirectoryResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 6;
-    friend void swap(ListDirectoryResponse& a, ListDirectoryResponse& b) { a.Swap(&b); }
-    inline void Swap(ListDirectoryResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(ListDirectoryResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  ListDirectoryResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<ListDirectoryResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const ListDirectoryResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const ListDirectoryResponse& from) { ListDirectoryResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    ListDirectoryResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<ListDirectoryResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const ListDirectoryResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const ListDirectoryResponse& from)
-    {
-        ListDirectoryResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(ListDirectoryResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.ListDirectoryResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit ListDirectoryResponse(::google::protobuf::Arena* arena);
+  ListDirectoryResponse(::google::protobuf::Arena* arena, const ListDirectoryResponse& from);
+  ListDirectoryResponse(::google::protobuf::Arena* arena, ListDirectoryResponse&& from) noexcept
+      : ListDirectoryResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(ListDirectoryResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.ListDirectoryResponse"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFtpResultFieldNumber = 1,
+    kDataFieldNumber = 2,
+  };
+  // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
+  bool has_ftp_result() const;
+  void clear_ftp_result() ;
+  const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
+  ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
+  void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
 
-protected:
-    explicit ListDirectoryResponse(::google::protobuf::Arena* arena);
-    ListDirectoryResponse(::google::protobuf::Arena* arena, const ListDirectoryResponse& from);
-    ListDirectoryResponse(::google::protobuf::Arena* arena, ListDirectoryResponse&& from) noexcept :
-        ListDirectoryResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
+  ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // .mavsdk.rpc.ftp.ListDirectoryData data = 2;
+  bool has_data() const;
+  void clear_data() ;
+  const ::mavsdk::rpc::ftp::ListDirectoryData& data() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::ListDirectoryData* release_data();
+  ::mavsdk::rpc::ftp::ListDirectoryData* mutable_data();
+  void set_allocated_data(::mavsdk::rpc::ftp::ListDirectoryData* value);
+  void unsafe_arena_set_allocated_data(::mavsdk::rpc::ftp::ListDirectoryData* value);
+  ::mavsdk::rpc::ftp::ListDirectoryData* unsafe_arena_release_data();
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kFtpResultFieldNumber = 1,
-        kDataFieldNumber = 2,
-    };
-    // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-    bool has_ftp_result() const;
-    void clear_ftp_result();
-    const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
-    ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
-    void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
+  private:
+  const ::mavsdk::rpc::ftp::ListDirectoryData& _internal_data() const;
+  ::mavsdk::rpc::ftp::ListDirectoryData* _internal_mutable_data();
 
-private:
-    const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
-    ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.ListDirectoryResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 2,
+      0, 2>
+      _table_;
 
-public:
-    // .mavsdk.rpc.ftp.ListDirectoryData data = 2;
-    bool has_data() const;
-    void clear_data();
-    const ::mavsdk::rpc::ftp::ListDirectoryData& data() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::ListDirectoryData* release_data();
-    ::mavsdk::rpc::ftp::ListDirectoryData* mutable_data();
-    void set_allocated_data(::mavsdk::rpc::ftp::ListDirectoryData* value);
-    void unsafe_arena_set_allocated_data(::mavsdk::rpc::ftp::ListDirectoryData* value);
-    ::mavsdk::rpc::ftp::ListDirectoryData* unsafe_arena_release_data();
-
-private:
-    const ::mavsdk::rpc::ftp::ListDirectoryData& _internal_data() const;
-    ::mavsdk::rpc::ftp::ListDirectoryData* _internal_mutable_data();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.ListDirectoryResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 2, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const ListDirectoryResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
-        ::mavsdk::rpc::ftp::ListDirectoryData* data_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const ListDirectoryResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
+    ::mavsdk::rpc::ftp::ListDirectoryData* data_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class DownloadResponse final : public ::google::protobuf::Message
+class DownloadResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.DownloadResponse) */ {
-public:
-    inline DownloadResponse() : DownloadResponse(nullptr) {}
-    ~DownloadResponse() PROTOBUF_FINAL;
+ public:
+  inline DownloadResponse() : DownloadResponse(nullptr) {}
+  ~DownloadResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(DownloadResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(DownloadResponse));
-    }
+  void operator delete(DownloadResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(DownloadResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR DownloadResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR DownloadResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline DownloadResponse(const DownloadResponse& from) : DownloadResponse(nullptr, from) {}
-    inline DownloadResponse(DownloadResponse&& from) noexcept :
-        DownloadResponse(nullptr, std::move(from))
-    {}
-    inline DownloadResponse& operator=(const DownloadResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline DownloadResponse(const DownloadResponse& from) : DownloadResponse(nullptr, from) {}
+  inline DownloadResponse(DownloadResponse&& from) noexcept
+      : DownloadResponse(nullptr, std::move(from)) {}
+  inline DownloadResponse& operator=(const DownloadResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DownloadResponse& operator=(DownloadResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline DownloadResponse& operator=(DownloadResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const DownloadResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const DownloadResponse* internal_default_instance() {
+    return reinterpret_cast<const DownloadResponse*>(
+        &_DownloadResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 1;
+  friend void swap(DownloadResponse& a, DownloadResponse& b) { a.Swap(&b); }
+  inline void Swap(DownloadResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(DownloadResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const DownloadResponse& default_instance() { return *internal_default_instance(); }
-    static inline const DownloadResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const DownloadResponse*>(&_DownloadResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 1;
-    friend void swap(DownloadResponse& a, DownloadResponse& b) { a.Swap(&b); }
-    inline void Swap(DownloadResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(DownloadResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  DownloadResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<DownloadResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const DownloadResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const DownloadResponse& from) { DownloadResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    DownloadResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<DownloadResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const DownloadResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const DownloadResponse& from) { DownloadResponse::MergeImpl(*this, from); }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(DownloadResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.DownloadResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit DownloadResponse(::google::protobuf::Arena* arena);
+  DownloadResponse(::google::protobuf::Arena* arena, const DownloadResponse& from);
+  DownloadResponse(::google::protobuf::Arena* arena, DownloadResponse&& from) noexcept
+      : DownloadResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(DownloadResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.DownloadResponse"; }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFtpResultFieldNumber = 1,
+    kProgressDataFieldNumber = 2,
+  };
+  // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
+  bool has_ftp_result() const;
+  void clear_ftp_result() ;
+  const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
+  ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
+  void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
 
-protected:
-    explicit DownloadResponse(::google::protobuf::Arena* arena);
-    DownloadResponse(::google::protobuf::Arena* arena, const DownloadResponse& from);
-    DownloadResponse(::google::protobuf::Arena* arena, DownloadResponse&& from) noexcept :
-        DownloadResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
+  ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // .mavsdk.rpc.ftp.ProgressData progress_data = 2;
+  bool has_progress_data() const;
+  void clear_progress_data() ;
+  const ::mavsdk::rpc::ftp::ProgressData& progress_data() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::ProgressData* release_progress_data();
+  ::mavsdk::rpc::ftp::ProgressData* mutable_progress_data();
+  void set_allocated_progress_data(::mavsdk::rpc::ftp::ProgressData* value);
+  void unsafe_arena_set_allocated_progress_data(::mavsdk::rpc::ftp::ProgressData* value);
+  ::mavsdk::rpc::ftp::ProgressData* unsafe_arena_release_progress_data();
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kFtpResultFieldNumber = 1,
-        kProgressDataFieldNumber = 2,
-    };
-    // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-    bool has_ftp_result() const;
-    void clear_ftp_result();
-    const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
-    ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
-    void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
+  private:
+  const ::mavsdk::rpc::ftp::ProgressData& _internal_progress_data() const;
+  ::mavsdk::rpc::ftp::ProgressData* _internal_mutable_progress_data();
 
-private:
-    const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
-    ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.DownloadResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 2,
+      0, 2>
+      _table_;
 
-public:
-    // .mavsdk.rpc.ftp.ProgressData progress_data = 2;
-    bool has_progress_data() const;
-    void clear_progress_data();
-    const ::mavsdk::rpc::ftp::ProgressData& progress_data() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::ProgressData* release_progress_data();
-    ::mavsdk::rpc::ftp::ProgressData* mutable_progress_data();
-    void set_allocated_progress_data(::mavsdk::rpc::ftp::ProgressData* value);
-    void unsafe_arena_set_allocated_progress_data(::mavsdk::rpc::ftp::ProgressData* value);
-    ::mavsdk::rpc::ftp::ProgressData* unsafe_arena_release_progress_data();
-
-private:
-    const ::mavsdk::rpc::ftp::ProgressData& _internal_progress_data() const;
-    ::mavsdk::rpc::ftp::ProgressData* _internal_mutable_progress_data();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.DownloadResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 2, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const DownloadResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
-        ::mavsdk::rpc::ftp::ProgressData* progress_data_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const DownloadResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
+    ::mavsdk::rpc::ftp::ProgressData* progress_data_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class CreateDirectoryResponse final : public ::google::protobuf::Message
+class CreateDirectoryResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.CreateDirectoryResponse) */ {
-public:
-    inline CreateDirectoryResponse() : CreateDirectoryResponse(nullptr) {}
-    ~CreateDirectoryResponse() PROTOBUF_FINAL;
+ public:
+  inline CreateDirectoryResponse() : CreateDirectoryResponse(nullptr) {}
+  ~CreateDirectoryResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(CreateDirectoryResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(CreateDirectoryResponse));
-    }
+  void operator delete(CreateDirectoryResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CreateDirectoryResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        CreateDirectoryResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR CreateDirectoryResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline CreateDirectoryResponse(const CreateDirectoryResponse& from) :
-        CreateDirectoryResponse(nullptr, from)
-    {}
-    inline CreateDirectoryResponse(CreateDirectoryResponse&& from) noexcept :
-        CreateDirectoryResponse(nullptr, std::move(from))
-    {}
-    inline CreateDirectoryResponse& operator=(const CreateDirectoryResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline CreateDirectoryResponse(const CreateDirectoryResponse& from) : CreateDirectoryResponse(nullptr, from) {}
+  inline CreateDirectoryResponse(CreateDirectoryResponse&& from) noexcept
+      : CreateDirectoryResponse(nullptr, std::move(from)) {}
+  inline CreateDirectoryResponse& operator=(const CreateDirectoryResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CreateDirectoryResponse& operator=(CreateDirectoryResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline CreateDirectoryResponse& operator=(CreateDirectoryResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CreateDirectoryResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const CreateDirectoryResponse* internal_default_instance() {
+    return reinterpret_cast<const CreateDirectoryResponse*>(
+        &_CreateDirectoryResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 8;
+  friend void swap(CreateDirectoryResponse& a, CreateDirectoryResponse& b) { a.Swap(&b); }
+  inline void Swap(CreateDirectoryResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(CreateDirectoryResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const CreateDirectoryResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const CreateDirectoryResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const CreateDirectoryResponse*>(
-            &_CreateDirectoryResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 8;
-    friend void swap(CreateDirectoryResponse& a, CreateDirectoryResponse& b) { a.Swap(&b); }
-    inline void Swap(CreateDirectoryResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(CreateDirectoryResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  CreateDirectoryResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<CreateDirectoryResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CreateDirectoryResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const CreateDirectoryResponse& from) { CreateDirectoryResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    CreateDirectoryResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<CreateDirectoryResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const CreateDirectoryResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const CreateDirectoryResponse& from)
-    {
-        CreateDirectoryResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(CreateDirectoryResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.CreateDirectoryResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit CreateDirectoryResponse(::google::protobuf::Arena* arena);
+  CreateDirectoryResponse(::google::protobuf::Arena* arena, const CreateDirectoryResponse& from);
+  CreateDirectoryResponse(::google::protobuf::Arena* arena, CreateDirectoryResponse&& from) noexcept
+      : CreateDirectoryResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(CreateDirectoryResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.ftp.CreateDirectoryResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFtpResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
+  bool has_ftp_result() const;
+  void clear_ftp_result() ;
+  const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
+  ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
+  void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
 
-protected:
-    explicit CreateDirectoryResponse(::google::protobuf::Arena* arena);
-    CreateDirectoryResponse(::google::protobuf::Arena* arena, const CreateDirectoryResponse& from);
-    CreateDirectoryResponse(
-        ::google::protobuf::Arena* arena, CreateDirectoryResponse&& from) noexcept :
-        CreateDirectoryResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
+  ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.CreateDirectoryResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kFtpResultFieldNumber = 1,
-    };
-    // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-    bool has_ftp_result() const;
-    void clear_ftp_result();
-    const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
-    ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
-    void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
-
-private:
-    const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
-    ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.CreateDirectoryResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<0, 1, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const CreateDirectoryResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const CreateDirectoryResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 // -------------------------------------------------------------------
 
-class AreFilesIdenticalResponse final : public ::google::protobuf::Message
+class AreFilesIdenticalResponse final
+    : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.ftp.AreFilesIdenticalResponse) */ {
-public:
-    inline AreFilesIdenticalResponse() : AreFilesIdenticalResponse(nullptr) {}
-    ~AreFilesIdenticalResponse() PROTOBUF_FINAL;
+ public:
+  inline AreFilesIdenticalResponse() : AreFilesIdenticalResponse(nullptr) {}
+  ~AreFilesIdenticalResponse() PROTOBUF_FINAL;
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    void operator delete(AreFilesIdenticalResponse* msg, std::destroying_delete_t)
-    {
-        SharedDtor(*msg);
-        ::google::protobuf::internal::SizedDelete(msg, sizeof(AreFilesIdenticalResponse));
-    }
+  void operator delete(AreFilesIdenticalResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(AreFilesIdenticalResponse));
+  }
 #endif
 
-    template<typename = void>
-    explicit PROTOBUF_CONSTEXPR
-        AreFilesIdenticalResponse(::google::protobuf::internal::ConstantInitialized);
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR AreFilesIdenticalResponse(
+      ::google::protobuf::internal::ConstantInitialized);
 
-    inline AreFilesIdenticalResponse(const AreFilesIdenticalResponse& from) :
-        AreFilesIdenticalResponse(nullptr, from)
-    {}
-    inline AreFilesIdenticalResponse(AreFilesIdenticalResponse&& from) noexcept :
-        AreFilesIdenticalResponse(nullptr, std::move(from))
-    {}
-    inline AreFilesIdenticalResponse& operator=(const AreFilesIdenticalResponse& from)
-    {
-        CopyFrom(from);
-        return *this;
+  inline AreFilesIdenticalResponse(const AreFilesIdenticalResponse& from) : AreFilesIdenticalResponse(nullptr, from) {}
+  inline AreFilesIdenticalResponse(AreFilesIdenticalResponse&& from) noexcept
+      : AreFilesIdenticalResponse(nullptr, std::move(from)) {}
+  inline AreFilesIdenticalResponse& operator=(const AreFilesIdenticalResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline AreFilesIdenticalResponse& operator=(AreFilesIdenticalResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
     }
-    inline AreFilesIdenticalResponse& operator=(AreFilesIdenticalResponse&& from) noexcept
-    {
-        if (this == &from)
-            return *this;
-        if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
-            InternalSwap(&from);
-        } else {
-            CopyFrom(from);
-        }
-        return *this;
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const AreFilesIdenticalResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const AreFilesIdenticalResponse* internal_default_instance() {
+    return reinterpret_cast<const AreFilesIdenticalResponse*>(
+        &_AreFilesIdenticalResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 16;
+  friend void swap(AreFilesIdenticalResponse& a, AreFilesIdenticalResponse& b) { a.Swap(&b); }
+  inline void Swap(AreFilesIdenticalResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
     }
+  }
+  void UnsafeArenaSwap(AreFilesIdenticalResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
 
-    inline const ::google::protobuf::UnknownFieldSet&
-    unknown_fields() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-            ::google::protobuf::UnknownFieldSet::default_instance);
-    }
-    inline ::google::protobuf::UnknownFieldSet*
-    mutable_unknown_fields() ABSL_ATTRIBUTE_LIFETIME_BOUND
-    {
-        return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
-    }
+  // implements Message ----------------------------------------------
 
-    static const ::google::protobuf::Descriptor* descriptor() { return GetDescriptor(); }
-    static const ::google::protobuf::Descriptor* GetDescriptor()
-    {
-        return default_instance().GetMetadata().descriptor;
-    }
-    static const ::google::protobuf::Reflection* GetReflection()
-    {
-        return default_instance().GetMetadata().reflection;
-    }
-    static const AreFilesIdenticalResponse& default_instance()
-    {
-        return *internal_default_instance();
-    }
-    static inline const AreFilesIdenticalResponse* internal_default_instance()
-    {
-        return reinterpret_cast<const AreFilesIdenticalResponse*>(
-            &_AreFilesIdenticalResponse_default_instance_);
-    }
-    static constexpr int kIndexInFileMessages = 16;
-    friend void swap(AreFilesIdenticalResponse& a, AreFilesIdenticalResponse& b) { a.Swap(&b); }
-    inline void Swap(AreFilesIdenticalResponse* other)
-    {
-        if (other == this)
-            return;
-        if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
-            InternalSwap(other);
-        } else {
-            ::google::protobuf::internal::GenericSwap(this, other);
-        }
-    }
-    void UnsafeArenaSwap(AreFilesIdenticalResponse* other)
-    {
-        if (other == this)
-            return;
-        ABSL_DCHECK(GetArena() == other->GetArena());
-        InternalSwap(other);
-    }
+  AreFilesIdenticalResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<AreFilesIdenticalResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const AreFilesIdenticalResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const AreFilesIdenticalResponse& from) { AreFilesIdenticalResponse::MergeImpl(*this, from); }
 
-    // implements Message ----------------------------------------------
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
 
-    AreFilesIdenticalResponse* New(::google::protobuf::Arena* arena = nullptr) const
-    {
-        return ::google::protobuf::Message::DefaultConstruct<AreFilesIdenticalResponse>(arena);
-    }
-    using ::google::protobuf::Message::CopyFrom;
-    void CopyFrom(const AreFilesIdenticalResponse& from);
-    using ::google::protobuf::Message::MergeFrom;
-    void MergeFrom(const AreFilesIdenticalResponse& from)
-    {
-        AreFilesIdenticalResponse::MergeImpl(*this, from);
-    }
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
 
-private:
-    static void MergeImpl(
-        ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg);
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
 
-public:
-    bool IsInitialized() const { return true; }
-    ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-private:
-    static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
-    static ::uint8_t* _InternalSerialize(
-        const MessageLite& msg,
-        ::uint8_t* target,
-        ::google::protobuf::io::EpsCopyOutputStream* stream);
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(AreFilesIdenticalResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.ftp.AreFilesIdenticalResponse"; }
 
-public:
-    ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
-    ::uint8_t*
-    _InternalSerialize(::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-    {
-        return _InternalSerialize(*this, target, stream);
-    }
-#else // PROTOBUF_CUSTOM_VTABLE
-    ::size_t ByteSizeLong() const final;
-    ::uint8_t* _InternalSerialize(
-        ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
-#endif // PROTOBUF_CUSTOM_VTABLE
-    int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+ protected:
+  explicit AreFilesIdenticalResponse(::google::protobuf::Arena* arena);
+  AreFilesIdenticalResponse(::google::protobuf::Arena* arena, const AreFilesIdenticalResponse& from);
+  AreFilesIdenticalResponse(::google::protobuf::Arena* arena, AreFilesIdenticalResponse&& from) noexcept
+      : AreFilesIdenticalResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
 
-private:
-    void SharedCtor(::google::protobuf::Arena* arena);
-    static void SharedDtor(MessageLite& self);
-    void InternalSwap(AreFilesIdenticalResponse* other);
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
 
-private:
-    template<typename T>
-    friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
-    static ::absl::string_view FullMessageName()
-    {
-        return "mavsdk.rpc.ftp.AreFilesIdenticalResponse";
-    }
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFtpResultFieldNumber = 1,
+    kAreIdenticalFieldNumber = 2,
+  };
+  // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
+  bool has_ftp_result() const;
+  void clear_ftp_result() ;
+  const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
+  ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
+  void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
+  ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
 
-protected:
-    explicit AreFilesIdenticalResponse(::google::protobuf::Arena* arena);
-    AreFilesIdenticalResponse(
-        ::google::protobuf::Arena* arena, const AreFilesIdenticalResponse& from);
-    AreFilesIdenticalResponse(
-        ::google::protobuf::Arena* arena, AreFilesIdenticalResponse&& from) noexcept :
-        AreFilesIdenticalResponse(arena)
-    {
-        *this = ::std::move(from);
-    }
-    const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
-    static void* PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena);
-    static constexpr auto InternalNewImpl_();
-    static const ::google::protobuf::internal::ClassDataFull _class_data_;
+  private:
+  const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
+  ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
 
-public:
-    ::google::protobuf::Metadata GetMetadata() const;
-    // nested types ----------------------------------------------------
+  public:
+  // bool are_identical = 2;
+  void clear_are_identical() ;
+  bool are_identical() const;
+  void set_are_identical(bool value);
 
-    // accessors -------------------------------------------------------
-    enum : int {
-        kFtpResultFieldNumber = 1,
-        kAreIdenticalFieldNumber = 2,
-    };
-    // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-    bool has_ftp_result() const;
-    void clear_ftp_result();
-    const ::mavsdk::rpc::ftp::FtpResult& ftp_result() const;
-    PROTOBUF_NODISCARD ::mavsdk::rpc::ftp::FtpResult* release_ftp_result();
-    ::mavsdk::rpc::ftp::FtpResult* mutable_ftp_result();
-    void set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    void unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value);
-    ::mavsdk::rpc::ftp::FtpResult* unsafe_arena_release_ftp_result();
+  private:
+  bool _internal_are_identical() const;
+  void _internal_set_are_identical(bool value);
 
-private:
-    const ::mavsdk::rpc::ftp::FtpResult& _internal_ftp_result() const;
-    ::mavsdk::rpc::ftp::FtpResult* _internal_mutable_ftp_result();
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.AreFilesIdenticalResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 1,
+      0, 2>
+      _table_;
 
-public:
-    // bool are_identical = 2;
-    void clear_are_identical();
-    bool are_identical() const;
-    void set_are_identical(bool value);
-
-private:
-    bool _internal_are_identical() const;
-    void _internal_set_are_identical(bool value);
-
-public:
-    // @@protoc_insertion_point(class_scope:mavsdk.rpc.ftp.AreFilesIdenticalResponse)
-private:
-    class _Internal;
-    friend class ::google::protobuf::internal::TcParser;
-    static const ::google::protobuf::internal::TcParseTable<1, 2, 1, 0, 2> _table_;
-
-    friend class ::google::protobuf::MessageLite;
-    friend class ::google::protobuf::Arena;
-    template<typename T> friend class ::google::protobuf::Arena::InternalHelper;
-    using InternalArenaConstructable_ = void;
-    using DestructorSkippable_ = void;
-    struct Impl_ {
-        inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena);
-        inline explicit Impl_(
-            ::google::protobuf::internal::InternalVisibility visibility,
-            ::google::protobuf::Arena* arena,
-            const Impl_& from,
-            const AreFilesIdenticalResponse& from_msg);
-        ::google::protobuf::internal::HasBits<1> _has_bits_;
-        ::google::protobuf::internal::CachedSize _cached_size_;
-        ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
-        bool are_identical_;
-        PROTOBUF_TSAN_DECLARE_MEMBER
-    };
-    union {
-        Impl_ _impl_;
-    };
-    friend struct ::TableStruct_ftp_2fftp_2eproto;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const AreFilesIdenticalResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::ftp::FtpResult* ftp_result_;
+    bool are_identical_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_ftp_2fftp_2eproto;
 };
 
 // ===================================================================
 
+
+
+
 // ===================================================================
+
 
 #ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-aliasing"
-#endif // __GNUC__
+#endif  // __GNUC__
 // -------------------------------------------------------------------
 
 // SubscribeDownloadRequest
 
 // string remote_file_path = 1;
-inline void SubscribeDownloadRequest::clear_remote_file_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_file_path_.ClearToEmpty();
+inline void SubscribeDownloadRequest::clear_remote_file_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_file_path_.ClearToEmpty();
 }
-inline const std::string&
-SubscribeDownloadRequest::remote_file_path() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SubscribeDownloadRequest.remote_file_path)
-    return _internal_remote_file_path();
+inline const std::string& SubscribeDownloadRequest::remote_file_path() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SubscribeDownloadRequest.remote_file_path)
+  return _internal_remote_file_path();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void
-SubscribeDownloadRequest::set_remote_file_path(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_file_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.SubscribeDownloadRequest.remote_file_path)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void SubscribeDownloadRequest::set_remote_file_path(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_file_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.SubscribeDownloadRequest.remote_file_path)
 }
-inline std::string*
-SubscribeDownloadRequest::mutable_remote_file_path() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_remote_file_path();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.SubscribeDownloadRequest.remote_file_path)
-    return _s;
+inline std::string* SubscribeDownloadRequest::mutable_remote_file_path() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_remote_file_path();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.SubscribeDownloadRequest.remote_file_path)
+  return _s;
 }
-inline const std::string& SubscribeDownloadRequest::_internal_remote_file_path() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.remote_file_path_.Get();
+inline const std::string& SubscribeDownloadRequest::_internal_remote_file_path() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.remote_file_path_.Get();
 }
-inline void SubscribeDownloadRequest::_internal_set_remote_file_path(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_file_path_.Set(value, GetArena());
+inline void SubscribeDownloadRequest::_internal_set_remote_file_path(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_file_path_.Set(value, GetArena());
 }
-inline std::string* SubscribeDownloadRequest::_internal_mutable_remote_file_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.remote_file_path_.Mutable(GetArena());
+inline std::string* SubscribeDownloadRequest::_internal_mutable_remote_file_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.remote_file_path_.Mutable( GetArena());
 }
-inline std::string* SubscribeDownloadRequest::release_remote_file_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.SubscribeDownloadRequest.remote_file_path)
-    return _impl_.remote_file_path_.Release();
+inline std::string* SubscribeDownloadRequest::release_remote_file_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.SubscribeDownloadRequest.remote_file_path)
+  return _impl_.remote_file_path_.Release();
 }
-inline void SubscribeDownloadRequest::set_allocated_remote_file_path(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_file_path_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.remote_file_path_.IsDefault()) {
-        _impl_.remote_file_path_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.SubscribeDownloadRequest.remote_file_path)
+inline void SubscribeDownloadRequest::set_allocated_remote_file_path(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_file_path_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.remote_file_path_.IsDefault()) {
+    _impl_.remote_file_path_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.SubscribeDownloadRequest.remote_file_path)
 }
 
 // string local_dir = 2;
-inline void SubscribeDownloadRequest::clear_local_dir()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.local_dir_.ClearToEmpty();
+inline void SubscribeDownloadRequest::clear_local_dir() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_dir_.ClearToEmpty();
 }
-inline const std::string& SubscribeDownloadRequest::local_dir() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SubscribeDownloadRequest.local_dir)
-    return _internal_local_dir();
+inline const std::string& SubscribeDownloadRequest::local_dir() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SubscribeDownloadRequest.local_dir)
+  return _internal_local_dir();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void
-SubscribeDownloadRequest::set_local_dir(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.local_dir_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.SubscribeDownloadRequest.local_dir)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void SubscribeDownloadRequest::set_local_dir(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_dir_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.SubscribeDownloadRequest.local_dir)
 }
-inline std::string* SubscribeDownloadRequest::mutable_local_dir() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_local_dir();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.SubscribeDownloadRequest.local_dir)
-    return _s;
+inline std::string* SubscribeDownloadRequest::mutable_local_dir() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_local_dir();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.SubscribeDownloadRequest.local_dir)
+  return _s;
 }
-inline const std::string& SubscribeDownloadRequest::_internal_local_dir() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.local_dir_.Get();
+inline const std::string& SubscribeDownloadRequest::_internal_local_dir() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.local_dir_.Get();
 }
-inline void SubscribeDownloadRequest::_internal_set_local_dir(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.local_dir_.Set(value, GetArena());
+inline void SubscribeDownloadRequest::_internal_set_local_dir(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_dir_.Set(value, GetArena());
 }
-inline std::string* SubscribeDownloadRequest::_internal_mutable_local_dir()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.local_dir_.Mutable(GetArena());
+inline std::string* SubscribeDownloadRequest::_internal_mutable_local_dir() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.local_dir_.Mutable( GetArena());
 }
-inline std::string* SubscribeDownloadRequest::release_local_dir()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.SubscribeDownloadRequest.local_dir)
-    return _impl_.local_dir_.Release();
+inline std::string* SubscribeDownloadRequest::release_local_dir() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.SubscribeDownloadRequest.local_dir)
+  return _impl_.local_dir_.Release();
 }
-inline void SubscribeDownloadRequest::set_allocated_local_dir(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.local_dir_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.local_dir_.IsDefault()) {
-        _impl_.local_dir_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.SubscribeDownloadRequest.local_dir)
+inline void SubscribeDownloadRequest::set_allocated_local_dir(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_dir_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.local_dir_.IsDefault()) {
+    _impl_.local_dir_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.SubscribeDownloadRequest.local_dir)
 }
 
 // bool use_burst = 3;
-inline void SubscribeDownloadRequest::clear_use_burst()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.use_burst_ = false;
+inline void SubscribeDownloadRequest::clear_use_burst() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.use_burst_ = false;
 }
-inline bool SubscribeDownloadRequest::use_burst() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SubscribeDownloadRequest.use_burst)
-    return _internal_use_burst();
+inline bool SubscribeDownloadRequest::use_burst() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SubscribeDownloadRequest.use_burst)
+  return _internal_use_burst();
 }
-inline void SubscribeDownloadRequest::set_use_burst(bool value)
-{
-    _internal_set_use_burst(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.SubscribeDownloadRequest.use_burst)
+inline void SubscribeDownloadRequest::set_use_burst(bool value) {
+  _internal_set_use_burst(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.SubscribeDownloadRequest.use_burst)
 }
-inline bool SubscribeDownloadRequest::_internal_use_burst() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.use_burst_;
+inline bool SubscribeDownloadRequest::_internal_use_burst() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.use_burst_;
 }
-inline void SubscribeDownloadRequest::_internal_set_use_burst(bool value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.use_burst_ = value;
+inline void SubscribeDownloadRequest::_internal_set_use_burst(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.use_burst_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -4933,231 +4674,195 @@ inline void SubscribeDownloadRequest::_internal_set_use_burst(bool value)
 // DownloadResponse
 
 // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-inline bool DownloadResponse::has_ftp_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
-    return value;
+inline bool DownloadResponse::has_ftp_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
+  return value;
 }
-inline void DownloadResponse::clear_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ != nullptr)
-        _impl_.ftp_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void DownloadResponse::clear_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ != nullptr) _impl_.ftp_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::ftp::FtpResult& DownloadResponse::_internal_ftp_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(
-                              ::mavsdk::rpc::ftp::_FtpResult_default_instance_);
+inline const ::mavsdk::rpc::ftp::FtpResult& DownloadResponse::_internal_ftp_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(::mavsdk::rpc::ftp::_FtpResult_default_instance_);
 }
-inline const ::mavsdk::rpc::ftp::FtpResult&
-DownloadResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.DownloadResponse.ftp_result)
-    return _internal_ftp_result();
+inline const ::mavsdk::rpc::ftp::FtpResult& DownloadResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.DownloadResponse.ftp_result)
+  return _internal_ftp_result();
 }
-inline void
-DownloadResponse::unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
-    }
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.DownloadResponse.ftp_result)
-}
-inline ::mavsdk::rpc::ftp::FtpResult* DownloadResponse::release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* DownloadResponse::unsafe_arena_release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.DownloadResponse.ftp_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* DownloadResponse::_internal_mutable_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ == nullptr) {
-        auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(
-            GetArena());
-        _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
-    }
-    return _impl_.ftp_result_;
-}
-inline ::mavsdk::rpc::ftp::FtpResult*
-DownloadResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void DownloadResponse::unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
+  }
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.DownloadResponse.ftp_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.DownloadResponse.ftp_result)
 }
-inline void DownloadResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.ftp_result_);
-    }
+inline ::mavsdk::rpc::ftp::FtpResult* DownloadResponse::release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* DownloadResponse::unsafe_arena_release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.DownloadResponse.ftp_result)
 
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.DownloadResponse.ftp_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* DownloadResponse::_internal_mutable_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(GetArena());
+    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
+  }
+  return _impl_.ftp_result_;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* DownloadResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.DownloadResponse.ftp_result)
+  return _msg;
+}
+inline void DownloadResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.ftp_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.DownloadResponse.ftp_result)
 }
 
 // .mavsdk.rpc.ftp.ProgressData progress_data = 2;
-inline bool DownloadResponse::has_progress_data() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.progress_data_ != nullptr);
-    return value;
+inline bool DownloadResponse::has_progress_data() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.progress_data_ != nullptr);
+  return value;
 }
-inline void DownloadResponse::clear_progress_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.progress_data_ != nullptr)
-        _impl_.progress_data_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000002u;
+inline void DownloadResponse::clear_progress_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.progress_data_ != nullptr) _impl_.progress_data_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline const ::mavsdk::rpc::ftp::ProgressData& DownloadResponse::_internal_progress_data() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::ftp::ProgressData* p = _impl_.progress_data_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::ftp::ProgressData&>(
-                              ::mavsdk::rpc::ftp::_ProgressData_default_instance_);
+inline const ::mavsdk::rpc::ftp::ProgressData& DownloadResponse::_internal_progress_data() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::ftp::ProgressData* p = _impl_.progress_data_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::ftp::ProgressData&>(::mavsdk::rpc::ftp::_ProgressData_default_instance_);
 }
-inline const ::mavsdk::rpc::ftp::ProgressData&
-DownloadResponse::progress_data() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.DownloadResponse.progress_data)
-    return _internal_progress_data();
+inline const ::mavsdk::rpc::ftp::ProgressData& DownloadResponse::progress_data() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.DownloadResponse.progress_data)
+  return _internal_progress_data();
 }
-inline void
-DownloadResponse::unsafe_arena_set_allocated_progress_data(::mavsdk::rpc::ftp::ProgressData* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.progress_data_);
-    }
-    _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::ftp::ProgressData*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000002u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000002u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.DownloadResponse.progress_data)
-}
-inline ::mavsdk::rpc::ftp::ProgressData* DownloadResponse::release_progress_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000002u;
-    ::mavsdk::rpc::ftp::ProgressData* released = _impl_.progress_data_;
-    _impl_.progress_data_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::ftp::ProgressData* DownloadResponse::unsafe_arena_release_progress_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.DownloadResponse.progress_data)
-
-    _impl_._has_bits_[0] &= ~0x00000002u;
-    ::mavsdk::rpc::ftp::ProgressData* temp = _impl_.progress_data_;
-    _impl_.progress_data_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::ftp::ProgressData* DownloadResponse::_internal_mutable_progress_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.progress_data_ == nullptr) {
-        auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::ProgressData>(
-            GetArena());
-        _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::ftp::ProgressData*>(p);
-    }
-    return _impl_.progress_data_;
-}
-inline ::mavsdk::rpc::ftp::ProgressData*
-DownloadResponse::mutable_progress_data() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void DownloadResponse::unsafe_arena_set_allocated_progress_data(::mavsdk::rpc::ftp::ProgressData* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.progress_data_);
+  }
+  _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::ftp::ProgressData*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000002u;
-    ::mavsdk::rpc::ftp::ProgressData* _msg = _internal_mutable_progress_data();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.DownloadResponse.progress_data)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.DownloadResponse.progress_data)
 }
-inline void DownloadResponse::set_allocated_progress_data(::mavsdk::rpc::ftp::ProgressData* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.progress_data_);
-    }
+inline ::mavsdk::rpc::ftp::ProgressData* DownloadResponse::release_progress_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000002u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000002u;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::ftp::ProgressData* released = _impl_.progress_data_;
+  _impl_.progress_data_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::ftp::ProgressData* DownloadResponse::unsafe_arena_release_progress_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.DownloadResponse.progress_data)
 
-    _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::ftp::ProgressData*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.DownloadResponse.progress_data)
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::ftp::ProgressData* temp = _impl_.progress_data_;
+  _impl_.progress_data_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::ftp::ProgressData* DownloadResponse::_internal_mutable_progress_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.progress_data_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::ProgressData>(GetArena());
+    _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::ftp::ProgressData*>(p);
+  }
+  return _impl_.progress_data_;
+}
+inline ::mavsdk::rpc::ftp::ProgressData* DownloadResponse::mutable_progress_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  ::mavsdk::rpc::ftp::ProgressData* _msg = _internal_mutable_progress_data();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.DownloadResponse.progress_data)
+  return _msg;
+}
+inline void DownloadResponse::set_allocated_progress_data(::mavsdk::rpc::ftp::ProgressData* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.progress_data_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+
+  _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::ftp::ProgressData*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.DownloadResponse.progress_data)
 }
 
 // -------------------------------------------------------------------
@@ -5165,117 +4870,99 @@ inline void DownloadResponse::set_allocated_progress_data(::mavsdk::rpc::ftp::Pr
 // SubscribeUploadRequest
 
 // string local_file_path = 1;
-inline void SubscribeUploadRequest::clear_local_file_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.local_file_path_.ClearToEmpty();
+inline void SubscribeUploadRequest::clear_local_file_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_file_path_.ClearToEmpty();
 }
-inline const std::string&
-SubscribeUploadRequest::local_file_path() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SubscribeUploadRequest.local_file_path)
-    return _internal_local_file_path();
+inline const std::string& SubscribeUploadRequest::local_file_path() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SubscribeUploadRequest.local_file_path)
+  return _internal_local_file_path();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void
-SubscribeUploadRequest::set_local_file_path(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.local_file_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.SubscribeUploadRequest.local_file_path)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void SubscribeUploadRequest::set_local_file_path(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_file_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.SubscribeUploadRequest.local_file_path)
 }
-inline std::string* SubscribeUploadRequest::mutable_local_file_path() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_local_file_path();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.SubscribeUploadRequest.local_file_path)
-    return _s;
+inline std::string* SubscribeUploadRequest::mutable_local_file_path() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_local_file_path();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.SubscribeUploadRequest.local_file_path)
+  return _s;
 }
-inline const std::string& SubscribeUploadRequest::_internal_local_file_path() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.local_file_path_.Get();
+inline const std::string& SubscribeUploadRequest::_internal_local_file_path() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.local_file_path_.Get();
 }
-inline void SubscribeUploadRequest::_internal_set_local_file_path(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.local_file_path_.Set(value, GetArena());
+inline void SubscribeUploadRequest::_internal_set_local_file_path(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_file_path_.Set(value, GetArena());
 }
-inline std::string* SubscribeUploadRequest::_internal_mutable_local_file_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.local_file_path_.Mutable(GetArena());
+inline std::string* SubscribeUploadRequest::_internal_mutable_local_file_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.local_file_path_.Mutable( GetArena());
 }
-inline std::string* SubscribeUploadRequest::release_local_file_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.SubscribeUploadRequest.local_file_path)
-    return _impl_.local_file_path_.Release();
+inline std::string* SubscribeUploadRequest::release_local_file_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.SubscribeUploadRequest.local_file_path)
+  return _impl_.local_file_path_.Release();
 }
-inline void SubscribeUploadRequest::set_allocated_local_file_path(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.local_file_path_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.local_file_path_.IsDefault()) {
-        _impl_.local_file_path_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.SubscribeUploadRequest.local_file_path)
+inline void SubscribeUploadRequest::set_allocated_local_file_path(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_file_path_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.local_file_path_.IsDefault()) {
+    _impl_.local_file_path_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.SubscribeUploadRequest.local_file_path)
 }
 
 // string remote_dir = 2;
-inline void SubscribeUploadRequest::clear_remote_dir()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_dir_.ClearToEmpty();
+inline void SubscribeUploadRequest::clear_remote_dir() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_dir_.ClearToEmpty();
 }
-inline const std::string& SubscribeUploadRequest::remote_dir() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SubscribeUploadRequest.remote_dir)
-    return _internal_remote_dir();
+inline const std::string& SubscribeUploadRequest::remote_dir() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SubscribeUploadRequest.remote_dir)
+  return _internal_remote_dir();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void SubscribeUploadRequest::set_remote_dir(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_dir_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.SubscribeUploadRequest.remote_dir)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void SubscribeUploadRequest::set_remote_dir(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_dir_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.SubscribeUploadRequest.remote_dir)
 }
-inline std::string* SubscribeUploadRequest::mutable_remote_dir() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_remote_dir();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.SubscribeUploadRequest.remote_dir)
-    return _s;
+inline std::string* SubscribeUploadRequest::mutable_remote_dir() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_remote_dir();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.SubscribeUploadRequest.remote_dir)
+  return _s;
 }
-inline const std::string& SubscribeUploadRequest::_internal_remote_dir() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.remote_dir_.Get();
+inline const std::string& SubscribeUploadRequest::_internal_remote_dir() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.remote_dir_.Get();
 }
-inline void SubscribeUploadRequest::_internal_set_remote_dir(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_dir_.Set(value, GetArena());
+inline void SubscribeUploadRequest::_internal_set_remote_dir(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_dir_.Set(value, GetArena());
 }
-inline std::string* SubscribeUploadRequest::_internal_mutable_remote_dir()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.remote_dir_.Mutable(GetArena());
+inline std::string* SubscribeUploadRequest::_internal_mutable_remote_dir() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.remote_dir_.Mutable( GetArena());
 }
-inline std::string* SubscribeUploadRequest::release_remote_dir()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.SubscribeUploadRequest.remote_dir)
-    return _impl_.remote_dir_.Release();
+inline std::string* SubscribeUploadRequest::release_remote_dir() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.SubscribeUploadRequest.remote_dir)
+  return _impl_.remote_dir_.Release();
 }
-inline void SubscribeUploadRequest::set_allocated_remote_dir(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_dir_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.remote_dir_.IsDefault()) {
-        _impl_.remote_dir_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.SubscribeUploadRequest.remote_dir)
+inline void SubscribeUploadRequest::set_allocated_remote_dir(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_dir_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.remote_dir_.IsDefault()) {
+    _impl_.remote_dir_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.SubscribeUploadRequest.remote_dir)
 }
 
 // -------------------------------------------------------------------
@@ -5283,231 +4970,195 @@ inline void SubscribeUploadRequest::set_allocated_remote_dir(std::string* value)
 // UploadResponse
 
 // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-inline bool UploadResponse::has_ftp_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
-    return value;
+inline bool UploadResponse::has_ftp_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
+  return value;
 }
-inline void UploadResponse::clear_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ != nullptr)
-        _impl_.ftp_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void UploadResponse::clear_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ != nullptr) _impl_.ftp_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::ftp::FtpResult& UploadResponse::_internal_ftp_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(
-                              ::mavsdk::rpc::ftp::_FtpResult_default_instance_);
+inline const ::mavsdk::rpc::ftp::FtpResult& UploadResponse::_internal_ftp_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(::mavsdk::rpc::ftp::_FtpResult_default_instance_);
 }
-inline const ::mavsdk::rpc::ftp::FtpResult&
-UploadResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.UploadResponse.ftp_result)
-    return _internal_ftp_result();
+inline const ::mavsdk::rpc::ftp::FtpResult& UploadResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.UploadResponse.ftp_result)
+  return _internal_ftp_result();
 }
-inline void
-UploadResponse::unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
-    }
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.UploadResponse.ftp_result)
-}
-inline ::mavsdk::rpc::ftp::FtpResult* UploadResponse::release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* UploadResponse::unsafe_arena_release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.UploadResponse.ftp_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* UploadResponse::_internal_mutable_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ == nullptr) {
-        auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(
-            GetArena());
-        _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
-    }
-    return _impl_.ftp_result_;
-}
-inline ::mavsdk::rpc::ftp::FtpResult*
-UploadResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void UploadResponse::unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
+  }
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.UploadResponse.ftp_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.UploadResponse.ftp_result)
 }
-inline void UploadResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.ftp_result_);
-    }
+inline ::mavsdk::rpc::ftp::FtpResult* UploadResponse::release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* UploadResponse::unsafe_arena_release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.UploadResponse.ftp_result)
 
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.UploadResponse.ftp_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* UploadResponse::_internal_mutable_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(GetArena());
+    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
+  }
+  return _impl_.ftp_result_;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* UploadResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.UploadResponse.ftp_result)
+  return _msg;
+}
+inline void UploadResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.ftp_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.UploadResponse.ftp_result)
 }
 
 // .mavsdk.rpc.ftp.ProgressData progress_data = 2;
-inline bool UploadResponse::has_progress_data() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.progress_data_ != nullptr);
-    return value;
+inline bool UploadResponse::has_progress_data() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.progress_data_ != nullptr);
+  return value;
 }
-inline void UploadResponse::clear_progress_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.progress_data_ != nullptr)
-        _impl_.progress_data_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000002u;
+inline void UploadResponse::clear_progress_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.progress_data_ != nullptr) _impl_.progress_data_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline const ::mavsdk::rpc::ftp::ProgressData& UploadResponse::_internal_progress_data() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::ftp::ProgressData* p = _impl_.progress_data_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::ftp::ProgressData&>(
-                              ::mavsdk::rpc::ftp::_ProgressData_default_instance_);
+inline const ::mavsdk::rpc::ftp::ProgressData& UploadResponse::_internal_progress_data() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::ftp::ProgressData* p = _impl_.progress_data_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::ftp::ProgressData&>(::mavsdk::rpc::ftp::_ProgressData_default_instance_);
 }
-inline const ::mavsdk::rpc::ftp::ProgressData&
-UploadResponse::progress_data() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.UploadResponse.progress_data)
-    return _internal_progress_data();
+inline const ::mavsdk::rpc::ftp::ProgressData& UploadResponse::progress_data() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.UploadResponse.progress_data)
+  return _internal_progress_data();
 }
-inline void
-UploadResponse::unsafe_arena_set_allocated_progress_data(::mavsdk::rpc::ftp::ProgressData* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.progress_data_);
-    }
-    _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::ftp::ProgressData*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000002u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000002u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.UploadResponse.progress_data)
-}
-inline ::mavsdk::rpc::ftp::ProgressData* UploadResponse::release_progress_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000002u;
-    ::mavsdk::rpc::ftp::ProgressData* released = _impl_.progress_data_;
-    _impl_.progress_data_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::ftp::ProgressData* UploadResponse::unsafe_arena_release_progress_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.UploadResponse.progress_data)
-
-    _impl_._has_bits_[0] &= ~0x00000002u;
-    ::mavsdk::rpc::ftp::ProgressData* temp = _impl_.progress_data_;
-    _impl_.progress_data_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::ftp::ProgressData* UploadResponse::_internal_mutable_progress_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.progress_data_ == nullptr) {
-        auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::ProgressData>(
-            GetArena());
-        _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::ftp::ProgressData*>(p);
-    }
-    return _impl_.progress_data_;
-}
-inline ::mavsdk::rpc::ftp::ProgressData*
-UploadResponse::mutable_progress_data() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void UploadResponse::unsafe_arena_set_allocated_progress_data(::mavsdk::rpc::ftp::ProgressData* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.progress_data_);
+  }
+  _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::ftp::ProgressData*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000002u;
-    ::mavsdk::rpc::ftp::ProgressData* _msg = _internal_mutable_progress_data();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.UploadResponse.progress_data)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.UploadResponse.progress_data)
 }
-inline void UploadResponse::set_allocated_progress_data(::mavsdk::rpc::ftp::ProgressData* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.progress_data_);
-    }
+inline ::mavsdk::rpc::ftp::ProgressData* UploadResponse::release_progress_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000002u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000002u;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::ftp::ProgressData* released = _impl_.progress_data_;
+  _impl_.progress_data_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::ftp::ProgressData* UploadResponse::unsafe_arena_release_progress_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.UploadResponse.progress_data)
 
-    _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::ftp::ProgressData*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.UploadResponse.progress_data)
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::ftp::ProgressData* temp = _impl_.progress_data_;
+  _impl_.progress_data_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::ftp::ProgressData* UploadResponse::_internal_mutable_progress_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.progress_data_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::ProgressData>(GetArena());
+    _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::ftp::ProgressData*>(p);
+  }
+  return _impl_.progress_data_;
+}
+inline ::mavsdk::rpc::ftp::ProgressData* UploadResponse::mutable_progress_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  ::mavsdk::rpc::ftp::ProgressData* _msg = _internal_mutable_progress_data();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.UploadResponse.progress_data)
+  return _msg;
+}
+inline void UploadResponse::set_allocated_progress_data(::mavsdk::rpc::ftp::ProgressData* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.progress_data_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+
+  _impl_.progress_data_ = reinterpret_cast<::mavsdk::rpc::ftp::ProgressData*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.UploadResponse.progress_data)
 }
 
 // -------------------------------------------------------------------
@@ -5515,59 +5166,51 @@ inline void UploadResponse::set_allocated_progress_data(::mavsdk::rpc::ftp::Prog
 // ListDirectoryRequest
 
 // string remote_dir = 1;
-inline void ListDirectoryRequest::clear_remote_dir()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_dir_.ClearToEmpty();
+inline void ListDirectoryRequest::clear_remote_dir() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_dir_.ClearToEmpty();
 }
-inline const std::string& ListDirectoryRequest::remote_dir() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ListDirectoryRequest.remote_dir)
-    return _internal_remote_dir();
+inline const std::string& ListDirectoryRequest::remote_dir() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ListDirectoryRequest.remote_dir)
+  return _internal_remote_dir();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void ListDirectoryRequest::set_remote_dir(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_dir_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.ListDirectoryRequest.remote_dir)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void ListDirectoryRequest::set_remote_dir(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_dir_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.ListDirectoryRequest.remote_dir)
 }
-inline std::string* ListDirectoryRequest::mutable_remote_dir() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_remote_dir();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.ListDirectoryRequest.remote_dir)
-    return _s;
+inline std::string* ListDirectoryRequest::mutable_remote_dir() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_remote_dir();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.ListDirectoryRequest.remote_dir)
+  return _s;
 }
-inline const std::string& ListDirectoryRequest::_internal_remote_dir() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.remote_dir_.Get();
+inline const std::string& ListDirectoryRequest::_internal_remote_dir() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.remote_dir_.Get();
 }
-inline void ListDirectoryRequest::_internal_set_remote_dir(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_dir_.Set(value, GetArena());
+inline void ListDirectoryRequest::_internal_set_remote_dir(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_dir_.Set(value, GetArena());
 }
-inline std::string* ListDirectoryRequest::_internal_mutable_remote_dir()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.remote_dir_.Mutable(GetArena());
+inline std::string* ListDirectoryRequest::_internal_mutable_remote_dir() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.remote_dir_.Mutable( GetArena());
 }
-inline std::string* ListDirectoryRequest::release_remote_dir()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.ListDirectoryRequest.remote_dir)
-    return _impl_.remote_dir_.Release();
+inline std::string* ListDirectoryRequest::release_remote_dir() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.ListDirectoryRequest.remote_dir)
+  return _impl_.remote_dir_.Release();
 }
-inline void ListDirectoryRequest::set_allocated_remote_dir(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_dir_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.remote_dir_.IsDefault()) {
-        _impl_.remote_dir_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.ListDirectoryRequest.remote_dir)
+inline void ListDirectoryRequest::set_allocated_remote_dir(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_dir_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.remote_dir_.IsDefault()) {
+    _impl_.remote_dir_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.ListDirectoryRequest.remote_dir)
 }
 
 // -------------------------------------------------------------------
@@ -5575,147 +5218,131 @@ inline void ListDirectoryRequest::set_allocated_remote_dir(std::string* value)
 // ListDirectoryData
 
 // repeated string dirs = 1;
-inline int ListDirectoryData::_internal_dirs_size() const
-{
-    return _internal_dirs().size();
+inline int ListDirectoryData::_internal_dirs_size() const {
+  return _internal_dirs().size();
 }
-inline int ListDirectoryData::dirs_size() const
-{
-    return _internal_dirs_size();
+inline int ListDirectoryData::dirs_size() const {
+  return _internal_dirs_size();
 }
-inline void ListDirectoryData::clear_dirs()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.dirs_.Clear();
+inline void ListDirectoryData::clear_dirs() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.dirs_.Clear();
 }
-inline std::string* ListDirectoryData::add_dirs() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    std::string* _s = _internal_mutable_dirs()->Add();
-    // @@protoc_insertion_point(field_add_mutable:mavsdk.rpc.ftp.ListDirectoryData.dirs)
-    return _s;
+inline std::string* ListDirectoryData::add_dirs() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  std::string* _s = _internal_mutable_dirs()->Add();
+  // @@protoc_insertion_point(field_add_mutable:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+  return _s;
 }
-inline const std::string& ListDirectoryData::dirs(int index) const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ListDirectoryData.dirs)
-    return _internal_dirs().Get(index);
+inline const std::string& ListDirectoryData::dirs(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+  return _internal_dirs().Get(index);
 }
-inline std::string* ListDirectoryData::mutable_dirs(int index) ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.ListDirectoryData.dirs)
-    return _internal_mutable_dirs()->Mutable(index);
+inline std::string* ListDirectoryData::mutable_dirs(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+  return _internal_mutable_dirs()->Mutable(index);
 }
-template<typename Arg_, typename... Args_>
-inline void ListDirectoryData::set_dirs(int index, Arg_&& value, Args_... args)
-{
-    ::google::protobuf::internal::AssignToString(
-        *_internal_mutable_dirs()->Mutable(index), std::forward<Arg_>(value), args...);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+template <typename Arg_, typename... Args_>
+inline void ListDirectoryData::set_dirs(int index, Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::AssignToString(
+      *_internal_mutable_dirs()->Mutable(index),
+      std::forward<Arg_>(value), args... );
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.ListDirectoryData.dirs)
 }
-template<typename Arg_, typename... Args_>
-inline void ListDirectoryData::add_dirs(Arg_&& value, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::google::protobuf::internal::AddToRepeatedPtrField(
-        *_internal_mutable_dirs(), std::forward<Arg_>(value), args...);
-    // @@protoc_insertion_point(field_add:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+template <typename Arg_, typename... Args_>
+inline void ListDirectoryData::add_dirs(Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::google::protobuf::internal::AddToRepeatedPtrField(*_internal_mutable_dirs(),
+                               std::forward<Arg_>(value),
+                               args... );
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.ftp.ListDirectoryData.dirs)
 }
 inline const ::google::protobuf::RepeatedPtrField<std::string>&
-ListDirectoryData::dirs() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_list:mavsdk.rpc.ftp.ListDirectoryData.dirs)
-    return _internal_dirs();
+ListDirectoryData::dirs() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+  return _internal_dirs();
 }
 inline ::google::protobuf::RepeatedPtrField<std::string>*
-ListDirectoryData::mutable_dirs() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.ftp.ListDirectoryData.dirs)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _internal_mutable_dirs();
+ListDirectoryData::mutable_dirs() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.ftp.ListDirectoryData.dirs)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_dirs();
 }
 inline const ::google::protobuf::RepeatedPtrField<std::string>&
-ListDirectoryData::_internal_dirs() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.dirs_;
+ListDirectoryData::_internal_dirs() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.dirs_;
 }
 inline ::google::protobuf::RepeatedPtrField<std::string>*
-ListDirectoryData::_internal_mutable_dirs()
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return &_impl_.dirs_;
+ListDirectoryData::_internal_mutable_dirs() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.dirs_;
 }
 
 // repeated string files = 2;
-inline int ListDirectoryData::_internal_files_size() const
-{
-    return _internal_files().size();
+inline int ListDirectoryData::_internal_files_size() const {
+  return _internal_files().size();
 }
-inline int ListDirectoryData::files_size() const
-{
-    return _internal_files_size();
+inline int ListDirectoryData::files_size() const {
+  return _internal_files_size();
 }
-inline void ListDirectoryData::clear_files()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.files_.Clear();
+inline void ListDirectoryData::clear_files() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.files_.Clear();
 }
-inline std::string* ListDirectoryData::add_files() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    std::string* _s = _internal_mutable_files()->Add();
-    // @@protoc_insertion_point(field_add_mutable:mavsdk.rpc.ftp.ListDirectoryData.files)
-    return _s;
+inline std::string* ListDirectoryData::add_files() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  std::string* _s = _internal_mutable_files()->Add();
+  // @@protoc_insertion_point(field_add_mutable:mavsdk.rpc.ftp.ListDirectoryData.files)
+  return _s;
 }
-inline const std::string& ListDirectoryData::files(int index) const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ListDirectoryData.files)
-    return _internal_files().Get(index);
+inline const std::string& ListDirectoryData::files(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ListDirectoryData.files)
+  return _internal_files().Get(index);
 }
-inline std::string* ListDirectoryData::mutable_files(int index) ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.ListDirectoryData.files)
-    return _internal_mutable_files()->Mutable(index);
+inline std::string* ListDirectoryData::mutable_files(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.ListDirectoryData.files)
+  return _internal_mutable_files()->Mutable(index);
 }
-template<typename Arg_, typename... Args_>
-inline void ListDirectoryData::set_files(int index, Arg_&& value, Args_... args)
-{
-    ::google::protobuf::internal::AssignToString(
-        *_internal_mutable_files()->Mutable(index), std::forward<Arg_>(value), args...);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.ListDirectoryData.files)
+template <typename Arg_, typename... Args_>
+inline void ListDirectoryData::set_files(int index, Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::AssignToString(
+      *_internal_mutable_files()->Mutable(index),
+      std::forward<Arg_>(value), args... );
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.ListDirectoryData.files)
 }
-template<typename Arg_, typename... Args_>
-inline void ListDirectoryData::add_files(Arg_&& value, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::google::protobuf::internal::AddToRepeatedPtrField(
-        *_internal_mutable_files(), std::forward<Arg_>(value), args...);
-    // @@protoc_insertion_point(field_add:mavsdk.rpc.ftp.ListDirectoryData.files)
+template <typename Arg_, typename... Args_>
+inline void ListDirectoryData::add_files(Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::google::protobuf::internal::AddToRepeatedPtrField(*_internal_mutable_files(),
+                               std::forward<Arg_>(value),
+                               args... );
+  // @@protoc_insertion_point(field_add:mavsdk.rpc.ftp.ListDirectoryData.files)
 }
 inline const ::google::protobuf::RepeatedPtrField<std::string>&
-ListDirectoryData::files() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_list:mavsdk.rpc.ftp.ListDirectoryData.files)
-    return _internal_files();
+ListDirectoryData::files() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:mavsdk.rpc.ftp.ListDirectoryData.files)
+  return _internal_files();
 }
 inline ::google::protobuf::RepeatedPtrField<std::string>*
-ListDirectoryData::mutable_files() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.ftp.ListDirectoryData.files)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _internal_mutable_files();
+ListDirectoryData::mutable_files() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable_list:mavsdk.rpc.ftp.ListDirectoryData.files)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_files();
 }
 inline const ::google::protobuf::RepeatedPtrField<std::string>&
-ListDirectoryData::_internal_files() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.files_;
+ListDirectoryData::_internal_files() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.files_;
 }
 inline ::google::protobuf::RepeatedPtrField<std::string>*
-ListDirectoryData::_internal_mutable_files()
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return &_impl_.files_;
+ListDirectoryData::_internal_mutable_files() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.files_;
 }
 
 // -------------------------------------------------------------------
@@ -5723,232 +5350,195 @@ ListDirectoryData::_internal_mutable_files()
 // ListDirectoryResponse
 
 // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-inline bool ListDirectoryResponse::has_ftp_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
-    return value;
+inline bool ListDirectoryResponse::has_ftp_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
+  return value;
 }
-inline void ListDirectoryResponse::clear_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ != nullptr)
-        _impl_.ftp_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void ListDirectoryResponse::clear_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ != nullptr) _impl_.ftp_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::ftp::FtpResult& ListDirectoryResponse::_internal_ftp_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(
-                              ::mavsdk::rpc::ftp::_FtpResult_default_instance_);
+inline const ::mavsdk::rpc::ftp::FtpResult& ListDirectoryResponse::_internal_ftp_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(::mavsdk::rpc::ftp::_FtpResult_default_instance_);
 }
-inline const ::mavsdk::rpc::ftp::FtpResult&
-ListDirectoryResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ListDirectoryResponse.ftp_result)
-    return _internal_ftp_result();
+inline const ::mavsdk::rpc::ftp::FtpResult& ListDirectoryResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ListDirectoryResponse.ftp_result)
+  return _internal_ftp_result();
 }
-inline void
-ListDirectoryResponse::unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
-    }
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.ListDirectoryResponse.ftp_result)
-}
-inline ::mavsdk::rpc::ftp::FtpResult* ListDirectoryResponse::release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* ListDirectoryResponse::unsafe_arena_release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.ListDirectoryResponse.ftp_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* ListDirectoryResponse::_internal_mutable_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ == nullptr) {
-        auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(
-            GetArena());
-        _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
-    }
-    return _impl_.ftp_result_;
-}
-inline ::mavsdk::rpc::ftp::FtpResult*
-ListDirectoryResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void ListDirectoryResponse::unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
+  }
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.ListDirectoryResponse.ftp_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.ListDirectoryResponse.ftp_result)
 }
-inline void ListDirectoryResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.ftp_result_);
-    }
+inline ::mavsdk::rpc::ftp::FtpResult* ListDirectoryResponse::release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* ListDirectoryResponse::unsafe_arena_release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.ListDirectoryResponse.ftp_result)
 
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.ListDirectoryResponse.ftp_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* ListDirectoryResponse::_internal_mutable_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(GetArena());
+    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
+  }
+  return _impl_.ftp_result_;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* ListDirectoryResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.ListDirectoryResponse.ftp_result)
+  return _msg;
+}
+inline void ListDirectoryResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.ftp_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.ListDirectoryResponse.ftp_result)
 }
 
 // .mavsdk.rpc.ftp.ListDirectoryData data = 2;
-inline bool ListDirectoryResponse::has_data() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.data_ != nullptr);
-    return value;
+inline bool ListDirectoryResponse::has_data() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.data_ != nullptr);
+  return value;
 }
-inline void ListDirectoryResponse::clear_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.data_ != nullptr)
-        _impl_.data_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000002u;
+inline void ListDirectoryResponse::clear_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.data_ != nullptr) _impl_.data_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000002u;
 }
-inline const ::mavsdk::rpc::ftp::ListDirectoryData& ListDirectoryResponse::_internal_data() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::ftp::ListDirectoryData* p = _impl_.data_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::ftp::ListDirectoryData&>(
-                              ::mavsdk::rpc::ftp::_ListDirectoryData_default_instance_);
+inline const ::mavsdk::rpc::ftp::ListDirectoryData& ListDirectoryResponse::_internal_data() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::ftp::ListDirectoryData* p = _impl_.data_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::ftp::ListDirectoryData&>(::mavsdk::rpc::ftp::_ListDirectoryData_default_instance_);
 }
-inline const ::mavsdk::rpc::ftp::ListDirectoryData&
-ListDirectoryResponse::data() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ListDirectoryResponse.data)
-    return _internal_data();
+inline const ::mavsdk::rpc::ftp::ListDirectoryData& ListDirectoryResponse::data() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ListDirectoryResponse.data)
+  return _internal_data();
 }
-inline void
-ListDirectoryResponse::unsafe_arena_set_allocated_data(::mavsdk::rpc::ftp::ListDirectoryData* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.data_);
-    }
-    _impl_.data_ = reinterpret_cast<::mavsdk::rpc::ftp::ListDirectoryData*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000002u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000002u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.ListDirectoryResponse.data)
-}
-inline ::mavsdk::rpc::ftp::ListDirectoryData* ListDirectoryResponse::release_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000002u;
-    ::mavsdk::rpc::ftp::ListDirectoryData* released = _impl_.data_;
-    _impl_.data_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::ftp::ListDirectoryData* ListDirectoryResponse::unsafe_arena_release_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.ListDirectoryResponse.data)
-
-    _impl_._has_bits_[0] &= ~0x00000002u;
-    ::mavsdk::rpc::ftp::ListDirectoryData* temp = _impl_.data_;
-    _impl_.data_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::ftp::ListDirectoryData* ListDirectoryResponse::_internal_mutable_data()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.data_ == nullptr) {
-        auto* p =
-            ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::ListDirectoryData>(
-                GetArena());
-        _impl_.data_ = reinterpret_cast<::mavsdk::rpc::ftp::ListDirectoryData*>(p);
-    }
-    return _impl_.data_;
-}
-inline ::mavsdk::rpc::ftp::ListDirectoryData*
-ListDirectoryResponse::mutable_data() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void ListDirectoryResponse::unsafe_arena_set_allocated_data(::mavsdk::rpc::ftp::ListDirectoryData* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.data_);
+  }
+  _impl_.data_ = reinterpret_cast<::mavsdk::rpc::ftp::ListDirectoryData*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000002u;
-    ::mavsdk::rpc::ftp::ListDirectoryData* _msg = _internal_mutable_data();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.ListDirectoryResponse.data)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.ListDirectoryResponse.data)
 }
-inline void ListDirectoryResponse::set_allocated_data(::mavsdk::rpc::ftp::ListDirectoryData* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.data_);
-    }
+inline ::mavsdk::rpc::ftp::ListDirectoryData* ListDirectoryResponse::release_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000002u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000002u;
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::ftp::ListDirectoryData* released = _impl_.data_;
+  _impl_.data_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::ftp::ListDirectoryData* ListDirectoryResponse::unsafe_arena_release_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.ListDirectoryResponse.data)
 
-    _impl_.data_ = reinterpret_cast<::mavsdk::rpc::ftp::ListDirectoryData*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.ListDirectoryResponse.data)
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::ftp::ListDirectoryData* temp = _impl_.data_;
+  _impl_.data_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::ftp::ListDirectoryData* ListDirectoryResponse::_internal_mutable_data() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.data_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::ListDirectoryData>(GetArena());
+    _impl_.data_ = reinterpret_cast<::mavsdk::rpc::ftp::ListDirectoryData*>(p);
+  }
+  return _impl_.data_;
+}
+inline ::mavsdk::rpc::ftp::ListDirectoryData* ListDirectoryResponse::mutable_data() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  ::mavsdk::rpc::ftp::ListDirectoryData* _msg = _internal_mutable_data();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.ListDirectoryResponse.data)
+  return _msg;
+}
+inline void ListDirectoryResponse::set_allocated_data(::mavsdk::rpc::ftp::ListDirectoryData* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.data_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+
+  _impl_.data_ = reinterpret_cast<::mavsdk::rpc::ftp::ListDirectoryData*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.ListDirectoryResponse.data)
 }
 
 // -------------------------------------------------------------------
@@ -5956,59 +5546,51 @@ inline void ListDirectoryResponse::set_allocated_data(::mavsdk::rpc::ftp::ListDi
 // CreateDirectoryRequest
 
 // string remote_dir = 1;
-inline void CreateDirectoryRequest::clear_remote_dir()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_dir_.ClearToEmpty();
+inline void CreateDirectoryRequest::clear_remote_dir() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_dir_.ClearToEmpty();
 }
-inline const std::string& CreateDirectoryRequest::remote_dir() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.CreateDirectoryRequest.remote_dir)
-    return _internal_remote_dir();
+inline const std::string& CreateDirectoryRequest::remote_dir() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.CreateDirectoryRequest.remote_dir)
+  return _internal_remote_dir();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void CreateDirectoryRequest::set_remote_dir(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_dir_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.CreateDirectoryRequest.remote_dir)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void CreateDirectoryRequest::set_remote_dir(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_dir_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.CreateDirectoryRequest.remote_dir)
 }
-inline std::string* CreateDirectoryRequest::mutable_remote_dir() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_remote_dir();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.CreateDirectoryRequest.remote_dir)
-    return _s;
+inline std::string* CreateDirectoryRequest::mutable_remote_dir() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_remote_dir();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.CreateDirectoryRequest.remote_dir)
+  return _s;
 }
-inline const std::string& CreateDirectoryRequest::_internal_remote_dir() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.remote_dir_.Get();
+inline const std::string& CreateDirectoryRequest::_internal_remote_dir() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.remote_dir_.Get();
 }
-inline void CreateDirectoryRequest::_internal_set_remote_dir(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_dir_.Set(value, GetArena());
+inline void CreateDirectoryRequest::_internal_set_remote_dir(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_dir_.Set(value, GetArena());
 }
-inline std::string* CreateDirectoryRequest::_internal_mutable_remote_dir()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.remote_dir_.Mutable(GetArena());
+inline std::string* CreateDirectoryRequest::_internal_mutable_remote_dir() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.remote_dir_.Mutable( GetArena());
 }
-inline std::string* CreateDirectoryRequest::release_remote_dir()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.CreateDirectoryRequest.remote_dir)
-    return _impl_.remote_dir_.Release();
+inline std::string* CreateDirectoryRequest::release_remote_dir() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.CreateDirectoryRequest.remote_dir)
+  return _impl_.remote_dir_.Release();
 }
-inline void CreateDirectoryRequest::set_allocated_remote_dir(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_dir_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.remote_dir_.IsDefault()) {
-        _impl_.remote_dir_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.CreateDirectoryRequest.remote_dir)
+inline void CreateDirectoryRequest::set_allocated_remote_dir(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_dir_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.remote_dir_.IsDefault()) {
+    _impl_.remote_dir_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.CreateDirectoryRequest.remote_dir)
 }
 
 // -------------------------------------------------------------------
@@ -6016,117 +5598,99 @@ inline void CreateDirectoryRequest::set_allocated_remote_dir(std::string* value)
 // CreateDirectoryResponse
 
 // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-inline bool CreateDirectoryResponse::has_ftp_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
-    return value;
+inline bool CreateDirectoryResponse::has_ftp_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
+  return value;
 }
-inline void CreateDirectoryResponse::clear_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ != nullptr)
-        _impl_.ftp_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void CreateDirectoryResponse::clear_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ != nullptr) _impl_.ftp_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::ftp::FtpResult& CreateDirectoryResponse::_internal_ftp_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(
-                              ::mavsdk::rpc::ftp::_FtpResult_default_instance_);
+inline const ::mavsdk::rpc::ftp::FtpResult& CreateDirectoryResponse::_internal_ftp_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(::mavsdk::rpc::ftp::_FtpResult_default_instance_);
 }
-inline const ::mavsdk::rpc::ftp::FtpResult&
-CreateDirectoryResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.CreateDirectoryResponse.ftp_result)
-    return _internal_ftp_result();
+inline const ::mavsdk::rpc::ftp::FtpResult& CreateDirectoryResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.CreateDirectoryResponse.ftp_result)
+  return _internal_ftp_result();
 }
-inline void
-CreateDirectoryResponse::unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
-    }
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.CreateDirectoryResponse.ftp_result)
-}
-inline ::mavsdk::rpc::ftp::FtpResult* CreateDirectoryResponse::release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* CreateDirectoryResponse::unsafe_arena_release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.CreateDirectoryResponse.ftp_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* CreateDirectoryResponse::_internal_mutable_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ == nullptr) {
-        auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(
-            GetArena());
-        _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
-    }
-    return _impl_.ftp_result_;
-}
-inline ::mavsdk::rpc::ftp::FtpResult*
-CreateDirectoryResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void CreateDirectoryResponse::unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
+  }
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.CreateDirectoryResponse.ftp_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.CreateDirectoryResponse.ftp_result)
 }
-inline void CreateDirectoryResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.ftp_result_);
-    }
+inline ::mavsdk::rpc::ftp::FtpResult* CreateDirectoryResponse::release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* CreateDirectoryResponse::unsafe_arena_release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.CreateDirectoryResponse.ftp_result)
 
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.CreateDirectoryResponse.ftp_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* CreateDirectoryResponse::_internal_mutable_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(GetArena());
+    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
+  }
+  return _impl_.ftp_result_;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* CreateDirectoryResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.CreateDirectoryResponse.ftp_result)
+  return _msg;
+}
+inline void CreateDirectoryResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.ftp_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.CreateDirectoryResponse.ftp_result)
 }
 
 // -------------------------------------------------------------------
@@ -6134,59 +5698,51 @@ inline void CreateDirectoryResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp
 // RemoveDirectoryRequest
 
 // string remote_dir = 1;
-inline void RemoveDirectoryRequest::clear_remote_dir()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_dir_.ClearToEmpty();
+inline void RemoveDirectoryRequest::clear_remote_dir() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_dir_.ClearToEmpty();
 }
-inline const std::string& RemoveDirectoryRequest::remote_dir() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.RemoveDirectoryRequest.remote_dir)
-    return _internal_remote_dir();
+inline const std::string& RemoveDirectoryRequest::remote_dir() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.RemoveDirectoryRequest.remote_dir)
+  return _internal_remote_dir();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void RemoveDirectoryRequest::set_remote_dir(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_dir_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.RemoveDirectoryRequest.remote_dir)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void RemoveDirectoryRequest::set_remote_dir(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_dir_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.RemoveDirectoryRequest.remote_dir)
 }
-inline std::string* RemoveDirectoryRequest::mutable_remote_dir() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_remote_dir();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.RemoveDirectoryRequest.remote_dir)
-    return _s;
+inline std::string* RemoveDirectoryRequest::mutable_remote_dir() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_remote_dir();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.RemoveDirectoryRequest.remote_dir)
+  return _s;
 }
-inline const std::string& RemoveDirectoryRequest::_internal_remote_dir() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.remote_dir_.Get();
+inline const std::string& RemoveDirectoryRequest::_internal_remote_dir() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.remote_dir_.Get();
 }
-inline void RemoveDirectoryRequest::_internal_set_remote_dir(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_dir_.Set(value, GetArena());
+inline void RemoveDirectoryRequest::_internal_set_remote_dir(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_dir_.Set(value, GetArena());
 }
-inline std::string* RemoveDirectoryRequest::_internal_mutable_remote_dir()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.remote_dir_.Mutable(GetArena());
+inline std::string* RemoveDirectoryRequest::_internal_mutable_remote_dir() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.remote_dir_.Mutable( GetArena());
 }
-inline std::string* RemoveDirectoryRequest::release_remote_dir()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.RemoveDirectoryRequest.remote_dir)
-    return _impl_.remote_dir_.Release();
+inline std::string* RemoveDirectoryRequest::release_remote_dir() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.RemoveDirectoryRequest.remote_dir)
+  return _impl_.remote_dir_.Release();
 }
-inline void RemoveDirectoryRequest::set_allocated_remote_dir(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_dir_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.remote_dir_.IsDefault()) {
-        _impl_.remote_dir_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.RemoveDirectoryRequest.remote_dir)
+inline void RemoveDirectoryRequest::set_allocated_remote_dir(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_dir_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.remote_dir_.IsDefault()) {
+    _impl_.remote_dir_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.RemoveDirectoryRequest.remote_dir)
 }
 
 // -------------------------------------------------------------------
@@ -6194,117 +5750,99 @@ inline void RemoveDirectoryRequest::set_allocated_remote_dir(std::string* value)
 // RemoveDirectoryResponse
 
 // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-inline bool RemoveDirectoryResponse::has_ftp_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
-    return value;
+inline bool RemoveDirectoryResponse::has_ftp_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
+  return value;
 }
-inline void RemoveDirectoryResponse::clear_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ != nullptr)
-        _impl_.ftp_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void RemoveDirectoryResponse::clear_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ != nullptr) _impl_.ftp_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::ftp::FtpResult& RemoveDirectoryResponse::_internal_ftp_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(
-                              ::mavsdk::rpc::ftp::_FtpResult_default_instance_);
+inline const ::mavsdk::rpc::ftp::FtpResult& RemoveDirectoryResponse::_internal_ftp_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(::mavsdk::rpc::ftp::_FtpResult_default_instance_);
 }
-inline const ::mavsdk::rpc::ftp::FtpResult&
-RemoveDirectoryResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.RemoveDirectoryResponse.ftp_result)
-    return _internal_ftp_result();
+inline const ::mavsdk::rpc::ftp::FtpResult& RemoveDirectoryResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.RemoveDirectoryResponse.ftp_result)
+  return _internal_ftp_result();
 }
-inline void
-RemoveDirectoryResponse::unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
-    }
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.RemoveDirectoryResponse.ftp_result)
-}
-inline ::mavsdk::rpc::ftp::FtpResult* RemoveDirectoryResponse::release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* RemoveDirectoryResponse::unsafe_arena_release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.RemoveDirectoryResponse.ftp_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* RemoveDirectoryResponse::_internal_mutable_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ == nullptr) {
-        auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(
-            GetArena());
-        _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
-    }
-    return _impl_.ftp_result_;
-}
-inline ::mavsdk::rpc::ftp::FtpResult*
-RemoveDirectoryResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void RemoveDirectoryResponse::unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
+  }
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.RemoveDirectoryResponse.ftp_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.RemoveDirectoryResponse.ftp_result)
 }
-inline void RemoveDirectoryResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.ftp_result_);
-    }
+inline ::mavsdk::rpc::ftp::FtpResult* RemoveDirectoryResponse::release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* RemoveDirectoryResponse::unsafe_arena_release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.RemoveDirectoryResponse.ftp_result)
 
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.RemoveDirectoryResponse.ftp_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* RemoveDirectoryResponse::_internal_mutable_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(GetArena());
+    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
+  }
+  return _impl_.ftp_result_;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* RemoveDirectoryResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.RemoveDirectoryResponse.ftp_result)
+  return _msg;
+}
+inline void RemoveDirectoryResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.ftp_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.RemoveDirectoryResponse.ftp_result)
 }
 
 // -------------------------------------------------------------------
@@ -6312,60 +5850,51 @@ inline void RemoveDirectoryResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp
 // RemoveFileRequest
 
 // string remote_file_path = 1;
-inline void RemoveFileRequest::clear_remote_file_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_file_path_.ClearToEmpty();
+inline void RemoveFileRequest::clear_remote_file_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_file_path_.ClearToEmpty();
 }
-inline const std::string& RemoveFileRequest::remote_file_path() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.RemoveFileRequest.remote_file_path)
-    return _internal_remote_file_path();
+inline const std::string& RemoveFileRequest::remote_file_path() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.RemoveFileRequest.remote_file_path)
+  return _internal_remote_file_path();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void
-RemoveFileRequest::set_remote_file_path(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_file_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.RemoveFileRequest.remote_file_path)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void RemoveFileRequest::set_remote_file_path(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_file_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.RemoveFileRequest.remote_file_path)
 }
-inline std::string* RemoveFileRequest::mutable_remote_file_path() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_remote_file_path();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.RemoveFileRequest.remote_file_path)
-    return _s;
+inline std::string* RemoveFileRequest::mutable_remote_file_path() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_remote_file_path();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.RemoveFileRequest.remote_file_path)
+  return _s;
 }
-inline const std::string& RemoveFileRequest::_internal_remote_file_path() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.remote_file_path_.Get();
+inline const std::string& RemoveFileRequest::_internal_remote_file_path() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.remote_file_path_.Get();
 }
-inline void RemoveFileRequest::_internal_set_remote_file_path(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_file_path_.Set(value, GetArena());
+inline void RemoveFileRequest::_internal_set_remote_file_path(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_file_path_.Set(value, GetArena());
 }
-inline std::string* RemoveFileRequest::_internal_mutable_remote_file_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.remote_file_path_.Mutable(GetArena());
+inline std::string* RemoveFileRequest::_internal_mutable_remote_file_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.remote_file_path_.Mutable( GetArena());
 }
-inline std::string* RemoveFileRequest::release_remote_file_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.RemoveFileRequest.remote_file_path)
-    return _impl_.remote_file_path_.Release();
+inline std::string* RemoveFileRequest::release_remote_file_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.RemoveFileRequest.remote_file_path)
+  return _impl_.remote_file_path_.Release();
 }
-inline void RemoveFileRequest::set_allocated_remote_file_path(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_file_path_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.remote_file_path_.IsDefault()) {
-        _impl_.remote_file_path_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.RemoveFileRequest.remote_file_path)
+inline void RemoveFileRequest::set_allocated_remote_file_path(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_file_path_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.remote_file_path_.IsDefault()) {
+    _impl_.remote_file_path_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.RemoveFileRequest.remote_file_path)
 }
 
 // -------------------------------------------------------------------
@@ -6373,117 +5902,99 @@ inline void RemoveFileRequest::set_allocated_remote_file_path(std::string* value
 // RemoveFileResponse
 
 // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-inline bool RemoveFileResponse::has_ftp_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
-    return value;
+inline bool RemoveFileResponse::has_ftp_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
+  return value;
 }
-inline void RemoveFileResponse::clear_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ != nullptr)
-        _impl_.ftp_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void RemoveFileResponse::clear_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ != nullptr) _impl_.ftp_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::ftp::FtpResult& RemoveFileResponse::_internal_ftp_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(
-                              ::mavsdk::rpc::ftp::_FtpResult_default_instance_);
+inline const ::mavsdk::rpc::ftp::FtpResult& RemoveFileResponse::_internal_ftp_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(::mavsdk::rpc::ftp::_FtpResult_default_instance_);
 }
-inline const ::mavsdk::rpc::ftp::FtpResult&
-RemoveFileResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.RemoveFileResponse.ftp_result)
-    return _internal_ftp_result();
+inline const ::mavsdk::rpc::ftp::FtpResult& RemoveFileResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.RemoveFileResponse.ftp_result)
+  return _internal_ftp_result();
 }
-inline void
-RemoveFileResponse::unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
-    }
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.RemoveFileResponse.ftp_result)
-}
-inline ::mavsdk::rpc::ftp::FtpResult* RemoveFileResponse::release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* RemoveFileResponse::unsafe_arena_release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.RemoveFileResponse.ftp_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* RemoveFileResponse::_internal_mutable_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ == nullptr) {
-        auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(
-            GetArena());
-        _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
-    }
-    return _impl_.ftp_result_;
-}
-inline ::mavsdk::rpc::ftp::FtpResult*
-RemoveFileResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void RemoveFileResponse::unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
+  }
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.RemoveFileResponse.ftp_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.RemoveFileResponse.ftp_result)
 }
-inline void RemoveFileResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.ftp_result_);
-    }
+inline ::mavsdk::rpc::ftp::FtpResult* RemoveFileResponse::release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* RemoveFileResponse::unsafe_arena_release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.RemoveFileResponse.ftp_result)
 
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.RemoveFileResponse.ftp_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* RemoveFileResponse::_internal_mutable_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(GetArena());
+    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
+  }
+  return _impl_.ftp_result_;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* RemoveFileResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.RemoveFileResponse.ftp_result)
+  return _msg;
+}
+inline void RemoveFileResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.ftp_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.RemoveFileResponse.ftp_result)
 }
 
 // -------------------------------------------------------------------
@@ -6491,115 +6002,99 @@ inline void RemoveFileResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::Ftp
 // RenameRequest
 
 // string remote_from_path = 1;
-inline void RenameRequest::clear_remote_from_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_from_path_.ClearToEmpty();
+inline void RenameRequest::clear_remote_from_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_from_path_.ClearToEmpty();
 }
-inline const std::string& RenameRequest::remote_from_path() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.RenameRequest.remote_from_path)
-    return _internal_remote_from_path();
+inline const std::string& RenameRequest::remote_from_path() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.RenameRequest.remote_from_path)
+  return _internal_remote_from_path();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void RenameRequest::set_remote_from_path(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_from_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.RenameRequest.remote_from_path)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void RenameRequest::set_remote_from_path(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_from_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.RenameRequest.remote_from_path)
 }
-inline std::string* RenameRequest::mutable_remote_from_path() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_remote_from_path();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.RenameRequest.remote_from_path)
-    return _s;
+inline std::string* RenameRequest::mutable_remote_from_path() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_remote_from_path();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.RenameRequest.remote_from_path)
+  return _s;
 }
-inline const std::string& RenameRequest::_internal_remote_from_path() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.remote_from_path_.Get();
+inline const std::string& RenameRequest::_internal_remote_from_path() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.remote_from_path_.Get();
 }
-inline void RenameRequest::_internal_set_remote_from_path(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_from_path_.Set(value, GetArena());
+inline void RenameRequest::_internal_set_remote_from_path(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_from_path_.Set(value, GetArena());
 }
-inline std::string* RenameRequest::_internal_mutable_remote_from_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.remote_from_path_.Mutable(GetArena());
+inline std::string* RenameRequest::_internal_mutable_remote_from_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.remote_from_path_.Mutable( GetArena());
 }
-inline std::string* RenameRequest::release_remote_from_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.RenameRequest.remote_from_path)
-    return _impl_.remote_from_path_.Release();
+inline std::string* RenameRequest::release_remote_from_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.RenameRequest.remote_from_path)
+  return _impl_.remote_from_path_.Release();
 }
-inline void RenameRequest::set_allocated_remote_from_path(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_from_path_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.remote_from_path_.IsDefault()) {
-        _impl_.remote_from_path_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.RenameRequest.remote_from_path)
+inline void RenameRequest::set_allocated_remote_from_path(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_from_path_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.remote_from_path_.IsDefault()) {
+    _impl_.remote_from_path_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.RenameRequest.remote_from_path)
 }
 
 // string remote_to_path = 2;
-inline void RenameRequest::clear_remote_to_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_to_path_.ClearToEmpty();
+inline void RenameRequest::clear_remote_to_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_to_path_.ClearToEmpty();
 }
-inline const std::string& RenameRequest::remote_to_path() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.RenameRequest.remote_to_path)
-    return _internal_remote_to_path();
+inline const std::string& RenameRequest::remote_to_path() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.RenameRequest.remote_to_path)
+  return _internal_remote_to_path();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void RenameRequest::set_remote_to_path(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_to_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.RenameRequest.remote_to_path)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void RenameRequest::set_remote_to_path(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_to_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.RenameRequest.remote_to_path)
 }
-inline std::string* RenameRequest::mutable_remote_to_path() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_remote_to_path();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.RenameRequest.remote_to_path)
-    return _s;
+inline std::string* RenameRequest::mutable_remote_to_path() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_remote_to_path();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.RenameRequest.remote_to_path)
+  return _s;
 }
-inline const std::string& RenameRequest::_internal_remote_to_path() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.remote_to_path_.Get();
+inline const std::string& RenameRequest::_internal_remote_to_path() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.remote_to_path_.Get();
 }
-inline void RenameRequest::_internal_set_remote_to_path(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_to_path_.Set(value, GetArena());
+inline void RenameRequest::_internal_set_remote_to_path(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_to_path_.Set(value, GetArena());
 }
-inline std::string* RenameRequest::_internal_mutable_remote_to_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.remote_to_path_.Mutable(GetArena());
+inline std::string* RenameRequest::_internal_mutable_remote_to_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.remote_to_path_.Mutable( GetArena());
 }
-inline std::string* RenameRequest::release_remote_to_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.RenameRequest.remote_to_path)
-    return _impl_.remote_to_path_.Release();
+inline std::string* RenameRequest::release_remote_to_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.RenameRequest.remote_to_path)
+  return _impl_.remote_to_path_.Release();
 }
-inline void RenameRequest::set_allocated_remote_to_path(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_to_path_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.remote_to_path_.IsDefault()) {
-        _impl_.remote_to_path_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.RenameRequest.remote_to_path)
+inline void RenameRequest::set_allocated_remote_to_path(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_to_path_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.remote_to_path_.IsDefault()) {
+    _impl_.remote_to_path_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.RenameRequest.remote_to_path)
 }
 
 // -------------------------------------------------------------------
@@ -6607,117 +6102,99 @@ inline void RenameRequest::set_allocated_remote_to_path(std::string* value)
 // RenameResponse
 
 // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-inline bool RenameResponse::has_ftp_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
-    return value;
+inline bool RenameResponse::has_ftp_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
+  return value;
 }
-inline void RenameResponse::clear_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ != nullptr)
-        _impl_.ftp_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void RenameResponse::clear_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ != nullptr) _impl_.ftp_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::ftp::FtpResult& RenameResponse::_internal_ftp_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(
-                              ::mavsdk::rpc::ftp::_FtpResult_default_instance_);
+inline const ::mavsdk::rpc::ftp::FtpResult& RenameResponse::_internal_ftp_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(::mavsdk::rpc::ftp::_FtpResult_default_instance_);
 }
-inline const ::mavsdk::rpc::ftp::FtpResult&
-RenameResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.RenameResponse.ftp_result)
-    return _internal_ftp_result();
+inline const ::mavsdk::rpc::ftp::FtpResult& RenameResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.RenameResponse.ftp_result)
+  return _internal_ftp_result();
 }
-inline void
-RenameResponse::unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
-    }
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.RenameResponse.ftp_result)
-}
-inline ::mavsdk::rpc::ftp::FtpResult* RenameResponse::release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* RenameResponse::unsafe_arena_release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.RenameResponse.ftp_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* RenameResponse::_internal_mutable_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ == nullptr) {
-        auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(
-            GetArena());
-        _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
-    }
-    return _impl_.ftp_result_;
-}
-inline ::mavsdk::rpc::ftp::FtpResult*
-RenameResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void RenameResponse::unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
+  }
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.RenameResponse.ftp_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.RenameResponse.ftp_result)
 }
-inline void RenameResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.ftp_result_);
-    }
+inline ::mavsdk::rpc::ftp::FtpResult* RenameResponse::release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* RenameResponse::unsafe_arena_release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.RenameResponse.ftp_result)
 
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.RenameResponse.ftp_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* RenameResponse::_internal_mutable_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(GetArena());
+    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
+  }
+  return _impl_.ftp_result_;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* RenameResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.RenameResponse.ftp_result)
+  return _msg;
+}
+inline void RenameResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.ftp_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.RenameResponse.ftp_result)
 }
 
 // -------------------------------------------------------------------
@@ -6725,121 +6202,99 @@ inline void RenameResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResu
 // AreFilesIdenticalRequest
 
 // string local_file_path = 1;
-inline void AreFilesIdenticalRequest::clear_local_file_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.local_file_path_.ClearToEmpty();
+inline void AreFilesIdenticalRequest::clear_local_file_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_file_path_.ClearToEmpty();
 }
-inline const std::string&
-AreFilesIdenticalRequest::local_file_path() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.AreFilesIdenticalRequest.local_file_path)
-    return _internal_local_file_path();
+inline const std::string& AreFilesIdenticalRequest::local_file_path() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.AreFilesIdenticalRequest.local_file_path)
+  return _internal_local_file_path();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void
-AreFilesIdenticalRequest::set_local_file_path(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.local_file_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.AreFilesIdenticalRequest.local_file_path)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void AreFilesIdenticalRequest::set_local_file_path(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_file_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.AreFilesIdenticalRequest.local_file_path)
 }
-inline std::string*
-AreFilesIdenticalRequest::mutable_local_file_path() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_local_file_path();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.AreFilesIdenticalRequest.local_file_path)
-    return _s;
+inline std::string* AreFilesIdenticalRequest::mutable_local_file_path() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_local_file_path();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.AreFilesIdenticalRequest.local_file_path)
+  return _s;
 }
-inline const std::string& AreFilesIdenticalRequest::_internal_local_file_path() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.local_file_path_.Get();
+inline const std::string& AreFilesIdenticalRequest::_internal_local_file_path() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.local_file_path_.Get();
 }
-inline void AreFilesIdenticalRequest::_internal_set_local_file_path(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.local_file_path_.Set(value, GetArena());
+inline void AreFilesIdenticalRequest::_internal_set_local_file_path(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_file_path_.Set(value, GetArena());
 }
-inline std::string* AreFilesIdenticalRequest::_internal_mutable_local_file_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.local_file_path_.Mutable(GetArena());
+inline std::string* AreFilesIdenticalRequest::_internal_mutable_local_file_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.local_file_path_.Mutable( GetArena());
 }
-inline std::string* AreFilesIdenticalRequest::release_local_file_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.AreFilesIdenticalRequest.local_file_path)
-    return _impl_.local_file_path_.Release();
+inline std::string* AreFilesIdenticalRequest::release_local_file_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.AreFilesIdenticalRequest.local_file_path)
+  return _impl_.local_file_path_.Release();
 }
-inline void AreFilesIdenticalRequest::set_allocated_local_file_path(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.local_file_path_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.local_file_path_.IsDefault()) {
-        _impl_.local_file_path_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.AreFilesIdenticalRequest.local_file_path)
+inline void AreFilesIdenticalRequest::set_allocated_local_file_path(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.local_file_path_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.local_file_path_.IsDefault()) {
+    _impl_.local_file_path_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.AreFilesIdenticalRequest.local_file_path)
 }
 
 // string remote_file_path = 2;
-inline void AreFilesIdenticalRequest::clear_remote_file_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_file_path_.ClearToEmpty();
+inline void AreFilesIdenticalRequest::clear_remote_file_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_file_path_.ClearToEmpty();
 }
-inline const std::string&
-AreFilesIdenticalRequest::remote_file_path() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.AreFilesIdenticalRequest.remote_file_path)
-    return _internal_remote_file_path();
+inline const std::string& AreFilesIdenticalRequest::remote_file_path() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.AreFilesIdenticalRequest.remote_file_path)
+  return _internal_remote_file_path();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void
-AreFilesIdenticalRequest::set_remote_file_path(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_file_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.AreFilesIdenticalRequest.remote_file_path)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void AreFilesIdenticalRequest::set_remote_file_path(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_file_path_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.AreFilesIdenticalRequest.remote_file_path)
 }
-inline std::string*
-AreFilesIdenticalRequest::mutable_remote_file_path() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_remote_file_path();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.AreFilesIdenticalRequest.remote_file_path)
-    return _s;
+inline std::string* AreFilesIdenticalRequest::mutable_remote_file_path() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_remote_file_path();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.AreFilesIdenticalRequest.remote_file_path)
+  return _s;
 }
-inline const std::string& AreFilesIdenticalRequest::_internal_remote_file_path() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.remote_file_path_.Get();
+inline const std::string& AreFilesIdenticalRequest::_internal_remote_file_path() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.remote_file_path_.Get();
 }
-inline void AreFilesIdenticalRequest::_internal_set_remote_file_path(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_file_path_.Set(value, GetArena());
+inline void AreFilesIdenticalRequest::_internal_set_remote_file_path(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_file_path_.Set(value, GetArena());
 }
-inline std::string* AreFilesIdenticalRequest::_internal_mutable_remote_file_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.remote_file_path_.Mutable(GetArena());
+inline std::string* AreFilesIdenticalRequest::_internal_mutable_remote_file_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.remote_file_path_.Mutable( GetArena());
 }
-inline std::string* AreFilesIdenticalRequest::release_remote_file_path()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.AreFilesIdenticalRequest.remote_file_path)
-    return _impl_.remote_file_path_.Release();
+inline std::string* AreFilesIdenticalRequest::release_remote_file_path() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.AreFilesIdenticalRequest.remote_file_path)
+  return _impl_.remote_file_path_.Release();
 }
-inline void AreFilesIdenticalRequest::set_allocated_remote_file_path(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.remote_file_path_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.remote_file_path_.IsDefault()) {
-        _impl_.remote_file_path_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.AreFilesIdenticalRequest.remote_file_path)
+inline void AreFilesIdenticalRequest::set_allocated_remote_file_path(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.remote_file_path_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.remote_file_path_.IsDefault()) {
+    _impl_.remote_file_path_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.AreFilesIdenticalRequest.remote_file_path)
 }
 
 // -------------------------------------------------------------------
@@ -6847,145 +6302,121 @@ inline void AreFilesIdenticalRequest::set_allocated_remote_file_path(std::string
 // AreFilesIdenticalResponse
 
 // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-inline bool AreFilesIdenticalResponse::has_ftp_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
-    return value;
+inline bool AreFilesIdenticalResponse::has_ftp_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
+  return value;
 }
-inline void AreFilesIdenticalResponse::clear_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ != nullptr)
-        _impl_.ftp_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void AreFilesIdenticalResponse::clear_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ != nullptr) _impl_.ftp_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::ftp::FtpResult& AreFilesIdenticalResponse::_internal_ftp_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(
-                              ::mavsdk::rpc::ftp::_FtpResult_default_instance_);
+inline const ::mavsdk::rpc::ftp::FtpResult& AreFilesIdenticalResponse::_internal_ftp_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(::mavsdk::rpc::ftp::_FtpResult_default_instance_);
 }
-inline const ::mavsdk::rpc::ftp::FtpResult&
-AreFilesIdenticalResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.AreFilesIdenticalResponse.ftp_result)
-    return _internal_ftp_result();
+inline const ::mavsdk::rpc::ftp::FtpResult& AreFilesIdenticalResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.AreFilesIdenticalResponse.ftp_result)
+  return _internal_ftp_result();
 }
-inline void AreFilesIdenticalResponse::unsafe_arena_set_allocated_ftp_result(
-    ::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
-    }
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.AreFilesIdenticalResponse.ftp_result)
-}
-inline ::mavsdk::rpc::ftp::FtpResult* AreFilesIdenticalResponse::release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* AreFilesIdenticalResponse::unsafe_arena_release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.AreFilesIdenticalResponse.ftp_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* AreFilesIdenticalResponse::_internal_mutable_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ == nullptr) {
-        auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(
-            GetArena());
-        _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
-    }
-    return _impl_.ftp_result_;
-}
-inline ::mavsdk::rpc::ftp::FtpResult*
-AreFilesIdenticalResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void AreFilesIdenticalResponse::unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
+  }
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.AreFilesIdenticalResponse.ftp_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.AreFilesIdenticalResponse.ftp_result)
 }
-inline void
-AreFilesIdenticalResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.ftp_result_);
-    }
+inline ::mavsdk::rpc::ftp::FtpResult* AreFilesIdenticalResponse::release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* AreFilesIdenticalResponse::unsafe_arena_release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.AreFilesIdenticalResponse.ftp_result)
 
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.AreFilesIdenticalResponse.ftp_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* AreFilesIdenticalResponse::_internal_mutable_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(GetArena());
+    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
+  }
+  return _impl_.ftp_result_;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* AreFilesIdenticalResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.AreFilesIdenticalResponse.ftp_result)
+  return _msg;
+}
+inline void AreFilesIdenticalResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.ftp_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.AreFilesIdenticalResponse.ftp_result)
 }
 
 // bool are_identical = 2;
-inline void AreFilesIdenticalResponse::clear_are_identical()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.are_identical_ = false;
+inline void AreFilesIdenticalResponse::clear_are_identical() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.are_identical_ = false;
 }
-inline bool AreFilesIdenticalResponse::are_identical() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.AreFilesIdenticalResponse.are_identical)
-    return _internal_are_identical();
+inline bool AreFilesIdenticalResponse::are_identical() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.AreFilesIdenticalResponse.are_identical)
+  return _internal_are_identical();
 }
-inline void AreFilesIdenticalResponse::set_are_identical(bool value)
-{
-    _internal_set_are_identical(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.AreFilesIdenticalResponse.are_identical)
+inline void AreFilesIdenticalResponse::set_are_identical(bool value) {
+  _internal_set_are_identical(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.AreFilesIdenticalResponse.are_identical)
 }
-inline bool AreFilesIdenticalResponse::_internal_are_identical() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.are_identical_;
+inline bool AreFilesIdenticalResponse::_internal_are_identical() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.are_identical_;
 }
-inline void AreFilesIdenticalResponse::_internal_set_are_identical(bool value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.are_identical_ = value;
+inline void AreFilesIdenticalResponse::_internal_set_are_identical(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.are_identical_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -6993,30 +6424,25 @@ inline void AreFilesIdenticalResponse::_internal_set_are_identical(bool value)
 // SetTargetCompidRequest
 
 // uint32 compid = 1;
-inline void SetTargetCompidRequest::clear_compid()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.compid_ = 0u;
+inline void SetTargetCompidRequest::clear_compid() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.compid_ = 0u;
 }
-inline ::uint32_t SetTargetCompidRequest::compid() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SetTargetCompidRequest.compid)
-    return _internal_compid();
+inline ::uint32_t SetTargetCompidRequest::compid() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SetTargetCompidRequest.compid)
+  return _internal_compid();
 }
-inline void SetTargetCompidRequest::set_compid(::uint32_t value)
-{
-    _internal_set_compid(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.SetTargetCompidRequest.compid)
+inline void SetTargetCompidRequest::set_compid(::uint32_t value) {
+  _internal_set_compid(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.SetTargetCompidRequest.compid)
 }
-inline ::uint32_t SetTargetCompidRequest::_internal_compid() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.compid_;
+inline ::uint32_t SetTargetCompidRequest::_internal_compid() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.compid_;
 }
-inline void SetTargetCompidRequest::_internal_set_compid(::uint32_t value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.compid_ = value;
+inline void SetTargetCompidRequest::_internal_set_compid(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.compid_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -7024,117 +6450,99 @@ inline void SetTargetCompidRequest::_internal_set_compid(::uint32_t value)
 // SetTargetCompidResponse
 
 // .mavsdk.rpc.ftp.FtpResult ftp_result = 1;
-inline bool SetTargetCompidResponse::has_ftp_result() const
-{
-    bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-    PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
-    return value;
+inline bool SetTargetCompidResponse::has_ftp_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.ftp_result_ != nullptr);
+  return value;
 }
-inline void SetTargetCompidResponse::clear_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ != nullptr)
-        _impl_.ftp_result_->Clear();
-    _impl_._has_bits_[0] &= ~0x00000001u;
+inline void SetTargetCompidResponse::clear_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ != nullptr) _impl_.ftp_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline const ::mavsdk::rpc::ftp::FtpResult& SetTargetCompidResponse::_internal_ftp_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
-    return p != nullptr ? *p :
-                          reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(
-                              ::mavsdk::rpc::ftp::_FtpResult_default_instance_);
+inline const ::mavsdk::rpc::ftp::FtpResult& SetTargetCompidResponse::_internal_ftp_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::ftp::FtpResult* p = _impl_.ftp_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::ftp::FtpResult&>(::mavsdk::rpc::ftp::_FtpResult_default_instance_);
 }
-inline const ::mavsdk::rpc::ftp::FtpResult&
-SetTargetCompidResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SetTargetCompidResponse.ftp_result)
-    return _internal_ftp_result();
+inline const ::mavsdk::rpc::ftp::FtpResult& SetTargetCompidResponse::ftp_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.SetTargetCompidResponse.ftp_result)
+  return _internal_ftp_result();
 }
-inline void
-SetTargetCompidResponse::unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (GetArena() == nullptr) {
-        delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
-    }
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    if (value != nullptr) {
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
-    }
-    // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.SetTargetCompidResponse.ftp_result)
-}
-inline ::mavsdk::rpc::ftp::FtpResult* SetTargetCompidResponse::release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
-        auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
-        released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        if (GetArena() == nullptr) {
-            delete old;
-        }
-    } else {
-        if (GetArena() != nullptr) {
-            released = ::google::protobuf::internal::DuplicateIfNonNull(released);
-        }
-    }
-    return released;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* SetTargetCompidResponse::unsafe_arena_release_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.SetTargetCompidResponse.ftp_result)
-
-    _impl_._has_bits_[0] &= ~0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
-    _impl_.ftp_result_ = nullptr;
-    return temp;
-}
-inline ::mavsdk::rpc::ftp::FtpResult* SetTargetCompidResponse::_internal_mutable_ftp_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (_impl_.ftp_result_ == nullptr) {
-        auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(
-            GetArena());
-        _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
-    }
-    return _impl_.ftp_result_;
-}
-inline ::mavsdk::rpc::ftp::FtpResult*
-SetTargetCompidResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
+inline void SetTargetCompidResponse::unsafe_arena_set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.ftp_result_);
+  }
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  if (value != nullptr) {
     _impl_._has_bits_[0] |= 0x00000001u;
-    ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.SetTargetCompidResponse.ftp_result)
-    return _msg;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.ftp.SetTargetCompidResponse.ftp_result)
 }
-inline void SetTargetCompidResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value)
-{
-    ::google::protobuf::Arena* message_arena = GetArena();
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    if (message_arena == nullptr) {
-        delete (_impl_.ftp_result_);
-    }
+inline ::mavsdk::rpc::ftp::FtpResult* SetTargetCompidResponse::release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
 
-    if (value != nullptr) {
-        ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
-        if (message_arena != submessage_arena) {
-            value = ::google::protobuf::internal::GetOwnedMessage(
-                message_arena, value, submessage_arena);
-        }
-        _impl_._has_bits_[0] |= 0x00000001u;
-    } else {
-        _impl_._has_bits_[0] &= ~0x00000001u;
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* released = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
     }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* SetTargetCompidResponse::unsafe_arena_release_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.SetTargetCompidResponse.ftp_result)
 
-    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.SetTargetCompidResponse.ftp_result)
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* temp = _impl_.ftp_result_;
+  _impl_.ftp_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* SetTargetCompidResponse::_internal_mutable_ftp_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.ftp_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::ftp::FtpResult>(GetArena());
+    _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(p);
+  }
+  return _impl_.ftp_result_;
+}
+inline ::mavsdk::rpc::ftp::FtpResult* SetTargetCompidResponse::mutable_ftp_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::ftp::FtpResult* _msg = _internal_mutable_ftp_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.SetTargetCompidResponse.ftp_result)
+  return _msg;
+}
+inline void SetTargetCompidResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp::FtpResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.ftp_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.ftp_result_ = reinterpret_cast<::mavsdk::rpc::ftp::FtpResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.SetTargetCompidResponse.ftp_result)
 }
 
 // -------------------------------------------------------------------
@@ -7142,57 +6550,47 @@ inline void SetTargetCompidResponse::set_allocated_ftp_result(::mavsdk::rpc::ftp
 // ProgressData
 
 // uint32 bytes_transferred = 1;
-inline void ProgressData::clear_bytes_transferred()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.bytes_transferred_ = 0u;
+inline void ProgressData::clear_bytes_transferred() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.bytes_transferred_ = 0u;
 }
-inline ::uint32_t ProgressData::bytes_transferred() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ProgressData.bytes_transferred)
-    return _internal_bytes_transferred();
+inline ::uint32_t ProgressData::bytes_transferred() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ProgressData.bytes_transferred)
+  return _internal_bytes_transferred();
 }
-inline void ProgressData::set_bytes_transferred(::uint32_t value)
-{
-    _internal_set_bytes_transferred(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.ProgressData.bytes_transferred)
+inline void ProgressData::set_bytes_transferred(::uint32_t value) {
+  _internal_set_bytes_transferred(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.ProgressData.bytes_transferred)
 }
-inline ::uint32_t ProgressData::_internal_bytes_transferred() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.bytes_transferred_;
+inline ::uint32_t ProgressData::_internal_bytes_transferred() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.bytes_transferred_;
 }
-inline void ProgressData::_internal_set_bytes_transferred(::uint32_t value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.bytes_transferred_ = value;
+inline void ProgressData::_internal_set_bytes_transferred(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.bytes_transferred_ = value;
 }
 
 // uint32 total_bytes = 2;
-inline void ProgressData::clear_total_bytes()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.total_bytes_ = 0u;
+inline void ProgressData::clear_total_bytes() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.total_bytes_ = 0u;
 }
-inline ::uint32_t ProgressData::total_bytes() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ProgressData.total_bytes)
-    return _internal_total_bytes();
+inline ::uint32_t ProgressData::total_bytes() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.ProgressData.total_bytes)
+  return _internal_total_bytes();
 }
-inline void ProgressData::set_total_bytes(::uint32_t value)
-{
-    _internal_set_total_bytes(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.ProgressData.total_bytes)
+inline void ProgressData::set_total_bytes(::uint32_t value) {
+  _internal_set_total_bytes(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.ProgressData.total_bytes)
 }
-inline ::uint32_t ProgressData::_internal_total_bytes() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.total_bytes_;
+inline ::uint32_t ProgressData::_internal_total_bytes() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.total_bytes_;
 }
-inline void ProgressData::_internal_set_total_bytes(::uint32_t value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.total_bytes_ = value;
+inline void ProgressData::_internal_set_total_bytes(::uint32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.total_bytes_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -7200,111 +6598,100 @@ inline void ProgressData::_internal_set_total_bytes(::uint32_t value)
 // FtpResult
 
 // .mavsdk.rpc.ftp.FtpResult.Result result = 1;
-inline void FtpResult::clear_result()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_ = 0;
+inline void FtpResult::clear_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_ = 0;
 }
-inline ::mavsdk::rpc::ftp::FtpResult_Result FtpResult::result() const
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.FtpResult.result)
-    return _internal_result();
+inline ::mavsdk::rpc::ftp::FtpResult_Result FtpResult::result() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.FtpResult.result)
+  return _internal_result();
 }
-inline void FtpResult::set_result(::mavsdk::rpc::ftp::FtpResult_Result value)
-{
-    _internal_set_result(value);
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.FtpResult.result)
+inline void FtpResult::set_result(::mavsdk::rpc::ftp::FtpResult_Result value) {
+  _internal_set_result(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.FtpResult.result)
 }
-inline ::mavsdk::rpc::ftp::FtpResult_Result FtpResult::_internal_result() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return static_cast<::mavsdk::rpc::ftp::FtpResult_Result>(_impl_.result_);
+inline ::mavsdk::rpc::ftp::FtpResult_Result FtpResult::_internal_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::ftp::FtpResult_Result>(_impl_.result_);
 }
-inline void FtpResult::_internal_set_result(::mavsdk::rpc::ftp::FtpResult_Result value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_ = value;
+inline void FtpResult::_internal_set_result(::mavsdk::rpc::ftp::FtpResult_Result value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_ = value;
 }
 
 // string result_str = 2;
-inline void FtpResult::clear_result_str()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.ClearToEmpty();
+inline void FtpResult::clear_result_str() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.ClearToEmpty();
 }
-inline const std::string& FtpResult::result_str() const ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.FtpResult.result_str)
-    return _internal_result_str();
+inline const std::string& FtpResult::result_str() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.ftp.FtpResult.result_str)
+  return _internal_result_str();
 }
-template<typename Arg_, typename... Args_>
-inline PROTOBUF_ALWAYS_INLINE void FtpResult::set_result_str(Arg_&& arg, Args_... args)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
-    // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.FtpResult.result_str)
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void FtpResult::set_result_str(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.ftp.FtpResult.result_str)
 }
-inline std::string* FtpResult::mutable_result_str() ABSL_ATTRIBUTE_LIFETIME_BOUND
-{
-    std::string* _s = _internal_mutable_result_str();
-    // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.FtpResult.result_str)
-    return _s;
+inline std::string* FtpResult::mutable_result_str() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_result_str();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.ftp.FtpResult.result_str)
+  return _s;
 }
-inline const std::string& FtpResult::_internal_result_str() const
-{
-    ::google::protobuf::internal::TSanRead(&_impl_);
-    return _impl_.result_str_.Get();
+inline const std::string& FtpResult::_internal_result_str() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.result_str_.Get();
 }
-inline void FtpResult::_internal_set_result_str(const std::string& value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.Set(value, GetArena());
+inline void FtpResult::_internal_set_result_str(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.Set(value, GetArena());
 }
-inline std::string* FtpResult::_internal_mutable_result_str()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    return _impl_.result_str_.Mutable(GetArena());
+inline std::string* FtpResult::_internal_mutable_result_str() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.result_str_.Mutable( GetArena());
 }
-inline std::string* FtpResult::release_result_str()
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.FtpResult.result_str)
-    return _impl_.result_str_.Release();
+inline std::string* FtpResult::release_result_str() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.ftp.FtpResult.result_str)
+  return _impl_.result_str_.Release();
 }
-inline void FtpResult::set_allocated_result_str(std::string* value)
-{
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    _impl_.result_str_.SetAllocated(value, GetArena());
-    if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() &&
-        _impl_.result_str_.IsDefault()) {
-        _impl_.result_str_.Set("", GetArena());
-    }
-    // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.FtpResult.result_str)
+inline void FtpResult::set_allocated_result_str(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_str_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.result_str_.IsDefault()) {
+    _impl_.result_str_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.ftp.FtpResult.result_str)
 }
 
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
-#endif // __GNUC__
+#endif  // __GNUC__
 
 // @@protoc_insertion_point(namespace_scope)
-} // namespace ftp
-} // namespace rpc
-} // namespace mavsdk
+}  // namespace ftp
+}  // namespace rpc
+}  // namespace mavsdk
+
 
 namespace google {
 namespace protobuf {
 
-template<> struct is_proto_enum<::mavsdk::rpc::ftp::FtpResult_Result> : std::true_type {};
-template<> inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::ftp::FtpResult_Result>()
-{
-    return ::mavsdk::rpc::ftp::FtpResult_Result_descriptor();
+template <>
+struct is_proto_enum<::mavsdk::rpc::ftp::FtpResult_Result> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::ftp::FtpResult_Result>() {
+  return ::mavsdk::rpc::ftp::FtpResult_Result_descriptor();
 }
 
-} // namespace protobuf
-} // namespace google
+}  // namespace protobuf
+}  // namespace google
 
 // @@protoc_insertion_point(global_scope)
 
 #include "google/protobuf/port_undef.inc"
 
-#endif // ftp_2fftp_2eproto_2epb_2eh
+#endif  // ftp_2fftp_2eproto_2epb_2eh

@@ -28,139 +28,132 @@ namespace mavsdk {
 namespace rpc {
 namespace failure {
 
-inline constexpr InjectRequest::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    failure_unit_{static_cast<::mavsdk::rpc::failure::FailureUnit>(0)},
-    failure_type_{static_cast<::mavsdk::rpc::failure::FailureType>(0)},
-    instance_{0},
-    _cached_size_{0}
-{}
+inline constexpr InjectRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : failure_unit_{static_cast< ::mavsdk::rpc::failure::FailureUnit >(0)},
+        failure_type_{static_cast< ::mavsdk::rpc::failure::FailureType >(0)},
+        instance_{0},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR InjectRequest::InjectRequest(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct InjectRequestDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR InjectRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~InjectRequestDefaultTypeInternal() {}
-    union {
-        InjectRequest _instance;
-    };
+  PROTOBUF_CONSTEXPR InjectRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~InjectRequestDefaultTypeInternal() {}
+  union {
+    InjectRequest _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    InjectRequestDefaultTypeInternal _InjectRequest_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 InjectRequestDefaultTypeInternal _InjectRequest_default_instance_;
 
-inline constexpr FailureResult::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    result_str_(
-        &::google::protobuf::internal::fixed_address_empty_string, ::_pbi::ConstantInitialized()),
-    result_{static_cast<::mavsdk::rpc::failure::FailureResult_Result>(0)},
-    _cached_size_{0}
-{}
+inline constexpr FailureResult::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : result_str_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        result_{static_cast< ::mavsdk::rpc::failure::FailureResult_Result >(0)},
+        _cached_size_{0} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR FailureResult::FailureResult(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct FailureResultDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR FailureResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~FailureResultDefaultTypeInternal() {}
-    union {
-        FailureResult _instance;
-    };
+  PROTOBUF_CONSTEXPR FailureResultDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~FailureResultDefaultTypeInternal() {}
+  union {
+    FailureResult _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    FailureResultDefaultTypeInternal _FailureResult_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FailureResultDefaultTypeInternal _FailureResult_default_instance_;
 
-inline constexpr InjectResponse::Impl_::Impl_(::_pbi::ConstantInitialized) noexcept :
-    _cached_size_{0},
-    failure_result_{nullptr}
-{}
+inline constexpr InjectResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        failure_result_{nullptr} {}
 
-template<typename>
+template <typename>
 PROTOBUF_CONSTEXPR InjectResponse::InjectResponse(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(_class_data_.base()),
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(),
-#endif // PROTOBUF_CUSTOM_VTABLE
-    _impl_(::_pbi::ConstantInitialized())
-{}
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
 struct InjectResponseDefaultTypeInternal {
-    PROTOBUF_CONSTEXPR InjectResponseDefaultTypeInternal() :
-        _instance(::_pbi::ConstantInitialized{})
-    {}
-    ~InjectResponseDefaultTypeInternal() {}
-    union {
-        InjectResponse _instance;
-    };
+  PROTOBUF_CONSTEXPR InjectResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~InjectResponseDefaultTypeInternal() {}
+  union {
+    InjectResponse _instance;
+  };
 };
 
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-    InjectResponseDefaultTypeInternal _InjectResponse_default_instance_;
-} // namespace failure
-} // namespace rpc
-} // namespace mavsdk
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 InjectResponseDefaultTypeInternal _InjectResponse_default_instance_;
+}  // namespace failure
+}  // namespace rpc
+}  // namespace mavsdk
 static const ::_pb::EnumDescriptor* file_level_enum_descriptors_failure_2ffailure_2eproto[3];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_failure_2ffailure_2eproto = nullptr;
-const ::uint32_t TableStruct_failure_2ffailure_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
-    protodesc_cold) = {
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectRequest, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectRequest, _impl_.failure_unit_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectRequest, _impl_.failure_type_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectRequest, _impl_.instance_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectResponse, _impl_._has_bits_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectResponse, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectResponse, _impl_.failure_result_),
-    0,
-    ~0u, // no _has_bits_
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::FailureResult, _internal_metadata_),
-    ~0u, // no _extensions_
-    ~0u, // no _oneof_case_
-    ~0u, // no _weak_field_map_
-    ~0u, // no _inlined_string_donated_
-    ~0u, // no _split_
-    ~0u, // no sizeof(Split)
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::FailureResult, _impl_.result_),
-    PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::FailureResult, _impl_.result_str_),
+const ::uint32_t
+    TableStruct_failure_2ffailure_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
+        protodesc_cold) = {
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectRequest, _impl_.failure_unit_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectRequest, _impl_.failure_type_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectRequest, _impl_.instance_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::InjectResponse, _impl_.failure_result_),
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::FailureResult, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::FailureResult, _impl_.result_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::failure::FailureResult, _impl_.result_str_),
 };
 
-static const ::_pbi::MigrationSchema schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-    {0, -1, -1, sizeof(::mavsdk::rpc::failure::InjectRequest)},
-    {11, 20, -1, sizeof(::mavsdk::rpc::failure::InjectResponse)},
-    {21, -1, -1, sizeof(::mavsdk::rpc::failure::FailureResult)},
+static const ::_pbi::MigrationSchema
+    schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+        {0, -1, -1, sizeof(::mavsdk::rpc::failure::InjectRequest)},
+        {11, 20, -1, sizeof(::mavsdk::rpc::failure::InjectResponse)},
+        {21, -1, -1, sizeof(::mavsdk::rpc::failure::FailureResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::failure::_InjectRequest_default_instance_._instance,
@@ -205,9 +198,11 @@ const char descriptor_table_protodef_failure_2ffailure_2eproto[] ABSL_ATTRIBUTE_
     "ect\022!.mavsdk.rpc.failure.InjectRequest\032\""
     ".mavsdk.rpc.failure.InjectResponse\"\004\200\265\030\001"
     "B!\n\021io.mavsdk.failureB\014FailureProtob\006pro"
-    "to3"};
-static const ::_pbi::DescriptorTable* const descriptor_table_failure_2ffailure_2eproto_deps[1] = {
-    &::descriptor_table_mavsdk_5foptions_2eproto,
+    "to3"
+};
+static const ::_pbi::DescriptorTable* const descriptor_table_failure_2ffailure_2eproto_deps[1] =
+    {
+        &::descriptor_table_mavsdk_5foptions_2eproto,
 };
 static ::absl::once_flag descriptor_table_failure_2ffailure_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_failure_2ffailure_2eproto = {
@@ -229,20 +224,17 @@ PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_failure_2ffail
 namespace mavsdk {
 namespace rpc {
 namespace failure {
-const ::google::protobuf::EnumDescriptor* FailureResult_Result_descriptor()
-{
-    ::google::protobuf::internal::AssignDescriptors(&descriptor_table_failure_2ffailure_2eproto);
-    return file_level_enum_descriptors_failure_2ffailure_2eproto[0];
+const ::google::protobuf::EnumDescriptor* FailureResult_Result_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_failure_2ffailure_2eproto);
+  return file_level_enum_descriptors_failure_2ffailure_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t FailureResult_Result_internal_data_[] = {
-    524288u,
-    0u,
-};
-bool FailureResult_Result_IsValid(int value)
-{
-    return 0 <= value && value <= 7;
+    524288u, 0u, };
+bool FailureResult_Result_IsValid(int value) {
+  return 0 <= value && value <= 7;
 }
-#if (__cplusplus < 201703) && (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+#if (__cplusplus < 201703) && \
+  (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
 
 constexpr FailureResult_Result FailureResult::RESULT_UNKNOWN;
 constexpr FailureResult_Result FailureResult::RESULT_SUCCESS;
@@ -256,96 +248,78 @@ constexpr FailureResult_Result FailureResult::Result_MIN;
 constexpr FailureResult_Result FailureResult::Result_MAX;
 constexpr int FailureResult::Result_ARRAYSIZE;
 
-#endif // (__cplusplus < 201703) &&
-       // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
-const ::google::protobuf::EnumDescriptor* FailureUnit_descriptor()
-{
-    ::google::protobuf::internal::AssignDescriptors(&descriptor_table_failure_2ffailure_2eproto);
-    return file_level_enum_descriptors_failure_2ffailure_2eproto[1];
+#endif  // (__cplusplus < 201703) &&
+        // (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
+const ::google::protobuf::EnumDescriptor* FailureUnit_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_failure_2ffailure_2eproto);
+  return file_level_enum_descriptors_failure_2ffailure_2eproto[1];
 }
 PROTOBUF_CONSTINIT const uint32_t FailureUnit_internal_data_[] = {
-    589824u,
-    128u,
-    0u,
-    0u,
-    4160749568u,
-    1u,
-};
-bool FailureUnit_IsValid(int value)
-{
-    return ::_pbi::ValidateEnum(value, FailureUnit_internal_data_);
+    589824u, 128u, 0u, 0u, 4160749568u, 1u, };
+bool FailureUnit_IsValid(int value) {
+  return ::_pbi::ValidateEnum(value, FailureUnit_internal_data_);
 }
-const ::google::protobuf::EnumDescriptor* FailureType_descriptor()
-{
-    ::google::protobuf::internal::AssignDescriptors(&descriptor_table_failure_2ffailure_2eproto);
-    return file_level_enum_descriptors_failure_2ffailure_2eproto[2];
+const ::google::protobuf::EnumDescriptor* FailureType_descriptor() {
+  ::google::protobuf::internal::AssignDescriptors(&descriptor_table_failure_2ffailure_2eproto);
+  return file_level_enum_descriptors_failure_2ffailure_2eproto[2];
 }
 PROTOBUF_CONSTINIT const uint32_t FailureType_internal_data_[] = {
-    524288u,
-    0u,
-};
-bool FailureType_IsValid(int value)
-{
-    return 0 <= value && value <= 7;
+    524288u, 0u, };
+bool FailureType_IsValid(int value) {
+  return 0 <= value && value <= 7;
 }
 // ===================================================================
 
 class InjectRequest::_Internal {
-public:
+ public:
 };
 
 InjectRequest::InjectRequest(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.failure.InjectRequest)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.failure.InjectRequest)
 }
-InjectRequest::InjectRequest(::google::protobuf::Arena* arena, const InjectRequest& from) :
-    InjectRequest(arena)
-{
-    MergeFrom(from);
+InjectRequest::InjectRequest(
+    ::google::protobuf::Arena* arena, const InjectRequest& from)
+    : InjectRequest(arena) {
+  MergeFrom(from);
 }
 inline PROTOBUF_NDEBUG_INLINE InjectRequest::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-inline void InjectRequest::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    ::memset(
-        reinterpret_cast<char*>(&_impl_) + offsetof(Impl_, failure_unit_),
-        0,
-        offsetof(Impl_, instance_) - offsetof(Impl_, failure_unit_) + sizeof(Impl_::instance_));
+inline void InjectRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, failure_unit_),
+           0,
+           offsetof(Impl_, instance_) -
+               offsetof(Impl_, failure_unit_) +
+               sizeof(Impl_::instance_));
 }
-InjectRequest::~InjectRequest()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.failure.InjectRequest)
-    SharedDtor(*this);
+InjectRequest::~InjectRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.failure.InjectRequest)
+  SharedDtor(*this);
 }
-inline void InjectRequest::SharedDtor(MessageLite& self)
-{
-    InjectRequest& this_ = static_cast<InjectRequest&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.~Impl_();
+inline void InjectRequest::SharedDtor(MessageLite& self) {
+  InjectRequest& this_ = static_cast<InjectRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
 }
 
-inline void* InjectRequest::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) InjectRequest(arena);
+inline void* InjectRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) InjectRequest(arena);
 }
-constexpr auto InjectRequest::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(InjectRequest), alignof(InjectRequest));
+constexpr auto InjectRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(InjectRequest),
+                                            alignof(InjectRequest));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -353,322 +327,283 @@ const ::google::protobuf::internal::ClassDataFull InjectRequest::_class_data_ = 
     ::google::protobuf::internal::ClassData{
         &_InjectRequest_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &InjectRequest::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<InjectRequest>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &InjectRequest::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<InjectRequest>(),
-        &InjectRequest::ByteSizeLong,
-        &InjectRequest::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<InjectRequest>(), &InjectRequest::ByteSizeLong,
+            &InjectRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(InjectRequest, _impl_._cached_size_),
         false,
     },
     &InjectRequest::kDescriptorMethods,
     &descriptor_table_failure_2ffailure_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* InjectRequest::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* InjectRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<2, 3, 0, 0, 2>
-    InjectRequest::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            3,
-            24, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967288, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            3, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::failure::InjectRequest>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            {::_pbi::TcParser::MiniParse, {}},
-            // .mavsdk.rpc.failure.FailureUnit failure_unit = 1;
-            {::_pbi::TcParser::SingularVarintNoZag1<
-                 ::uint32_t,
-                 offsetof(InjectRequest, _impl_.failure_unit_),
-                 63>(),
-             {8, 63, 0, PROTOBUF_FIELD_OFFSET(InjectRequest, _impl_.failure_unit_)}},
-            // .mavsdk.rpc.failure.FailureType failure_type = 2;
-            {::_pbi::TcParser::SingularVarintNoZag1<
-                 ::uint32_t,
-                 offsetof(InjectRequest, _impl_.failure_type_),
-                 63>(),
-             {16, 63, 0, PROTOBUF_FIELD_OFFSET(InjectRequest, _impl_.failure_type_)}},
-            // int32 instance = 3;
-            {::_pbi::TcParser::
-                 SingularVarintNoZag1<::uint32_t, offsetof(InjectRequest, _impl_.instance_), 63>(),
-             {24, 63, 0, PROTOBUF_FIELD_OFFSET(InjectRequest, _impl_.instance_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.failure.FailureUnit failure_unit = 1;
-            {PROTOBUF_FIELD_OFFSET(InjectRequest, _impl_.failure_unit_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-            // .mavsdk.rpc.failure.FailureType failure_type = 2;
-            {PROTOBUF_FIELD_OFFSET(InjectRequest, _impl_.failure_type_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-            // int32 instance = 3;
-            {PROTOBUF_FIELD_OFFSET(InjectRequest, _impl_.instance_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
-        }},
-        // no aux_entries
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void InjectRequest::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.failure.InjectRequest)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    ::memset(
-        &_impl_.failure_unit_,
-        0,
-        static_cast<::size_t>(
-            reinterpret_cast<char*>(&_impl_.instance_) -
-            reinterpret_cast<char*>(&_impl_.failure_unit_)) +
-            sizeof(_impl_.instance_));
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* InjectRequest::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const InjectRequest& this_ = static_cast<const InjectRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* InjectRequest::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const InjectRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.failure.InjectRequest)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> InjectRequest::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::failure::InjectRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
     // .mavsdk.rpc.failure.FailureUnit failure_unit = 1;
-    if (this_._internal_failure_unit() != 0) {
-        target = stream->EnsureSpace(target);
-        target =
-            ::_pbi::WireFormatLite::WriteEnumToArray(1, this_._internal_failure_unit(), target);
-    }
-
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(InjectRequest, _impl_.failure_unit_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(InjectRequest, _impl_.failure_unit_)}},
     // .mavsdk.rpc.failure.FailureType failure_type = 2;
-    if (this_._internal_failure_type() != 0) {
-        target = stream->EnsureSpace(target);
-        target =
-            ::_pbi::WireFormatLite::WriteEnumToArray(2, this_._internal_failure_type(), target);
-    }
-
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(InjectRequest, _impl_.failure_type_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(InjectRequest, _impl_.failure_type_)}},
     // int32 instance = 3;
-    if (this_._internal_instance() != 0) {
-        target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<3>(
-            stream, this_._internal_instance(), target);
-    }
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(InjectRequest, _impl_.instance_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(InjectRequest, _impl_.instance_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.failure.FailureUnit failure_unit = 1;
+    {PROTOBUF_FIELD_OFFSET(InjectRequest, _impl_.failure_unit_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // .mavsdk.rpc.failure.FailureType failure_type = 2;
+    {PROTOBUF_FIELD_OFFSET(InjectRequest, _impl_.failure_type_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // int32 instance = 3;
+    {PROTOBUF_FIELD_OFFSET(InjectRequest, _impl_.instance_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.failure.InjectRequest)
-    return target;
+PROTOBUF_NOINLINE void InjectRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.failure.InjectRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.failure_unit_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.instance_) -
+      reinterpret_cast<char*>(&_impl_.failure_unit_)) + sizeof(_impl_.instance_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t InjectRequest::ByteSizeLong(const MessageLite& base)
-{
-    const InjectRequest& this_ = static_cast<const InjectRequest&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t InjectRequest::ByteSizeLong() const
-{
-    const InjectRequest& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.failure.InjectRequest)
-    ::size_t total_size = 0;
+        ::uint8_t* InjectRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const InjectRequest& this_ = static_cast<const InjectRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* InjectRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const InjectRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.failure.InjectRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // .mavsdk.rpc.failure.FailureUnit failure_unit = 1;
+          if (this_._internal_failure_unit() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                1, this_._internal_failure_unit(), target);
+          }
 
-    ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-    {
-        // .mavsdk.rpc.failure.FailureUnit failure_unit = 1;
-        if (this_._internal_failure_unit() != 0) {
-            total_size += 1 + ::_pbi::WireFormatLite::EnumSize(this_._internal_failure_unit());
+          // .mavsdk.rpc.failure.FailureType failure_type = 2;
+          if (this_._internal_failure_type() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                2, this_._internal_failure_type(), target);
+          }
+
+          // int32 instance = 3;
+          if (this_._internal_instance() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<3>(
+                    stream, this_._internal_instance(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.failure.InjectRequest)
+          return target;
         }
-        // .mavsdk.rpc.failure.FailureType failure_type = 2;
-        if (this_._internal_failure_type() != 0) {
-            total_size += 1 + ::_pbi::WireFormatLite::EnumSize(this_._internal_failure_type());
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t InjectRequest::ByteSizeLong(const MessageLite& base) {
+          const InjectRequest& this_ = static_cast<const InjectRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t InjectRequest::ByteSizeLong() const {
+          const InjectRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.failure.InjectRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // .mavsdk.rpc.failure.FailureUnit failure_unit = 1;
+            if (this_._internal_failure_unit() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_failure_unit());
+            }
+            // .mavsdk.rpc.failure.FailureType failure_type = 2;
+            if (this_._internal_failure_type() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_failure_type());
+            }
+            // int32 instance = 3;
+            if (this_._internal_instance() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_instance());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
-        // int32 instance = 3;
-        if (this_._internal_instance() != 0) {
-            total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this_._internal_instance());
-        }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+void InjectRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<InjectRequest*>(&to_msg);
+  auto& from = static_cast<const InjectRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.failure.InjectRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_failure_unit() != 0) {
+    _this->_impl_.failure_unit_ = from._impl_.failure_unit_;
+  }
+  if (from._internal_failure_type() != 0) {
+    _this->_impl_.failure_type_ = from._impl_.failure_type_;
+  }
+  if (from._internal_instance() != 0) {
+    _this->_impl_.instance_ = from._impl_.instance_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void InjectRequest::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<InjectRequest*>(&to_msg);
-    auto& from = static_cast<const InjectRequest&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.failure.InjectRequest)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (from._internal_failure_unit() != 0) {
-        _this->_impl_.failure_unit_ = from._impl_.failure_unit_;
-    }
-    if (from._internal_failure_type() != 0) {
-        _this->_impl_.failure_type_ = from._impl_.failure_type_;
-    }
-    if (from._internal_instance() != 0) {
-        _this->_impl_.instance_ = from._impl_.instance_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void InjectRequest::CopyFrom(const InjectRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.failure.InjectRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void InjectRequest::CopyFrom(const InjectRequest& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.failure.InjectRequest)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void InjectRequest::InternalSwap(InjectRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(InjectRequest, _impl_.instance_)
+      + sizeof(InjectRequest::_impl_.instance_)
+      - PROTOBUF_FIELD_OFFSET(InjectRequest, _impl_.failure_unit_)>(
+          reinterpret_cast<char*>(&_impl_.failure_unit_),
+          reinterpret_cast<char*>(&other->_impl_.failure_unit_));
 }
 
-void InjectRequest::InternalSwap(InjectRequest* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    ::google::protobuf::internal::memswap<
-        PROTOBUF_FIELD_OFFSET(InjectRequest, _impl_.instance_) +
-        sizeof(InjectRequest::_impl_.instance_) -
-        PROTOBUF_FIELD_OFFSET(InjectRequest, _impl_.failure_unit_)>(
-        reinterpret_cast<char*>(&_impl_.failure_unit_),
-        reinterpret_cast<char*>(&other->_impl_.failure_unit_));
-}
-
-::google::protobuf::Metadata InjectRequest::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata InjectRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class InjectResponse::_Internal {
-public:
-    using HasBits = decltype(std::declval<InjectResponse>()._impl_._has_bits_);
-    static constexpr ::int32_t kHasBitsOffset =
-        8 * PROTOBUF_FIELD_OFFSET(InjectResponse, _impl_._has_bits_);
+ public:
+  using HasBits =
+      decltype(std::declval<InjectResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(InjectResponse, _impl_._has_bits_);
 };
 
 InjectResponse::InjectResponse(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.failure.InjectResponse)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.failure.InjectResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE InjectResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::failure::InjectResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+InjectResponse::InjectResponse(
+    ::google::protobuf::Arena* arena,
+    const InjectResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  InjectResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.failure_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::failure::FailureResult>(
+                              arena, *from._impl_.failure_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.failure.InjectResponse)
 }
 inline PROTOBUF_NDEBUG_INLINE InjectResponse::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::failure::InjectResponse& from_msg) :
-    _has_bits_{from._has_bits_},
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
 
-InjectResponse::InjectResponse(::google::protobuf::Arena* arena, const InjectResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    InjectResponse* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    ::uint32_t cached_has_bits = _impl_._has_bits_[0];
-    _impl_.failure_result_ =
-        (cached_has_bits & 0x00000001u) ?
-            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::failure::FailureResult>(
-                arena, *from._impl_.failure_result_) :
-            nullptr;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.failure.InjectResponse)
+inline void InjectResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.failure_result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE InjectResponse::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    _cached_size_{0}
-{}
-
-inline void InjectResponse::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.failure_result_ = {};
+InjectResponse::~InjectResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.failure.InjectResponse)
+  SharedDtor(*this);
 }
-InjectResponse::~InjectResponse()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.failure.InjectResponse)
-    SharedDtor(*this);
-}
-inline void InjectResponse::SharedDtor(MessageLite& self)
-{
-    InjectResponse& this_ = static_cast<InjectResponse&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    delete this_._impl_.failure_result_;
-    this_._impl_.~Impl_();
+inline void InjectResponse::SharedDtor(MessageLite& self) {
+  InjectResponse& this_ = static_cast<InjectResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.failure_result_;
+  this_._impl_.~Impl_();
 }
 
-inline void* InjectResponse::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) InjectResponse(arena);
+inline void* InjectResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) InjectResponse(arena);
 }
-constexpr auto InjectResponse::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::ZeroInit(
-        sizeof(InjectResponse), alignof(InjectResponse));
+constexpr auto InjectResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(InjectResponse),
+                                            alignof(InjectResponse));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -676,276 +611,243 @@ const ::google::protobuf::internal::ClassDataFull InjectResponse::_class_data_ =
     ::google::protobuf::internal::ClassData{
         &_InjectResponse_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &InjectResponse::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<InjectResponse>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &InjectResponse::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<InjectResponse>(),
-        &InjectResponse::ByteSizeLong,
-        &InjectResponse::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<InjectResponse>(), &InjectResponse::ByteSizeLong,
+            &InjectResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(InjectResponse, _impl_._cached_size_),
         false,
     },
     &InjectResponse::kDescriptorMethods,
     &descriptor_table_failure_2ffailure_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* InjectResponse::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* InjectResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
-    InjectResponse::_table_ = {
-        {
-            PROTOBUF_FIELD_OFFSET(InjectResponse, _impl_._has_bits_),
-            0, // no _extensions_
-            1,
-            0, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967294, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            1, // num_field_entries
-            1, // num_aux_entries
-            offsetof(decltype(_table_), aux_entries),
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::failure::InjectResponse>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // .mavsdk.rpc.failure.FailureResult failure_result = 1;
-            {::_pbi::TcParser::FastMtS1,
-             {10, 0, 0, PROTOBUF_FIELD_OFFSET(InjectResponse, _impl_.failure_result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.failure.FailureResult failure_result = 1;
-            {PROTOBUF_FIELD_OFFSET(InjectResponse, _impl_.failure_result_),
-             _Internal::kHasBitsOffset + 0,
-             0,
-             (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
-        }},
-        {{
-            {::_pbi::TcParser::GetTable<::mavsdk::rpc::failure::FailureResult>()},
-        }},
-        {{}},
-    };
-
-PROTOBUF_NOINLINE void InjectResponse::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.failure.InjectResponse)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    cached_has_bits = _impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(_impl_.failure_result_ != nullptr);
-        _impl_.failure_result_->Clear();
-    }
-    _impl_._has_bits_.Clear();
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* InjectResponse::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const InjectResponse& this_ = static_cast<const InjectResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* InjectResponse::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const InjectResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.failure.InjectResponse)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    cached_has_bits = this_._impl_._has_bits_[0];
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> InjectResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(InjectResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::failure::InjectResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // .mavsdk.rpc.failure.FailureResult failure_result = 1;
-    if (cached_has_bits & 0x00000001u) {
-        target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-            1,
-            *this_._impl_.failure_result_,
-            this_._impl_.failure_result_->GetCachedSize(),
-            target,
-            stream);
-    }
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(InjectResponse, _impl_.failure_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.failure.FailureResult failure_result = 1;
+    {PROTOBUF_FIELD_OFFSET(InjectResponse, _impl_.failure_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::failure::FailureResult>()},
+  }}, {{
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.failure.InjectResponse)
-    return target;
+PROTOBUF_NOINLINE void InjectResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.failure.InjectResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.failure_result_ != nullptr);
+    _impl_.failure_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t InjectResponse::ByteSizeLong(const MessageLite& base)
-{
-    const InjectResponse& this_ = static_cast<const InjectResponse&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t InjectResponse::ByteSizeLong() const
-{
-    const InjectResponse& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.failure.InjectResponse)
-    ::size_t total_size = 0;
+        ::uint8_t* InjectResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const InjectResponse& this_ = static_cast<const InjectResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* InjectResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const InjectResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.failure.InjectResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.failure.FailureResult failure_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.failure_result_, this_._impl_.failure_result_->GetCachedSize(), target,
+                stream);
+          }
 
-    {
-        // .mavsdk.rpc.failure.FailureResult failure_result = 1;
-        cached_has_bits = this_._impl_._has_bits_[0];
-        if (cached_has_bits & 0x00000001u) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::MessageSize(
-                                  *this_._impl_.failure_result_);
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.failure.InjectResponse)
+          return target;
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
-}
 
-void InjectResponse::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<InjectResponse*>(&to_msg);
-    auto& from = static_cast<const InjectResponse&>(from_msg);
-    ::google::protobuf::Arena* arena = _this->GetArena();
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.failure.InjectResponse)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t InjectResponse::ByteSizeLong(const MessageLite& base) {
+          const InjectResponse& this_ = static_cast<const InjectResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t InjectResponse::ByteSizeLong() const {
+          const InjectResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.failure.InjectResponse)
+          ::size_t total_size = 0;
 
-    cached_has_bits = from._impl_._has_bits_[0];
-    if (cached_has_bits & 0x00000001u) {
-        ABSL_DCHECK(from._impl_.failure_result_ != nullptr);
-        if (_this->_impl_.failure_result_ == nullptr) {
-            _this->_impl_.failure_result_ =
-                ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::failure::FailureResult>(
-                    arena, *from._impl_.failure_result_);
-        } else {
-            _this->_impl_.failure_result_->MergeFrom(*from._impl_.failure_result_);
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.failure.FailureResult failure_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.failure_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
+
+void InjectResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<InjectResponse*>(&to_msg);
+  auto& from = static_cast<const InjectResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.failure.InjectResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.failure_result_ != nullptr);
+    if (_this->_impl_.failure_result_ == nullptr) {
+      _this->_impl_.failure_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::failure::FailureResult>(arena, *from._impl_.failure_result_);
+    } else {
+      _this->_impl_.failure_result_->MergeFrom(*from._impl_.failure_result_);
     }
-    _this->_impl_._has_bits_[0] |= cached_has_bits;
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void InjectResponse::CopyFrom(const InjectResponse& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.failure.InjectResponse)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+void InjectResponse::CopyFrom(const InjectResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.failure.InjectResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void InjectResponse::InternalSwap(InjectResponse* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-    swap(_impl_.failure_result_, other->_impl_.failure_result_);
+
+void InjectResponse::InternalSwap(InjectResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.failure_result_, other->_impl_.failure_result_);
 }
 
-::google::protobuf::Metadata InjectResponse::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata InjectResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
 class FailureResult::_Internal {
-public:
+ public:
 };
 
 FailureResult::FailureResult(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    SharedCtor(arena);
-    // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.failure.FailureResult)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.failure.FailureResult)
+}
+inline PROTOBUF_NDEBUG_INLINE FailureResult::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::failure::FailureResult& from_msg)
+      : result_str_(arena, from.result_str_),
+        _cached_size_{0} {}
+
+FailureResult::FailureResult(
+    ::google::protobuf::Arena* arena,
+    const FailureResult& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  FailureResult* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.result_ = from._impl_.result_;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.failure.FailureResult)
 }
 inline PROTOBUF_NDEBUG_INLINE FailureResult::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
-    ::google::protobuf::Arena* arena,
-    const Impl_& from,
-    const ::mavsdk::rpc::failure::FailureResult& from_msg) :
-    result_str_(arena, from.result_str_),
-    _cached_size_{0}
-{}
+    ::google::protobuf::Arena* arena)
+      : result_str_(arena),
+        _cached_size_{0} {}
 
-FailureResult::FailureResult(::google::protobuf::Arena* arena, const FailureResult& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    :
-    ::google::protobuf::Message(arena, _class_data_.base())
-{
-#else // PROTOBUF_CUSTOM_VTABLE
-    :
-    ::google::protobuf::Message(arena)
-{
-#endif // PROTOBUF_CUSTOM_VTABLE
-    FailureResult* const _this = this;
-    (void)_this;
-    _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
-    new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-    _impl_.result_ = from._impl_.result_;
-
-    // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.failure.FailureResult)
+inline void FailureResult::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.result_ = {};
 }
-inline PROTOBUF_NDEBUG_INLINE FailureResult::Impl_::Impl_(
-    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena) :
-    result_str_(arena),
-    _cached_size_{0}
-{}
-
-inline void FailureResult::SharedCtor(::_pb::Arena* arena)
-{
-    new (&_impl_) Impl_(internal_visibility(), arena);
-    _impl_.result_ = {};
+FailureResult::~FailureResult() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.failure.FailureResult)
+  SharedDtor(*this);
 }
-FailureResult::~FailureResult()
-{
-    // @@protoc_insertion_point(destructor:mavsdk.rpc.failure.FailureResult)
-    SharedDtor(*this);
-}
-inline void FailureResult::SharedDtor(MessageLite& self)
-{
-    FailureResult& this_ = static_cast<FailureResult&>(self);
-    this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
-    ABSL_DCHECK(this_.GetArena() == nullptr);
-    this_._impl_.result_str_.Destroy();
-    this_._impl_.~Impl_();
+inline void FailureResult::SharedDtor(MessageLite& self) {
+  FailureResult& this_ = static_cast<FailureResult&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.result_str_.Destroy();
+  this_._impl_.~Impl_();
 }
 
-inline void* FailureResult::PlacementNew_(const void*, void* mem, ::google::protobuf::Arena* arena)
-{
-    return ::new (mem) FailureResult(arena);
+inline void* FailureResult::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) FailureResult(arena);
 }
-constexpr auto FailureResult::InternalNewImpl_()
-{
-    return ::google::protobuf::internal::MessageCreator::CopyInit(
-        sizeof(FailureResult), alignof(FailureResult));
+constexpr auto FailureResult::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(FailureResult),
+                                            alignof(FailureResult));
 }
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
@@ -953,215 +855,200 @@ const ::google::protobuf::internal::ClassDataFull FailureResult::_class_data_ = 
     ::google::protobuf::internal::ClassData{
         &_FailureResult_default_instance_._instance,
         &_table_.header,
-        nullptr, // OnDemandRegisterArenaDtor
-        nullptr, // IsInitialized
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
         &FailureResult::MergeImpl,
         ::google::protobuf::Message::GetNewImpl<FailureResult>(),
 #if defined(PROTOBUF_CUSTOM_VTABLE)
         &FailureResult::SharedDtor,
-        ::google::protobuf::Message::GetClearImpl<FailureResult>(),
-        &FailureResult::ByteSizeLong,
-        &FailureResult::_InternalSerialize,
-#endif // PROTOBUF_CUSTOM_VTABLE
+        ::google::protobuf::Message::GetClearImpl<FailureResult>(), &FailureResult::ByteSizeLong,
+            &FailureResult::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
         PROTOBUF_FIELD_OFFSET(FailureResult, _impl_._cached_size_),
         false,
     },
     &FailureResult::kDescriptorMethods,
     &descriptor_table_failure_2ffailure_2eproto,
-    nullptr, // tracker
+    nullptr,  // tracker
 };
-const ::google::protobuf::internal::ClassData* FailureResult::GetClassData() const
-{
-    ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-    ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-    return _class_data_.base();
+const ::google::protobuf::internal::ClassData* FailureResult::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
 }
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::TcParseTable<1, 2, 0, 51, 2>
-    FailureResult::_table_ = {
-        {
-            0, // no _has_bits_
-            0, // no _extensions_
-            2,
-            8, // max_field_number, fast_idx_mask
-            offsetof(decltype(_table_), field_lookup_table),
-            4294967292, // skipmap
-            offsetof(decltype(_table_), field_entries),
-            2, // num_field_entries
-            0, // num_aux_entries
-            offsetof(decltype(_table_), field_names), // no aux_entries
-            _class_data_.base(),
-            nullptr, // post_loop_handler
-            ::_pbi::TcParser::GenericFallback, // fallback
-#ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-            ::_pbi::TcParser::GetTable<::mavsdk::rpc::failure::FailureResult>(), // to_prefetch
-#endif // PROTOBUF_PREFETCH_PARSE_TABLE
-        },
-        {{
-            // string result_str = 2;
-            {::_pbi::TcParser::FastUS1,
-             {18, 63, 0, PROTOBUF_FIELD_OFFSET(FailureResult, _impl_.result_str_)}},
-            // .mavsdk.rpc.failure.FailureResult.Result result = 1;
-            {::_pbi::TcParser::
-                 SingularVarintNoZag1<::uint32_t, offsetof(FailureResult, _impl_.result_), 63>(),
-             {8, 63, 0, PROTOBUF_FIELD_OFFSET(FailureResult, _impl_.result_)}},
-        }},
-        {{65535, 65535}},
-        {{
-            // .mavsdk.rpc.failure.FailureResult.Result result = 1;
-            {PROTOBUF_FIELD_OFFSET(FailureResult, _impl_.result_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
-            // string result_str = 2;
-            {PROTOBUF_FIELD_OFFSET(FailureResult, _impl_.result_str_),
-             0,
-             0,
-             (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
-        }},
-        // no aux_entries
-        {{"\40\0\12\0\0\0\0\0"
-          "mavsdk.rpc.failure.FailureResult"
-          "result_str"}},
-    };
-
-PROTOBUF_NOINLINE void FailureResult::Clear()
-{
-    // @@protoc_insertion_point(message_clear_start:mavsdk.rpc.failure.FailureResult)
-    ::google::protobuf::internal::TSanWrite(&_impl_);
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
-
-    _impl_.result_str_.ClearToEmpty();
-    _impl_.result_ = 0;
-    _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
-}
-
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-::uint8_t* FailureResult::_InternalSerialize(
-    const MessageLite& base, ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream)
-{
-    const FailureResult& this_ = static_cast<const FailureResult&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::uint8_t* FailureResult::_InternalSerialize(
-    ::uint8_t* target, ::google::protobuf::io::EpsCopyOutputStream* stream) const
-{
-    const FailureResult& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.failure.FailureResult)
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    // .mavsdk.rpc.failure.FailureResult.Result result = 1;
-    if (this_._internal_result() != 0) {
-        target = stream->EnsureSpace(target);
-        target = ::_pbi::WireFormatLite::WriteEnumToArray(1, this_._internal_result(), target);
-    }
-
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 51, 2> FailureResult::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::failure::FailureResult>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
     // string result_str = 2;
-    if (!this_._internal_result_str().empty()) {
-        const std::string& _s = this_._internal_result_str();
-        ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            _s.data(),
-            static_cast<int>(_s.length()),
-            ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-            "mavsdk.rpc.failure.FailureResult.result_str");
-        target = stream->WriteStringMaybeAliased(2, _s, target);
-    }
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(FailureResult, _impl_.result_str_)}},
+    // .mavsdk.rpc.failure.FailureResult.Result result = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(FailureResult, _impl_.result_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(FailureResult, _impl_.result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.failure.FailureResult.Result result = 1;
+    {PROTOBUF_FIELD_OFFSET(FailureResult, _impl_.result_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kOpenEnum)},
+    // string result_str = 2;
+    {PROTOBUF_FIELD_OFFSET(FailureResult, _impl_.result_str_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\40\0\12\0\0\0\0\0"
+    "mavsdk.rpc.failure.FailureResult"
+    "result_str"
+  }},
+};
 
-    if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
-        target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(
-                ::google::protobuf::UnknownFieldSet::default_instance),
-            target,
-            stream);
-    }
-    // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.failure.FailureResult)
-    return target;
+PROTOBUF_NOINLINE void FailureResult::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.failure.FailureResult)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.result_str_.ClearToEmpty();
+  _impl_.result_ = 0;
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-::size_t FailureResult::ByteSizeLong(const MessageLite& base)
-{
-    const FailureResult& this_ = static_cast<const FailureResult&>(base);
-#else // PROTOBUF_CUSTOM_VTABLE
-::size_t FailureResult::ByteSizeLong() const
-{
-    const FailureResult& this_ = *this;
-#endif // PROTOBUF_CUSTOM_VTABLE
-       // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.failure.FailureResult)
-    ::size_t total_size = 0;
+        ::uint8_t* FailureResult::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const FailureResult& this_ = static_cast<const FailureResult&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* FailureResult::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const FailureResult& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.failure.FailureResult)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
 
-    ::uint32_t cached_has_bits = 0;
-    // Prevent compiler warnings about cached_has_bits being unused
-    (void)cached_has_bits;
+          // .mavsdk.rpc.failure.FailureResult.Result result = 1;
+          if (this_._internal_result() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteEnumToArray(
+                1, this_._internal_result(), target);
+          }
 
-    ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-    {
-        // string result_str = 2;
-        if (!this_._internal_result_str().empty()) {
-            total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
-                                  this_._internal_result_str());
+          // string result_str = 2;
+          if (!this_._internal_result_str().empty()) {
+            const std::string& _s = this_._internal_result_str();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mavsdk.rpc.failure.FailureResult.result_str");
+            target = stream->WriteStringMaybeAliased(2, _s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.failure.FailureResult)
+          return target;
         }
-        // .mavsdk.rpc.failure.FailureResult.Result result = 1;
-        if (this_._internal_result() != 0) {
-            total_size += 1 + ::_pbi::WireFormatLite::EnumSize(this_._internal_result());
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t FailureResult::ByteSizeLong(const MessageLite& base) {
+          const FailureResult& this_ = static_cast<const FailureResult&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t FailureResult::ByteSizeLong() const {
+          const FailureResult& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.failure.FailureResult)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string result_str = 2;
+            if (!this_._internal_result_str().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_result_str());
+            }
+            // .mavsdk.rpc.failure.FailureResult.Result result = 1;
+            if (this_._internal_result() != 0) {
+              total_size += 1 +
+                            ::_pbi::WireFormatLite::EnumSize(this_._internal_result());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
         }
-    }
-    return this_.MaybeComputeUnknownFieldsSize(total_size, &this_._impl_._cached_size_);
+
+void FailureResult::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<FailureResult*>(&to_msg);
+  auto& from = static_cast<const FailureResult&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.failure.FailureResult)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_result_str().empty()) {
+    _this->_internal_set_result_str(from._internal_result_str());
+  }
+  if (from._internal_result() != 0) {
+    _this->_impl_.result_ = from._impl_.result_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void FailureResult::MergeImpl(
-    ::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg)
-{
-    auto* const _this = static_cast<FailureResult*>(&to_msg);
-    auto& from = static_cast<const FailureResult&>(from_msg);
-    // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.failure.FailureResult)
-    ABSL_DCHECK_NE(&from, _this);
-    ::uint32_t cached_has_bits = 0;
-    (void)cached_has_bits;
-
-    if (!from._internal_result_str().empty()) {
-        _this->_internal_set_result_str(from._internal_result_str());
-    }
-    if (from._internal_result() != 0) {
-        _this->_impl_.result_ = from._impl_.result_;
-    }
-    _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-        from._internal_metadata_);
+void FailureResult::CopyFrom(const FailureResult& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.failure.FailureResult)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
 }
 
-void FailureResult::CopyFrom(const FailureResult& from)
-{
-    // @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.failure.FailureResult)
-    if (&from == this)
-        return;
-    Clear();
-    MergeFrom(from);
+
+void FailureResult::InternalSwap(FailureResult* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, &other->_impl_.result_str_, arena);
+  swap(_impl_.result_, other->_impl_.result_);
 }
 
-void FailureResult::InternalSwap(FailureResult* PROTOBUF_RESTRICT other)
-{
-    using std::swap;
-    auto* arena = GetArena();
-    ABSL_DCHECK_EQ(arena, other->GetArena());
-    _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-    ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.result_str_, &other->_impl_.result_str_, arena);
-    swap(_impl_.result_, other->_impl_.result_);
-}
-
-::google::protobuf::Metadata FailureResult::GetMetadata() const
-{
-    return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+::google::protobuf::Metadata FailureResult::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)
-} // namespace failure
-} // namespace rpc
-} // namespace mavsdk
+}  // namespace failure
+}  // namespace rpc
+}  // namespace mavsdk
 namespace google {
-namespace protobuf {} // namespace protobuf
-} // namespace google
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 // @@protoc_insertion_point(global_scope)
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::std::false_type _static_init2_ PROTOBUF_UNUSED =
-    (::_pbi::AddDescriptors(&descriptor_table_failure_2ffailure_2eproto), ::std::false_type{});
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::std::false_type
+    _static_init2_ PROTOBUF_UNUSED =
+        (::_pbi::AddDescriptors(&descriptor_table_failure_2ffailure_2eproto),
+         ::std::false_type{});
 #include "google/protobuf/port_undef.inc"
