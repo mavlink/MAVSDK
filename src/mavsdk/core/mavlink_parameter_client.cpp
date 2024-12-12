@@ -665,7 +665,8 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
     }
 
     if (_parameter_debugging) {
-        LogDebug() << "process_param_value: " << safe_param_id << " " << received_value << ", index: " << param_value.param_index;
+        LogDebug() << "process_param_value: " << safe_param_id << " " << received_value
+                   << ", index: " << param_value.param_index;
     }
 
     if (param_value.param_index == std::numeric_limits<uint16_t>::max()) {
@@ -769,8 +770,7 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                 }
             },
             [&](WorkItemGetAll& item) {
-
-                auto maybe_current_missing_index = _param_cache.next_missing_index(item.count);
+                auto maybe_current_missing_index = _param_cache.last_missing_requested();
 
                 switch (_param_cache.add_new_param(
                     safe_param_id, received_value, param_value.param_index)) {
@@ -813,36 +813,17 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                                            << " of " << param_value.param_count;
                             }
                             if (item.rerequesting) {
-
-                                if (maybe_current_missing_index.has_value() &&
-                                    maybe_current_missing_index.value() == param_value.param_index) {
-
-                                    // We got what we were waiting for, request next one.
-                                    auto maybe_next_missing_index =
-                                        _param_cache.next_missing_index(item.count);
-
-                                    if (!maybe_next_missing_index.has_value()) {
-                                        LogErr() << "logic error, there should a missing index";
-                                        assert(false);
-                                    }
-
-                                    LogInfo() << "Requesting " << _param_cache.missing_count() << " parameters missed during initial burst.";
-
-                                    if (_parameter_debugging) {
-                                        LogDebug() << "Requesting missing parameter "
-                                                   << (int)maybe_next_missing_index.value();
-                                    }
-
-                                    std::array<char, PARAM_ID_LEN> param_id_buff{};
-                                    if (!send_get_param_message(
-                                            param_id_buff, maybe_next_missing_index.value())) {
-                                        LogErr() << "Send message failed";
+                                if (maybe_current_missing_index == param_value.param_index) {
+                                    // Looks like the last one of the previous retransmission chunk
+                                    // was done, start another one.
+                                    if (!request_next_missing(item.count)) {
                                         work_queue_guard->pop_front();
                                         if (item.callback) {
                                             auto callback = item.callback;
                                             work_queue_guard.reset();
                                             callback(Result::ConnectionError, {});
                                         }
+                                        return;
                                     }
                                 }
                             } else {
@@ -1167,25 +1148,16 @@ void MavlinkParameterClient::receive_timeout()
                 } else {
                     item.rerequesting = true;
 
+                    LogInfo() << "Requesting " << _param_cache.missing_count(item.count) << " of "
+                              << item.count << " parameters missed during initial burst.";
+
                     if (_parameter_debugging) {
                         _param_cache.print_missing(item.count);
                     }
 
-                    auto maybe_next_missing_index = _param_cache.next_missing_index(item.count);
-                    if (!maybe_next_missing_index.has_value()) {
-                        LogErr() << "logic error, there should a missing index";
-                        assert(false);
-                    }
-
-                    if (_parameter_debugging) {
-                        LogDebug() << "Requesting missing parameter "
-                                   << (int)maybe_next_missing_index.value();
-                    }
-
-                    std::array<char, PARAM_ID_LEN> param_id_buff{};
-
-                    if (!send_get_param_message(param_id_buff, maybe_next_missing_index.value())) {
-                        LogErr() << "Send message failed";
+                    // To speed retransmissions up, we request params in chunks, otherwise the
+                    // latency back and forth makes this quite slow.
+                    if (!request_next_missing(item.count)) {
                         work_queue_guard->pop_front();
                         if (item.callback) {
                             auto callback = item.callback;
@@ -1194,11 +1166,38 @@ void MavlinkParameterClient::receive_timeout()
                         }
                         return;
                     }
+
                     _timeout_cookie =
                         _timeout_handler.add([this] { receive_timeout(); }, _timeout_s_callback());
                 }
             }},
         work->work_item_variant);
+}
+
+bool MavlinkParameterClient::request_next_missing(uint16_t count)
+{
+    // Requesting 10 at a time seems to work on SiK radios.
+    const uint16_t chunk_size = 10;
+
+    auto next_missing_indices = _param_cache.next_missing_indices(count, chunk_size);
+    if (next_missing_indices.empty()) {
+        LogErr() << "logic error, there should a missing index";
+        return false;
+    }
+
+    for (auto next_missing_index : next_missing_indices) {
+        if (_parameter_debugging) {
+            LogDebug() << "Requesting missing parameter " << (int)next_missing_index;
+        }
+
+        std::array<char, PARAM_ID_LEN> param_id_buff{};
+
+        if (!send_get_param_message(param_id_buff, next_missing_index)) {
+            LogErr() << "Send message failed";
+            return false;
+        }
+    }
+    return true;
 }
 
 std::ostream& operator<<(std::ostream& str, const MavlinkParameterClient::Result& result)

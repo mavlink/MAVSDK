@@ -120,6 +120,7 @@ uint16_t MavlinkParameterCache::count(bool including_extended) const
 void MavlinkParameterCache::clear()
 {
     _all_params.clear();
+    _last_missing_requested = {};
 }
 
 bool MavlinkParameterCache::exists(const std::string& param_id) const
@@ -151,7 +152,8 @@ uint16_t MavlinkParameterCache::missing_count(uint16_t count) const
     return missing;
 }
 
-std::optional<uint16_t> MavlinkParameterCache::next_missing_index(uint16_t count)
+std::vector<uint16_t>
+MavlinkParameterCache::next_missing_indices(uint16_t count, uint16_t chunk_size)
 {
     // Extended doesn't matter here because we use this function in the sender
     // which is always either all extended or not.
@@ -159,12 +161,22 @@ std::optional<uint16_t> MavlinkParameterCache::next_missing_index(uint16_t count
         return lhs.index < rhs.index;
     });
 
+    std::vector<uint16_t> result;
+
     for (unsigned i = 0; i < count; ++i) {
-        if (!exists(i)) {
-            return {i};
+        if (exists(i)) {
+            continue;
+        }
+
+        result.push_back(i);
+        _last_missing_requested = {i};
+
+        if (result.size() == chunk_size) {
+            break;
         }
     }
-    return {};
+
+    return result;
 }
 
 void MavlinkParameterCache::print_missing(uint16_t count)
