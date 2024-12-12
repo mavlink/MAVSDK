@@ -195,6 +195,8 @@ private:
         const std::array<char, PARAM_ID_LEN>& param_id_buff, int16_t param_index);
     bool send_request_list_message();
 
+    bool request_next_missing(uint16_t count);
+
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;
     TimeoutHandler& _timeout_handler;

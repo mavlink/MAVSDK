@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <limits>
 #include <map>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -45,9 +46,14 @@ public:
 
     [[nodiscard]] uint16_t count(bool including_extended) const;
 
-    [[nodiscard]] std::optional<uint16_t> next_missing_index(uint16_t count);
+    [[nodiscard]] std::vector<uint16_t> next_missing_indices(uint16_t count, uint16_t chunk_size);
 
     [[nodiscard]] uint16_t missing_count(uint16_t count) const;
+
+    [[nodiscard]] std::optional<uint16_t> last_missing_requested() const
+    {
+        return _last_missing_requested;
+    }
 
     void print_missing(uint16_t count);
 
@@ -58,6 +64,8 @@ private:
     [[nodiscard]] bool exists(uint16_t param_index) const;
 
     std::vector<Param> _all_params;
+
+    std::optional<uint16_t> _last_missing_requested{};
 };
 
 } // namespace mavsdk
