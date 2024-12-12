@@ -8,6 +8,7 @@ list(APPEND CMAKE_ARGS
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
     "-DCMAKE_TOOLCHAIN_FILE:PATH=${CMAKE_TOOLCHAIN_FILE}"
     "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+    "-Dprotobuf_BUILD_LIBUPB=OFF"
     "-Dprotobuf_BUILD_TESTS=OFF"
     "-Dprotobuf_BUILD_SHARED_LIBS=OFF"
     "-Dprotobuf_MODULE_COMPATIBLE=ON"
@@ -38,7 +39,7 @@ endforeach()
 
 ExternalProject_add(
     protobuf
-    URL https://github.com/protocolbuffers/protobuf/releases/download/v25.1/protobuf-25.1.tar.gz
+    URL https://github.com/protocolbuffers/protobuf/releases/download/v29.1/protobuf-29.1.tar.gz
     PREFIX protobuf
     CMAKE_ARGS "${CMAKE_ARGS}"
     )
