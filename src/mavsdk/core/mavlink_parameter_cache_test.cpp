@@ -67,6 +67,7 @@ TEST(MavlinkParameterCache, AddingAndUpdating)
         MavlinkParameterCache::UpdateExistingParamResult::WrongType,
         cache.update_existing_param(custom_value1.id, int_value1.value));
 }
+
 TEST(MavlinkParameterCache, MissingIndicesSorted)
 {
     MavlinkParameterCache cache;
@@ -78,18 +79,37 @@ TEST(MavlinkParameterCache, MissingIndicesSorted)
     cache.add_new_param("PARAM1", value);
 
     // No result when the count matches the contents.
-    EXPECT_EQ(cache.next_missing_index(2), std::nullopt);
+    EXPECT_EQ(cache.next_missing_indices(2, 10).size(), 0);
+
     // The next entry when the count is bigger.
-    EXPECT_EQ(cache.next_missing_index(3), 2);
-    EXPECT_EQ(cache.next_missing_index(10), 2);
+    ASSERT_EQ(cache.next_missing_indices(3, 10).size(), 1);
+    EXPECT_EQ(cache.next_missing_indices(3, 10)[0], 2);
+    EXPECT_EQ(cache.next_missing_indices(10, 10)[0], 2);
 
-    cache.add_new_param("PARAM1", value, 5);
-    EXPECT_EQ(cache.next_missing_index(6), 2);
-
-    // What about when we add something
-    cache.add_new_param("PARAM2", value);
-    EXPECT_EQ(cache.next_missing_index(6), 3);
+    cache.add_new_param("PARAM2", value, 5);
+    std::vector<uint16_t> result = {2, 3, 4};
+    EXPECT_EQ(cache.next_missing_indices(6, 10), result);
 }
+
+TEST(MavlinkParameterCache, MissingInChunks)
+{
+    MavlinkParameterCache cache;
+    ParamValue value;
+    // We use all the same value, we don't care about that part.
+    value.set_int(42);
+
+    cache.add_new_param("PARAM0", value);
+    cache.add_new_param("PARAM1", value);
+    cache.add_new_param("PARAM2", value);
+    cache.add_new_param("PARAM3", value);
+
+    // All remaining one are returned.
+    EXPECT_EQ(cache.next_missing_indices(10, 10).size(), 6);
+
+    // Only up to chunk size are returned
+    EXPECT_EQ(cache.next_missing_indices(10, 3).size(), 3);
+}
+
 TEST(MavlinkParameterCache, MissingIndicesNotSorted)
 {
     MavlinkParameterCache cache;
@@ -99,8 +119,8 @@ TEST(MavlinkParameterCache, MissingIndicesNotSorted)
 
     cache.add_new_param("PARAM0", value, 1);
     cache.add_new_param("PARAM1", value, 3);
-    cache.add_new_param("PARAM2", value, 0);
 
     // It should still work when not sorted.
-    EXPECT_EQ(cache.next_missing_index(3), 2);
+    std::vector<uint16_t> result = {0, 2};
+    EXPECT_EQ(cache.next_missing_indices(3, 10), result);
 }

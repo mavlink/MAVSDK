@@ -152,6 +152,8 @@ public:
     friend std::ostream& operator<<(std::ostream&, const Result&);
 
 private:
+    const double _get_all_timeout_factor = 4.0;
+
     struct WorkItemSet {
         const std::string param_name;
         const ParamValue param_value;
@@ -192,6 +194,8 @@ private:
     bool send_get_param_message(
         const std::array<char, PARAM_ID_LEN>& param_id_buff, int16_t param_index);
     bool send_request_list_message();
+
+    bool request_next_missing(uint16_t count);
 
     Sender& _sender;
     MavlinkMessageHandler& _message_handler;
