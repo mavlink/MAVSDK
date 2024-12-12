@@ -1,3 +1,30 @@
+/**
+* MAVLink proxy example using the MavlinkPassthrough plugin
+* ------------------------------------------------- ---
+* This example demonstrates how to implement a MAVLink proxy using the MAVSDK's MavlinkPassthrough plugin.
+* This proxy example facilitates communication between two MAVLink components (e.g. PX4 and QGroundControl)
+* by intercepting, archiving, and forwarding MAVLink messages.
+*
+* Main features:
+* - Intercepts outgoing MAVLink messages.
+* - Routes messages between PX4 and QGroundControl, for example.
+* - Uses a multithreaded architecture for efficient message processing.
+* - Implements thread-safe queue management.
+* - Provides graceful shutdown with signal handling.
+*
+* Usage:
+* 1. Build the example: `cmake --build . --target mavlink_proxy`
+* 2. Run the proxy with the following command:
+* `./build/mavlink_proxy udp://127.0.0.1:14550 udp://:14050`
+*
+* Note:
+* - Make sure that SITL PX4 is not running on the default port (14550) to avoid conflicts.
+* - Adjust the PX4 configuration to use a different port (e.g. 14050).
+*
+* This example is intended to serve as a reference for developers looking to implement custom MAVLink proxies
+* or similar tools. It demonstrates best practices for handling MAVLink messages using MAVSDK.
+*/
+
 #include <mavsdk/mavsdk.h>
 #include <mavsdk/plugins/mavlink_passthrough/mavlink_passthrough.h>
 #include <iostream>
@@ -135,7 +162,6 @@ int main(int argc, char** argv) {
     log_message("INFO", "Waiting for systems to connect...");
 
     intercept_outgoing_messages(mavsdk_px4, PROXY_SYSID_PX4, PROXY_SYSID_QGC);
-    //intercept_outgoing_messages(mavsdk_qgc, PROXY_SYSID_PX4, PROXY_SYSID_QGC);
 
     auto px4_system = wait_for_system(mavsdk_px4);
     auto qgc_system = wait_for_system(mavsdk_qgc);
@@ -160,11 +186,9 @@ int main(int argc, char** argv) {
 
     for (uint16_t msg_id = 0; msg_id < 500; ++msg_id) {
         passthrough_map[PX4_NAME]->subscribe_message(msg_id, [&](const mavlink_message_t& message) {
-            //std::thread([=]() { enqueue_message(PX4_NAME, message); }).detach();
             enqueue_message(PX4_NAME, message);
         });
         passthrough_map[QGC_NAME]->subscribe_message(msg_id, [&](const mavlink_message_t& message) {
-            //std::thread([=]() { enqueue_message(QGC_NAME, message); }).detach();
             enqueue_message(QGC_NAME, message);
         });
     }
