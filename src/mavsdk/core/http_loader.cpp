@@ -1,5 +1,6 @@
 #include "http_loader.h"
 #include "curl_wrapper.h"
+#include "log.h"
 
 namespace mavsdk {
 
@@ -86,7 +87,17 @@ bool HttpLoader::do_download(
 
 bool HttpLoader::download_text_sync(const std::string& url, std::string& content)
 {
-    bool success = _curl_wrapper->download_text(url, content);
+    std::string http_url(url);
+
+    // We don't have https support in curl, so we try to use http for now.
+
+    std::string https = "https";
+    if (http_url.find(https, 0) == 0) {
+        http_url.replace(0, https.size(), "http");
+        LogWarn() << "Downloading over http instead of https";
+    }
+
+    bool success = _curl_wrapper->download_text(http_url, content);
     return success;
 }
 
