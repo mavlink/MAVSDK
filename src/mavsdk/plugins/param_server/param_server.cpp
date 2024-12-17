@@ -21,6 +21,11 @@ ParamServer::ParamServer(std::shared_ptr<ServerComponent> server_component) :
 
 ParamServer::~ParamServer() {}
 
+ParamServer::Result ParamServer::set_protocol(bool extended_protocol) const
+{
+    return _impl->set_protocol(extended_protocol);
+}
+
 std::pair<ParamServer::Result, int32_t> ParamServer::retrieve_param_int(std::string name) const
 {
     return _impl->retrieve_param_int(name);

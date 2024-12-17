@@ -21,6 +21,12 @@ CameraServerImpl::~CameraServerImpl()
 void CameraServerImpl::init()
 {
     _server_component_impl->register_mavlink_command_handler(
+        MAV_CMD_REQUEST_MESSAGE,
+        [this](const MavlinkCommandReceiver::CommandLong& command) {
+            return process_request_message(command);
+        },
+        this);
+    _server_component_impl->register_mavlink_command_handler(
         MAV_CMD_REQUEST_CAMERA_INFORMATION,
         [this](const MavlinkCommandReceiver::CommandLong& command) {
             return process_camera_information_request(command);
@@ -938,12 +944,14 @@ void CameraServerImpl::start_image_capture_interval(float interval_s, int32_t co
     // If count == 0, it means capture "forever" until a stop command is received.
     auto remaining = std::make_shared<int32_t>(count == 0 ? INT32_MAX : count);
 
+    _last_interval_index = index;
+
     _image_capture_timer_cookie = _server_component_impl->add_call_every(
-        [this, remaining, index]() {
+        [this, remaining]() {
             LogDebug() << "capture image timer triggered";
 
             if (!_take_photo_callbacks.empty()) {
-                _take_photo_callbacks(index);
+                _take_photo_callbacks(_last_interval_index++);
                 (*remaining)--;
             }
 
@@ -968,15 +976,38 @@ void CameraServerImpl::stop_image_capture_interval()
 std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_information_request(
     const MavlinkCommandReceiver::CommandLong& command)
 {
-    LogWarn() << "Camera info request";
-    auto capabilities = static_cast<bool>(command.params.param1);
+    LogDebug() << "Camera info request";
 
-    if (!capabilities) {
-        LogDebug() << "early info return";
+    if (static_cast<int>(command.params.param1) == 0) {
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_ACCEPTED);
     }
 
+    return send_camera_information(command);
+}
+
+std::optional<mavlink_command_ack_t>
+CameraServerImpl::process_request_message(const MavlinkCommandReceiver::CommandLong& command)
+{
+    switch (static_cast<int>(command.params.param1)) {
+        case MAVLINK_MSG_ID_CAMERA_INFORMATION:
+            return send_camera_information(command);
+
+        case MAVLINK_MSG_ID_CAMERA_CAPTURE_STATUS:
+            send_capture_status();
+            return _server_component_impl->make_command_ack_message(
+                command, MAV_RESULT::MAV_RESULT_ACCEPTED);
+
+        default:
+            LogWarn() << "Got unknown request message!";
+            return _server_component_impl->make_command_ack_message(
+                command, MAV_RESULT::MAV_RESULT_DENIED);
+    }
+}
+
+std::optional<mavlink_command_ack_t>
+CameraServerImpl::send_camera_information(const MavlinkCommandReceiver::CommandLong& command)
+{
     if (!_is_information_set) {
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_TEMPORARILY_REJECTED);
@@ -986,7 +1017,6 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_informatio
     auto command_ack =
         _server_component_impl->make_command_ack_message(command, MAV_RESULT::MAV_RESULT_ACCEPTED);
     _server_component_impl->send_command_ack(command_ack);
-    LogDebug() << "sent info ack";
 
     // It is safe to ignore the return value of parse_version_string() here
     // since the string was already validated in set_information().
@@ -1058,12 +1088,11 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_informatio
             capability_flags,
             _information.definition_file_version,
             _information.definition_file_uri.c_str(),
+            0,
             0);
         return message;
     });
-    LogDebug() << "sent info msg";
 
-    // ack was already sent
     return std::nullopt;
 }
 
@@ -1073,7 +1102,6 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_settings_r
     auto settings = static_cast<bool>(command.params.param1);
 
     if (!settings) {
-        LogDebug() << "early settings return";
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_ACCEPTED);
     }
@@ -1099,7 +1127,8 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_settings_r
             static_cast<uint32_t>(_server_component_impl->get_time().elapsed_s() * 1e3),
             mode_id,
             zoom_level,
-            focus_level);
+            focus_level,
+            0);
         return message;
     });
     LogDebug() << "sent settings msg";
@@ -1225,7 +1254,8 @@ void CameraServerImpl::send_capture_status()
             _image_capture_timer_interval_s,
             recording_time_ms,
             available_capacity,
-            _image_capture_count);
+            _image_capture_count,
+            0);
         return message;
     });
 }
@@ -1562,7 +1592,9 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_info
             0, // rotation
             0, // horizontal field of view
             name,
-            _video_streaming.rtsp_uri.c_str());
+            _video_streaming.rtsp_uri.c_str(),
+            0,
+            0);
 
         _server_component_impl->send_message(msg);
 
@@ -1604,8 +1636,8 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_stat
         0, // resolution vertical
         0, // bitrate
         0, // rotation
-        0 // horizontal field of view
-    );
+        0, // horizontal field of view
+        0);
     _server_component_impl->send_message(msg);
 
     // ack was already sent
@@ -1904,7 +1936,8 @@ void CameraServerImpl::send_tracking_status_with_interval(uint32_t interval_us)
                         0.0f,
                         0.0f,
                         0.0f,
-                        0.0f);
+                        0.0f,
+                        0);
                     break;
                 case TrackingMode::POINT:
 
@@ -1922,7 +1955,8 @@ void CameraServerImpl::send_tracking_status_with_interval(uint32_t interval_us)
                         0.0f,
                         0.0f,
                         0.0f,
-                        0.0f);
+                        0.0f,
+                        0);
                     break;
 
                 case TrackingMode::RECTANGLE:
@@ -1941,7 +1975,8 @@ void CameraServerImpl::send_tracking_status_with_interval(uint32_t interval_us)
                         _tracked_rectangle.top_left_corner_x,
                         _tracked_rectangle.top_left_corner_y,
                         _tracked_rectangle.bottom_right_corner_x,
-                        _tracked_rectangle.bottom_right_corner_y);
+                        _tracked_rectangle.bottom_right_corner_y,
+                        0);
                     break;
             }
             return message;

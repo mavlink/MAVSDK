@@ -9,7 +9,7 @@
 
 using namespace mavsdk;
 
-TEST(SystemTest, CameraTakePhoto)
+TEST(SystemTest, CameraTakePhotoInterval)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
 
@@ -27,7 +27,7 @@ TEST(SystemTest, CameraTakePhoto)
     information.vendor_name = "CoolCameras";
     information.model_name = "Frozen Super";
     information.firmware_version = "4.0.0";
-    information.definition_file_version = 1;
+    information.definition_file_version = 0;
     information.definition_file_uri = "";
     camera_server.set_information(information);
 
@@ -39,11 +39,6 @@ TEST(SystemTest, CameraTakePhoto)
         info.is_success = true;
 
         camera_server.respond_take_photo(CameraServer::CameraFeedback::Ok, info);
-    });
-
-    camera_server.subscribe_set_mode([&](CameraServer::Mode mode) {
-        LogInfo() << "Set mode to " << mode;
-        camera_server.respond_set_mode(CameraServer::CameraFeedback::Ok);
     });
 
     auto prom = std::promise<std::shared_ptr<System>>();
@@ -67,22 +62,20 @@ TEST(SystemTest, CameraTakePhoto)
     // We expect to find one camera.
     ASSERT_EQ(camera.camera_list().cameras.size(), 1);
 
-    auto received_captured_info_prom = std::promise<void>{};
-    auto received_captured_info_fut = received_captured_info_prom.get_future();
+    unsigned captured = 0;
 
-    Camera::CaptureInfoHandle capture_handle = camera.subscribe_capture_info(
-        [&camera, &received_captured_info_prom, &capture_handle](Camera::CaptureInfo capture_info) {
-            LogInfo() << "Received captured info for image: " << capture_info.index;
-            // Unsubscribe again to prevent double setting promise.
-            camera.unsubscribe_capture_info(capture_handle);
-            received_captured_info_prom.set_value();
-        });
+    camera.subscribe_capture_info([&](Camera::CaptureInfo capture_info) {
+        LogInfo() << "Received captured info for image: " << capture_info.index;
+        ++captured;
+    });
 
     EXPECT_EQ(
-        camera.take_photo(camera.camera_list().cameras[0].component_id), Camera::Result::Success);
-    ASSERT_EQ(
-        received_captured_info_fut.wait_for(std::chrono::seconds(10)), std::future_status::ready);
-    received_captured_info_fut.get();
+        camera.start_photo_interval(camera.camera_list().cameras[0].component_id, 0.1f),
+        Camera::Result::Success);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    EXPECT_EQ(
+        camera.stop_photo_interval(camera.camera_list().cameras[0].component_id),
+        Camera::Result::Success);
+    EXPECT_GE(captured, 2);
 }

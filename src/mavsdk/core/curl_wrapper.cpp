@@ -78,14 +78,14 @@ static int download_progress_update(
     }
 
     if (dltotal == 0 || dlnow == 0) {
-        return myp->progress_callback(0, HttpStatus::Idle, CURLcode::CURLE_OK);
-    }
+        myp->progress_callback(0, HttpStatus::Idle, CURLcode::CURLE_OK);
+    } else {
+        int percentage = static_cast<int>(100 * dlnow / dltotal);
 
-    int percentage = static_cast<int>(100 / dltotal * dlnow);
-
-    if (percentage > myp->progress_in_percentage) {
-        myp->progress_in_percentage = percentage;
-        return myp->progress_callback(percentage, HttpStatus::Downloading, CURLcode::CURLE_OK);
+        if (percentage > myp->progress_in_percentage) {
+            myp->progress_in_percentage = percentage;
+            myp->progress_callback(percentage, HttpStatus::Downloading, CURLcode::CURLE_OK);
+        }
     }
 
     return 0;

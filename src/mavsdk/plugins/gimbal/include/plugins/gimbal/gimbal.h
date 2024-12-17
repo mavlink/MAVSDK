@@ -252,7 +252,7 @@ public:
      * @brief Gimbal list
      */
     struct GimbalList {
-        std::vector<GimbalItem> gimbals{}; /**< @brief Gimbal item. */
+        std::vector<GimbalItem> gimbals{}; /**< @brief Gimbal items. */
     };
 
     /**

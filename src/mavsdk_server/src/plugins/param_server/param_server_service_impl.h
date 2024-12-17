@@ -210,6 +210,36 @@ public:
         }
     }
 
+    grpc::Status SetProtocol(
+        grpc::ServerContext* /* context */,
+        const rpc::param_server::SetProtocolRequest* request,
+        rpc::param_server::SetProtocolResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                // For server plugins, this should never happen, they should always be
+                // constructible.
+                auto result = mavsdk::ParamServer::Result::Unknown;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetProtocol sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->set_protocol(request->extended_protocol());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status RetrieveParamInt(
         grpc::ServerContext* /* context */,
         const rpc::param_server::RetrieveParamIntRequest* request,
