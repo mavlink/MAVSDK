@@ -13,7 +13,7 @@ static struct MavsdkServer* mavsdk_server;
 
 void signal_handler(int sig)
 {
-    std::cout << "Received SIGUSR1 signal" << std::endl;
+    std::cout << "Received signal " << sig << std::endl;
 
     mavsdk_server_stop(mavsdk_server);
 }
@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    signal(SIGUSR1, signal_handler);
+    signal(SIGINT, signal_handler);
 
     mavsdk_server_init(&mavsdk_server);
     mavsdk_server_run(mavsdk_server, argv[1], 50051);
