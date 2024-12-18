@@ -21,6 +21,8 @@ public:
     explicit MavlinkCommandSender(SystemImpl& system_impl);
     ~MavlinkCommandSender();
 
+    static constexpr unsigned DEFAULT_RETRIES = 3;
+
     enum class Result {
         Success = 0,
         NoSystem,
@@ -73,11 +75,17 @@ public:
         } params{};
     };
 
-    Result send_command(const CommandInt& command);
-    Result send_command(const CommandLong& command);
+    Result send_command(const CommandInt& command, unsigned retries = DEFAULT_RETRIES);
+    Result send_command(const CommandLong& command, unsigned retries = DEFAULT_RETRIES);
 
-    void queue_command_async(const CommandInt& command, const CommandResultCallback& callback);
-    void queue_command_async(const CommandLong& command, const CommandResultCallback& callback);
+    void queue_command_async(
+        const CommandInt& command,
+        const CommandResultCallback& callback,
+        unsigned retries = DEFAULT_RETRIES);
+    void queue_command_async(
+        const CommandLong& command,
+        const CommandResultCallback& callback,
+        unsigned retries = DEFAULT_RETRIES);
 
     void do_work();
 
@@ -116,7 +124,7 @@ private:
         SteadyTimePoint time_started{};
         TimeoutHandler::Cookie timeout_cookie{};
         double timeout_s{0.5};
-        int retries_to_do{3};
+        int retries_to_do;
         bool already_sent{false};
     };
 

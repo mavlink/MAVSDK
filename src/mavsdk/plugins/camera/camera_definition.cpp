@@ -3,10 +3,6 @@
 
 namespace mavsdk {
 
-CameraDefinition::CameraDefinition() {}
-
-CameraDefinition::~CameraDefinition() {}
-
 bool CameraDefinition::load_file(const std::string& filepath)
 {
     tinyxml2::XMLError xml_error = _doc.LoadFile(filepath.c_str());
@@ -31,22 +27,16 @@ bool CameraDefinition::load_string(const std::string& content)
 
 std::string CameraDefinition::get_model() const
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     return _model;
 }
 
 std::string CameraDefinition::get_vendor() const
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     return _vendor;
 }
 
 bool CameraDefinition::parse_xml()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     auto e_mavlinkcamera = _doc.FirstChildElement("mavlinkcamera");
     if (!e_mavlinkcamera) {
         LogErr() << "Tag mavlinkcamera not found";
@@ -187,7 +177,7 @@ bool CameraDefinition::parse_xml()
             for (auto e_update = e_updates->FirstChildElement("update"); e_update != nullptr;
                  e_update = e_update->NextSiblingElement("update")) {
                 // LogDebug() << "Updates: " << e_update->GetText();
-                new_parameter->updates.push_back(e_update->GetText());
+                new_parameter->updates.emplace_back(e_update->GetText());
             }
         }
 
@@ -242,7 +232,7 @@ bool CameraDefinition::parse_xml()
         } else {
             auto maybe_range_options = parse_range_options(e_parameter, param_name, type_map);
             if (!std::get<0>(maybe_range_options)) {
-                LogWarn() << "Not found: " << param_name;
+                LogWarn() << "Range not found for: " << param_name;
                 continue;
             }
 
@@ -296,7 +286,7 @@ CameraDefinition::parse_options(
             for (auto e_exclude = e_exclusions->FirstChildElement("exclude"); e_exclude != nullptr;
                  e_exclude = e_exclude->NextSiblingElement("exclude")) {
                 // LogDebug() << "Exclude: " << e_exclude->GetText();
-                new_option->exclusions.push_back(e_exclude->GetText());
+                new_option->exclusions.emplace_back(e_exclude->GetText());
             }
         }
 
@@ -367,7 +357,7 @@ CameraDefinition::parse_range_options(
 
     const char* min_str = param_handle->Attribute("min");
     if (!min_str) {
-        LogErr() << "min range missing for " << param_name;
+        LogDebug() << "min range missing for " << param_name;
         return std::make_tuple<>(false, options, default_option);
     }
 
@@ -376,7 +366,7 @@ CameraDefinition::parse_range_options(
 
     const char* max_str = param_handle->Attribute("max");
     if (!max_str) {
-        LogErr() << "max range missing for " << param_name;
+        LogDebug() << "max range missing for " << param_name;
         return std::make_tuple<>(false, options, default_option);
     }
 
@@ -453,59 +443,32 @@ std::pair<bool, CameraDefinition::Option> CameraDefinition::find_default(
 
 void CameraDefinition::assume_default_settings()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
+    reset_to_default_settings(false);
+}
 
+void CameraDefinition::reset_to_default_settings(bool needs_updating)
+{
     _current_settings.clear();
 
     for (const auto& parameter : _parameter_map) {
-        // if (parameter.second->is_range) {
-
         InternalCurrentSetting new_setting;
         new_setting.value = parameter.second->default_option.value;
-        new_setting.needs_updating = false;
+        new_setting.needs_updating = needs_updating;
         _current_settings[parameter.first] = new_setting;
-
-        //} else {
-
-        //    for (const auto &option : parameter.second->options) {
-        //        if (!option->is_default) {
-        //            //LogDebug() << option->name << " not default";
-        //            continue;
-        //        }
-        //        //LogDebug() << option->name << " default value: " << option->value << " (type: "
-        //        <<
-        //        // option->value.typestr() << ")";
-
-        //        InternalCurrentSetting new_setting;
-        //        new_setting.value = option->value;
-        //        new_setting.needs_updating = false;
-        //        _current_settings[parameter.first] = new_setting;
-        //    }
-        //}
     }
 }
 
 bool CameraDefinition::get_all_settings(std::unordered_map<std::string, ParamValue>& settings)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     settings.clear();
     for (const auto& current_setting : _current_settings) {
         settings[current_setting.first] = current_setting.second.value;
     }
 
-    return (settings.size() > 0);
+    return !settings.empty();
 }
 
 bool CameraDefinition::get_possible_settings(std::unordered_map<std::string, ParamValue>& settings)
-{
-    std::lock_guard<std::mutex> lock(_mutex);
-
-    return get_possible_settings_locked(settings);
-}
-
-bool CameraDefinition::get_possible_settings_locked(
-    std::unordered_map<std::string, ParamValue>& settings)
 {
     settings.clear();
 
@@ -542,13 +505,11 @@ bool CameraDefinition::get_possible_settings_locked(
         settings[setting.first] = setting.second.value;
     }
 
-    return (settings.size() > 0);
+    return !settings.empty();
 }
 
 bool CameraDefinition::set_setting(const std::string& name, const ParamValue& value)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     if (_parameter_map.find(name) == _parameter_map.end()) {
         LogErr() << "Unknown setting to set: " << name;
         return false;
@@ -578,7 +539,7 @@ bool CameraDefinition::set_setting(const std::string& name, const ParamValue& va
     // needs to happen outside of this class.
     for (const auto& update : _parameter_map[name]->updates) {
         if (_current_settings.find(update) == _current_settings.end()) {
-            // LogDebug() << "Update to '" << update << "' not understood.";
+            LogDebug() << "Update to '" << update << "' not understood.";
             continue;
         }
         _current_settings[update].needs_updating = true;
@@ -589,8 +550,6 @@ bool CameraDefinition::set_setting(const std::string& name, const ParamValue& va
 
 bool CameraDefinition::get_setting(const std::string& name, ParamValue& value)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     if (_current_settings.find(name) == _current_settings.end()) {
         LogErr() << "Unknown setting to get: " << name;
         return false;
@@ -607,8 +566,6 @@ bool CameraDefinition::get_setting(const std::string& name, ParamValue& value)
 bool CameraDefinition::get_option_value(
     const std::string& param_name, const std::string& option_value, ParamValue& value)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     if (_parameter_map.find(param_name) == _parameter_map.end()) {
         LogErr() << "Unknown parameter to get option: " << param_name;
         return false;
@@ -626,8 +583,6 @@ bool CameraDefinition::get_option_value(
 
 bool CameraDefinition::get_all_options(const std::string& name, std::vector<ParamValue>& values)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     values.clear();
 
     if (_parameter_map.find(name) == _parameter_map.end()) {
@@ -645,8 +600,6 @@ bool CameraDefinition::get_all_options(const std::string& name, std::vector<Para
 bool CameraDefinition::get_possible_options(
     const std::string& name, std::vector<ParamValue>& values)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     values.clear();
 
     if (_parameter_map.find(name) == _parameter_map.end()) {
@@ -655,7 +608,7 @@ bool CameraDefinition::get_possible_options(
     }
 
     std::unordered_map<std::string, ParamValue> settings;
-    if (!get_possible_settings_locked(settings)) {
+    if (!get_possible_settings(settings)) {
         return false;
     }
     if (settings.find(name) == settings.end()) {
@@ -711,7 +664,7 @@ bool CameraDefinition::get_possible_options(
             // Only look at current set option.
             if (_current_settings[parameter.first].value == option->value) {
                 // Go through parameter ranges but only concerning the parameter that
-                // we're interested in..
+                // we're interested in.
                 if (option->parameter_ranges.find(name) != option->parameter_ranges.end()) {
                     for (const auto& range : option->parameter_ranges[name]) {
                         allowed_ranges.push_back(range.second);
@@ -729,7 +682,7 @@ bool CameraDefinition::get_possible_options(
                 option_allowed = true;
             }
         }
-        if (option_allowed || allowed_ranges.size() == 0) {
+        if (option_allowed || allowed_ranges.empty()) {
             values.push_back(option->value);
         }
     }
@@ -739,8 +692,6 @@ bool CameraDefinition::get_possible_options(
 
 void CameraDefinition::get_unknown_params(std::vector<std::pair<std::string, ParamValue>>& params)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     params.clear();
 
     for (const auto& parameter : _parameter_map) {
@@ -752,8 +703,6 @@ void CameraDefinition::get_unknown_params(std::vector<std::pair<std::string, Par
 
 void CameraDefinition::set_all_params_unknown()
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     for (auto& parameter : _parameter_map) {
         _current_settings[parameter.first].needs_updating = true;
     }
@@ -761,8 +710,6 @@ void CameraDefinition::set_all_params_unknown()
 
 bool CameraDefinition::is_setting_range(const std::string& name)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     if (_parameter_map.find(name) == _parameter_map.end()) {
         LogWarn() << "Setting " << name << " not found.";
         return false;
@@ -773,8 +720,6 @@ bool CameraDefinition::is_setting_range(const std::string& name)
 
 bool CameraDefinition::get_setting_str(const std::string& name, std::string& description)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     description.clear();
 
     if (_parameter_map.find(name) == _parameter_map.end()) {
@@ -789,8 +734,6 @@ bool CameraDefinition::get_setting_str(const std::string& name, std::string& des
 bool CameraDefinition::get_option_str(
     const std::string& setting_name, const std::string& option_name, std::string& description)
 {
-    std::lock_guard<std::mutex> lock(_mutex);
-
     description.clear();
 
     if (_parameter_map.find(setting_name) == _parameter_map.end()) {
@@ -799,8 +742,6 @@ bool CameraDefinition::get_option_str(
     }
 
     for (const auto& option : _parameter_map[setting_name]->options) {
-        std::stringstream value_ss{};
-        value_ss << option->value;
         if (option->value == option_name) {
             description = option->name;
             return true;

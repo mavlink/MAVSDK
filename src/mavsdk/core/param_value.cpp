@@ -488,7 +488,7 @@ bool ParamValue::set_int(int new_value)
         _value = static_cast<uint32_t>(new_value);
         return true;
     } else if (std::get_if<int32_t>(&_value)) {
-        _value = static_cast<int32_t>(new_value);
+        _value = new_value;
         return true;
     } else {
         return false;
@@ -580,15 +580,33 @@ std::array<char, 128> ParamValue::get_128_bytes() const
         (std::get_if<double>(&_value) && std::get_if<double>(&rhs._value)) ||
         (std::get_if<std::string>(&_value) && std::get_if<std::string>(&rhs._value))) {
         return true;
-    } else {
-        LogWarn() << "Comparison type mismatch between " << typestr() << " and " << rhs.typestr();
-        return false;
     }
+
+    if ((std::get_if<uint8_t>(&_value) || std::get_if<int8_t>(&_value) ||
+         std::get_if<uint16_t>(&_value) || std::get_if<int16_t>(&_value) ||
+         std::get_if<uint32_t>(&_value) || std::get_if<int32_t>(&_value) ||
+         std::get_if<uint64_t>(&_value) || std::get_if<int64_t>(&_value)) &&
+        (std::get_if<uint8_t>(&rhs._value) || std::get_if<int8_t>(&rhs._value) ||
+         std::get_if<uint16_t>(&rhs._value) || std::get_if<int16_t>(&rhs._value) ||
+         std::get_if<uint32_t>(&rhs._value) || std::get_if<int32_t>(&rhs._value) ||
+         std::get_if<uint64_t>(&rhs._value) || std::get_if<int64_t>(&rhs._value))) {
+        LogDebug() << "Ignoring int mismatch between " << typestr() << " and " << rhs.typestr();
+        return true;
+    }
+
+    if ((std::get_if<float>(&_value) || std::get_if<double>(&_value)) &&
+        (std::get_if<float>(&rhs._value) || std::get_if<double>(&rhs._value))) {
+        LogDebug() << "Ignoring float/double mismatch between " << typestr() << " and "
+                   << rhs.typestr();
+        return true;
+    }
+
+    LogWarn() << "Comparison type mismatch between " << typestr() << " and " << rhs.typestr();
+    return false;
 }
 
 bool ParamValue::operator==(const std::string& value_str) const
 {
-    // LogDebug() << "Compare " << value_str() << " and " << rhs.value_str();
     if (std::get_if<uint8_t>(&_value)) {
         return std::get<uint8_t>(_value) == std::stoi(value_str);
     } else if (std::get_if<int8_t>(&_value)) {

@@ -193,6 +193,12 @@ private:
     std::optional<mavlink_command_ack_t>
     process_set_message_interval(const MavlinkCommandReceiver::CommandLong& command);
 
+    std::optional<mavlink_command_ack_t>
+    process_request_message(const MavlinkCommandReceiver::CommandLong& command);
+
+    std::optional<mavlink_command_ack_t>
+    send_camera_information(const MavlinkCommandReceiver::CommandLong& command);
+
     void send_capture_status();
 
     bool _is_information_set{};
@@ -258,6 +264,8 @@ private:
     MavlinkCommandReceiver::CommandLong _last_zoom_out_start_command;
     MavlinkCommandReceiver::CommandLong _last_zoom_stop_command;
     MavlinkCommandReceiver::CommandLong _last_zoom_range_command;
+
+    int32_t _last_interval_index{0};
 };
 
 } // namespace mavsdk

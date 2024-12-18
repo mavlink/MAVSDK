@@ -18,7 +18,7 @@ public:
     HttpLoader(const std::shared_ptr<ICurlWrapper>& curl_wrapper);
 #endif
 
-    explicit HttpLoader();
+    HttpLoader();
     ~HttpLoader();
 
     void start();
@@ -29,13 +29,7 @@ public:
     void download_async(
         const std::string& url,
         const std::string& local_path,
-        const ProgressCallback& progress_callback = nullptr);
-
-    bool upload_sync(const std::string& target_url, const std::string& local_path);
-    void upload_async(
-        const std::string& target_url,
-        const std::string& local_path,
-        const ProgressCallback& progress_callback = nullptr);
+        ProgressCallback progress_callback = nullptr);
 
     // Non-copyable
     HttpLoader(const HttpLoader&) = delete;

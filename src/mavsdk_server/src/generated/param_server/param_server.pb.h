@@ -123,6 +123,12 @@ extern RetrieveParamIntRequestDefaultTypeInternal _RetrieveParamIntRequest_defau
 class RetrieveParamIntResponse;
 struct RetrieveParamIntResponseDefaultTypeInternal;
 extern RetrieveParamIntResponseDefaultTypeInternal _RetrieveParamIntResponse_default_instance_;
+class SetProtocolRequest;
+struct SetProtocolRequestDefaultTypeInternal;
+extern SetProtocolRequestDefaultTypeInternal _SetProtocolRequest_default_instance_;
+class SetProtocolResponse;
+struct SetProtocolResponseDefaultTypeInternal;
+extern SetProtocolResponseDefaultTypeInternal _SetProtocolResponse_default_instance_;
 class SubscribeChangedParamCustomRequest;
 struct SubscribeChangedParamCustomRequestDefaultTypeInternal;
 extern SubscribeChangedParamCustomRequestDefaultTypeInternal _SubscribeChangedParamCustomRequest_default_instance_;
@@ -246,7 +252,7 @@ class SubscribeChangedParamIntRequest final
     return reinterpret_cast<const SubscribeChangedParamIntRequest*>(
         &_SubscribeChangedParamIntRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 14;
+  static constexpr int kIndexInFileMessages = 16;
   friend void swap(SubscribeChangedParamIntRequest& a, SubscribeChangedParamIntRequest& b) { a.Swap(&b); }
   inline void Swap(SubscribeChangedParamIntRequest* other) {
     if (other == this) return;
@@ -392,7 +398,7 @@ class SubscribeChangedParamFloatRequest final
     return reinterpret_cast<const SubscribeChangedParamFloatRequest*>(
         &_SubscribeChangedParamFloatRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 16;
+  static constexpr int kIndexInFileMessages = 18;
   friend void swap(SubscribeChangedParamFloatRequest& a, SubscribeChangedParamFloatRequest& b) { a.Swap(&b); }
   inline void Swap(SubscribeChangedParamFloatRequest* other) {
     if (other == this) return;
@@ -538,7 +544,7 @@ class SubscribeChangedParamCustomRequest final
     return reinterpret_cast<const SubscribeChangedParamCustomRequest*>(
         &_SubscribeChangedParamCustomRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 18;
+  static constexpr int kIndexInFileMessages = 20;
   friend void swap(SubscribeChangedParamCustomRequest& a, SubscribeChangedParamCustomRequest& b) { a.Swap(&b); }
   inline void Swap(SubscribeChangedParamCustomRequest* other) {
     if (other == this) return;
@@ -625,6 +631,197 @@ class SubscribeChangedParamCustomRequest final
 };
 // -------------------------------------------------------------------
 
+class SetProtocolRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.param_server.SetProtocolRequest) */ {
+ public:
+  inline SetProtocolRequest() : SetProtocolRequest(nullptr) {}
+  ~SetProtocolRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SetProtocolRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SetProtocolRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SetProtocolRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SetProtocolRequest(const SetProtocolRequest& from) : SetProtocolRequest(nullptr, from) {}
+  inline SetProtocolRequest(SetProtocolRequest&& from) noexcept
+      : SetProtocolRequest(nullptr, std::move(from)) {}
+  inline SetProtocolRequest& operator=(const SetProtocolRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetProtocolRequest& operator=(SetProtocolRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetProtocolRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetProtocolRequest* internal_default_instance() {
+    return reinterpret_cast<const SetProtocolRequest*>(
+        &_SetProtocolRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 0;
+  friend void swap(SetProtocolRequest& a, SetProtocolRequest& b) { a.Swap(&b); }
+  inline void Swap(SetProtocolRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetProtocolRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SetProtocolRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SetProtocolRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SetProtocolRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SetProtocolRequest& from) { SetProtocolRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SetProtocolRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.param_server.SetProtocolRequest"; }
+
+ protected:
+  explicit SetProtocolRequest(::google::protobuf::Arena* arena);
+  SetProtocolRequest(::google::protobuf::Arena* arena, const SetProtocolRequest& from);
+  SetProtocolRequest(::google::protobuf::Arena* arena, SetProtocolRequest&& from) noexcept
+      : SetProtocolRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kExtendedProtocolFieldNumber = 1,
+  };
+  // bool extended_protocol = 1;
+  void clear_extended_protocol() ;
+  bool extended_protocol() const;
+  void set_extended_protocol(bool value);
+
+  private:
+  bool _internal_extended_protocol() const;
+  void _internal_set_extended_protocol(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.param_server.SetProtocolRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SetProtocolRequest& from_msg);
+    bool extended_protocol_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_param_5fserver_2fparam_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class RetrieveParamIntRequest final
     : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.param_server.RetrieveParamIntRequest) */ {
@@ -685,7 +882,7 @@ class RetrieveParamIntRequest final
     return reinterpret_cast<const RetrieveParamIntRequest*>(
         &_RetrieveParamIntRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 0;
+  static constexpr int kIndexInFileMessages = 2;
   friend void swap(RetrieveParamIntRequest& a, RetrieveParamIntRequest& b) { a.Swap(&b); }
   inline void Swap(RetrieveParamIntRequest* other) {
     if (other == this) return;
@@ -882,7 +1079,7 @@ class RetrieveParamFloatRequest final
     return reinterpret_cast<const RetrieveParamFloatRequest*>(
         &_RetrieveParamFloatRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 6;
   friend void swap(RetrieveParamFloatRequest& a, RetrieveParamFloatRequest& b) { a.Swap(&b); }
   inline void Swap(RetrieveParamFloatRequest* other) {
     if (other == this) return;
@@ -1079,7 +1276,7 @@ class RetrieveParamCustomRequest final
     return reinterpret_cast<const RetrieveParamCustomRequest*>(
         &_RetrieveParamCustomRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 8;
+  static constexpr int kIndexInFileMessages = 10;
   friend void swap(RetrieveParamCustomRequest& a, RetrieveParamCustomRequest& b) { a.Swap(&b); }
   inline void Swap(RetrieveParamCustomRequest* other) {
     if (other == this) return;
@@ -1275,7 +1472,7 @@ class RetrieveAllParamsRequest final
     return reinterpret_cast<const RetrieveAllParamsRequest*>(
         &_RetrieveAllParamsRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 12;
+  static constexpr int kIndexInFileMessages = 14;
   friend void swap(RetrieveAllParamsRequest& a, RetrieveAllParamsRequest& b) { a.Swap(&b); }
   inline void Swap(RetrieveAllParamsRequest* other) {
     if (other == this) return;
@@ -1422,7 +1619,7 @@ class ProvideParamIntRequest final
     return reinterpret_cast<const ProvideParamIntRequest*>(
         &_ProvideParamIntRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 2;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(ProvideParamIntRequest& a, ProvideParamIntRequest& b) { a.Swap(&b); }
   inline void Swap(ProvideParamIntRequest* other) {
     if (other == this) return;
@@ -1631,7 +1828,7 @@ class ProvideParamFloatRequest final
     return reinterpret_cast<const ProvideParamFloatRequest*>(
         &_ProvideParamFloatRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 8;
   friend void swap(ProvideParamFloatRequest& a, ProvideParamFloatRequest& b) { a.Swap(&b); }
   inline void Swap(ProvideParamFloatRequest* other) {
     if (other == this) return;
@@ -1840,7 +2037,7 @@ class ProvideParamCustomRequest final
     return reinterpret_cast<const ProvideParamCustomRequest*>(
         &_ProvideParamCustomRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 10;
+  static constexpr int kIndexInFileMessages = 12;
   friend void swap(ProvideParamCustomRequest& a, ProvideParamCustomRequest& b) { a.Swap(&b); }
   inline void Swap(ProvideParamCustomRequest* other) {
     if (other == this) return;
@@ -2055,7 +2252,7 @@ class ParamServerResult final
     return reinterpret_cast<const ParamServerResult*>(
         &_ParamServerResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 24;
+  static constexpr int kIndexInFileMessages = 26;
   friend void swap(ParamServerResult& a, ParamServerResult& b) { a.Swap(&b); }
   inline void Swap(ParamServerResult* other) {
     if (other == this) return;
@@ -2288,7 +2485,7 @@ class IntParam final
     return reinterpret_cast<const IntParam*>(
         &_IntParam_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 20;
+  static constexpr int kIndexInFileMessages = 22;
   friend void swap(IntParam& a, IntParam& b) { a.Swap(&b); }
   inline void Swap(IntParam* other) {
     if (other == this) return;
@@ -2497,7 +2694,7 @@ class FloatParam final
     return reinterpret_cast<const FloatParam*>(
         &_FloatParam_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 21;
+  static constexpr int kIndexInFileMessages = 23;
   friend void swap(FloatParam& a, FloatParam& b) { a.Swap(&b); }
   inline void Swap(FloatParam* other) {
     if (other == this) return;
@@ -2706,7 +2903,7 @@ class CustomParam final
     return reinterpret_cast<const CustomParam*>(
         &_CustomParam_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 22;
+  static constexpr int kIndexInFileMessages = 24;
   friend void swap(CustomParam& a, CustomParam& b) { a.Swap(&b); }
   inline void Swap(CustomParam* other) {
     if (other == this) return;
@@ -2861,6 +3058,203 @@ class CustomParam final
 };
 // -------------------------------------------------------------------
 
+class SetProtocolResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.param_server.SetProtocolResponse) */ {
+ public:
+  inline SetProtocolResponse() : SetProtocolResponse(nullptr) {}
+  ~SetProtocolResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SetProtocolResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SetProtocolResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SetProtocolResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SetProtocolResponse(const SetProtocolResponse& from) : SetProtocolResponse(nullptr, from) {}
+  inline SetProtocolResponse(SetProtocolResponse&& from) noexcept
+      : SetProtocolResponse(nullptr, std::move(from)) {}
+  inline SetProtocolResponse& operator=(const SetProtocolResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SetProtocolResponse& operator=(SetProtocolResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SetProtocolResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SetProtocolResponse* internal_default_instance() {
+    return reinterpret_cast<const SetProtocolResponse*>(
+        &_SetProtocolResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 1;
+  friend void swap(SetProtocolResponse& a, SetProtocolResponse& b) { a.Swap(&b); }
+  inline void Swap(SetProtocolResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SetProtocolResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SetProtocolResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SetProtocolResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SetProtocolResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SetProtocolResponse& from) { SetProtocolResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SetProtocolResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.param_server.SetProtocolResponse"; }
+
+ protected:
+  explicit SetProtocolResponse(::google::protobuf::Arena* arena);
+  SetProtocolResponse(::google::protobuf::Arena* arena, const SetProtocolResponse& from);
+  SetProtocolResponse(::google::protobuf::Arena* arena, SetProtocolResponse&& from) noexcept
+      : SetProtocolResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kParamServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
+  bool has_param_server_result() const;
+  void clear_param_server_result() ;
+  const ::mavsdk::rpc::param_server::ParamServerResult& param_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::param_server::ParamServerResult* release_param_server_result();
+  ::mavsdk::rpc::param_server::ParamServerResult* mutable_param_server_result();
+  void set_allocated_param_server_result(::mavsdk::rpc::param_server::ParamServerResult* value);
+  void unsafe_arena_set_allocated_param_server_result(::mavsdk::rpc::param_server::ParamServerResult* value);
+  ::mavsdk::rpc::param_server::ParamServerResult* unsafe_arena_release_param_server_result();
+
+  private:
+  const ::mavsdk::rpc::param_server::ParamServerResult& _internal_param_server_result() const;
+  ::mavsdk::rpc::param_server::ParamServerResult* _internal_mutable_param_server_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.param_server.SetProtocolResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SetProtocolResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::param_server::ParamServerResult* param_server_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_param_5fserver_2fparam_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class RetrieveParamIntResponse final
     : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.param_server.RetrieveParamIntResponse) */ {
@@ -2921,7 +3315,7 @@ class RetrieveParamIntResponse final
     return reinterpret_cast<const RetrieveParamIntResponse*>(
         &_RetrieveParamIntResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 1;
+  static constexpr int kIndexInFileMessages = 3;
   friend void swap(RetrieveParamIntResponse& a, RetrieveParamIntResponse& b) { a.Swap(&b); }
   inline void Swap(RetrieveParamIntResponse* other) {
     if (other == this) return;
@@ -3130,7 +3524,7 @@ class RetrieveParamFloatResponse final
     return reinterpret_cast<const RetrieveParamFloatResponse*>(
         &_RetrieveParamFloatResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 7;
   friend void swap(RetrieveParamFloatResponse& a, RetrieveParamFloatResponse& b) { a.Swap(&b); }
   inline void Swap(RetrieveParamFloatResponse* other) {
     if (other == this) return;
@@ -3339,7 +3733,7 @@ class RetrieveParamCustomResponse final
     return reinterpret_cast<const RetrieveParamCustomResponse*>(
         &_RetrieveParamCustomResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 9;
+  static constexpr int kIndexInFileMessages = 11;
   friend void swap(RetrieveParamCustomResponse& a, RetrieveParamCustomResponse& b) { a.Swap(&b); }
   inline void Swap(RetrieveParamCustomResponse* other) {
     if (other == this) return;
@@ -3554,7 +3948,7 @@ class ProvideParamIntResponse final
     return reinterpret_cast<const ProvideParamIntResponse*>(
         &_ProvideParamIntResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 3;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(ProvideParamIntResponse& a, ProvideParamIntResponse& b) { a.Swap(&b); }
   inline void Swap(ProvideParamIntResponse* other) {
     if (other == this) return;
@@ -3751,7 +4145,7 @@ class ProvideParamFloatResponse final
     return reinterpret_cast<const ProvideParamFloatResponse*>(
         &_ProvideParamFloatResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 9;
   friend void swap(ProvideParamFloatResponse& a, ProvideParamFloatResponse& b) { a.Swap(&b); }
   inline void Swap(ProvideParamFloatResponse* other) {
     if (other == this) return;
@@ -3948,7 +4342,7 @@ class ProvideParamCustomResponse final
     return reinterpret_cast<const ProvideParamCustomResponse*>(
         &_ProvideParamCustomResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 11;
+  static constexpr int kIndexInFileMessages = 13;
   friend void swap(ProvideParamCustomResponse& a, ProvideParamCustomResponse& b) { a.Swap(&b); }
   inline void Swap(ProvideParamCustomResponse* other) {
     if (other == this) return;
@@ -4145,7 +4539,7 @@ class ChangedParamIntResponse final
     return reinterpret_cast<const ChangedParamIntResponse*>(
         &_ChangedParamIntResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 15;
+  static constexpr int kIndexInFileMessages = 17;
   friend void swap(ChangedParamIntResponse& a, ChangedParamIntResponse& b) { a.Swap(&b); }
   inline void Swap(ChangedParamIntResponse* other) {
     if (other == this) return;
@@ -4342,7 +4736,7 @@ class ChangedParamFloatResponse final
     return reinterpret_cast<const ChangedParamFloatResponse*>(
         &_ChangedParamFloatResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 17;
+  static constexpr int kIndexInFileMessages = 19;
   friend void swap(ChangedParamFloatResponse& a, ChangedParamFloatResponse& b) { a.Swap(&b); }
   inline void Swap(ChangedParamFloatResponse* other) {
     if (other == this) return;
@@ -4539,7 +4933,7 @@ class ChangedParamCustomResponse final
     return reinterpret_cast<const ChangedParamCustomResponse*>(
         &_ChangedParamCustomResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 19;
+  static constexpr int kIndexInFileMessages = 21;
   friend void swap(ChangedParamCustomResponse& a, ChangedParamCustomResponse& b) { a.Swap(&b); }
   inline void Swap(ChangedParamCustomResponse* other) {
     if (other == this) return;
@@ -4736,7 +5130,7 @@ class AllParams final
     return reinterpret_cast<const AllParams*>(
         &_AllParams_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 23;
+  static constexpr int kIndexInFileMessages = 25;
   friend void swap(AllParams& a, AllParams& b) { a.Swap(&b); }
   inline void Swap(AllParams* other) {
     if (other == this) return;
@@ -4972,7 +5366,7 @@ class RetrieveAllParamsResponse final
     return reinterpret_cast<const RetrieveAllParamsResponse*>(
         &_RetrieveAllParamsResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 13;
+  static constexpr int kIndexInFileMessages = 15;
   friend void swap(RetrieveAllParamsResponse& a, RetrieveAllParamsResponse& b) { a.Swap(&b); }
   inline void Swap(RetrieveAllParamsResponse* other) {
     if (other == this) return;
@@ -5120,6 +5514,132 @@ class RetrieveAllParamsResponse final
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// SetProtocolRequest
+
+// bool extended_protocol = 1;
+inline void SetProtocolRequest::clear_extended_protocol() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.extended_protocol_ = false;
+}
+inline bool SetProtocolRequest::extended_protocol() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.param_server.SetProtocolRequest.extended_protocol)
+  return _internal_extended_protocol();
+}
+inline void SetProtocolRequest::set_extended_protocol(bool value) {
+  _internal_set_extended_protocol(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.param_server.SetProtocolRequest.extended_protocol)
+}
+inline bool SetProtocolRequest::_internal_extended_protocol() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.extended_protocol_;
+}
+inline void SetProtocolRequest::_internal_set_extended_protocol(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.extended_protocol_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// SetProtocolResponse
+
+// .mavsdk.rpc.param_server.ParamServerResult param_server_result = 1;
+inline bool SetProtocolResponse::has_param_server_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.param_server_result_ != nullptr);
+  return value;
+}
+inline void SetProtocolResponse::clear_param_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.param_server_result_ != nullptr) _impl_.param_server_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::param_server::ParamServerResult& SetProtocolResponse::_internal_param_server_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::param_server::ParamServerResult* p = _impl_.param_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::param_server::ParamServerResult&>(::mavsdk::rpc::param_server::_ParamServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::param_server::ParamServerResult& SetProtocolResponse::param_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.param_server.SetProtocolResponse.param_server_result)
+  return _internal_param_server_result();
+}
+inline void SetProtocolResponse::unsafe_arena_set_allocated_param_server_result(::mavsdk::rpc::param_server::ParamServerResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.param_server_result_);
+  }
+  _impl_.param_server_result_ = reinterpret_cast<::mavsdk::rpc::param_server::ParamServerResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.param_server.SetProtocolResponse.param_server_result)
+}
+inline ::mavsdk::rpc::param_server::ParamServerResult* SetProtocolResponse::release_param_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::param_server::ParamServerResult* released = _impl_.param_server_result_;
+  _impl_.param_server_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::param_server::ParamServerResult* SetProtocolResponse::unsafe_arena_release_param_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.param_server.SetProtocolResponse.param_server_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::param_server::ParamServerResult* temp = _impl_.param_server_result_;
+  _impl_.param_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::param_server::ParamServerResult* SetProtocolResponse::_internal_mutable_param_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.param_server_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::param_server::ParamServerResult>(GetArena());
+    _impl_.param_server_result_ = reinterpret_cast<::mavsdk::rpc::param_server::ParamServerResult*>(p);
+  }
+  return _impl_.param_server_result_;
+}
+inline ::mavsdk::rpc::param_server::ParamServerResult* SetProtocolResponse::mutable_param_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::param_server::ParamServerResult* _msg = _internal_mutable_param_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.param_server.SetProtocolResponse.param_server_result)
+  return _msg;
+}
+inline void SetProtocolResponse::set_allocated_param_server_result(::mavsdk::rpc::param_server::ParamServerResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.param_server_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.param_server_result_ = reinterpret_cast<::mavsdk::rpc::param_server::ParamServerResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.param_server.SetProtocolResponse.param_server_result)
+}
+
 // -------------------------------------------------------------------
 
 // RetrieveParamIntRequest

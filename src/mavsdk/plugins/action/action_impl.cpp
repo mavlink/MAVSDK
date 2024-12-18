@@ -1,6 +1,6 @@
 #include "action_impl.h"
 #include "mavsdk_impl.h"
-#include "mavsdk_math.h"
+#include "math_utils.h"
 #include "flight_mode.h"
 #include "px4_custom_mode.h"
 #include <cmath>

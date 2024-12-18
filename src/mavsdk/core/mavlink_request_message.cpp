@@ -89,11 +89,13 @@ void MavlinkRequestMessage::send_request_using_new_command(WorkItem& item)
             if (result != MavlinkCommandSender::Result::InProgress) {
                 handle_command_result(message_id, result);
             }
-        });
+        },
+        1);
 }
 
 bool MavlinkRequestMessage::try_sending_request_using_old_command(WorkItem& item)
 {
+    LogInfo() << "Try old command";
     MavlinkCommandSender::CommandLong command_request_message{};
     command_request_message.target_system_id = _system_impl.get_system_id();
     command_request_message.target_component_id = item.target_component;
@@ -175,7 +177,8 @@ bool MavlinkRequestMessage::try_sending_request_using_old_command(WorkItem& item
             if (result != MavlinkCommandSender::Result::InProgress) {
                 handle_command_result(message_id, result);
             }
-        });
+        },
+        1);
 
     return true;
 }
@@ -232,10 +235,6 @@ void MavlinkRequestMessage::handle_command_result(
                     1.0);
                 return;
 
-            case MavlinkCommandSender::Result::NoSystem:
-                // FALLTHROUGH
-            case MavlinkCommandSender::Result::ConnectionError:
-                // FALLTHROUGH
             case MavlinkCommandSender::Result::Busy:
                 // FALLTHROUGH
             case MavlinkCommandSender::Result::Denied:
@@ -245,6 +244,24 @@ void MavlinkRequestMessage::handle_command_result(
             case MavlinkCommandSender::Result::Timeout:
                 // FALLTHROUGH
             case MavlinkCommandSender::Result::TemporarilyRejected:
+                // It looks like we should try again
+                if (++it->retries > RETRIES) {
+                    // We have already retried, let's give up.
+                    auto temp_callback = it->callback;
+                    _message_handler.unregister_one(it->message_id, this);
+                    _work_items.erase(it);
+                    lock.unlock();
+                    if (temp_callback) {
+                        temp_callback(MavlinkCommandSender::Result::Timeout, {});
+                    }
+                } else {
+                    send_request(*it);
+                }
+                return;
+
+            case MavlinkCommandSender::Result::NoSystem:
+                // FALLTHROUGH
+            case MavlinkCommandSender::Result::ConnectionError:
                 // FALLTHROUGH
             case MavlinkCommandSender::Result::Failed:
                 // FALLTHROUGH
@@ -280,7 +297,7 @@ void MavlinkRequestMessage::handle_timeout(uint32_t message_id, uint8_t target_c
             continue;
         }
 
-        if (++it->retries > 3) {
+        if (++it->retries > RETRIES) {
             // We have already retried, let's give up.
             auto temp_callback = it->callback;
             _message_handler.unregister_one(it->message_id, this);

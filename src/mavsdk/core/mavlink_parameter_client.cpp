@@ -681,7 +681,10 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
     // out of scope.
     auto work_queue_guard = std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
     const auto work = work_queue_guard->get_front();
+
     if (!work) {
+        // update existing param
+        find_and_call_subscriptions_value_changed(safe_param_id, received_value);
         return;
     }
 
@@ -845,8 +848,6 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                 }
             }},
         work->work_item_variant);
-
-    // find_and_call_subscriptions_value_changed(safe_param_id, received_value);
 }
 
 void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& message)
@@ -871,9 +872,13 @@ void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& me
     // See comments on process_param_value for use of unique_ptr
     auto work_queue_guard = std::make_unique<LockedQueue<WorkItem>::Guard>(_work_queue);
     auto work = work_queue_guard->get_front();
+
     if (!work) {
+        // update existing param
+        find_and_call_subscriptions_value_changed(safe_param_id, received_value);
         return;
     }
+
     if (!work->already_requested) {
         return;
     }
@@ -952,9 +957,6 @@ void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& me
             },
         },
         work->work_item_variant);
-
-    // TODO I think we need to consider more edge cases here
-    // find_and_call_subscriptions_value_changed(safe_param_id, received_value);
 }
 
 void MavlinkParameterClient::process_param_ext_ack(const mavlink_message_t& message)

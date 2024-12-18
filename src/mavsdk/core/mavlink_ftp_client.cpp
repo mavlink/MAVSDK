@@ -381,6 +381,7 @@ void MavlinkFtpClient::process_mavlink_ftp_message(const mavlink_message_t& msg)
 bool MavlinkFtpClient::download_start(Work& work, DownloadItem& item)
 {
     fs::path local_path = fs::path(item.local_folder) / fs::path(item.remote_path).filename();
+    fs::create_directories(fs::path(item.local_folder));
 
     if (_debugging) {
         LogDebug() << "Trying to open write to local path: " << local_path.string();

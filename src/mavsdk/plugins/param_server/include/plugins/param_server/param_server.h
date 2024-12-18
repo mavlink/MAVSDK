@@ -165,6 +165,19 @@ public:
     using ResultCallback = std::function<void(Result)>;
 
     /**
+     * @brief Set param protocol.
+     *
+     * The extended param protocol is used by default. This allows to use the previous/normal one.
+     *
+     * Note that camera definition files are meant to implement/use the extended protocol.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result set_protocol(bool extended_protocol) const;
+
+    /**
      * @brief Retrieve an int parameter.
      *
      * If the type is wrong, the result will be `WRONG_TYPE`.

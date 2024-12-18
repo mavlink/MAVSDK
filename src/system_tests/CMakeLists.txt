@@ -1,5 +1,12 @@
 add_executable(system_tests_runner
+    camera_mode.cpp
     camera_take_photo.cpp
+    camera_take_photo_interval.cpp
+    camera_format_storage.cpp
+    camera_settings.cpp
+    camera_storage.cpp
+    camera_list_cameras.cpp
+    camera_video_stream.cpp
     component_metadata.cpp
     action_arm_disarm.cpp
     param_set_and_get.cpp

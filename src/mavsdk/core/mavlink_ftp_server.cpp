@@ -256,6 +256,7 @@ MavlinkFtpServer::_path_from_string(const std::string& payload_path)
 
     // No permission whatsoever if the root dir is not set.
     if (_root_dir.empty()) {
+        LogWarn() << "Root dir not set!";
         return ServerResult::ERR_FAIL;
     }
 
@@ -285,10 +286,13 @@ void MavlinkFtpServer::set_root_directory(const std::string& root_dir)
 {
     std::lock_guard<std::mutex> lock(_mutex);
 
-    std::error_code ignored;
-    _root_dir = fs::canonical(fs::path(root_dir), ignored).string();
+    std::error_code ec;
+    _root_dir = fs::canonical(fs::path(root_dir), ec).string();
+    if (ec) {
+        LogWarn() << "Root dir could not be made absolute: " << ec.message();
+    }
     if (_debugging) {
-        LogDebug() << "Set root dir to: " << _root_dir;
+        LogDebug() << "Set root dir to: " << _root_dir << " from: " << root_dir;
     }
 }
 

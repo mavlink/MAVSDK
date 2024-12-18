@@ -136,6 +136,8 @@ public:
 
     bool is_armed() const { return _armed; }
 
+    MavlinkParameterClient* param_sender(uint8_t component_id, bool extended);
+
     MavlinkParameterClient::Result set_param(
         const std::string& name,
         ParamValue value,
@@ -348,8 +350,6 @@ private:
     MavlinkMessageHandler _mavlink_message_handler{};
 
     MavlinkStatustextHandler _statustext_handler{};
-
-    MavlinkParameterClient* param_sender(uint8_t component_id, bool extended);
 
     struct StatustextCallback {
         std::function<void(const MavlinkStatustextHandler::Statustext&)> callback;

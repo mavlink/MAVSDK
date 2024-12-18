@@ -1,8 +1,11 @@
 
 #include "fs_utils.h"
 #include "log.h"
+#include <algorithm>
+#include <cctype>
 #include <fstream>
 #include <random>
+#include <string>
 
 #if defined(LINUX) || defined(APPLE)
 #include <pwd.h>
@@ -112,4 +115,17 @@ std::optional<std::filesystem::path> create_tmp_directory(const std::string& pre
     LogErr() << "Could not create a temporary directory, aborting.";
     return std::nullopt;
 }
+
+std::string replace_non_ascii_and_whitespace(const std::string& input)
+{
+    std::string result = input;
+    std::transform(result.begin(), result.end(), result.begin(), [](unsigned char ch) {
+        if (ch > 127 || std::isspace(ch)) {
+            return '_';
+        }
+        return static_cast<char>(ch);
+    });
+    return result;
+}
+
 } // namespace mavsdk
