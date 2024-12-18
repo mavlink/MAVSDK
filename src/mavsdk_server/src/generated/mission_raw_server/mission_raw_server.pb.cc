@@ -506,25 +506,25 @@ const char descriptor_table_protodef_mission_5fraw_5fserver_2fmission_5fraw_5fse
     "ULT_UNSUPPORTED\020\007\022\037\n\033RESULT_NO_MISSION_A"
     "VAILABLE\020\010\022\"\n\036RESULT_UNSUPPORTED_MISSION"
     "_CMD\020\013\022\035\n\031RESULT_TRANSFER_CANCELLED\020\014\022\024\n"
-    "\020RESULT_NO_SYSTEM\020\r\022\017\n\013RESULT_NEXT\020\0162\366\004\n"
-    "\027MissionRawServerService\022\226\001\n\030SubscribeIn"
+    "\020RESULT_NO_SYSTEM\020\r\022\017\n\013RESULT_NEXT\020\0162\202\005\n"
+    "\027MissionRawServerService\022\232\001\n\030SubscribeIn"
     "comingMission\022>.mavsdk.rpc.mission_raw_s"
     "erver.SubscribeIncomingMissionRequest\0326."
     "mavsdk.rpc.mission_raw_server.IncomingMi"
-    "ssionResponse\"\0000\001\022\237\001\n\033SubscribeCurrentIt"
-    "emChanged\022A.mavsdk.rpc.mission_raw_serve"
-    "r.SubscribeCurrentItemChangedRequest\0329.m"
-    "avsdk.rpc.mission_raw_server.CurrentItem"
-    "ChangedResponse\"\0000\001\022\233\001\n\026SetCurrentItemCo"
-    "mplete\022<.mavsdk.rpc.mission_raw_server.S"
-    "etCurrentItemCompleteRequest\032=.mavsdk.rp"
-    "c.mission_raw_server.SetCurrentItemCompl"
-    "eteResponse\"\004\200\265\030\001\022\201\001\n\021SubscribeClearAll\022"
-    "7.mavsdk.rpc.mission_raw_server.Subscrib"
-    "eClearAllRequest\032/.mavsdk.rpc.mission_ra"
-    "w_server.ClearAllResponse\"\0000\001B5\n\034io.mavs"
-    "dk.mission_raw_serverB\025MissionRawServerP"
-    "rotob\006proto3"
+    "ssionResponse\"\004\200\265\030\0000\001\022\243\001\n\033SubscribeCurre"
+    "ntItemChanged\022A.mavsdk.rpc.mission_raw_s"
+    "erver.SubscribeCurrentItemChangedRequest"
+    "\0329.mavsdk.rpc.mission_raw_server.Current"
+    "ItemChangedResponse\"\004\200\265\030\0000\001\022\233\001\n\026SetCurre"
+    "ntItemComplete\022<.mavsdk.rpc.mission_raw_"
+    "server.SetCurrentItemCompleteRequest\032=.m"
+    "avsdk.rpc.mission_raw_server.SetCurrentI"
+    "temCompleteResponse\"\004\200\265\030\001\022\205\001\n\021SubscribeC"
+    "learAll\0227.mavsdk.rpc.mission_raw_server."
+    "SubscribeClearAllRequest\032/.mavsdk.rpc.mi"
+    "ssion_raw_server.ClearAllResponse\"\004\200\265\030\0000"
+    "\001B5\n\034io.mavsdk.mission_raw_serverB\025Missi"
+    "onRawServerProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_mission_5fraw_5fserver_2fmission_5fraw_5fserver_2eproto_deps[1] =
     {
@@ -534,7 +534,7 @@ static ::absl::once_flag descriptor_table_mission_5fraw_5fserver_2fmission_5fraw
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_mission_5fraw_5fserver_2fmission_5fraw_5fserver_2eproto = {
     false,
     false,
-    2092,
+    2104,
     descriptor_table_protodef_mission_5fraw_5fserver_2fmission_5fraw_5fserver_2eproto,
     "mission_raw_server/mission_raw_server.proto",
     &descriptor_table_mission_5fraw_5fserver_2fmission_5fraw_5fserver_2eproto_once,

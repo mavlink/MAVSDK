@@ -186,13 +186,6 @@ public:
     void unsubscribe_incoming_mission(IncomingMissionHandle handle);
 
     /**
-     * @brief Poll for 'MissionPlan' (blocking).
-     *
-     * @return One MissionPlan update.
-     */
-    MissionPlan incoming_mission() const;
-
-    /**
      * @brief Callback type for subscribe_current_item_changed.
      */
     using CurrentItemChangedCallback = std::function<void(MissionItem)>;
@@ -212,13 +205,6 @@ public:
      * @brief Unsubscribe from subscribe_current_item_changed
      */
     void unsubscribe_current_item_changed(CurrentItemChangedHandle handle);
-
-    /**
-     * @brief Poll for 'MissionItem' (blocking).
-     *
-     * @return One MissionItem update.
-     */
-    MissionItem current_item_changed() const;
 
     /**
      * @brief Set Current item as completed
@@ -248,13 +234,6 @@ public:
      * @brief Unsubscribe from subscribe_clear_all
      */
     void unsubscribe_clear_all(ClearAllHandle handle);
-
-    /**
-     * @brief Poll for 'uint32_t' (blocking).
-     *
-     * @return One uint32_t update.
-     */
-    uint32_t clear_all() const;
 
     /**
      * @brief Copy constructor.
