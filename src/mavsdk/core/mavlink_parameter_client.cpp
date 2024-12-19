@@ -706,6 +706,18 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                                << ", received: " << received_value;
                 }
 
+                if (!item.param_value.is_same_type(received_value)) {
+                    LogErr() << "Wrong type in param set";
+                    _timeout_handler.remove(_timeout_cookie);
+                    work_queue_guard->pop_front();
+                    if (item.callback) {
+                        auto callback = item.callback;
+                        work_queue_guard.reset();
+                        callback(MavlinkParameterClient::Result::WrongType);
+                    }
+                    return;
+                }
+
                 if (item.param_value == received_value) {
                     // This was successful. Inform the caller.
                     _timeout_handler.remove(_timeout_cookie);
