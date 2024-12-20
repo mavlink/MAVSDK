@@ -673,7 +673,8 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                    << ", index: " << param_value.param_index;
     }
 
-    if (param_value.param_index == std::numeric_limits<uint16_t>::max()) {
+    if (param_value.param_index == std::numeric_limits<uint16_t>::max() &&
+        safe_param_id == "_HASH_CHECK") {
         // Ignore PX4's _HASH_CHECK param.
         return;
     }
