@@ -87,9 +87,9 @@ jobs:
       matrix:
         include:
           - ubuntu_image: ubuntu-20.04
-            cc: gcc
-            cxx: g++
-            description: Ubuntu 20.04 (GCC)
+            cc: gcc-10
+            cxx: g++-10
+            description: Ubuntu 20.04 (GCC 10)
           - ubuntu_image: ubuntu-22.04
             cc: gcc
             cxx: g++
