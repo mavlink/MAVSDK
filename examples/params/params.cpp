@@ -7,11 +7,14 @@
 
 #include <charconv>
 #include <chrono>
+#include <cstdio>
 #include <cstdint>
 #include <iostream>
 #include <future>
 #include <utility>
 #include <string>
+
+std::from_chars_result our_from_chars_float(const char* first, const char* last, float& value);
 
 using namespace mavsdk;
 
@@ -248,7 +251,7 @@ void set(Param& param, std::string name, std::string value)
     // Try float if integer failed
     float float_value;
     const auto float_result =
-        std::from_chars(value.data(), value.data() + value.size(), float_value);
+        our_from_chars_float(value.data(), value.data() + value.size(), float_value);
     if (float_result.ec == std::errc() && float_result.ptr == value.data() + value.size()) {
         std::cerr << "Setting " << value << " as float..." << std::flush;
 
@@ -269,4 +272,22 @@ void set(Param& param, std::string name, std::string value)
 
     std::cerr << "Neither int or float worked, should maybe try custom? (not implemented)"
               << std::endl;
+}
+
+// GCC 9/10 don't have std::from_chars for float yet, so we have to have our own (simplified) one.
+std::from_chars_result our_from_chars_float(const char* first, const char* last, float& value)
+{
+    float parsed_value;
+    int chars_read;
+
+    // sscanf returns number of successfully parsed items (should be 1)
+    // %n stores the number of characters read
+    if (sscanf(first, "%f%n", &parsed_value, &chars_read) == 1) {
+        if (first + chars_read <= last) {
+            value = parsed_value;
+            return {first + chars_read, std::errc{}};
+        }
+    }
+
+    return {first, std::errc::invalid_argument};
 }
