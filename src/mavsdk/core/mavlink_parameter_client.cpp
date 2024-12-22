@@ -669,7 +669,8 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                    << ", index: " << param_value.param_index;
     }
 
-    if (param_value.param_index == std::numeric_limits<uint16_t>::max()) {
+    if (param_value.param_index == std::numeric_limits<uint16_t>::max() &&
+        safe_param_id == "_HASH_CHECK") {
         // Ignore PX4's _HASH_CHECK param.
         return;
     }
@@ -703,6 +704,18 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
                 if (_parameter_debugging) {
                     LogDebug() << "Item value is: " << item.param_value
                                << ", received: " << received_value;
+                }
+
+                if (!item.param_value.is_same_type(received_value)) {
+                    LogErr() << "Wrong type in param set";
+                    _timeout_handler.remove(_timeout_cookie);
+                    work_queue_guard->pop_front();
+                    if (item.callback) {
+                        auto callback = item.callback;
+                        work_queue_guard.reset();
+                        callback(MavlinkParameterClient::Result::WrongType);
+                    }
+                    return;
                 }
 
                 if (item.param_value == received_value) {
