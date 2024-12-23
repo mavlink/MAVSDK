@@ -246,7 +246,7 @@ jobs:
           sudo apt-get install -y ruby-dev
           sudo gem install --no-document fpm
       - name: configure
-        run: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -Bbuild/release -H.
+        run: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=/usr/ -DWERROR=ON -Bbuild/release -H.
       - name: build
         run: cmake --build build/release --target install -- -j2
       - name: Package
