@@ -10,6 +10,7 @@ add_executable(integration_tests_runner
     action_transition_multicopter_fixedwing.cpp
     action_goto.cpp
     action_hold.cpp
+    autopilot_server_configuration.cpp
     calibration.cpp
     connection.cpp
     follow_me.cpp
