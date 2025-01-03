@@ -6,10 +6,14 @@ on:
     - 'main'
     tags:
     - 'v*'
+    paths-ignore:
+    - 'docs/**'
   pull_request:
     branches:
     - '*'
-
+    paths-ignore:
+    - 'docs/**'
+    - '.github/workflows/docs_deploy.yml'
 
 jobs:
   coverage:
