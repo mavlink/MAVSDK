@@ -191,7 +191,7 @@ jobs:
             cmake -Bthird_party/mavlink/build -Sthird_party/mavlink
             sudo cmake --build third_party/mavlink/build
       - name: configure
-        run: cmake -DSUPERBUILD=OFF -DHUNTER_ENABLED=ON -DCMAKE_TOOLCHAIN_FILE=$(pwd)/src/cmake/fpic_toolchain.cmake  -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=OFF -DENABLE_CPPTRACE=On -Bbuild -H.
+        run: cmake -DSUPERBUILD=OFF -DHUNTER_ENABLED=ON -DCMAKE_TOOLCHAIN_FILE=$(pwd)/cmake/fpic_toolchain.cmake  -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=OFF -DENABLE_CPPTRACE=On -Bbuild -H.
       - name: build
         run: cmake --build build -j2
       - name: unit tests
