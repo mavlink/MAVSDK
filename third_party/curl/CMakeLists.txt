@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.1)
 project(external-curl)
 include(ExternalProject)
 
+set(MODULES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Modules")
+message(STATUS "cmake modules path: ${MODULES_PATH}")
+
 list(APPEND CMAKE_ARGS
     "-DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}"
     "-DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}"
@@ -19,6 +22,7 @@ list(APPEND CMAKE_ARGS
     "-DHAVE_POSIX_STRERROR_R=1"
     "-DBUILD_TESTING=OFF"
     "-DUSE_LIBIDN2=OFF"
+    "-DCMAKE_MODULE_PATH=${MODULES_PATH}"
     )
 
 if(ANDROID)
