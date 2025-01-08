@@ -712,32 +712,7 @@ Autopilot MavsdkImpl::autopilot() const
 // FIXME: this should be per component
 uint8_t MavsdkImpl::get_mav_type() const
 {
-    switch (_configuration.get_component_type()) {
-        case ComponentType::Autopilot:
-            return MAV_TYPE_GENERIC;
-
-        case ComponentType::GroundStation:
-            return MAV_TYPE_GCS;
-
-        case ComponentType::CompanionComputer:
-            return MAV_TYPE_ONBOARD_CONTROLLER;
-
-        case ComponentType::Camera:
-            return MAV_TYPE_CAMERA;
-
-        case ComponentType::Gimbal:
-            return MAV_TYPE_GIMBAL;
-
-        case ComponentType::RemoteId:
-            return MAV_TYPE_ODID;
-
-        case ComponentType::Custom:
-            return MAV_TYPE_GENERIC;
-
-        default:
-            LogErr() << "Unknown configuration";
-            return 0;
-    }
+    return _configuration.get_mav_type();
 }
 
 void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)

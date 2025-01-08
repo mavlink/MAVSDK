@@ -249,13 +249,26 @@ public:
          */
         void set_component_type(ComponentType component_type);
 
+        /**
+         * @brief Get the mav type (vehicle type) of this configuration
+         * @return `uint8_t` the mav type stored in this configuration
+         */
+        uint8_t get_mav_type() const;
+
+        /**
+         * @brief Set the mav type (vehicle type) of this configuration.
+         */
+        void set_mav_type(uint8_t mav_type);
+
     private:
         uint8_t _system_id;
         uint8_t _component_id;
         bool _always_send_heartbeats;
         ComponentType _component_type;
+        MAV_TYPE _mav_type;
 
         static ComponentType component_type_for_component_id(uint8_t component_id);
+        static MAV_TYPE mav_type_for_component_type(ComponentType component_type);
     };
 
     /**
