@@ -32,7 +32,11 @@ include(../cmake/compiler_flags.cmake)
 find_package(Threads REQUIRED)
 
 if(NOT HUNTER_ENABLED)
-    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules")
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules/common")
+
+    if(NOT MSVC)
+        list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules/non-msvc")
+    endif()
 endif()
 
 # This will noop if hunter is not enabled

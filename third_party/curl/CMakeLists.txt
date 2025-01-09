@@ -40,7 +40,7 @@ elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
 endif()
 
 if(NOT MSVC)
-    set(MODULES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Modules")
+    set(MODULES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Modules/non-msvc")
     message(STATUS "cmake modules path: ${MODULES_PATH}")
 
     list(APPEND CMAKE_ARGS
