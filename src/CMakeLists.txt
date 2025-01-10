@@ -27,12 +27,16 @@ endif()
 option(BUILD_TESTING "Build tests" ON)
 option(CMAKE_POSITION_INDEPENDENT_CODE "Position independent code" ON)
 
-include(cmake/compiler_flags.cmake)
+include(../cmake/compiler_flags.cmake)
 
 find_package(Threads REQUIRED)
 
 if(NOT HUNTER_ENABLED)
-    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules/common")
+
+    if(NOT MSVC)
+        list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/Modules/non-msvc")
+    endif()
 endif()
 
 # This will noop if hunter is not enabled
@@ -68,7 +72,7 @@ endif()
 
 add_subdirectory(mavsdk)
 
-include(cmake/static_analyzers.cmake)
+include(../cmake/static_analyzers.cmake)
 
 if(BUILD_TESTING)
     enable_testing()

@@ -39,6 +39,15 @@ elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
     endif()
 endif()
 
+if(NOT MSVC)
+    set(MODULES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Modules/non-msvc")
+    message(STATUS "cmake modules path: ${MODULES_PATH}")
+
+    list(APPEND CMAKE_ARGS
+        "-DCMAKE_MODULE_PATH=${MODULES_PATH}"
+    )
+endif()
+
 message(STATUS "Preparing external project \"curl\" with args:")
 foreach(CMAKE_ARG ${CMAKE_ARGS})
     message(STATUS "-- ${CMAKE_ARG}")
