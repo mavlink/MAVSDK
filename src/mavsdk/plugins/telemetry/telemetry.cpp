@@ -278,6 +278,11 @@ Telemetry::Health Telemetry::health() const
     return _impl->health();
 }
 
+Telemetry::SysStatusSensors Telemetry::sys_status_sensors() const
+{
+    return _impl->sys_status_sensors();
+}
+
 Telemetry::RcStatusHandle Telemetry::subscribe_rc_status(const RcStatusCallback& callback)
 {
     return _impl->subscribe_rc_status(callback);
