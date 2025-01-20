@@ -742,7 +742,7 @@ bool CameraDefinition::get_option_str(
     }
 
     for (const auto& option : _parameter_map[setting_name]->options) {
-        if (option->value == option_name) {
+        if (option->name == option_name) {
             description = option->name;
             return true;
         }
