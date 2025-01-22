@@ -112,14 +112,24 @@ if(NOT IOS AND NOT ANDROID)
     )
 
     if (BUILD_SHARED_LIBS)
-        set_target_properties(mavsdk_server_bin PROPERTIES
-            INSTALL_RPATH "${CMAKE_INSTALL_LIBDIR}"
+        if (APPLE)
+            set_target_properties(mavsdk_server PROPERTIES
+                BUILD_WITH_INSTALL_RPATH ON
+                INSTALL_NAME_DIR "@rpath"
+                INSTALL_RPATH "@loader_path/../lib"
             )
-
-        set_target_properties(mavsdk_server
-            PROPERTIES
-            INSTALL_RPATH "$ORIGIN"
-        )
+            set_target_properties(mavsdk_server_bin PROPERTIES
+                BUILD_WITH_INSTALL_RPATH ON
+                INSTALL_RPATH "@loader_path/../lib"
+            )
+        else()
+            set_target_properties(mavsdk_server PROPERTIES
+                INSTALL_RPATH "$ORIGIN"
+            )
+            set_target_properties(mavsdk_server_bin PROPERTIES
+                INSTALL_RPATH "${CMAKE_INSTALL_LIBDIR}"
+            )
+        endif()
     endif()
 endif()
 
