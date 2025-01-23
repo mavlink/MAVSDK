@@ -30,18 +30,12 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install Yarn
-        uses: actions/toolchain@v2
-        with:
-          toolchain: node@20.x
-          additional-tools: yarn
-
       - name: Install dependencies
         run: npm ci
 
       - name: Build with VitePress
         run: |
-          yarn docs:build
+          npm run docs:build
           touch docs/.vitepress/dist/.nojekyll
 
       - name: Upload artifact
