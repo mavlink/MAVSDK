@@ -476,7 +476,7 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_any_connec
                 return add_udp_connection(path, port, forwarding_option);
             } else {
                 std::string path = cli_arg.get_path();
-                return setup_udp_remote(path, port, 0, forwarding_option);
+                return setup_udp_remote(path, port, forwarding_option);
             }
         }
 
@@ -531,14 +531,13 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_udp_connec
 std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::setup_udp_remote(
     const std::string& remote_ip,
     int remote_port,
-    int local_port,
     ForwardingOption forwarding_option)
 {
-    auto it = local_port == 0 ?
+    auto it = remote_port == 0 ?
                   _connections.end() :
                   std::find_if(_connections.begin(), _connections.end(), [=](const auto& entry) {
                       auto udpConn = dynamic_cast<UdpConnection*>(entry.connection.get());
-                      if (udpConn && udpConn->local_port() == local_port) {
+                      if (udpConn && udpConn->local_port() == remote_port ) {
                           return true;
                       }
                       return false;
@@ -553,7 +552,7 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::setup_udp_remo
                 receive_message(message, connection);
             },
             "0.0.0.0",
-            local_port,
+            remote_port,
             forwarding_option);
         if (!new_conn) {
             return {ConnectionResult::ConnectionError, Mavsdk::ConnectionHandle{}};

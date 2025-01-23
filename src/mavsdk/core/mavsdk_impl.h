@@ -69,7 +69,6 @@ public:
     std::pair<ConnectionResult, Mavsdk::ConnectionHandle> setup_udp_remote(
         const std::string& remote_ip,
         int remote_port,
-        int local_port,
         ForwardingOption forwarding_option);
 
     void remove_connection(Mavsdk::ConnectionHandle handle);
