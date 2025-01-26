@@ -34,7 +34,12 @@ int main(int argc, char* argv[])
     mavsdk_server_init(&mavsdk_server);
 
     // This returns when a system has been discovered.
-    mavsdk_server_run(mavsdk_server, argv[1], 50051);
+    int ret = mavsdk_server_run(mavsdk_server, argv[1], 50051);
+    if (ret != 0) {
+        std::cout << "mavsdk_server_run failed: " << ret << std::endl;
+        mavsdk_server_destroy(mavsdk_server);
+        return ret;
+    }
 
     while (!_should_stop.load()) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
