@@ -6,10 +6,9 @@ import tabsPlugin from "@red-asuka/vitepress-plugin-tabs";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "MAVSDK Developer Guide",
-  description: "MAVSDK Developer Guide",
-  //base: process.env.BRANCH_NAME ? "/" + process.env.BRANCH_NAME + "/" : "", //Build doesn't use branches!
-  base: "",
+  title: "MAVSDK Guide",
+  description: "MAVSDK Guide",
+  base: process.env.BRANCH_NAME ? "/" + process.env.BRANCH_NAME + "/" : "",
   srcExclude: [
     "de/**/*.md",
     "ja/**/*.md",
@@ -40,9 +39,9 @@ export default defineConfig({
           pattern: ({ filePath, frontmatter }) => {
             if (frontmatter.newEditLink) {
               //newEditLink defines a frontmatter key you can use to append a path to main
-              return `https://github.com/mavlink/MAVSDK-docs/edit/main/${frontmatter.newEditLink}`;
+              return `https://github.com/mavlink/MAVSDK/edit/main/docs/${frontmatter.newEditLink}`;
             } else {
-              return `https://github.com/mavlink/MAVSDK-docs/edit/main/${filePath}`;
+              return `https://github.com/mavlink/MAVSDK/edit/main/docs/${filePath}`;
             }
           },
           text: "Edit on GitHub",
