@@ -4,11 +4,11 @@
   "repository": "https://github.com/mavlink/MAVSDK",
   "license": "CC-BY-4.0",
   "scripts": {
-    "docs:dev": "vitepress dev docs",
-    "docs:preview": "vitepress preview docs",
-    "docs:build": "vitepress build docs",
-    "docs:gen_alt_sidebar_ubuntu": "python3 ./docs/scripts/gen_alt_sidebar.py",
-    "docs:get_alt_sidebar_windows": "python ./docs/scripts/gen_alt_sidebar.py",
+    "docs:dev": "vitepress dev .",
+    "docs:preview": "vitepress preview .",
+    "docs:build": "vitepress build .",
+    "docs:gen_alt_sidebar_ubuntu": "python3 ./scripts/gen_alt_sidebar.py",
+    "docs:get_alt_sidebar_windows": "python ./scripts/gen_alt_sidebar.py",
     "start": "yarn docs:dev",
     "linkcheck": "markdown_link_checker_sc -d en -i assets"
   },
