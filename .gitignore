@@ -29,6 +29,6 @@ mavlink-headers
 
 
 # vitepress - Docs guide
-node_modules/
+docs/node_modules/
 docs/.vitepress/cache/
 docs/.vitepress/dist/
