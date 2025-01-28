@@ -32,12 +32,14 @@ jobs:
           cache: npm
 
       - name: Install dependencies
+        working-directory: ./docs
         run: yarn install --frozen-lockfile
 
       - name: Build with VitePress
+        working-directory: ./docs
         run: |
           npm run docs:build
-          touch docs/.vitepress/dist/.nojekyll
+          touch .vitepress/dist/.nojekyll
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -49,7 +51,7 @@ jobs:
   deploy:
     if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged) }}
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Download Artifact
