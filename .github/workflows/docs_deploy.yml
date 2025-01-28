@@ -30,6 +30,8 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          # Specify the path to lock file for correct caching
+          cache-dependency-path: ./docs/yarn.lock
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile --cwd ./docs
