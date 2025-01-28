@@ -32,8 +32,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        working-directory: ./docs
-        run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile --cwd ./docs
 
       - name: Build with VitePress
         working-directory: ./docs
