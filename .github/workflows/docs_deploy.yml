@@ -5,8 +5,8 @@ on:
     branches:
       - main
       - 'v*'
-    tags:
-      - 'v*'
+    #tags:
+    #  - 'v*'
     paths:
       - 'docs/**'
   pull_request:
