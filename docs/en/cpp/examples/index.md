@@ -25,8 +25,10 @@ Example | Description
 
 The examples are "largely" built and run in the same way, as described in the following section (any exceptions are covered in the page for the associated example).
 
-> **Warning** Some of the examples define flight behaviour relative to the default home position in the simulator (e.g. [Fly Mission](../examples/fly_mission.md)).
-  Care should be taken if using them on a real vehicle.
+::: warning
+Some of the examples define flight behaviour relative to the default home position in the simulator (e.g. [Fly Mission](../examples/fly_mission.md)).
+Care should be taken if using them on a real vehicle.
+:::
 
 ## Trying the Examples {#trying_the_examples}
 

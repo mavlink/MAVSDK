@@ -163,9 +163,11 @@ or run in a command prompt with admin privileges on Windows, or using `runas`:
 runas cmake --build build/default --target install
 ```
 
-> **Warning** Make sure to prevent conflicts between libraries installed in your system.
-> The mavsdk library installed via a .deb or .rpm file will be installed in `/usr/` while the built library will be installed in `/usr/local`.
-> It's recommended to only have one installed at any time to prevent conflicts.
+::: warning
+Make sure to prevent conflicts between libraries installed in your system.
+The mavsdk library installed via a .deb or .rpm file will be installed in `/usr/` while the built library will be installed in `/usr/local`.
+It's recommended to only have one installed at any time to prevent conflicts.
+:::
 
 ### Local Install {#sdk_local_install}
 

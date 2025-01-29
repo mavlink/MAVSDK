@@ -9,9 +9,11 @@ Applications must get target position information from the underlying platform (
 - Apple: [Core Location Framework](https://developer.apple.com/documentation/corelocation)
 - Windows: [Windows.Devices.Geolocation](https://docs.microsoft.com/en-us/uwp/api/Windows.Devices.Geolocation)
 
-> **Warning** Running *QGroundControl* at the same time as the SDK *Follow Me* may result in unpredictable behaviour as both send position updates.
-> You **must** ensure that *GSC Position Streaming* is disabled.
-> Use the latest *QGC Daily Build* and ensure that the **[Application Setting > General](https://docs.qgroundcontrol.com/en/SettingsView/General.html) > Miscellaneous > Stream GCS Position** is set to *Never*.
+::: warning
+Running *QGroundControl* at the same time as the SDK *Follow Me* may result in unpredictable behaviour as both send position updates.
+You **must** ensure that *GSC Position Streaming* is disabled.
+Use the latest *QGC Daily Build* and ensure that the **[Application Setting > General](https://docs.qgroundcontrol.com/en/SettingsView/General.html) > Miscellaneous > Stream GCS Position** is set to *Never*.
+:::
 
 ## Create the Plugin
 
