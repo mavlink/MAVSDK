@@ -13,8 +13,10 @@ The implication is that you may need to monitor for completion of actions!
 
 ## Create the Plugin
 
-> **Tip** `Action` objects are created in the same way as for other SDK plugins.
+::: tip
+`Action` objects are created in the same way as for other SDK plugins.
 General instructions are provided in the topic: [Using Plugins](../guide/using_plugins.md).
+:::
 
 The main steps are:
 
@@ -131,7 +133,9 @@ if (arm_result != Action::Result::Success) {
 }
 ```
 
-> **Tip** If the `arm()` method returns `Action::Result::Success` then the vehicle is armed and can proceed to takeoff. This can be confirmed using [Telemetry::armed()](../api_reference/classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a6620142adc47f069262e5bf69dbb3876).
+::: tip
+If the `arm()` method returns `Action::Result::Success` then the vehicle is armed and can proceed to takeoff. This can be confirmed using [Telemetry::armed()](../api_reference/classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a6620142adc47f069262e5bf69dbb3876).
+:::
 
 
 ### Get/Set Takeoff Altitude
@@ -232,7 +236,9 @@ The methods are listed below. These are used in the same way as other similar `A
 - [kill()](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1af40fc1ddf588b3796134a9303ebc3667), [kill_async](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a78c1f15c3b190ba94793045621819e69)
 
 
-> **Tip** PX4 will automatically disarm the vehicle after landing. The disarm methods explicitly invoke the same functionality.
+::: tip
+PX4 will automatically disarm the vehicle after landing. The disarm methods explicitly invoke the same functionality.
+:::
 
 
 ## Get/Set Cruise Speed

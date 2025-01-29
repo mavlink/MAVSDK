@@ -10,8 +10,10 @@ This example shows how you can use the SDK [Action](../api_reference/classmavsdk
 The example must be run against a VTOL aircraft (simulated or otherwise).
 Otherwise the example is built and run [in the standard way](../examples/index.md#trying_the_examples).
 
-> **Tip** Instructions for running the Gazebo simulator for a standard VTOL can be found here: [PX4 Development Guide > Gazebo Simulation](https://docs.px4.io/master/en/simulation/gazebo.html#standard-vtol).
-  jMAVSim does not support VTOL simulation.
+::: tip
+Instructions for running the Gazebo simulator for a standard VTOL can be found here: [PX4 Development Guide > Gazebo Simulation](https://docs.px4.io/master/en/simulation/gazebo.html#standard-vtol).
+jMAVSim does not support VTOL simulation.
+:::
 
 The example terminal output for a debug build of the SDK should be similar to that shown below (a release build will omit the "Debug" messages):
 

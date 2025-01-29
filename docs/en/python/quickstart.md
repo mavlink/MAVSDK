@@ -16,7 +16,9 @@ pip3 install mavsdk
 
 Make sure that the output of this command confirms that the installation succeeded!
 
-> **Tip** On some systems, you may have to run `pip3 install --user mavsdk`, or you may want to run in a Python venv.
+::: tip
+On some systems, you may have to run `pip3 install --user mavsdk`, or you may want to run in a Python venv.
+:::
 
 For the quick start below we will also install the lightweight package called “aioconsole”.
 This provides a REPL (interactive shell) called `apython` that we can use for running asyncio code:

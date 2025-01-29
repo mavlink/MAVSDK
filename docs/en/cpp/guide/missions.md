@@ -6,8 +6,10 @@ Missions can have multiple "mission items", each which may specify a position, a
 Missions are *managed* though the [Mission](../api_reference/classmavsdk_1_1_mission.md) class, which communicates with the vehicle to upload mission information and run, pause, track the mission progress etc.
 The mission that is uploaded to the vehicle is defined as a vector of [MissionItem](../api_reference/structmavsdk_1_1_mission_1_1_mission_item.md) objects.
 
-> **Tip** The [Mission plugin](../api_reference/classmavsdk_1_1_mission.md) described here only supports a small subset of the full functionality of MAVLink missions. If you require the full mission item spec as MAVLink provides it, you might be better off using the [MissionRaw plugin](../api_reference/classmavsdk_1_1_mission_raw.md).
-> Furthermore MissionRaw allows importing mission from QGroundControl.
+::: tip
+The [Mission plugin](../api_reference/classmavsdk_1_1_mission.md) described here only supports a small subset of the full functionality of MAVLink missions. If you require the full mission item spec as MAVLink provides it, you might be better off using the [MissionRaw plugin](../api_reference/classmavsdk_1_1_mission_raw.md).
+Furthermore `MissionRaw` allows importing mission from QGroundControl.
+:::
 
 ## Supported Mission Commands {#supported_mission_commands}
 
@@ -27,14 +29,18 @@ Additionally, the following commands are supported only for mission import/downl
 * [MAV_CMD_NAV_LAND](https://mavlink.io/en/messages/common.html#MAV_CMD_NAV_LAND)
 * [MAV_CMD_NAV_TAKEOFF](https://mavlink.io/en/messages/common.html#MAV_CMD_NAV_TAKEOFF)
 
-> **Tip** The Mission API does not (at time of writing) provide explicit functionality to "repeat", takeoff, return to land etc.
-> The SDK provides some omitted functionality through the [Action](../guide/taking_off_landing.md) API.
+::: tip
+The Mission API does not (at time of writing) provide explicit functionality to "repeat", takeoff, return to land etc.
+The SDK provides some omitted functionality through the [Action](../guide/taking_off_landing.md) API.
+:::
 
 
 ## Create the Plugin
 
-> **Tip** `Mission` objects are created in the same way as other MAVSDK plugins.
-  General instructions are provided in the topic: [Using Plugins](../guide/using_plugins.md).
+::: tip
+`Mission` objects are created in the same way as other MAVSDK plugins.
+General instructions are provided in the topic: [Using Plugins](../guide/using_plugins.md).
+:::
 
 The main steps are:
 

@@ -177,10 +177,13 @@ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install -Bbuild/default 
 cmake --build build/default --target install
 ```
 
-> **Tip** If you already have run *cmake* without setting `CMAKE_INSTALL_PREFIX`, you may need to clean the build first:
-  ```sh
-  rm -rf build/default
-  ```
+::: tip
+If you already have run *cmake* without setting `CMAKE_INSTALL_PREFIX`, you may need to clean the build first:
+
+```sh
+rm -rf build/default
+```
+:::
 
 ## Troubleshooting
 

@@ -15,8 +15,10 @@ Applications must get target position information from the underlying platform (
 
 ## Create the Plugin
 
-> **Tip** `FollowMe` objects are created in the same way as other SDK plugins.
-  General instructions are provided in the topic: [Using Plugins](../guide/using_plugins.md).
+::: tip
+`FollowMe` objects are created in the same way as other SDK plugins.
+General instructions are provided in the topic: [Using Plugins](../guide/using_plugins.md).
+:::
 
 The main steps are:
 

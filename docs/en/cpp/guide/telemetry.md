@@ -46,8 +46,10 @@ In addition there are a number of methods that return vehicle "state":
 
 ## Create the Plugin
 
-> **Tip** `Telemetry` objects are created in the same way as objects in other SDK plugins.
+::: tip
+`Telemetry` objects are created in the same way as objects in other SDK plugins.
 General instructions are provided in the topic: [Using Plugins](../guide/using_plugins.md).
+:::
 
 The main steps are:
 
@@ -168,7 +170,9 @@ telemetry.subscribe_flight_mode(nullptr);
 
 This same approach can be used to report only messages that meet some condition.
 
-> **Tip** In future we may add a mechanism *in the API* to support just reporting changes: [Issue #63](https://github.com/mavlink/MAVSDK/issues/63).
+::: tip
+In future we may add a mechanism *in the API* to support just reporting changes: [Issue #63](https://github.com/mavlink/MAVSDK/issues/63).
+:::
 
 
 ## Blocking Telemetry Requests (State Management)

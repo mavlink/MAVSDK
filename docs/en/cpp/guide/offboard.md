@@ -15,8 +15,10 @@ If more precise control is required, clients can call the setpoint methods at wh
 
 ## Create the Plugin
 
-> **Tip** `Offboard` objects are created in the same way as other SDK plugins.
-  General instructions are provided in the topic: [Using Plugins](../guide/using_plugins.md).
+::: tip
+`Offboard` objects are created in the same way as other SDK plugins.
+General instructions are provided in the topic: [Using Plugins](../guide/using_plugins.md).
+:::
 
 The main steps are:
 

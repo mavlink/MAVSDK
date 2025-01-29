@@ -5,7 +5,9 @@ The unit tests are run every time new code is committed to the library, and must
 
 This topic shows how to run the existing tests.
 
-> **Tip** For information on _writing_ tests see: [Writing Plugins &gt; Test Code](../contributing/plugins.md#testing).
+::: tip
+For information on _writing_ tests see: [Writing Plugins &gt; Test Code](../contributing/plugins.md#testing).
+:::
 
 ## Running Unit Tests
 
@@ -19,10 +21,11 @@ To run all unit tests:
 
 Tests can be run against the simulator (either manually starting PX4 SITL or letting the tests start it automatically) or against a real vehicle.
 
-> **Tip** To run SITL you will need to install the _Gazebo_ simulator.
-> This is included as part of the standard PX4 installation for [macOS](https://docs.px4.io/master/en/dev_setup/dev_env_mac.html)
-> and [Linux](https://docs.px4.io/master/en/dev_setup/dev_env_linux_ubuntu.html).
-> It does not run on Windows.
+::: tip
+To run SITL you will need to install the _Gazebo_ simulator.
+This is included as part of the standard PX4 installation for [macOS](https://docs.px4.io/master/en/dev_setup/dev_env_mac.html) and [Linux](https://docs.px4.io/master/en/dev_setup/dev_env_linux_ubuntu.html).
+It does not run on Windows.
+:::
 
 ### Autostart PX4 SITL
 
@@ -62,7 +65,9 @@ cd path/to/MAVSDK/
 ./build/debug/src/integration_tests/integration_tests_runner
 ```
 
-> **Tip** The tests are designed to run in simulation, and may not be safe if run on a real vehicle.
+::: tip
+The tests are designed to run in simulation, and may not be safe if run on a real vehicle.
+:::
 
 ### Gtest Tricks
 

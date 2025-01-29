@@ -1,6 +1,8 @@
 # C++ Examples
 
-> **Tip** Information about *writing* example code is covered in the [Contributing > Writing Plugins](../contributing/plugins.md) (*plugin developers* should initially create [integration tests](../contributing/plugins.md#integration_tests) rather than examples for new code).
+::: tip
+Information about *writing* example code is covered in the [Contributing > Writing Plugins](../contributing/plugins.md) (*plugin developers* should initially create [integration tests](../contributing/plugins.md#integration_tests) rather than examples for new code).
+:::
 
 This section contains examples showing how to use MAVSDK.
 
@@ -98,8 +100,10 @@ For Windows you would run the following (from the **\build\Debug\** directory):
 build\Debug\takeoff_and_land.exe udp://:14540
 ```
 
-> **Tip** Most examples will create a binary with the same name as the example.
-> The name that is used is specified in the **CMakeLists.txt** file as the first value in the call to `add_executable()`.
+::: tip
+Most examples will create a binary with the same name as the example.
+The name that is used is specified in the **CMakeLists.txt** file as the first value in the call to `add_executable()`.
+:::
 
 If you have already started the simulation the example code should connect to PX4,
 and you will be able to observe behaviour through the SDK terminal, SITL terminal, and/or *QGroundControl*.

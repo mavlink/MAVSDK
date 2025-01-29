@@ -285,7 +285,9 @@ Most of the existing plugins do not have unit tests,
 because we do not yet have the ability to [mock MAVLink communications](https://github.com/mavlink/MAVSDK/issues/148) (needed to test most plugins).
 Unit tests are therefore considered optional!
 
-> **Tip** Comprehensive integration tests should be written instead, with the simulator providing appropriate MAVLink messages.
+::: tip
+Comprehensive integration tests should be written instead, with the simulator providing appropriate MAVLink messages.
+:::
 
 #### Adding Unit Tests {#adding_unit_tests}
 
@@ -316,9 +318,9 @@ All tests in a file should share the same test-case name (the first argument to 
 
 MAVSDK provides the `integration_tests_runner` application for running the integration tests and some helper code to make it easier to log tests and run them against the simulator.
 
-> **Tip** Check out the [Google Test Primer](https://google.github.io/googletest/primer.html)
-> and the [integration_tests](https://github.com/mavlink/MAVSDK/tree/main/src/integration_tests)
-> for our existing plugins to better understand how to write your own!
+::: tip
+Check out the [Google Test Primer](https://google.github.io/googletest/primer.html) and the [integration_tests](https://github.com/mavlink/MAVSDK/tree/main/src/integration_tests) for our existing plugins to better understand how to write your own!
+:::
 
 
 #### Adding Integration Tests
@@ -376,8 +378,10 @@ Where possible examples should demonstrate realistic use cases such that the cod
 
 The public API must be fully documented using the proto files.
 
-> **Tip** The in-source comments will be compiled to markdown and included in the [API Reference](../api_reference/index.md).
-> The process is outlined in [Documentation > API Reference](documentation.md#api-reference).
+::: tip
+The in-source comments will be compiled to markdown and included in the [API Reference](../api_reference/index.md).
+The process is outlined in [Documentation > API Reference](documentation.md#api-reference).
+:::
 
 Internal/implementation classes need not be documented, but should be written using expressive naming of variables and functions to help the reader.
 Anything unexpected or special however warrants an explanation as a comment.
