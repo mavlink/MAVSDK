@@ -122,10 +122,12 @@ message SetReturnToLaunchAltitudeResponse {
 }
 ```
 
-> **Note** Requests can defined SYNC, ASYNC, or BOTH using `option (mavsdk.options.async_type) = ...;`.
-  The choice depends on the functionality that is being implemented and how it would generally be used.
-  There are no hard rules, it's something that makes sense to be discussed one by one in a pull request.
-  The default implementation is `BOTH`.
+::: info
+Requests can defined SYNC, ASYNC, or BOTH using `option (mavsdk.options.async_type) = ...;`.
+The choice depends on the functionality that is being implemented and how it would generally be used.
+There are no hard rules, it's something that makes sense to be discussed one by one in a pull request.
+The default implementation is `BOTH`.
+:::
 
 #### Subscriptions:
 
@@ -144,11 +146,15 @@ message PositionResponse {
 }
 ```
 
-> **Note** Subscriptions also can defined SYNC, ASYNC, or BOTH using `option (mavsdk.options.async_type) = ...;`.
-  The sync implementation of a subscription is just a getter for the last received value.
+::: info
+Subscriptions also can defined SYNC, ASYNC, or BOTH using `option (mavsdk.options.async_type) = ...;`.
+The sync implementation of a subscription is just a getter for the last received value.
+:::
 
-> **Note** Subscriptions can be defined finite using `option (mavsdk.options.is_finite) = true;`.
-  This means that the stream of messages will end at some point instead of continuing indefinitely. An example would be progress updates about a calibration which eventually finishes.
+::: info
+Subscriptions can be defined finite using `option (mavsdk.options.is_finite) = true;`.
+This means that the stream of messages will end at some point instead of continuing indefinitely. An example would be progress updates about a calibration which eventually finishes.
+:::
 
 ### Add API to proto
 
@@ -191,10 +197,12 @@ Once the proto file has been created, you can generate all files required for th
    tools/fix_style.sh .
    ```
 
-> **Note** the files `my_new_plugin.h` and `my_new_plugin.cpp` are generated and overwritten every time the script is run.
-  However, the files `my_new_plugin_impl.h` and `my_new_plugin_impl.cpp` are only generated once.
-  To re-generate them, delete them and run the script again.
-  This approach is used to prevent the script from overwriting your local changes.
+::: info
+The files `my_new_plugin.h` and `my_new_plugin.cpp` are generated and overwritten every time the script is run.
+However, the files `my_new_plugin_impl.h` and `my_new_plugin_impl.cpp` are only generated once.
+To re-generate them, delete them and run the script again.
+This approach is used to prevent the script from overwriting your local changes.
+:::
 
 ### Actually implement MAVLink messages
 
@@ -277,7 +285,9 @@ Most of the existing plugins do not have unit tests,
 because we do not yet have the ability to [mock MAVLink communications](https://github.com/mavlink/MAVSDK/issues/148) (needed to test most plugins).
 Unit tests are therefore considered optional!
 
-> **Tip** Comprehensive integration tests should be written instead, with the simulator providing appropriate MAVLink messages.
+::: tip
+Comprehensive integration tests should be written instead, with the simulator providing appropriate MAVLink messages.
+:::
 
 #### Adding Unit Tests {#adding_unit_tests}
 
@@ -308,9 +318,9 @@ All tests in a file should share the same test-case name (the first argument to 
 
 MAVSDK provides the `integration_tests_runner` application for running the integration tests and some helper code to make it easier to log tests and run them against the simulator.
 
-> **Tip** Check out the [Google Test Primer](https://google.github.io/googletest/primer.html)
-> and the [integration_tests](https://github.com/mavlink/MAVSDK/tree/main/src/integration_tests)
-> for our existing plugins to better understand how to write your own!
+::: tip
+Check out the [Google Test Primer](https://google.github.io/googletest/primer.html) and the [integration_tests](https://github.com/mavlink/MAVSDK/tree/main/src/integration_tests) for our existing plugins to better understand how to write your own!
+:::
 
 
 #### Adding Integration Tests
@@ -342,15 +352,19 @@ add_executable(integration_tests_runner
 The main MAVSDK-specific functionality is provided by [integration_test_helper.h](https://github.com/mavlink/MAVSDK/blob/main/src/integration_tests/integration_test_helper.h).
 This provides access to the [Plugin/Test Logger](../guide/dev_logging.md) and a shared test class `SitlTest` for setting up and tearing down the PX4 simulator.
 
-> **Note** All tests running against SITL can be declared using `TEST_F` and have a first argument `SitlTest` as shown.
-  This is required in order to use the shared class to set up and tear down the simulator between tests.
+::: info
+All tests running against SITL can be declared using `TEST_F` and have a first argument `SitlTest` as shown.
+This is required in order to use the shared class to set up and tear down the simulator between tests.
+:::
 
 For reference inspect the [existing integration tests](https://github.com/mavlink/MAVSDK/blob/main/src/integration_tests).
 
 ## Example Code
 
-> **Note** It is quicker and easier to write and modify [integration tests](#integration_tests) than examples.
-> Do not write example code until the plugin has been accepted!
+::: info
+It is quicker and easier to write and modify [integration tests](#integration_tests) than examples.
+Do not write example code until the plugin has been accepted!
+:::
 
 A simple example should be written that demonstrates basic usage of its API by 3rd parties.
 The example need not cover all functionality, but should demonstrate enough that developers can see how it is used and how the example might be extended.
@@ -364,8 +378,10 @@ Where possible examples should demonstrate realistic use cases such that the cod
 
 The public API must be fully documented using the proto files.
 
-> **Tip** The in-source comments will be compiled to markdown and included in the [API Reference](../api_reference/index.md).
-> The process is outlined in [Documentation > API Reference](documentation.md#api-reference).
+::: tip
+The in-source comments will be compiled to markdown and included in the [API Reference](../api_reference/index.md).
+The process is outlined in [Documentation > API Reference](documentation.md#api-reference).
+:::
 
 Internal/implementation classes need not be documented, but should be written using expressive naming of variables and functions to help the reader.
 Anything unexpected or special however warrants an explanation as a comment.

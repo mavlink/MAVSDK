@@ -2,9 +2,10 @@
 
 The [Info](../api_reference/classmavsdk_1_1_info.md) class is used to get system (vehicle) information, including the UUID (MAVLink `SYS_ID` if no UUID is stored in hardware), PX4 firmware version, vendor firmware version, host OS version (e.g. for NuttX) and vendor and product ids/names.
 
-> **Note** Not all version information will necessarily be relevant on all vehicles. Where this occurs the
-hardware may return garbage values (for example, the simulator provides garbage values for the vendor
-firmware semantic version).
+::: info
+Not all version information will necessarily be relevant on all vehicles.
+Where this occurs the hardware may return garbage values (for example, the simulator provides garbage values for the vendor firmware semantic version).
+:::
 
 ## Preconditions
 
@@ -23,7 +24,10 @@ auto info = Info{system};
 
 The code below shows how to query the hardware uid, version, and product, information and print it to the console:
 
-> **Tip** The UUID/uid with type uint64_t has been replaced by uid2 called hardware_uid with type char[18]. This was a a change inherited from mavlink in order to prevent ID conflicts.
+::: tip
+The UUID/uid with type uint64_t has been replaced by uid2 called hardware_uid with type char[18].
+This was a a change inherited from mavlink in order to prevent ID conflicts.
+:::
 
 ```cpp
 std::cout << "hardware uid: " << info.hardware_uid() << '\n';
@@ -60,5 +64,7 @@ std::cout << "  vendor_id: " << systemProduct.vendor_id<< '\n'
           << "  product_name: " << systemProduct.product_id<< '\n';
 ```
 
-> **Tip** It is possible to query for the information before all values have been retrieved.
-  Note above how we use `Info::is_complete()` to check that the version information (`Info::Version` and `Info::Product`) has all been obtained from the vehicle before printing it.
+::: tip
+It is possible to query for the information before all values have been retrieved.
+Note above how we use `Info::is_complete()` to check that the version information (`Info::Version` and `Info::Product`) has all been obtained from the vehicle before printing it.
+:::

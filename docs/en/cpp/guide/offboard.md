@@ -3,8 +3,10 @@
 The [Offboard](../api_reference/classmavsdk_1_1_offboard.md) MAVSDK plugin provides a simple API for controlling the vehicle using velocity and yaw setpoints.
 It is useful for tasks requiring direct control from a companion computer; for example to implement collision avoidance.
 
-> **Note** The API uses the PX4 [Offboard flight mode](https://docs.px4.io/master/en/flight_modes/offboard.html).
-  The class can only be used with copter and VTOL vehicles (not fixed wing - a PX4 limitation) and currently only supports *velocity setpoint commands* (PX4 additionally supports position and thrust setpoints).
+::: info
+The API uses the PX4 [Offboard flight mode](https://docs.px4.io/master/en/flight_modes/offboard.html).
+The class can only be used with copter and VTOL vehicles (not fixed wing - a PX4 limitation) and currently only supports *velocity setpoint commands* (PX4 additionally supports position and thrust setpoints).
+:::
 
 Client code must specify a setpoint before starting *Offboard mode*.
 The Offboard plugin automatically resends setpoints at 20Hz (PX4 requires that setpoints are minimally resent at 2Hz).
@@ -13,8 +15,10 @@ If more precise control is required, clients can call the setpoint methods at wh
 
 ## Create the Plugin
 
-> **Tip** `Offboard` objects are created in the same way as other SDK plugins.
-  General instructions are provided in the topic: [Using Plugins](../guide/using_plugins.md).
+::: tip
+`Offboard` objects are created in the same way as other SDK plugins.
+General instructions are provided in the topic: [Using Plugins](../guide/using_plugins.md).
+:::
 
 The main steps are:
 
@@ -73,7 +77,9 @@ if (result != Offboard::Result::Success) {
     }
 ```
 
-> **Note** Offboard mode can also be stopped by moving the vehicle into another mode (e.g. using the `Action` API).
+::: info
+Offboard mode can also be stopped by moving the vehicle into another mode (e.g. using the `Action` API).
+:::
 
 
 ## Velocity Setpoints

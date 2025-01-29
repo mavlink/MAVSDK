@@ -11,8 +11,10 @@ The example is built and run in the normal way ([as described here](../examples/
 
 The example terminal output should be similar to that shown below:
 
-> **Note** This is from a debug build of the SDK.
-  A release build will omit the "Debug" messages.
+::: info
+This is from a debug build of the SDK.
+A release build will omit the "Debug" messages.
+:::
 
 ```
 $ ./fly_mission udp://:14540

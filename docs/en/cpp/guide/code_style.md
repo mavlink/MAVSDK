@@ -2,8 +2,10 @@
 
 This topic contains the C++ formatting and coding guidelines for MAVSDK.
 
-> **Note** These guidelines are not written in stone!
->   [Start a discussion](../../index.md#getting-help) if you have suggestions for improvement \(the project will consider anything other than "matters of personal taste"\).
+::: info
+These guidelines are not written in stone!
+[Start a discussion](../../index.md#getting-help) if you have suggestions for improvement \(the project will consider anything other than "matters of personal taste"\).
+:::
 
 ## Formatting and White Space
 

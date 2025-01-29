@@ -8,7 +8,10 @@ Basic [message logging](#message_logging) can be enabled by building with a spec
 
 The API methods display a custom message, prepending a timestamp and the type of log message (e.g. debug) and appending the origin of the message (file and line number).
 
-> **Tip** The API should be considered "internal". It is not exported, or intended, for use in SDK apps (and we do not commit to maintaining compatibility in future versions).
+::: tip
+The API should be considered "internal".
+It is not exported, or intended, for use in SDK apps (and we do not commit to maintaining compatibility in future versions).
+:::
 
 ### Usage
 

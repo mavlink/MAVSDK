@@ -9,14 +9,18 @@ Applications must get target position information from the underlying platform (
 - Apple: [Core Location Framework](https://developer.apple.com/documentation/corelocation)
 - Windows: [Windows.Devices.Geolocation](https://docs.microsoft.com/en-us/uwp/api/Windows.Devices.Geolocation)
 
-> **Warning** Running *QGroundControl* at the same time as the SDK *Follow Me* may result in unpredictable behaviour as both send position updates.
-> You **must** ensure that *GSC Position Streaming* is disabled.
-> Use the latest *QGC Daily Build* and ensure that the **[Application Setting > General](https://docs.qgroundcontrol.com/en/SettingsView/General.html) > Miscellaneous > Stream GCS Position** is set to *Never*.
+::: warning
+Running *QGroundControl* at the same time as the SDK *Follow Me* may result in unpredictable behaviour as both send position updates.
+You **must** ensure that *GSC Position Streaming* is disabled.
+Use the latest *QGC Daily Build* and ensure that the **[Application Setting > General](https://docs.qgroundcontrol.com/en/SettingsView/General.html) > Miscellaneous > Stream GCS Position** is set to *Never*.
+:::
 
 ## Create the Plugin
 
-> **Tip** `FollowMe` objects are created in the same way as other SDK plugins.
-  General instructions are provided in the topic: [Using Plugins](../guide/using_plugins.md).
+::: tip
+`FollowMe` objects are created in the same way as other SDK plugins.
+General instructions are provided in the topic: [Using Plugins](../guide/using_plugins.md).
+:::
 
 The main steps are:
 
@@ -76,7 +80,9 @@ Use [set_target_location()](../api_reference/classmavsdk_1_1_follow_me.md#classm
 This can be called at any time, but messages will only be sent once following is started.
 The plugin automatically resends the last set position at the rate required by the autopilot/flight mode (1 Hz).
 
-> **Note** Typically you would call `set_target_location()` before or shortly after starting the mode. If you call `start()` without having set any target location, or if the connection is broken, the vehicle will climb to minimum altitude (if needed) and remain in the mode waiting for messages.
+::: info
+Typically you would call `set_target_location()` before or shortly after starting the mode. If you call `start()` without having set any target location, or if the connection is broken, the vehicle will climb to minimum altitude (if needed) and remain in the mode waiting for messages.
+:::
 
 ```cpp
 // Start following

@@ -6,13 +6,17 @@ Most of the methods have both synchronous and asynchronous versions.
 The methods send commands to a vehicle, and return/complete with the vehicle's response.
 It is important to understand that a successful response indicates whether or not the vehicle intends to act on the command, not that it has finished the action (e.g. arming, landing, taking off etc.).
 
-> **Note** The implication is that you may need to monitor for completion of actions!
+::: info
+The implication is that you may need to monitor for completion of actions!
+:::
 
 
 ## Create the Plugin
 
-> **Tip** `Action` objects are created in the same way as for other SDK plugins.
+::: tip
+`Action` objects are created in the same way as for other SDK plugins.
 General instructions are provided in the topic: [Using Plugins](../guide/using_plugins.md).
+:::
 
 The main steps are:
 
@@ -36,16 +40,20 @@ The main steps are:
 
 The `action` object can then used to access the plugin API (as shown in the following sections).
 
-> **Note** Some of the sections below additionally assume you have created a `Telemetry` instance that can be accessed using `telemetry`.
+::: info
+Some of the sections below additionally assume you have created a `Telemetry` instance that can be accessed using `telemetry`.
+:::
 
 
 ## Taking Off
 
 The recommended way to take off using the SDK (and PX4) is to use either of the [takeoff()](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a0121d39baf922b1d88283230207ab5d0) or [takeoff_async()](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1ab658d938970326db41709d83e02b41e6) methods. If a takeoff command is accepted the vehicle will change to the [Takeoff mode](https://docs.px4.io/master/en/flight_modes/takeoff.html), fly to the takeoff altitude, and then hover (in takeoff mode) until another instruction is received.
 
-> **Note** PX4/SDK also provides other ways to take off:
-> - A copter or VTOL will take off automatically if a mission is started (fixed-wing will not).
-> - You can also take off by manually driving the vehicle using the offboard API.
+::: info
+PX4/SDK also provides other ways to take off:
+- A copter or VTOL will take off automatically if a mission is started (fixed-wing will not).
+- You can also take off by manually driving the vehicle using the offboard API.
+:::
 
 The vehicle will only take off once *armed*, and can only arm once it is "healthy" (has been calibrated, the home position has been set, and there is a high-enough quality GPS lock). After it starts flying, code needs to check that takeoff is complete before sending additional instructions.
 
@@ -106,7 +114,9 @@ while (telemetry.health_all_ok() != true) {
 }
 ```
 
-> **Note** Vehicle health can also be checked using [Telemetry:subscribe_health_all_ok()](../api_reference/classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a0f94ea6d707ff314e412367d6681bd8f).
+::: info
+Vehicle health can also be checked using [Telemetry:subscribe_health_all_ok()](../api_reference/classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a0f94ea6d707ff314e412367d6681bd8f).
+:::
 
 
 ### Arming
@@ -123,7 +133,9 @@ if (arm_result != Action::Result::Success) {
 }
 ```
 
-> **Tip** If the `arm()` method returns `Action::Result::Success` then the vehicle is armed and can proceed to takeoff. This can be confirmed using [Telemetry::armed()](../api_reference/classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a6620142adc47f069262e5bf69dbb3876).
+::: tip
+If the `arm()` method returns `Action::Result::Success` then the vehicle is armed and can proceed to takeoff. This can be confirmed using [Telemetry::armed()](../api_reference/classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a6620142adc47f069262e5bf69dbb3876).
+:::
 
 
 ### Get/Set Takeoff Altitude
@@ -151,7 +163,9 @@ if (takeoff_result != Action::Result::Success) {
 
 If the command succeeds the vehicle will takeoff, and hover at the takeoff altitude. Code should wait until takeoff has completed before sending the next instruction. Unfortunately there is no specific indicator to inform code that takeoff is complete.
 
-> **Note** One alternative is to simply wait for enough time that the vehicle *should* have reached the takeoff altitude.
+::: info
+One alternative is to simply wait for enough time that the vehicle *should* have reached the takeoff altitude.
+:::
 
 The code below checks for takeoff completion by polling the current altitude until the target altitude is reached:
 
@@ -171,7 +185,9 @@ while (current_position<target_alt) {
 The best way to land the vehicle at the current location is to use the [land()](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1af6429e1bdb2875deebfe98ed53da3d41) or [land_async()](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a89d146a766d49f1c706c66a3e2b9252d) methods.
 If the command is accepted the vehicle will change to the [Land mode](https://docs.px4.io/master/en/flight_modes/land.html) and land at the current point.
 
-> **Note** The SDK does not at time of writing recommend other approaches for landing: land mission items are not supported and manually landing the vehicle using the offboard is not as safe.
+::: info
+The SDK does not at time of writing recommend other approaches for landing: land mission items are not supported and manually landing the vehicle using the offboard is not as safe.
+:::
 
 The code below shows how to use the land action.
 
@@ -220,7 +236,9 @@ The methods are listed below. These are used in the same way as other similar `A
 - [kill()](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1af40fc1ddf588b3796134a9303ebc3667), [kill_async](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a78c1f15c3b190ba94793045621819e69)
 
 
-> **Tip** PX4 will automatically disarm the vehicle after landing. The disarm methods explicitly invoke the same functionality.
+::: tip
+PX4 will automatically disarm the vehicle after landing. The disarm methods explicitly invoke the same functionality.
+:::
 
 
 ## Get/Set Cruise Speed
@@ -229,8 +247,10 @@ You can get/set the normal horizontal velocity used in *Return mode*, *Hold mode
 * [set_maximum_speed()](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a5fccee1636215bccf8d77d9dca15134e)
 * [get_maximum_speed](../api_reference/classmavsdk_1_1_action.md#classmavsdk_1_1_action_1a128bf73fe8d0d359f36a3a9a327799ee)
 
-> **Note** These methods get/set the [MPC_XY_CRUISE](https://docs.px4.io/master/en/advanced_config/parameter_reference.html#MPC_XY_CRUISE) parameter.
-  They are used in the same way as the other `Action` methods.
+::: info
+These methods get/set the [MPC_XY_CRUISE](https://docs.px4.io/master/en/advanced_config/parameter_reference.html#MPC_XY_CRUISE) parameter.
+They are used in the same way as the other `Action` methods.
+:::
 
 
 

@@ -21,8 +21,10 @@ All objects are automatically cleaned up when the parent `Mavsdk` object is dest
 
 MAVSDK APIs do not raise exceptions! Instead, methods that can fail return success or an error reason as `enum` values.
 
-> **Tip** The error code usually reflects acknowledgment from the vehicle that it will perform the requested action (or not).
-  The operation itself may not yet have completed (e.g. taking off).
+::: tip
+The error code usually reflects acknowledgment from the vehicle that it will perform the requested action (or not).
+The operation itself may not yet have completed (e.g. taking off).
+:::
 
 The various classes also all provide stream operators for getting human readable strings from their associated result enum.
 You can see how these are used in the example code.

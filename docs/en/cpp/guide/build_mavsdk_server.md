@@ -4,7 +4,9 @@ Language wrappers for MAVSDK other than C++ connect to the MAVSDK C++ core using
 
 For more information about the architecture, also see [how the auto-generation works](../contributing/autogen.md).
 
-> **Note** It is generally recommended to use pre-built binaries of mavsdk_server from the [releases page](https://github.com/mavlink/MAVSDK/releases), however, if needed, it can also be built manually from source as described below.
+::: info
+It is generally recommended to use pre-built binaries of mavsdk_server from the [releases page](https://github.com/mavlink/MAVSDK/releases), however, if needed, it can also be built manually from source as described below.
+:::
 
 ## Requirements
 
@@ -24,7 +26,10 @@ cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DBUILD_MAVSDK_SERVER=O
 cmake --build build/default -j8
 ```
 
-> **Note:** there is no proper support for the Apple M1 chip yet. One blocker is that there is currently no M1 hardware in GitHub Actions CI available.
+::: info
+There is no proper support for the Apple M1 chip yet.
+One blocker is that there is currently no M1 hardware in GitHub Actions CI available.
+:::
 
 ## Build on Windows
 

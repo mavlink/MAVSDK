@@ -16,7 +16,9 @@ Below we explain how to set up a minimal build setup (**CMakeLists.txt**) file f
 
 The sections below show how you can set up the file for when the SDK is [installed system wide](installation.md) (the default) or [locally](build.md#sdk_local_install).
 
-> **Warning** On Windows use the [local installation](#sdk_local_install).
+::: warning
+On Windows use the [local installation](#sdk_local_install).
+:::
 
 A "template" **CMakeLists.txt** is shown below.
 Most of file is boilerplate - the main things you need to change are *your_project_name*, *your_executable_name* and *your_source_file*. You should also make sure that any plugins used by your app are listed in the `target_link_libraries` section.
@@ -52,8 +54,10 @@ target_link_libraries(your_executable_name
 )
 ```
 
-> **Note** The file format and required modifications are self-explanatory.
-> If additional information is required see the [cmake documentation](https://cmake.org/cmake/help/latest/manual/cmake-commands.7.html).
+::: info
+The file format and required modifications are self-explanatory.
+If additional information is required see the [cmake documentation](https://cmake.org/cmake/help/latest/manual/cmake-commands.7.html).
+:::
 
 
 ## Building the App

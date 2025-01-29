@@ -4,7 +4,9 @@ Making quick fixes to existing text or raising issues is very easy.
 More complicated changes will require you to set up the [Gitbook toolchain](https://github.com/GitbookIO/gitbook/blob/master/docs/setup.md).
 If you want to help, [get in touch](../../index.md#getting-help).
 
-> **Tip** You will need a [Github](https://github.com/) login to make and submit changes to this guide.
+::: tip
+You will need a [Github](https://github.com/) login to make and submit changes to this guide.
+:::
 
 ## Overview
 

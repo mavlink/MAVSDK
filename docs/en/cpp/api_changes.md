@@ -17,7 +17,9 @@ Individual parts of the number are iterated when the:
 
 This means that breaking changes to the API result in a bump of the major version number (e.g. 1.4.3 to 2.0.0).
 
-> **note**: bumping of the major version is unrelated to the stability of the library. E.g. v2.0.0 is not by definition more stable than v1.4.18. It just means that the API has changed with v2. As development is carried on, stability is likely increasing whenever the minor or patch versions increase as incremental fixes are added.
+::: info
+Bumping of the major version is unrelated to the stability of the library. E.g. v2.0.0 is not by definition more stable than v1.4.18. It just means that the API has changed with v2. As development is carried on, stability is likely increasing whenever the minor or patch versions increase as incremental fixes are added.
+:::
 
 ## v2
 
@@ -37,8 +39,9 @@ New instantiation:
 Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 ```
 
-**Note:**
+::: info
 It is still possible to change the configuration later (although not recommended) using `Mavsdk::set_configuration(...)`.
+:::
 
 **Rationale:**
 
@@ -48,9 +51,9 @@ For instance, in the case where MAVSDK is used on the companion computer, the au
 
 Also, having to set the default makes it less likely to misconfigure the overall integration and end up with several components that conflict.
 
-**Note:**
+::: info
 It is also possible to set the sysid/compid directly, just check out the API of [Mavsdk::Configuration](cpp/api_reference/classmavsdk_1_1_mavsdk_1_1_configuration.md).
-
+:::
 
 ### Subscription API
 

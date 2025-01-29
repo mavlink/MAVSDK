@@ -5,10 +5,14 @@ For example, the [Action](../api_reference/classmavsdk_1_1_action.md) plugin is 
 while the [Telemetry](../guide/telemetry.md) plugin can be used to query the vehicle GPS status, flight mode, etc.
 A separate plugin instance must be created for each system that needs it.
 
-> **Note** All plugins are declared/used in the same way. This topic uses the `Action` plugin for the purposes of the demonstration.
+::: info
+All plugins are declared/used in the same way. This topic uses the `Action` plugin for the purposes of the demonstration.
+:::
 
-> **Note** Plugins are named using the convention **mavsdk\__plugin\_name_.so**.
-  For more information see [Building C++ Apps](../guide/toolchain.md)
+::: info
+Plugins are named using the convention **mavsdk\__plugin\_name_.so**.
+For more information see [Building C++ Apps](../guide/toolchain.md)
+:::
 
 
 In the application source code:
