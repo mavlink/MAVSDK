@@ -1,0 +1,78 @@
+name: Docs
+
+on:
+  push:
+    branches:
+      - main
+      - 'v*'
+    #tags:
+    #  - 'v*'
+    paths:
+      - 'docs/**'
+  pull_request:
+    paths:
+      - 'docs/**'
+
+  workflow_dispatch:
+
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          # Specify the path to lock file for correct caching
+          cache-dependency-path: ./docs/yarn.lock
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --cwd ./docs
+
+      - name: Build with VitePress
+        working-directory: ./docs
+        run: |
+          npm run docs:build
+          touch .vitepress/dist/.nojekyll
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mavsdk_docs_build
+          path: docs/.vitepress/dist/
+          retention-days: 1
+
+  deploy:
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged) }}
+    needs: build
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mavsdk_docs_build
+          path: ~/_book
+
+      - name: Deploy
+        env:
+          GIT_USER: ${{ secrets.PX4BUILDBOT_USER }}
+          GIT_PASS: ${{ secrets.PX4BUILDBOT_PASS }}
+        run: |
+          git clone https://${{ secrets.PX4BUILDBOT_USER }}:${{ secrets.PX4BUILDBOT_ACCESSTOKEN }}@github.com/mavlink/mavsdk.mavlink.io.git
+          rm -rf mavsdk.mavlink.io/${{ env.BRANCH_NAME }}
+          mkdir -p mavsdk.mavlink.io/${{ env.BRANCH_NAME }}
+          cp -r ~/_book/* mavsdk.mavlink.io/${{ env.BRANCH_NAME }}/
+          cd mavsdk.mavlink.io
+          git config user.email "bot@px4.io"
+          git config user.name "PX4BuildBot"
+          git add ${{ env.BRANCH_NAME }}
+          git commit -a -m "MAVSDK docs build update `date`"
+          git push origin master
