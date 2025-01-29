@@ -39,8 +39,9 @@ New instantiation:
 Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
 ```
 
-**Note:**
+::: info
 It is still possible to change the configuration later (although not recommended) using `Mavsdk::set_configuration(...)`.
+:::
 
 **Rationale:**
 
@@ -50,9 +51,9 @@ For instance, in the case where MAVSDK is used on the companion computer, the au
 
 Also, having to set the default makes it less likely to misconfigure the overall integration and end up with several components that conflict.
 
-**Note:**
+::: info
 It is also possible to set the sysid/compid directly, just check out the API of [Mavsdk::Configuration](cpp/api_reference/classmavsdk_1_1_mavsdk_1_1_configuration.md).
-
+:::
 
 ### Subscription API
 

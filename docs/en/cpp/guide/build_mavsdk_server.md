@@ -26,7 +26,10 @@ cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DBUILD_MAVSDK_SERVER=O
 cmake --build build/default -j8
 ```
 
-> **Note:** there is no proper support for the Apple M1 chip yet. One blocker is that there is currently no M1 hardware in GitHub Actions CI available.
+::: info
+There is no proper support for the Apple M1 chip yet.
+One blocker is that there is currently no M1 hardware in GitHub Actions CI available.
+:::
 
 ## Build on Windows
 
