@@ -99,12 +99,15 @@ new_item2->camera_photo_interval_s =  1.0f;
 mission_items.push_back(new_item2);
 ```
 
-> **Note** The autopilot has sensible default values for the attributes.
-  If you do set a value (e.g. the desired speed) then it will be the default for the remainder of the mission.
+::: info
+The autopilot has sensible default values for the attributes.
+If you do set a value (e.g. the desired speed) then it will be the default for the remainder of the mission.
+:::
 
-<span></span>
-> **Note** There are also getter methods for querying the current value of `MissionItem` attributes.
-  The default values of most fields are `NaN` (which means they are ignored/not sent).
+::: info
+There are also getter methods for querying the current value of `MissionItem` attributes.
+The default values of most fields are `NaN` (which means they are ignored/not sent).
+:::
 
 The mission (`mission_items`) can then be uploaded as shown in the section [Uploading a Mission](#uploading_mission) below.
 
@@ -207,7 +210,9 @@ mission.subscribe_mission_progress( [](Mission::MissionProgress mission_progress
     });
 ```
 
-> **Note** The mission is complete when `current == total`.
+::: info
+The mission is complete when `current == total`.
+:::
 
 The following synchronous methods is also available for checking mission progress:
 * [is_mission_finished()](../api_reference/classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1a1ecf4f8798ab9ae96882dfbd34f23466) - Checks if mission has been finished.
@@ -229,9 +234,11 @@ If required you can instead use the appropriate commands in the [Action](../guid
 Use [Mission::download_mission()](../api_reference/classmavsdk_1_1_mission.md#classmavsdk_1_1_mission_1a23e9f7da32f42bcce7ef16ea8044fe53) to download a mission from the vehicle.
 The mission is downloaded as a vector of [MissionItem](../api_reference/structmavsdk_1_1_mission_1_1_mission_item.md) objects, that you can then view or manipulate as required.
 
-> **Note** Mission download will fail if the mission contains a command that is outside the [supported set](#supported_mission_commands).
-> Missions created using *QGroundControl* are not guaranteed to successfully download!
-> Again, for that case [MissionRaw](../api_reference/classmavsdk_1_1_mission_raw.md) might be a better fit.
+::: info
+Mission download will fail if the mission contains a command that is outside the [supported set](#supported_mission_commands).
+Missions created using *QGroundControl* are not guaranteed to successfully download!
+Again, for that case [MissionRaw](../api_reference/classmavsdk_1_1_mission_raw.md) might be a better fit.
+:::
 
 The code fragment below shows how to download a mission:
 

@@ -4,7 +4,9 @@ Language wrappers for MAVSDK other than C++ connect to the MAVSDK C++ core using
 
 For more information about the architecture, also see [how the auto-generation works](../contributing/autogen.md).
 
-> **Note** It is generally recommended to use pre-built binaries of mavsdk_server from the [releases page](https://github.com/mavlink/MAVSDK/releases), however, if needed, it can also be built manually from source as described below.
+::: info
+It is generally recommended to use pre-built binaries of mavsdk_server from the [releases page](https://github.com/mavlink/MAVSDK/releases), however, if needed, it can also be built manually from source as described below.
+:::
 
 ## Requirements
 

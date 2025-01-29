@@ -52,8 +52,10 @@ target_link_libraries(your_executable_name
 )
 ```
 
-> **Note** The file format and required modifications are self-explanatory.
-> If additional information is required see the [cmake documentation](https://cmake.org/cmake/help/latest/manual/cmake-commands.7.html).
+::: info
+The file format and required modifications are self-explanatory.
+If additional information is required see the [cmake documentation](https://cmake.org/cmake/help/latest/manual/cmake-commands.7.html).
+:::
 
 
 ## Building the App

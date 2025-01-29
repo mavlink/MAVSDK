@@ -3,8 +3,10 @@
 The [Autopilot Server](https://github.com/mavlink/MAVSDK/tree/main/examples/autopilot_server) example creates two instances of MAVSDK, representing a client (GCS) and a server (Vehicle).
 The MAVSDK instances communicates with each other via UDP transmitting telemetry, publishing parameters, missions and takeoff commands.
 
-> **Note** This example shows how to use [MAVSDK Server Plugins](../server_plugins.md)!
-> This is a good starting point if you are looking to implement MAVLink services to a non-MAVLink compatible system.
+::: info
+This example shows how to use [MAVSDK Server Plugins](../server_plugins.md)!
+This is a good starting point if you are looking to implement MAVLink services to a non-MAVLink compatible system.
+:::
 
 
 ## Running the Example {#run_example}
@@ -13,8 +15,10 @@ The example is built and run in the normal way ([as described here](../examples/
 
 The example terminal output should be similar to that shown below:
 
-> **Note** This is from a debug build of the SDK.
-  A release build will omit the "Debug" messages.
+::: info
+This is from a debug build of the SDK.
+A release build will omit the "Debug" messages.
+:::
 
 ```
 $ ./autopilot_server

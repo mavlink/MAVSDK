@@ -17,7 +17,9 @@ Individual parts of the number are iterated when the:
 
 This means that breaking changes to the API result in a bump of the major version number (e.g. 1.4.3 to 2.0.0).
 
-> **note**: bumping of the major version is unrelated to the stability of the library. E.g. v2.0.0 is not by definition more stable than v1.4.18. It just means that the API has changed with v2. As development is carried on, stability is likely increasing whenever the minor or patch versions increase as incremental fixes are added.
+::: info
+Bumping of the major version is unrelated to the stability of the library. E.g. v2.0.0 is not by definition more stable than v1.4.18. It just means that the API has changed with v2. As development is carried on, stability is likely increasing whenever the minor or patch versions increase as incremental fixes are added.
+:::
 
 ## v2
 

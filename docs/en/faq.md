@@ -15,10 +15,12 @@ Yes.
 
 A maximum of 255 vehicles can be connected.
 
-> **Note** The maximum number of vehicles is defined by the MAVLink protocol.
-  MAVLink refers to vehicles as "systems", which are comprised of components (for example, a drone with a gimbal and a camera).
-  Each system has a network-unique MAVLink system ID, with a value between 1 and 255 (0 is a "broadcast address").
-  Each component in a system shares its system id, and has a system-unique component ID, again with a value 1 and 255.
+::: info
+The maximum number of vehicles is defined by the MAVLink protocol.
+MAVLink refers to vehicles as "systems", which are comprised of components (for example, a drone with a gimbal and a camera).
+Each system has a network-unique MAVLink system ID, with a value between 1 and 255 (0 is a "broadcast address").
+Each component in a system shares its system id, and has a system-unique component ID, again with a value 1 and 255.
+:::
 
 ### Is MAVLink 1 supported?
 
@@ -45,8 +47,10 @@ MAVSDK, so far, is optimised for use with the PX4 flight stack and all testing i
 While many features should work on other flight stacks there may be implementation differences at the [MAVLink microservices level](https://mavlink.io/en/protocol/overview.html) which means that not every API will work.
 For example, PX4 and ArduPilot implement the parameter protocol differently, and vary slightly in the mission upload/download protocol (e.g. ArduPilot uses the 0 entry as the home position).
 
-> **Note** The SDK welcomes contributions to better support flight stacks other than PX4.
-> We do however expect contributors to also help with testing and maintenance support for using the SDK with their autopilot.
+::: info
+The SDK welcomes contributions to better support flight stacks other than PX4.
+We do however expect contributors to also help with testing and maintenance support for using the SDK with their autopilot.
+:::
 
 ### Are serial connections supported?
 

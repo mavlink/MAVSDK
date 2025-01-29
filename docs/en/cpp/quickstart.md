@@ -2,7 +2,9 @@
 
 This quickstart shows you how to build and run a simple MAVSDK C++ example application against a simulated vehicle, and observe the operation using the console and in a ground station.
 
-> **Note** MAVSDK is essentially a C++ library (or rather multiple library files) that you can include and link in your C++ application.
+::: info
+MAVSDK is essentially a C++ library (or rather multiple library files) that you can include and link in your C++ application.
+:::
 
 
 ## Install MAVSDK library
@@ -89,8 +91,10 @@ build/takeoff_and_land udp://:14540
 The MAVSDK application should connect to PX4, and you will be able to observe the example running in the SDK terminal, SITL terminal, and/or *QGroundControl*.
 The expected behaviour is shown here: [Example: Takeoff and Land](examples/takeoff_and_land.md).
 
-> **Note** The first argument above is the connection string (`udp://:14540`).
-  This is the standard PX4 UDP port for connecting to offboard APIs (also see [Connecting to Systems](guide/connections.md)).
+::: info
+The first argument above is the connection string (`udp://:14540`).
+This is the standard PX4 UDP port for connecting to offboard APIs (also see [Connecting to Systems](guide/connections.md)).
+:::
 
 
 ## Next Steps

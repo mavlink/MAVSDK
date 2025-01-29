@@ -2,7 +2,9 @@
 
 These are the instructions on how to get a release out the door.
 
-> **Note** The idea is of course to automate this as much as possible!
+::: info
+The idea is of course to automate this as much as possible!
+:::
 
 ## MAVSDK part
 

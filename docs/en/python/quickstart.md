@@ -75,7 +75,9 @@ Here is what it looks like in jMAVSim:
 
 ![jMAVSim after a successful takeoff](../../assets/python/quickstart/jmavsim_takeoff.png)
 
-> **Note** Make sure to send the `takeoff()` command within (at most) a few seconds of `arm()`; the drone will automatically disarm after a few seconds if it does not receive a command to takeoff.
+::: info
+Make sure to send the `takeoff()` command within (at most) a few seconds of `arm()`; the drone will automatically disarm after a few seconds if it does not receive a command to takeoff.
+:::
 
 You get an exception, as shown below:
 ```python
@@ -93,7 +95,9 @@ Now that the drone is flying, we can land:
 await drone.action.land()
 ```
 
-> **Note** We have been using the apython REPL to run all that interactively, but the same can be achieved by running the [takeoff_and_land.py](https://github.com/mavlink/MAVSDK-Python/blob/master/examples/takeoff_and_land.py) example (in which case the `aioconsole` package is not needed).
+::: info
+We have been using the apython REPL to run all that interactively, but the same can be achieved by running the [takeoff_and_land.py](https://github.com/mavlink/MAVSDK-Python/blob/master/examples/takeoff_and_land.py) example (in which case the `aioconsole` package is not needed).
+:::
 
 ## Using an IDE
 

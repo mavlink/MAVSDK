@@ -2,9 +2,10 @@
 
 The [Info](../api_reference/classmavsdk_1_1_info.md) class is used to get system (vehicle) information, including the UUID (MAVLink `SYS_ID` if no UUID is stored in hardware), PX4 firmware version, vendor firmware version, host OS version (e.g. for NuttX) and vendor and product ids/names.
 
-> **Note** Not all version information will necessarily be relevant on all vehicles. Where this occurs the
-hardware may return garbage values (for example, the simulator provides garbage values for the vendor
-firmware semantic version).
+::: info
+Not all version information will necessarily be relevant on all vehicles.
+Where this occurs the hardware may return garbage values (for example, the simulator provides garbage values for the vendor firmware semantic version).
+:::
 
 ## Preconditions
 

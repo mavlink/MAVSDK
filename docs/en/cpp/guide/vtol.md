@@ -3,8 +3,10 @@
 MAVSDK has only basic support for VTOL vehicles.
 VTOL waypoint missions are only supported using the [MissionRaw plugin](../api_reference/classmavsdk_1_1_mission_raw.md).
 
-> **Note** Most design and test effort has gone into multicopter support.
-> [Get in touch](../../index.md#getting-help) if you would like to help enhance the VTOL/Fixed-wing experience!
+::: info
+Most design and test effort has gone into multicopter support.
+[Get in touch](../../index.md#getting-help) if you would like to help enhance the VTOL/Fixed-wing experience!
+:::
 
 ## Supported Functionality
 

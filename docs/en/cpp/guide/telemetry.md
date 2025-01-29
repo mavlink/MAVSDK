@@ -77,8 +77,10 @@ The `telemetry` object can then used to access the plugin API (as shown in the f
 The telemetry update rate determines the frequency at which callbacks will be invoked with new information, and also the probable "freshness" of data obtained when using synchronous telemetry APIs. The default update rate depends on the autopilot and may also be limited by the characteristics of the communications channel.
 You can set the rate for *each* type of telemetry, and both synchronous or asynchronous rate-setting methods are provided.
 
-> **Note** For PX4 running on hardware the *default* rates are set on a per-mode basis in [mavlink_main.cpp](https://github.com/PX4/Firmware/blob/master/src/modules/mavlink/mavlink_main.cpp#L2025) (search on `configure_stream`).
-  For PX4 running on SITL, the default rates are defined in the [startup file](https://docs.px4.io/master/en/concept/system_startup.html).
+::: info
+For PX4 running on hardware the *default* rates are set on a per-mode basis in [mavlink_main.cpp](https://github.com/PX4/Firmware/blob/master/src/modules/mavlink/mavlink_main.cpp#L2025) (search on `configure_stream`).
+For PX4 running on SITL, the default rates are defined in the [startup file](https://docs.px4.io/master/en/concept/system_startup.html).
+:::
 
 The rate-setting methods are all used in the same way, so we just show one example for both the asynchronous and synchronous methods below.
 In both cases we set the rate for position updates.
@@ -206,8 +208,10 @@ Similarly, you can use the asynchronous method and block
     // Now ready to arm
 }
 ```
-> **Note** Note that `prom->set_value()` must only be called once.
-  If your code can potentially call this multiple times, remember to unsubscribe from the callback after it succeeds (e.g. using `telemetry.subscribe_health_all_ok(nullptr)`).
+::: info
+Note that `prom->set_value()` must only be called once.
+If your code can potentially call this multiple times, remember to unsubscribe from the callback after it succeeds (e.g. using `telemetry.subscribe_health_all_ok(nullptr)`).
+:::
 
 Depending on the architecture of your application, you may even wish to arm the vehicle in your callback function.
 Usually though it is easier to understand program flow using the approach above.

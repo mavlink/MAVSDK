@@ -5,9 +5,11 @@ It shows how to send the drone both the current position of the target (`FollowM
 
 ![Follow Me QGC Screenshot](../../../assets/examples/follow_me/follow_me_example_qgc.jpg)
 
-> **Note** A real application using this API will get the position information from the underlying operating system.
-  The example uses a fake position source (`FakeLocationProvider`) to enable it to be run on computers that do not have position information.
-  The `FakeLocationProvider` emulates the typical usage of common positioning APIs used in Android, Linux and iPhone.
+::: info
+A real application using this API will get the position information from the underlying operating system.
+The example uses a fake position source (`FakeLocationProvider`) to enable it to be run on computers that do not have position information.
+The `FakeLocationProvider` emulates the typical usage of common positioning APIs used in Android, Linux and iPhone.
+:::
 
 
 ## Running the Example {#run_example}
@@ -25,8 +27,10 @@ Otherwise the example is built and run in the normal way ([as described here](..
 
 The example terminal output should be similar to that shown below:
 
-> **Note** This is from a debug build of the SDK.
-  A release build will omit the "Debug" messages.
+::: info
+This is from a debug build of the SDK.
+A release build will omit the "Debug" messages.
+:::
 
 ```
 $ ./follow_me udp://:14540

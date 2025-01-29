@@ -76,7 +76,9 @@ Use [set_target_location()](../api_reference/classmavsdk_1_1_follow_me.md#classm
 This can be called at any time, but messages will only be sent once following is started.
 The plugin automatically resends the last set position at the rate required by the autopilot/flight mode (1 Hz).
 
-> **Note** Typically you would call `set_target_location()` before or shortly after starting the mode. If you call `start()` without having set any target location, or if the connection is broken, the vehicle will climb to minimum altitude (if needed) and remain in the mode waiting for messages.
+::: info
+Typically you would call `set_target_location()` before or shortly after starting the mode. If you call `start()` without having set any target location, or if the connection is broken, the vehicle will climb to minimum altitude (if needed) and remain in the mode waiting for messages.
+:::
 
 ```cpp
 // Start following
