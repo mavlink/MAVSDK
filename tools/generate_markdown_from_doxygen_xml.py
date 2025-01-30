@@ -215,15 +215,16 @@ def markdown_any_tag(aTag, html=False,para=True,consume=False):
         #Convert "note" types
         if aTag.attrib['kind']=='warning' or aTag.attrib['kind']=='note' or aTag.attrib['kind']=='attention':
             #print('Debug: kind %s' % aTag.attrib['kind'])
-            noteTypeText=aTag.attrib['kind'].capitalize()
+            noteTypeText=aTag.attrib['kind'].lower()
+            if noteTypeText == 'note': # Vitepress expects info blocks
+                noteTypeText = 'info'
             if para:
-                 if html:
-                     tag_text='<p>'+lead_text+'<b>'+noteTypeText+': </b> '+child_text+'</p>'+tail_text
-                 else: # ONLY THIS PATH TESTED (others should not occur, but leaving in as standard.
-                     tag_text='\n\n> **'+noteTypeText+'** '+lead_text.strip()+child_text.strip()+'\n\n'+tail_text.strip()
+                if html:
+                    tag_text='<p>'+lead_text+'<b>'+noteTypeText+': </b> '+child_text+'</p>'+tail_text
+                else: # ONLY THIS PATH TESTED (others should not occur, but leaving in as standard.
+                    tag_text='\n\n::: '+noteTypeText+'\n'+lead_text.strip()+child_text.strip()+'\n:::\n\n'+tail_text.strip()
             else: #para disabled, render without them.
-                tag_text='\n\n> **'+noteTypeText+'** '+ lead_text.strip()+child_text.strip()+tail_text.strip()
-
+                tag_text='\n\n::: '+noteTypeText+'\n'+ lead_text.strip()+child_text.strip()+'\n:::\n\n'+tail_text.strip()
 
     elif aTag.tag=='verbatim':
         tag_text='\n\n'+lead_text+child_text+'\n\n'+tail_text
