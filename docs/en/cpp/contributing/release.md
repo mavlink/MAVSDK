@@ -17,10 +17,8 @@ The idea is of course to automate this as much as possible!
    git tag vX.Y.Z
    git push origin vX.Y.Z
    ```
-1. - Generate changelog using `tools/generate_changelog.py --token TOKEN_FROM_GITHUB --verbose --tag vX.Y.Z`.
-   - If it finds old/wrong PRs, wait a bit or create the release from the tag in the [GitHub UI](https://github.com/mavlink/MAVSDK/releases).
-   - Once it finds the correct PRs it will check all of them for labels. Make sure all merged PRs have sensible labels (e.g. `enhancement`, `bug`, or `feature`).
-   - Copy the changelog text to the [release](https://github.com/mavlink/MAVSDK/releases).
+1. - Update the version branch (e.g. `v3`) as well to track main.
+   - Create the release on GitHub for the pushed tag. Generate the changelog using the GitHub button.
 1. Check later if all artifacts have been uploaded correctly to the release.
 1. Update the Arch AUR repository. This depends on the AUR maintainter's credentials (currently julianoes).
    - Use the repo: `ssh://aur@aur.archlinux.org/mavsdk.git`.
