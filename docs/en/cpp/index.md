@@ -40,7 +40,7 @@ The most important classes are:
 - [Geofence](api_reference/classmavsdk_1_1_geofence.md): Specify a geofence.
 - [Gimbal](api_reference/classmavsdk_1_1_gimbal.md): Control a gimbal.
 - [Camera](api_reference/classmavsdk_1_1_camera.md): Control a camera.
-- [FollowMe](api_reference/classmavsdk_1_1_follow_me.md): Drone tracks a position supplied by the SDK.
+- [FollowMe](api_reference/classmavsdk_1_1_follow_me.md): Drone tracks a position supplied by MAVSDK.
 - [Calibration](api_reference/classmavsdk_1_1_calibration.md):  Calibrate sensors (e.g.: gyro, accelerometer, and magnetometer).
 - [LogFiles](api_reference/classmavsdk_1_1_log_files.md): Download log files from the vehicle.
 
@@ -58,7 +58,7 @@ They should only be used where features are missing from the main APIs above.
 
 ## Contributing/Extending
 
-The [Contributing](contributing/index.md) section contains everything you need to contribute to project, including topics about building the SDK from source code, running our integration and unit tests, and all other aspects of core development.
+The [Contributing](contributing/index.md) section contains everything you need to contribute to project, including topics about building MAVSDK from source code, running our integration and unit tests, and all other aspects of core development.
 
 ## Troubleshooting
 

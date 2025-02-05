@@ -18,7 +18,7 @@ A simplified view of the folder structure is shown below:
 ```
 ├── MAVSDK
 │   └── src
-│       ├── integration_tests
+│       ├── system_tests
 │       ├── mavsdk_server
 │       └── mavsdk
 │           ├── core
@@ -182,7 +182,7 @@ Once the proto file has been created, you can generate all files required for th
 
 1. Run the configure step to prepare the tools required:
    ```
-   cmake -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -H.
+   cmake -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -S.
    ```
 1. Install `protoc_gen_mavsdk` which is required for the auto-generation:
    ```
@@ -278,23 +278,19 @@ The tests should be exhaustive, and cover all aspects of using the plugin API.
 The [Google Test Primer](https://google.github.io/googletest/primer.html)
 provides an excellent overview of how tests are written and used.
 
+### System Tests
 
-### Writing Unit Tests
+Most of the existing plugins do not have unit tests as they mostly just translate between MAVSDK APIs and MAVLink message logic.
+That sort of logic can be covered by system_tests which basically tests the MAVLink message logic by implementing both "client" and "server" parts, the server being exposed in the server plugin.
 
-Most of the existing plugins do not have unit tests,
-because we do not yet have the ability to [mock MAVLink communications](https://github.com/mavlink/MAVSDK/issues/148) (needed to test most plugins).
-Unit tests are therefore considered optional!
+### Unit Tests
 
 ::: tip
-Comprehensive integration tests should be written instead, with the simulator providing appropriate MAVLink messages.
+Unit tests are a good way to test more intricate functionality as required in a plugin or in the core. They typically cover only one class.
 :::
-
-#### Adding Unit Tests {#adding_unit_tests}
-
 Unit test files are stored in the same directory as their associated source code.
 
-In order to include a test in the SDK unit test program (`unit_tests_runner`),
-it must be added to the `UNIT_TEST_SOURCES` variable in the plugin **CMakeLists.txt** file.
+In order to include a test in `unit_tests_runner`, it must be added to the `UNIT_TEST_SOURCES` variable in the plugin **CMakeLists.txt** file.
 
 For example, to add the **example_foo_test.cpp** unit test you would
 append the following lines to its **CMakeLists.txt**:
@@ -306,65 +302,19 @@ list(APPEND UNIT_TEST_SOURCES
 set(UNIT_TEST_SOURCES ${UNIT_TEST_SOURCES} PARENT_SCOPE)
 ```
 
+Unit tests typically include the header file of the class to be tested and `<gtest/gtest.h>`.
 
-#### Unit Test Code
+### Integration tests {#integration_tests}
 
-Unit tests typically include the file to be tested, **mavsdk.h**, and **gtest.h**.
-There are no standard shared test unit resources so test functions are declared using `TEST`.
-All tests in a file should share the same test-case name (the first argument to `TEST`).
+We have opted to slowly fade out integration tests and use a few examples instead.
 
+The rationale is as follows: the integration tests were used to test functionality against SITL (sofware in the loop) simulation. However, we learnt that it was slow to start up the simulatoin and then run a test all the way through. It was also cumbersome to keep track of the potential test matrix including both MAVSDK and PX4 as well as ArduPilot versions. In reality it's only really possible to test a few full integrations like this, so only a small part of the functionality/code coverage.
 
-### Writing Integration Tests {#integration_tests}
+At this point, the integration tests ended up quite similar to the examples. For contributors it was then often confusing whether they should provide an integration test or an example, or both. Given the integration tests weren't useful as we had to remove them from CI, we decided to move away from them and instead focus on readable examples instead.
 
-MAVSDK provides the `integration_tests_runner` application for running the integration tests and some helper code to make it easier to log tests and run them against the simulator.
-
-::: tip
-Check out the [Google Test Primer](https://google.github.io/googletest/primer.html) and the [integration_tests](https://github.com/mavlink/MAVSDK/tree/main/src/integration_tests) for our existing plugins to better understand how to write your own!
-:::
-
-
-#### Adding Integration Tests
-
-In order to run an integration test it needs to be added to the `integration_tests_runner` program.
-
-Integration tests for core functionality and plugins delivered by the project
-are stored in [MAVSDK/src/integration_tests](https://github.com/mavlink/MAVSDK/tree/main/src/integration_tests).
-The files are added to the test program in that folder's
-[CMakeLists.txt](https://github.com/mavlink/MAVSDK/blob/main/src/integration_tests/CMakeLists.txt) file:
-
-```cmake
-# This includes all GTests that run integration tests
-add_executable(integration_tests_runner
-    ../core/unittests_main.cpp
-    simple_connect.cpp
-    async_connect.cpp
-    telemetry_simple.cpp
-    ...
-    gimbal.cpp
-    transition_multicopter_fixedwing.cpp
-    follow_me.cpp
-)
-```
-
-
-#### Integration Test Files/Code
-
-The main MAVSDK-specific functionality is provided by [integration_test_helper.h](https://github.com/mavlink/MAVSDK/blob/main/src/integration_tests/integration_test_helper.h).
-This provides access to the [Plugin/Test Logger](../guide/dev_logging.md) and a shared test class `SitlTest` for setting up and tearing down the PX4 simulator.
-
-::: info
-All tests running against SITL can be declared using `TEST_F` and have a first argument `SitlTest` as shown.
-This is required in order to use the shared class to set up and tear down the simulator between tests.
-:::
-
-For reference inspect the [existing integration tests](https://github.com/mavlink/MAVSDK/blob/main/src/integration_tests).
+### Examples {#examples}
 
 ## Example Code
-
-::: info
-It is quicker and easier to write and modify [integration tests](#integration_tests) than examples.
-Do not write example code until the plugin has been accepted!
-:::
 
 A simple example should be written that demonstrates basic usage of its API by 3rd parties.
 The example need not cover all functionality, but should demonstrate enough that developers can see how it is used and how the example might be extended.

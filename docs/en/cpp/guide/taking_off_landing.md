@@ -14,9 +14,8 @@ The implication is that you may need to monitor for completion of actions!
 ## Create the Plugin
 
 ::: tip
-`Action` objects are created in the same way as for other SDK plugins.
+`Action` objects are created in the same way as for other MAVSDK plugins.
 General instructions are provided in the topic: [Using Plugins](../guide/using_plugins.md).
-:::
 
 The main steps are:
 

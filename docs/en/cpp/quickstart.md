@@ -3,9 +3,8 @@
 This quickstart shows you how to build and run a simple MAVSDK C++ example application against a simulated vehicle, and observe the operation using the console and in a ground station.
 
 ::: info
-MAVSDK is essentially a C++ library (or rather multiple library files) that you can include and link in your C++ application.
+MAVSDK is essentially a C++ library that you can include in and link from your C++ application.
 :::
-
 
 ## Install MAVSDK library
 
@@ -21,8 +20,8 @@ sudo apt remove mavsdk
 The prebuilt C++ library can be downloaded as a **.deb** from [releases](https://github.com/mavlink/MAVSDK/releases), e.g.:
 
 ```
-wget https://github.com/mavlink/MAVSDK/releases/download/v2.6.0/libmavsdk-dev_2.6.0_ubuntu22.04_amd64.deb
-sudo dpkg -i libmavsdk-dev_2.6.0_ubuntu22.04_amd64.deb
+wget https://github.com/mavlink/MAVSDK/releases/download/v3.0.0/libmavsdk-dev_3.0.0_ubuntu24.04_amd64.deb
+sudo dpkg -i libmavsdk-dev_3.0.0_ubuntu24.04_amd64.deb
 ```
 
 ### macOS
@@ -46,7 +45,7 @@ To set up and run the PX4 simulator, you need to either [set up the PX4 SITL dev
 
 Or use a [pre-built docker container to run PX4 and the simulator](https://github.com/JonasVautherin/px4-gazebo-headless):
 ```
-docker run --rm -it jonasvautherin/px4-gazebo-headless:1.11.0
+docker run --rm -it jonasvautherin/px4-gazebo-headless:1.15.3
 ```
 
 ## Install QGroundControl
@@ -75,9 +74,13 @@ To build the takeoff and land example, you can do:
 
 ```sh
 cd takeoff_and_land/
-cmake -Bbuild -H.
+cmake -Bbuild -S.
 cmake --build build -j4
 ```
+
+::: info
+The examples match the MAVSDK version from your current branch. If you have another MAVSDK version installed, you should checkout the examples from that version. For example, if you have installed MAVSDK v2.x.y, you need to switch to the branch `v2`.
+"""
 
 ## Running an Example {#running_the_examples}
 
@@ -85,14 +88,14 @@ First start PX4 in SITL (Simulation) and *QGroundControl* as described above.
 
 Then run the example app (from the **example/takeoff_land/build** directory) as shown:
 ```sh
-build/takeoff_and_land udp://:14540
+build/takeoff_and_land udpin://0.0.0.0:14540
 ```
 
 The MAVSDK application should connect to PX4, and you will be able to observe the example running in the SDK terminal, SITL terminal, and/or *QGroundControl*.
 The expected behaviour is shown here: [Example: Takeoff and Land](examples/takeoff_and_land.md).
 
 ::: info
-The first argument above is the connection string (`udp://:14540`).
+The first argument above is the connection string (`udpin://0.0.0.0:14540`).
 This is the standard PX4 UDP port for connecting to offboard APIs (also see [Connecting to Systems](guide/connections.md)).
 :::
 

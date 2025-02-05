@@ -1,4 +1,4 @@
-# SDK Paradigms/Usage
+# MAVSDK Paradigms/Usage
 
 This topic provides general/overview information about how the MAVSDK is used, designed and some limitations.
 
@@ -111,7 +111,7 @@ The implication is that developers will need to separately monitor the completio
 
 The `Mission` and `MissionItem` APIs provide a the most useful *subset* of MAVLink mission commands as a developer-friendly API.
 
-Not every mission command behaviour supported by the protocol and PX4 will be supported by the SDK.
+Not every mission command behaviour supported by the protocol and PX4 will be supported by MAVSDK.
 For example, at time of writing the API does not allow you to specify commands that jump back to previous mission items.
 
 The API allows you to download/import missions.

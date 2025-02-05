@@ -3,7 +3,7 @@
 These are the instructions on how to get a release out the door.
 
 ::: info
-The idea is of course to automate this as much as possible!
+The idea is of course to automate this as much as possible.
 :::
 
 ## MAVSDK part
@@ -52,4 +52,4 @@ The idea is of course to automate this as much as possible!
 
 ## Other
 
-1. Post a note on Slack #mavsdk.
+1. Post a note on Discord #mavsdk.
