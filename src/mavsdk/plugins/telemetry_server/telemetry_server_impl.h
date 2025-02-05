@@ -76,6 +76,13 @@ public:
     TelemetryServer::Result publish_extended_sys_state(
         TelemetryServer::VtolState vtol_state, TelemetryServer::LandedState landed_state);
 
+    TelemetryServer::Result publish_attitude(
+        TelemetryServer::EulerAngle attitude,
+        TelemetryServer::AngularVelocityBody angular_velocity);
+
+    TelemetryServer::Result
+    publish_visual_flight_rules_hud(TelemetryServer::FixedwingMetrics fixed_wing_metrics);
+
 private:
     bool _send_home();
 

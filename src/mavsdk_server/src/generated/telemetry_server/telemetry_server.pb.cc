@@ -552,7 +552,10 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 inline constexpr FixedwingMetrics::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : airspeed_m_s_{0},
+        groundspeed_m_s_{0},
+        heading_deg_{0},
         throttle_percentage_{0},
+        altitude_msl_{0},
         climb_rate_m_s_{0},
         _cached_size_{0} {}
 
@@ -814,6 +817,56 @@ struct AccelerationFrdDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AccelerationFrdDefaultTypeInternal _AccelerationFrd_default_instance_;
+
+inline constexpr PublishVisualFlightRulesHudResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        telemetry_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishVisualFlightRulesHudResponse::PublishVisualFlightRulesHudResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct PublishVisualFlightRulesHudResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishVisualFlightRulesHudResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishVisualFlightRulesHudResponseDefaultTypeInternal() {}
+  union {
+    PublishVisualFlightRulesHudResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishVisualFlightRulesHudResponseDefaultTypeInternal _PublishVisualFlightRulesHudResponse_default_instance_;
+
+inline constexpr PublishVisualFlightRulesHudRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        fixed_wing_metrics_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishVisualFlightRulesHudRequest::PublishVisualFlightRulesHudRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct PublishVisualFlightRulesHudRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishVisualFlightRulesHudRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishVisualFlightRulesHudRequestDefaultTypeInternal() {}
+  union {
+    PublishVisualFlightRulesHudRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishVisualFlightRulesHudRequestDefaultTypeInternal _PublishVisualFlightRulesHudRequest_default_instance_;
 
 inline constexpr PublishUnixEpochTimeResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -1423,6 +1476,57 @@ struct PublishBatteryRequestDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishBatteryRequestDefaultTypeInternal _PublishBatteryRequest_default_instance_;
 
+inline constexpr PublishAttitudeResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        telemetry_server_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishAttitudeResponse::PublishAttitudeResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct PublishAttitudeResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishAttitudeResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishAttitudeResponseDefaultTypeInternal() {}
+  union {
+    PublishAttitudeResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishAttitudeResponseDefaultTypeInternal _PublishAttitudeResponse_default_instance_;
+
+inline constexpr PublishAttitudeRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        angle_{nullptr},
+        angular_velocity_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PublishAttitudeRequest::PublishAttitudeRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct PublishAttitudeRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PublishAttitudeRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PublishAttitudeRequestDefaultTypeInternal() {}
+  union {
+    PublishAttitudeRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PublishAttitudeRequestDefaultTypeInternal _PublishAttitudeRequest_default_instance_;
+
 inline constexpr PositionVelocityNed::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -1837,6 +1941,28 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest, _impl_.distance_sensor_),
         0,
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::PublishAttitudeRequest, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::PublishAttitudeRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::PublishAttitudeRequest, _impl_.angle_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::PublishAttitudeRequest, _impl_.angular_velocity_),
+        0,
+        1,
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest, _impl_.fixed_wing_metrics_),
+        0,
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::PublishPositionResponse, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::PublishPositionResponse, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -1986,6 +2112,26 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse, _impl_.telemetry_server_result_),
+        0,
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::PublishAttitudeResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::PublishAttitudeResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::PublishAttitudeResponse, _impl_.telemetry_server_result_),
+        0,
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse, _impl_.telemetry_server_result_),
         0,
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::Position, _internal_metadata_),
@@ -2262,7 +2408,10 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.airspeed_m_s_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.groundspeed_m_s_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.heading_deg_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.throttle_percentage_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.altitude_msl_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.climb_rate_m_s_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::AccelerationFrd, _internal_metadata_),
@@ -2347,49 +2496,53 @@ static const ::_pbi::MigrationSchema
         {164, 173, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishRawImuRequest)},
         {174, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeRequest)},
         {183, 192, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest)},
-        {193, 202, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishPositionResponse)},
-        {203, 212, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishHomeResponse)},
-        {213, 222, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishSysStatusResponse)},
-        {223, 232, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishExtendedSysStateResponse)},
-        {233, 242, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishRawGpsResponse)},
-        {243, 252, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishBatteryResponse)},
-        {253, 262, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishStatusTextResponse)},
-        {263, 272, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishOdometryResponse)},
-        {273, 282, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishPositionVelocityNedResponse)},
-        {283, 292, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishGroundTruthResponse)},
-        {293, 302, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishImuResponse)},
-        {303, 312, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishScaledImuResponse)},
-        {313, 322, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishRawImuResponse)},
-        {323, 332, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeResponse)},
-        {333, 342, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse)},
-        {343, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Position)},
-        {355, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Heading)},
-        {364, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Quaternion)},
-        {377, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::EulerAngle)},
-        {389, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::AngularVelocityBody)},
-        {400, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::GpsInfo)},
-        {410, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::RawGps)},
-        {432, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Battery)},
-        {442, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::RcStatus)},
-        {453, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::StatusText)},
-        {463, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::ActuatorControlTarget)},
-        {473, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::ActuatorOutputStatus)},
-        {483, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Covariance)},
-        {492, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::VelocityBody)},
-        {503, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::PositionBody)},
-        {514, 531, -1, sizeof(::mavsdk::rpc::telemetry_server::Odometry)},
-        {540, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::DistanceSensor)},
-        {551, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::ScaledPressure)},
-        {564, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::PositionNed)},
-        {575, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::VelocityNed)},
-        {586, 596, -1, sizeof(::mavsdk::rpc::telemetry_server::PositionVelocityNed)},
-        {598, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::GroundTruth)},
-        {609, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::FixedwingMetrics)},
-        {620, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::AccelerationFrd)},
-        {631, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::AngularVelocityFrd)},
-        {642, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::MagneticFieldFrd)},
-        {653, 666, -1, sizeof(::mavsdk::rpc::telemetry_server::Imu)},
-        {671, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::TelemetryServerResult)},
+        {193, 203, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishAttitudeRequest)},
+        {205, 214, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest)},
+        {215, 224, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishPositionResponse)},
+        {225, 234, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishHomeResponse)},
+        {235, 244, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishSysStatusResponse)},
+        {245, 254, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishExtendedSysStateResponse)},
+        {255, 264, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishRawGpsResponse)},
+        {265, 274, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishBatteryResponse)},
+        {275, 284, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishStatusTextResponse)},
+        {285, 294, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishOdometryResponse)},
+        {295, 304, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishPositionVelocityNedResponse)},
+        {305, 314, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishGroundTruthResponse)},
+        {315, 324, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishImuResponse)},
+        {325, 334, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishScaledImuResponse)},
+        {335, 344, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishRawImuResponse)},
+        {345, 354, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeResponse)},
+        {355, 364, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse)},
+        {365, 374, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishAttitudeResponse)},
+        {375, 384, -1, sizeof(::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse)},
+        {385, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Position)},
+        {397, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Heading)},
+        {406, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Quaternion)},
+        {419, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::EulerAngle)},
+        {431, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::AngularVelocityBody)},
+        {442, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::GpsInfo)},
+        {452, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::RawGps)},
+        {474, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Battery)},
+        {484, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::RcStatus)},
+        {495, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::StatusText)},
+        {505, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::ActuatorControlTarget)},
+        {515, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::ActuatorOutputStatus)},
+        {525, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::Covariance)},
+        {534, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::VelocityBody)},
+        {545, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::PositionBody)},
+        {556, 573, -1, sizeof(::mavsdk::rpc::telemetry_server::Odometry)},
+        {582, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::DistanceSensor)},
+        {593, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::ScaledPressure)},
+        {606, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::PositionNed)},
+        {617, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::VelocityNed)},
+        {628, 638, -1, sizeof(::mavsdk::rpc::telemetry_server::PositionVelocityNed)},
+        {640, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::GroundTruth)},
+        {651, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::FixedwingMetrics)},
+        {665, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::AccelerationFrd)},
+        {676, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::AngularVelocityFrd)},
+        {687, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::MagneticFieldFrd)},
+        {698, 711, -1, sizeof(::mavsdk::rpc::telemetry_server::Imu)},
+        {716, -1, -1, sizeof(::mavsdk::rpc::telemetry_server::TelemetryServerResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::telemetry_server::_PublishPositionRequest_default_instance_._instance,
@@ -2410,6 +2563,8 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::telemetry_server::_PublishRawImuRequest_default_instance_._instance,
     &::mavsdk::rpc::telemetry_server::_PublishUnixEpochTimeRequest_default_instance_._instance,
     &::mavsdk::rpc::telemetry_server::_PublishDistanceSensorRequest_default_instance_._instance,
+    &::mavsdk::rpc::telemetry_server::_PublishAttitudeRequest_default_instance_._instance,
+    &::mavsdk::rpc::telemetry_server::_PublishVisualFlightRulesHudRequest_default_instance_._instance,
     &::mavsdk::rpc::telemetry_server::_PublishPositionResponse_default_instance_._instance,
     &::mavsdk::rpc::telemetry_server::_PublishHomeResponse_default_instance_._instance,
     &::mavsdk::rpc::telemetry_server::_PublishSysStatusResponse_default_instance_._instance,
@@ -2425,6 +2580,8 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::telemetry_server::_PublishRawImuResponse_default_instance_._instance,
     &::mavsdk::rpc::telemetry_server::_PublishUnixEpochTimeResponse_default_instance_._instance,
     &::mavsdk::rpc::telemetry_server::_PublishDistanceSensorResponse_default_instance_._instance,
+    &::mavsdk::rpc::telemetry_server::_PublishAttitudeResponse_default_instance_._instance,
+    &::mavsdk::rpc::telemetry_server::_PublishVisualFlightRulesHudResponse_default_instance_._instance,
     &::mavsdk::rpc::telemetry_server::_Position_default_instance_._instance,
     &::mavsdk::rpc::telemetry_server::_Heading_default_instance_._instance,
     &::mavsdk::rpc::telemetry_server::_Quaternion_default_instance_._instance,
@@ -2503,222 +2660,244 @@ const char descriptor_table_protodef_telemetry_5fserver_2ftelemetry_5fserver_2ep
     "blishUnixEpochTimeRequest\022\017\n\007time_us\030\001 \001"
     "(\004\"d\n\034PublishDistanceSensorRequest\022D\n\017di"
     "stance_sensor\030\001 \001(\0132+.mavsdk.rpc.telemet"
-    "ry_server.DistanceSensor\"n\n\027PublishPosit"
-    "ionResponse\022S\n\027telemetry_server_result\030\001"
-    " \001(\01322.mavsdk.rpc.telemetry_server.Telem"
-    "etryServerResult\"j\n\023PublishHomeResponse\022"
-    "S\n\027telemetry_server_result\030\001 \001(\01322.mavsd"
-    "k.rpc.telemetry_server.TelemetryServerRe"
-    "sult\"o\n\030PublishSysStatusResponse\022S\n\027tele"
-    "metry_server_result\030\001 \001(\01322.mavsdk.rpc.t"
-    "elemetry_server.TelemetryServerResult\"v\n"
-    "\037PublishExtendedSysStateResponse\022S\n\027tele"
-    "metry_server_result\030\001 \001(\01322.mavsdk.rpc.t"
-    "elemetry_server.TelemetryServerResult\"l\n"
-    "\025PublishRawGpsResponse\022S\n\027telemetry_serv"
-    "er_result\030\001 \001(\01322.mavsdk.rpc.telemetry_s"
-    "erver.TelemetryServerResult\"m\n\026PublishBa"
-    "tteryResponse\022S\n\027telemetry_server_result"
-    "\030\001 \001(\01322.mavsdk.rpc.telemetry_server.Tel"
-    "emetryServerResult\"p\n\031PublishStatusTextR"
-    "esponse\022S\n\027telemetry_server_result\030\001 \001(\013"
-    "22.mavsdk.rpc.telemetry_server.Telemetry"
-    "ServerResult\"n\n\027PublishOdometryResponse\022"
-    "S\n\027telemetry_server_result\030\001 \001(\01322.mavsd"
-    "k.rpc.telemetry_server.TelemetryServerRe"
-    "sult\"y\n\"PublishPositionVelocityNedRespon"
-    "se\022S\n\027telemetry_server_result\030\001 \001(\01322.ma"
-    "vsdk.rpc.telemetry_server.TelemetryServe"
-    "rResult\"q\n\032PublishGroundTruthResponse\022S\n"
-    "\027telemetry_server_result\030\001 \001(\01322.mavsdk."
-    "rpc.telemetry_server.TelemetryServerResu"
-    "lt\"i\n\022PublishImuResponse\022S\n\027telemetry_se"
+    "ry_server.DistanceSensor\"\234\001\n\026PublishAtti"
+    "tudeRequest\0226\n\005angle\030\001 \001(\0132\'.mavsdk.rpc."
+    "telemetry_server.EulerAngle\022J\n\020angular_v"
+    "elocity\030\002 \001(\01320.mavsdk.rpc.telemetry_ser"
+    "ver.AngularVelocityBody\"o\n\"PublishVisual"
+    "FlightRulesHudRequest\022I\n\022fixed_wing_metr"
+    "ics\030\001 \001(\0132-.mavsdk.rpc.telemetry_server."
+    "FixedwingMetrics\"n\n\027PublishPositionRespo"
+    "nse\022S\n\027telemetry_server_result\030\001 \001(\01322.m"
+    "avsdk.rpc.telemetry_server.TelemetryServ"
+    "erResult\"j\n\023PublishHomeResponse\022S\n\027telem"
+    "etry_server_result\030\001 \001(\01322.mavsdk.rpc.te"
+    "lemetry_server.TelemetryServerResult\"o\n\030"
+    "PublishSysStatusResponse\022S\n\027telemetry_se"
     "rver_result\030\001 \001(\01322.mavsdk.rpc.telemetry"
-    "_server.TelemetryServerResult\"o\n\030Publish"
-    "ScaledImuResponse\022S\n\027telemetry_server_re"
-    "sult\030\001 \001(\01322.mavsdk.rpc.telemetry_server"
-    ".TelemetryServerResult\"l\n\025PublishRawImuR"
-    "esponse\022S\n\027telemetry_server_result\030\001 \001(\013"
-    "22.mavsdk.rpc.telemetry_server.Telemetry"
-    "ServerResult\"s\n\034PublishUnixEpochTimeResp"
-    "onse\022S\n\027telemetry_server_result\030\001 \001(\01322."
-    "mavsdk.rpc.telemetry_server.TelemetrySer"
-    "verResult\"t\n\035PublishDistanceSensorRespon"
-    "se\022S\n\027telemetry_server_result\030\001 \001(\01322.ma"
-    "vsdk.rpc.telemetry_server.TelemetryServe"
-    "rResult\"\225\001\n\010Position\022\035\n\014latitude_deg\030\001 \001"
-    "(\001B\007\202\265\030\003NaN\022\036\n\rlongitude_deg\030\002 \001(\001B\007\202\265\030\003"
-    "NaN\022$\n\023absolute_altitude_m\030\003 \001(\002B\007\202\265\030\003Na"
-    "N\022$\n\023relative_altitude_m\030\004 \001(\002B\007\202\265\030\003NaN\""
-    "\'\n\007Heading\022\034\n\013heading_deg\030\001 \001(\001B\007\202\265\030\003NaN"
-    "\"r\n\nQuaternion\022\022\n\001w\030\001 \001(\002B\007\202\265\030\003NaN\022\022\n\001x\030"
-    "\002 \001(\002B\007\202\265\030\003NaN\022\022\n\001y\030\003 \001(\002B\007\202\265\030\003NaN\022\022\n\001z\030"
-    "\004 \001(\002B\007\202\265\030\003NaN\022\024\n\014timestamp_us\030\005 \001(\004\"s\n\n"
-    "EulerAngle\022\031\n\010roll_deg\030\001 \001(\002B\007\202\265\030\003NaN\022\032\n"
-    "\tpitch_deg\030\002 \001(\002B\007\202\265\030\003NaN\022\030\n\007yaw_deg\030\003 \001"
-    "(\002B\007\202\265\030\003NaN\022\024\n\014timestamp_us\030\004 \001(\004\"l\n\023Ang"
-    "ularVelocityBody\022\033\n\nroll_rad_s\030\001 \001(\002B\007\202\265"
-    "\030\003NaN\022\034\n\013pitch_rad_s\030\002 \001(\002B\007\202\265\030\003NaN\022\032\n\ty"
-    "aw_rad_s\030\003 \001(\002B\007\202\265\030\003NaN\"`\n\007GpsInfo\022\035\n\016nu"
-    "m_satellites\030\001 \001(\005B\005\202\265\030\0010\0226\n\010fix_type\030\002 "
-    "\001(\0162$.mavsdk.rpc.telemetry_server.FixTyp"
-    "e\"\337\002\n\006RawGps\022\024\n\014timestamp_us\030\001 \001(\004\022\024\n\014la"
-    "titude_deg\030\002 \001(\001\022\025\n\rlongitude_deg\030\003 \001(\001\022"
-    "\033\n\023absolute_altitude_m\030\004 \001(\002\022\014\n\004hdop\030\005 \001"
-    "(\002\022\014\n\004vdop\030\006 \001(\002\022\024\n\014velocity_m_s\030\007 \001(\002\022\017"
-    "\n\007cog_deg\030\010 \001(\002\022\034\n\024altitude_ellipsoid_m\030"
-    "\t \001(\002\022 \n\030horizontal_uncertainty_m\030\n \001(\002\022"
-    "\036\n\026vertical_uncertainty_m\030\013 \001(\002\022 \n\030veloc"
-    "ity_uncertainty_m_s\030\014 \001(\002\022\037\n\027heading_unc"
-    "ertainty_deg\030\r \001(\002\022\017\n\007yaw_deg\030\016 \001(\002\"I\n\007B"
-    "attery\022\032\n\tvoltage_v\030\001 \001(\002B\007\202\265\030\003NaN\022\"\n\021re"
-    "maining_percent\030\002 \001(\002B\007\202\265\030\003NaN\"|\n\010RcStat"
-    "us\022%\n\022was_available_once\030\001 \001(\010B\t\202\265\030\005fals"
-    "e\022\037\n\014is_available\030\002 \001(\010B\t\202\265\030\005false\022(\n\027si"
-    "gnal_strength_percent\030\003 \001(\002B\007\202\265\030\003NaN\"U\n\n"
-    "StatusText\0229\n\004type\030\001 \001(\0162+.mavsdk.rpc.te"
-    "lemetry_server.StatusTextType\022\014\n\004text\030\002 "
-    "\001(\t\"\?\n\025ActuatorControlTarget\022\024\n\005group\030\001 "
-    "\001(\005B\005\202\265\030\0010\022\020\n\010controls\030\002 \003(\002\"\?\n\024Actuator"
-    "OutputStatus\022\025\n\006active\030\001 \001(\rB\005\202\265\030\0010\022\020\n\010a"
-    "ctuator\030\002 \003(\002\"\'\n\nCovariance\022\031\n\021covarianc"
-    "e_matrix\030\001 \003(\002\";\n\014VelocityBody\022\r\n\005x_m_s\030"
-    "\001 \001(\002\022\r\n\005y_m_s\030\002 \001(\002\022\r\n\005z_m_s\030\003 \001(\002\"5\n\014P"
-    "ositionBody\022\013\n\003x_m\030\001 \001(\002\022\013\n\003y_m\030\002 \001(\002\022\013\n"
-    "\003z_m\030\003 \001(\002\"\244\005\n\010Odometry\022\021\n\ttime_usec\030\001 \001"
-    "(\004\022@\n\010frame_id\030\002 \001(\0162..mavsdk.rpc.teleme"
-    "try_server.Odometry.MavFrame\022F\n\016child_fr"
-    "ame_id\030\003 \001(\0162..mavsdk.rpc.telemetry_serv"
-    "er.Odometry.MavFrame\022@\n\rposition_body\030\004 "
-    "\001(\0132).mavsdk.rpc.telemetry_server.Positi"
-    "onBody\0222\n\001q\030\005 \001(\0132\'.mavsdk.rpc.telemetry"
-    "_server.Quaternion\022@\n\rvelocity_body\030\006 \001("
-    "\0132).mavsdk.rpc.telemetry_server.Velocity"
-    "Body\022O\n\025angular_velocity_body\030\007 \001(\01320.ma"
-    "vsdk.rpc.telemetry_server.AngularVelocit"
-    "yBody\022@\n\017pose_covariance\030\010 \001(\0132\'.mavsdk."
-    "rpc.telemetry_server.Covariance\022D\n\023veloc"
-    "ity_covariance\030\t \001(\0132\'.mavsdk.rpc.teleme"
-    "try_server.Covariance\"j\n\010MavFrame\022\023\n\017MAV"
-    "_FRAME_UNDEF\020\000\022\026\n\022MAV_FRAME_BODY_NED\020\010\022\030"
-    "\n\024MAV_FRAME_VISION_NED\020\020\022\027\n\023MAV_FRAME_ES"
-    "TIM_NED\020\022\"\177\n\016DistanceSensor\022#\n\022minimum_d"
-    "istance_m\030\001 \001(\002B\007\202\265\030\003NaN\022#\n\022maximum_dist"
-    "ance_m\030\002 \001(\002B\007\202\265\030\003NaN\022#\n\022current_distanc"
-    "e_m\030\003 \001(\002B\007\202\265\030\003NaN\"\260\001\n\016ScaledPressure\022\024\n"
-    "\014timestamp_us\030\001 \001(\004\022\035\n\025absolute_pressure"
-    "_hpa\030\002 \001(\002\022!\n\031differential_pressure_hpa\030"
-    "\003 \001(\002\022\027\n\017temperature_deg\030\004 \001(\002\022-\n%differ"
-    "ential_pressure_temperature_deg\030\005 \001(\002\"Y\n"
-    "\013PositionNed\022\030\n\007north_m\030\001 \001(\002B\007\202\265\030\003NaN\022\027"
-    "\n\006east_m\030\002 \001(\002B\007\202\265\030\003NaN\022\027\n\006down_m\030\003 \001(\002B"
-    "\007\202\265\030\003NaN\"D\n\013VelocityNed\022\021\n\tnorth_m_s\030\001 \001"
-    "(\002\022\020\n\010east_m_s\030\002 \001(\002\022\020\n\010down_m_s\030\003 \001(\002\"\215"
-    "\001\n\023PositionVelocityNed\022:\n\010position\030\001 \001(\013"
-    "2(.mavsdk.rpc.telemetry_server.PositionN"
-    "ed\022:\n\010velocity\030\002 \001(\0132(.mavsdk.rpc.teleme"
-    "try_server.VelocityNed\"r\n\013GroundTruth\022\035\n"
-    "\014latitude_deg\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rlongitud"
-    "e_deg\030\002 \001(\001B\007\202\265\030\003NaN\022$\n\023absolute_altitud"
-    "e_m\030\003 \001(\002B\007\202\265\030\003NaN\"x\n\020FixedwingMetrics\022\035"
-    "\n\014airspeed_m_s\030\001 \001(\002B\007\202\265\030\003NaN\022$\n\023throttl"
-    "e_percentage\030\002 \001(\002B\007\202\265\030\003NaN\022\037\n\016climb_rat"
-    "e_m_s\030\003 \001(\002B\007\202\265\030\003NaN\"i\n\017AccelerationFrd\022"
-    "\035\n\014forward_m_s2\030\001 \001(\002B\007\202\265\030\003NaN\022\033\n\nright_"
-    "m_s2\030\002 \001(\002B\007\202\265\030\003NaN\022\032\n\tdown_m_s2\030\003 \001(\002B\007"
-    "\202\265\030\003NaN\"o\n\022AngularVelocityFrd\022\036\n\rforward"
-    "_rad_s\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013right_rad_s\030\002 \001"
-    "(\002B\007\202\265\030\003NaN\022\033\n\ndown_rad_s\030\003 \001(\002B\007\202\265\030\003NaN"
-    "\"m\n\020MagneticFieldFrd\022\036\n\rforward_gauss\030\001 "
-    "\001(\002B\007\202\265\030\003NaN\022\034\n\013right_gauss\030\002 \001(\002B\007\202\265\030\003N"
-    "aN\022\033\n\ndown_gauss\030\003 \001(\002B\007\202\265\030\003NaN\"\240\002\n\003Imu\022"
-    "F\n\020acceleration_frd\030\001 \001(\0132,.mavsdk.rpc.t"
-    "elemetry_server.AccelerationFrd\022M\n\024angul"
-    "ar_velocity_frd\030\002 \001(\0132/.mavsdk.rpc.telem"
-    "etry_server.AngularVelocityFrd\022I\n\022magnet"
-    "ic_field_frd\030\003 \001(\0132-.mavsdk.rpc.telemetr"
-    "y_server.MagneticFieldFrd\022!\n\020temperature"
-    "_degc\030\004 \001(\002B\007\202\265\030\003NaN\022\024\n\014timestamp_us\030\005 \001"
-    "(\004\"\264\002\n\025TelemetryServerResult\022I\n\006result\030\001"
-    " \001(\01629.mavsdk.rpc.telemetry_server.Telem"
-    "etryServerResult.Result\022\022\n\nresult_str\030\002 "
-    "\001(\t\"\273\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022\n\016RE"
-    "SULT_SUCCESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002\022\033\n\027"
-    "RESULT_CONNECTION_ERROR\020\003\022\017\n\013RESULT_BUSY"
-    "\020\004\022\031\n\025RESULT_COMMAND_DENIED\020\005\022\022\n\016RESULT_"
-    "TIMEOUT\020\006\022\026\n\022RESULT_UNSUPPORTED\020\007*\244\001\n\007Fi"
-    "xType\022\023\n\017FIX_TYPE_NO_GPS\020\000\022\023\n\017FIX_TYPE_N"
-    "O_FIX\020\001\022\023\n\017FIX_TYPE_FIX_2D\020\002\022\023\n\017FIX_TYPE"
-    "_FIX_3D\020\003\022\025\n\021FIX_TYPE_FIX_DGPS\020\004\022\026\n\022FIX_"
-    "TYPE_RTK_FLOAT\020\005\022\026\n\022FIX_TYPE_RTK_FIXED\020\006"
-    "*\215\001\n\tVtolState\022\030\n\024VTOL_STATE_UNDEFINED\020\000"
-    "\022\037\n\033VTOL_STATE_TRANSITION_TO_FW\020\001\022\037\n\033VTO"
-    "L_STATE_TRANSITION_TO_MC\020\002\022\021\n\rVTOL_STATE"
-    "_MC\020\003\022\021\n\rVTOL_STATE_FW\020\004*\371\001\n\016StatusTextT"
-    "ype\022\032\n\026STATUS_TEXT_TYPE_DEBUG\020\000\022\031\n\025STATU"
-    "S_TEXT_TYPE_INFO\020\001\022\033\n\027STATUS_TEXT_TYPE_N"
-    "OTICE\020\002\022\034\n\030STATUS_TEXT_TYPE_WARNING\020\003\022\032\n"
-    "\026STATUS_TEXT_TYPE_ERROR\020\004\022\035\n\031STATUS_TEXT"
-    "_TYPE_CRITICAL\020\005\022\032\n\026STATUS_TEXT_TYPE_ALE"
-    "RT\020\006\022\036\n\032STATUS_TEXT_TYPE_EMERGENCY\020\007*\223\001\n"
-    "\013LandedState\022\030\n\024LANDED_STATE_UNKNOWN\020\000\022\032"
-    "\n\026LANDED_STATE_ON_GROUND\020\001\022\027\n\023LANDED_STA"
-    "TE_IN_AIR\020\002\022\033\n\027LANDED_STATE_TAKING_OFF\020\003"
-    "\022\030\n\024LANDED_STATE_LANDING\020\0042\243\020\n\026Telemetry"
-    "ServerService\022\202\001\n\017PublishPosition\0223.mavs"
-    "dk.rpc.telemetry_server.PublishPositionR"
-    "equest\0324.mavsdk.rpc.telemetry_server.Pub"
-    "lishPositionResponse\"\004\200\265\030\001\022v\n\013PublishHom"
-    "e\022/.mavsdk.rpc.telemetry_server.PublishH"
-    "omeRequest\0320.mavsdk.rpc.telemetry_server"
-    ".PublishHomeResponse\"\004\200\265\030\001\022\205\001\n\020PublishSy"
-    "sStatus\0224.mavsdk.rpc.telemetry_server.Pu"
-    "blishSysStatusRequest\0325.mavsdk.rpc.telem"
-    "etry_server.PublishSysStatusResponse\"\004\200\265"
-    "\030\001\022\232\001\n\027PublishExtendedSysState\022;.mavsdk."
-    "rpc.telemetry_server.PublishExtendedSysS"
-    "tateRequest\032<.mavsdk.rpc.telemetry_serve"
-    "r.PublishExtendedSysStateResponse\"\004\200\265\030\001\022"
-    "|\n\rPublishRawGps\0221.mavsdk.rpc.telemetry_"
-    "server.PublishRawGpsRequest\0322.mavsdk.rpc"
-    ".telemetry_server.PublishRawGpsResponse\""
-    "\004\200\265\030\001\022\177\n\016PublishBattery\0222.mavsdk.rpc.tel"
-    "emetry_server.PublishBatteryRequest\0323.ma"
-    "vsdk.rpc.telemetry_server.PublishBattery"
-    "Response\"\004\200\265\030\001\022\210\001\n\021PublishStatusText\0225.m"
-    "avsdk.rpc.telemetry_server.PublishStatus"
-    "TextRequest\0326.mavsdk.rpc.telemetry_serve"
-    "r.PublishStatusTextResponse\"\004\200\265\030\001\022\202\001\n\017Pu"
-    "blishOdometry\0223.mavsdk.rpc.telemetry_ser"
-    "ver.PublishOdometryRequest\0324.mavsdk.rpc."
-    "telemetry_server.PublishOdometryResponse"
-    "\"\004\200\265\030\001\022\243\001\n\032PublishPositionVelocityNed\022>."
+    "_server.TelemetryServerResult\"v\n\037Publish"
+    "ExtendedSysStateResponse\022S\n\027telemetry_se"
+    "rver_result\030\001 \001(\01322.mavsdk.rpc.telemetry"
+    "_server.TelemetryServerResult\"l\n\025Publish"
+    "RawGpsResponse\022S\n\027telemetry_server_resul"
+    "t\030\001 \001(\01322.mavsdk.rpc.telemetry_server.Te"
+    "lemetryServerResult\"m\n\026PublishBatteryRes"
+    "ponse\022S\n\027telemetry_server_result\030\001 \001(\01322"
+    ".mavsdk.rpc.telemetry_server.TelemetrySe"
+    "rverResult\"p\n\031PublishStatusTextResponse\022"
+    "S\n\027telemetry_server_result\030\001 \001(\01322.mavsd"
+    "k.rpc.telemetry_server.TelemetryServerRe"
+    "sult\"n\n\027PublishOdometryResponse\022S\n\027telem"
+    "etry_server_result\030\001 \001(\01322.mavsdk.rpc.te"
+    "lemetry_server.TelemetryServerResult\"y\n\""
+    "PublishPositionVelocityNedResponse\022S\n\027te"
+    "lemetry_server_result\030\001 \001(\01322.mavsdk.rpc"
+    ".telemetry_server.TelemetryServerResult\""
+    "q\n\032PublishGroundTruthResponse\022S\n\027telemet"
+    "ry_server_result\030\001 \001(\01322.mavsdk.rpc.tele"
+    "metry_server.TelemetryServerResult\"i\n\022Pu"
+    "blishImuResponse\022S\n\027telemetry_server_res"
+    "ult\030\001 \001(\01322.mavsdk.rpc.telemetry_server."
+    "TelemetryServerResult\"o\n\030PublishScaledIm"
+    "uResponse\022S\n\027telemetry_server_result\030\001 \001"
+    "(\01322.mavsdk.rpc.telemetry_server.Telemet"
+    "ryServerResult\"l\n\025PublishRawImuResponse\022"
+    "S\n\027telemetry_server_result\030\001 \001(\01322.mavsd"
+    "k.rpc.telemetry_server.TelemetryServerRe"
+    "sult\"s\n\034PublishUnixEpochTimeResponse\022S\n\027"
+    "telemetry_server_result\030\001 \001(\01322.mavsdk.r"
+    "pc.telemetry_server.TelemetryServerResul"
+    "t\"t\n\035PublishDistanceSensorResponse\022S\n\027te"
+    "lemetry_server_result\030\001 \001(\01322.mavsdk.rpc"
+    ".telemetry_server.TelemetryServerResult\""
+    "n\n\027PublishAttitudeResponse\022S\n\027telemetry_"
+    "server_result\030\001 \001(\01322.mavsdk.rpc.telemet"
+    "ry_server.TelemetryServerResult\"z\n#Publi"
+    "shVisualFlightRulesHudResponse\022S\n\027teleme"
+    "try_server_result\030\001 \001(\01322.mavsdk.rpc.tel"
+    "emetry_server.TelemetryServerResult\"\225\001\n\010"
+    "Position\022\035\n\014latitude_deg\030\001 \001(\001B\007\202\265\030\003NaN\022"
+    "\036\n\rlongitude_deg\030\002 \001(\001B\007\202\265\030\003NaN\022$\n\023absol"
+    "ute_altitude_m\030\003 \001(\002B\007\202\265\030\003NaN\022$\n\023relativ"
+    "e_altitude_m\030\004 \001(\002B\007\202\265\030\003NaN\"\'\n\007Heading\022\034"
+    "\n\013heading_deg\030\001 \001(\001B\007\202\265\030\003NaN\"r\n\nQuaterni"
+    "on\022\022\n\001w\030\001 \001(\002B\007\202\265\030\003NaN\022\022\n\001x\030\002 \001(\002B\007\202\265\030\003N"
+    "aN\022\022\n\001y\030\003 \001(\002B\007\202\265\030\003NaN\022\022\n\001z\030\004 \001(\002B\007\202\265\030\003N"
+    "aN\022\024\n\014timestamp_us\030\005 \001(\004\"s\n\nEulerAngle\022\031"
+    "\n\010roll_deg\030\001 \001(\002B\007\202\265\030\003NaN\022\032\n\tpitch_deg\030\002"
+    " \001(\002B\007\202\265\030\003NaN\022\030\n\007yaw_deg\030\003 \001(\002B\007\202\265\030\003NaN\022"
+    "\024\n\014timestamp_us\030\004 \001(\004\"l\n\023AngularVelocity"
+    "Body\022\033\n\nroll_rad_s\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013pit"
+    "ch_rad_s\030\002 \001(\002B\007\202\265\030\003NaN\022\032\n\tyaw_rad_s\030\003 \001"
+    "(\002B\007\202\265\030\003NaN\"`\n\007GpsInfo\022\035\n\016num_satellites"
+    "\030\001 \001(\005B\005\202\265\030\0010\0226\n\010fix_type\030\002 \001(\0162$.mavsdk"
+    ".rpc.telemetry_server.FixType\"\337\002\n\006RawGps"
+    "\022\024\n\014timestamp_us\030\001 \001(\004\022\024\n\014latitude_deg\030\002"
+    " \001(\001\022\025\n\rlongitude_deg\030\003 \001(\001\022\033\n\023absolute_"
+    "altitude_m\030\004 \001(\002\022\014\n\004hdop\030\005 \001(\002\022\014\n\004vdop\030\006"
+    " \001(\002\022\024\n\014velocity_m_s\030\007 \001(\002\022\017\n\007cog_deg\030\010 "
+    "\001(\002\022\034\n\024altitude_ellipsoid_m\030\t \001(\002\022 \n\030hor"
+    "izontal_uncertainty_m\030\n \001(\002\022\036\n\026vertical_"
+    "uncertainty_m\030\013 \001(\002\022 \n\030velocity_uncertai"
+    "nty_m_s\030\014 \001(\002\022\037\n\027heading_uncertainty_deg"
+    "\030\r \001(\002\022\017\n\007yaw_deg\030\016 \001(\002\"I\n\007Battery\022\032\n\tvo"
+    "ltage_v\030\001 \001(\002B\007\202\265\030\003NaN\022\"\n\021remaining_perc"
+    "ent\030\002 \001(\002B\007\202\265\030\003NaN\"|\n\010RcStatus\022%\n\022was_av"
+    "ailable_once\030\001 \001(\010B\t\202\265\030\005false\022\037\n\014is_avai"
+    "lable\030\002 \001(\010B\t\202\265\030\005false\022(\n\027signal_strengt"
+    "h_percent\030\003 \001(\002B\007\202\265\030\003NaN\"U\n\nStatusText\0229"
+    "\n\004type\030\001 \001(\0162+.mavsdk.rpc.telemetry_serv"
+    "er.StatusTextType\022\014\n\004text\030\002 \001(\t\"\?\n\025Actua"
+    "torControlTarget\022\024\n\005group\030\001 \001(\005B\005\202\265\030\0010\022\020"
+    "\n\010controls\030\002 \003(\002\"\?\n\024ActuatorOutputStatus"
+    "\022\025\n\006active\030\001 \001(\rB\005\202\265\030\0010\022\020\n\010actuator\030\002 \003("
+    "\002\"\'\n\nCovariance\022\031\n\021covariance_matrix\030\001 \003"
+    "(\002\";\n\014VelocityBody\022\r\n\005x_m_s\030\001 \001(\002\022\r\n\005y_m"
+    "_s\030\002 \001(\002\022\r\n\005z_m_s\030\003 \001(\002\"5\n\014PositionBody\022"
+    "\013\n\003x_m\030\001 \001(\002\022\013\n\003y_m\030\002 \001(\002\022\013\n\003z_m\030\003 \001(\002\"\244"
+    "\005\n\010Odometry\022\021\n\ttime_usec\030\001 \001(\004\022@\n\010frame_"
+    "id\030\002 \001(\0162..mavsdk.rpc.telemetry_server.O"
+    "dometry.MavFrame\022F\n\016child_frame_id\030\003 \001(\016"
+    "2..mavsdk.rpc.telemetry_server.Odometry."
+    "MavFrame\022@\n\rposition_body\030\004 \001(\0132).mavsdk"
+    ".rpc.telemetry_server.PositionBody\0222\n\001q\030"
+    "\005 \001(\0132\'.mavsdk.rpc.telemetry_server.Quat"
+    "ernion\022@\n\rvelocity_body\030\006 \001(\0132).mavsdk.r"
+    "pc.telemetry_server.VelocityBody\022O\n\025angu"
+    "lar_velocity_body\030\007 \001(\01320.mavsdk.rpc.tel"
+    "emetry_server.AngularVelocityBody\022@\n\017pos"
+    "e_covariance\030\010 \001(\0132\'.mavsdk.rpc.telemetr"
+    "y_server.Covariance\022D\n\023velocity_covarian"
+    "ce\030\t \001(\0132\'.mavsdk.rpc.telemetry_server.C"
+    "ovariance\"j\n\010MavFrame\022\023\n\017MAV_FRAME_UNDEF"
+    "\020\000\022\026\n\022MAV_FRAME_BODY_NED\020\010\022\030\n\024MAV_FRAME_"
+    "VISION_NED\020\020\022\027\n\023MAV_FRAME_ESTIM_NED\020\022\"\177\n"
+    "\016DistanceSensor\022#\n\022minimum_distance_m\030\001 "
+    "\001(\002B\007\202\265\030\003NaN\022#\n\022maximum_distance_m\030\002 \001(\002"
+    "B\007\202\265\030\003NaN\022#\n\022current_distance_m\030\003 \001(\002B\007\202"
+    "\265\030\003NaN\"\260\001\n\016ScaledPressure\022\024\n\014timestamp_u"
+    "s\030\001 \001(\004\022\035\n\025absolute_pressure_hpa\030\002 \001(\002\022!"
+    "\n\031differential_pressure_hpa\030\003 \001(\002\022\027\n\017tem"
+    "perature_deg\030\004 \001(\002\022-\n%differential_press"
+    "ure_temperature_deg\030\005 \001(\002\"Y\n\013PositionNed"
+    "\022\030\n\007north_m\030\001 \001(\002B\007\202\265\030\003NaN\022\027\n\006east_m\030\002 \001"
+    "(\002B\007\202\265\030\003NaN\022\027\n\006down_m\030\003 \001(\002B\007\202\265\030\003NaN\"D\n\013"
+    "VelocityNed\022\021\n\tnorth_m_s\030\001 \001(\002\022\020\n\010east_m"
+    "_s\030\002 \001(\002\022\020\n\010down_m_s\030\003 \001(\002\"\215\001\n\023PositionV"
+    "elocityNed\022:\n\010position\030\001 \001(\0132(.mavsdk.rp"
+    "c.telemetry_server.PositionNed\022:\n\010veloci"
+    "ty\030\002 \001(\0132(.mavsdk.rpc.telemetry_server.V"
+    "elocityNed\"r\n\013GroundTruth\022\035\n\014latitude_de"
+    "g\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rlongitude_deg\030\002 \001(\001B"
+    "\007\202\265\030\003NaN\022$\n\023absolute_altitude_m\030\003 \001(\002B\007\202"
+    "\265\030\003NaN\"\327\001\n\020FixedwingMetrics\022\035\n\014airspeed_"
+    "m_s\030\001 \001(\002B\007\202\265\030\003NaN\022 \n\017groundspeed_m_s\030\002 "
+    "\001(\002B\007\202\265\030\003NaN\022\034\n\013heading_deg\030\003 \001(\002B\007\202\265\030\003N"
+    "aN\022$\n\023throttle_percentage\030\004 \001(\002B\007\202\265\030\003NaN"
+    "\022\035\n\014altitude_msl\030\005 \001(\002B\007\202\265\030\003NaN\022\037\n\016climb"
+    "_rate_m_s\030\006 \001(\002B\007\202\265\030\003NaN\"i\n\017Acceleration"
+    "Frd\022\035\n\014forward_m_s2\030\001 \001(\002B\007\202\265\030\003NaN\022\033\n\nri"
+    "ght_m_s2\030\002 \001(\002B\007\202\265\030\003NaN\022\032\n\tdown_m_s2\030\003 \001"
+    "(\002B\007\202\265\030\003NaN\"o\n\022AngularVelocityFrd\022\036\n\rfor"
+    "ward_rad_s\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013right_rad_s"
+    "\030\002 \001(\002B\007\202\265\030\003NaN\022\033\n\ndown_rad_s\030\003 \001(\002B\007\202\265\030"
+    "\003NaN\"m\n\020MagneticFieldFrd\022\036\n\rforward_gaus"
+    "s\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013right_gauss\030\002 \001(\002B\007\202"
+    "\265\030\003NaN\022\033\n\ndown_gauss\030\003 \001(\002B\007\202\265\030\003NaN\"\240\002\n\003"
+    "Imu\022F\n\020acceleration_frd\030\001 \001(\0132,.mavsdk.r"
+    "pc.telemetry_server.AccelerationFrd\022M\n\024a"
+    "ngular_velocity_frd\030\002 \001(\0132/.mavsdk.rpc.t"
+    "elemetry_server.AngularVelocityFrd\022I\n\022ma"
+    "gnetic_field_frd\030\003 \001(\0132-.mavsdk.rpc.tele"
+    "metry_server.MagneticFieldFrd\022!\n\020tempera"
+    "ture_degc\030\004 \001(\002B\007\202\265\030\003NaN\022\024\n\014timestamp_us"
+    "\030\005 \001(\004\"\264\002\n\025TelemetryServerResult\022I\n\006resu"
+    "lt\030\001 \001(\01629.mavsdk.rpc.telemetry_server.T"
+    "elemetryServerResult.Result\022\022\n\nresult_st"
+    "r\030\002 \001(\t\"\273\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022"
+    "\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002"
+    "\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\017\n\013RESULT_"
+    "BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIED\020\005\022\022\n\016RES"
+    "ULT_TIMEOUT\020\006\022\026\n\022RESULT_UNSUPPORTED\020\007*\244\001"
+    "\n\007FixType\022\023\n\017FIX_TYPE_NO_GPS\020\000\022\023\n\017FIX_TY"
+    "PE_NO_FIX\020\001\022\023\n\017FIX_TYPE_FIX_2D\020\002\022\023\n\017FIX_"
+    "TYPE_FIX_3D\020\003\022\025\n\021FIX_TYPE_FIX_DGPS\020\004\022\026\n\022"
+    "FIX_TYPE_RTK_FLOAT\020\005\022\026\n\022FIX_TYPE_RTK_FIX"
+    "ED\020\006*\215\001\n\tVtolState\022\030\n\024VTOL_STATE_UNDEFIN"
+    "ED\020\000\022\037\n\033VTOL_STATE_TRANSITION_TO_FW\020\001\022\037\n"
+    "\033VTOL_STATE_TRANSITION_TO_MC\020\002\022\021\n\rVTOL_S"
+    "TATE_MC\020\003\022\021\n\rVTOL_STATE_FW\020\004*\371\001\n\016StatusT"
+    "extType\022\032\n\026STATUS_TEXT_TYPE_DEBUG\020\000\022\031\n\025S"
+    "TATUS_TEXT_TYPE_INFO\020\001\022\033\n\027STATUS_TEXT_TY"
+    "PE_NOTICE\020\002\022\034\n\030STATUS_TEXT_TYPE_WARNING\020"
+    "\003\022\032\n\026STATUS_TEXT_TYPE_ERROR\020\004\022\035\n\031STATUS_"
+    "TEXT_TYPE_CRITICAL\020\005\022\032\n\026STATUS_TEXT_TYPE"
+    "_ALERT\020\006\022\036\n\032STATUS_TEXT_TYPE_EMERGENCY\020\007"
+    "*\223\001\n\013LandedState\022\030\n\024LANDED_STATE_UNKNOWN"
+    "\020\000\022\032\n\026LANDED_STATE_ON_GROUND\020\001\022\027\n\023LANDED"
+    "_STATE_IN_AIR\020\002\022\033\n\027LANDED_STATE_TAKING_O"
+    "FF\020\003\022\030\n\024LANDED_STATE_LANDING\020\0042\321\022\n\026Telem"
+    "etryServerService\022\202\001\n\017PublishPosition\0223."
     "mavsdk.rpc.telemetry_server.PublishPosit"
-    "ionVelocityNedRequest\032\?.mavsdk.rpc.telem"
-    "etry_server.PublishPositionVelocityNedRe"
-    "sponse\"\004\200\265\030\001\022\213\001\n\022PublishGroundTruth\0226.ma"
-    "vsdk.rpc.telemetry_server.PublishGroundT"
-    "ruthRequest\0327.mavsdk.rpc.telemetry_serve"
-    "r.PublishGroundTruthResponse\"\004\200\265\030\001\022s\n\nPu"
-    "blishImu\022..mavsdk.rpc.telemetry_server.P"
-    "ublishImuRequest\032/.mavsdk.rpc.telemetry_"
-    "server.PublishImuResponse\"\004\200\265\030\001\022\205\001\n\020Publ"
-    "ishScaledImu\0224.mavsdk.rpc.telemetry_serv"
-    "er.PublishScaledImuRequest\0325.mavsdk.rpc."
-    "telemetry_server.PublishScaledImuRespons"
-    "e\"\004\200\265\030\001\022|\n\rPublishRawImu\0221.mavsdk.rpc.te"
-    "lemetry_server.PublishRawImuRequest\0322.ma"
-    "vsdk.rpc.telemetry_server.PublishRawImuR"
-    "esponse\"\004\200\265\030\001\022\221\001\n\024PublishUnixEpochTime\0228"
-    ".mavsdk.rpc.telemetry_server.PublishUnix"
-    "EpochTimeRequest\0329.mavsdk.rpc.telemetry_"
-    "server.PublishUnixEpochTimeResponse\"\004\200\265\030"
-    "\001\022\224\001\n\025PublishDistanceSensor\0229.mavsdk.rpc"
-    ".telemetry_server.PublishDistanceSensorR"
-    "equest\032:.mavsdk.rpc.telemetry_server.Pub"
-    "lishDistanceSensorResponse\"\004\200\265\030\001B2\n\032io.m"
-    "avsdk.telemetry_serverB\024TelemetryServerP"
-    "rotob\006proto3"
+    "ionRequest\0324.mavsdk.rpc.telemetry_server"
+    ".PublishPositionResponse\"\004\200\265\030\001\022v\n\013Publis"
+    "hHome\022/.mavsdk.rpc.telemetry_server.Publ"
+    "ishHomeRequest\0320.mavsdk.rpc.telemetry_se"
+    "rver.PublishHomeResponse\"\004\200\265\030\001\022\205\001\n\020Publi"
+    "shSysStatus\0224.mavsdk.rpc.telemetry_serve"
+    "r.PublishSysStatusRequest\0325.mavsdk.rpc.t"
+    "elemetry_server.PublishSysStatusResponse"
+    "\"\004\200\265\030\001\022\232\001\n\027PublishExtendedSysState\022;.mav"
+    "sdk.rpc.telemetry_server.PublishExtended"
+    "SysStateRequest\032<.mavsdk.rpc.telemetry_s"
+    "erver.PublishExtendedSysStateResponse\"\004\200"
+    "\265\030\001\022|\n\rPublishRawGps\0221.mavsdk.rpc.teleme"
+    "try_server.PublishRawGpsRequest\0322.mavsdk"
+    ".rpc.telemetry_server.PublishRawGpsRespo"
+    "nse\"\004\200\265\030\001\022\177\n\016PublishBattery\0222.mavsdk.rpc"
+    ".telemetry_server.PublishBatteryRequest\032"
+    "3.mavsdk.rpc.telemetry_server.PublishBat"
+    "teryResponse\"\004\200\265\030\001\022\210\001\n\021PublishStatusText"
+    "\0225.mavsdk.rpc.telemetry_server.PublishSt"
+    "atusTextRequest\0326.mavsdk.rpc.telemetry_s"
+    "erver.PublishStatusTextResponse\"\004\200\265\030\001\022\202\001"
+    "\n\017PublishOdometry\0223.mavsdk.rpc.telemetry"
+    "_server.PublishOdometryRequest\0324.mavsdk."
+    "rpc.telemetry_server.PublishOdometryResp"
+    "onse\"\004\200\265\030\001\022\243\001\n\032PublishPositionVelocityNe"
+    "d\022>.mavsdk.rpc.telemetry_server.PublishP"
+    "ositionVelocityNedRequest\032\?.mavsdk.rpc.t"
+    "elemetry_server.PublishPositionVelocityN"
+    "edResponse\"\004\200\265\030\001\022\213\001\n\022PublishGroundTruth\022"
+    "6.mavsdk.rpc.telemetry_server.PublishGro"
+    "undTruthRequest\0327.mavsdk.rpc.telemetry_s"
+    "erver.PublishGroundTruthResponse\"\004\200\265\030\001\022s"
+    "\n\nPublishImu\022..mavsdk.rpc.telemetry_serv"
+    "er.PublishImuRequest\032/.mavsdk.rpc.teleme"
+    "try_server.PublishImuResponse\"\004\200\265\030\001\022\205\001\n\020"
+    "PublishScaledImu\0224.mavsdk.rpc.telemetry_"
+    "server.PublishScaledImuRequest\0325.mavsdk."
+    "rpc.telemetry_server.PublishScaledImuRes"
+    "ponse\"\004\200\265\030\001\022|\n\rPublishRawImu\0221.mavsdk.rp"
+    "c.telemetry_server.PublishRawImuRequest\032"
+    "2.mavsdk.rpc.telemetry_server.PublishRaw"
+    "ImuResponse\"\004\200\265\030\001\022\221\001\n\024PublishUnixEpochTi"
+    "me\0228.mavsdk.rpc.telemetry_server.Publish"
+    "UnixEpochTimeRequest\0329.mavsdk.rpc.teleme"
+    "try_server.PublishUnixEpochTimeResponse\""
+    "\004\200\265\030\001\022\224\001\n\025PublishDistanceSensor\0229.mavsdk"
+    ".rpc.telemetry_server.PublishDistanceSen"
+    "sorRequest\032:.mavsdk.rpc.telemetry_server"
+    ".PublishDistanceSensorResponse\"\004\200\265\030\001\022\202\001\n"
+    "\017PublishAttitude\0223.mavsdk.rpc.telemetry_"
+    "server.PublishAttitudeRequest\0324.mavsdk.r"
+    "pc.telemetry_server.PublishAttitudeRespo"
+    "nse\"\004\200\265\030\001\022\246\001\n\033PublishVisualFlightRulesHu"
+    "d\022\?.mavsdk.rpc.telemetry_server.PublishV"
+    "isualFlightRulesHudRequest\032@.mavsdk.rpc."
+    "telemetry_server.PublishVisualFlightRule"
+    "sHudResponse\"\004\200\265\030\001B2\n\032io.mavsdk.telemetr"
+    "y_serverB\024TelemetryServerProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_deps[1] =
     {
@@ -2728,13 +2907,13 @@ static ::absl::once_flag descriptor_table_telemetry_5fserver_2ftelemetry_5fserve
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto = {
     false,
     false,
-    10492,
+    11398,
     descriptor_table_protodef_telemetry_5fserver_2ftelemetry_5fserver_2eproto,
     "telemetry_server/telemetry_server.proto",
     &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
     descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_deps,
     1,
-    61,
+    65,
     schemas,
     file_default_instances,
     TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto::offsets,
@@ -7455,6 +7634,557 @@ void PublishDistanceSensorRequest::InternalSwap(PublishDistanceSensorRequest* PR
 }
 // ===================================================================
 
+class PublishAttitudeRequest::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<PublishAttitudeRequest>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(PublishAttitudeRequest, _impl_._has_bits_);
+};
+
+PublishAttitudeRequest::PublishAttitudeRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishAttitudeRequest)
+}
+inline PROTOBUF_NDEBUG_INLINE PublishAttitudeRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+PublishAttitudeRequest::PublishAttitudeRequest(
+    ::google::protobuf::Arena* arena,
+    const PublishAttitudeRequest& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  PublishAttitudeRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.angle_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::telemetry_server::EulerAngle>(
+                              arena, *from._impl_.angle_)
+                        : nullptr;
+  _impl_.angular_velocity_ = (cached_has_bits & 0x00000002u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::telemetry_server::AngularVelocityBody>(
+                              arena, *from._impl_.angular_velocity_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishAttitudeRequest)
+}
+inline PROTOBUF_NDEBUG_INLINE PublishAttitudeRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void PublishAttitudeRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, angle_),
+           0,
+           offsetof(Impl_, angular_velocity_) -
+               offsetof(Impl_, angle_) +
+               sizeof(Impl_::angular_velocity_));
+}
+PublishAttitudeRequest::~PublishAttitudeRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishAttitudeRequest)
+  SharedDtor(*this);
+}
+inline void PublishAttitudeRequest::SharedDtor(MessageLite& self) {
+  PublishAttitudeRequest& this_ = static_cast<PublishAttitudeRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.angle_;
+  delete this_._impl_.angular_velocity_;
+  this_._impl_.~Impl_();
+}
+
+inline void* PublishAttitudeRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) PublishAttitudeRequest(arena);
+}
+constexpr auto PublishAttitudeRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(PublishAttitudeRequest),
+                                            alignof(PublishAttitudeRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull PublishAttitudeRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_PublishAttitudeRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &PublishAttitudeRequest::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<PublishAttitudeRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &PublishAttitudeRequest::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<PublishAttitudeRequest>(), &PublishAttitudeRequest::ByteSizeLong,
+            &PublishAttitudeRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(PublishAttitudeRequest, _impl_._cached_size_),
+        false,
+    },
+    &PublishAttitudeRequest::kDescriptorMethods,
+    &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* PublishAttitudeRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 2, 0, 2> PublishAttitudeRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishAttitudeRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    2,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::PublishAttitudeRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.telemetry_server.AngularVelocityBody angular_velocity = 2;
+    {::_pbi::TcParser::FastMtS1,
+     {18, 1, 1, PROTOBUF_FIELD_OFFSET(PublishAttitudeRequest, _impl_.angular_velocity_)}},
+    // .mavsdk.rpc.telemetry_server.EulerAngle angle = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishAttitudeRequest, _impl_.angle_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.EulerAngle angle = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishAttitudeRequest, _impl_.angle_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.telemetry_server.AngularVelocityBody angular_velocity = 2;
+    {PROTOBUF_FIELD_OFFSET(PublishAttitudeRequest, _impl_.angular_velocity_), _Internal::kHasBitsOffset + 1, 1,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::EulerAngle>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::AngularVelocityBody>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void PublishAttitudeRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishAttitudeRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      ABSL_DCHECK(_impl_.angle_ != nullptr);
+      _impl_.angle_->Clear();
+    }
+    if (cached_has_bits & 0x00000002u) {
+      ABSL_DCHECK(_impl_.angular_velocity_ != nullptr);
+      _impl_.angular_velocity_->Clear();
+    }
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* PublishAttitudeRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const PublishAttitudeRequest& this_ = static_cast<const PublishAttitudeRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* PublishAttitudeRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const PublishAttitudeRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishAttitudeRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.telemetry_server.EulerAngle angle = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.angle_, this_._impl_.angle_->GetCachedSize(), target,
+                stream);
+          }
+
+          // .mavsdk.rpc.telemetry_server.AngularVelocityBody angular_velocity = 2;
+          if (cached_has_bits & 0x00000002u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                2, *this_._impl_.angular_velocity_, this_._impl_.angular_velocity_->GetCachedSize(), target,
+                stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishAttitudeRequest)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t PublishAttitudeRequest::ByteSizeLong(const MessageLite& base) {
+          const PublishAttitudeRequest& this_ = static_cast<const PublishAttitudeRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t PublishAttitudeRequest::ByteSizeLong() const {
+          const PublishAttitudeRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry_server.PublishAttitudeRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+          cached_has_bits = this_._impl_._has_bits_[0];
+          if (cached_has_bits & 0x00000003u) {
+            // .mavsdk.rpc.telemetry_server.EulerAngle angle = 1;
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.angle_);
+            }
+            // .mavsdk.rpc.telemetry_server.AngularVelocityBody angular_velocity = 2;
+            if (cached_has_bits & 0x00000002u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.angular_velocity_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void PublishAttitudeRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<PublishAttitudeRequest*>(&to_msg);
+  auto& from = static_cast<const PublishAttitudeRequest&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishAttitudeRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      ABSL_DCHECK(from._impl_.angle_ != nullptr);
+      if (_this->_impl_.angle_ == nullptr) {
+        _this->_impl_.angle_ =
+            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::telemetry_server::EulerAngle>(arena, *from._impl_.angle_);
+      } else {
+        _this->_impl_.angle_->MergeFrom(*from._impl_.angle_);
+      }
+    }
+    if (cached_has_bits & 0x00000002u) {
+      ABSL_DCHECK(from._impl_.angular_velocity_ != nullptr);
+      if (_this->_impl_.angular_velocity_ == nullptr) {
+        _this->_impl_.angular_velocity_ =
+            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::telemetry_server::AngularVelocityBody>(arena, *from._impl_.angular_velocity_);
+      } else {
+        _this->_impl_.angular_velocity_->MergeFrom(*from._impl_.angular_velocity_);
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void PublishAttitudeRequest::CopyFrom(const PublishAttitudeRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry_server.PublishAttitudeRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void PublishAttitudeRequest::InternalSwap(PublishAttitudeRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(PublishAttitudeRequest, _impl_.angular_velocity_)
+      + sizeof(PublishAttitudeRequest::_impl_.angular_velocity_)
+      - PROTOBUF_FIELD_OFFSET(PublishAttitudeRequest, _impl_.angle_)>(
+          reinterpret_cast<char*>(&_impl_.angle_),
+          reinterpret_cast<char*>(&other->_impl_.angle_));
+}
+
+::google::protobuf::Metadata PublishAttitudeRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class PublishVisualFlightRulesHudRequest::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<PublishVisualFlightRulesHudRequest>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(PublishVisualFlightRulesHudRequest, _impl_._has_bits_);
+};
+
+PublishVisualFlightRulesHudRequest::PublishVisualFlightRulesHudRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudRequest)
+}
+inline PROTOBUF_NDEBUG_INLINE PublishVisualFlightRulesHudRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+PublishVisualFlightRulesHudRequest::PublishVisualFlightRulesHudRequest(
+    ::google::protobuf::Arena* arena,
+    const PublishVisualFlightRulesHudRequest& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  PublishVisualFlightRulesHudRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.fixed_wing_metrics_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::telemetry_server::FixedwingMetrics>(
+                              arena, *from._impl_.fixed_wing_metrics_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudRequest)
+}
+inline PROTOBUF_NDEBUG_INLINE PublishVisualFlightRulesHudRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void PublishVisualFlightRulesHudRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.fixed_wing_metrics_ = {};
+}
+PublishVisualFlightRulesHudRequest::~PublishVisualFlightRulesHudRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudRequest)
+  SharedDtor(*this);
+}
+inline void PublishVisualFlightRulesHudRequest::SharedDtor(MessageLite& self) {
+  PublishVisualFlightRulesHudRequest& this_ = static_cast<PublishVisualFlightRulesHudRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.fixed_wing_metrics_;
+  this_._impl_.~Impl_();
+}
+
+inline void* PublishVisualFlightRulesHudRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) PublishVisualFlightRulesHudRequest(arena);
+}
+constexpr auto PublishVisualFlightRulesHudRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(PublishVisualFlightRulesHudRequest),
+                                            alignof(PublishVisualFlightRulesHudRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull PublishVisualFlightRulesHudRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_PublishVisualFlightRulesHudRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &PublishVisualFlightRulesHudRequest::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<PublishVisualFlightRulesHudRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &PublishVisualFlightRulesHudRequest::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<PublishVisualFlightRulesHudRequest>(), &PublishVisualFlightRulesHudRequest::ByteSizeLong,
+            &PublishVisualFlightRulesHudRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(PublishVisualFlightRulesHudRequest, _impl_._cached_size_),
+        false,
+    },
+    &PublishVisualFlightRulesHudRequest::kDescriptorMethods,
+    &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* PublishVisualFlightRulesHudRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishVisualFlightRulesHudRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishVisualFlightRulesHudRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.telemetry_server.FixedwingMetrics fixed_wing_metrics = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishVisualFlightRulesHudRequest, _impl_.fixed_wing_metrics_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.FixedwingMetrics fixed_wing_metrics = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishVisualFlightRulesHudRequest, _impl_.fixed_wing_metrics_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::FixedwingMetrics>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void PublishVisualFlightRulesHudRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.fixed_wing_metrics_ != nullptr);
+    _impl_.fixed_wing_metrics_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* PublishVisualFlightRulesHudRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const PublishVisualFlightRulesHudRequest& this_ = static_cast<const PublishVisualFlightRulesHudRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* PublishVisualFlightRulesHudRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const PublishVisualFlightRulesHudRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.telemetry_server.FixedwingMetrics fixed_wing_metrics = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.fixed_wing_metrics_, this_._impl_.fixed_wing_metrics_->GetCachedSize(), target,
+                stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudRequest)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t PublishVisualFlightRulesHudRequest::ByteSizeLong(const MessageLite& base) {
+          const PublishVisualFlightRulesHudRequest& this_ = static_cast<const PublishVisualFlightRulesHudRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t PublishVisualFlightRulesHudRequest::ByteSizeLong() const {
+          const PublishVisualFlightRulesHudRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.telemetry_server.FixedwingMetrics fixed_wing_metrics = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.fixed_wing_metrics_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void PublishVisualFlightRulesHudRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<PublishVisualFlightRulesHudRequest*>(&to_msg);
+  auto& from = static_cast<const PublishVisualFlightRulesHudRequest&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.fixed_wing_metrics_ != nullptr);
+    if (_this->_impl_.fixed_wing_metrics_ == nullptr) {
+      _this->_impl_.fixed_wing_metrics_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::telemetry_server::FixedwingMetrics>(arena, *from._impl_.fixed_wing_metrics_);
+    } else {
+      _this->_impl_.fixed_wing_metrics_->MergeFrom(*from._impl_.fixed_wing_metrics_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void PublishVisualFlightRulesHudRequest::CopyFrom(const PublishVisualFlightRulesHudRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void PublishVisualFlightRulesHudRequest::InternalSwap(PublishVisualFlightRulesHudRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.fixed_wing_metrics_, other->_impl_.fixed_wing_metrics_);
+}
+
+::google::protobuf::Metadata PublishVisualFlightRulesHudRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
 class PublishPositionResponse::_Internal {
  public:
   using HasBits =
@@ -11201,6 +11931,506 @@ void PublishDistanceSensorResponse::InternalSwap(PublishDistanceSensorResponse* 
 }
 
 ::google::protobuf::Metadata PublishDistanceSensorResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class PublishAttitudeResponse::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<PublishAttitudeResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(PublishAttitudeResponse, _impl_._has_bits_);
+};
+
+PublishAttitudeResponse::PublishAttitudeResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishAttitudeResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE PublishAttitudeResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+PublishAttitudeResponse::PublishAttitudeResponse(
+    ::google::protobuf::Arena* arena,
+    const PublishAttitudeResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  PublishAttitudeResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.telemetry_server_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(
+                              arena, *from._impl_.telemetry_server_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishAttitudeResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE PublishAttitudeResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void PublishAttitudeResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.telemetry_server_result_ = {};
+}
+PublishAttitudeResponse::~PublishAttitudeResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishAttitudeResponse)
+  SharedDtor(*this);
+}
+inline void PublishAttitudeResponse::SharedDtor(MessageLite& self) {
+  PublishAttitudeResponse& this_ = static_cast<PublishAttitudeResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.telemetry_server_result_;
+  this_._impl_.~Impl_();
+}
+
+inline void* PublishAttitudeResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) PublishAttitudeResponse(arena);
+}
+constexpr auto PublishAttitudeResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(PublishAttitudeResponse),
+                                            alignof(PublishAttitudeResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull PublishAttitudeResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_PublishAttitudeResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &PublishAttitudeResponse::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<PublishAttitudeResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &PublishAttitudeResponse::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<PublishAttitudeResponse>(), &PublishAttitudeResponse::ByteSizeLong,
+            &PublishAttitudeResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(PublishAttitudeResponse, _impl_._cached_size_),
+        false,
+    },
+    &PublishAttitudeResponse::kDescriptorMethods,
+    &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* PublishAttitudeResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishAttitudeResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishAttitudeResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishAttitudeResponse, _impl_.telemetry_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishAttitudeResponse, _impl_.telemetry_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::TelemetryServerResult>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void PublishAttitudeResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishAttitudeResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.telemetry_server_result_ != nullptr);
+    _impl_.telemetry_server_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* PublishAttitudeResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const PublishAttitudeResponse& this_ = static_cast<const PublishAttitudeResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* PublishAttitudeResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const PublishAttitudeResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishAttitudeResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.telemetry_server_result_, this_._impl_.telemetry_server_result_->GetCachedSize(), target,
+                stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishAttitudeResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t PublishAttitudeResponse::ByteSizeLong(const MessageLite& base) {
+          const PublishAttitudeResponse& this_ = static_cast<const PublishAttitudeResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t PublishAttitudeResponse::ByteSizeLong() const {
+          const PublishAttitudeResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry_server.PublishAttitudeResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.telemetry_server_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void PublishAttitudeResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<PublishAttitudeResponse*>(&to_msg);
+  auto& from = static_cast<const PublishAttitudeResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishAttitudeResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.telemetry_server_result_ != nullptr);
+    if (_this->_impl_.telemetry_server_result_ == nullptr) {
+      _this->_impl_.telemetry_server_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(arena, *from._impl_.telemetry_server_result_);
+    } else {
+      _this->_impl_.telemetry_server_result_->MergeFrom(*from._impl_.telemetry_server_result_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void PublishAttitudeResponse::CopyFrom(const PublishAttitudeResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry_server.PublishAttitudeResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void PublishAttitudeResponse::InternalSwap(PublishAttitudeResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.telemetry_server_result_, other->_impl_.telemetry_server_result_);
+}
+
+::google::protobuf::Metadata PublishAttitudeResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class PublishVisualFlightRulesHudResponse::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<PublishVisualFlightRulesHudResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(PublishVisualFlightRulesHudResponse, _impl_._has_bits_);
+};
+
+PublishVisualFlightRulesHudResponse::PublishVisualFlightRulesHudResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE PublishVisualFlightRulesHudResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+PublishVisualFlightRulesHudResponse::PublishVisualFlightRulesHudResponse(
+    ::google::protobuf::Arena* arena,
+    const PublishVisualFlightRulesHudResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  PublishVisualFlightRulesHudResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.telemetry_server_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(
+                              arena, *from._impl_.telemetry_server_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE PublishVisualFlightRulesHudResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void PublishVisualFlightRulesHudResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.telemetry_server_result_ = {};
+}
+PublishVisualFlightRulesHudResponse::~PublishVisualFlightRulesHudResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudResponse)
+  SharedDtor(*this);
+}
+inline void PublishVisualFlightRulesHudResponse::SharedDtor(MessageLite& self) {
+  PublishVisualFlightRulesHudResponse& this_ = static_cast<PublishVisualFlightRulesHudResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.telemetry_server_result_;
+  this_._impl_.~Impl_();
+}
+
+inline void* PublishVisualFlightRulesHudResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) PublishVisualFlightRulesHudResponse(arena);
+}
+constexpr auto PublishVisualFlightRulesHudResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(PublishVisualFlightRulesHudResponse),
+                                            alignof(PublishVisualFlightRulesHudResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull PublishVisualFlightRulesHudResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_PublishVisualFlightRulesHudResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &PublishVisualFlightRulesHudResponse::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<PublishVisualFlightRulesHudResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &PublishVisualFlightRulesHudResponse::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<PublishVisualFlightRulesHudResponse>(), &PublishVisualFlightRulesHudResponse::ByteSizeLong,
+            &PublishVisualFlightRulesHudResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(PublishVisualFlightRulesHudResponse, _impl_._cached_size_),
+        false,
+    },
+    &PublishVisualFlightRulesHudResponse::kDescriptorMethods,
+    &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* PublishVisualFlightRulesHudResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PublishVisualFlightRulesHudResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PublishVisualFlightRulesHudResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(PublishVisualFlightRulesHudResponse, _impl_.telemetry_server_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+    {PROTOBUF_FIELD_OFFSET(PublishVisualFlightRulesHudResponse, _impl_.telemetry_server_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::telemetry_server::TelemetryServerResult>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void PublishVisualFlightRulesHudResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.telemetry_server_result_ != nullptr);
+    _impl_.telemetry_server_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* PublishVisualFlightRulesHudResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const PublishVisualFlightRulesHudResponse& this_ = static_cast<const PublishVisualFlightRulesHudResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* PublishVisualFlightRulesHudResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const PublishVisualFlightRulesHudResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.telemetry_server_result_, this_._impl_.telemetry_server_result_->GetCachedSize(), target,
+                stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t PublishVisualFlightRulesHudResponse::ByteSizeLong(const MessageLite& base) {
+          const PublishVisualFlightRulesHudResponse& this_ = static_cast<const PublishVisualFlightRulesHudResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t PublishVisualFlightRulesHudResponse::ByteSizeLong() const {
+          const PublishVisualFlightRulesHudResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.telemetry_server_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void PublishVisualFlightRulesHudResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<PublishVisualFlightRulesHudResponse*>(&to_msg);
+  auto& from = static_cast<const PublishVisualFlightRulesHudResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.telemetry_server_result_ != nullptr);
+    if (_this->_impl_.telemetry_server_result_ == nullptr) {
+      _this->_impl_.telemetry_server_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(arena, *from._impl_.telemetry_server_result_);
+    } else {
+      _this->_impl_.telemetry_server_result_->MergeFrom(*from._impl_.telemetry_server_result_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void PublishVisualFlightRulesHudResponse::CopyFrom(const PublishVisualFlightRulesHudResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void PublishVisualFlightRulesHudResponse::InternalSwap(PublishVisualFlightRulesHudResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.telemetry_server_result_, other->_impl_.telemetry_server_result_);
+}
+
+::google::protobuf::Metadata PublishVisualFlightRulesHudResponse::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
@@ -17550,15 +18780,15 @@ const ::google::protobuf::internal::ClassData* FixedwingMetrics::GetClassData() 
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 0, 2> FixedwingMetrics::_table_ = {
+const ::_pbi::TcParseTable<3, 6, 0, 0, 2> FixedwingMetrics::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    6, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967232,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
+    6,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     _class_data_.base(),
@@ -17572,22 +18802,41 @@ const ::_pbi::TcParseTable<2, 3, 0, 0, 2> FixedwingMetrics::_table_ = {
     // float airspeed_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
     {::_pbi::TcParser::FastF32S1,
      {13, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.airspeed_m_s_)}},
-    // float throttle_percentage = 2 [(.mavsdk.options.default_value) = "NaN"];
+    // float groundspeed_m_s = 2 [(.mavsdk.options.default_value) = "NaN"];
     {::_pbi::TcParser::FastF32S1,
-     {21, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.throttle_percentage_)}},
-    // float climb_rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.groundspeed_m_s_)}},
+    // float heading_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
     {::_pbi::TcParser::FastF32S1,
-     {29, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.climb_rate_m_s_)}},
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.heading_deg_)}},
+    // float throttle_percentage = 4 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {37, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.throttle_percentage_)}},
+    // float altitude_msl = 5 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {45, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.altitude_msl_)}},
+    // float climb_rate_m_s = 6 [(.mavsdk.options.default_value) = "NaN"];
+    {::_pbi::TcParser::FastF32S1,
+     {53, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.climb_rate_m_s_)}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
     // float airspeed_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
     {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.airspeed_m_s_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float throttle_percentage = 2 [(.mavsdk.options.default_value) = "NaN"];
+    // float groundspeed_m_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.groundspeed_m_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float heading_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.heading_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float throttle_percentage = 4 [(.mavsdk.options.default_value) = "NaN"];
     {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.throttle_percentage_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float climb_rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+    // float altitude_msl = 5 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.altitude_msl_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float climb_rate_m_s = 6 [(.mavsdk.options.default_value) = "NaN"];
     {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.climb_rate_m_s_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
   }},
@@ -17631,18 +18880,39 @@ PROTOBUF_NOINLINE void FixedwingMetrics::Clear() {
                 1, this_._internal_airspeed_m_s(), target);
           }
 
-          // float throttle_percentage = 2 [(.mavsdk.options.default_value) = "NaN"];
+          // float groundspeed_m_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_groundspeed_m_s()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                2, this_._internal_groundspeed_m_s(), target);
+          }
+
+          // float heading_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_heading_deg()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                3, this_._internal_heading_deg(), target);
+          }
+
+          // float throttle_percentage = 4 [(.mavsdk.options.default_value) = "NaN"];
           if (::absl::bit_cast<::uint32_t>(this_._internal_throttle_percentage()) != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                2, this_._internal_throttle_percentage(), target);
+                4, this_._internal_throttle_percentage(), target);
           }
 
-          // float climb_rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+          // float altitude_msl = 5 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_altitude_msl()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                5, this_._internal_altitude_msl(), target);
+          }
+
+          // float climb_rate_m_s = 6 [(.mavsdk.options.default_value) = "NaN"];
           if (::absl::bit_cast<::uint32_t>(this_._internal_climb_rate_m_s()) != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                3, this_._internal_climb_rate_m_s(), target);
+                6, this_._internal_climb_rate_m_s(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -17674,11 +18944,23 @@ PROTOBUF_NOINLINE void FixedwingMetrics::Clear() {
             if (::absl::bit_cast<::uint32_t>(this_._internal_airspeed_m_s()) != 0) {
               total_size += 5;
             }
-            // float throttle_percentage = 2 [(.mavsdk.options.default_value) = "NaN"];
+            // float groundspeed_m_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_groundspeed_m_s()) != 0) {
+              total_size += 5;
+            }
+            // float heading_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_heading_deg()) != 0) {
+              total_size += 5;
+            }
+            // float throttle_percentage = 4 [(.mavsdk.options.default_value) = "NaN"];
             if (::absl::bit_cast<::uint32_t>(this_._internal_throttle_percentage()) != 0) {
               total_size += 5;
             }
-            // float climb_rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+            // float altitude_msl = 5 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_altitude_msl()) != 0) {
+              total_size += 5;
+            }
+            // float climb_rate_m_s = 6 [(.mavsdk.options.default_value) = "NaN"];
             if (::absl::bit_cast<::uint32_t>(this_._internal_climb_rate_m_s()) != 0) {
               total_size += 5;
             }
@@ -17698,8 +18980,17 @@ void FixedwingMetrics::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
   if (::absl::bit_cast<::uint32_t>(from._internal_airspeed_m_s()) != 0) {
     _this->_impl_.airspeed_m_s_ = from._impl_.airspeed_m_s_;
   }
+  if (::absl::bit_cast<::uint32_t>(from._internal_groundspeed_m_s()) != 0) {
+    _this->_impl_.groundspeed_m_s_ = from._impl_.groundspeed_m_s_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_heading_deg()) != 0) {
+    _this->_impl_.heading_deg_ = from._impl_.heading_deg_;
+  }
   if (::absl::bit_cast<::uint32_t>(from._internal_throttle_percentage()) != 0) {
     _this->_impl_.throttle_percentage_ = from._impl_.throttle_percentage_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_altitude_msl()) != 0) {
+    _this->_impl_.altitude_msl_ = from._impl_.altitude_msl_;
   }
   if (::absl::bit_cast<::uint32_t>(from._internal_climb_rate_m_s()) != 0) {
     _this->_impl_.climb_rate_m_s_ = from._impl_.climb_rate_m_s_;

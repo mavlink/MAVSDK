@@ -131,6 +131,18 @@ TelemetryServer::publish_distance_sensor(DistanceSensor distance_sensor) const
     return _impl->publish_distance_sensor(distance_sensor);
 }
 
+TelemetryServer::Result
+TelemetryServer::publish_attitude(EulerAngle angle, AngularVelocityBody angular_velocity) const
+{
+    return _impl->publish_attitude(angle, angular_velocity);
+}
+
+TelemetryServer::Result
+TelemetryServer::publish_visual_flight_rules_hud(FixedwingMetrics fixed_wing_metrics) const
+{
+    return _impl->publish_visual_flight_rules_hud(fixed_wing_metrics);
+}
+
 bool operator==(const TelemetryServer::Position& lhs, const TelemetryServer::Position& rhs)
 {
     return ((std::isnan(rhs.latitude_deg) && std::isnan(lhs.latitude_deg)) ||
@@ -636,8 +648,14 @@ bool operator==(
 {
     return ((std::isnan(rhs.airspeed_m_s) && std::isnan(lhs.airspeed_m_s)) ||
             rhs.airspeed_m_s == lhs.airspeed_m_s) &&
+           ((std::isnan(rhs.groundspeed_m_s) && std::isnan(lhs.groundspeed_m_s)) ||
+            rhs.groundspeed_m_s == lhs.groundspeed_m_s) &&
+           ((std::isnan(rhs.heading_deg) && std::isnan(lhs.heading_deg)) ||
+            rhs.heading_deg == lhs.heading_deg) &&
            ((std::isnan(rhs.throttle_percentage) && std::isnan(lhs.throttle_percentage)) ||
             rhs.throttle_percentage == lhs.throttle_percentage) &&
+           ((std::isnan(rhs.altitude_msl) && std::isnan(lhs.altitude_msl)) ||
+            rhs.altitude_msl == lhs.altitude_msl) &&
            ((std::isnan(rhs.climb_rate_m_s) && std::isnan(lhs.climb_rate_m_s)) ||
             rhs.climb_rate_m_s == lhs.climb_rate_m_s);
 }
@@ -648,7 +666,10 @@ operator<<(std::ostream& str, TelemetryServer::FixedwingMetrics const& fixedwing
     str << std::setprecision(15);
     str << "fixedwing_metrics:" << '\n' << "{\n";
     str << "    airspeed_m_s: " << fixedwing_metrics.airspeed_m_s << '\n';
+    str << "    groundspeed_m_s: " << fixedwing_metrics.groundspeed_m_s << '\n';
+    str << "    heading_deg: " << fixedwing_metrics.heading_deg << '\n';
     str << "    throttle_percentage: " << fixedwing_metrics.throttle_percentage << '\n';
+    str << "    altitude_msl: " << fixedwing_metrics.altitude_msl << '\n';
     str << "    climb_rate_m_s: " << fixedwing_metrics.climb_rate_m_s << '\n';
     str << '}';
     return str;

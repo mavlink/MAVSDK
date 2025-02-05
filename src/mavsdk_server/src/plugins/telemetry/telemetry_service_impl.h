@@ -1100,7 +1100,13 @@ public:
 
         rpc_obj->set_airspeed_m_s(fixedwing_metrics.airspeed_m_s);
 
+        rpc_obj->set_groundspeed_m_s(fixedwing_metrics.groundspeed_m_s);
+
+        rpc_obj->set_heading_deg(fixedwing_metrics.heading_deg);
+
         rpc_obj->set_throttle_percentage(fixedwing_metrics.throttle_percentage);
+
+        rpc_obj->set_altitude_msl(fixedwing_metrics.altitude_msl);
 
         rpc_obj->set_climb_rate_m_s(fixedwing_metrics.climb_rate_m_s);
 
@@ -1114,7 +1120,13 @@ public:
 
         obj.airspeed_m_s = fixedwing_metrics.airspeed_m_s();
 
+        obj.groundspeed_m_s = fixedwing_metrics.groundspeed_m_s();
+
+        obj.heading_deg = fixedwing_metrics.heading_deg();
+
         obj.throttle_percentage = fixedwing_metrics.throttle_percentage();
+
+        obj.altitude_msl = fixedwing_metrics.altitude_msl();
 
         obj.climb_rate_m_s = fixedwing_metrics.climb_rate_m_s();
 
