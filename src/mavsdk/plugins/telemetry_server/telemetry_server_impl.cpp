@@ -536,9 +536,9 @@ TelemetryServer::Result TelemetryServerImpl::publish_attitude(
                        channel,
                        &message,
                        static_cast<uint32_t>(attitude.timestamp_us / 1000.F),
-                       attitude.roll_deg,
-                       attitude.pitch_deg,
-                       attitude.yaw_deg,
+                       attitude.roll_deg * M_PI / 180.F,
+                       attitude.pitch_deg * M_PI / 180.F,
+                       attitude.yaw_deg * M_PI / 180.F,
                        angular_velocity.roll_rad_s,
                        angular_velocity.pitch_rad_s,
                        angular_velocity.yaw_rad_s);
@@ -561,8 +561,8 @@ TelemetryServer::Result TelemetryServerImpl::publish_visual_flight_rules_hud(
                        &message,
                        fixed_wing_metrics.airspeed_m_s,
                        fixed_wing_metrics.groundspeed_m_s,
-                       fixed_wing_metrics.heading_deg,
-                       fixed_wing_metrics.throttle_percentage,
+                       static_cast<uint16_t>(std::round(fixed_wing_metrics.heading_deg)),
+                       static_cast<uint16_t>(std::round(fixed_wing_metrics.throttle_percentage)),
                        fixed_wing_metrics.altitude_msl,
                        fixed_wing_metrics.climb_rate_m_s);
                    return message;
