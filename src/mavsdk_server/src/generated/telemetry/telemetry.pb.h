@@ -15534,11 +15534,11 @@ class FixedwingMetrics final
   // accessors -------------------------------------------------------
   enum : int {
     kAirspeedMSFieldNumber = 1,
-    kGroundspeedMSFieldNumber = 2,
-    kHeadingDegFieldNumber = 3,
-    kThrottlePercentageFieldNumber = 4,
-    kAltitudeMslFieldNumber = 5,
-    kClimbRateMSFieldNumber = 6,
+    kThrottlePercentageFieldNumber = 2,
+    kClimbRateMSFieldNumber = 3,
+    kGroundspeedMSFieldNumber = 4,
+    kHeadingDegFieldNumber = 5,
+    kAltitudeMslFieldNumber = 6,
   };
   // float airspeed_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_airspeed_m_s() ;
@@ -15550,27 +15550,7 @@ class FixedwingMetrics final
   void _internal_set_airspeed_m_s(float value);
 
   public:
-  // float groundspeed_m_s = 2 [(.mavsdk.options.default_value) = "NaN"];
-  void clear_groundspeed_m_s() ;
-  float groundspeed_m_s() const;
-  void set_groundspeed_m_s(float value);
-
-  private:
-  float _internal_groundspeed_m_s() const;
-  void _internal_set_groundspeed_m_s(float value);
-
-  public:
-  // float heading_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
-  void clear_heading_deg() ;
-  float heading_deg() const;
-  void set_heading_deg(float value);
-
-  private:
-  float _internal_heading_deg() const;
-  void _internal_set_heading_deg(float value);
-
-  public:
-  // float throttle_percentage = 4 [(.mavsdk.options.default_value) = "NaN"];
+  // float throttle_percentage = 2 [(.mavsdk.options.default_value) = "NaN"];
   void clear_throttle_percentage() ;
   float throttle_percentage() const;
   void set_throttle_percentage(float value);
@@ -15580,17 +15560,7 @@ class FixedwingMetrics final
   void _internal_set_throttle_percentage(float value);
 
   public:
-  // float altitude_msl = 5 [(.mavsdk.options.default_value) = "NaN"];
-  void clear_altitude_msl() ;
-  float altitude_msl() const;
-  void set_altitude_msl(float value);
-
-  private:
-  float _internal_altitude_msl() const;
-  void _internal_set_altitude_msl(float value);
-
-  public:
-  // float climb_rate_m_s = 6 [(.mavsdk.options.default_value) = "NaN"];
+  // float climb_rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
   void clear_climb_rate_m_s() ;
   float climb_rate_m_s() const;
   void set_climb_rate_m_s(float value);
@@ -15598,6 +15568,36 @@ class FixedwingMetrics final
   private:
   float _internal_climb_rate_m_s() const;
   void _internal_set_climb_rate_m_s(float value);
+
+  public:
+  // float groundspeed_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_groundspeed_m_s() ;
+  float groundspeed_m_s() const;
+  void set_groundspeed_m_s(float value);
+
+  private:
+  float _internal_groundspeed_m_s() const;
+  void _internal_set_groundspeed_m_s(float value);
+
+  public:
+  // float heading_deg = 5 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_heading_deg() ;
+  float heading_deg() const;
+  void set_heading_deg(float value);
+
+  private:
+  float _internal_heading_deg() const;
+  void _internal_set_heading_deg(float value);
+
+  public:
+  // float altitude_msl = 6 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_altitude_msl() ;
+  float altitude_msl() const;
+  void set_altitude_msl(float value);
+
+  private:
+  float _internal_altitude_msl() const;
+  void _internal_set_altitude_msl(float value);
 
   public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.FixedwingMetrics)
@@ -15624,11 +15624,11 @@ class FixedwingMetrics final
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const FixedwingMetrics& from_msg);
     float airspeed_m_s_;
+    float throttle_percentage_;
+    float climb_rate_m_s_;
     float groundspeed_m_s_;
     float heading_deg_;
-    float throttle_percentage_;
     float altitude_msl_;
-    float climb_rate_m_s_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -37683,51 +37683,7 @@ inline void FixedwingMetrics::_internal_set_airspeed_m_s(float value) {
   _impl_.airspeed_m_s_ = value;
 }
 
-// float groundspeed_m_s = 2 [(.mavsdk.options.default_value) = "NaN"];
-inline void FixedwingMetrics::clear_groundspeed_m_s() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.groundspeed_m_s_ = 0;
-}
-inline float FixedwingMetrics::groundspeed_m_s() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.FixedwingMetrics.groundspeed_m_s)
-  return _internal_groundspeed_m_s();
-}
-inline void FixedwingMetrics::set_groundspeed_m_s(float value) {
-  _internal_set_groundspeed_m_s(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.FixedwingMetrics.groundspeed_m_s)
-}
-inline float FixedwingMetrics::_internal_groundspeed_m_s() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.groundspeed_m_s_;
-}
-inline void FixedwingMetrics::_internal_set_groundspeed_m_s(float value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.groundspeed_m_s_ = value;
-}
-
-// float heading_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
-inline void FixedwingMetrics::clear_heading_deg() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.heading_deg_ = 0;
-}
-inline float FixedwingMetrics::heading_deg() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.FixedwingMetrics.heading_deg)
-  return _internal_heading_deg();
-}
-inline void FixedwingMetrics::set_heading_deg(float value) {
-  _internal_set_heading_deg(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.FixedwingMetrics.heading_deg)
-}
-inline float FixedwingMetrics::_internal_heading_deg() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.heading_deg_;
-}
-inline void FixedwingMetrics::_internal_set_heading_deg(float value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.heading_deg_ = value;
-}
-
-// float throttle_percentage = 4 [(.mavsdk.options.default_value) = "NaN"];
+// float throttle_percentage = 2 [(.mavsdk.options.default_value) = "NaN"];
 inline void FixedwingMetrics::clear_throttle_percentage() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.throttle_percentage_ = 0;
@@ -37749,29 +37705,7 @@ inline void FixedwingMetrics::_internal_set_throttle_percentage(float value) {
   _impl_.throttle_percentage_ = value;
 }
 
-// float altitude_msl = 5 [(.mavsdk.options.default_value) = "NaN"];
-inline void FixedwingMetrics::clear_altitude_msl() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.altitude_msl_ = 0;
-}
-inline float FixedwingMetrics::altitude_msl() const {
-  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.FixedwingMetrics.altitude_msl)
-  return _internal_altitude_msl();
-}
-inline void FixedwingMetrics::set_altitude_msl(float value) {
-  _internal_set_altitude_msl(value);
-  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.FixedwingMetrics.altitude_msl)
-}
-inline float FixedwingMetrics::_internal_altitude_msl() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.altitude_msl_;
-}
-inline void FixedwingMetrics::_internal_set_altitude_msl(float value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.altitude_msl_ = value;
-}
-
-// float climb_rate_m_s = 6 [(.mavsdk.options.default_value) = "NaN"];
+// float climb_rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
 inline void FixedwingMetrics::clear_climb_rate_m_s() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.climb_rate_m_s_ = 0;
@@ -37791,6 +37725,72 @@ inline float FixedwingMetrics::_internal_climb_rate_m_s() const {
 inline void FixedwingMetrics::_internal_set_climb_rate_m_s(float value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.climb_rate_m_s_ = value;
+}
+
+// float groundspeed_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
+inline void FixedwingMetrics::clear_groundspeed_m_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.groundspeed_m_s_ = 0;
+}
+inline float FixedwingMetrics::groundspeed_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.FixedwingMetrics.groundspeed_m_s)
+  return _internal_groundspeed_m_s();
+}
+inline void FixedwingMetrics::set_groundspeed_m_s(float value) {
+  _internal_set_groundspeed_m_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.FixedwingMetrics.groundspeed_m_s)
+}
+inline float FixedwingMetrics::_internal_groundspeed_m_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.groundspeed_m_s_;
+}
+inline void FixedwingMetrics::_internal_set_groundspeed_m_s(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.groundspeed_m_s_ = value;
+}
+
+// float heading_deg = 5 [(.mavsdk.options.default_value) = "NaN"];
+inline void FixedwingMetrics::clear_heading_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.heading_deg_ = 0;
+}
+inline float FixedwingMetrics::heading_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.FixedwingMetrics.heading_deg)
+  return _internal_heading_deg();
+}
+inline void FixedwingMetrics::set_heading_deg(float value) {
+  _internal_set_heading_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.FixedwingMetrics.heading_deg)
+}
+inline float FixedwingMetrics::_internal_heading_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.heading_deg_;
+}
+inline void FixedwingMetrics::_internal_set_heading_deg(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.heading_deg_ = value;
+}
+
+// float altitude_msl = 6 [(.mavsdk.options.default_value) = "NaN"];
+inline void FixedwingMetrics::clear_altitude_msl() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.altitude_msl_ = 0;
+}
+inline float FixedwingMetrics::altitude_msl() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.FixedwingMetrics.altitude_msl)
+  return _internal_altitude_msl();
+}
+inline void FixedwingMetrics::set_altitude_msl(float value) {
+  _internal_set_altitude_msl(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.FixedwingMetrics.altitude_msl)
+}
+inline float FixedwingMetrics::_internal_altitude_msl() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.altitude_msl_;
+}
+inline void FixedwingMetrics::_internal_set_altitude_msl(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.altitude_msl_ = value;
 }
 
 // -------------------------------------------------------------------

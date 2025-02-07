@@ -552,11 +552,11 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 inline constexpr FixedwingMetrics::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : airspeed_m_s_{0},
+        throttle_percentage_{0},
+        climb_rate_m_s_{0},
         groundspeed_m_s_{0},
         heading_deg_{0},
-        throttle_percentage_{0},
         altitude_msl_{0},
-        climb_rate_m_s_{0},
         _cached_size_{0} {}
 
 template <typename>
@@ -2408,11 +2408,11 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.airspeed_m_s_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.throttle_percentage_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.climb_rate_m_s_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.groundspeed_m_s_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.heading_deg_),
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.throttle_percentage_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.altitude_msl_),
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.climb_rate_m_s_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::AccelerationFrd, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -2791,11 +2791,11 @@ const char descriptor_table_protodef_telemetry_5fserver_2ftelemetry_5fserver_2ep
     "g\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rlongitude_deg\030\002 \001(\001B"
     "\007\202\265\030\003NaN\022$\n\023absolute_altitude_m\030\003 \001(\002B\007\202"
     "\265\030\003NaN\"\327\001\n\020FixedwingMetrics\022\035\n\014airspeed_"
-    "m_s\030\001 \001(\002B\007\202\265\030\003NaN\022 \n\017groundspeed_m_s\030\002 "
-    "\001(\002B\007\202\265\030\003NaN\022\034\n\013heading_deg\030\003 \001(\002B\007\202\265\030\003N"
-    "aN\022$\n\023throttle_percentage\030\004 \001(\002B\007\202\265\030\003NaN"
-    "\022\035\n\014altitude_msl\030\005 \001(\002B\007\202\265\030\003NaN\022\037\n\016climb"
-    "_rate_m_s\030\006 \001(\002B\007\202\265\030\003NaN\"i\n\017Acceleration"
+    "m_s\030\001 \001(\002B\007\202\265\030\003NaN\022$\n\023throttle_percentag"
+    "e\030\002 \001(\002B\007\202\265\030\003NaN\022\037\n\016climb_rate_m_s\030\003 \001(\002"
+    "B\007\202\265\030\003NaN\022 \n\017groundspeed_m_s\030\004 \001(\002B\007\202\265\030\003"
+    "NaN\022\034\n\013heading_deg\030\005 \001(\002B\007\202\265\030\003NaN\022\035\n\014alt"
+    "itude_msl\030\006 \001(\002B\007\202\265\030\003NaN\"i\n\017Acceleration"
     "Frd\022\035\n\014forward_m_s2\030\001 \001(\002B\007\202\265\030\003NaN\022\033\n\nri"
     "ght_m_s2\030\002 \001(\002B\007\202\265\030\003NaN\022\032\n\tdown_m_s2\030\003 \001"
     "(\002B\007\202\265\030\003NaN\"o\n\022AngularVelocityFrd\022\036\n\rfor"
@@ -18729,9 +18729,9 @@ inline void FixedwingMetrics::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, airspeed_m_s_),
            0,
-           offsetof(Impl_, climb_rate_m_s_) -
+           offsetof(Impl_, altitude_msl_) -
                offsetof(Impl_, airspeed_m_s_) +
-               sizeof(Impl_::climb_rate_m_s_));
+               sizeof(Impl_::altitude_msl_));
 }
 FixedwingMetrics::~FixedwingMetrics() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.FixedwingMetrics)
@@ -18802,21 +18802,21 @@ const ::_pbi::TcParseTable<3, 6, 0, 0, 2> FixedwingMetrics::_table_ = {
     // float airspeed_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
     {::_pbi::TcParser::FastF32S1,
      {13, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.airspeed_m_s_)}},
-    // float groundspeed_m_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+    // float throttle_percentage = 2 [(.mavsdk.options.default_value) = "NaN"];
     {::_pbi::TcParser::FastF32S1,
-     {21, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.groundspeed_m_s_)}},
-    // float heading_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.throttle_percentage_)}},
+    // float climb_rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
     {::_pbi::TcParser::FastF32S1,
-     {29, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.heading_deg_)}},
-    // float throttle_percentage = 4 [(.mavsdk.options.default_value) = "NaN"];
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.climb_rate_m_s_)}},
+    // float groundspeed_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
     {::_pbi::TcParser::FastF32S1,
-     {37, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.throttle_percentage_)}},
-    // float altitude_msl = 5 [(.mavsdk.options.default_value) = "NaN"];
+     {37, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.groundspeed_m_s_)}},
+    // float heading_deg = 5 [(.mavsdk.options.default_value) = "NaN"];
     {::_pbi::TcParser::FastF32S1,
-     {45, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.altitude_msl_)}},
-    // float climb_rate_m_s = 6 [(.mavsdk.options.default_value) = "NaN"];
+     {45, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.heading_deg_)}},
+    // float altitude_msl = 6 [(.mavsdk.options.default_value) = "NaN"];
     {::_pbi::TcParser::FastF32S1,
-     {53, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.climb_rate_m_s_)}},
+     {53, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.altitude_msl_)}},
     {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
@@ -18824,20 +18824,20 @@ const ::_pbi::TcParseTable<3, 6, 0, 0, 2> FixedwingMetrics::_table_ = {
     // float airspeed_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
     {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.airspeed_m_s_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float groundspeed_m_s = 2 [(.mavsdk.options.default_value) = "NaN"];
-    {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.groundspeed_m_s_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float heading_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
-    {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.heading_deg_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float throttle_percentage = 4 [(.mavsdk.options.default_value) = "NaN"];
+    // float throttle_percentage = 2 [(.mavsdk.options.default_value) = "NaN"];
     {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.throttle_percentage_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float altitude_msl = 5 [(.mavsdk.options.default_value) = "NaN"];
-    {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.altitude_msl_), 0, 0,
-    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float climb_rate_m_s = 6 [(.mavsdk.options.default_value) = "NaN"];
+    // float climb_rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
     {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.climb_rate_m_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float groundspeed_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.groundspeed_m_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float heading_deg = 5 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.heading_deg_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float altitude_msl = 6 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.altitude_msl_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
   }},
   // no aux_entries
@@ -18853,8 +18853,8 @@ PROTOBUF_NOINLINE void FixedwingMetrics::Clear() {
   (void) cached_has_bits;
 
   ::memset(&_impl_.airspeed_m_s_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.climb_rate_m_s_) -
-      reinterpret_cast<char*>(&_impl_.airspeed_m_s_)) + sizeof(_impl_.climb_rate_m_s_));
+      reinterpret_cast<char*>(&_impl_.altitude_msl_) -
+      reinterpret_cast<char*>(&_impl_.airspeed_m_s_)) + sizeof(_impl_.altitude_msl_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -18880,39 +18880,39 @@ PROTOBUF_NOINLINE void FixedwingMetrics::Clear() {
                 1, this_._internal_airspeed_m_s(), target);
           }
 
-          // float groundspeed_m_s = 2 [(.mavsdk.options.default_value) = "NaN"];
-          if (::absl::bit_cast<::uint32_t>(this_._internal_groundspeed_m_s()) != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                2, this_._internal_groundspeed_m_s(), target);
-          }
-
-          // float heading_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
-          if (::absl::bit_cast<::uint32_t>(this_._internal_heading_deg()) != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                3, this_._internal_heading_deg(), target);
-          }
-
-          // float throttle_percentage = 4 [(.mavsdk.options.default_value) = "NaN"];
+          // float throttle_percentage = 2 [(.mavsdk.options.default_value) = "NaN"];
           if (::absl::bit_cast<::uint32_t>(this_._internal_throttle_percentage()) != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                4, this_._internal_throttle_percentage(), target);
+                2, this_._internal_throttle_percentage(), target);
           }
 
-          // float altitude_msl = 5 [(.mavsdk.options.default_value) = "NaN"];
-          if (::absl::bit_cast<::uint32_t>(this_._internal_altitude_msl()) != 0) {
-            target = stream->EnsureSpace(target);
-            target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                5, this_._internal_altitude_msl(), target);
-          }
-
-          // float climb_rate_m_s = 6 [(.mavsdk.options.default_value) = "NaN"];
+          // float climb_rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
           if (::absl::bit_cast<::uint32_t>(this_._internal_climb_rate_m_s()) != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                6, this_._internal_climb_rate_m_s(), target);
+                3, this_._internal_climb_rate_m_s(), target);
+          }
+
+          // float groundspeed_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_groundspeed_m_s()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                4, this_._internal_groundspeed_m_s(), target);
+          }
+
+          // float heading_deg = 5 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_heading_deg()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                5, this_._internal_heading_deg(), target);
+          }
+
+          // float altitude_msl = 6 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_altitude_msl()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                6, this_._internal_altitude_msl(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -18944,24 +18944,24 @@ PROTOBUF_NOINLINE void FixedwingMetrics::Clear() {
             if (::absl::bit_cast<::uint32_t>(this_._internal_airspeed_m_s()) != 0) {
               total_size += 5;
             }
-            // float groundspeed_m_s = 2 [(.mavsdk.options.default_value) = "NaN"];
-            if (::absl::bit_cast<::uint32_t>(this_._internal_groundspeed_m_s()) != 0) {
-              total_size += 5;
-            }
-            // float heading_deg = 3 [(.mavsdk.options.default_value) = "NaN"];
-            if (::absl::bit_cast<::uint32_t>(this_._internal_heading_deg()) != 0) {
-              total_size += 5;
-            }
-            // float throttle_percentage = 4 [(.mavsdk.options.default_value) = "NaN"];
+            // float throttle_percentage = 2 [(.mavsdk.options.default_value) = "NaN"];
             if (::absl::bit_cast<::uint32_t>(this_._internal_throttle_percentage()) != 0) {
               total_size += 5;
             }
-            // float altitude_msl = 5 [(.mavsdk.options.default_value) = "NaN"];
-            if (::absl::bit_cast<::uint32_t>(this_._internal_altitude_msl()) != 0) {
+            // float climb_rate_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_climb_rate_m_s()) != 0) {
               total_size += 5;
             }
-            // float climb_rate_m_s = 6 [(.mavsdk.options.default_value) = "NaN"];
-            if (::absl::bit_cast<::uint32_t>(this_._internal_climb_rate_m_s()) != 0) {
+            // float groundspeed_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_groundspeed_m_s()) != 0) {
+              total_size += 5;
+            }
+            // float heading_deg = 5 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_heading_deg()) != 0) {
+              total_size += 5;
+            }
+            // float altitude_msl = 6 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_altitude_msl()) != 0) {
               total_size += 5;
             }
           }
@@ -18980,20 +18980,20 @@ void FixedwingMetrics::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
   if (::absl::bit_cast<::uint32_t>(from._internal_airspeed_m_s()) != 0) {
     _this->_impl_.airspeed_m_s_ = from._impl_.airspeed_m_s_;
   }
+  if (::absl::bit_cast<::uint32_t>(from._internal_throttle_percentage()) != 0) {
+    _this->_impl_.throttle_percentage_ = from._impl_.throttle_percentage_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_climb_rate_m_s()) != 0) {
+    _this->_impl_.climb_rate_m_s_ = from._impl_.climb_rate_m_s_;
+  }
   if (::absl::bit_cast<::uint32_t>(from._internal_groundspeed_m_s()) != 0) {
     _this->_impl_.groundspeed_m_s_ = from._impl_.groundspeed_m_s_;
   }
   if (::absl::bit_cast<::uint32_t>(from._internal_heading_deg()) != 0) {
     _this->_impl_.heading_deg_ = from._impl_.heading_deg_;
   }
-  if (::absl::bit_cast<::uint32_t>(from._internal_throttle_percentage()) != 0) {
-    _this->_impl_.throttle_percentage_ = from._impl_.throttle_percentage_;
-  }
   if (::absl::bit_cast<::uint32_t>(from._internal_altitude_msl()) != 0) {
     _this->_impl_.altitude_msl_ = from._impl_.altitude_msl_;
-  }
-  if (::absl::bit_cast<::uint32_t>(from._internal_climb_rate_m_s()) != 0) {
-    _this->_impl_.climb_rate_m_s_ = from._impl_.climb_rate_m_s_;
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -19010,8 +19010,8 @@ void FixedwingMetrics::InternalSwap(FixedwingMetrics* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.climb_rate_m_s_)
-      + sizeof(FixedwingMetrics::_impl_.climb_rate_m_s_)
+      PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.altitude_msl_)
+      + sizeof(FixedwingMetrics::_impl_.altitude_msl_)
       - PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.airspeed_m_s_)>(
           reinterpret_cast<char*>(&_impl_.airspeed_m_s_),
           reinterpret_cast<char*>(&other->_impl_.airspeed_m_s_));
