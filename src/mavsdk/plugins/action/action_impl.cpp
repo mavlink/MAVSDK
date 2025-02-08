@@ -573,6 +573,50 @@ void ActionImpl::goto_location_async(
     send_do_reposition();
 }
 
+void ActionImpl::goto_location_land_async(
+    const double latitude_deg,
+    const double longitude_deg,
+    const float altitude_amsl_m,
+    const float yaw_deg,
+    const Action::ResultCallback &callback)
+{
+    auto send_do_reposition =
+        [this, callback, yaw_deg, latitude_deg, longitude_deg, altitude_amsl_m]() {
+            MavlinkCommandSender::CommandInt command{};
+
+            command.command = MAV_CMD_NAV_VTOL_LAND;
+            command.target_component_id = _system_impl->get_autopilot_id();
+            command.params.x = int32_t(std::round(latitude_deg * 1e7));
+            command.params.y = int32_t(std::round(longitude_deg * 1e7));
+
+            _system_impl->send_command_async(
+                command, [this, callback](MavlinkCommandSender::Result result, float) {
+                    command_result_callback(result, callback);
+                });
+        };
+    FlightMode goto_flight_mode;
+    if (_system_impl->autopilot() == Autopilot::Px4) {
+        goto_flight_mode = FlightMode::Hold;
+    } else {
+        goto_flight_mode = FlightMode::Offboard;
+    }
+    if (_system_impl->get_flight_mode() != goto_flight_mode) {
+        _system_impl->set_flight_mode_async(
+            goto_flight_mode,
+            [this, callback, send_do_reposition](MavlinkCommandSender::Result result, float) {
+                Action::Result action_result = action_result_from_command_result(result);
+                if (action_result != Action::Result::Success) {
+                    command_result_callback(result, callback);
+                    return;
+                }
+                send_do_reposition();
+            });
+        return;
+    }
+
+    send_do_reposition();
+}
+
 void ActionImpl::execute_custom_command_long_async(
     MAV_CMD mavCommand,
     const float param1,

@@ -74,6 +74,12 @@ public:
         const float altitude_amsl_m,
         const float yaw_deg,
         const Action::ResultCallback& callback);
+    void goto_location_land_async(
+        const double latitude_deg,
+        const double longitude_deg,
+        const float altitude_amsl_m,
+        const float yaw_deg,
+        const Action::ResultCallback& callback);
     void execute_custom_command_long_async(
         MAV_CMD mavCommand,
         const float param1,

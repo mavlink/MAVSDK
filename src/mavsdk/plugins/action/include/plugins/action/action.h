@@ -365,6 +365,23 @@ public:
         const ResultCallback callback);
 
     /**
+     * @brief Send command to move the vehicle to a specific global position and land.
+     *
+     * The latitude and longitude are given in degrees (WGS84 frame) and the altitude
+     * in meters AMSL (above mean sea level).
+     *
+     * The yaw angle is in degrees (frame is NED, 0 is North, positive is clockwise).
+     *
+     * This function is non-blocking. See 'goto_location' for the blocking counterpart.
+     */
+    void goto_location_land_async(
+        double latitude_deg,
+        double longitude_deg,
+        float absolute_altitude_m,
+        float yaw_deg,
+        const ResultCallback callback);
+
+    /**
      * @brief Send custom long command to the drone.
      * @return Result of request.
      */
