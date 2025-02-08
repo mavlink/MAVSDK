@@ -997,7 +997,7 @@ void TelemetryImpl::process_fixedwing_metrics(const mavlink_message_t& message)
     new_fixedwing_metrics.groundspeed_m_s = vfr_hud.groundspeed;
     new_fixedwing_metrics.heading_deg = vfr_hud.heading;
     new_fixedwing_metrics.throttle_percentage = vfr_hud.throttle * 1e-2f;
-    new_fixedwing_metrics.altitude_msl = vfr_hud.alt;
+    new_fixedwing_metrics.absolute_altitude_m = vfr_hud.alt;
     new_fixedwing_metrics.climb_rate_m_s = vfr_hud.climb;
 
     set_fixedwing_metrics(new_fixedwing_metrics);

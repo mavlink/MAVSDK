@@ -656,8 +656,8 @@ bool operator==(
             rhs.groundspeed_m_s == lhs.groundspeed_m_s) &&
            ((std::isnan(rhs.heading_deg) && std::isnan(lhs.heading_deg)) ||
             rhs.heading_deg == lhs.heading_deg) &&
-           ((std::isnan(rhs.altitude_msl) && std::isnan(lhs.altitude_msl)) ||
-            rhs.altitude_msl == lhs.altitude_msl);
+           ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) ||
+            rhs.absolute_altitude_m == lhs.absolute_altitude_m);
 }
 
 std::ostream&
@@ -670,7 +670,7 @@ operator<<(std::ostream& str, TelemetryServer::FixedwingMetrics const& fixedwing
     str << "    climb_rate_m_s: " << fixedwing_metrics.climb_rate_m_s << '\n';
     str << "    groundspeed_m_s: " << fixedwing_metrics.groundspeed_m_s << '\n';
     str << "    heading_deg: " << fixedwing_metrics.heading_deg << '\n';
-    str << "    altitude_msl: " << fixedwing_metrics.altitude_msl << '\n';
+    str << "    absolute_altitude_m: " << fixedwing_metrics.absolute_altitude_m << '\n';
     str << '}';
     return str;
 }

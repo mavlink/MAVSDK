@@ -760,7 +760,7 @@ public:
         float groundspeed_m_s{float(NAN)}; /**< @brief Current groundspeed metres per second */
         float heading_deg{
             float(NAN)}; /**< @brief Current heading in compass units (0-360, 0=north) */
-        float altitude_msl{float(NAN)}; /**< @brief Current altitude in metres (MSL) */
+        float absolute_altitude_m{float(NAN)}; /**< @brief Current altitude in metres (MSL) */
     };
 
     /**

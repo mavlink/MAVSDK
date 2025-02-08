@@ -563,7 +563,7 @@ TelemetryServer::Result TelemetryServerImpl::publish_visual_flight_rules_hud(
                        fixed_wing_metrics.groundspeed_m_s,
                        static_cast<uint16_t>(std::round(fixed_wing_metrics.heading_deg)),
                        static_cast<uint16_t>(std::round(fixed_wing_metrics.throttle_percentage)),
-                       fixed_wing_metrics.altitude_msl,
+                       fixed_wing_metrics.absolute_altitude_m,
                        fixed_wing_metrics.climb_rate_m_s);
                    return message;
                }) ?

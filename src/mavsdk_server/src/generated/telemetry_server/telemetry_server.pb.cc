@@ -556,7 +556,7 @@ inline constexpr FixedwingMetrics::Impl_::Impl_(
         climb_rate_m_s_{0},
         groundspeed_m_s_{0},
         heading_deg_{0},
-        altitude_msl_{0},
+        absolute_altitude_m_{0},
         _cached_size_{0} {}
 
 template <typename>
@@ -2412,7 +2412,7 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.climb_rate_m_s_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.groundspeed_m_s_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.heading_deg_),
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.altitude_msl_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::FixedwingMetrics, _impl_.absolute_altitude_m_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::telemetry_server::AccelerationFrd, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -2790,114 +2790,115 @@ const char descriptor_table_protodef_telemetry_5fserver_2ftelemetry_5fserver_2ep
     "elocityNed\"r\n\013GroundTruth\022\035\n\014latitude_de"
     "g\030\001 \001(\001B\007\202\265\030\003NaN\022\036\n\rlongitude_deg\030\002 \001(\001B"
     "\007\202\265\030\003NaN\022$\n\023absolute_altitude_m\030\003 \001(\002B\007\202"
-    "\265\030\003NaN\"\327\001\n\020FixedwingMetrics\022\035\n\014airspeed_"
+    "\265\030\003NaN\"\336\001\n\020FixedwingMetrics\022\035\n\014airspeed_"
     "m_s\030\001 \001(\002B\007\202\265\030\003NaN\022$\n\023throttle_percentag"
     "e\030\002 \001(\002B\007\202\265\030\003NaN\022\037\n\016climb_rate_m_s\030\003 \001(\002"
     "B\007\202\265\030\003NaN\022 \n\017groundspeed_m_s\030\004 \001(\002B\007\202\265\030\003"
-    "NaN\022\034\n\013heading_deg\030\005 \001(\002B\007\202\265\030\003NaN\022\035\n\014alt"
-    "itude_msl\030\006 \001(\002B\007\202\265\030\003NaN\"i\n\017Acceleration"
-    "Frd\022\035\n\014forward_m_s2\030\001 \001(\002B\007\202\265\030\003NaN\022\033\n\nri"
-    "ght_m_s2\030\002 \001(\002B\007\202\265\030\003NaN\022\032\n\tdown_m_s2\030\003 \001"
-    "(\002B\007\202\265\030\003NaN\"o\n\022AngularVelocityFrd\022\036\n\rfor"
-    "ward_rad_s\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013right_rad_s"
-    "\030\002 \001(\002B\007\202\265\030\003NaN\022\033\n\ndown_rad_s\030\003 \001(\002B\007\202\265\030"
-    "\003NaN\"m\n\020MagneticFieldFrd\022\036\n\rforward_gaus"
-    "s\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013right_gauss\030\002 \001(\002B\007\202"
-    "\265\030\003NaN\022\033\n\ndown_gauss\030\003 \001(\002B\007\202\265\030\003NaN\"\240\002\n\003"
-    "Imu\022F\n\020acceleration_frd\030\001 \001(\0132,.mavsdk.r"
-    "pc.telemetry_server.AccelerationFrd\022M\n\024a"
-    "ngular_velocity_frd\030\002 \001(\0132/.mavsdk.rpc.t"
-    "elemetry_server.AngularVelocityFrd\022I\n\022ma"
-    "gnetic_field_frd\030\003 \001(\0132-.mavsdk.rpc.tele"
-    "metry_server.MagneticFieldFrd\022!\n\020tempera"
-    "ture_degc\030\004 \001(\002B\007\202\265\030\003NaN\022\024\n\014timestamp_us"
-    "\030\005 \001(\004\"\264\002\n\025TelemetryServerResult\022I\n\006resu"
-    "lt\030\001 \001(\01629.mavsdk.rpc.telemetry_server.T"
-    "elemetryServerResult.Result\022\022\n\nresult_st"
-    "r\030\002 \001(\t\"\273\001\n\006Result\022\022\n\016RESULT_UNKNOWN\020\000\022\022"
-    "\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_SYSTEM\020\002"
-    "\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\017\n\013RESULT_"
-    "BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIED\020\005\022\022\n\016RES"
-    "ULT_TIMEOUT\020\006\022\026\n\022RESULT_UNSUPPORTED\020\007*\244\001"
-    "\n\007FixType\022\023\n\017FIX_TYPE_NO_GPS\020\000\022\023\n\017FIX_TY"
-    "PE_NO_FIX\020\001\022\023\n\017FIX_TYPE_FIX_2D\020\002\022\023\n\017FIX_"
-    "TYPE_FIX_3D\020\003\022\025\n\021FIX_TYPE_FIX_DGPS\020\004\022\026\n\022"
-    "FIX_TYPE_RTK_FLOAT\020\005\022\026\n\022FIX_TYPE_RTK_FIX"
-    "ED\020\006*\215\001\n\tVtolState\022\030\n\024VTOL_STATE_UNDEFIN"
-    "ED\020\000\022\037\n\033VTOL_STATE_TRANSITION_TO_FW\020\001\022\037\n"
-    "\033VTOL_STATE_TRANSITION_TO_MC\020\002\022\021\n\rVTOL_S"
-    "TATE_MC\020\003\022\021\n\rVTOL_STATE_FW\020\004*\371\001\n\016StatusT"
-    "extType\022\032\n\026STATUS_TEXT_TYPE_DEBUG\020\000\022\031\n\025S"
-    "TATUS_TEXT_TYPE_INFO\020\001\022\033\n\027STATUS_TEXT_TY"
-    "PE_NOTICE\020\002\022\034\n\030STATUS_TEXT_TYPE_WARNING\020"
-    "\003\022\032\n\026STATUS_TEXT_TYPE_ERROR\020\004\022\035\n\031STATUS_"
-    "TEXT_TYPE_CRITICAL\020\005\022\032\n\026STATUS_TEXT_TYPE"
-    "_ALERT\020\006\022\036\n\032STATUS_TEXT_TYPE_EMERGENCY\020\007"
-    "*\223\001\n\013LandedState\022\030\n\024LANDED_STATE_UNKNOWN"
-    "\020\000\022\032\n\026LANDED_STATE_ON_GROUND\020\001\022\027\n\023LANDED"
-    "_STATE_IN_AIR\020\002\022\033\n\027LANDED_STATE_TAKING_O"
-    "FF\020\003\022\030\n\024LANDED_STATE_LANDING\020\0042\321\022\n\026Telem"
-    "etryServerService\022\202\001\n\017PublishPosition\0223."
-    "mavsdk.rpc.telemetry_server.PublishPosit"
-    "ionRequest\0324.mavsdk.rpc.telemetry_server"
-    ".PublishPositionResponse\"\004\200\265\030\001\022v\n\013Publis"
-    "hHome\022/.mavsdk.rpc.telemetry_server.Publ"
-    "ishHomeRequest\0320.mavsdk.rpc.telemetry_se"
-    "rver.PublishHomeResponse\"\004\200\265\030\001\022\205\001\n\020Publi"
-    "shSysStatus\0224.mavsdk.rpc.telemetry_serve"
-    "r.PublishSysStatusRequest\0325.mavsdk.rpc.t"
-    "elemetry_server.PublishSysStatusResponse"
-    "\"\004\200\265\030\001\022\232\001\n\027PublishExtendedSysState\022;.mav"
-    "sdk.rpc.telemetry_server.PublishExtended"
-    "SysStateRequest\032<.mavsdk.rpc.telemetry_s"
-    "erver.PublishExtendedSysStateResponse\"\004\200"
-    "\265\030\001\022|\n\rPublishRawGps\0221.mavsdk.rpc.teleme"
-    "try_server.PublishRawGpsRequest\0322.mavsdk"
-    ".rpc.telemetry_server.PublishRawGpsRespo"
-    "nse\"\004\200\265\030\001\022\177\n\016PublishBattery\0222.mavsdk.rpc"
-    ".telemetry_server.PublishBatteryRequest\032"
-    "3.mavsdk.rpc.telemetry_server.PublishBat"
-    "teryResponse\"\004\200\265\030\001\022\210\001\n\021PublishStatusText"
-    "\0225.mavsdk.rpc.telemetry_server.PublishSt"
-    "atusTextRequest\0326.mavsdk.rpc.telemetry_s"
-    "erver.PublishStatusTextResponse\"\004\200\265\030\001\022\202\001"
-    "\n\017PublishOdometry\0223.mavsdk.rpc.telemetry"
-    "_server.PublishOdometryRequest\0324.mavsdk."
-    "rpc.telemetry_server.PublishOdometryResp"
-    "onse\"\004\200\265\030\001\022\243\001\n\032PublishPositionVelocityNe"
-    "d\022>.mavsdk.rpc.telemetry_server.PublishP"
-    "ositionVelocityNedRequest\032\?.mavsdk.rpc.t"
-    "elemetry_server.PublishPositionVelocityN"
-    "edResponse\"\004\200\265\030\001\022\213\001\n\022PublishGroundTruth\022"
-    "6.mavsdk.rpc.telemetry_server.PublishGro"
-    "undTruthRequest\0327.mavsdk.rpc.telemetry_s"
-    "erver.PublishGroundTruthResponse\"\004\200\265\030\001\022s"
-    "\n\nPublishImu\022..mavsdk.rpc.telemetry_serv"
-    "er.PublishImuRequest\032/.mavsdk.rpc.teleme"
-    "try_server.PublishImuResponse\"\004\200\265\030\001\022\205\001\n\020"
-    "PublishScaledImu\0224.mavsdk.rpc.telemetry_"
-    "server.PublishScaledImuRequest\0325.mavsdk."
-    "rpc.telemetry_server.PublishScaledImuRes"
-    "ponse\"\004\200\265\030\001\022|\n\rPublishRawImu\0221.mavsdk.rp"
-    "c.telemetry_server.PublishRawImuRequest\032"
-    "2.mavsdk.rpc.telemetry_server.PublishRaw"
-    "ImuResponse\"\004\200\265\030\001\022\221\001\n\024PublishUnixEpochTi"
-    "me\0228.mavsdk.rpc.telemetry_server.Publish"
-    "UnixEpochTimeRequest\0329.mavsdk.rpc.teleme"
-    "try_server.PublishUnixEpochTimeResponse\""
-    "\004\200\265\030\001\022\224\001\n\025PublishDistanceSensor\0229.mavsdk"
-    ".rpc.telemetry_server.PublishDistanceSen"
-    "sorRequest\032:.mavsdk.rpc.telemetry_server"
-    ".PublishDistanceSensorResponse\"\004\200\265\030\001\022\202\001\n"
-    "\017PublishAttitude\0223.mavsdk.rpc.telemetry_"
-    "server.PublishAttitudeRequest\0324.mavsdk.r"
-    "pc.telemetry_server.PublishAttitudeRespo"
-    "nse\"\004\200\265\030\001\022\246\001\n\033PublishVisualFlightRulesHu"
-    "d\022\?.mavsdk.rpc.telemetry_server.PublishV"
-    "isualFlightRulesHudRequest\032@.mavsdk.rpc."
-    "telemetry_server.PublishVisualFlightRule"
-    "sHudResponse\"\004\200\265\030\001B2\n\032io.mavsdk.telemetr"
-    "y_serverB\024TelemetryServerProtob\006proto3"
+    "NaN\022\034\n\013heading_deg\030\005 \001(\002B\007\202\265\030\003NaN\022$\n\023abs"
+    "olute_altitude_m\030\006 \001(\002B\007\202\265\030\003NaN\"i\n\017Accel"
+    "erationFrd\022\035\n\014forward_m_s2\030\001 \001(\002B\007\202\265\030\003Na"
+    "N\022\033\n\nright_m_s2\030\002 \001(\002B\007\202\265\030\003NaN\022\032\n\tdown_m"
+    "_s2\030\003 \001(\002B\007\202\265\030\003NaN\"o\n\022AngularVelocityFrd"
+    "\022\036\n\rforward_rad_s\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013righ"
+    "t_rad_s\030\002 \001(\002B\007\202\265\030\003NaN\022\033\n\ndown_rad_s\030\003 \001"
+    "(\002B\007\202\265\030\003NaN\"m\n\020MagneticFieldFrd\022\036\n\rforwa"
+    "rd_gauss\030\001 \001(\002B\007\202\265\030\003NaN\022\034\n\013right_gauss\030\002"
+    " \001(\002B\007\202\265\030\003NaN\022\033\n\ndown_gauss\030\003 \001(\002B\007\202\265\030\003N"
+    "aN\"\240\002\n\003Imu\022F\n\020acceleration_frd\030\001 \001(\0132,.m"
+    "avsdk.rpc.telemetry_server.AccelerationF"
+    "rd\022M\n\024angular_velocity_frd\030\002 \001(\0132/.mavsd"
+    "k.rpc.telemetry_server.AngularVelocityFr"
+    "d\022I\n\022magnetic_field_frd\030\003 \001(\0132-.mavsdk.r"
+    "pc.telemetry_server.MagneticFieldFrd\022!\n\020"
+    "temperature_degc\030\004 \001(\002B\007\202\265\030\003NaN\022\024\n\014times"
+    "tamp_us\030\005 \001(\004\"\264\002\n\025TelemetryServerResult\022"
+    "I\n\006result\030\001 \001(\01629.mavsdk.rpc.telemetry_s"
+    "erver.TelemetryServerResult.Result\022\022\n\nre"
+    "sult_str\030\002 \001(\t\"\273\001\n\006Result\022\022\n\016RESULT_UNKN"
+    "OWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_S"
+    "YSTEM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\017\n\013"
+    "RESULT_BUSY\020\004\022\031\n\025RESULT_COMMAND_DENIED\020\005"
+    "\022\022\n\016RESULT_TIMEOUT\020\006\022\026\n\022RESULT_UNSUPPORT"
+    "ED\020\007*\244\001\n\007FixType\022\023\n\017FIX_TYPE_NO_GPS\020\000\022\023\n"
+    "\017FIX_TYPE_NO_FIX\020\001\022\023\n\017FIX_TYPE_FIX_2D\020\002\022"
+    "\023\n\017FIX_TYPE_FIX_3D\020\003\022\025\n\021FIX_TYPE_FIX_DGP"
+    "S\020\004\022\026\n\022FIX_TYPE_RTK_FLOAT\020\005\022\026\n\022FIX_TYPE_"
+    "RTK_FIXED\020\006*\215\001\n\tVtolState\022\030\n\024VTOL_STATE_"
+    "UNDEFINED\020\000\022\037\n\033VTOL_STATE_TRANSITION_TO_"
+    "FW\020\001\022\037\n\033VTOL_STATE_TRANSITION_TO_MC\020\002\022\021\n"
+    "\rVTOL_STATE_MC\020\003\022\021\n\rVTOL_STATE_FW\020\004*\371\001\n\016"
+    "StatusTextType\022\032\n\026STATUS_TEXT_TYPE_DEBUG"
+    "\020\000\022\031\n\025STATUS_TEXT_TYPE_INFO\020\001\022\033\n\027STATUS_"
+    "TEXT_TYPE_NOTICE\020\002\022\034\n\030STATUS_TEXT_TYPE_W"
+    "ARNING\020\003\022\032\n\026STATUS_TEXT_TYPE_ERROR\020\004\022\035\n\031"
+    "STATUS_TEXT_TYPE_CRITICAL\020\005\022\032\n\026STATUS_TE"
+    "XT_TYPE_ALERT\020\006\022\036\n\032STATUS_TEXT_TYPE_EMER"
+    "GENCY\020\007*\223\001\n\013LandedState\022\030\n\024LANDED_STATE_"
+    "UNKNOWN\020\000\022\032\n\026LANDED_STATE_ON_GROUND\020\001\022\027\n"
+    "\023LANDED_STATE_IN_AIR\020\002\022\033\n\027LANDED_STATE_T"
+    "AKING_OFF\020\003\022\030\n\024LANDED_STATE_LANDING\020\0042\321\022"
+    "\n\026TelemetryServerService\022\202\001\n\017PublishPosi"
+    "tion\0223.mavsdk.rpc.telemetry_server.Publi"
+    "shPositionRequest\0324.mavsdk.rpc.telemetry"
+    "_server.PublishPositionResponse\"\004\200\265\030\001\022v\n"
+    "\013PublishHome\022/.mavsdk.rpc.telemetry_serv"
+    "er.PublishHomeRequest\0320.mavsdk.rpc.telem"
+    "etry_server.PublishHomeResponse\"\004\200\265\030\001\022\205\001"
+    "\n\020PublishSysStatus\0224.mavsdk.rpc.telemetr"
+    "y_server.PublishSysStatusRequest\0325.mavsd"
+    "k.rpc.telemetry_server.PublishSysStatusR"
+    "esponse\"\004\200\265\030\001\022\232\001\n\027PublishExtendedSysStat"
+    "e\022;.mavsdk.rpc.telemetry_server.PublishE"
+    "xtendedSysStateRequest\032<.mavsdk.rpc.tele"
+    "metry_server.PublishExtendedSysStateResp"
+    "onse\"\004\200\265\030\001\022|\n\rPublishRawGps\0221.mavsdk.rpc"
+    ".telemetry_server.PublishRawGpsRequest\0322"
+    ".mavsdk.rpc.telemetry_server.PublishRawG"
+    "psResponse\"\004\200\265\030\001\022\177\n\016PublishBattery\0222.mav"
+    "sdk.rpc.telemetry_server.PublishBatteryR"
+    "equest\0323.mavsdk.rpc.telemetry_server.Pub"
+    "lishBatteryResponse\"\004\200\265\030\001\022\210\001\n\021PublishSta"
+    "tusText\0225.mavsdk.rpc.telemetry_server.Pu"
+    "blishStatusTextRequest\0326.mavsdk.rpc.tele"
+    "metry_server.PublishStatusTextResponse\"\004"
+    "\200\265\030\001\022\202\001\n\017PublishOdometry\0223.mavsdk.rpc.te"
+    "lemetry_server.PublishOdometryRequest\0324."
+    "mavsdk.rpc.telemetry_server.PublishOdome"
+    "tryResponse\"\004\200\265\030\001\022\243\001\n\032PublishPositionVel"
+    "ocityNed\022>.mavsdk.rpc.telemetry_server.P"
+    "ublishPositionVelocityNedRequest\032\?.mavsd"
+    "k.rpc.telemetry_server.PublishPositionVe"
+    "locityNedResponse\"\004\200\265\030\001\022\213\001\n\022PublishGroun"
+    "dTruth\0226.mavsdk.rpc.telemetry_server.Pub"
+    "lishGroundTruthRequest\0327.mavsdk.rpc.tele"
+    "metry_server.PublishGroundTruthResponse\""
+    "\004\200\265\030\001\022s\n\nPublishImu\022..mavsdk.rpc.telemet"
+    "ry_server.PublishImuRequest\032/.mavsdk.rpc"
+    ".telemetry_server.PublishImuResponse\"\004\200\265"
+    "\030\001\022\205\001\n\020PublishScaledImu\0224.mavsdk.rpc.tel"
+    "emetry_server.PublishScaledImuRequest\0325."
+    "mavsdk.rpc.telemetry_server.PublishScale"
+    "dImuResponse\"\004\200\265\030\001\022|\n\rPublishRawImu\0221.ma"
+    "vsdk.rpc.telemetry_server.PublishRawImuR"
+    "equest\0322.mavsdk.rpc.telemetry_server.Pub"
+    "lishRawImuResponse\"\004\200\265\030\001\022\221\001\n\024PublishUnix"
+    "EpochTime\0228.mavsdk.rpc.telemetry_server."
+    "PublishUnixEpochTimeRequest\0329.mavsdk.rpc"
+    ".telemetry_server.PublishUnixEpochTimeRe"
+    "sponse\"\004\200\265\030\001\022\224\001\n\025PublishDistanceSensor\0229"
+    ".mavsdk.rpc.telemetry_server.PublishDist"
+    "anceSensorRequest\032:.mavsdk.rpc.telemetry"
+    "_server.PublishDistanceSensorResponse\"\004\200"
+    "\265\030\001\022\202\001\n\017PublishAttitude\0223.mavsdk.rpc.tel"
+    "emetry_server.PublishAttitudeRequest\0324.m"
+    "avsdk.rpc.telemetry_server.PublishAttitu"
+    "deResponse\"\004\200\265\030\001\022\246\001\n\033PublishVisualFlight"
+    "RulesHud\022\?.mavsdk.rpc.telemetry_server.P"
+    "ublishVisualFlightRulesHudRequest\032@.mavs"
+    "dk.rpc.telemetry_server.PublishVisualFli"
+    "ghtRulesHudResponse\"\004\200\265\030\001B2\n\032io.mavsdk.t"
+    "elemetry_serverB\024TelemetryServerProtob\006p"
+    "roto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_deps[1] =
     {
@@ -2907,7 +2908,7 @@ static ::absl::once_flag descriptor_table_telemetry_5fserver_2ftelemetry_5fserve
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto = {
     false,
     false,
-    11398,
+    11405,
     descriptor_table_protodef_telemetry_5fserver_2ftelemetry_5fserver_2eproto,
     "telemetry_server/telemetry_server.proto",
     &descriptor_table_telemetry_5fserver_2ftelemetry_5fserver_2eproto_once,
@@ -18729,9 +18730,9 @@ inline void FixedwingMetrics::SharedCtor(::_pb::Arena* arena) {
   ::memset(reinterpret_cast<char *>(&_impl_) +
                offsetof(Impl_, airspeed_m_s_),
            0,
-           offsetof(Impl_, altitude_msl_) -
+           offsetof(Impl_, absolute_altitude_m_) -
                offsetof(Impl_, airspeed_m_s_) +
-               sizeof(Impl_::altitude_msl_));
+               sizeof(Impl_::absolute_altitude_m_));
 }
 FixedwingMetrics::~FixedwingMetrics() {
   // @@protoc_insertion_point(destructor:mavsdk.rpc.telemetry_server.FixedwingMetrics)
@@ -18814,9 +18815,9 @@ const ::_pbi::TcParseTable<3, 6, 0, 0, 2> FixedwingMetrics::_table_ = {
     // float heading_deg = 5 [(.mavsdk.options.default_value) = "NaN"];
     {::_pbi::TcParser::FastF32S1,
      {45, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.heading_deg_)}},
-    // float altitude_msl = 6 [(.mavsdk.options.default_value) = "NaN"];
+    // float absolute_altitude_m = 6 [(.mavsdk.options.default_value) = "NaN"];
     {::_pbi::TcParser::FastF32S1,
-     {53, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.altitude_msl_)}},
+     {53, 63, 0, PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.absolute_altitude_m_)}},
     {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
@@ -18836,8 +18837,8 @@ const ::_pbi::TcParseTable<3, 6, 0, 0, 2> FixedwingMetrics::_table_ = {
     // float heading_deg = 5 [(.mavsdk.options.default_value) = "NaN"];
     {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.heading_deg_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
-    // float altitude_msl = 6 [(.mavsdk.options.default_value) = "NaN"];
-    {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.altitude_msl_), 0, 0,
+    // float absolute_altitude_m = 6 [(.mavsdk.options.default_value) = "NaN"];
+    {PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.absolute_altitude_m_), 0, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
   }},
   // no aux_entries
@@ -18853,8 +18854,8 @@ PROTOBUF_NOINLINE void FixedwingMetrics::Clear() {
   (void) cached_has_bits;
 
   ::memset(&_impl_.airspeed_m_s_, 0, static_cast<::size_t>(
-      reinterpret_cast<char*>(&_impl_.altitude_msl_) -
-      reinterpret_cast<char*>(&_impl_.airspeed_m_s_)) + sizeof(_impl_.altitude_msl_));
+      reinterpret_cast<char*>(&_impl_.absolute_altitude_m_) -
+      reinterpret_cast<char*>(&_impl_.airspeed_m_s_)) + sizeof(_impl_.absolute_altitude_m_));
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -18908,11 +18909,11 @@ PROTOBUF_NOINLINE void FixedwingMetrics::Clear() {
                 5, this_._internal_heading_deg(), target);
           }
 
-          // float altitude_msl = 6 [(.mavsdk.options.default_value) = "NaN"];
-          if (::absl::bit_cast<::uint32_t>(this_._internal_altitude_msl()) != 0) {
+          // float absolute_altitude_m = 6 [(.mavsdk.options.default_value) = "NaN"];
+          if (::absl::bit_cast<::uint32_t>(this_._internal_absolute_altitude_m()) != 0) {
             target = stream->EnsureSpace(target);
             target = ::_pbi::WireFormatLite::WriteFloatToArray(
-                6, this_._internal_altitude_msl(), target);
+                6, this_._internal_absolute_altitude_m(), target);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -18960,8 +18961,8 @@ PROTOBUF_NOINLINE void FixedwingMetrics::Clear() {
             if (::absl::bit_cast<::uint32_t>(this_._internal_heading_deg()) != 0) {
               total_size += 5;
             }
-            // float altitude_msl = 6 [(.mavsdk.options.default_value) = "NaN"];
-            if (::absl::bit_cast<::uint32_t>(this_._internal_altitude_msl()) != 0) {
+            // float absolute_altitude_m = 6 [(.mavsdk.options.default_value) = "NaN"];
+            if (::absl::bit_cast<::uint32_t>(this_._internal_absolute_altitude_m()) != 0) {
               total_size += 5;
             }
           }
@@ -18992,8 +18993,8 @@ void FixedwingMetrics::MergeImpl(::google::protobuf::MessageLite& to_msg, const 
   if (::absl::bit_cast<::uint32_t>(from._internal_heading_deg()) != 0) {
     _this->_impl_.heading_deg_ = from._impl_.heading_deg_;
   }
-  if (::absl::bit_cast<::uint32_t>(from._internal_altitude_msl()) != 0) {
-    _this->_impl_.altitude_msl_ = from._impl_.altitude_msl_;
+  if (::absl::bit_cast<::uint32_t>(from._internal_absolute_altitude_m()) != 0) {
+    _this->_impl_.absolute_altitude_m_ = from._impl_.absolute_altitude_m_;
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -19010,8 +19011,8 @@ void FixedwingMetrics::InternalSwap(FixedwingMetrics* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::google::protobuf::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.altitude_msl_)
-      + sizeof(FixedwingMetrics::_impl_.altitude_msl_)
+      PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.absolute_altitude_m_)
+      + sizeof(FixedwingMetrics::_impl_.absolute_altitude_m_)
       - PROTOBUF_FIELD_OFFSET(FixedwingMetrics, _impl_.airspeed_m_s_)>(
           reinterpret_cast<char*>(&_impl_.airspeed_m_s_),
           reinterpret_cast<char*>(&other->_impl_.airspeed_m_s_));

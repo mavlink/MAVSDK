@@ -1108,7 +1108,7 @@ public:
 
         rpc_obj->set_heading_deg(fixedwing_metrics.heading_deg);
 
-        rpc_obj->set_altitude_msl(fixedwing_metrics.altitude_msl);
+        rpc_obj->set_absolute_altitude_m(fixedwing_metrics.absolute_altitude_m);
 
         return rpc_obj;
     }
@@ -1128,7 +1128,7 @@ public:
 
         obj.heading_deg = fixedwing_metrics.heading_deg();
 
-        obj.altitude_msl = fixedwing_metrics.altitude_msl();
+        obj.absolute_altitude_m = fixedwing_metrics.absolute_altitude_m();
 
         return obj;
     }
