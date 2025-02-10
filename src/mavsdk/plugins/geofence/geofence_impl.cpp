@@ -46,7 +46,7 @@ void GeofenceImpl::upload_geofence_async(
 
     _system_impl->mission_transfer_client().upload_items_async(
         MAV_MISSION_TYPE_FENCE,
-        1,
+        _system_impl->get_system_id(),
         items,
         [this, callback](MavlinkMissionTransferClient::Result result) {
             auto converted_result = convert_result(result);
