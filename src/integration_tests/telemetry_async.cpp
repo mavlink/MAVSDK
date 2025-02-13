@@ -264,7 +264,10 @@ void print_angular_velocity_body(Telemetry::AngularVelocityBody angular_velocity
 void print_fixedwing_metrics(Telemetry::FixedwingMetrics fixedwing_metrics)
 {
     std::cout << "async Airspeed: " << fixedwing_metrics.airspeed_m_s << " m/s, "
+              << "Groundspeed: " << fixedwing_metrics.groundspeed_m_s << " m/s, "
+              << "Heading: " << fixedwing_metrics.heading_deg << " deg, "
               << "Throttle: " << fixedwing_metrics.throttle_percentage << " %, "
+              << "Altitude: " << fixedwing_metrics.absolute_altitude_m << " m (MSL), "
               << "Climb: " << fixedwing_metrics.climb_rate_m_s << " m/s" << '\n';
     _received_fixedwing_metrics = true;
 }

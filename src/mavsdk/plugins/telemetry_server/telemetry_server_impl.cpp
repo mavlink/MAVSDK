@@ -524,4 +524,51 @@ TelemetryServer::Result TelemetryServerImpl::publish_extended_sys_state(
                TelemetryServer::Result::Unsupported;
 }
 
+TelemetryServer::Result TelemetryServerImpl::publish_attitude(
+    TelemetryServer::EulerAngle attitude, TelemetryServer::AngularVelocityBody angular_velocity)
+{
+    return _server_component_impl->queue_message(
+               [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                   mavlink_message_t message;
+                   mavlink_msg_attitude_pack_chan(
+                       mavlink_address.system_id,
+                       mavlink_address.component_id,
+                       channel,
+                       &message,
+                       static_cast<uint32_t>(attitude.timestamp_us / 1000.F),
+                       attitude.roll_deg * M_PI / 180.F,
+                       attitude.pitch_deg * M_PI / 180.F,
+                       attitude.yaw_deg * M_PI / 180.F,
+                       angular_velocity.roll_rad_s,
+                       angular_velocity.pitch_rad_s,
+                       angular_velocity.yaw_rad_s);
+                   return message;
+               }) ?
+               TelemetryServer::Result::Success :
+               TelemetryServer::Result::Unsupported;
+}
+
+TelemetryServer::Result TelemetryServerImpl::publish_visual_flight_rules_hud(
+    TelemetryServer::FixedwingMetrics fixed_wing_metrics)
+{
+    return _server_component_impl->queue_message(
+               [&](MavlinkAddress mavlink_address, uint8_t channel) {
+                   mavlink_message_t message;
+                   mavlink_msg_vfr_hud_pack_chan(
+                       mavlink_address.system_id,
+                       mavlink_address.component_id,
+                       channel,
+                       &message,
+                       fixed_wing_metrics.airspeed_m_s,
+                       fixed_wing_metrics.groundspeed_m_s,
+                       static_cast<uint16_t>(std::round(fixed_wing_metrics.heading_deg)),
+                       static_cast<uint16_t>(std::round(fixed_wing_metrics.throttle_percentage)),
+                       fixed_wing_metrics.absolute_altitude_m,
+                       fixed_wing_metrics.climb_rate_m_s);
+                   return message;
+               }) ?
+               TelemetryServer::Result::Success :
+               TelemetryServer::Result::Unsupported;
+}
+
 } // namespace mavsdk

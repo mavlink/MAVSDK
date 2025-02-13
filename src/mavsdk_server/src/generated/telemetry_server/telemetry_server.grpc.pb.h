@@ -160,6 +160,22 @@ class TelemetryServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse>> PrepareAsyncPublishDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse>>(PrepareAsyncPublishDistanceSensorRaw(context, request, cq));
     }
+    // Publish to "attitude" updates.
+    virtual ::grpc::Status PublishAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest& request, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>> AsyncPublishAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>>(AsyncPublishAttitudeRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>> PrepareAsyncPublishAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>>(PrepareAsyncPublishAttitudeRaw(context, request, cq));
+    }
+    // Publish to "Visual Flight Rules HUD" updates.
+    virtual ::grpc::Status PublishVisualFlightRulesHud(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest& request, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>> AsyncPublishVisualFlightRulesHud(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>>(AsyncPublishVisualFlightRulesHudRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>> PrepareAsyncPublishVisualFlightRulesHud(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>>(PrepareAsyncPublishVisualFlightRulesHudRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -208,6 +224,12 @@ class TelemetryServerService final {
       // Publish to "distance sensor" updates.
       virtual void PublishDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest* request, ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void PublishDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest* request, ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Publish to "attitude" updates.
+      virtual void PublishAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest* request, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void PublishAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest* request, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Publish to "Visual Flight Rules HUD" updates.
+      virtual void PublishVisualFlightRulesHud(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest* request, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void PublishVisualFlightRulesHud(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest* request, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -243,6 +265,10 @@ class TelemetryServerService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeResponse>* PrepareAsyncPublishUnixEpochTimeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse>* AsyncPublishDistanceSensorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse>* PrepareAsyncPublishDistanceSensorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>* AsyncPublishAttitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>* PrepareAsyncPublishAttitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>* AsyncPublishVisualFlightRulesHudRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>* PrepareAsyncPublishVisualFlightRulesHudRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -352,6 +378,20 @@ class TelemetryServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse>> PrepareAsyncPublishDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse>>(PrepareAsyncPublishDistanceSensorRaw(context, request, cq));
     }
+    ::grpc::Status PublishAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest& request, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>> AsyncPublishAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>>(AsyncPublishAttitudeRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>> PrepareAsyncPublishAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>>(PrepareAsyncPublishAttitudeRaw(context, request, cq));
+    }
+    ::grpc::Status PublishVisualFlightRulesHud(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest& request, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>> AsyncPublishVisualFlightRulesHud(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>>(AsyncPublishVisualFlightRulesHudRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>> PrepareAsyncPublishVisualFlightRulesHud(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>>(PrepareAsyncPublishVisualFlightRulesHudRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
@@ -385,6 +425,10 @@ class TelemetryServerService final {
       void PublishUnixEpochTime(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeRequest* request, ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void PublishDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest* request, ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse* response, std::function<void(::grpc::Status)>) override;
       void PublishDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest* request, ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void PublishAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest* request, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse* response, std::function<void(::grpc::Status)>) override;
+      void PublishAttitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest* request, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void PublishVisualFlightRulesHud(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest* request, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse* response, std::function<void(::grpc::Status)>) override;
+      void PublishVisualFlightRulesHud(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest* request, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -426,6 +470,10 @@ class TelemetryServerService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeResponse>* PrepareAsyncPublishUnixEpochTimeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse>* AsyncPublishDistanceSensorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse>* PrepareAsyncPublishDistanceSensorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>* AsyncPublishAttitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>* PrepareAsyncPublishAttitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>* AsyncPublishVisualFlightRulesHudRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>* PrepareAsyncPublishVisualFlightRulesHudRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_PublishPosition_;
     const ::grpc::internal::RpcMethod rpcmethod_PublishHome_;
     const ::grpc::internal::RpcMethod rpcmethod_PublishSysStatus_;
@@ -441,6 +489,8 @@ class TelemetryServerService final {
     const ::grpc::internal::RpcMethod rpcmethod_PublishRawImu_;
     const ::grpc::internal::RpcMethod rpcmethod_PublishUnixEpochTime_;
     const ::grpc::internal::RpcMethod rpcmethod_PublishDistanceSensor_;
+    const ::grpc::internal::RpcMethod rpcmethod_PublishAttitude_;
+    const ::grpc::internal::RpcMethod rpcmethod_PublishVisualFlightRulesHud_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -478,6 +528,10 @@ class TelemetryServerService final {
     virtual ::grpc::Status PublishUnixEpochTime(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeRequest* request, ::mavsdk::rpc::telemetry_server::PublishUnixEpochTimeResponse* response);
     // Publish to "distance sensor" updates.
     virtual ::grpc::Status PublishDistanceSensor(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest* request, ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse* response);
+    // Publish to "attitude" updates.
+    virtual ::grpc::Status PublishAttitude(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest* request, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse* response);
+    // Publish to "Visual Flight Rules HUD" updates.
+    virtual ::grpc::Status PublishVisualFlightRulesHud(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest* request, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_PublishPosition : public BaseClass {
@@ -779,7 +833,47 @@ class TelemetryServerService final {
       ::grpc::Service::RequestAsyncUnary(14, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_PublishPosition<WithAsyncMethod_PublishHome<WithAsyncMethod_PublishSysStatus<WithAsyncMethod_PublishExtendedSysState<WithAsyncMethod_PublishRawGps<WithAsyncMethod_PublishBattery<WithAsyncMethod_PublishStatusText<WithAsyncMethod_PublishOdometry<WithAsyncMethod_PublishPositionVelocityNed<WithAsyncMethod_PublishGroundTruth<WithAsyncMethod_PublishImu<WithAsyncMethod_PublishScaledImu<WithAsyncMethod_PublishRawImu<WithAsyncMethod_PublishUnixEpochTime<WithAsyncMethod_PublishDistanceSensor<Service > > > > > > > > > > > > > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_PublishAttitude : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_PublishAttitude() {
+      ::grpc::Service::MarkMethodAsync(15);
+    }
+    ~WithAsyncMethod_PublishAttitude() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status PublishAttitude(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest* /*request*/, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestPublishAttitude(::grpc::ServerContext* context, ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(15, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_PublishVisualFlightRulesHud : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_PublishVisualFlightRulesHud() {
+      ::grpc::Service::MarkMethodAsync(16);
+    }
+    ~WithAsyncMethod_PublishVisualFlightRulesHud() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status PublishVisualFlightRulesHud(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest* /*request*/, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestPublishVisualFlightRulesHud(::grpc::ServerContext* context, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(16, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_PublishPosition<WithAsyncMethod_PublishHome<WithAsyncMethod_PublishSysStatus<WithAsyncMethod_PublishExtendedSysState<WithAsyncMethod_PublishRawGps<WithAsyncMethod_PublishBattery<WithAsyncMethod_PublishStatusText<WithAsyncMethod_PublishOdometry<WithAsyncMethod_PublishPositionVelocityNed<WithAsyncMethod_PublishGroundTruth<WithAsyncMethod_PublishImu<WithAsyncMethod_PublishScaledImu<WithAsyncMethod_PublishRawImu<WithAsyncMethod_PublishUnixEpochTime<WithAsyncMethod_PublishDistanceSensor<WithAsyncMethod_PublishAttitude<WithAsyncMethod_PublishVisualFlightRulesHud<Service > > > > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_PublishPosition : public BaseClass {
    private:
@@ -1185,7 +1279,61 @@ class TelemetryServerService final {
     virtual ::grpc::ServerUnaryReactor* PublishDistanceSensor(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest* /*request*/, ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_PublishPosition<WithCallbackMethod_PublishHome<WithCallbackMethod_PublishSysStatus<WithCallbackMethod_PublishExtendedSysState<WithCallbackMethod_PublishRawGps<WithCallbackMethod_PublishBattery<WithCallbackMethod_PublishStatusText<WithCallbackMethod_PublishOdometry<WithCallbackMethod_PublishPositionVelocityNed<WithCallbackMethod_PublishGroundTruth<WithCallbackMethod_PublishImu<WithCallbackMethod_PublishScaledImu<WithCallbackMethod_PublishRawImu<WithCallbackMethod_PublishUnixEpochTime<WithCallbackMethod_PublishDistanceSensor<Service > > > > > > > > > > > > > > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_PublishAttitude : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_PublishAttitude() {
+      ::grpc::Service::MarkMethodCallback(15,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest* request, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse* response) { return this->PublishAttitude(context, request, response); }));}
+    void SetMessageAllocatorFor_PublishAttitude(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(15);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_PublishAttitude() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status PublishAttitude(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest* /*request*/, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* PublishAttitude(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest* /*request*/, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_PublishVisualFlightRulesHud : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_PublishVisualFlightRulesHud() {
+      ::grpc::Service::MarkMethodCallback(16,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest* request, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse* response) { return this->PublishVisualFlightRulesHud(context, request, response); }));}
+    void SetMessageAllocatorFor_PublishVisualFlightRulesHud(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(16);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_PublishVisualFlightRulesHud() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status PublishVisualFlightRulesHud(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest* /*request*/, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* PublishVisualFlightRulesHud(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest* /*request*/, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_PublishPosition<WithCallbackMethod_PublishHome<WithCallbackMethod_PublishSysStatus<WithCallbackMethod_PublishExtendedSysState<WithCallbackMethod_PublishRawGps<WithCallbackMethod_PublishBattery<WithCallbackMethod_PublishStatusText<WithCallbackMethod_PublishOdometry<WithCallbackMethod_PublishPositionVelocityNed<WithCallbackMethod_PublishGroundTruth<WithCallbackMethod_PublishImu<WithCallbackMethod_PublishScaledImu<WithCallbackMethod_PublishRawImu<WithCallbackMethod_PublishUnixEpochTime<WithCallbackMethod_PublishDistanceSensor<WithCallbackMethod_PublishAttitude<WithCallbackMethod_PublishVisualFlightRulesHud<Service > > > > > > > > > > > > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_PublishPosition : public BaseClass {
@@ -1438,6 +1586,40 @@ class TelemetryServerService final {
     }
     // disable synchronous version of this method
     ::grpc::Status PublishDistanceSensor(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest* /*request*/, ::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_PublishAttitude : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_PublishAttitude() {
+      ::grpc::Service::MarkMethodGeneric(15);
+    }
+    ~WithGenericMethod_PublishAttitude() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status PublishAttitude(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest* /*request*/, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_PublishVisualFlightRulesHud : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_PublishVisualFlightRulesHud() {
+      ::grpc::Service::MarkMethodGeneric(16);
+    }
+    ~WithGenericMethod_PublishVisualFlightRulesHud() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status PublishVisualFlightRulesHud(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest* /*request*/, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1740,6 +1922,46 @@ class TelemetryServerService final {
     }
     void RequestPublishDistanceSensor(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(14, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_PublishAttitude : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_PublishAttitude() {
+      ::grpc::Service::MarkMethodRaw(15);
+    }
+    ~WithRawMethod_PublishAttitude() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status PublishAttitude(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest* /*request*/, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestPublishAttitude(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(15, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_PublishVisualFlightRulesHud : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_PublishVisualFlightRulesHud() {
+      ::grpc::Service::MarkMethodRaw(16);
+    }
+    ~WithRawMethod_PublishVisualFlightRulesHud() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status PublishVisualFlightRulesHud(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest* /*request*/, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestPublishVisualFlightRulesHud(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(16, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -2070,6 +2292,50 @@ class TelemetryServerService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* PublishDistanceSensor(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_PublishAttitude : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_PublishAttitude() {
+      ::grpc::Service::MarkMethodRawCallback(15,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->PublishAttitude(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_PublishAttitude() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status PublishAttitude(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest* /*request*/, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* PublishAttitude(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_PublishVisualFlightRulesHud : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_PublishVisualFlightRulesHud() {
+      ::grpc::Service::MarkMethodRawCallback(16,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->PublishVisualFlightRulesHud(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_PublishVisualFlightRulesHud() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status PublishVisualFlightRulesHud(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest* /*request*/, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* PublishVisualFlightRulesHud(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
@@ -2477,9 +2743,63 @@ class TelemetryServerService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedPublishDistanceSensor(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::telemetry_server::PublishDistanceSensorRequest,::mavsdk::rpc::telemetry_server::PublishDistanceSensorResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_PublishPosition<WithStreamedUnaryMethod_PublishHome<WithStreamedUnaryMethod_PublishSysStatus<WithStreamedUnaryMethod_PublishExtendedSysState<WithStreamedUnaryMethod_PublishRawGps<WithStreamedUnaryMethod_PublishBattery<WithStreamedUnaryMethod_PublishStatusText<WithStreamedUnaryMethod_PublishOdometry<WithStreamedUnaryMethod_PublishPositionVelocityNed<WithStreamedUnaryMethod_PublishGroundTruth<WithStreamedUnaryMethod_PublishImu<WithStreamedUnaryMethod_PublishScaledImu<WithStreamedUnaryMethod_PublishRawImu<WithStreamedUnaryMethod_PublishUnixEpochTime<WithStreamedUnaryMethod_PublishDistanceSensor<Service > > > > > > > > > > > > > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_PublishAttitude : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_PublishAttitude() {
+      ::grpc::Service::MarkMethodStreamed(15,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>* streamer) {
+                       return this->StreamedPublishAttitude(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_PublishAttitude() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status PublishAttitude(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest* /*request*/, ::mavsdk::rpc::telemetry_server::PublishAttitudeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedPublishAttitude(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::telemetry_server::PublishAttitudeRequest,::mavsdk::rpc::telemetry_server::PublishAttitudeResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_PublishVisualFlightRulesHud : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_PublishVisualFlightRulesHud() {
+      ::grpc::Service::MarkMethodStreamed(16,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>* streamer) {
+                       return this->StreamedPublishVisualFlightRulesHud(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_PublishVisualFlightRulesHud() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status PublishVisualFlightRulesHud(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest* /*request*/, ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedPublishVisualFlightRulesHud(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudRequest,::mavsdk::rpc::telemetry_server::PublishVisualFlightRulesHudResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_PublishPosition<WithStreamedUnaryMethod_PublishHome<WithStreamedUnaryMethod_PublishSysStatus<WithStreamedUnaryMethod_PublishExtendedSysState<WithStreamedUnaryMethod_PublishRawGps<WithStreamedUnaryMethod_PublishBattery<WithStreamedUnaryMethod_PublishStatusText<WithStreamedUnaryMethod_PublishOdometry<WithStreamedUnaryMethod_PublishPositionVelocityNed<WithStreamedUnaryMethod_PublishGroundTruth<WithStreamedUnaryMethod_PublishImu<WithStreamedUnaryMethod_PublishScaledImu<WithStreamedUnaryMethod_PublishRawImu<WithStreamedUnaryMethod_PublishUnixEpochTime<WithStreamedUnaryMethod_PublishDistanceSensor<WithStreamedUnaryMethod_PublishAttitude<WithStreamedUnaryMethod_PublishVisualFlightRulesHud<Service > > > > > > > > > > > > > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_PublishPosition<WithStreamedUnaryMethod_PublishHome<WithStreamedUnaryMethod_PublishSysStatus<WithStreamedUnaryMethod_PublishExtendedSysState<WithStreamedUnaryMethod_PublishRawGps<WithStreamedUnaryMethod_PublishBattery<WithStreamedUnaryMethod_PublishStatusText<WithStreamedUnaryMethod_PublishOdometry<WithStreamedUnaryMethod_PublishPositionVelocityNed<WithStreamedUnaryMethod_PublishGroundTruth<WithStreamedUnaryMethod_PublishImu<WithStreamedUnaryMethod_PublishScaledImu<WithStreamedUnaryMethod_PublishRawImu<WithStreamedUnaryMethod_PublishUnixEpochTime<WithStreamedUnaryMethod_PublishDistanceSensor<Service > > > > > > > > > > > > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_PublishPosition<WithStreamedUnaryMethod_PublishHome<WithStreamedUnaryMethod_PublishSysStatus<WithStreamedUnaryMethod_PublishExtendedSysState<WithStreamedUnaryMethod_PublishRawGps<WithStreamedUnaryMethod_PublishBattery<WithStreamedUnaryMethod_PublishStatusText<WithStreamedUnaryMethod_PublishOdometry<WithStreamedUnaryMethod_PublishPositionVelocityNed<WithStreamedUnaryMethod_PublishGroundTruth<WithStreamedUnaryMethod_PublishImu<WithStreamedUnaryMethod_PublishScaledImu<WithStreamedUnaryMethod_PublishRawImu<WithStreamedUnaryMethod_PublishUnixEpochTime<WithStreamedUnaryMethod_PublishDistanceSensor<WithStreamedUnaryMethod_PublishAttitude<WithStreamedUnaryMethod_PublishVisualFlightRulesHud<Service > > > > > > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace telemetry_server

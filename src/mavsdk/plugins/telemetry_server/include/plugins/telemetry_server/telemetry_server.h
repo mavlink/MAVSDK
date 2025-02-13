@@ -757,6 +757,10 @@ public:
             float(NAN)}; /**< @brief Current indicated airspeed (IAS) in metres per second */
         float throttle_percentage{float(NAN)}; /**< @brief Current throttle setting (0 to 100) */
         float climb_rate_m_s{float(NAN)}; /**< @brief Current climb rate in metres per second */
+        float groundspeed_m_s{float(NAN)}; /**< @brief Current groundspeed metres per second */
+        float heading_deg{
+            float(NAN)}; /**< @brief Current heading in compass units (0-360, 0=north) */
+        float absolute_altitude_m{float(NAN)}; /**< @brief Current altitude in metres (MSL) */
     };
 
     /**
@@ -1051,6 +1055,24 @@ public:
      * @return Result of request.
      */
     Result publish_distance_sensor(DistanceSensor distance_sensor) const;
+
+    /**
+     * @brief Publish to "attitude" updates.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result publish_attitude(EulerAngle angle, AngularVelocityBody angular_velocity) const;
+
+    /**
+     * @brief Publish to "Visual Flight Rules HUD" updates.
+     *
+     * This function is blocking.
+     *
+     * @return Result of request.
+     */
+    Result publish_visual_flight_rules_hud(FixedwingMetrics fixed_wing_metrics) const;
 
     /**
      * @brief Copy constructor.

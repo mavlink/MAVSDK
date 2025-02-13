@@ -116,6 +116,12 @@ extern PositionNedDefaultTypeInternal _PositionNed_default_instance_;
 class PositionVelocityNed;
 struct PositionVelocityNedDefaultTypeInternal;
 extern PositionVelocityNedDefaultTypeInternal _PositionVelocityNed_default_instance_;
+class PublishAttitudeRequest;
+struct PublishAttitudeRequestDefaultTypeInternal;
+extern PublishAttitudeRequestDefaultTypeInternal _PublishAttitudeRequest_default_instance_;
+class PublishAttitudeResponse;
+struct PublishAttitudeResponseDefaultTypeInternal;
+extern PublishAttitudeResponseDefaultTypeInternal _PublishAttitudeResponse_default_instance_;
 class PublishBatteryRequest;
 struct PublishBatteryRequestDefaultTypeInternal;
 extern PublishBatteryRequestDefaultTypeInternal _PublishBatteryRequest_default_instance_;
@@ -215,6 +221,12 @@ extern PublishUnixEpochTimeRequestDefaultTypeInternal _PublishUnixEpochTimeReque
 class PublishUnixEpochTimeResponse;
 struct PublishUnixEpochTimeResponseDefaultTypeInternal;
 extern PublishUnixEpochTimeResponseDefaultTypeInternal _PublishUnixEpochTimeResponse_default_instance_;
+class PublishVisualFlightRulesHudRequest;
+struct PublishVisualFlightRulesHudRequestDefaultTypeInternal;
+extern PublishVisualFlightRulesHudRequestDefaultTypeInternal _PublishVisualFlightRulesHudRequest_default_instance_;
+class PublishVisualFlightRulesHudResponse;
+struct PublishVisualFlightRulesHudResponseDefaultTypeInternal;
+extern PublishVisualFlightRulesHudResponseDefaultTypeInternal _PublishVisualFlightRulesHudResponse_default_instance_;
 class Quaternion;
 struct QuaternionDefaultTypeInternal;
 extern QuaternionDefaultTypeInternal _Quaternion_default_instance_;
@@ -533,7 +545,7 @@ class VelocityNed final
     return reinterpret_cast<const VelocityNed*>(
         &_VelocityNed_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 52;
+  static constexpr int kIndexInFileMessages = 56;
   friend void swap(VelocityNed& a, VelocityNed& b) { a.Swap(&b); }
   inline void Swap(VelocityNed* other) {
     if (other == this) return;
@@ -748,7 +760,7 @@ class VelocityBody final
     return reinterpret_cast<const VelocityBody*>(
         &_VelocityBody_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 46;
+  static constexpr int kIndexInFileMessages = 50;
   friend void swap(VelocityBody& a, VelocityBody& b) { a.Swap(&b); }
   inline void Swap(VelocityBody* other) {
     if (other == this) return;
@@ -963,7 +975,7 @@ class TelemetryServerResult final
     return reinterpret_cast<const TelemetryServerResult*>(
         &_TelemetryServerResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 60;
+  static constexpr int kIndexInFileMessages = 64;
   friend void swap(TelemetryServerResult& a, TelemetryServerResult& b) { a.Swap(&b); }
   inline void Swap(TelemetryServerResult* other) {
     if (other == this) return;
@@ -1197,7 +1209,7 @@ class StatusText final
     return reinterpret_cast<const StatusText*>(
         &_StatusText_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 42;
+  static constexpr int kIndexInFileMessages = 46;
   friend void swap(StatusText& a, StatusText& b) { a.Swap(&b); }
   inline void Swap(StatusText* other) {
     if (other == this) return;
@@ -1406,7 +1418,7 @@ class ScaledPressure final
     return reinterpret_cast<const ScaledPressure*>(
         &_ScaledPressure_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 50;
+  static constexpr int kIndexInFileMessages = 54;
   friend void swap(ScaledPressure& a, ScaledPressure& b) { a.Swap(&b); }
   inline void Swap(ScaledPressure* other) {
     if (other == this) return;
@@ -1645,7 +1657,7 @@ class RcStatus final
     return reinterpret_cast<const RcStatus*>(
         &_RcStatus_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 41;
+  static constexpr int kIndexInFileMessages = 45;
   friend void swap(RcStatus& a, RcStatus& b) { a.Swap(&b); }
   inline void Swap(RcStatus* other) {
     if (other == this) return;
@@ -1860,7 +1872,7 @@ class RawGps final
     return reinterpret_cast<const RawGps*>(
         &_RawGps_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 39;
+  static constexpr int kIndexInFileMessages = 43;
   friend void swap(RawGps& a, RawGps& b) { a.Swap(&b); }
   inline void Swap(RawGps* other) {
     if (other == this) return;
@@ -2207,7 +2219,7 @@ class Quaternion final
     return reinterpret_cast<const Quaternion*>(
         &_Quaternion_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 35;
+  static constexpr int kIndexInFileMessages = 39;
   friend void swap(Quaternion& a, Quaternion& b) { a.Swap(&b); }
   inline void Swap(Quaternion* other) {
     if (other == this) return;
@@ -3222,7 +3234,7 @@ class PositionNed final
     return reinterpret_cast<const PositionNed*>(
         &_PositionNed_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 51;
+  static constexpr int kIndexInFileMessages = 55;
   friend void swap(PositionNed& a, PositionNed& b) { a.Swap(&b); }
   inline void Swap(PositionNed* other) {
     if (other == this) return;
@@ -3437,7 +3449,7 @@ class PositionBody final
     return reinterpret_cast<const PositionBody*>(
         &_PositionBody_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 47;
+  static constexpr int kIndexInFileMessages = 51;
   friend void swap(PositionBody& a, PositionBody& b) { a.Swap(&b); }
   inline void Swap(PositionBody* other) {
     if (other == this) return;
@@ -3652,7 +3664,7 @@ class Position final
     return reinterpret_cast<const Position*>(
         &_Position_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 33;
+  static constexpr int kIndexInFileMessages = 37;
   friend void swap(Position& a, Position& b) { a.Swap(&b); }
   inline void Swap(Position* other) {
     if (other == this) return;
@@ -3879,7 +3891,7 @@ class MagneticFieldFrd final
     return reinterpret_cast<const MagneticFieldFrd*>(
         &_MagneticFieldFrd_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 58;
+  static constexpr int kIndexInFileMessages = 62;
   friend void swap(MagneticFieldFrd& a, MagneticFieldFrd& b) { a.Swap(&b); }
   inline void Swap(MagneticFieldFrd* other) {
     if (other == this) return;
@@ -4094,7 +4106,7 @@ class Heading final
     return reinterpret_cast<const Heading*>(
         &_Heading_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 34;
+  static constexpr int kIndexInFileMessages = 38;
   friend void swap(Heading& a, Heading& b) { a.Swap(&b); }
   inline void Swap(Heading* other) {
     if (other == this) return;
@@ -4285,7 +4297,7 @@ class GroundTruth final
     return reinterpret_cast<const GroundTruth*>(
         &_GroundTruth_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 54;
+  static constexpr int kIndexInFileMessages = 58;
   friend void swap(GroundTruth& a, GroundTruth& b) { a.Swap(&b); }
   inline void Swap(GroundTruth* other) {
     if (other == this) return;
@@ -4500,7 +4512,7 @@ class GpsInfo final
     return reinterpret_cast<const GpsInfo*>(
         &_GpsInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 38;
+  static constexpr int kIndexInFileMessages = 42;
   friend void swap(GpsInfo& a, GpsInfo& b) { a.Swap(&b); }
   inline void Swap(GpsInfo* other) {
     if (other == this) return;
@@ -4703,7 +4715,7 @@ class FixedwingMetrics final
     return reinterpret_cast<const FixedwingMetrics*>(
         &_FixedwingMetrics_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 55;
+  static constexpr int kIndexInFileMessages = 59;
   friend void swap(FixedwingMetrics& a, FixedwingMetrics& b) { a.Swap(&b); }
   inline void Swap(FixedwingMetrics* other) {
     if (other == this) return;
@@ -4793,6 +4805,9 @@ class FixedwingMetrics final
     kAirspeedMSFieldNumber = 1,
     kThrottlePercentageFieldNumber = 2,
     kClimbRateMSFieldNumber = 3,
+    kGroundspeedMSFieldNumber = 4,
+    kHeadingDegFieldNumber = 5,
+    kAbsoluteAltitudeMFieldNumber = 6,
   };
   // float airspeed_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_airspeed_m_s() ;
@@ -4824,12 +4839,42 @@ class FixedwingMetrics final
   void _internal_set_climb_rate_m_s(float value);
 
   public:
+  // float groundspeed_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_groundspeed_m_s() ;
+  float groundspeed_m_s() const;
+  void set_groundspeed_m_s(float value);
+
+  private:
+  float _internal_groundspeed_m_s() const;
+  void _internal_set_groundspeed_m_s(float value);
+
+  public:
+  // float heading_deg = 5 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_heading_deg() ;
+  float heading_deg() const;
+  void set_heading_deg(float value);
+
+  private:
+  float _internal_heading_deg() const;
+  void _internal_set_heading_deg(float value);
+
+  public:
+  // float absolute_altitude_m = 6 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_absolute_altitude_m() ;
+  float absolute_altitude_m() const;
+  void set_absolute_altitude_m(float value);
+
+  private:
+  float _internal_absolute_altitude_m() const;
+  void _internal_set_absolute_altitude_m(float value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.FixedwingMetrics)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 0,
+      3, 6, 0,
       0, 2>
       _table_;
 
@@ -4850,6 +4895,9 @@ class FixedwingMetrics final
     float airspeed_m_s_;
     float throttle_percentage_;
     float climb_rate_m_s_;
+    float groundspeed_m_s_;
+    float heading_deg_;
+    float absolute_altitude_m_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -4918,7 +4966,7 @@ class EulerAngle final
     return reinterpret_cast<const EulerAngle*>(
         &_EulerAngle_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 36;
+  static constexpr int kIndexInFileMessages = 40;
   friend void swap(EulerAngle& a, EulerAngle& b) { a.Swap(&b); }
   inline void Swap(EulerAngle* other) {
     if (other == this) return;
@@ -5145,7 +5193,7 @@ class DistanceSensor final
     return reinterpret_cast<const DistanceSensor*>(
         &_DistanceSensor_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 49;
+  static constexpr int kIndexInFileMessages = 53;
   friend void swap(DistanceSensor& a, DistanceSensor& b) { a.Swap(&b); }
   inline void Swap(DistanceSensor* other) {
     if (other == this) return;
@@ -5360,7 +5408,7 @@ class Covariance final
     return reinterpret_cast<const Covariance*>(
         &_Covariance_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 45;
+  static constexpr int kIndexInFileMessages = 49;
   friend void swap(Covariance& a, Covariance& b) { a.Swap(&b); }
   inline void Swap(Covariance* other) {
     if (other == this) return;
@@ -5559,7 +5607,7 @@ class Battery final
     return reinterpret_cast<const Battery*>(
         &_Battery_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 40;
+  static constexpr int kIndexInFileMessages = 44;
   friend void swap(Battery& a, Battery& b) { a.Swap(&b); }
   inline void Swap(Battery* other) {
     if (other == this) return;
@@ -5762,7 +5810,7 @@ class AngularVelocityFrd final
     return reinterpret_cast<const AngularVelocityFrd*>(
         &_AngularVelocityFrd_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 57;
+  static constexpr int kIndexInFileMessages = 61;
   friend void swap(AngularVelocityFrd& a, AngularVelocityFrd& b) { a.Swap(&b); }
   inline void Swap(AngularVelocityFrd* other) {
     if (other == this) return;
@@ -5977,7 +6025,7 @@ class AngularVelocityBody final
     return reinterpret_cast<const AngularVelocityBody*>(
         &_AngularVelocityBody_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 37;
+  static constexpr int kIndexInFileMessages = 41;
   friend void swap(AngularVelocityBody& a, AngularVelocityBody& b) { a.Swap(&b); }
   inline void Swap(AngularVelocityBody* other) {
     if (other == this) return;
@@ -6192,7 +6240,7 @@ class ActuatorOutputStatus final
     return reinterpret_cast<const ActuatorOutputStatus*>(
         &_ActuatorOutputStatus_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 44;
+  static constexpr int kIndexInFileMessages = 48;
   friend void swap(ActuatorOutputStatus& a, ActuatorOutputStatus& b) { a.Swap(&b); }
   inline void Swap(ActuatorOutputStatus* other) {
     if (other == this) return;
@@ -6403,7 +6451,7 @@ class ActuatorControlTarget final
     return reinterpret_cast<const ActuatorControlTarget*>(
         &_ActuatorControlTarget_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 43;
+  static constexpr int kIndexInFileMessages = 47;
   friend void swap(ActuatorControlTarget& a, ActuatorControlTarget& b) { a.Swap(&b); }
   inline void Swap(ActuatorControlTarget* other) {
     if (other == this) return;
@@ -6614,7 +6662,7 @@ class AccelerationFrd final
     return reinterpret_cast<const AccelerationFrd*>(
         &_AccelerationFrd_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 56;
+  static constexpr int kIndexInFileMessages = 60;
   friend void swap(AccelerationFrd& a, AccelerationFrd& b) { a.Swap(&b); }
   inline void Swap(AccelerationFrd* other) {
     if (other == this) return;
@@ -6769,6 +6817,400 @@ class AccelerationFrd final
 };
 // -------------------------------------------------------------------
 
+class PublishVisualFlightRulesHudResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudResponse) */ {
+ public:
+  inline PublishVisualFlightRulesHudResponse() : PublishVisualFlightRulesHudResponse(nullptr) {}
+  ~PublishVisualFlightRulesHudResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(PublishVisualFlightRulesHudResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(PublishVisualFlightRulesHudResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR PublishVisualFlightRulesHudResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline PublishVisualFlightRulesHudResponse(const PublishVisualFlightRulesHudResponse& from) : PublishVisualFlightRulesHudResponse(nullptr, from) {}
+  inline PublishVisualFlightRulesHudResponse(PublishVisualFlightRulesHudResponse&& from) noexcept
+      : PublishVisualFlightRulesHudResponse(nullptr, std::move(from)) {}
+  inline PublishVisualFlightRulesHudResponse& operator=(const PublishVisualFlightRulesHudResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PublishVisualFlightRulesHudResponse& operator=(PublishVisualFlightRulesHudResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PublishVisualFlightRulesHudResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PublishVisualFlightRulesHudResponse* internal_default_instance() {
+    return reinterpret_cast<const PublishVisualFlightRulesHudResponse*>(
+        &_PublishVisualFlightRulesHudResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 36;
+  friend void swap(PublishVisualFlightRulesHudResponse& a, PublishVisualFlightRulesHudResponse& b) { a.Swap(&b); }
+  inline void Swap(PublishVisualFlightRulesHudResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PublishVisualFlightRulesHudResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PublishVisualFlightRulesHudResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<PublishVisualFlightRulesHudResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const PublishVisualFlightRulesHudResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const PublishVisualFlightRulesHudResponse& from) { PublishVisualFlightRulesHudResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(PublishVisualFlightRulesHudResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudResponse"; }
+
+ protected:
+  explicit PublishVisualFlightRulesHudResponse(::google::protobuf::Arena* arena);
+  PublishVisualFlightRulesHudResponse(::google::protobuf::Arena* arena, const PublishVisualFlightRulesHudResponse& from);
+  PublishVisualFlightRulesHudResponse(::google::protobuf::Arena* arena, PublishVisualFlightRulesHudResponse&& from) noexcept
+      : PublishVisualFlightRulesHudResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kTelemetryServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+  bool has_telemetry_server_result() const;
+  void clear_telemetry_server_result() ;
+  const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& telemetry_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry_server::TelemetryServerResult* release_telemetry_server_result();
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* mutable_telemetry_server_result();
+  void set_allocated_telemetry_server_result(::mavsdk::rpc::telemetry_server::TelemetryServerResult* value);
+  void unsafe_arena_set_allocated_telemetry_server_result(::mavsdk::rpc::telemetry_server::TelemetryServerResult* value);
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* unsafe_arena_release_telemetry_server_result();
+
+  private:
+  const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& _internal_telemetry_server_result() const;
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* _internal_mutable_telemetry_server_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const PublishVisualFlightRulesHudResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::telemetry_server::TelemetryServerResult* telemetry_server_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class PublishVisualFlightRulesHudRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudRequest) */ {
+ public:
+  inline PublishVisualFlightRulesHudRequest() : PublishVisualFlightRulesHudRequest(nullptr) {}
+  ~PublishVisualFlightRulesHudRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(PublishVisualFlightRulesHudRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(PublishVisualFlightRulesHudRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR PublishVisualFlightRulesHudRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline PublishVisualFlightRulesHudRequest(const PublishVisualFlightRulesHudRequest& from) : PublishVisualFlightRulesHudRequest(nullptr, from) {}
+  inline PublishVisualFlightRulesHudRequest(PublishVisualFlightRulesHudRequest&& from) noexcept
+      : PublishVisualFlightRulesHudRequest(nullptr, std::move(from)) {}
+  inline PublishVisualFlightRulesHudRequest& operator=(const PublishVisualFlightRulesHudRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PublishVisualFlightRulesHudRequest& operator=(PublishVisualFlightRulesHudRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PublishVisualFlightRulesHudRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PublishVisualFlightRulesHudRequest* internal_default_instance() {
+    return reinterpret_cast<const PublishVisualFlightRulesHudRequest*>(
+        &_PublishVisualFlightRulesHudRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 19;
+  friend void swap(PublishVisualFlightRulesHudRequest& a, PublishVisualFlightRulesHudRequest& b) { a.Swap(&b); }
+  inline void Swap(PublishVisualFlightRulesHudRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PublishVisualFlightRulesHudRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PublishVisualFlightRulesHudRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<PublishVisualFlightRulesHudRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const PublishVisualFlightRulesHudRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const PublishVisualFlightRulesHudRequest& from) { PublishVisualFlightRulesHudRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(PublishVisualFlightRulesHudRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudRequest"; }
+
+ protected:
+  explicit PublishVisualFlightRulesHudRequest(::google::protobuf::Arena* arena);
+  PublishVisualFlightRulesHudRequest(::google::protobuf::Arena* arena, const PublishVisualFlightRulesHudRequest& from);
+  PublishVisualFlightRulesHudRequest(::google::protobuf::Arena* arena, PublishVisualFlightRulesHudRequest&& from) noexcept
+      : PublishVisualFlightRulesHudRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kFixedWingMetricsFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry_server.FixedwingMetrics fixed_wing_metrics = 1;
+  bool has_fixed_wing_metrics() const;
+  void clear_fixed_wing_metrics() ;
+  const ::mavsdk::rpc::telemetry_server::FixedwingMetrics& fixed_wing_metrics() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry_server::FixedwingMetrics* release_fixed_wing_metrics();
+  ::mavsdk::rpc::telemetry_server::FixedwingMetrics* mutable_fixed_wing_metrics();
+  void set_allocated_fixed_wing_metrics(::mavsdk::rpc::telemetry_server::FixedwingMetrics* value);
+  void unsafe_arena_set_allocated_fixed_wing_metrics(::mavsdk::rpc::telemetry_server::FixedwingMetrics* value);
+  ::mavsdk::rpc::telemetry_server::FixedwingMetrics* unsafe_arena_release_fixed_wing_metrics();
+
+  private:
+  const ::mavsdk::rpc::telemetry_server::FixedwingMetrics& _internal_fixed_wing_metrics() const;
+  ::mavsdk::rpc::telemetry_server::FixedwingMetrics* _internal_mutable_fixed_wing_metrics();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const PublishVisualFlightRulesHudRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::telemetry_server::FixedwingMetrics* fixed_wing_metrics_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class PublishUnixEpochTimeResponse final
     : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.PublishUnixEpochTimeResponse) */ {
@@ -6829,7 +7271,7 @@ class PublishUnixEpochTimeResponse final
     return reinterpret_cast<const PublishUnixEpochTimeResponse*>(
         &_PublishUnixEpochTimeResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 31;
+  static constexpr int kIndexInFileMessages = 33;
   friend void swap(PublishUnixEpochTimeResponse& a, PublishUnixEpochTimeResponse& b) { a.Swap(&b); }
   inline void Swap(PublishUnixEpochTimeResponse* other) {
     if (other == this) return;
@@ -7026,7 +7468,7 @@ class PublishSysStatusResponse final
     return reinterpret_cast<const PublishSysStatusResponse*>(
         &_PublishSysStatusResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 20;
+  static constexpr int kIndexInFileMessages = 22;
   friend void swap(PublishSysStatusResponse& a, PublishSysStatusResponse& b) { a.Swap(&b); }
   inline void Swap(PublishSysStatusResponse* other) {
     if (other == this) return;
@@ -7480,7 +7922,7 @@ class PublishStatusTextResponse final
     return reinterpret_cast<const PublishStatusTextResponse*>(
         &_PublishStatusTextResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 24;
+  static constexpr int kIndexInFileMessages = 26;
   friend void swap(PublishStatusTextResponse& a, PublishStatusTextResponse& b) { a.Swap(&b); }
   inline void Swap(PublishStatusTextResponse* other) {
     if (other == this) return;
@@ -7874,7 +8316,7 @@ class PublishScaledImuResponse final
     return reinterpret_cast<const PublishScaledImuResponse*>(
         &_PublishScaledImuResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 29;
+  static constexpr int kIndexInFileMessages = 31;
   friend void swap(PublishScaledImuResponse& a, PublishScaledImuResponse& b) { a.Swap(&b); }
   inline void Swap(PublishScaledImuResponse* other) {
     if (other == this) return;
@@ -8268,7 +8710,7 @@ class PublishRawImuResponse final
     return reinterpret_cast<const PublishRawImuResponse*>(
         &_PublishRawImuResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 30;
+  static constexpr int kIndexInFileMessages = 32;
   friend void swap(PublishRawImuResponse& a, PublishRawImuResponse& b) { a.Swap(&b); }
   inline void Swap(PublishRawImuResponse* other) {
     if (other == this) return;
@@ -8465,7 +8907,7 @@ class PublishRawGpsResponse final
     return reinterpret_cast<const PublishRawGpsResponse*>(
         &_PublishRawGpsResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 22;
+  static constexpr int kIndexInFileMessages = 24;
   friend void swap(PublishRawGpsResponse& a, PublishRawGpsResponse& b) { a.Swap(&b); }
   inline void Swap(PublishRawGpsResponse* other) {
     if (other == this) return;
@@ -8876,7 +9318,7 @@ class PublishPositionVelocityNedResponse final
     return reinterpret_cast<const PublishPositionVelocityNedResponse*>(
         &_PublishPositionVelocityNedResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 26;
+  static constexpr int kIndexInFileMessages = 28;
   friend void swap(PublishPositionVelocityNedResponse& a, PublishPositionVelocityNedResponse& b) { a.Swap(&b); }
   inline void Swap(PublishPositionVelocityNedResponse* other) {
     if (other == this) return;
@@ -9073,7 +9515,7 @@ class PublishPositionResponse final
     return reinterpret_cast<const PublishPositionResponse*>(
         &_PublishPositionResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 18;
+  static constexpr int kIndexInFileMessages = 20;
   friend void swap(PublishPositionResponse& a, PublishPositionResponse& b) { a.Swap(&b); }
   inline void Swap(PublishPositionResponse* other) {
     if (other == this) return;
@@ -9501,7 +9943,7 @@ class PublishOdometryResponse final
     return reinterpret_cast<const PublishOdometryResponse*>(
         &_PublishOdometryResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 25;
+  static constexpr int kIndexInFileMessages = 27;
   friend void swap(PublishOdometryResponse& a, PublishOdometryResponse& b) { a.Swap(&b); }
   inline void Swap(PublishOdometryResponse* other) {
     if (other == this) return;
@@ -9698,7 +10140,7 @@ class PublishImuResponse final
     return reinterpret_cast<const PublishImuResponse*>(
         &_PublishImuResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 28;
+  static constexpr int kIndexInFileMessages = 30;
   friend void swap(PublishImuResponse& a, PublishImuResponse& b) { a.Swap(&b); }
   inline void Swap(PublishImuResponse* other) {
     if (other == this) return;
@@ -9895,7 +10337,7 @@ class PublishHomeResponse final
     return reinterpret_cast<const PublishHomeResponse*>(
         &_PublishHomeResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 19;
+  static constexpr int kIndexInFileMessages = 21;
   friend void swap(PublishHomeResponse& a, PublishHomeResponse& b) { a.Swap(&b); }
   inline void Swap(PublishHomeResponse* other) {
     if (other == this) return;
@@ -10289,7 +10731,7 @@ class PublishGroundTruthResponse final
     return reinterpret_cast<const PublishGroundTruthResponse*>(
         &_PublishGroundTruthResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 27;
+  static constexpr int kIndexInFileMessages = 29;
   friend void swap(PublishGroundTruthResponse& a, PublishGroundTruthResponse& b) { a.Swap(&b); }
   inline void Swap(PublishGroundTruthResponse* other) {
     if (other == this) return;
@@ -10683,7 +11125,7 @@ class PublishExtendedSysStateResponse final
     return reinterpret_cast<const PublishExtendedSysStateResponse*>(
         &_PublishExtendedSysStateResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 21;
+  static constexpr int kIndexInFileMessages = 23;
   friend void swap(PublishExtendedSysStateResponse& a, PublishExtendedSysStateResponse& b) { a.Swap(&b); }
   inline void Swap(PublishExtendedSysStateResponse* other) {
     if (other == this) return;
@@ -10880,7 +11322,7 @@ class PublishDistanceSensorResponse final
     return reinterpret_cast<const PublishDistanceSensorResponse*>(
         &_PublishDistanceSensorResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 32;
+  static constexpr int kIndexInFileMessages = 34;
   friend void swap(PublishDistanceSensorResponse& a, PublishDistanceSensorResponse& b) { a.Swap(&b); }
   inline void Swap(PublishDistanceSensorResponse* other) {
     if (other == this) return;
@@ -11274,7 +11716,7 @@ class PublishBatteryResponse final
     return reinterpret_cast<const PublishBatteryResponse*>(
         &_PublishBatteryResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 23;
+  static constexpr int kIndexInFileMessages = 25;
   friend void swap(PublishBatteryResponse& a, PublishBatteryResponse& b) { a.Swap(&b); }
   inline void Swap(PublishBatteryResponse* other) {
     if (other == this) return;
@@ -11608,6 +12050,417 @@ class PublishBatteryRequest final
 };
 // -------------------------------------------------------------------
 
+class PublishAttitudeResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.PublishAttitudeResponse) */ {
+ public:
+  inline PublishAttitudeResponse() : PublishAttitudeResponse(nullptr) {}
+  ~PublishAttitudeResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(PublishAttitudeResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(PublishAttitudeResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR PublishAttitudeResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline PublishAttitudeResponse(const PublishAttitudeResponse& from) : PublishAttitudeResponse(nullptr, from) {}
+  inline PublishAttitudeResponse(PublishAttitudeResponse&& from) noexcept
+      : PublishAttitudeResponse(nullptr, std::move(from)) {}
+  inline PublishAttitudeResponse& operator=(const PublishAttitudeResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PublishAttitudeResponse& operator=(PublishAttitudeResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PublishAttitudeResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PublishAttitudeResponse* internal_default_instance() {
+    return reinterpret_cast<const PublishAttitudeResponse*>(
+        &_PublishAttitudeResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 35;
+  friend void swap(PublishAttitudeResponse& a, PublishAttitudeResponse& b) { a.Swap(&b); }
+  inline void Swap(PublishAttitudeResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PublishAttitudeResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PublishAttitudeResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<PublishAttitudeResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const PublishAttitudeResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const PublishAttitudeResponse& from) { PublishAttitudeResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(PublishAttitudeResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.telemetry_server.PublishAttitudeResponse"; }
+
+ protected:
+  explicit PublishAttitudeResponse(::google::protobuf::Arena* arena);
+  PublishAttitudeResponse(::google::protobuf::Arena* arena, const PublishAttitudeResponse& from);
+  PublishAttitudeResponse(::google::protobuf::Arena* arena, PublishAttitudeResponse&& from) noexcept
+      : PublishAttitudeResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kTelemetryServerResultFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+  bool has_telemetry_server_result() const;
+  void clear_telemetry_server_result() ;
+  const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& telemetry_server_result() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry_server::TelemetryServerResult* release_telemetry_server_result();
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* mutable_telemetry_server_result();
+  void set_allocated_telemetry_server_result(::mavsdk::rpc::telemetry_server::TelemetryServerResult* value);
+  void unsafe_arena_set_allocated_telemetry_server_result(::mavsdk::rpc::telemetry_server::TelemetryServerResult* value);
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* unsafe_arena_release_telemetry_server_result();
+
+  private:
+  const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& _internal_telemetry_server_result() const;
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* _internal_mutable_telemetry_server_result();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.PublishAttitudeResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const PublishAttitudeResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::telemetry_server::TelemetryServerResult* telemetry_server_result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
+class PublishAttitudeRequest final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.PublishAttitudeRequest) */ {
+ public:
+  inline PublishAttitudeRequest() : PublishAttitudeRequest(nullptr) {}
+  ~PublishAttitudeRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(PublishAttitudeRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(PublishAttitudeRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR PublishAttitudeRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline PublishAttitudeRequest(const PublishAttitudeRequest& from) : PublishAttitudeRequest(nullptr, from) {}
+  inline PublishAttitudeRequest(PublishAttitudeRequest&& from) noexcept
+      : PublishAttitudeRequest(nullptr, std::move(from)) {}
+  inline PublishAttitudeRequest& operator=(const PublishAttitudeRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline PublishAttitudeRequest& operator=(PublishAttitudeRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const PublishAttitudeRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const PublishAttitudeRequest* internal_default_instance() {
+    return reinterpret_cast<const PublishAttitudeRequest*>(
+        &_PublishAttitudeRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 18;
+  friend void swap(PublishAttitudeRequest& a, PublishAttitudeRequest& b) { a.Swap(&b); }
+  inline void Swap(PublishAttitudeRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(PublishAttitudeRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  PublishAttitudeRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<PublishAttitudeRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const PublishAttitudeRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const PublishAttitudeRequest& from) { PublishAttitudeRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(PublishAttitudeRequest* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.telemetry_server.PublishAttitudeRequest"; }
+
+ protected:
+  explicit PublishAttitudeRequest(::google::protobuf::Arena* arena);
+  PublishAttitudeRequest(::google::protobuf::Arena* arena, const PublishAttitudeRequest& from);
+  PublishAttitudeRequest(::google::protobuf::Arena* arena, PublishAttitudeRequest&& from) noexcept
+      : PublishAttitudeRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kAngleFieldNumber = 1,
+    kAngularVelocityFieldNumber = 2,
+  };
+  // .mavsdk.rpc.telemetry_server.EulerAngle angle = 1;
+  bool has_angle() const;
+  void clear_angle() ;
+  const ::mavsdk::rpc::telemetry_server::EulerAngle& angle() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry_server::EulerAngle* release_angle();
+  ::mavsdk::rpc::telemetry_server::EulerAngle* mutable_angle();
+  void set_allocated_angle(::mavsdk::rpc::telemetry_server::EulerAngle* value);
+  void unsafe_arena_set_allocated_angle(::mavsdk::rpc::telemetry_server::EulerAngle* value);
+  ::mavsdk::rpc::telemetry_server::EulerAngle* unsafe_arena_release_angle();
+
+  private:
+  const ::mavsdk::rpc::telemetry_server::EulerAngle& _internal_angle() const;
+  ::mavsdk::rpc::telemetry_server::EulerAngle* _internal_mutable_angle();
+
+  public:
+  // .mavsdk.rpc.telemetry_server.AngularVelocityBody angular_velocity = 2;
+  bool has_angular_velocity() const;
+  void clear_angular_velocity() ;
+  const ::mavsdk::rpc::telemetry_server::AngularVelocityBody& angular_velocity() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry_server::AngularVelocityBody* release_angular_velocity();
+  ::mavsdk::rpc::telemetry_server::AngularVelocityBody* mutable_angular_velocity();
+  void set_allocated_angular_velocity(::mavsdk::rpc::telemetry_server::AngularVelocityBody* value);
+  void unsafe_arena_set_allocated_angular_velocity(::mavsdk::rpc::telemetry_server::AngularVelocityBody* value);
+  ::mavsdk::rpc::telemetry_server::AngularVelocityBody* unsafe_arena_release_angular_velocity();
+
+  private:
+  const ::mavsdk::rpc::telemetry_server::AngularVelocityBody& _internal_angular_velocity() const;
+  ::mavsdk::rpc::telemetry_server::AngularVelocityBody* _internal_mutable_angular_velocity();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry_server.PublishAttitudeRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      1, 2, 2,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const PublishAttitudeRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::telemetry_server::EulerAngle* angle_;
+    ::mavsdk::rpc::telemetry_server::AngularVelocityBody* angular_velocity_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_telemetry_5fserver_2ftelemetry_5fserver_2eproto;
+};
+// -------------------------------------------------------------------
+
 class PositionVelocityNed final
     : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry_server.PositionVelocityNed) */ {
@@ -11668,7 +12521,7 @@ class PositionVelocityNed final
     return reinterpret_cast<const PositionVelocityNed*>(
         &_PositionVelocityNed_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 53;
+  static constexpr int kIndexInFileMessages = 57;
   friend void swap(PositionVelocityNed& a, PositionVelocityNed& b) { a.Swap(&b); }
   inline void Swap(PositionVelocityNed* other) {
     if (other == this) return;
@@ -11882,7 +12735,7 @@ class Odometry final
     return reinterpret_cast<const Odometry*>(
         &_Odometry_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 48;
+  static constexpr int kIndexInFileMessages = 52;
   friend void swap(Odometry& a, Odometry& b) { a.Swap(&b); }
   inline void Swap(Odometry* other) {
     if (other == this) return;
@@ -12221,7 +13074,7 @@ class Imu final
     return reinterpret_cast<const Imu*>(
         &_Imu_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 59;
+  static constexpr int kIndexInFileMessages = 63;
   friend void swap(Imu& a, Imu& b) { a.Swap(&b); }
   inline void Swap(Imu* other) {
     if (other == this) return;
@@ -15338,6 +16191,302 @@ inline void PublishDistanceSensorRequest::set_allocated_distance_sensor(::mavsdk
 
 // -------------------------------------------------------------------
 
+// PublishAttitudeRequest
+
+// .mavsdk.rpc.telemetry_server.EulerAngle angle = 1;
+inline bool PublishAttitudeRequest::has_angle() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.angle_ != nullptr);
+  return value;
+}
+inline void PublishAttitudeRequest::clear_angle() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.angle_ != nullptr) _impl_.angle_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::telemetry_server::EulerAngle& PublishAttitudeRequest::_internal_angle() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::telemetry_server::EulerAngle* p = _impl_.angle_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry_server::EulerAngle&>(::mavsdk::rpc::telemetry_server::_EulerAngle_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry_server::EulerAngle& PublishAttitudeRequest::angle() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.PublishAttitudeRequest.angle)
+  return _internal_angle();
+}
+inline void PublishAttitudeRequest::unsafe_arena_set_allocated_angle(::mavsdk::rpc::telemetry_server::EulerAngle* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.angle_);
+  }
+  _impl_.angle_ = reinterpret_cast<::mavsdk::rpc::telemetry_server::EulerAngle*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry_server.PublishAttitudeRequest.angle)
+}
+inline ::mavsdk::rpc::telemetry_server::EulerAngle* PublishAttitudeRequest::release_angle() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::telemetry_server::EulerAngle* released = _impl_.angle_;
+  _impl_.angle_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::telemetry_server::EulerAngle* PublishAttitudeRequest::unsafe_arena_release_angle() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.PublishAttitudeRequest.angle)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::telemetry_server::EulerAngle* temp = _impl_.angle_;
+  _impl_.angle_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::EulerAngle* PublishAttitudeRequest::_internal_mutable_angle() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.angle_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::telemetry_server::EulerAngle>(GetArena());
+    _impl_.angle_ = reinterpret_cast<::mavsdk::rpc::telemetry_server::EulerAngle*>(p);
+  }
+  return _impl_.angle_;
+}
+inline ::mavsdk::rpc::telemetry_server::EulerAngle* PublishAttitudeRequest::mutable_angle() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::telemetry_server::EulerAngle* _msg = _internal_mutable_angle();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.PublishAttitudeRequest.angle)
+  return _msg;
+}
+inline void PublishAttitudeRequest::set_allocated_angle(::mavsdk::rpc::telemetry_server::EulerAngle* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.angle_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.angle_ = reinterpret_cast<::mavsdk::rpc::telemetry_server::EulerAngle*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishAttitudeRequest.angle)
+}
+
+// .mavsdk.rpc.telemetry_server.AngularVelocityBody angular_velocity = 2;
+inline bool PublishAttitudeRequest::has_angular_velocity() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.angular_velocity_ != nullptr);
+  return value;
+}
+inline void PublishAttitudeRequest::clear_angular_velocity() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.angular_velocity_ != nullptr) _impl_.angular_velocity_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000002u;
+}
+inline const ::mavsdk::rpc::telemetry_server::AngularVelocityBody& PublishAttitudeRequest::_internal_angular_velocity() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::telemetry_server::AngularVelocityBody* p = _impl_.angular_velocity_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry_server::AngularVelocityBody&>(::mavsdk::rpc::telemetry_server::_AngularVelocityBody_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry_server::AngularVelocityBody& PublishAttitudeRequest::angular_velocity() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.PublishAttitudeRequest.angular_velocity)
+  return _internal_angular_velocity();
+}
+inline void PublishAttitudeRequest::unsafe_arena_set_allocated_angular_velocity(::mavsdk::rpc::telemetry_server::AngularVelocityBody* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.angular_velocity_);
+  }
+  _impl_.angular_velocity_ = reinterpret_cast<::mavsdk::rpc::telemetry_server::AngularVelocityBody*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry_server.PublishAttitudeRequest.angular_velocity)
+}
+inline ::mavsdk::rpc::telemetry_server::AngularVelocityBody* PublishAttitudeRequest::release_angular_velocity() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::telemetry_server::AngularVelocityBody* released = _impl_.angular_velocity_;
+  _impl_.angular_velocity_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::telemetry_server::AngularVelocityBody* PublishAttitudeRequest::unsafe_arena_release_angular_velocity() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.PublishAttitudeRequest.angular_velocity)
+
+  _impl_._has_bits_[0] &= ~0x00000002u;
+  ::mavsdk::rpc::telemetry_server::AngularVelocityBody* temp = _impl_.angular_velocity_;
+  _impl_.angular_velocity_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::AngularVelocityBody* PublishAttitudeRequest::_internal_mutable_angular_velocity() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.angular_velocity_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::telemetry_server::AngularVelocityBody>(GetArena());
+    _impl_.angular_velocity_ = reinterpret_cast<::mavsdk::rpc::telemetry_server::AngularVelocityBody*>(p);
+  }
+  return _impl_.angular_velocity_;
+}
+inline ::mavsdk::rpc::telemetry_server::AngularVelocityBody* PublishAttitudeRequest::mutable_angular_velocity() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000002u;
+  ::mavsdk::rpc::telemetry_server::AngularVelocityBody* _msg = _internal_mutable_angular_velocity();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.PublishAttitudeRequest.angular_velocity)
+  return _msg;
+}
+inline void PublishAttitudeRequest::set_allocated_angular_velocity(::mavsdk::rpc::telemetry_server::AngularVelocityBody* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.angular_velocity_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000002u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000002u;
+  }
+
+  _impl_.angular_velocity_ = reinterpret_cast<::mavsdk::rpc::telemetry_server::AngularVelocityBody*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishAttitudeRequest.angular_velocity)
+}
+
+// -------------------------------------------------------------------
+
+// PublishVisualFlightRulesHudRequest
+
+// .mavsdk.rpc.telemetry_server.FixedwingMetrics fixed_wing_metrics = 1;
+inline bool PublishVisualFlightRulesHudRequest::has_fixed_wing_metrics() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.fixed_wing_metrics_ != nullptr);
+  return value;
+}
+inline void PublishVisualFlightRulesHudRequest::clear_fixed_wing_metrics() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.fixed_wing_metrics_ != nullptr) _impl_.fixed_wing_metrics_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::telemetry_server::FixedwingMetrics& PublishVisualFlightRulesHudRequest::_internal_fixed_wing_metrics() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::telemetry_server::FixedwingMetrics* p = _impl_.fixed_wing_metrics_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry_server::FixedwingMetrics&>(::mavsdk::rpc::telemetry_server::_FixedwingMetrics_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry_server::FixedwingMetrics& PublishVisualFlightRulesHudRequest::fixed_wing_metrics() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudRequest.fixed_wing_metrics)
+  return _internal_fixed_wing_metrics();
+}
+inline void PublishVisualFlightRulesHudRequest::unsafe_arena_set_allocated_fixed_wing_metrics(::mavsdk::rpc::telemetry_server::FixedwingMetrics* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.fixed_wing_metrics_);
+  }
+  _impl_.fixed_wing_metrics_ = reinterpret_cast<::mavsdk::rpc::telemetry_server::FixedwingMetrics*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudRequest.fixed_wing_metrics)
+}
+inline ::mavsdk::rpc::telemetry_server::FixedwingMetrics* PublishVisualFlightRulesHudRequest::release_fixed_wing_metrics() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::telemetry_server::FixedwingMetrics* released = _impl_.fixed_wing_metrics_;
+  _impl_.fixed_wing_metrics_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::telemetry_server::FixedwingMetrics* PublishVisualFlightRulesHudRequest::unsafe_arena_release_fixed_wing_metrics() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudRequest.fixed_wing_metrics)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::telemetry_server::FixedwingMetrics* temp = _impl_.fixed_wing_metrics_;
+  _impl_.fixed_wing_metrics_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::FixedwingMetrics* PublishVisualFlightRulesHudRequest::_internal_mutable_fixed_wing_metrics() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.fixed_wing_metrics_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::telemetry_server::FixedwingMetrics>(GetArena());
+    _impl_.fixed_wing_metrics_ = reinterpret_cast<::mavsdk::rpc::telemetry_server::FixedwingMetrics*>(p);
+  }
+  return _impl_.fixed_wing_metrics_;
+}
+inline ::mavsdk::rpc::telemetry_server::FixedwingMetrics* PublishVisualFlightRulesHudRequest::mutable_fixed_wing_metrics() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::telemetry_server::FixedwingMetrics* _msg = _internal_mutable_fixed_wing_metrics();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudRequest.fixed_wing_metrics)
+  return _msg;
+}
+inline void PublishVisualFlightRulesHudRequest::set_allocated_fixed_wing_metrics(::mavsdk::rpc::telemetry_server::FixedwingMetrics* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.fixed_wing_metrics_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.fixed_wing_metrics_ = reinterpret_cast<::mavsdk::rpc::telemetry_server::FixedwingMetrics*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudRequest.fixed_wing_metrics)
+}
+
+// -------------------------------------------------------------------
+
 // PublishPositionResponse
 
 // .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
@@ -16834,6 +17983,206 @@ inline void PublishDistanceSensorResponse::set_allocated_telemetry_server_result
 
   _impl_.telemetry_server_result_ = reinterpret_cast<::mavsdk::rpc::telemetry_server::TelemetryServerResult*>(value);
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishDistanceSensorResponse.telemetry_server_result)
+}
+
+// -------------------------------------------------------------------
+
+// PublishAttitudeResponse
+
+// .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+inline bool PublishAttitudeResponse::has_telemetry_server_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.telemetry_server_result_ != nullptr);
+  return value;
+}
+inline void PublishAttitudeResponse::clear_telemetry_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.telemetry_server_result_ != nullptr) _impl_.telemetry_server_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishAttitudeResponse::_internal_telemetry_server_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::telemetry_server::TelemetryServerResult* p = _impl_.telemetry_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&>(::mavsdk::rpc::telemetry_server::_TelemetryServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishAttitudeResponse::telemetry_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.PublishAttitudeResponse.telemetry_server_result)
+  return _internal_telemetry_server_result();
+}
+inline void PublishAttitudeResponse::unsafe_arena_set_allocated_telemetry_server_result(::mavsdk::rpc::telemetry_server::TelemetryServerResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.telemetry_server_result_);
+  }
+  _impl_.telemetry_server_result_ = reinterpret_cast<::mavsdk::rpc::telemetry_server::TelemetryServerResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry_server.PublishAttitudeResponse.telemetry_server_result)
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishAttitudeResponse::release_telemetry_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* released = _impl_.telemetry_server_result_;
+  _impl_.telemetry_server_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishAttitudeResponse::unsafe_arena_release_telemetry_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.PublishAttitudeResponse.telemetry_server_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* temp = _impl_.telemetry_server_result_;
+  _impl_.telemetry_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishAttitudeResponse::_internal_mutable_telemetry_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.telemetry_server_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(GetArena());
+    _impl_.telemetry_server_result_ = reinterpret_cast<::mavsdk::rpc::telemetry_server::TelemetryServerResult*>(p);
+  }
+  return _impl_.telemetry_server_result_;
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishAttitudeResponse::mutable_telemetry_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* _msg = _internal_mutable_telemetry_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.PublishAttitudeResponse.telemetry_server_result)
+  return _msg;
+}
+inline void PublishAttitudeResponse::set_allocated_telemetry_server_result(::mavsdk::rpc::telemetry_server::TelemetryServerResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.telemetry_server_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.telemetry_server_result_ = reinterpret_cast<::mavsdk::rpc::telemetry_server::TelemetryServerResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishAttitudeResponse.telemetry_server_result)
+}
+
+// -------------------------------------------------------------------
+
+// PublishVisualFlightRulesHudResponse
+
+// .mavsdk.rpc.telemetry_server.TelemetryServerResult telemetry_server_result = 1;
+inline bool PublishVisualFlightRulesHudResponse::has_telemetry_server_result() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.telemetry_server_result_ != nullptr);
+  return value;
+}
+inline void PublishVisualFlightRulesHudResponse::clear_telemetry_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.telemetry_server_result_ != nullptr) _impl_.telemetry_server_result_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishVisualFlightRulesHudResponse::_internal_telemetry_server_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::telemetry_server::TelemetryServerResult* p = _impl_.telemetry_server_result_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry_server::TelemetryServerResult&>(::mavsdk::rpc::telemetry_server::_TelemetryServerResult_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry_server::TelemetryServerResult& PublishVisualFlightRulesHudResponse::telemetry_server_result() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudResponse.telemetry_server_result)
+  return _internal_telemetry_server_result();
+}
+inline void PublishVisualFlightRulesHudResponse::unsafe_arena_set_allocated_telemetry_server_result(::mavsdk::rpc::telemetry_server::TelemetryServerResult* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.telemetry_server_result_);
+  }
+  _impl_.telemetry_server_result_ = reinterpret_cast<::mavsdk::rpc::telemetry_server::TelemetryServerResult*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudResponse.telemetry_server_result)
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishVisualFlightRulesHudResponse::release_telemetry_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* released = _impl_.telemetry_server_result_;
+  _impl_.telemetry_server_result_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishVisualFlightRulesHudResponse::unsafe_arena_release_telemetry_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudResponse.telemetry_server_result)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* temp = _impl_.telemetry_server_result_;
+  _impl_.telemetry_server_result_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishVisualFlightRulesHudResponse::_internal_mutable_telemetry_server_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.telemetry_server_result_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::telemetry_server::TelemetryServerResult>(GetArena());
+    _impl_.telemetry_server_result_ = reinterpret_cast<::mavsdk::rpc::telemetry_server::TelemetryServerResult*>(p);
+  }
+  return _impl_.telemetry_server_result_;
+}
+inline ::mavsdk::rpc::telemetry_server::TelemetryServerResult* PublishVisualFlightRulesHudResponse::mutable_telemetry_server_result() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::telemetry_server::TelemetryServerResult* _msg = _internal_mutable_telemetry_server_result();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudResponse.telemetry_server_result)
+  return _msg;
+}
+inline void PublishVisualFlightRulesHudResponse::set_allocated_telemetry_server_result(::mavsdk::rpc::telemetry_server::TelemetryServerResult* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.telemetry_server_result_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.telemetry_server_result_ = reinterpret_cast<::mavsdk::rpc::telemetry_server::TelemetryServerResult*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry_server.PublishVisualFlightRulesHudResponse.telemetry_server_result)
 }
 
 // -------------------------------------------------------------------
@@ -19417,6 +20766,72 @@ inline float FixedwingMetrics::_internal_climb_rate_m_s() const {
 inline void FixedwingMetrics::_internal_set_climb_rate_m_s(float value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.climb_rate_m_s_ = value;
+}
+
+// float groundspeed_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
+inline void FixedwingMetrics::clear_groundspeed_m_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.groundspeed_m_s_ = 0;
+}
+inline float FixedwingMetrics::groundspeed_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.FixedwingMetrics.groundspeed_m_s)
+  return _internal_groundspeed_m_s();
+}
+inline void FixedwingMetrics::set_groundspeed_m_s(float value) {
+  _internal_set_groundspeed_m_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.FixedwingMetrics.groundspeed_m_s)
+}
+inline float FixedwingMetrics::_internal_groundspeed_m_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.groundspeed_m_s_;
+}
+inline void FixedwingMetrics::_internal_set_groundspeed_m_s(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.groundspeed_m_s_ = value;
+}
+
+// float heading_deg = 5 [(.mavsdk.options.default_value) = "NaN"];
+inline void FixedwingMetrics::clear_heading_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.heading_deg_ = 0;
+}
+inline float FixedwingMetrics::heading_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.FixedwingMetrics.heading_deg)
+  return _internal_heading_deg();
+}
+inline void FixedwingMetrics::set_heading_deg(float value) {
+  _internal_set_heading_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.FixedwingMetrics.heading_deg)
+}
+inline float FixedwingMetrics::_internal_heading_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.heading_deg_;
+}
+inline void FixedwingMetrics::_internal_set_heading_deg(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.heading_deg_ = value;
+}
+
+// float absolute_altitude_m = 6 [(.mavsdk.options.default_value) = "NaN"];
+inline void FixedwingMetrics::clear_absolute_altitude_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.absolute_altitude_m_ = 0;
+}
+inline float FixedwingMetrics::absolute_altitude_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry_server.FixedwingMetrics.absolute_altitude_m)
+  return _internal_absolute_altitude_m();
+}
+inline void FixedwingMetrics::set_absolute_altitude_m(float value) {
+  _internal_set_absolute_altitude_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry_server.FixedwingMetrics.absolute_altitude_m)
+}
+inline float FixedwingMetrics::_internal_absolute_altitude_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.absolute_altitude_m_;
+}
+inline void FixedwingMetrics::_internal_set_absolute_altitude_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.absolute_altitude_m_ = value;
 }
 
 // -------------------------------------------------------------------

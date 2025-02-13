@@ -15536,6 +15536,9 @@ class FixedwingMetrics final
     kAirspeedMSFieldNumber = 1,
     kThrottlePercentageFieldNumber = 2,
     kClimbRateMSFieldNumber = 3,
+    kGroundspeedMSFieldNumber = 4,
+    kHeadingDegFieldNumber = 5,
+    kAbsoluteAltitudeMFieldNumber = 6,
   };
   // float airspeed_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
   void clear_airspeed_m_s() ;
@@ -15567,12 +15570,42 @@ class FixedwingMetrics final
   void _internal_set_climb_rate_m_s(float value);
 
   public:
+  // float groundspeed_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_groundspeed_m_s() ;
+  float groundspeed_m_s() const;
+  void set_groundspeed_m_s(float value);
+
+  private:
+  float _internal_groundspeed_m_s() const;
+  void _internal_set_groundspeed_m_s(float value);
+
+  public:
+  // float heading_deg = 5 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_heading_deg() ;
+  float heading_deg() const;
+  void set_heading_deg(float value);
+
+  private:
+  float _internal_heading_deg() const;
+  void _internal_set_heading_deg(float value);
+
+  public:
+  // float absolute_altitude_m = 6 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_absolute_altitude_m() ;
+  float absolute_altitude_m() const;
+  void set_absolute_altitude_m(float value);
+
+  private:
+  float _internal_absolute_altitude_m() const;
+  void _internal_set_absolute_altitude_m(float value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.FixedwingMetrics)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 0,
+      3, 6, 0,
       0, 2>
       _table_;
 
@@ -15593,6 +15626,9 @@ class FixedwingMetrics final
     float airspeed_m_s_;
     float throttle_percentage_;
     float climb_rate_m_s_;
+    float groundspeed_m_s_;
+    float heading_deg_;
+    float absolute_altitude_m_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -37689,6 +37725,72 @@ inline float FixedwingMetrics::_internal_climb_rate_m_s() const {
 inline void FixedwingMetrics::_internal_set_climb_rate_m_s(float value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.climb_rate_m_s_ = value;
+}
+
+// float groundspeed_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
+inline void FixedwingMetrics::clear_groundspeed_m_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.groundspeed_m_s_ = 0;
+}
+inline float FixedwingMetrics::groundspeed_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.FixedwingMetrics.groundspeed_m_s)
+  return _internal_groundspeed_m_s();
+}
+inline void FixedwingMetrics::set_groundspeed_m_s(float value) {
+  _internal_set_groundspeed_m_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.FixedwingMetrics.groundspeed_m_s)
+}
+inline float FixedwingMetrics::_internal_groundspeed_m_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.groundspeed_m_s_;
+}
+inline void FixedwingMetrics::_internal_set_groundspeed_m_s(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.groundspeed_m_s_ = value;
+}
+
+// float heading_deg = 5 [(.mavsdk.options.default_value) = "NaN"];
+inline void FixedwingMetrics::clear_heading_deg() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.heading_deg_ = 0;
+}
+inline float FixedwingMetrics::heading_deg() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.FixedwingMetrics.heading_deg)
+  return _internal_heading_deg();
+}
+inline void FixedwingMetrics::set_heading_deg(float value) {
+  _internal_set_heading_deg(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.FixedwingMetrics.heading_deg)
+}
+inline float FixedwingMetrics::_internal_heading_deg() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.heading_deg_;
+}
+inline void FixedwingMetrics::_internal_set_heading_deg(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.heading_deg_ = value;
+}
+
+// float absolute_altitude_m = 6 [(.mavsdk.options.default_value) = "NaN"];
+inline void FixedwingMetrics::clear_absolute_altitude_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.absolute_altitude_m_ = 0;
+}
+inline float FixedwingMetrics::absolute_altitude_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.FixedwingMetrics.absolute_altitude_m)
+  return _internal_absolute_altitude_m();
+}
+inline void FixedwingMetrics::set_absolute_altitude_m(float value) {
+  _internal_set_absolute_altitude_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.FixedwingMetrics.absolute_altitude_m)
+}
+inline float FixedwingMetrics::_internal_absolute_altitude_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.absolute_altitude_m_;
+}
+inline void FixedwingMetrics::_internal_set_absolute_altitude_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.absolute_altitude_m_ = value;
 }
 
 // -------------------------------------------------------------------

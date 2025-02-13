@@ -1322,7 +1322,13 @@ bool operator==(const Telemetry::FixedwingMetrics& lhs, const Telemetry::Fixedwi
            ((std::isnan(rhs.throttle_percentage) && std::isnan(lhs.throttle_percentage)) ||
             rhs.throttle_percentage == lhs.throttle_percentage) &&
            ((std::isnan(rhs.climb_rate_m_s) && std::isnan(lhs.climb_rate_m_s)) ||
-            rhs.climb_rate_m_s == lhs.climb_rate_m_s);
+            rhs.climb_rate_m_s == lhs.climb_rate_m_s) &&
+           ((std::isnan(rhs.groundspeed_m_s) && std::isnan(lhs.groundspeed_m_s)) ||
+            rhs.groundspeed_m_s == lhs.groundspeed_m_s) &&
+           ((std::isnan(rhs.heading_deg) && std::isnan(lhs.heading_deg)) ||
+            rhs.heading_deg == lhs.heading_deg) &&
+           ((std::isnan(rhs.absolute_altitude_m) && std::isnan(lhs.absolute_altitude_m)) ||
+            rhs.absolute_altitude_m == lhs.absolute_altitude_m);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& fixedwing_metrics)
@@ -1332,6 +1338,9 @@ std::ostream& operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& f
     str << "    airspeed_m_s: " << fixedwing_metrics.airspeed_m_s << '\n';
     str << "    throttle_percentage: " << fixedwing_metrics.throttle_percentage << '\n';
     str << "    climb_rate_m_s: " << fixedwing_metrics.climb_rate_m_s << '\n';
+    str << "    groundspeed_m_s: " << fixedwing_metrics.groundspeed_m_s << '\n';
+    str << "    heading_deg: " << fixedwing_metrics.heading_deg << '\n';
+    str << "    absolute_altitude_m: " << fixedwing_metrics.absolute_altitude_m << '\n';
     str << '}';
     return str;
 }
