@@ -18,11 +18,22 @@ command -v doxygen >/dev/null 2>&1 || { echo "ERROR: 'doxygen' is required and w
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 skip_checks=false
-if [ "$#" -eq 1 -a "$1" == "--skip-checks" ]; then
-    skip_checks=true
+overwrite=false
+
+if [ "$#" -ge 1 ]; then
+    for arg in "$@"; do
+        case "$arg" in
+            --skip-checks)
+                skip_checks=true
+                ;;
+            --overwrite)
+                overwrite=true
+                ;;
+        esac
+    done
 fi
 
-BUILD_DIR="${SCRIPT_DIR}/docs"
+BUILD_DIR="${SCRIPT_DIR}/../build-docs"
 INSTALL_DIR="${BUILD_DIR}/install"
 
 if [ "$skip_checks" = false ]; then
@@ -54,5 +65,12 @@ fi
 # TODO (Jonas): is there a reason for generating markdown if doxygen failed above?
 ${SCRIPT_DIR}/generate_markdown_from_doxygen_xml.py ${INSTALL_DIR}/docs ${INSTALL_DIR}/docs
 popd
+
+
+if [ "$overwrite" = true ]; then
+    # Clear folder first except index.md
+    find ${SCRIPT_DIR}/../docs/en/cpp/api_reference/ -type f -not -name 'index.md' -delete
+    cp ${INSTALL_DIR}/docs/markdown/* ${SCRIPT_DIR}/../docs/en/cpp/api_reference/
+fi
 
 exit $return_result
