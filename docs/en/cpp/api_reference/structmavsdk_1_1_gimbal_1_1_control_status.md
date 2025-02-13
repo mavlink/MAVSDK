@@ -10,6 +10,8 @@ Control status.
 ## Data Fields
 
 
+int32_t [gimbal_id](#structmavsdk_1_1_gimbal_1_1_control_status_1a25f59ad4fe9be95dc14f43d37c5d378e) {} - [Gimbal](classmavsdk_1_1_gimbal.md) ID.
+
 [ControlMode](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1a01b721086d7de6089aefdeb0fda4cff3) [control_mode](#structmavsdk_1_1_gimbal_1_1_control_status_1a58ab8c223f8dd71268bbcfdc019fae8a) {} - Control mode (none, primary or secondary)
 
 int32_t [sysid_primary_control](#structmavsdk_1_1_gimbal_1_1_control_status_1a99fdfdc94af7663c03bd88ac4bde82c3) {} - Sysid of the component that has primary control over the gimbal (0 if no one is in control)
@@ -22,6 +24,16 @@ int32_t [compid_secondary_control](#structmavsdk_1_1_gimbal_1_1_control_status_1
 
 
 ## Field Documentation
+
+
+### gimbal_id {#structmavsdk_1_1_gimbal_1_1_control_status_1a25f59ad4fe9be95dc14f43d37c5d378e}
+
+```cpp
+int32_t mavsdk::Gimbal::ControlStatus::gimbal_id {}
+```
+
+
+[Gimbal](classmavsdk_1_1_gimbal.md) ID.
 
 
 ### control_mode {#structmavsdk_1_1_gimbal_1_1_control_status_1a58ab8c223f8dd71268bbcfdc019fae8a}

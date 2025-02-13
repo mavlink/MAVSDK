@@ -13,7 +13,7 @@ Possible configurations.
 Type | Name | Description
 ---: | --- | ---
 &nbsp; | [Configuration](#classmavsdk_1_1_mavsdk_1_1_configuration_1a10477130d041107e76efd1f94e65b503) (uint8_t system_id, uint8_t component_id, bool always_send_heartbeats) | Create new [Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md) via manually configured system and component ID.
-&nbsp; | [Configuration](#classmavsdk_1_1_mavsdk_1_1_configuration_1abcc015ee6be8abc2da2c967bbbda9fed) ([ComponentType](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ac9e9d48bbf840dad8705323b224b1746) component_type) | Create new [Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md) using a component type. In this mode, the system and component ID will be automatically chosen.
+&nbsp; | [Configuration](#classmavsdk_1_1_mavsdk_1_1_configuration_1abcc015ee6be8abc2da2c967bbbda9fed) ([ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) component_type) | Create new [Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md) using a component type. In this mode, the system and component ID will be automatically chosen.
 &nbsp; | [Configuration](#classmavsdk_1_1_mavsdk_1_1_configuration_1a1a65e2e31f06bec1f6692a933c95b03c) ()=delete |
 &nbsp; | [~Configuration](#classmavsdk_1_1_mavsdk_1_1_configuration_1a31cad2329ee14898752638d9c3759da9) ()=default |
 uint8_t | [get_system_id](#classmavsdk_1_1_mavsdk_1_1_configuration_1a0497bdda816b674b1418ab07889ca781) () const | Get the system id of this configuration.
@@ -22,8 +22,10 @@ uint8_t | [get_component_id](#classmavsdk_1_1_mavsdk_1_1_configuration_1adfcae3d
 void | [set_component_id](#classmavsdk_1_1_mavsdk_1_1_configuration_1aa590fbafa8ca104e1a004ca537f5798e) (uint8_t component_id) | Set the component id of this configuration.
 bool | [get_always_send_heartbeats](#classmavsdk_1_1_mavsdk_1_1_configuration_1a0aa9008fe5a7498f374dbd2adad5f137) () const | Get whether to send heartbeats by default.
 void | [set_always_send_heartbeats](#classmavsdk_1_1_mavsdk_1_1_configuration_1a0ad68b52763e205012b34faa5120a792) (bool always_send_heartbeats) | Set whether to send heartbeats by default.
-[ComponentType](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ac9e9d48bbf840dad8705323b224b1746) | [get_component_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1a81d3645816f8a3072044498c3f539d12) () const | Component type of this configuration, used for automatic ID set.
-void | [set_component_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1a06461b86734eaa9544e80a4a907c9754) ([ComponentType](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ac9e9d48bbf840dad8705323b224b1746) component_type) | Set the component type of this configuration.
+[ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) | [get_component_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1a81d3645816f8a3072044498c3f539d12) () const | Component type of this configuration, used for automatic ID set.
+void | [set_component_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1a06461b86734eaa9544e80a4a907c9754) ([ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) component_type) | Set the component type of this configuration.
+uint8_t | [get_mav_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1aafe9e8fc11dd0b688a836c123357e9ba) () const | Get the mav type (vehicle type) of this configuration.
+void | [set_mav_type](#classmavsdk_1_1_mavsdk_1_1_configuration_1a16db98d8802c3427b1be10f0b72b977b) (uint8_t mav_type) | Set the mav type (vehicle type) of this configuration.
 
 
 ## Constructor & Destructor Documentation
@@ -55,7 +57,7 @@ Create new [Configuration](classmavsdk_1_1_mavsdk_1_1_configuration.md) using a 
 
 **Parameters**
 
-* [ComponentType](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ac9e9d48bbf840dad8705323b224b1746) **component_type** - the component type, used for automatically choosing ids.
+* [ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) **component_type** - the component type, used for automatically choosing ids.
 
 ### Configuration() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a1a65e2e31f06bec1f6692a933c95b03c}
 ```cpp
@@ -161,7 +163,7 @@ Component type of this configuration, used for automatic ID set.
 
 **Returns**
 
-&emsp;[ComponentType](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ac9e9d48bbf840dad8705323b224b1746) - 
+&emsp;[ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) - 
 
 ### set_component_type() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a06461b86734eaa9544e80a4a907c9754}
 ```cpp
@@ -174,4 +176,30 @@ Set the component type of this configuration.
 
 **Parameters**
 
-* [ComponentType](classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1ac9e9d48bbf840dad8705323b224b1746) **component_type** - 
+* [ComponentType](namespacemavsdk.md#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) **component_type** - 
+
+### get_mav_type() {#classmavsdk_1_1_mavsdk_1_1_configuration_1aafe9e8fc11dd0b688a836c123357e9ba}
+```cpp
+uint8_t mavsdk::Mavsdk::Configuration::get_mav_type() const
+```
+
+
+Get the mav type (vehicle type) of this configuration.
+
+
+**Returns**
+
+&emsp;uint8_t - `uint8_t` the mav type stored in this configuration
+
+### set_mav_type() {#classmavsdk_1_1_mavsdk_1_1_configuration_1a16db98d8802c3427b1be10f0b72b977b}
+```cpp
+void mavsdk::Mavsdk::Configuration::set_mav_type(uint8_t mav_type)
+```
+
+
+Set the mav type (vehicle type) of this configuration.
+
+
+**Parameters**
+
+* uint8_t **mav_type** - 

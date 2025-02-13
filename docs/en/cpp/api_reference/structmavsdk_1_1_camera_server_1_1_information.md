@@ -32,6 +32,10 @@ uint32_t [definition_file_version](#structmavsdk_1_1_camera_server_1_1_informati
 
 std::string [definition_file_uri](#structmavsdk_1_1_camera_server_1_1_information_1ac45dbba688c93cafe5750fc352917797) {} - [Camera](classmavsdk_1_1_camera.md) definition URI (http or mavlink ftp)
 
+bool [image_in_video_mode_supported](#structmavsdk_1_1_camera_server_1_1_information_1a9c57eed55bfa60127eed4601becc523f) {} - [Camera](classmavsdk_1_1_camera.md) supports taking images while in video mode.
+
+bool [video_in_image_mode_supported](#structmavsdk_1_1_camera_server_1_1_information_1a18761cceb1ef3226d87e9752a738145a) {} - [Camera](classmavsdk_1_1_camera.md) supports recording video while in image mode.
+
 
 ## Field Documentation
 
@@ -144,4 +148,24 @@ std::string mavsdk::CameraServer::Information::definition_file_uri {}
 
 
 [Camera](classmavsdk_1_1_camera.md) definition URI (http or mavlink ftp)
+
+
+### image_in_video_mode_supported {#structmavsdk_1_1_camera_server_1_1_information_1a9c57eed55bfa60127eed4601becc523f}
+
+```cpp
+bool mavsdk::CameraServer::Information::image_in_video_mode_supported {}
+```
+
+
+[Camera](classmavsdk_1_1_camera.md) supports taking images while in video mode.
+
+
+### video_in_image_mode_supported {#structmavsdk_1_1_camera_server_1_1_information_1a18761cceb1ef3226d87e9752a738145a}
+
+```cpp
+bool mavsdk::CameraServer::Information::video_in_image_mode_supported {}
+```
+
+
+[Camera](classmavsdk_1_1_camera.md) supports recording video while in image mode.
 

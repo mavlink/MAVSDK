@@ -26,7 +26,7 @@ Type | Name | Description
 &nbsp; | [~ServerUtility](#classmavsdk_1_1_server_utility_1a3f5fe15b02bcf41520a94feb2fc51fce) () override | Destructor (internal use only).
 &nbsp; | [ServerUtility](#classmavsdk_1_1_server_utility_1a9cbd0e7b1b19b21d98ce7e914ea03f95) (const [ServerUtility](classmavsdk_1_1_server_utility.md) & other) | Copy constructor.
 [Result](classmavsdk_1_1_server_utility.md#classmavsdk_1_1_server_utility_1accdda519179f5fc6fe946a727f75f468) | [send_status_text](#classmavsdk_1_1_server_utility_1a7b7bb0b568e94575615086a86a625ae1) ([StatusTextType](classmavsdk_1_1_server_utility.md#classmavsdk_1_1_server_utility_1a763ddc41251f992acec6af7f19287233) type, std::string text)const | Sends a statustext.
-const [ServerUtility](classmavsdk_1_1_server_utility.md) & | [operator=](#classmavsdk_1_1_server_utility_1a11fcb91df55711ecb78d8687b1d47472) (const [ServerUtility](classmavsdk_1_1_server_utility.md) &)=delete | Equality operator (object is not copyable).
+const [ServerUtility](classmavsdk_1_1_server_utility.md) & | [operator=](#classmavsdk_1_1_server_utility_1a164070f95b448b4b6e43bffaaa559ba8) (const [ServerUtility](classmavsdk_1_1_server_utility.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -159,9 +159,9 @@ This function is blocking.
 
 &emsp;[Result](classmavsdk_1_1_server_utility.md#classmavsdk_1_1_server_utility_1accdda519179f5fc6fe946a727f75f468) - Result of request.
 
-### operator=() {#classmavsdk_1_1_server_utility_1a11fcb91df55711ecb78d8687b1d47472}
+### operator=() {#classmavsdk_1_1_server_utility_1a164070f95b448b4b6e43bffaaa559ba8}
 ```cpp
-const ServerUtility& mavsdk::ServerUtility::operator=(const ServerUtility &)=delete
+const ServerUtility & mavsdk::ServerUtility::operator=(const ServerUtility &)=delete
 ```
 
 

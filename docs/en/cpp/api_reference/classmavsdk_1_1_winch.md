@@ -57,7 +57,7 @@ void | [abandon_line_async](#classmavsdk_1_1_winch_1a3970c74e067d3734ba8dd3382c5
 [Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) | [abandon_line](#classmavsdk_1_1_winch_1a625f6d58d5447afbe0c40e3d896071b0) (uint32_t instance)const | Spool out the entire length of the line.
 void | [load_payload_async](#classmavsdk_1_1_winch_1af715b6c01dc75c44868c2936af04d40a) (uint32_t instance, const [ResultCallback](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a683fc7d385d461efb059df917622a6b7) callback) | Spools out just enough to present the hook to the user to load the payload.
 [Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) | [load_payload](#classmavsdk_1_1_winch_1a01fec2758f7f09d8aef5de23f4566d47) (uint32_t instance)const | Spools out just enough to present the hook to the user to load the payload.
-const [Winch](classmavsdk_1_1_winch.md) & | [operator=](#classmavsdk_1_1_winch_1a5216eb2d1533b1e737ad30f31b7eff7a) (const [Winch](classmavsdk_1_1_winch.md) &)=delete | Equality operator (object is not copyable).
+const [Winch](classmavsdk_1_1_winch.md) & | [operator=](#classmavsdk_1_1_winch_1a95e5998fc48ba20b61001d344a7274ff) (const [Winch](classmavsdk_1_1_winch.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -580,9 +580,9 @@ This function is blocking. See 'load_payload_async' for the non-blocking counter
 
 &emsp;[Result](classmavsdk_1_1_winch.md#classmavsdk_1_1_winch_1a48edb6e5176dc8d5e95bd30eacd7a091) - Result of request.
 
-### operator=() {#classmavsdk_1_1_winch_1a5216eb2d1533b1e737ad30f31b7eff7a}
+### operator=() {#classmavsdk_1_1_winch_1a95e5998fc48ba20b61001d344a7274ff}
 ```cpp
-const Winch& mavsdk::Winch::operator=(const Winch &)=delete
+const Winch & mavsdk::Winch::operator=(const Winch &)=delete
 ```
 
 

@@ -40,15 +40,12 @@ Type | Name | Description
 &nbsp; | [MissionRawServer](#classmavsdk_1_1_mission_raw_server_1a14b11b78ba44bdda6fb718ed13e1ab77) (const [MissionRawServer](classmavsdk_1_1_mission_raw_server.md) & other) | Copy constructor.
 [IncomingMissionHandle](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a71173397d112f738fd05014ccc0952ff) | [subscribe_incoming_mission](#classmavsdk_1_1_mission_raw_server_1aede616f945d7c59d2da6afad830f377b) (const [IncomingMissionCallback](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1ac8bb83c581ff08945314e51973728693) & callback) | Subscribe to when a new mission is uploaded (asynchronous).
 void | [unsubscribe_incoming_mission](#classmavsdk_1_1_mission_raw_server_1a93107d6ee73d03edc0050401c5a5f169) ([IncomingMissionHandle](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a71173397d112f738fd05014ccc0952ff) handle) | Unsubscribe from subscribe_incoming_mission.
-[MissionPlan](structmavsdk_1_1_mission_raw_server_1_1_mission_plan.md) | [incoming_mission](#classmavsdk_1_1_mission_raw_server_1ae7c20d621170e5454953513526241577) () const | Poll for '[MissionPlan](structmavsdk_1_1_mission_raw_server_1_1_mission_plan.md)' (blocking).
 [CurrentItemChangedHandle](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a490cab4b8b06fd5d6eb8e759427f5b47) | [subscribe_current_item_changed](#classmavsdk_1_1_mission_raw_server_1a287af1e5ca18de2e84345b4f5f8fa386) (const [CurrentItemChangedCallback](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1aca7ac64b6e39e612d05ff6497cd572b1) & callback) | Subscribe to when a new current item is set.
 void | [unsubscribe_current_item_changed](#classmavsdk_1_1_mission_raw_server_1a8c693a86be890f78a5a10cee9a36dc6c) ([CurrentItemChangedHandle](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a490cab4b8b06fd5d6eb8e759427f5b47) handle) | Unsubscribe from subscribe_current_item_changed.
-[MissionItem](structmavsdk_1_1_mission_raw_server_1_1_mission_item.md) | [current_item_changed](#classmavsdk_1_1_mission_raw_server_1af2bbab99a8a2e1dd1dfebceb439f2ad1) () const | Poll for '[MissionItem](structmavsdk_1_1_mission_raw_server_1_1_mission_item.md)' (blocking).
 void | [set_current_item_complete](#classmavsdk_1_1_mission_raw_server_1a496791a14c2bdc1e9917f5d04622330a) () const | Set Current item as completed.
 [ClearAllHandle](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a59022e22386a18e9d51f88e6ed3cf120) | [subscribe_clear_all](#classmavsdk_1_1_mission_raw_server_1a9b08ba6c1607618e67fd1ec723883415) (const [ClearAllCallback](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1ae9d7d9d863d1552274440d091e2ec869) & callback) | Subscribe when a MISSION_CLEAR_ALL is received.
 void | [unsubscribe_clear_all](#classmavsdk_1_1_mission_raw_server_1af337c8126b52d78436605a3b2e558397) ([ClearAllHandle](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a59022e22386a18e9d51f88e6ed3cf120) handle) | Unsubscribe from subscribe_clear_all.
-uint32_t | [clear_all](#classmavsdk_1_1_mission_raw_server_1a307e0f39d704ae9aeb227a27092bf435) () const | Poll for 'uint32_t' (blocking).
-const [MissionRawServer](classmavsdk_1_1_mission_raw_server.md) & | [operator=](#classmavsdk_1_1_mission_raw_server_1aad0690db8cec599b271d4f62e8ecd975) (const [MissionRawServer](classmavsdk_1_1_mission_raw_server.md) &)=delete | Equality operator (object is not copyable).
+const [MissionRawServer](classmavsdk_1_1_mission_raw_server.md) & | [operator=](#classmavsdk_1_1_mission_raw_server_1a9d589d816286937b2c9c5d29451f0f91) (const [MissionRawServer](classmavsdk_1_1_mission_raw_server.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -225,19 +222,6 @@ Unsubscribe from subscribe_incoming_mission.
 
 * [IncomingMissionHandle](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a71173397d112f738fd05014ccc0952ff) **handle** - 
 
-### incoming_mission() {#classmavsdk_1_1_mission_raw_server_1ae7c20d621170e5454953513526241577}
-```cpp
-MissionPlan mavsdk::MissionRawServer::incoming_mission() const
-```
-
-
-Poll for '[MissionPlan](structmavsdk_1_1_mission_raw_server_1_1_mission_plan.md)' (blocking).
-
-
-**Returns**
-
-&emsp;[MissionPlan](structmavsdk_1_1_mission_raw_server_1_1_mission_plan.md) - One [MissionPlan](structmavsdk_1_1_mission_raw_server_1_1_mission_plan.md) update.
-
 ### subscribe_current_item_changed() {#classmavsdk_1_1_mission_raw_server_1a287af1e5ca18de2e84345b4f5f8fa386}
 ```cpp
 CurrentItemChangedHandle mavsdk::MissionRawServer::subscribe_current_item_changed(const CurrentItemChangedCallback &callback)
@@ -267,19 +251,6 @@ Unsubscribe from subscribe_current_item_changed.
 **Parameters**
 
 * [CurrentItemChangedHandle](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a490cab4b8b06fd5d6eb8e759427f5b47) **handle** - 
-
-### current_item_changed() {#classmavsdk_1_1_mission_raw_server_1af2bbab99a8a2e1dd1dfebceb439f2ad1}
-```cpp
-MissionItem mavsdk::MissionRawServer::current_item_changed() const
-```
-
-
-Poll for '[MissionItem](structmavsdk_1_1_mission_raw_server_1_1_mission_item.md)' (blocking).
-
-
-**Returns**
-
-&emsp;[MissionItem](structmavsdk_1_1_mission_raw_server_1_1_mission_item.md) - One [MissionItem](structmavsdk_1_1_mission_raw_server_1_1_mission_item.md) update.
 
 ### set_current_item_complete() {#classmavsdk_1_1_mission_raw_server_1a496791a14c2bdc1e9917f5d04622330a}
 ```cpp
@@ -321,22 +292,9 @@ Unsubscribe from subscribe_clear_all.
 
 * [ClearAllHandle](classmavsdk_1_1_mission_raw_server.md#classmavsdk_1_1_mission_raw_server_1a59022e22386a18e9d51f88e6ed3cf120) **handle** - 
 
-### clear_all() {#classmavsdk_1_1_mission_raw_server_1a307e0f39d704ae9aeb227a27092bf435}
+### operator=() {#classmavsdk_1_1_mission_raw_server_1a9d589d816286937b2c9c5d29451f0f91}
 ```cpp
-uint32_t mavsdk::MissionRawServer::clear_all() const
-```
-
-
-Poll for 'uint32_t' (blocking).
-
-
-**Returns**
-
-&emsp;uint32_t - One uint32_t update.
-
-### operator=() {#classmavsdk_1_1_mission_raw_server_1aad0690db8cec599b271d4f62e8ecd975}
-```cpp
-const MissionRawServer& mavsdk::MissionRawServer::operator=(const MissionRawServer &)=delete
+const MissionRawServer & mavsdk::MissionRawServer::operator=(const MissionRawServer &)=delete
 ```
 
 

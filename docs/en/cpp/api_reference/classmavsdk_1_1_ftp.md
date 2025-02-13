@@ -10,6 +10,8 @@ Implements file transfer functionality using MAVLink FTP.
 ## Data Structures
 
 
+struct [ListDirectoryData](structmavsdk_1_1_ftp_1_1_list_directory_data.md)
+
 struct [ProgressData](structmavsdk_1_1_ftp_1_1_progress_data.md)
 
 ## Public Types
@@ -21,7 +23,7 @@ enum [Result](#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) | Possibl
 std::function< void([Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4))> [ResultCallback](#classmavsdk_1_1_ftp_1a04a12a1ab954b24a54570300f89486b0) | Callback type for asynchronous [Ftp](classmavsdk_1_1_ftp.md) calls.
 std::function< void([Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4), [ProgressData](structmavsdk_1_1_ftp_1_1_progress_data.md))> [DownloadCallback](#classmavsdk_1_1_ftp_1a7c8e0377726e349a8a4e12495db42c75) | Callback type for download_async.
 std::function< void([Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4), [ProgressData](structmavsdk_1_1_ftp_1_1_progress_data.md))> [UploadCallback](#classmavsdk_1_1_ftp_1a50ffb77f0730267f499656d40291f5a3) | Callback type for upload_async.
-std::function< void([Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4), std::vector< std::string >)> [ListDirectoryCallback](#classmavsdk_1_1_ftp_1a87a77c4e013a8665017504a550d876b7) | Callback type for list_directory_async.
+std::function< void([Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4), [ListDirectoryData](structmavsdk_1_1_ftp_1_1_list_directory_data.md))> [ListDirectoryCallback](#classmavsdk_1_1_ftp_1a88f904585306ce744d4f723a840c976c) | Callback type for list_directory_async.
 std::function< void([Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4), bool)> [AreFilesIdenticalCallback](#classmavsdk_1_1_ftp_1abe24e99f7141a234206f8952d2f61318) | Callback type for are_files_identical_async.
 
 ## Public Member Functions
@@ -35,8 +37,8 @@ Type | Name | Description
 &nbsp; | [Ftp](#classmavsdk_1_1_ftp_1a7b7486356a7b04fb231c430e090c673e) (const [Ftp](classmavsdk_1_1_ftp.md) & other) | Copy constructor.
 void | [download_async](#classmavsdk_1_1_ftp_1a0845245b8e1d0e74ed8961c90c96d1d3) (std::string remote_file_path, std::string local_dir, bool use_burst, const [DownloadCallback](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a7c8e0377726e349a8a4e12495db42c75) & callback) | Downloads a file to local directory.
 void | [upload_async](#classmavsdk_1_1_ftp_1affe86a8b0a035109e7df9bd85c99f442) (std::string local_file_path, std::string remote_dir, const [UploadCallback](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a50ffb77f0730267f499656d40291f5a3) & callback) | Uploads local file to remote directory.
-void | [list_directory_async](#classmavsdk_1_1_ftp_1abf5d83104a7293413b62e7a8ba1a0f2c) (std::string remote_dir, const [ListDirectoryCallback](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a87a77c4e013a8665017504a550d876b7) callback) | Lists items from a remote directory.
-std::pair< [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4), std::vector< std::string > > | [list_directory](#classmavsdk_1_1_ftp_1a2301aba586be9dd4569d984a58967ccc) (std::string remote_dir)const | Lists items from a remote directory.
+void | [list_directory_async](#classmavsdk_1_1_ftp_1abf5d83104a7293413b62e7a8ba1a0f2c) (std::string remote_dir, const [ListDirectoryCallback](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a88f904585306ce744d4f723a840c976c) callback) | Lists items from a remote directory.
+std::pair< [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4), [Ftp::ListDirectoryData](structmavsdk_1_1_ftp_1_1_list_directory_data.md) > | [list_directory](#classmavsdk_1_1_ftp_1a7a6160b63fa193f84c9059b8a7c09fc4) (std::string remote_dir)const | Lists items from a remote directory.
 void | [create_directory_async](#classmavsdk_1_1_ftp_1aa53fdd5c005bd4da3e0cb29d448689d3) (std::string remote_dir, const [ResultCallback](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a04a12a1ab954b24a54570300f89486b0) callback) | Creates a remote directory.
 [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) | [create_directory](#classmavsdk_1_1_ftp_1ac6edf64fe63d5934b892c95778e1c548) (std::string remote_dir)const | Creates a remote directory.
 void | [remove_directory_async](#classmavsdk_1_1_ftp_1a25823c7298dc2d081532dd094d013b8a) (std::string remote_dir, const [ResultCallback](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a04a12a1ab954b24a54570300f89486b0) callback) | Removes a remote directory.
@@ -46,9 +48,9 @@ void | [remove_file_async](#classmavsdk_1_1_ftp_1a3ecda69288fb860a8da1f8fad25af3
 void | [rename_async](#classmavsdk_1_1_ftp_1afea8b15ad7b5748b0b5f68fd7103514a) (std::string remote_from_path, std::string remote_to_path, const [ResultCallback](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a04a12a1ab954b24a54570300f89486b0) callback) | Renames a remote file or remote directory.
 [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) | [rename](#classmavsdk_1_1_ftp_1ac7411b38ea31f84f4f679b6b85313032) (std::string remote_from_path, std::string remote_to_path)const | Renames a remote file or remote directory.
 void | [are_files_identical_async](#classmavsdk_1_1_ftp_1abddebf1a103b2853116e68f5f870e4a7) (std::string local_file_path, std::string remote_file_path, const [AreFilesIdenticalCallback](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1abe24e99f7141a234206f8952d2f61318) callback) | Compares a local file to a remote file using a CRC32 checksum.
-std::pair< [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4), bool > | [are_files_identical](#classmavsdk_1_1_ftp_1a1ace427243aedef4b0988a055fc414bf) (std::string local_file_path, std::string remote_file_path)const | Compares a local file to a remote file using a CRC32 checksum.
+std::pair< [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4), bool > | [are_files_identical](#classmavsdk_1_1_ftp_1af4c63e732c056f906a10b9fdb915c4bc) (std::string local_file_path, std::string remote_file_path)const | Compares a local file to a remote file using a CRC32 checksum.
 [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) | [set_target_compid](#classmavsdk_1_1_ftp_1ad93744cd25a89beffe0d72a090748229) (uint32_t compid)const | Set target component ID. By default it is the autopilot.
-const [Ftp](classmavsdk_1_1_ftp.md) & | [operator=](#classmavsdk_1_1_ftp_1a01dc5f41d1e684a667d31c213728b376) (const [Ftp](classmavsdk_1_1_ftp.md) &)=delete | Equality operator (object is not copyable).
+const [Ftp](classmavsdk_1_1_ftp.md) & | [operator=](#classmavsdk_1_1_ftp_1a43e32f49ce47a9424ac2ded204413225) (const [Ftp](classmavsdk_1_1_ftp.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -145,10 +147,10 @@ using mavsdk::Ftp::UploadCallback =  std::function<void(Result, ProgressData)>
 Callback type for upload_async.
 
 
-### typedef ListDirectoryCallback {#classmavsdk_1_1_ftp_1a87a77c4e013a8665017504a550d876b7}
+### typedef ListDirectoryCallback {#classmavsdk_1_1_ftp_1a88f904585306ce744d4f723a840c976c}
 
 ```cpp
-using mavsdk::Ftp::ListDirectoryCallback =  std::function<void(Result, std::vector<std::string>)>
+using mavsdk::Ftp::ListDirectoryCallback =  std::function<void(Result, ListDirectoryData)>
 ```
 
 
@@ -237,11 +239,11 @@ This function is non-blocking. See 'list_directory' for the blocking counterpart
 **Parameters**
 
 * std::string **remote_dir** - 
-* const [ListDirectoryCallback](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a87a77c4e013a8665017504a550d876b7) **callback** - 
+* const [ListDirectoryCallback](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a88f904585306ce744d4f723a840c976c) **callback** - 
 
-### list_directory() {#classmavsdk_1_1_ftp_1a2301aba586be9dd4569d984a58967ccc}
+### list_directory() {#classmavsdk_1_1_ftp_1a7a6160b63fa193f84c9059b8a7c09fc4}
 ```cpp
-std::pair<Result, std::vector<std::string> > mavsdk::Ftp::list_directory(std::string remote_dir) const
+std::pair< Result, Ftp::ListDirectoryData > mavsdk::Ftp::list_directory(std::string remote_dir) const
 ```
 
 
@@ -255,7 +257,7 @@ This function is blocking. See 'list_directory_async' for the non-blocking count
 
 **Returns**
 
-&emsp;std::pair< [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4), std::vector< std::string > > - Result of request.
+&emsp;std::pair< [Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4), [Ftp::ListDirectoryData](structmavsdk_1_1_ftp_1_1_list_directory_data.md) > - Result of request.
 
 ### create_directory_async() {#classmavsdk_1_1_ftp_1aa53fdd5c005bd4da3e0cb29d448689d3}
 ```cpp
@@ -407,9 +409,9 @@ This function is non-blocking. See 'are_files_identical' for the blocking counte
 * std::string **remote_file_path** - 
 * const [AreFilesIdenticalCallback](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1abe24e99f7141a234206f8952d2f61318) **callback** - 
 
-### are_files_identical() {#classmavsdk_1_1_ftp_1a1ace427243aedef4b0988a055fc414bf}
+### are_files_identical() {#classmavsdk_1_1_ftp_1af4c63e732c056f906a10b9fdb915c4bc}
 ```cpp
-std::pair<Result, bool> mavsdk::Ftp::are_files_identical(std::string local_file_path, std::string remote_file_path) const
+std::pair< Result, bool > mavsdk::Ftp::are_files_identical(std::string local_file_path, std::string remote_file_path) const
 ```
 
 
@@ -444,9 +446,9 @@ This function is blocking.
 
 &emsp;[Result](classmavsdk_1_1_ftp.md#classmavsdk_1_1_ftp_1a4cc4f42a3ef6d63403d811e594b946e4) - Result of request.
 
-### operator=() {#classmavsdk_1_1_ftp_1a01dc5f41d1e684a667d31c213728b376}
+### operator=() {#classmavsdk_1_1_ftp_1a43e32f49ce47a9424ac2ded204413225}
 ```cpp
-const Ftp& mavsdk::Ftp::operator=(const Ftp &)=delete
+const Ftp & mavsdk::Ftp::operator=(const Ftp &)=delete
 ```
 
 

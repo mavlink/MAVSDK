@@ -29,7 +29,7 @@ void | [start_position_control_async](#classmavsdk_1_1_manual_control_1a2a3352c1
 void | [start_altitude_control_async](#classmavsdk_1_1_manual_control_1abf7659d98949c01b634e421a9c2df079) (const [ResultCallback](classmavsdk_1_1_manual_control.md#classmavsdk_1_1_manual_control_1a08b010bafdf770d3e4ea6060f56a0f3b) callback) | Start altitude control.
 [Result](classmavsdk_1_1_manual_control.md#classmavsdk_1_1_manual_control_1a6c7dbd25e051b6e1369a65fd05a22799) | [start_altitude_control](#classmavsdk_1_1_manual_control_1a67609e46bafb34309d5b5d943a29f23c) () const | Start altitude control.
 [Result](classmavsdk_1_1_manual_control.md#classmavsdk_1_1_manual_control_1a6c7dbd25e051b6e1369a65fd05a22799) | [set_manual_control_input](#classmavsdk_1_1_manual_control_1a1b4b34db391d7238e33b821614fc1f29) (float x, float y, float z, float r)const | Set manual control input.
-const [ManualControl](classmavsdk_1_1_manual_control.md) & | [operator=](#classmavsdk_1_1_manual_control_1aca51fff98c33fbd5201495101ddf1368) (const [ManualControl](classmavsdk_1_1_manual_control.md) &)=delete | Equality operator (object is not copyable).
+const [ManualControl](classmavsdk_1_1_manual_control.md) & | [operator=](#classmavsdk_1_1_manual_control_1a4cc95d340ce5a6a4eb2309c67302fdb9) (const [ManualControl](classmavsdk_1_1_manual_control.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -222,9 +222,9 @@ This function is blocking.
 
 &emsp;[Result](classmavsdk_1_1_manual_control.md#classmavsdk_1_1_manual_control_1a6c7dbd25e051b6e1369a65fd05a22799) - Result of request.
 
-### operator=() {#classmavsdk_1_1_manual_control_1aca51fff98c33fbd5201495101ddf1368}
+### operator=() {#classmavsdk_1_1_manual_control_1a4cc95d340ce5a6a4eb2309c67302fdb9}
 ```cpp
-const ManualControl& mavsdk::ManualControl::operator=(const ManualControl &)=delete
+const ManualControl & mavsdk::ManualControl::operator=(const ManualControl &)=delete
 ```
 
 
