@@ -229,6 +229,18 @@ jobs:
       - name: check for diff
         run: git diff --exit-code
 
+  ubuntu24-docs-check:
+    name: ubuntu-24.04 (docs check)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: generate docs
+        run: tools/generate_docs.sh --overwrite
+      - name: check for diff
+        run: git diff --exit-code
+
   deb-package:
     name: ${{ matrix.container_name }} (package, non-mavsdk_server)
     runs-on: ${{ matrix.container_name }}
