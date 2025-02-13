@@ -54,7 +54,7 @@ For `udpin`, where we bind locally to that port, the IP can be set to:
 - TCP out (client): tcpout://remote_ip:port
 ```
 
-For `tcp`, where we listen locally on that port, the IP can be set to:
+For `tcpin`, where we listen locally on that port, the IP can be set to:
 - `0.0.0.0` to listen on all network interfaces.
 - `127.0.0.1` to listen on the local loopback interface only.
 - to our IP which means we listen on this network interfaces only.
