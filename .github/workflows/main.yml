@@ -236,6 +236,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+      - name: Install doxygen
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen
       - name: generate docs
         run: tools/generate_docs.sh --overwrite
       - name: check for diff
