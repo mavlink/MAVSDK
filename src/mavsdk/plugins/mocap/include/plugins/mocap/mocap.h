@@ -23,8 +23,7 @@ class System;
 class MocapImpl;
 
 /**
- * @brief *
- * Allows interfacing a vehicle with a motion capture system in
+ * @brief Allows interfacing a vehicle with a motion capture system in
  * order to allow navigation without global positioning sources available
  * (e.g. indoors, or when flying under a bridge. etc.).
  */
@@ -343,7 +342,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_vision_position_estimate(VisionPositionEstimate vision_position_estimate) const;
 
@@ -352,7 +353,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_attitude_position_mocap(AttitudePositionMocap attitude_position_mocap) const;
 
@@ -361,7 +364,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_odometry(Odometry odometry) const;
 

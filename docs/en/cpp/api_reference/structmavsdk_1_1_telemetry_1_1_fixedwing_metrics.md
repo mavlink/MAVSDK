@@ -16,6 +16,12 @@ float [throttle_percentage](#structmavsdk_1_1_telemetry_1_1_fixedwing_metrics_1a
 
 float [climb_rate_m_s](#structmavsdk_1_1_telemetry_1_1_fixedwing_metrics_1a9bc33e3e1ea00ad6fd4ef385c20b1233) {float(NAN)} - Current climb rate in metres per second.
 
+float [groundspeed_m_s](#structmavsdk_1_1_telemetry_1_1_fixedwing_metrics_1af0b1ea02e78baea35235a66b3077de82) {float(NAN)} - Current groundspeed metres per second.
+
+float [heading_deg](#structmavsdk_1_1_telemetry_1_1_fixedwing_metrics_1a80e3b31e3288fe11bb7eaa97b31409da) { float(NAN)} - Current heading in compass units (0-360, 0=north)
+
+float [absolute_altitude_m](#structmavsdk_1_1_telemetry_1_1_fixedwing_metrics_1a197cc902b11b366c8e3c556817da9a7b) {float(NAN)} - Current altitude in metres (MSL)
+
 
 ## Field Documentation
 
@@ -48,4 +54,34 @@ float mavsdk::Telemetry::FixedwingMetrics::climb_rate_m_s {float(NAN)}
 
 
 Current climb rate in metres per second.
+
+
+### groundspeed_m_s {#structmavsdk_1_1_telemetry_1_1_fixedwing_metrics_1af0b1ea02e78baea35235a66b3077de82}
+
+```cpp
+float mavsdk::Telemetry::FixedwingMetrics::groundspeed_m_s {float(NAN)}
+```
+
+
+Current groundspeed metres per second.
+
+
+### heading_deg {#structmavsdk_1_1_telemetry_1_1_fixedwing_metrics_1a80e3b31e3288fe11bb7eaa97b31409da}
+
+```cpp
+float mavsdk::Telemetry::FixedwingMetrics::heading_deg { float(NAN)}
+```
+
+
+Current heading in compass units (0-360, 0=north)
+
+
+### absolute_altitude_m {#structmavsdk_1_1_telemetry_1_1_fixedwing_metrics_1a197cc902b11b366c8e3c556817da9a7b}
+
+```cpp
+float mavsdk::Telemetry::FixedwingMetrics::absolute_altitude_m {float(NAN)}
+```
+
+
+Current altitude in metres (MSL)
 

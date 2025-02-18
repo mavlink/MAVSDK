@@ -170,7 +170,7 @@ class MissionRawService final {
     std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_raw::MissionProgressResponse>> PrepareAsyncSubscribeMissionProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::SubscribeMissionProgressRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::mavsdk::rpc::mission_raw::MissionProgressResponse>>(PrepareAsyncSubscribeMissionProgressRaw(context, request, cq));
     }
-    // *
+    //
     // Subscribes to mission changed.
     //
     // This notification can be used to be informed if a ground station has
@@ -283,7 +283,7 @@ class MissionRawService final {
       //
       // Subscribe to mission progress updates.
       virtual void SubscribeMissionProgress(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::SubscribeMissionProgressRequest* request, ::grpc::ClientReadReactor< ::mavsdk::rpc::mission_raw::MissionProgressResponse>* reactor) = 0;
-      // *
+      //
       // Subscribes to mission changed.
       //
       // This notification can be used to be informed if a ground station has
@@ -623,7 +623,7 @@ class MissionRawService final {
     //
     // Subscribe to mission progress updates.
     virtual ::grpc::Status SubscribeMissionProgress(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_raw::SubscribeMissionProgressRequest* request, ::grpc::ServerWriter< ::mavsdk::rpc::mission_raw::MissionProgressResponse>* writer);
-    // *
+    //
     // Subscribes to mission changed.
     //
     // This notification can be used to be informed if a ground station has

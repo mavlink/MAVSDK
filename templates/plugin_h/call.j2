@@ -13,7 +13,9 @@ void {{ name.lower_snake_case }}_async({% for param in params %}{% if param.type
  *
  * This function is blocking.{% if is_async %} See '{{ name.lower_snake_case }}_async' for the non-blocking counterpart.{% endif %}
  *
+ {% if has_result %}
  * @return Result of request.
+ {% endif %}
  */
 {% if has_result %}Result{% else %}void{% endif %} {{ name.lower_snake_case }}({% for param in params %}{% if param.type_info.name.endswith("Result") %}Result{% else %}{{ param.type_info.name }}{% endif %} {{ param.name.lower_snake_case }}{{ ", " if not loop.last }}{% endfor %}) const;
 {% endif %}

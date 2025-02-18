@@ -262,7 +262,7 @@ public:
     operator<<(std::ostream& str, Camera::VideoStreamInfo const& video_stream_info);
 
     /**
-     * @brief
+     * @brief An update about the current mode
      */
     struct ModeUpdate {
         int32_t component_id{}; /**< @brief Component ID */
@@ -284,7 +284,7 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Camera::ModeUpdate const& mode_update);
 
     /**
-     * @brief
+     * @brief An update about a video stream
      */
     struct VideoStreamUpdate {
         int32_t component_id{}; /**< @brief Component ID */
@@ -379,7 +379,7 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Camera::Storage const& storage);
 
     /**
-     * @brief
+     * @brief An update about storage
      */
     struct StorageUpdate {
         int32_t component_id{}; /**< @brief Component ID */
@@ -401,7 +401,7 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Camera::StorageUpdate const& storage_update);
 
     /**
-     * @brief
+     * @brief An update about a current setting
      */
     struct CurrentSettingsUpdate {
         int32_t component_id{}; /**< @brief Component ID */
@@ -425,7 +425,7 @@ public:
     operator<<(std::ostream& str, Camera::CurrentSettingsUpdate const& current_settings_update);
 
     /**
-     * @brief
+     * @brief An update about possible setting options
      */
     struct PossibleSettingOptionsUpdate {
         int32_t component_id{}; /**< @brief Component ID */
@@ -656,7 +656,9 @@ public:
      *
      * This function is blocking. See 'take_photo_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result take_photo(int32_t component_id) const;
 
@@ -673,7 +675,9 @@ public:
      *
      * This function is blocking. See 'start_photo_interval_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result start_photo_interval(int32_t component_id, float interval_s) const;
 
@@ -689,7 +693,9 @@ public:
      *
      * This function is blocking. See 'stop_photo_interval_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result stop_photo_interval(int32_t component_id) const;
 
@@ -705,7 +711,9 @@ public:
      *
      * This function is blocking. See 'start_video_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result start_video(int32_t component_id) const;
 
@@ -721,7 +729,9 @@ public:
      *
      * This function is blocking. See 'stop_video_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result stop_video(int32_t component_id) const;
 
@@ -730,7 +740,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result start_video_streaming(int32_t component_id, int32_t stream_id) const;
 
@@ -739,7 +751,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result stop_video_streaming(int32_t component_id, int32_t stream_id) const;
 
@@ -755,7 +769,9 @@ public:
      *
      * This function is blocking. See 'set_mode_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_mode(int32_t component_id, Mode mode) const;
 
@@ -1004,7 +1020,9 @@ public:
      *
      * This function is blocking. See 'set_setting_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_setting(int32_t component_id, Setting setting) const;
 
@@ -1051,7 +1069,9 @@ public:
      *
      * This function is blocking. See 'format_storage_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result format_storage(int32_t component_id, int32_t storage_id) const;
 
@@ -1071,7 +1091,9 @@ public:
      *
      * This function is blocking. See 'reset_settings_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result reset_settings(int32_t component_id) const;
 
@@ -1087,7 +1109,9 @@ public:
      *
      * This function is blocking. See 'zoom_in_start_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result zoom_in_start(int32_t component_id) const;
 
@@ -1103,7 +1127,9 @@ public:
      *
      * This function is blocking. See 'zoom_out_start_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result zoom_out_start(int32_t component_id) const;
 
@@ -1119,7 +1145,9 @@ public:
      *
      * This function is blocking. See 'zoom_stop_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result zoom_stop(int32_t component_id) const;
 
@@ -1135,7 +1163,9 @@ public:
      *
      * This function is blocking. See 'zoom_range_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result zoom_range(int32_t component_id, float range) const;
 
@@ -1156,7 +1186,9 @@ public:
      *
      * This function is blocking. See 'track_point_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result track_point(int32_t component_id, float point_x, float point_y, float radius) const;
 
@@ -1178,7 +1210,9 @@ public:
      *
      * This function is blocking. See 'track_rectangle_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result track_rectangle(
         int32_t component_id,
@@ -1199,7 +1233,9 @@ public:
      *
      * This function is blocking. See 'track_stop_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result track_stop(int32_t component_id) const;
 
@@ -1215,7 +1251,9 @@ public:
      *
      * This function is blocking. See 'focus_in_start_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result focus_in_start(int32_t component_id) const;
 
@@ -1231,7 +1269,9 @@ public:
      *
      * This function is blocking. See 'focus_out_start_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result focus_out_start(int32_t component_id) const;
 
@@ -1247,7 +1287,9 @@ public:
      *
      * This function is blocking. See 'focus_stop_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result focus_stop(int32_t component_id) const;
 
@@ -1263,7 +1305,9 @@ public:
      *
      * This function is blocking. See 'focus_range_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result focus_range(int32_t component_id, float range) const;
 

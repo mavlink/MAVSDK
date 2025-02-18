@@ -107,7 +107,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result send_rtcm_data(RtcmData rtcm_data) const;
 

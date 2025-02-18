@@ -15,28 +15,23 @@ The requirements are the same as described in the [library build instructions](b
 ## Build on Linux
 
 ```
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -H.
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -S.
 cmake --build build/default -j8
 ```
 
 ## Build on macOS
 
 ```
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -H.
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -S.
 cmake --build build/default -j8
 ```
 
-::: info
-There is no proper support for the Apple M1 chip yet.
-One blocker is that there is currently no M1 hardware in GitHub Actions CI available.
-:::
-
 ## Build on Windows
 
-Open the "x64 Native Tools Command Prompt for VS 2022", cd into the MAVSDK directory, and do:
+Open the "x64 Native Tools Command Prompt for VS 2022" (or later), cd into the MAVSDK directory, and do:
 
 ```
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -H.
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -Bbuild/default -S.
 cmake --build build/default -j8
 ```
 
@@ -49,19 +44,19 @@ Build for Android using the dockcross cross compiler, as described in the [cross
 To build for real iOS devices on macOS:
 
 ```sh
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_TOOLCHAIN_FILE=tools/ios.toolchain.cmake -DPLATFORM=OS -Bbuild/ios -H.
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_TOOLCHAIN_FILE=tools/ios.toolchain.cmake -DPLATFORM=OS -Bbuild/ios -S.
 cmake --build build/ios
 ```
 
 Build for the iOS simulator on macOS:
 
 ```sh
-cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_TOOLCHAIN_FILE=tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -Bbuild/ios_simulator -H.
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_TOOLCHAIN_FILE=tools/ios.toolchain.cmake -DPLATFORM=SIMULATOR64 -Bbuild/ios_simulator -S.
 ```
 
 ## Cross compilation using dockcross {#cross_compilation_dockcross}
 
-Cross compilation is usually the fastest way to compile for "embedded" platforms like the Raspberry Pi, BeagleBone Blue or Nvidia Jetson (i.e. typically faster than native compilation on device itself).
+Cross compilation is usually the fastest way to compile for "embedded" platforms like the Raspberry Pi, or Nvidia Jetson (i.e. typically faster than native compilation on device itself).
 
 We recommend using [dockcross](https://github.com/dockcross/dockcross), which is a very convenient tool for cross compilation based on docker (and which supports many platforms).
 

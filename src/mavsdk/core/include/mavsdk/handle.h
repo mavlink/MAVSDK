@@ -15,6 +15,11 @@ public:
     Handle() = default;
     ~Handle() = default;
 
+    /**
+     * @brief Wheter handle is valid
+     *
+     * @return true if handle is valid
+     */
     bool valid() const { return _id != 0; }
 
     bool operator<(const Handle& other) const { return _id < other._id; }

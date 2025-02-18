@@ -10,6 +10,8 @@
 ## Data Fields
 
 
+int32_t [component_id](#structmavsdk_1_1_camera_1_1_capture_info_1a4911c3f31733e87c2a189a598889ef85) {} - Component ID.
+
 [Position](structmavsdk_1_1_camera_1_1_position.md) [position](#structmavsdk_1_1_camera_1_1_capture_info_1a570779eaff94d3cf3c1a160938096d0f) {} - Location where the picture was taken.
 
 [Quaternion](structmavsdk_1_1_camera_1_1_quaternion.md) [attitude_quaternion](#structmavsdk_1_1_camera_1_1_capture_info_1add20201828d0e0a82a6ee6366022abc4) {} - Attitude of the camera when the picture was taken (quaternion)
@@ -26,6 +28,16 @@ std::string [file_url](#structmavsdk_1_1_camera_1_1_capture_info_1a6fa362c6a13fe
 
 
 ## Field Documentation
+
+
+### component_id {#structmavsdk_1_1_camera_1_1_capture_info_1a4911c3f31733e87c2a189a598889ef85}
+
+```cpp
+int32_t mavsdk::Camera::CaptureInfo::component_id {}
+```
+
+
+Component ID.
 
 
 ### position {#structmavsdk_1_1_camera_1_1_capture_info_1a570779eaff94d3cf3c1a160938096d0f}

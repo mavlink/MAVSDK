@@ -387,7 +387,7 @@ class RequestComponentResponse final
     return reinterpret_cast<const RequestComponentResponse*>(
         &_RequestComponentResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 1;
   friend void swap(RequestComponentResponse& a, RequestComponentResponse& b) { a.Swap(&b); }
   inline void Swap(RequestComponentResponse* other) {
     if (other == this) return;
@@ -1238,7 +1238,7 @@ class MetadataData final
     return reinterpret_cast<const MetadataData*>(
         &_MetadataData_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 3;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(MetadataData& a, MetadataData& b) { a.Swap(&b); }
   inline void Swap(MetadataData* other) {
     if (other == this) return;
@@ -1435,7 +1435,7 @@ class GetMetadataRequest final
     return reinterpret_cast<const GetMetadataRequest*>(
         &_GetMetadataRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 1;
+  static constexpr int kIndexInFileMessages = 2;
   friend void swap(GetMetadataRequest& a, GetMetadataRequest& b) { a.Swap(&b); }
   inline void Swap(GetMetadataRequest* other) {
     if (other == this) return;
@@ -1638,7 +1638,7 @@ class ComponentMetadataResult final
     return reinterpret_cast<const ComponentMetadataResult*>(
         &_ComponentMetadataResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(ComponentMetadataResult& a, ComponentMetadataResult& b) { a.Swap(&b); }
   inline void Swap(ComponentMetadataResult* other) {
     if (other == this) return;
@@ -2070,7 +2070,7 @@ class GetMetadataResponse final
     return reinterpret_cast<const GetMetadataResponse*>(
         &_GetMetadataResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 2;
+  static constexpr int kIndexInFileMessages = 3;
   friend void swap(GetMetadataResponse& a, GetMetadataResponse& b) { a.Swap(&b); }
   inline void Swap(GetMetadataResponse* other) {
     if (other == this) return;
@@ -2260,6 +2260,10 @@ inline void RequestComponentRequest::_internal_set_compid(::uint32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.compid_ = value;
 }
+
+// -------------------------------------------------------------------
+
+// RequestComponentResponse
 
 // -------------------------------------------------------------------
 
@@ -2630,10 +2634,6 @@ inline void ComponentMetadataResult::set_allocated_result_str(std::string* value
   }
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.component_metadata.ComponentMetadataResult.result_str)
 }
-
-// -------------------------------------------------------------------
-
-// RequestComponentResponse
 
 // -------------------------------------------------------------------
 

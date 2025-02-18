@@ -38,7 +38,7 @@ bool | [is_active](#classmavsdk_1_1_follow_me_1a48ab77939257e52159bd9ed19335a7de
 [FollowMe::TargetLocation](structmavsdk_1_1_follow_me_1_1_target_location.md) | [get_last_location](#classmavsdk_1_1_follow_me_1af2a1af346ee2fa7761b58b406e9e6e0c) () const | Get the last location of the target.
 [Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) | [start](#classmavsdk_1_1_follow_me_1a4b6ae3ec1ff07d8b3a79038e04992003) () const | Start [FollowMe](classmavsdk_1_1_follow_me.md) mode.
 [Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) | [stop](#classmavsdk_1_1_follow_me_1a202a7b9edf56d9b883c974a09c14ba7d) () const | Stop [FollowMe](classmavsdk_1_1_follow_me.md) mode.
-const [FollowMe](classmavsdk_1_1_follow_me.md) & | [operator=](#classmavsdk_1_1_follow_me_1a6292f6dd2c91cedde0e3b82952d83510) (const [FollowMe](classmavsdk_1_1_follow_me.md) &)=delete | Equality operator (object is not copyable).
+const [FollowMe](classmavsdk_1_1_follow_me.md) & | [operator=](#classmavsdk_1_1_follow_me_1ab9787b3a8301c734aa22745ac753bbb9) (const [FollowMe](classmavsdk_1_1_follow_me.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -245,9 +245,9 @@ This function is blocking.
 
 &emsp;[Result](classmavsdk_1_1_follow_me.md#classmavsdk_1_1_follow_me_1a2b3f334ea72fd84d9e925fb3756451d8) - Result of request.
 
-### operator=() {#classmavsdk_1_1_follow_me_1a6292f6dd2c91cedde0e3b82952d83510}
+### operator=() {#classmavsdk_1_1_follow_me_1ab9787b3a8301c734aa22745ac753bbb9}
 ```cpp
-const FollowMe& mavsdk::FollowMe::operator=(const FollowMe &)=delete
+const FollowMe & mavsdk::FollowMe::operator=(const FollowMe &)=delete
 ```
 
 

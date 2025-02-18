@@ -103,9 +103,11 @@ public:
      * Requires a valid position using e.g. GPS, external vision, or optical flow.
      *
      * This function is blocking. See 'start_position_control_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result start_position_control() const;
 
@@ -126,9 +128,11 @@ public:
      * Does not require a  valid position e.g. GPS.
      *
      * This function is blocking. See 'start_altitude_control_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result start_altitude_control() const;
 
@@ -140,7 +144,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_manual_control_input(float x, float y, float z, float r) const;
 

@@ -29,6 +29,7 @@ namespace mavsdk {
 namespace rpc {
 namespace arm_authorizer_server {
 
+// Use arm authorization.
 class ArmAuthorizerServerService final {
  public:
   static constexpr char const* service_full_name() {

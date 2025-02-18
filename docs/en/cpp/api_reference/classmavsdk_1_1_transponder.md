@@ -38,7 +38,7 @@ void | [unsubscribe_transponder](#classmavsdk_1_1_transponder_1a28735123acd67953
 [AdsbVehicle](structmavsdk_1_1_transponder_1_1_adsb_vehicle.md) | [transponder](#classmavsdk_1_1_transponder_1a1674c21928af3368e2be84bd182251d9) () const | Poll for '[AdsbVehicle](structmavsdk_1_1_transponder_1_1_adsb_vehicle.md)' (blocking).
 void | [set_rate_transponder_async](#classmavsdk_1_1_transponder_1a098f5692a3f2b76a201ce0b22a56f0ec) (double rate_hz, const [ResultCallback](classmavsdk_1_1_transponder.md#classmavsdk_1_1_transponder_1a57166e61c37ad92ecd5420bc1b7972a5) callback) | Set rate to 'transponder' updates.
 [Result](classmavsdk_1_1_transponder.md#classmavsdk_1_1_transponder_1a683477ab9a02d00b2524bc2dcea3ecc8) | [set_rate_transponder](#classmavsdk_1_1_transponder_1a9d9f4b4899ef61b6d13d9e25f44dbecd) (double rate_hz)const | Set rate to 'transponder' updates.
-const [Transponder](classmavsdk_1_1_transponder.md) & | [operator=](#classmavsdk_1_1_transponder_1aaee71763de213002fadeb9dec3ec9fb6) (const [Transponder](classmavsdk_1_1_transponder.md) &)=delete | Equality operator (object is not copyable).
+const [Transponder](classmavsdk_1_1_transponder.md) & | [operator=](#classmavsdk_1_1_transponder_1a26e549ff3c1a202aa24b3e1a0c5fe87f) (const [Transponder](classmavsdk_1_1_transponder.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -273,9 +273,9 @@ This function is blocking. See 'set_rate_transponder_async' for the non-blocking
 
 &emsp;[Result](classmavsdk_1_1_transponder.md#classmavsdk_1_1_transponder_1a683477ab9a02d00b2524bc2dcea3ecc8) - Result of request.
 
-### operator=() {#classmavsdk_1_1_transponder_1aaee71763de213002fadeb9dec3ec9fb6}
+### operator=() {#classmavsdk_1_1_transponder_1a26e549ff3c1a202aa24b3e1a0c5fe87f}
 ```cpp
-const Transponder& mavsdk::Transponder::operator=(const Transponder &)=delete
+const Transponder & mavsdk::Transponder::operator=(const Transponder &)=delete
 ```
 
 

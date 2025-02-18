@@ -7,55 +7,58 @@ Namespace for all mavsdk types.
 
 ## Data Structures
 
-* [mavsdk::CallbackListImpl](classmavsdk_1_1_callback_list_impl.md)
-* [mavsdk::CallbackList](classmavsdk_1_1_callback_list.md)
-* [mavsdk::FakeHandle](classmavsdk_1_1_fake_handle.md)
-* [mavsdk::Handle](classmavsdk_1_1_handle.md)
-* [mavsdk::Mavsdk](classmavsdk_1_1_mavsdk.md)
-* [mavsdk::overloaded](structmavsdk_1_1overloaded.md)
-* [mavsdk::PluginBase](classmavsdk_1_1_plugin_base.md)
 * [mavsdk::Action](classmavsdk_1_1_action.md)
 * [mavsdk::ActionServer](classmavsdk_1_1_action_server.md)
+* [mavsdk::ArmAuthorizerServer](classmavsdk_1_1_arm_authorizer_server.md)
 * [mavsdk::Calibration](classmavsdk_1_1_calibration.md)
 * [mavsdk::Camera](classmavsdk_1_1_camera.md)
 * [mavsdk::CameraServer](classmavsdk_1_1_camera_server.md)
-* [mavsdk::ComponentInformation](classmavsdk_1_1_component_information.md)
-* [mavsdk::ComponentInformationServer](classmavsdk_1_1_component_information_server.md)
+* [mavsdk::ComponentMetadata](classmavsdk_1_1_component_metadata.md)
+* [mavsdk::ComponentMetadataServer](classmavsdk_1_1_component_metadata_server.md)
+* [mavsdk::Events](classmavsdk_1_1_events.md)
 * [mavsdk::Failure](classmavsdk_1_1_failure.md)
+* [mavsdk::FakeHandle](classmavsdk_1_1_fake_handle.md)
 * [mavsdk::FollowMe](classmavsdk_1_1_follow_me.md)
 * [mavsdk::Ftp](classmavsdk_1_1_ftp.md)
 * [mavsdk::FtpServer](classmavsdk_1_1_ftp_server.md)
 * [mavsdk::Geofence](classmavsdk_1_1_geofence.md)
 * [mavsdk::Gimbal](classmavsdk_1_1_gimbal.md)
 * [mavsdk::Gripper](classmavsdk_1_1_gripper.md)
+* [mavsdk::Handle](classmavsdk_1_1_handle.md)
+* [mavsdk::HandleFactory](classmavsdk_1_1_handle_factory.md)
 * [mavsdk::Info](classmavsdk_1_1_info.md)
 * [mavsdk::LogFiles](classmavsdk_1_1_log_files.md)
+* [mavsdk::LogStreaming](classmavsdk_1_1_log_streaming.md)
 * [mavsdk::ManualControl](classmavsdk_1_1_manual_control.md)
 * [mavsdk::MavlinkPassthrough](classmavsdk_1_1_mavlink_passthrough.md)
+* [mavsdk::Mavsdk](classmavsdk_1_1_mavsdk.md)
 * [mavsdk::Mission](classmavsdk_1_1_mission.md)
 * [mavsdk::MissionRaw](classmavsdk_1_1_mission_raw.md)
 * [mavsdk::MissionRawServer](classmavsdk_1_1_mission_raw_server.md)
 * [mavsdk::Mocap](classmavsdk_1_1_mocap.md)
 * [mavsdk::Offboard](classmavsdk_1_1_offboard.md)
+* [mavsdk::overloaded](structmavsdk_1_1overloaded.md)
 * [mavsdk::Param](classmavsdk_1_1_param.md)
 * [mavsdk::ParamServer](classmavsdk_1_1_param_server.md)
+* [mavsdk::PluginBase](classmavsdk_1_1_plugin_base.md)
 * [mavsdk::Rtk](classmavsdk_1_1_rtk.md)
+* [mavsdk::ServerComponent](classmavsdk_1_1_server_component.md)
+* [mavsdk::ServerPluginBase](classmavsdk_1_1_server_plugin_base.md)
 * [mavsdk::ServerUtility](classmavsdk_1_1_server_utility.md)
 * [mavsdk::Shell](classmavsdk_1_1_shell.md)
+* [mavsdk::System](classmavsdk_1_1_system.md)
 * [mavsdk::Telemetry](classmavsdk_1_1_telemetry.md)
 * [mavsdk::TelemetryServer](classmavsdk_1_1_telemetry_server.md)
-* [mavsdk::TrackingServer](classmavsdk_1_1_tracking_server.md)
 * [mavsdk::Transponder](classmavsdk_1_1_transponder.md)
 * [mavsdk::Tune](classmavsdk_1_1_tune.md)
 * [mavsdk::Winch](classmavsdk_1_1_winch.md)
-* [mavsdk::ServerComponent](classmavsdk_1_1_server_component.md)
-* [mavsdk::ServerPluginBase](classmavsdk_1_1_server_plugin_base.md)
-* [mavsdk::System](classmavsdk_1_1_system.md)
 
 ## Enumerations
 
 Type | Description
 --- | ---
+enum [Autopilot](#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) | Autopilot type.
+enum [ComponentType](#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) | ComponentType of configurations, used for automatic ID setting.
 enum [ConnectionResult](#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) | Result type returned when adding a connection.
 enum [ForwardingOption](#namespacemavsdk_1a7066729108eae8a605d4dd169e4581b9) | ForwardingOption for Connection, used to set message forwarding option.
 
@@ -63,11 +66,52 @@ enum [ForwardingOption](#namespacemavsdk_1a7066729108eae8a605d4dd169e4581b9) | F
 
 Type | Name | Description
 --- | --- | ---
-std::ostream & | [operator<<](#namespacemavsdk_1a3307e6cbeb3dba8551dcde4b873691d3) (std::ostream & str, const [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) & result) | Stream operator to print information about a `ConnectionResult`.
+std::string | [base64_encode](#namespacemavsdk_1a57a9962be22a61e5c36a66bc17e6a2a7) (std::vector< uint8_t > & raw) | Encode raw bytes to a base64 string.
+std::vector< uint8_t > | [base64_decode](#namespacemavsdk_1a34e7609c9e2ddcc72a74bbc79daf9c19) (const std::string & str) | Decode a base64 string into raw bytes.
+std::ostream & | [operator<<](#namespacemavsdk_1a2aa91d8b846b07fe7f305b399375ce5f) (std::ostream & str, const [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) & result) | Stream operator to print information about a `ConnectionResult`.
 &nbsp; | [overloaded](#namespacemavsdk_1a724e321aaff91eb2ba28279e0292e552) (Ts...)-> overloaded< Ts... > | Template deduction helper for `overloaded`
 
 ## Enumeration Type Documentation
 
+
+### enum Autopilot {#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297}
+
+```
+#include: autopilot.h
+```
+
+
+Autopilot type.
+
+
+Value | Description
+--- | ---
+<span id="namespacemavsdk_1aba05635d1785223a4d7b457ae0407297a88183b946cc5f0e8c96b2e66e1c74a7e"></span> `Unknown` |  
+<span id="namespacemavsdk_1aba05635d1785223a4d7b457ae0407297a31e54e53a62995611ff9ccc0dd9cb510"></span> `Px4` |  
+<span id="namespacemavsdk_1aba05635d1785223a4d7b457ae0407297a1f79341042063f30812f2942a48d19ed"></span> `ArduPilot` |  
+
+### enum ComponentType {#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12}
+
+```
+#include: component_type.h
+```
+
+
+ComponentType of configurations, used for automatic ID setting.
+
+
+Value | Description
+--- | ---
+<span id="namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12a6ca1d2b081cc474f42cb95e3d04e6e68"></span> `Autopilot` | SDK is used as an autopilot. 
+<span id="namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12af64f82089eddc6133add8c55c65d6687"></span> `GroundStation` | SDK is used as a ground station. 
+<span id="namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12a8f2f82e1a7aa48819e9530d5c4977477"></span> `CompanionComputer` | SDK is used as a companion computer on board the MAV. 
+<span id="namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12a967d35e40f3f95b1f538bd248640bf3b"></span> `Camera` |  
+<span id="namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12acda0f2848103fd4a833697ac64b9ad8d"></span> `Gimbal` | SDK is used as a camera. <
+<span id="namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12a9b61d83cce82349f154b47131680be37"></span> `RemoteId` | SDK is used as a gimbal. <
+<span id="namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12a90589c47f06eb971d548591f23c285af"></span> `Custom` | SDK is used as a RemoteId system. <
+
+
+the SDK is used in a custom configuration, no automatic ID will be provided
 
 ### enum ConnectionResult {#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992}
 
@@ -78,7 +122,7 @@ std::ostream & | [operator<<](#namespacemavsdk_1a3307e6cbeb3dba8551dcde4b873691d
 
 Result type returned when adding a connection.
 
-**Note**: [Mavsdk](classmavsdk_1_1_mavsdk.md) does not throw exceptions. Instead a result of this type will be returned when you add a connection: add_udp_connection().
+**Note**: [Mavsdk](classmavsdk_1_1_mavsdk.md) does not throw exceptions. Instead a result of this type will be returned.
 
 Value | Description
 --- | ---
@@ -115,13 +159,55 @@ Value | Description
 ## Function Documentation
 
 
-### operator<<() {#namespacemavsdk_1a3307e6cbeb3dba8551dcde4b873691d3}
+### base64_encode() {#namespacemavsdk_1a57a9962be22a61e5c36a66bc17e6a2a7}
+
+```
+#include: base64.h
+```
+```cpp
+std::string mavsdk::base64_encode(std::vector< uint8_t > &raw)
+```
+
+
+Encode raw bytes to a base64 string.
+
+
+**Parameters**
+
+* std::vector< uint8_t >& **raw** - Raw bytes
+
+**Returns**
+
+&emsp;std::string - Base64 string
+
+### base64_decode() {#namespacemavsdk_1a34e7609c9e2ddcc72a74bbc79daf9c19}
+
+```
+#include: base64.h
+```
+```cpp
+std::vector< uint8_t > mavsdk::base64_decode(const std::string &str)
+```
+
+
+Decode a base64 string into raw bytes.
+
+
+**Parameters**
+
+* const std::string& **str** - Base64 string
+
+**Returns**
+
+&emsp;std::vector< uint8_t > - Raw bytes
+
+### operator<<() {#namespacemavsdk_1a2aa91d8b846b07fe7f305b399375ce5f}
 
 ```
 #include: connection_result.h
 ```
 ```cpp
-std::ostream& mavsdk::operator<<(std::ostream &str, const ConnectionResult &result)
+std::ostream & mavsdk::operator<<(std::ostream &str, const ConnectionResult &result)
 ```
 
 

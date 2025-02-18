@@ -114,7 +114,9 @@ public:
      *
      * This function is blocking. See 'grab_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result grab(uint32_t instance) const;
 
@@ -130,7 +132,9 @@ public:
      *
      * This function is blocking. See 'release_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result release(uint32_t instance) const;
 

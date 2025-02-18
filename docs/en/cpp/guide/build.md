@@ -77,7 +77,7 @@ For configuration, you specify the type of build you want to execute in the [bui
 
 A typical configuration command example would be:
 
-`cmake -DCMAKE_BUILD_TYPE=Debug -Bbuild/default -H.`
+`cmake -DCMAKE_BUILD_TYPE=Debug -Bbuild/default -S.`
 
 - Build type is set to `Debug`
 - Build directory is set to `build/default`
@@ -118,7 +118,7 @@ To build the MAVSDK C++ Library for development, use the debug build.
 
 There are 2 steps in building a library: Configure and build.
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Debug -Bbuild/default -H.
+cmake -DCMAKE_BUILD_TYPE=Debug -Bbuild/default -S.
 cmake --build build/default -j8
 ```
 
@@ -129,14 +129,14 @@ Once you ship software, make sure to use the release build with optimizations tu
 **Linux/macOS:**
 
  ```bash
- cmake -Bbuild/default -DCMAKE_BUILD_TYPE=Release -H.
+ cmake -Bbuild/default -DCMAKE_BUILD_TYPE=Release -S.
  cmake --build build/default -j8
  ```
 
 **Windows:**
 
 ```bash
-cmake -Bbuild/default -H. -DCMAKE_BUILD_TYPE=Release
+cmake -Bbuild/default -S. -DCMAKE_BUILD_TYPE=Release
 cmake --build build/default -j8 --config Release
 ```
 
@@ -175,7 +175,7 @@ The install path can be set in the [configuration step](#configuration_step) usi
 
 For example, to install into the `MAVSDK/install/` folder you would set the `CMAKE_INSTALL_PREFIX` variable to specify a path relative to the folder from which you call `cmake` (or an absolute path).
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install -Bbuild/default -H.
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install -Bbuild/default -S.
 cmake --build build/default --target install
 ```
 

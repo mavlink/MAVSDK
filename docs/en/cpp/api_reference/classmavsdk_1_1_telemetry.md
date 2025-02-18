@@ -100,10 +100,6 @@ std::function< void([EulerAngle](structmavsdk_1_1_telemetry_1_1_euler_angle.md))
 [Handle](classmavsdk_1_1_handle.md)< [EulerAngle](structmavsdk_1_1_telemetry_1_1_euler_angle.md) > [AttitudeEulerHandle](#classmavsdk_1_1_telemetry_1ae73f3d3ac224438a6cd07344fda9543b) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_attitude_euler.
 std::function< void([AngularVelocityBody](structmavsdk_1_1_telemetry_1_1_angular_velocity_body.md))> [AttitudeAngularVelocityBodyCallback](#classmavsdk_1_1_telemetry_1a35ff8def3048faeab7f732153d51085f) | Callback type for subscribe_attitude_angular_velocity_body.
 [Handle](classmavsdk_1_1_handle.md)< [AngularVelocityBody](structmavsdk_1_1_telemetry_1_1_angular_velocity_body.md) > [AttitudeAngularVelocityBodyHandle](#classmavsdk_1_1_telemetry_1a2328e39c1a96ce9a090cb19283d3ffc1) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_attitude_angular_velocity_body.
-std::function< void([Quaternion](structmavsdk_1_1_telemetry_1_1_quaternion.md))> [CameraAttitudeQuaternionCallback](#classmavsdk_1_1_telemetry_1aa83dafa14e9b5179573a574f6fbdd973) | Callback type for subscribe_camera_attitude_quaternion.
-[Handle](classmavsdk_1_1_handle.md)< [Quaternion](structmavsdk_1_1_telemetry_1_1_quaternion.md) > [CameraAttitudeQuaternionHandle](#classmavsdk_1_1_telemetry_1aeb2a99828961bf2a4d5c24753e020358) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_camera_attitude_quaternion.
-std::function< void([EulerAngle](structmavsdk_1_1_telemetry_1_1_euler_angle.md))> [CameraAttitudeEulerCallback](#classmavsdk_1_1_telemetry_1aa29f9bb0767ba8c384bfe1df69f2fdd9) | Callback type for subscribe_camera_attitude_euler.
-[Handle](classmavsdk_1_1_handle.md)< [EulerAngle](structmavsdk_1_1_telemetry_1_1_euler_angle.md) > [CameraAttitudeEulerHandle](#classmavsdk_1_1_telemetry_1a76471c91115d6e03e6165a3e1315808b) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_camera_attitude_euler.
 std::function< void([VelocityNed](structmavsdk_1_1_telemetry_1_1_velocity_ned.md))> [VelocityNedCallback](#classmavsdk_1_1_telemetry_1ab5859d2f6a9c9bd81282166b3de92342) | Callback type for subscribe_velocity_ned.
 [Handle](classmavsdk_1_1_handle.md)< [VelocityNed](structmavsdk_1_1_telemetry_1_1_velocity_ned.md) > [VelocityNedHandle](#classmavsdk_1_1_telemetry_1a2c3898f33bfa1bffe86681aaca33343e) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_velocity_ned.
 std::function< void([GpsInfo](structmavsdk_1_1_telemetry_1_1_gps_info.md))> [GpsInfoCallback](#classmavsdk_1_1_telemetry_1ad8fa90886b2283eace09b4b46708048b) | Callback type for subscribe_gps_info.
@@ -188,12 +184,6 @@ void | [unsubscribe_attitude_euler](#classmavsdk_1_1_telemetry_1aa770088117b0374
 [AttitudeAngularVelocityBodyHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a2328e39c1a96ce9a090cb19283d3ffc1) | [subscribe_attitude_angular_velocity_body](#classmavsdk_1_1_telemetry_1a3bbefcdb4e9cd9af9692626984504cb7) (const [AttitudeAngularVelocityBodyCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a35ff8def3048faeab7f732153d51085f) & callback) | Subscribe to 'attitude' updates (angular velocity)
 void | [unsubscribe_attitude_angular_velocity_body](#classmavsdk_1_1_telemetry_1a2319d78b4e214e5b2f3ef55a1c32e2c5) ([AttitudeAngularVelocityBodyHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a2328e39c1a96ce9a090cb19283d3ffc1) handle) | Unsubscribe from subscribe_attitude_angular_velocity_body.
 [AngularVelocityBody](structmavsdk_1_1_telemetry_1_1_angular_velocity_body.md) | [attitude_angular_velocity_body](#classmavsdk_1_1_telemetry_1a8d9e2489b79c2cdbabaef8b6bb8e2952) () const | Poll for '[AngularVelocityBody](structmavsdk_1_1_telemetry_1_1_angular_velocity_body.md)' (blocking).
-[CameraAttitudeQuaternionHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1aeb2a99828961bf2a4d5c24753e020358) | [subscribe_camera_attitude_quaternion](#classmavsdk_1_1_telemetry_1a9b7517e15c841765fbb8b1230e73bf82) (const [CameraAttitudeQuaternionCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1aa83dafa14e9b5179573a574f6fbdd973) & callback) | Subscribe to 'camera attitude' updates (quaternion).
-void | [unsubscribe_camera_attitude_quaternion](#classmavsdk_1_1_telemetry_1aa92270b8a30b22271f65d92e9a7ed9a1) ([CameraAttitudeQuaternionHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1aeb2a99828961bf2a4d5c24753e020358) handle) | Unsubscribe from subscribe_camera_attitude_quaternion.
-[Quaternion](structmavsdk_1_1_telemetry_1_1_quaternion.md) | [camera_attitude_quaternion](#classmavsdk_1_1_telemetry_1a3c07447351d3b6195d5e2526e7b128b3) () const | Poll for '[Quaternion](structmavsdk_1_1_telemetry_1_1_quaternion.md)' (blocking).
-[CameraAttitudeEulerHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a76471c91115d6e03e6165a3e1315808b) | [subscribe_camera_attitude_euler](#classmavsdk_1_1_telemetry_1aa50015ba9b1decb825d45e459191c342) (const [CameraAttitudeEulerCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1aa29f9bb0767ba8c384bfe1df69f2fdd9) & callback) | Subscribe to 'camera attitude' updates (Euler).
-void | [unsubscribe_camera_attitude_euler](#classmavsdk_1_1_telemetry_1a90b8dfe6b83afc908e4c236bbbc32930) ([CameraAttitudeEulerHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a76471c91115d6e03e6165a3e1315808b) handle) | Unsubscribe from subscribe_camera_attitude_euler.
-[EulerAngle](structmavsdk_1_1_telemetry_1_1_euler_angle.md) | [camera_attitude_euler](#classmavsdk_1_1_telemetry_1a635643d955f0cd9a805914501f819796) () const | Poll for '[EulerAngle](structmavsdk_1_1_telemetry_1_1_euler_angle.md)' (blocking).
 [VelocityNedHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a2c3898f33bfa1bffe86681aaca33343e) | [subscribe_velocity_ned](#classmavsdk_1_1_telemetry_1a9b5e6bd8fb05324fd7a99d0260933c9d) (const [VelocityNedCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1ab5859d2f6a9c9bd81282166b3de92342) & callback) | Subscribe to 'ground speed' updates (NED).
 void | [unsubscribe_velocity_ned](#classmavsdk_1_1_telemetry_1ae14a663f3b4820e891a4d83c2f8aa2c3) ([VelocityNedHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a2c3898f33bfa1bffe86681aaca33343e) handle) | Unsubscribe from subscribe_velocity_ned.
 [VelocityNed](structmavsdk_1_1_telemetry_1_1_velocity_ned.md) | [velocity_ned](#classmavsdk_1_1_telemetry_1a40a86062c0322d6be7c86d8e15a52f28) () const | Poll for '[VelocityNed](structmavsdk_1_1_telemetry_1_1_velocity_ned.md)' (blocking).
@@ -277,10 +267,8 @@ void | [set_rate_attitude_quaternion_async](#classmavsdk_1_1_telemetry_1a1eb6bc9
 [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) | [set_rate_attitude_quaternion](#classmavsdk_1_1_telemetry_1adfc8e1a3bfa0f459350640630283716d) (double rate_hz)const | Set rate to 'attitude euler angle' updates.
 void | [set_rate_attitude_euler_async](#classmavsdk_1_1_telemetry_1aabf20f904d9c65582cdf167f7b0275a9) (double rate_hz, const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) callback) | Set rate to 'attitude quaternion' updates.
 [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) | [set_rate_attitude_euler](#classmavsdk_1_1_telemetry_1adc7a43d7143261df5f97fdc8a882fdf3) (double rate_hz)const | Set rate to 'attitude quaternion' updates.
-void | [set_rate_camera_attitude_async](#classmavsdk_1_1_telemetry_1a520f15e42f5f1b3987ca2a9cd94a3d9a) (double rate_hz, const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) callback) | Set rate of camera attitude updates.
-[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) | [set_rate_camera_attitude](#classmavsdk_1_1_telemetry_1a427da223d16ce07a61b07d4e5af1ab04) (double rate_hz)const | Set rate of camera attitude updates.
-void | [set_rate_velocity_ned_async](#classmavsdk_1_1_telemetry_1a9429ffa784fa56adee69c5017abedee4) (double rate_hz, const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) callback) | Set rate to 'ground speed' updates (NED).
-[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) | [set_rate_velocity_ned](#classmavsdk_1_1_telemetry_1ab5cb79fd53f27f245808a6bb9ed3225d) (double rate_hz)const | Set rate to 'ground speed' updates (NED).
+void | [set_rate_velocity_ned_async](#classmavsdk_1_1_telemetry_1a9429ffa784fa56adee69c5017abedee4) (double rate_hz, const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) callback) | Set rate of camera attitude updates. Set rate to 'ground speed' updates (NED).
+[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) | [set_rate_velocity_ned](#classmavsdk_1_1_telemetry_1ab5cb79fd53f27f245808a6bb9ed3225d) (double rate_hz)const | Set rate of camera attitude updates. Set rate to 'ground speed' updates (NED).
 void | [set_rate_gps_info_async](#classmavsdk_1_1_telemetry_1ae6ada3cd6d4e9835dd4d1d712f1195e4) (double rate_hz, const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) callback) | Set rate to 'GPS info' updates.
 [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) | [set_rate_gps_info](#classmavsdk_1_1_telemetry_1a14510bcb6fe3c31d91653d32d354613f) (double rate_hz)const | Set rate to 'GPS info' updates.
 void | [set_rate_battery_async](#classmavsdk_1_1_telemetry_1a5615e21f616997dfca1318c96a7e550e) (double rate_hz, const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) callback) | Set rate to 'battery' updates.
@@ -312,8 +300,8 @@ void | [set_rate_distance_sensor_async](#classmavsdk_1_1_telemetry_1a0371c470866
 void | [set_rate_altitude_async](#classmavsdk_1_1_telemetry_1a15461dd3f64aef2b921c9f06ee144bc1) (double rate_hz, const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) callback) | Set rate to '[Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md)' updates.
 [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) | [set_rate_altitude](#classmavsdk_1_1_telemetry_1a100fc786b86637385c6188ea53121b98) (double rate_hz)const | Set rate to '[Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md)' updates.
 void | [get_gps_global_origin_async](#classmavsdk_1_1_telemetry_1a60cca43e2f87e3fd3a9e170ff2b64e0a) (const [GetGpsGlobalOriginCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a350ee89a7e30a691e130e29ace8917ef) callback) | Get the GPS location of where the estimator has been initialized.
-std::pair< [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75), [Telemetry::GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md) > | [get_gps_global_origin](#classmavsdk_1_1_telemetry_1a77747e7cea5a4d644bd6bec9441c7bfb) () const | Get the GPS location of where the estimator has been initialized.
-const [Telemetry](classmavsdk_1_1_telemetry.md) & | [operator=](#classmavsdk_1_1_telemetry_1a703ac978c925be8806921925cf16aca9) (const [Telemetry](classmavsdk_1_1_telemetry.md) &)=delete | Equality operator (object is not copyable).
+std::pair< [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75), [Telemetry::GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md) > | [get_gps_global_origin](#classmavsdk_1_1_telemetry_1a341b90234b30a27bb25670a31303e0cd) () const | Get the GPS location of where the estimator has been initialized.
+const [Telemetry](classmavsdk_1_1_telemetry.md) & | [operator=](#classmavsdk_1_1_telemetry_1ae606a3e3814c773a12035c2674a00c5c) (const [Telemetry](classmavsdk_1_1_telemetry.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -568,46 +556,6 @@ using mavsdk::Telemetry::AttitudeAngularVelocityBodyHandle =  Handle<AngularVelo
 
 
 [Handle](classmavsdk_1_1_handle.md) type for subscribe_attitude_angular_velocity_body.
-
-
-### typedef CameraAttitudeQuaternionCallback {#classmavsdk_1_1_telemetry_1aa83dafa14e9b5179573a574f6fbdd973}
-
-```cpp
-using mavsdk::Telemetry::CameraAttitudeQuaternionCallback =  std::function<void(Quaternion)>
-```
-
-
-Callback type for subscribe_camera_attitude_quaternion.
-
-
-### typedef CameraAttitudeQuaternionHandle {#classmavsdk_1_1_telemetry_1aeb2a99828961bf2a4d5c24753e020358}
-
-```cpp
-using mavsdk::Telemetry::CameraAttitudeQuaternionHandle =  Handle<Quaternion>
-```
-
-
-[Handle](classmavsdk_1_1_handle.md) type for subscribe_camera_attitude_quaternion.
-
-
-### typedef CameraAttitudeEulerCallback {#classmavsdk_1_1_telemetry_1aa29f9bb0767ba8c384bfe1df69f2fdd9}
-
-```cpp
-using mavsdk::Telemetry::CameraAttitudeEulerCallback =  std::function<void(EulerAngle)>
-```
-
-
-Callback type for subscribe_camera_attitude_euler.
-
-
-### typedef CameraAttitudeEulerHandle {#classmavsdk_1_1_telemetry_1a76471c91115d6e03e6165a3e1315808b}
-
-```cpp
-using mavsdk::Telemetry::CameraAttitudeEulerHandle =  Handle<EulerAngle>
-```
-
-
-[Handle](classmavsdk_1_1_handle.md) type for subscribe_camera_attitude_euler.
 
 
 ### typedef VelocityNedCallback {#classmavsdk_1_1_telemetry_1ab5859d2f6a9c9bd81282166b3de92342}
@@ -1575,92 +1523,6 @@ Poll for '[AngularVelocityBody](structmavsdk_1_1_telemetry_1_1_angular_velocity_
 **Returns**
 
 &emsp;[AngularVelocityBody](structmavsdk_1_1_telemetry_1_1_angular_velocity_body.md) - One [AngularVelocityBody](structmavsdk_1_1_telemetry_1_1_angular_velocity_body.md) update.
-
-### subscribe_camera_attitude_quaternion() {#classmavsdk_1_1_telemetry_1a9b7517e15c841765fbb8b1230e73bf82}
-```cpp
-CameraAttitudeQuaternionHandle mavsdk::Telemetry::subscribe_camera_attitude_quaternion(const CameraAttitudeQuaternionCallback &callback)
-```
-
-
-Subscribe to 'camera attitude' updates (quaternion).
-
-
-**Parameters**
-
-* const [CameraAttitudeQuaternionCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1aa83dafa14e9b5179573a574f6fbdd973)& **callback** - 
-
-**Returns**
-
-&emsp;[CameraAttitudeQuaternionHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1aeb2a99828961bf2a4d5c24753e020358) - 
-
-### unsubscribe_camera_attitude_quaternion() {#classmavsdk_1_1_telemetry_1aa92270b8a30b22271f65d92e9a7ed9a1}
-```cpp
-void mavsdk::Telemetry::unsubscribe_camera_attitude_quaternion(CameraAttitudeQuaternionHandle handle)
-```
-
-
-Unsubscribe from subscribe_camera_attitude_quaternion.
-
-
-**Parameters**
-
-* [CameraAttitudeQuaternionHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1aeb2a99828961bf2a4d5c24753e020358) **handle** - 
-
-### camera_attitude_quaternion() {#classmavsdk_1_1_telemetry_1a3c07447351d3b6195d5e2526e7b128b3}
-```cpp
-Quaternion mavsdk::Telemetry::camera_attitude_quaternion() const
-```
-
-
-Poll for '[Quaternion](structmavsdk_1_1_telemetry_1_1_quaternion.md)' (blocking).
-
-
-**Returns**
-
-&emsp;[Quaternion](structmavsdk_1_1_telemetry_1_1_quaternion.md) - One [Quaternion](structmavsdk_1_1_telemetry_1_1_quaternion.md) update.
-
-### subscribe_camera_attitude_euler() {#classmavsdk_1_1_telemetry_1aa50015ba9b1decb825d45e459191c342}
-```cpp
-CameraAttitudeEulerHandle mavsdk::Telemetry::subscribe_camera_attitude_euler(const CameraAttitudeEulerCallback &callback)
-```
-
-
-Subscribe to 'camera attitude' updates (Euler).
-
-
-**Parameters**
-
-* const [CameraAttitudeEulerCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1aa29f9bb0767ba8c384bfe1df69f2fdd9)& **callback** - 
-
-**Returns**
-
-&emsp;[CameraAttitudeEulerHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a76471c91115d6e03e6165a3e1315808b) - 
-
-### unsubscribe_camera_attitude_euler() {#classmavsdk_1_1_telemetry_1a90b8dfe6b83afc908e4c236bbbc32930}
-```cpp
-void mavsdk::Telemetry::unsubscribe_camera_attitude_euler(CameraAttitudeEulerHandle handle)
-```
-
-
-Unsubscribe from subscribe_camera_attitude_euler.
-
-
-**Parameters**
-
-* [CameraAttitudeEulerHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a76471c91115d6e03e6165a3e1315808b) **handle** - 
-
-### camera_attitude_euler() {#classmavsdk_1_1_telemetry_1a635643d955f0cd9a805914501f819796}
-```cpp
-EulerAngle mavsdk::Telemetry::camera_attitude_euler() const
-```
-
-
-Poll for '[EulerAngle](structmavsdk_1_1_telemetry_1_1_euler_angle.md)' (blocking).
-
-
-**Returns**
-
-&emsp;[EulerAngle](structmavsdk_1_1_telemetry_1_1_euler_angle.md) - One [EulerAngle](structmavsdk_1_1_telemetry_1_1_euler_angle.md) update.
 
 ### subscribe_velocity_ned() {#classmavsdk_1_1_telemetry_1a9b5e6bd8fb05324fd7a99d0260933c9d}
 ```cpp
@@ -2882,46 +2744,13 @@ This function is blocking. See 'set_rate_attitude_euler_async' for the non-block
 
 &emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
 
-### set_rate_camera_attitude_async() {#classmavsdk_1_1_telemetry_1a520f15e42f5f1b3987ca2a9cd94a3d9a}
-```cpp
-void mavsdk::Telemetry::set_rate_camera_attitude_async(double rate_hz, const ResultCallback callback)
-```
-
-
-Set rate of camera attitude updates.
-
-This function is non-blocking. See 'set_rate_camera_attitude' for the blocking counterpart.
-
-**Parameters**
-
-* double **rate_hz** - 
-* const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) **callback** - 
-
-### set_rate_camera_attitude() {#classmavsdk_1_1_telemetry_1a427da223d16ce07a61b07d4e5af1ab04}
-```cpp
-Result mavsdk::Telemetry::set_rate_camera_attitude(double rate_hz) const
-```
-
-
-Set rate of camera attitude updates.
-
-This function is blocking. See 'set_rate_camera_attitude_async' for the non-blocking counterpart.
-
-**Parameters**
-
-* double **rate_hz** - 
-
-**Returns**
-
-&emsp;[Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) - Result of request.
-
 ### set_rate_velocity_ned_async() {#classmavsdk_1_1_telemetry_1a9429ffa784fa56adee69c5017abedee4}
 ```cpp
 void mavsdk::Telemetry::set_rate_velocity_ned_async(double rate_hz, const ResultCallback callback)
 ```
 
 
-Set rate to 'ground speed' updates (NED).
+Set rate of camera attitude updates. Set rate to 'ground speed' updates (NED).
 
 This function is non-blocking. See 'set_rate_velocity_ned' for the blocking counterpart.
 
@@ -2936,7 +2765,7 @@ Result mavsdk::Telemetry::set_rate_velocity_ned(double rate_hz) const
 ```
 
 
-Set rate to 'ground speed' updates (NED).
+Set rate of camera attitude updates. Set rate to 'ground speed' updates (NED).
 
 This function is blocking. See 'set_rate_velocity_ned_async' for the non-blocking counterpart.
 
@@ -3457,9 +3286,9 @@ This function is non-blocking. See 'get_gps_global_origin' for the blocking coun
 
 * const [GetGpsGlobalOriginCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a350ee89a7e30a691e130e29ace8917ef) **callback** - 
 
-### get_gps_global_origin() {#classmavsdk_1_1_telemetry_1a77747e7cea5a4d644bd6bec9441c7bfb}
+### get_gps_global_origin() {#classmavsdk_1_1_telemetry_1a341b90234b30a27bb25670a31303e0cd}
 ```cpp
-std::pair<Result, Telemetry::GpsGlobalOrigin> mavsdk::Telemetry::get_gps_global_origin() const
+std::pair< Result, Telemetry::GpsGlobalOrigin > mavsdk::Telemetry::get_gps_global_origin() const
 ```
 
 
@@ -3471,9 +3300,9 @@ This function is blocking. See 'get_gps_global_origin_async' for the non-blockin
 
 &emsp;std::pair< [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75), [Telemetry::GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md) > - Result of request.
 
-### operator=() {#classmavsdk_1_1_telemetry_1a703ac978c925be8806921925cf16aca9}
+### operator=() {#classmavsdk_1_1_telemetry_1ae606a3e3814c773a12035c2674a00c5c}
 ```cpp
-const Telemetry& mavsdk::Telemetry::operator=(const Telemetry &)=delete
+const Telemetry & mavsdk::Telemetry::operator=(const Telemetry &)=delete
 ```
 
 

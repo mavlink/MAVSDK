@@ -13,8 +13,10 @@ The connection details are specified using the string formats shown below:
 
 Connection | URL Format
 --- | ---
-UDP | `udp://[host][:port]`
-TCP | `tcp://[host][:port]`
+UDP in | `udpin://[ip][:port]`
+UDP out | `udpout://[ip][:port]`
+TCP in | `tcpin://[ip][:port]`
+TCP out | `tcpout://[ip][:port]`
 Serial | `serial://[path][:baudrate]`
 
 ### Connecting over serial
@@ -49,16 +51,25 @@ When connecting over UDP, there are two setups to distinguish: server and client
 
 #### Behave like a server
 
-This is the default connection mode for a ground station listening to a system/vehicle (this is the same as [add_udp_connection()](../api_reference/classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1aa43dfb00d5118d26ae5aabd0f9ba56b2)).
+In the server mode, we bind to a local networking interface. We can use `0.0.0.0` (INADDR_ANY) to accept UDP datagrams from any network interface, or our IP on a specific network interface to only accept traffic from that interface.
 
-In the server mode, we listen on an local networking interface (`INADDR_ANY`/`0.0.0.0`) on the set port and wait for any heartbeats arriving.
-This means that the drone has to send the UDP packets to that local IP, or broadcast them on the network.
 
-The code snippet below shows how to set up a connection in server mode and listen on the "SDK port 14540":
+This means that the drone has to send the UDP packets to that IP, or broadcast them on the network.
+
+The code snippet below shows how to set up a connection in server mode and listen on the "SDK port 14540", on any network network adapter, e.g. WiFi, LAN, or localhost/loopback:
 
 ```cpp
-Mavsdk mavsdk;
-ConnectionResult connection_result = mavsdk.add_any_connection("udp://:14540");
+auto connection_result = mavsdk.add_any_connection("udpin://0.0.0.0:14540");
+if (connection_result != ConnectionResult::Success) {
+    std::cout << "Adding connection failed: " << connection_result << '\n';
+    return;
+}
+```
+
+However, if our IP on WiFi is `192.168.1.42` and you want to only listen to any messages coming over WiFi, we can use this IP 
+
+```cpp
+auto connection_result = mavsdk.add_any_connection("udpin://192.168.1.42:14540");
 if (connection_result != ConnectionResult::Success) {
     std::cout << "Adding connection failed: " << connection_result << '\n';
     return;
@@ -66,9 +77,8 @@ if (connection_result != ConnectionResult::Success) {
 ```
 
 ::: info
-The connection string used above (`udp://:14540`) is to the [standard PX4 UDP port](https://docs.px4.io/master/en/simulation/#default-px4-mavlink-udp-ports) for off-board APIs (14540).
-This is the normal/most common way for offboard APIs to connect to PX4 over WiFi.
-The standard way to talk to a ground station (e.g. QGC is on port 14550).
+The connection string used above (`udpin://0.0.0.0:14540`) is the [standard PX4 UDP port](https://docs.px4.io/master/en/simulation/#default-px4-mavlink-udp-ports) for off-board APIs (14540) used with SITL.
+  The standard way to talk to a ground station (e.g. QGC is on port 14550).
 :::
 
 #### Behave like a client
@@ -79,8 +89,7 @@ In this case the IP and port, of where it should connect to, has to be set (this
 E.g. to connect to a ground station on 192.168.1.12, you would do:
 
 ```cpp
-Mavsdk mavsdk;
-ConnectionResult connection_result = mavsdk.add_any_connection("udp://192.168.1.12:14550");
+auto connection_result = mavsdk.add_any_connection("udpout://192.168.1.12:14550");
 if (connection_result != ConnectionResult::Success) {
     std::cout << "Adding connection failed: " << connection_result << '\n';
     return;
@@ -91,8 +100,7 @@ E.g. to listen locally to a mavlink-router endpoint at 14551, you would do:
 
 
 ```cpp
-Mavsdk mavsdk;
-ConnectionResult connection_result = mavsdk.add_any_connection("udp://:14551");
+auto connection_result = mavsdk.add_any_connection("udpout://127.0.0.1:14551");
 if (connection_result != ConnectionResult::Success) {
     std::cout << "Adding connection failed: " << connection_result << '\n';
     return;
@@ -101,12 +109,26 @@ if (connection_result != ConnectionResult::Success) {
 
 ### Connecting over TCP
 
-For TCP connections, only the client connection is currently implemented.
-This is the same as [add_tcp_connection()](../api_reference/classmavsdk_1_1_mavsdk.md#classmavsdk_1_1_mavsdk_1a91c7a70c6e8ffa43844f2ce04f2696f0).
+For TCP connections, the client as well as server connections are implemented.
+
+#### Behave like a server
+
+In this mode we listen on one of our a network interfaces (or all of them) and port:
 
 ```cpp
-Mavsdk mavsdk;
-ConnectionResult connection_result = mavsdk.add_any_connection("tcp://192.168.1.12:14550");
+auto connection_result = mavsdk.add_any_connection("tcpin://0.0.0.0:14550");
+if (connection_result != ConnectionResult::Success) {
+    std::cout << "Adding connection failed: " << connection_result << '\n';
+    return;
+}
+```
+
+#### Behave like a client
+
+In this mode we connect to an IP and port:
+
+```cpp
+auto connection_result = mavsdk.add_any_connection("tcpout://192.168.1.12:14550");
 if (connection_result != ConnectionResult::Success) {
     std::cout << "Adding connection failed: " << connection_result << '\n';
     return;
@@ -123,7 +145,7 @@ The code fragment below shows how to register a callback (in this case the callb
 ```cpp
 Mavsdk mavsdk;
 ... //add ports
-mavsdk.register_on_new_system([]() {
+mavsdk.subscribe_on_new_system([]() {
     std::cout << "Discovered new system\n";
 });
 ```
@@ -150,8 +172,6 @@ To access a certain system, pick the one from the vector that you require, or us
 
 
 ```cpp
-Mavsdk mavsdk;
-mavsdk.add_udp_connection();
 // Wait for the system to connect via heartbeat
 while (mavsdk.systems().size() == 0) {
     std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -171,7 +191,7 @@ To forward bi-directional from UDP to serial and serial to UDP, you would set bo
 
 ```cpp
 Mavsdk mavsdk;
-mavsdk.add_any_connection("udp://:14540", ForwardingOption::ForwardingOn);
+mavsdk.add_any_connection("udpin://0.0.0.0:14540", ForwardingOption::ForwardingOn);
 mavsdk.add_any_connection("serial:///dev/serial/by-id/usb-FTDI_FT232R_USB_UART_XXXXXXXX-if00-port0:57600", ForwardingOption::ForwardingOn);
 ```
 
@@ -179,7 +199,7 @@ To forward only in one direction, e.g to send messages arriving on serial over U
 
 ```cpp
 Mavsdk mavsdk;
-mavsdk.add_any_connection("udp://:14540", ForwardingOption::ForwardingOn);
+mavsdk.add_any_connection("udpin://0.0.0.0:14540", ForwardingOption::ForwardingOn);
 mavsdk.add_any_connection("serial:///dev/serial/by-id/usb-FTDI_FT232R_USB_UART_XXXXXXXX-if00-port0:57600", `ForwardingOption::ForwardingOff`);
 ```
 

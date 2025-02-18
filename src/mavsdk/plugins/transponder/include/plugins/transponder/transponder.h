@@ -209,7 +209,9 @@ public:
      *
      * This function is blocking. See 'set_rate_transponder_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_transponder(double rate_hz) const;
 

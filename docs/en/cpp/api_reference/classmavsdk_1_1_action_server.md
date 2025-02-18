@@ -64,7 +64,7 @@ void | [unsubscribe_terminate](#classmavsdk_1_1_action_server_1a3e236694f1f0beae
 [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) | [set_disarmable](#classmavsdk_1_1_action_server_1afae1336100d7a91a4f4521cee56a1ecb) (bool disarmable, bool force_disarmable)const | Can the vehicle disarm when requested.
 [Result](classmavsdk_1_1_action_server.md#classmavsdk_1_1_action_server_1a4a8eb4fe9d098a5b7891232fc5bf32f8) | [set_allowable_flight_modes](#classmavsdk_1_1_action_server_1a3041d1b923a3b01021433ad43ab93b3a) ([AllowableFlightModes](structmavsdk_1_1_action_server_1_1_allowable_flight_modes.md) flight_modes)const | Set which modes the vehicle can transition to (Manual always allowed)
 [ActionServer::AllowableFlightModes](structmavsdk_1_1_action_server_1_1_allowable_flight_modes.md) | [get_allowable_flight_modes](#classmavsdk_1_1_action_server_1a0960a6ec243823729a418a3c68feaf2a) () const | Get which modes the vehicle can transition to (Manual always allowed)
-const [ActionServer](classmavsdk_1_1_action_server.md) & | [operator=](#classmavsdk_1_1_action_server_1a86d8bb24723ad8222669aec1f5c523ca) (const [ActionServer](classmavsdk_1_1_action_server.md) &)=delete | Equality operator (object is not copyable).
+const [ActionServer](classmavsdk_1_1_action_server.md) & | [operator=](#classmavsdk_1_1_action_server_1aa80e34dd72d2e31005085c78892bab8c) (const [ActionServer](classmavsdk_1_1_action_server.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -613,9 +613,9 @@ This function is blocking.
 
 &emsp;[ActionServer::AllowableFlightModes](structmavsdk_1_1_action_server_1_1_allowable_flight_modes.md) - Result of request.
 
-### operator=() {#classmavsdk_1_1_action_server_1a86d8bb24723ad8222669aec1f5c523ca}
+### operator=() {#classmavsdk_1_1_action_server_1aa80e34dd72d2e31005085c78892bab8c}
 ```cpp
-const ActionServer& mavsdk::ActionServer::operator=(const ActionServer &)=delete
+const ActionServer & mavsdk::ActionServer::operator=(const ActionServer &)=delete
 ```
 
 

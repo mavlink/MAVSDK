@@ -190,6 +190,8 @@ std::ostream& operator<<(std::ostream& str, Events::Result const& result)
             return str << "Timeout";
         case Events::Result::NoSystem:
             return str << "No System";
+        case Events::Result::Unknown:
+            return str << "Unknown";
         default:
             return str << "Unknown";
     }

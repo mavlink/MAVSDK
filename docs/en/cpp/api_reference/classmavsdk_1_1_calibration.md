@@ -40,7 +40,7 @@ void | [calibrate_magnetometer_async](#classmavsdk_1_1_calibration_1aa8a04e0f687
 void | [calibrate_level_horizon_async](#classmavsdk_1_1_calibration_1a77dd4e73da90801d63da973e1736628d) (const [CalibrateLevelHorizonCallback](classmavsdk_1_1_calibration.md#classmavsdk_1_1_calibration_1a397475f5df5fd0e1a181437d4e146aa4) & callback) | Perform board level horizon calibration.
 void | [calibrate_gimbal_accelerometer_async](#classmavsdk_1_1_calibration_1a9b95e383527253c17cd0990653682cd6) (const [CalibrateGimbalAccelerometerCallback](classmavsdk_1_1_calibration.md#classmavsdk_1_1_calibration_1aa254e3a18042794e182fc7f3685aad01) & callback) | Perform gimbal accelerometer calibration.
 [Result](classmavsdk_1_1_calibration.md#classmavsdk_1_1_calibration_1a6e1ce7a3a07eb098edc06821d23a8ec1) | [cancel](#classmavsdk_1_1_calibration_1ae26f45164d36576d56a186ee69e32ffb) () const | Cancel ongoing calibration process.
-const [Calibration](classmavsdk_1_1_calibration.md) & | [operator=](#classmavsdk_1_1_calibration_1ada12d974bb516745ea67f94c72abf59b) (const [Calibration](classmavsdk_1_1_calibration.md) &)=delete | Equality operator (object is not copyable).
+const [Calibration](classmavsdk_1_1_calibration.md) & | [operator=](#classmavsdk_1_1_calibration_1a6153be06646326c736660560c9582610) (const [Calibration](classmavsdk_1_1_calibration.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -273,9 +273,9 @@ This function is blocking.
 
 &emsp;[Result](classmavsdk_1_1_calibration.md#classmavsdk_1_1_calibration_1a6e1ce7a3a07eb098edc06821d23a8ec1) - Result of request.
 
-### operator=() {#classmavsdk_1_1_calibration_1ada12d974bb516745ea67f94c72abf59b}
+### operator=() {#classmavsdk_1_1_calibration_1a6153be06646326c736660560c9582610}
 ```cpp
-const Calibration& mavsdk::Calibration::operator=(const Calibration &)=delete
+const Calibration & mavsdk::Calibration::operator=(const Calibration &)=delete
 ```
 
 

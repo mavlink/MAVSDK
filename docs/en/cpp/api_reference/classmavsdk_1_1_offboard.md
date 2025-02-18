@@ -4,10 +4,7 @@
 ----
 
 
-<ul>
-<li><p>Control a drone with position, velocity, attitude or motor commands. </p>
-</li>
-</ul>
+Control a drone with position, velocity, attitude or motor commands. 
 
 
 The module is called offboard because the commands can be sent from external sources as opposed to onboard control right inside the autopilot "board".
@@ -69,7 +66,7 @@ bool | [is_active](#classmavsdk_1_1_offboard_1aa5e0f3c02a03f2667f82d5e162221ff5)
 [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) | [set_position_velocity_ned](#classmavsdk_1_1_offboard_1ae422165680b434eed74e84cc901e3a33) ([PositionNedYaw](structmavsdk_1_1_offboard_1_1_position_ned_yaw.md) position_ned_yaw, [VelocityNedYaw](structmavsdk_1_1_offboard_1_1_velocity_ned_yaw.md) velocity_ned_yaw)const | Set the position in NED coordinates, with the velocity to be used as feed-forward.
 [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) | [set_position_velocity_acceleration_ned](#classmavsdk_1_1_offboard_1a845aab746fc078d1ee2848df33c04eb9) ([PositionNedYaw](structmavsdk_1_1_offboard_1_1_position_ned_yaw.md) position_ned_yaw, [VelocityNedYaw](structmavsdk_1_1_offboard_1_1_velocity_ned_yaw.md) velocity_ned_yaw, [AccelerationNed](structmavsdk_1_1_offboard_1_1_acceleration_ned.md) acceleration_ned)const | Set the position, velocity and acceleration in NED coordinates, with velocity and acceleration used as feed-forward.
 [Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) | [set_acceleration_ned](#classmavsdk_1_1_offboard_1ac0d471609df13c79a37e0e352be71d03) ([AccelerationNed](structmavsdk_1_1_offboard_1_1_acceleration_ned.md) acceleration_ned)const | Set the acceleration in NED coordinates.
-const [Offboard](classmavsdk_1_1_offboard.md) & | [operator=](#classmavsdk_1_1_offboard_1acb01657624668251c0a022bc3f8135cd) (const [Offboard](classmavsdk_1_1_offboard.md) &)=delete | Equality operator (object is not copyable).
+const [Offboard](classmavsdk_1_1_offboard.md) & | [operator=](#classmavsdk_1_1_offboard_1a69747733dbdc9b60a8b37006674eda53) (const [Offboard](classmavsdk_1_1_offboard.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -435,9 +432,9 @@ This function is blocking.
 
 &emsp;[Result](classmavsdk_1_1_offboard.md#classmavsdk_1_1_offboard_1a2d4d594301d8c756429457b0982130e9) - Result of request.
 
-### operator=() {#classmavsdk_1_1_offboard_1acb01657624668251c0a022bc3f8135cd}
+### operator=() {#classmavsdk_1_1_offboard_1a69747733dbdc9b60a8b37006674eda53}
 ```cpp
-const Offboard& mavsdk::Offboard::operator=(const Offboard &)=delete
+const Offboard & mavsdk::Offboard::operator=(const Offboard &)=delete
 ```
 
 

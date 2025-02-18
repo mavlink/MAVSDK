@@ -211,7 +211,7 @@ public:
      *
      * This function is blocking.
      *
-     * @return Result of request.
+
      */
     void set_current_item_complete() const;
 

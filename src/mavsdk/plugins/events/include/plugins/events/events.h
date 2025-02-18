@@ -59,17 +59,17 @@ public:
     ~Events() override;
 
     /**
-     * @brief
+     * @brief Log level type
      */
     enum class LogLevel {
-        Emergency, /**< @brief. */
-        Alert, /**< @brief. */
-        Critical, /**< @brief. */
-        Error, /**< @brief. */
-        Warning, /**< @brief. */
-        Notice, /**< @brief. */
-        Info, /**< @brief. */
-        Debug, /**< @brief. */
+        Emergency, /**< @brief Emergency. */
+        Alert, /**< @brief Alert. */
+        Critical, /**< @brief Critical. */
+        Error, /**< @brief Error. */
+        Warning, /**< @brief Warning. */
+        Notice, /**< @brief Notice. */
+        Info, /**< @brief Info. */
+        Debug, /**< @brief Debug. */
     };
 
     /**
@@ -80,14 +80,14 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Events::LogLevel const& log_level);
 
     /**
-     * @brief
+     * @brief Event type
      */
     struct Event {
         uint32_t compid{}; /**< @brief The source component ID of the event */
         std::string message{}; /**< @brief Short, single-line message */
         std::string
             description{}; /**< @brief Detailed description (optional, might be multiple lines) */
-        LogLevel log_level{}; /**< @brief */
+        LogLevel log_level{}; /**< @brief Log level of message */
         std::string event_namespace{}; /**< @brief Namespace, e.g. "px4" */
         std::string event_name{}; /**< @brief Event name (unique within the namespace) */
     };
@@ -107,13 +107,13 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Events::Event const& event);
 
     /**
-     * @brief
+     * @brief Health and arming check problem type
      */
     struct HealthAndArmingCheckProblem {
         std::string message{}; /**< @brief Short, single-line message */
         std::string
             description{}; /**< @brief Detailed description (optional, might be multiple lines) */
-        LogLevel log_level{}; /**< @brief */
+        LogLevel log_level{}; /**< @brief Log level of message */
         std::string health_component{}; /**< @brief Associated health component, e.g. "gps" */
     };
 
@@ -163,7 +163,7 @@ public:
         std::ostream& str, Events::HealthAndArmingCheckMode const& health_and_arming_check_mode);
 
     /**
-     * @brief
+     * @brief Health component report type
      */
     struct HealthComponentReport {
         std::string name{}; /**< @brief Unique component name, e.g. "gps" */
@@ -191,7 +191,7 @@ public:
     operator<<(std::ostream& str, Events::HealthComponentReport const& health_component_report);
 
     /**
-     * @brief
+     * @brief Health and arming check report type
      */
     struct HealthAndArmingCheckReport {
         HealthAndArmingCheckMode
@@ -221,17 +221,18 @@ public:
         Events::HealthAndArmingCheckReport const& health_and_arming_check_report);
 
     /**
-     * @brief
+     * @brief Possible results returned
      */
     enum class Result {
-        Success, /**< @brief. */
-        NotAvailable, /**< @brief. */
-        ConnectionError, /**< @brief. */
-        Unsupported, /**< @brief. */
-        Denied, /**< @brief. */
-        Failed, /**< @brief. */
-        Timeout, /**< @brief. */
-        NoSystem, /**< @brief. */
+        Success, /**< @brief Successful result. */
+        NotAvailable, /**< @brief Not available. */
+        ConnectionError, /**< @brief Connection error. */
+        Unsupported, /**< @brief Unsupported. */
+        Denied, /**< @brief Denied. */
+        Failed, /**< @brief Failed. */
+        Timeout, /**< @brief Timeout. */
+        NoSystem, /**< @brief No system available. */
+        Unknown, /**< @brief Unknown result. */
     };
 
     /**

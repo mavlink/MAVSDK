@@ -920,7 +920,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_position(Position position, VelocityNed velocity_ned, Heading heading) const;
 
@@ -929,7 +931,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_home(Position home) const;
 
@@ -938,7 +942,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_sys_status(
         Battery battery,
@@ -953,7 +959,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_extended_sys_state(VtolState vtol_state, LandedState landed_state) const;
 
@@ -962,7 +970,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_raw_gps(RawGps raw_gps, GpsInfo gps_info) const;
 
@@ -971,7 +981,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_battery(Battery battery) const;
 
@@ -980,7 +992,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_status_text(StatusText status_text) const;
 
@@ -989,7 +1003,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_odometry(Odometry odometry) const;
 
@@ -998,7 +1014,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_position_velocity_ned(PositionVelocityNed position_velocity_ned) const;
 
@@ -1007,7 +1025,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_ground_truth(GroundTruth ground_truth) const;
 
@@ -1016,7 +1036,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_imu(Imu imu) const;
 
@@ -1025,7 +1047,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_scaled_imu(Imu imu) const;
 
@@ -1034,7 +1058,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_raw_imu(Imu imu) const;
 
@@ -1043,7 +1069,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_unix_epoch_time(uint64_t time_us) const;
 
@@ -1052,7 +1080,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_distance_sensor(DistanceSensor distance_sensor) const;
 
@@ -1061,7 +1091,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_attitude(EulerAngle angle, AngularVelocityBody angular_velocity) const;
 
@@ -1070,7 +1102,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result publish_visual_flight_rules_hud(FixedwingMetrics fixed_wing_metrics) const;
 

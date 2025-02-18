@@ -321,11 +321,11 @@ public:
     operator<<(std::ostream& str, CameraServer::StorageInformation const& storage_information);
 
     /**
-     * @brief
+     * @brief Capture status
      */
     struct CaptureStatus {
         /**
-         * @brief
+         * @brief The image status
          */
         enum class ImageStatus {
             Idle, /**< @brief idle. */
@@ -343,7 +343,7 @@ public:
         operator<<(std::ostream& str, CameraServer::CaptureStatus::ImageStatus const& image_status);
 
         /**
-         * @brief
+         * @brief The video status
          */
         enum class VideoStatus {
             Idle, /**< @brief idle. */
@@ -447,11 +447,13 @@ public:
 
     /**
      * @brief Sets the camera information. This must be called as soon as the camera server is
-     * created.
+     created.
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_information(Information information) const;
 
@@ -460,17 +462,21 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_video_streaming(VideoStreaming video_streaming) const;
 
     /**
      * @brief Sets image capture in progress status flags. This should be set to true when the
-     * camera is busy taking a photo and false when it is done.
+     camera is busy taking a photo and false when it is done.
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_in_progress(bool in_progress) const;
 
@@ -500,7 +506,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result respond_take_photo(CameraFeedback take_photo_feedback, CaptureInfo capture_info) const;
 
@@ -527,11 +535,13 @@ public:
 
     /**
      * @brief Subscribe to stop video requests. Each request received should respond using
-     * StopVideoResponse
+     StopVideoResponse
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result respond_start_video(CameraFeedback start_video_feedback) const;
 
@@ -561,7 +571,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result respond_stop_video(CameraFeedback stop_video_feedback) const;
 
@@ -592,7 +604,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result respond_start_video_streaming(CameraFeedback start_video_streaming_feedback) const;
 
@@ -623,7 +637,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result respond_stop_video_streaming(CameraFeedback stop_video_streaming_feedback) const;
 
@@ -653,7 +669,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result respond_set_mode(CameraFeedback set_mode_feedback) const;
 
@@ -684,7 +702,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result respond_storage_information(
         CameraFeedback storage_information_feedback, StorageInformation storage_information) const;
@@ -715,7 +735,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result respond_capture_status(
         CameraFeedback capture_status_feedback, CaptureStatus capture_status) const;
@@ -746,7 +768,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result respond_format_storage(CameraFeedback format_storage_feedback) const;
 
@@ -776,7 +800,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result respond_reset_settings(CameraFeedback reset_settings_feedback) const;
 
@@ -805,7 +831,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result respond_zoom_in_start(CameraFeedback zoom_in_start_feedback) const;
 
@@ -834,7 +862,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result respond_zoom_out_start(CameraFeedback zoom_out_start_feedback) const;
 
@@ -863,7 +893,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result respond_zoom_stop(CameraFeedback zoom_stop_feedback) const;
 
@@ -892,7 +924,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result respond_zoom_range(CameraFeedback zoom_range_feedback) const;
 
@@ -901,7 +935,7 @@ public:
      *
      * This function is blocking.
      *
-     * @return Result of request.
+
      */
     void set_tracking_rectangle_status(TrackRectangle tracked_rectangle) const;
 
@@ -910,7 +944,7 @@ public:
      *
      * This function is blocking.
      *
-     * @return Result of request.
+
      */
     void set_tracking_off_status() const;
 
@@ -982,7 +1016,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result respond_tracking_point_command(CameraFeedback stop_video_feedback) const;
 
@@ -991,7 +1027,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result respond_tracking_rectangle_command(CameraFeedback stop_video_feedback) const;
 
@@ -1000,7 +1038,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result respond_tracking_off_command(CameraFeedback stop_video_feedback) const;
 

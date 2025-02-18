@@ -27,7 +27,7 @@ Type | Name | Description
 &nbsp; | [~Failure](#classmavsdk_1_1_failure_1a1358a71e00d96af5415236183c6508cd) () override | Destructor (internal use only).
 &nbsp; | [Failure](#classmavsdk_1_1_failure_1ae12162366b96624fa85d345a7166749c) (const [Failure](classmavsdk_1_1_failure.md) & other) | Copy constructor.
 [Result](classmavsdk_1_1_failure.md#classmavsdk_1_1_failure_1a6dcdd665b49a7ddf48c76b41475022f1) | [inject](#classmavsdk_1_1_failure_1ae937d22216ecae38f4c763f503cbbd88) ([FailureUnit](classmavsdk_1_1_failure.md#classmavsdk_1_1_failure_1a471f93c1fbff2124ebdea7fb681e23f1) failure_unit, [FailureType](classmavsdk_1_1_failure.md#classmavsdk_1_1_failure_1ade0813be29826ae35e6692f506e8ab72) failure_type, int32_t instance)const | Injects a failure.
-const [Failure](classmavsdk_1_1_failure.md) & | [operator=](#classmavsdk_1_1_failure_1a255209f9df74ffde1f63b707f17bdb72) (const [Failure](classmavsdk_1_1_failure.md) &)=delete | Equality operator (object is not copyable).
+const [Failure](classmavsdk_1_1_failure.md) & | [operator=](#classmavsdk_1_1_failure_1a9995bc44876b37dc942862090bb57fb2) (const [Failure](classmavsdk_1_1_failure.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -188,9 +188,9 @@ This function is blocking.
 
 &emsp;[Result](classmavsdk_1_1_failure.md#classmavsdk_1_1_failure_1a6dcdd665b49a7ddf48c76b41475022f1) - Result of request.
 
-### operator=() {#classmavsdk_1_1_failure_1a255209f9df74ffde1f63b707f17bdb72}
+### operator=() {#classmavsdk_1_1_failure_1a9995bc44876b37dc942862090bb57fb2}
 ```cpp
-const Failure& mavsdk::Failure::operator=(const Failure &)=delete
+const Failure & mavsdk::Failure::operator=(const Failure &)=delete
 ```
 
 

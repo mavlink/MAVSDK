@@ -24,7 +24,7 @@ Type | Name | Description
 &nbsp; | [~FtpServer](#classmavsdk_1_1_ftp_server_1a685d6499b3fbc7d8b4fac6f8031e7e99) () override | Destructor (internal use only).
 &nbsp; | [FtpServer](#classmavsdk_1_1_ftp_server_1afed6d9c192b299e27d5e0014e63c275f) (const [FtpServer](classmavsdk_1_1_ftp_server.md) & other) | Copy constructor.
 [Result](classmavsdk_1_1_ftp_server.md#classmavsdk_1_1_ftp_server_1a24027b6ade1f681dd191a81c25653763) | [set_root_dir](#classmavsdk_1_1_ftp_server_1aa79196f0d3cd0bc178a57711252ed8f3) (std::string path)const | Set root directory.
-const [FtpServer](classmavsdk_1_1_ftp_server.md) & | [operator=](#classmavsdk_1_1_ftp_server_1aa3822f6508adad0b930cbca3be4fd5c5) (const [FtpServer](classmavsdk_1_1_ftp_server.md) &)=delete | Equality operator (object is not copyable).
+const [FtpServer](classmavsdk_1_1_ftp_server.md) & | [operator=](#classmavsdk_1_1_ftp_server_1ae2226ea7897a33dfa5225cdc023f23ed) (const [FtpServer](classmavsdk_1_1_ftp_server.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -123,9 +123,9 @@ This function is blocking.
 
 &emsp;[Result](classmavsdk_1_1_ftp_server.md#classmavsdk_1_1_ftp_server_1a24027b6ade1f681dd191a81c25653763) - Result of request.
 
-### operator=() {#classmavsdk_1_1_ftp_server_1aa3822f6508adad0b930cbca3be4fd5c5}
+### operator=() {#classmavsdk_1_1_ftp_server_1ae2226ea7897a33dfa5225cdc023f23ed}
 ```cpp
-const FtpServer& mavsdk::FtpServer::operator=(const FtpServer &)=delete
+const FtpServer & mavsdk::FtpServer::operator=(const FtpServer &)=delete
 ```
 
 

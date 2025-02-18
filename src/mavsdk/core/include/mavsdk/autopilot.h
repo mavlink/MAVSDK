@@ -2,10 +2,13 @@
 
 namespace mavsdk {
 
+/**
+ * @brief Autopilot type
+ */
 enum class Autopilot {
-    Unknown,
-    Px4,
-    ArduPilot,
+    Unknown, // Autopilot unknown
+    Px4, // PX4
+    ArduPilot, // ArduPilot
 };
 
 } // namespace mavsdk

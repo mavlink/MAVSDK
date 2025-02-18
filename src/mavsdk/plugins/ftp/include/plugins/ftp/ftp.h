@@ -59,7 +59,7 @@ public:
     ~Ftp() override;
 
     /**
-     * @brief
+     * @brief The output of a directory list
      */
     struct ListDirectoryData {
         std::vector<std::string> dirs{}; /**< @brief The found directories. */
@@ -192,7 +192,9 @@ public:
      *
      * This function is blocking. See 'create_directory_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result create_directory(std::string remote_dir) const;
 
@@ -208,7 +210,9 @@ public:
      *
      * This function is blocking. See 'remove_directory_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result remove_directory(std::string remote_dir) const;
 
@@ -224,7 +228,9 @@ public:
      *
      * This function is blocking. See 'remove_file_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result remove_file(std::string remote_file_path) const;
 
@@ -241,7 +247,9 @@ public:
      *
      * This function is blocking. See 'rename_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result rename(std::string remote_from_path, std::string remote_to_path) const;
 
@@ -275,7 +283,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_target_compid(uint32_t compid) const;
 

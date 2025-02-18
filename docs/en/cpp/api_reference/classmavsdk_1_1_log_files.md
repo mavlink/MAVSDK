@@ -34,10 +34,10 @@ Type | Name | Description
 &nbsp; | [~LogFiles](#classmavsdk_1_1_log_files_1a313ea62b9c45927c4140fb784578a5b9) () override | Destructor (internal use only).
 &nbsp; | [LogFiles](#classmavsdk_1_1_log_files_1ae09021cd080dc45f63019ea76968801f) (const [LogFiles](classmavsdk_1_1_log_files.md) & other) | Copy constructor.
 void | [get_entries_async](#classmavsdk_1_1_log_files_1a6a922097850fb43fbb9d3348fe0b3bb7) (const [GetEntriesCallback](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a0bb101777daba9e87cb33baf55389403) callback) | Get List of log files.
-std::pair< [Result](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a43e5425f17cd8a6830ff6fd952a724cd), std::vector< [LogFiles::Entry](structmavsdk_1_1_log_files_1_1_entry.md) > > | [get_entries](#classmavsdk_1_1_log_files_1ab06a17009589c57aa90ac31a24aa9064) () const | Get List of log files.
+std::pair< [Result](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a43e5425f17cd8a6830ff6fd952a724cd), std::vector< [LogFiles::Entry](structmavsdk_1_1_log_files_1_1_entry.md) > > | [get_entries](#classmavsdk_1_1_log_files_1a89164b17ff0a521b7ad67f3ef69b445c) () const | Get List of log files.
 void | [download_log_file_async](#classmavsdk_1_1_log_files_1a2d5eca47cfa3de13a317915cd261d642) ([Entry](structmavsdk_1_1_log_files_1_1_entry.md) entry, std::string path, const [DownloadLogFileCallback](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1af62400ee1e20bfbe948e1ec98255d236) & callback) | Download log file.
 [Result](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a43e5425f17cd8a6830ff6fd952a724cd) | [erase_all_log_files](#classmavsdk_1_1_log_files_1a31cc0db36046c8211763a829b8f62414) () const | Erase all log files.
-const [LogFiles](classmavsdk_1_1_log_files.md) & | [operator=](#classmavsdk_1_1_log_files_1a2ba9f188f7644a647f5dcdadb034e300) (const [LogFiles](classmavsdk_1_1_log_files.md) &)=delete | Equality operator (object is not copyable).
+const [LogFiles](classmavsdk_1_1_log_files.md) & | [operator=](#classmavsdk_1_1_log_files_1a2122270cf236099a445e3b4fc31573aa) (const [LogFiles](classmavsdk_1_1_log_files.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -171,9 +171,9 @@ This function is non-blocking. See 'get_entries' for the blocking counterpart.
 
 * const [GetEntriesCallback](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a0bb101777daba9e87cb33baf55389403) **callback** - 
 
-### get_entries() {#classmavsdk_1_1_log_files_1ab06a17009589c57aa90ac31a24aa9064}
+### get_entries() {#classmavsdk_1_1_log_files_1a89164b17ff0a521b7ad67f3ef69b445c}
 ```cpp
-std::pair<Result, std::vector<LogFiles::Entry> > mavsdk::LogFiles::get_entries() const
+std::pair< Result, std::vector< LogFiles::Entry > > mavsdk::LogFiles::get_entries() const
 ```
 
 
@@ -214,9 +214,9 @@ This function is blocking.
 
 &emsp;[Result](classmavsdk_1_1_log_files.md#classmavsdk_1_1_log_files_1a43e5425f17cd8a6830ff6fd952a724cd) - Result of request.
 
-### operator=() {#classmavsdk_1_1_log_files_1a2ba9f188f7644a647f5dcdadb034e300}
+### operator=() {#classmavsdk_1_1_log_files_1a2122270cf236099a445e3b4fc31573aa}
 ```cpp
-const LogFiles& mavsdk::LogFiles::operator=(const LogFiles &)=delete
+const LogFiles & mavsdk::LogFiles::operator=(const LogFiles &)=delete
 ```
 
 

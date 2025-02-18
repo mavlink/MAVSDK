@@ -4,10 +4,7 @@
 ----
 
 
-<ul>
-<li><p>Allow to communicate with the vehicle's system shell. </p>
-</li>
-</ul>
+Allow to communicate with the vehicle's system shell. 
 
 
 ## Public Types
@@ -32,7 +29,7 @@ Type | Name | Description
 [Result](classmavsdk_1_1_shell.md#classmavsdk_1_1_shell_1a768bfa296ba3309f936f887fb86c9ba8) | [send](#classmavsdk_1_1_shell_1a7b39022ce3be914eec82b53a76d19bc7) (std::string command)const | Send a command line.
 [ReceiveHandle](classmavsdk_1_1_shell.md#classmavsdk_1_1_shell_1aea7ab47a9a86aa3f91e71306cc9b430b) | [subscribe_receive](#classmavsdk_1_1_shell_1a2794ac389f4df4f1aaa344612bc8c470) (const [ReceiveCallback](classmavsdk_1_1_shell.md#classmavsdk_1_1_shell_1adfa64ede96967ae1ab5a5ecd83032dbb) & callback) | Receive feedback from a sent command line.
 void | [unsubscribe_receive](#classmavsdk_1_1_shell_1a5b696e1651459dbc3ceef2a393af433d) ([ReceiveHandle](classmavsdk_1_1_shell.md#classmavsdk_1_1_shell_1aea7ab47a9a86aa3f91e71306cc9b430b) handle) | Unsubscribe from subscribe_receive.
-const [Shell](classmavsdk_1_1_shell.md) & | [operator=](#classmavsdk_1_1_shell_1a492f8b2e36ef2468522bfd0f51f4b9b8) (const [Shell](classmavsdk_1_1_shell.md) &)=delete | Equality operator (object is not copyable).
+const [Shell](classmavsdk_1_1_shell.md) & | [operator=](#classmavsdk_1_1_shell_1abd920b11e6535152ad85cb4187b0c620) (const [Shell](classmavsdk_1_1_shell.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -199,9 +196,9 @@ Unsubscribe from subscribe_receive.
 
 * [ReceiveHandle](classmavsdk_1_1_shell.md#classmavsdk_1_1_shell_1aea7ab47a9a86aa3f91e71306cc9b430b) **handle** - 
 
-### operator=() {#classmavsdk_1_1_shell_1a492f8b2e36ef2468522bfd0f51f4b9b8}
+### operator=() {#classmavsdk_1_1_shell_1abd920b11e6535152ad85cb4187b0c620}
 ```cpp
-const Shell& mavsdk::Shell::operator=(const Shell &)=delete
+const Shell & mavsdk::Shell::operator=(const Shell &)=delete
 ```
 
 

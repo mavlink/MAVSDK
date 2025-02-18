@@ -303,6 +303,8 @@ public:
                 return rpc::events::EventsResult_Result_RESULT_TIMEOUT;
             case mavsdk::Events::Result::NoSystem:
                 return rpc::events::EventsResult_Result_RESULT_NO_SYSTEM;
+            case mavsdk::Events::Result::Unknown:
+                return rpc::events::EventsResult_Result_RESULT_UNKNOWN;
         }
     }
 
@@ -329,6 +331,8 @@ public:
                 return mavsdk::Events::Result::Timeout;
             case rpc::events::EventsResult_Result_RESULT_NO_SYSTEM:
                 return mavsdk::Events::Result::NoSystem;
+            case rpc::events::EventsResult_Result_RESULT_UNKNOWN:
+                return mavsdk::Events::Result::Unknown;
         }
     }
 

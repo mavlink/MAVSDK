@@ -15,7 +15,7 @@ Type | Name | Description
 &nbsp; | [PluginBase](#classmavsdk_1_1_plugin_base_1afbb5a017df6856e58fb576d65a9fe207) ()=default | Default Constructor.
 &nbsp; | [~PluginBase](#classmavsdk_1_1_plugin_base_1a038befc8f15d34e0be17ec7df8e9d092) ()=default | Default Destructor.
 &nbsp; | [PluginBase](#classmavsdk_1_1_plugin_base_1a717e8eda4a615730256f4a707f00aa72) (const [PluginBase](classmavsdk_1_1_plugin_base.md) &)=delete | Copy constructor (object is not copyable).
-const [PluginBase](classmavsdk_1_1_plugin_base.md) & | [operator=](#classmavsdk_1_1_plugin_base_1a7336d48f2784ef2ffe284ee2aaea3063) (const [PluginBase](classmavsdk_1_1_plugin_base.md) &)=delete | Assign operator (object is not copyable).
+const [PluginBase](classmavsdk_1_1_plugin_base.md) & | [operator=](#classmavsdk_1_1_plugin_base_1a4f60b8eb315861e418e265ceba9a7a9e) (const [PluginBase](classmavsdk_1_1_plugin_base.md) &)=delete | Assign operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -55,9 +55,9 @@ Copy constructor (object is not copyable).
 ## Member Function Documentation
 
 
-### operator=() {#classmavsdk_1_1_plugin_base_1a7336d48f2784ef2ffe284ee2aaea3063}
+### operator=() {#classmavsdk_1_1_plugin_base_1a4f60b8eb315861e418e265ceba9a7a9e}
 ```cpp
-const PluginBase& mavsdk::PluginBase::operator=(const PluginBase &)=delete
+const PluginBase & mavsdk::PluginBase::operator=(const PluginBase &)=delete
 ```
 
 

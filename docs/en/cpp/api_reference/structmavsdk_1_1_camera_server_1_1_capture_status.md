@@ -1,7 +1,10 @@
 # mavsdk::CameraServer::CaptureStatus Struct Reference
-`#include: UNKNOWN`
+`#include: camera_server.h`
 
 ----
+
+
+Capture status. 
 
 
 ## Public Types
@@ -9,8 +12,8 @@
 
 Type | Description
 --- | ---
-enum [ImageStatus](#structmavsdk_1_1_camera_server_1_1_capture_status_1ab9567d4fc7a19f6549f233684f2657cc) | 
-enum [VideoStatus](#structmavsdk_1_1_camera_server_1_1_capture_status_1aa5805c521b56d734ab6d78be2084397a) | 
+enum [ImageStatus](#structmavsdk_1_1_camera_server_1_1_capture_status_1ab9567d4fc7a19f6549f233684f2657cc) | The image status.
+enum [VideoStatus](#structmavsdk_1_1_camera_server_1_1_capture_status_1aa5805c521b56d734ab6d78be2084397a) | The video status.
 
 ## Data Fields
 
@@ -34,6 +37,9 @@ int32_t [image_count](#structmavsdk_1_1_camera_server_1_1_capture_status_1a64feb
 ### enum ImageStatus {#structmavsdk_1_1_camera_server_1_1_capture_status_1ab9567d4fc7a19f6549f233684f2657cc}
 
 
+The image status.
+
+
 Value | Description
 --- | ---
 <span id="structmavsdk_1_1_camera_server_1_1_capture_status_1ab9567d4fc7a19f6549f233684f2657ccae599161956d626eda4cb0a5ffb85271c"></span> `Idle` | idle. 
@@ -42,6 +48,9 @@ Value | Description
 <span id="structmavsdk_1_1_camera_server_1_1_capture_status_1ab9567d4fc7a19f6549f233684f2657cca485df5a54846e4125c2e1ca9dc2f1f1b"></span> `IntervalInProgress` | interval set and capture in progress). 
 
 ### enum VideoStatus {#structmavsdk_1_1_camera_server_1_1_capture_status_1aa5805c521b56d734ab6d78be2084397a}
+
+
+The video status.
 
 
 Value | Description

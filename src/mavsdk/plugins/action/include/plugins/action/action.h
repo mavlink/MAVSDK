@@ -130,7 +130,9 @@ public:
      *
      * This function is blocking. See 'arm_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result arm() const;
 
@@ -156,7 +158,9 @@ public:
      *
      * This function is blocking. See 'arm_force_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result arm_force() const;
 
@@ -178,7 +182,9 @@ public:
      *
      * This function is blocking. See 'disarm_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result disarm() const;
 
@@ -204,7 +210,9 @@ public:
      *
      * This function is blocking. See 'takeoff_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result takeoff() const;
 
@@ -224,7 +232,9 @@ public:
      *
      * This function is blocking. See 'land_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result land() const;
 
@@ -244,7 +254,9 @@ public:
      *
      * This function is blocking. See 'reboot_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result reboot() const;
 
@@ -268,7 +280,9 @@ public:
      *
      * This function is blocking. See 'shutdown_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result shutdown() const;
 
@@ -286,11 +300,13 @@ public:
      * @brief Send command to terminate the drone.
      *
      * This will run the terminate routine as configured on the drone (e.g. disarm and open the
-     * parachute).
+     parachute).
      *
      * This function is blocking. See 'terminate_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result terminate() const;
 
@@ -312,7 +328,9 @@ public:
      *
      * This function is blocking. See 'kill_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result kill() const;
 
@@ -332,13 +350,15 @@ public:
      * @brief Send command to return to the launch (takeoff) position and land.
      *
      * This switches the drone into [Return
-     * mode](https://docs.px4.io/master/en/flight_modes/return.html) which generally means it will
-     * rise up to a certain altitude to clear any obstacles before heading back to the launch
-     * (takeoff) position and land there.
+     mode](https://docs.px4.io/master/en/flight_modes/return.html) which
+     * generally means it will rise up to a certain altitude to clear any obstacles before heading
+     * back to the launch (takeoff) position and land there.
      *
      * This function is blocking. See 'return_to_launch_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result return_to_launch() const;
 
@@ -369,7 +389,9 @@ public:
      *
      * This function is blocking. See 'goto_location_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result goto_location(
         double latitude_deg, double longitude_deg, float absolute_altitude_m, float yaw_deg) const;
@@ -397,7 +419,9 @@ public:
      *
      * This function is blocking. See 'do_orbit_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result do_orbit(
         float radius_m,
@@ -431,7 +455,9 @@ public:
      *
      * This function is blocking. See 'hold_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result hold() const;
 
@@ -451,7 +477,9 @@ public:
      *
      * This function is blocking. See 'set_actuator_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_actuator(int32_t index, float value) const;
 
@@ -474,9 +502,11 @@ public:
      * is already in fixedwing mode.
      *
      * This function is blocking. See 'transition_to_fixedwing_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result transition_to_fixedwing() const;
 
@@ -499,9 +529,11 @@ public:
      * is already in multicopter mode.
      *
      * This function is blocking. See 'transition_to_multicopter_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result transition_to_multicopter() const;
 
@@ -538,7 +570,9 @@ public:
      *
      * This function is blocking. See 'set_takeoff_altitude_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_takeoff_altitude(float altitude) const;
 
@@ -578,9 +612,11 @@ public:
      * @brief Set the return to launch minimum return altitude (in meters).
      *
      * This function is blocking. See 'set_return_to_launch_altitude_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_return_to_launch_altitude(float relative_altitude_m) const;
 
@@ -602,7 +638,9 @@ public:
      *
      * This function is blocking. See 'set_current_speed_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_current_speed(float speed_m_s) const;
 

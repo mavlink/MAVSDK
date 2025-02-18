@@ -221,7 +221,9 @@ public:
      *
      * This function is blocking. See 'relax_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result relax(uint32_t instance) const;
 
@@ -237,9 +239,11 @@ public:
      * @brief Wind or unwind specified length of line, optionally using specified rate.
      *
      * This function is blocking. See 'relative_length_control_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result relative_length_control(uint32_t instance, float length_m, float rate_m_s) const;
 
@@ -255,7 +259,9 @@ public:
      *
      * This function is blocking. See 'rate_control_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result rate_control(uint32_t instance, float rate_m_s) const;
 
@@ -271,7 +277,9 @@ public:
      *
      * This function is blocking. See 'lock_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result lock(uint32_t instance) const;
 
@@ -287,7 +295,9 @@ public:
      *
      * This function is blocking. See 'deliver_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result deliver(uint32_t instance) const;
 
@@ -303,7 +313,9 @@ public:
      *
      * This function is blocking. See 'hold_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result hold(uint32_t instance) const;
 
@@ -319,7 +331,9 @@ public:
      *
      * This function is blocking. See 'retract_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result retract(uint32_t instance) const;
 
@@ -337,11 +351,13 @@ public:
      * @brief Load the reel with line.
      *
      * The winch will calculate the total loaded length and stop when the tension exceeds a
-     * threshold.
+     threshold.
      *
      * This function is blocking. See 'load_line_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result load_line(uint32_t instance) const;
 
@@ -357,7 +373,9 @@ public:
      *
      * This function is blocking. See 'abandon_line_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result abandon_line(uint32_t instance) const;
 
@@ -373,7 +391,9 @@ public:
      *
      * This function is blocking. See 'load_payload_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result load_payload(uint32_t instance) const;
 

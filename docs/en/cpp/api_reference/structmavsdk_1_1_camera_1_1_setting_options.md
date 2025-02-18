@@ -10,6 +10,8 @@ Type to represent a setting with a list of options to choose from.
 ## Data Fields
 
 
+int32_t [component_id](#structmavsdk_1_1_camera_1_1_setting_options_1ad497c229df9899af7e76226664ced72d) {} - Component ID.
+
 std::string [setting_id](#structmavsdk_1_1_camera_1_1_setting_options_1aca647af6e140ee78b41d85565d673f14) {} - Name of the setting (machine readable)
 
 std::string [setting_description](#structmavsdk_1_1_camera_1_1_setting_options_1a8902e7f9dfc25ee9c8363cf5f4775b92) {} - Description of the setting (human readable)
@@ -20,6 +22,16 @@ bool [is_range](#structmavsdk_1_1_camera_1_1_setting_options_1af6459fc1e354ec95f
 
 
 ## Field Documentation
+
+
+### component_id {#structmavsdk_1_1_camera_1_1_setting_options_1ad497c229df9899af7e76226664ced72d}
+
+```cpp
+int32_t mavsdk::Camera::SettingOptions::component_id {}
+```
+
+
+Component ID.
 
 
 ### setting_id {#structmavsdk_1_1_camera_1_1_setting_options_1aca647af6e140ee78b41d85565d673f14}

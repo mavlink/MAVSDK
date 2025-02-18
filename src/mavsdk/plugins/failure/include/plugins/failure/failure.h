@@ -138,7 +138,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result inject(FailureUnit failure_unit, FailureType failure_type, int32_t instance) const;
 

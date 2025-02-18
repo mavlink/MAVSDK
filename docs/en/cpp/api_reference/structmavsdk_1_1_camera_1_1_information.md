@@ -10,6 +10,8 @@ Type to represent a camera information.
 ## Data Fields
 
 
+int32_t [component_id](#structmavsdk_1_1_camera_1_1_information_1a2312a17b4f00a1bb55489a72d70de2e4) {} - Component ID.
+
 std::string [vendor_name](#structmavsdk_1_1_camera_1_1_information_1a54c399e4a570ff8a96b4cd4c01651834) {} - Name of the camera vendor.
 
 std::string [model_name](#structmavsdk_1_1_camera_1_1_information_1a500232dfe9359366211cd303cc702eaa) {} - Name of the camera model.
@@ -26,6 +28,16 @@ uint32_t [vertical_resolution_px](#structmavsdk_1_1_camera_1_1_information_1a2c1
 
 
 ## Field Documentation
+
+
+### component_id {#structmavsdk_1_1_camera_1_1_information_1a2312a17b4f00a1bb55489a72d70de2e4}
+
+```cpp
+int32_t mavsdk::Camera::Information::component_id {}
+```
+
+
+Component ID.
 
 
 ### vendor_name {#structmavsdk_1_1_camera_1_1_information_1a54c399e4a570ff8a96b4cd4c01651834}

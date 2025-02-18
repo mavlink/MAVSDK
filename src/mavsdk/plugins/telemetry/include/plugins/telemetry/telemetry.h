@@ -1906,7 +1906,9 @@ public:
      *
      * This function is blocking. See 'set_rate_position_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_position(double rate_hz) const;
 
@@ -1922,7 +1924,9 @@ public:
      *
      * This function is blocking. See 'set_rate_home_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_home(double rate_hz) const;
 
@@ -1938,7 +1942,9 @@ public:
      *
      * This function is blocking. See 'set_rate_in_air_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_in_air(double rate_hz) const;
 
@@ -1953,9 +1959,11 @@ public:
      * @brief Set rate to landed state updates
      *
      * This function is blocking. See 'set_rate_landed_state_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_landed_state(double rate_hz) const;
 
@@ -1971,7 +1979,9 @@ public:
      *
      * This function is blocking. See 'set_rate_vtol_state_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_vtol_state(double rate_hz) const;
 
@@ -1987,9 +1997,11 @@ public:
      * @brief Set rate to 'attitude euler angle' updates.
      *
      * This function is blocking. See 'set_rate_attitude_quaternion_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_attitude_quaternion(double rate_hz) const;
 
@@ -2004,9 +2016,11 @@ public:
      * @brief Set rate to 'attitude quaternion' updates.
      *
      * This function is blocking. See 'set_rate_attitude_euler_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_attitude_euler(double rate_hz) const;
 
@@ -2023,9 +2037,11 @@ public:
      * Set rate to 'ground speed' updates (NED).
      *
      * This function is blocking. See 'set_rate_velocity_ned_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_velocity_ned(double rate_hz) const;
 
@@ -2041,7 +2057,9 @@ public:
      *
      * This function is blocking. See 'set_rate_gps_info_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_gps_info(double rate_hz) const;
 
@@ -2057,7 +2075,9 @@ public:
      *
      * This function is blocking. See 'set_rate_battery_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_battery(double rate_hz) const;
 
@@ -2073,7 +2093,9 @@ public:
      *
      * This function is blocking. See 'set_rate_rc_status_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_rc_status(double rate_hz) const;
 
@@ -2089,9 +2111,11 @@ public:
      * @brief Set rate to 'actuator control target' updates.
      *
      * This function is blocking. See 'set_rate_actuator_control_target_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_actuator_control_target(double rate_hz) const;
 
@@ -2107,9 +2131,11 @@ public:
      * @brief Set rate to 'actuator output status' updates.
      *
      * This function is blocking. See 'set_rate_actuator_output_status_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_actuator_output_status(double rate_hz) const;
 
@@ -2125,7 +2151,9 @@ public:
      *
      * This function is blocking. See 'set_rate_odometry_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_odometry(double rate_hz) const;
 
@@ -2141,9 +2169,11 @@ public:
      * @brief Set rate to 'position velocity' updates.
      *
      * This function is blocking. See 'set_rate_position_velocity_ned_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_position_velocity_ned(double rate_hz) const;
 
@@ -2158,9 +2188,11 @@ public:
      * @brief Set rate to 'ground truth' updates.
      *
      * This function is blocking. See 'set_rate_ground_truth_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_ground_truth(double rate_hz) const;
 
@@ -2175,9 +2207,11 @@ public:
      * @brief Set rate to 'fixedwing metrics' updates.
      *
      * This function is blocking. See 'set_rate_fixedwing_metrics_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_fixedwing_metrics(double rate_hz) const;
 
@@ -2193,7 +2227,9 @@ public:
      *
      * This function is blocking. See 'set_rate_imu_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_imu(double rate_hz) const;
 
@@ -2209,7 +2245,9 @@ public:
      *
      * This function is blocking. See 'set_rate_scaled_imu_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_scaled_imu(double rate_hz) const;
 
@@ -2225,7 +2263,9 @@ public:
      *
      * This function is blocking. See 'set_rate_raw_imu_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_raw_imu(double rate_hz) const;
 
@@ -2240,9 +2280,11 @@ public:
      * @brief Set rate to 'unix epoch time' updates.
      *
      * This function is blocking. See 'set_rate_unix_epoch_time_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_unix_epoch_time(double rate_hz) const;
 
@@ -2257,9 +2299,11 @@ public:
      * @brief Set rate to 'Distance Sensor' updates.
      *
      * This function is blocking. See 'set_rate_distance_sensor_async' for the non-blocking
-     * counterpart.
+     counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_distance_sensor(double rate_hz) const;
 
@@ -2275,7 +2319,9 @@ public:
      *
      * This function is blocking. See 'set_rate_altitude_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_rate_altitude(double rate_hz) const;
 

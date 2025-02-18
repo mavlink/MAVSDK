@@ -18,6 +18,8 @@ enum [VideoStreamSpectrum](#structmavsdk_1_1_camera_1_1_video_stream_info_1a51a8
 ## Data Fields
 
 
+int32_t [stream_id](#structmavsdk_1_1_camera_1_1_video_stream_info_1a0b3d94b0885b9f38daa91d4f61315073) {} - Stream ID.
+
 [VideoStreamSettings](structmavsdk_1_1_camera_1_1_video_stream_settings.md) [settings](#structmavsdk_1_1_camera_1_1_video_stream_info_1a11d9b81db8dc7b666ff9cd37d3835ead) {} - Video stream settings.
 
 [VideoStreamStatus](structmavsdk_1_1_camera_1_1_video_stream_info.md#structmavsdk_1_1_camera_1_1_video_stream_info_1a1750d70ce75b862be98164b67026d85c) [status](#structmavsdk_1_1_camera_1_1_video_stream_info_1a08c5a2c0f4109d9a61a7e0b7edffde96) {} - Current status of video streaming.
@@ -52,6 +54,16 @@ Value | Description
 <span id="structmavsdk_1_1_camera_1_1_video_stream_info_1a51a8994b04aae4b78b3ba3279344584fade1c318db60bc972858577273c2d1ddd"></span> `Infrared` | Infrared. 
 
 ## Field Documentation
+
+
+### stream_id {#structmavsdk_1_1_camera_1_1_video_stream_info_1a0b3d94b0885b9f38daa91d4f61315073}
+
+```cpp
+int32_t mavsdk::Camera::VideoStreamInfo::stream_id {}
+```
+
+
+Stream ID.
 
 
 ### settings {#structmavsdk_1_1_camera_1_1_video_stream_info_1a11d9b81db8dc7b666ff9cd37d3835ead}

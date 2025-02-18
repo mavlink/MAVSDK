@@ -40,11 +40,12 @@ Type | Name | Description
 &nbsp; | [ParamServer](#classmavsdk_1_1_param_server_1ae86996ca7c1cf57ae1d011ca5279d231) (std::shared_ptr< [ServerComponent](classmavsdk_1_1_server_component.md) > server_component) | Constructor. Creates the plugin for a [ServerComponent](classmavsdk_1_1_server_component.md) instance.
 &nbsp; | [~ParamServer](#classmavsdk_1_1_param_server_1a0b221c28148f0278f063232059d372b5) () override | Destructor (internal use only).
 &nbsp; | [ParamServer](#classmavsdk_1_1_param_server_1a4cffcb488093838f72414c94e6c40fd0) (const [ParamServer](classmavsdk_1_1_param_server.md) & other) | Copy constructor.
-std::pair< [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469), int32_t > | [retrieve_param_int](#classmavsdk_1_1_param_server_1a95c445dbdd2b764248c811da0230b0b4) (std::string name)const | Retrieve an int parameter.
+[Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) | [set_protocol](#classmavsdk_1_1_param_server_1a04dd88d5e06f4d7f184c4d8da296ba00) (bool extended_protocol)const | Set param protocol.
+std::pair< [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469), int32_t > | [retrieve_param_int](#classmavsdk_1_1_param_server_1aba490929e68a2a280dd4637152ab45c1) (std::string name)const | Retrieve an int parameter.
 [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) | [provide_param_int](#classmavsdk_1_1_param_server_1a9de5dade4020eda7fb1cc07c6868dad1) (std::string name, int32_t value)const | Provide an int parameter.
-std::pair< [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469), float > | [retrieve_param_float](#classmavsdk_1_1_param_server_1a2845916c07a7e47e7444a49f88b23320) (std::string name)const | Retrieve a float parameter.
+std::pair< [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469), float > | [retrieve_param_float](#classmavsdk_1_1_param_server_1a4ad8adbaafa16f597e0141716dc440bd) (std::string name)const | Retrieve a float parameter.
 [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) | [provide_param_float](#classmavsdk_1_1_param_server_1a7893e4b00609eb0826835b3d8930db1f) (std::string name, float value)const | Provide a float parameter.
-std::pair< [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469), std::string > | [retrieve_param_custom](#classmavsdk_1_1_param_server_1aa6564b8138bc66519f425a350265b50d) (std::string name)const | Retrieve a custom parameter.
+std::pair< [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469), std::string > | [retrieve_param_custom](#classmavsdk_1_1_param_server_1a60ab665d721dce7ab910b8f0abbf7946) (std::string name)const | Retrieve a custom parameter.
 [Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) | [provide_param_custom](#classmavsdk_1_1_param_server_1a60487de3470b9b1c39b403d4c9053d73) (std::string name, std::string value)const | Provide a custom parameter.
 [ParamServer::AllParams](structmavsdk_1_1_param_server_1_1_all_params.md) | [retrieve_all_params](#classmavsdk_1_1_param_server_1aaf6b3862213d415ff26730afad95565f) () const | Retrieve all parameters.
 [ChangedParamIntHandle](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a923f3ae88ca5614690f3b1b6e4eb259a) | [subscribe_changed_param_int](#classmavsdk_1_1_param_server_1ad022db97fe1c040d255ce8eeb98dcbf9) (const [ChangedParamIntCallback](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a7674183da6d76416b34df9ce51c59358) & callback) | Subscribe to changed int param.
@@ -53,7 +54,7 @@ void | [unsubscribe_changed_param_int](#classmavsdk_1_1_param_server_1adea6bfaca
 void | [unsubscribe_changed_param_float](#classmavsdk_1_1_param_server_1a33796a9ecc396b905b51ad4d2ce7989b) ([ChangedParamFloatHandle](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a86b8aa9c92d3d6d7dd47fc9b8f0bf881) handle) | Unsubscribe from subscribe_changed_param_float.
 [ChangedParamCustomHandle](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a27cf0998ffff4bbdb3f00743b30c903f) | [subscribe_changed_param_custom](#classmavsdk_1_1_param_server_1a91d4aa280e7e0c43621ea87088781ccb) (const [ChangedParamCustomCallback](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1ada550af744c9125178f7ad74d3c1041a) & callback) | Subscribe to changed custom param.
 void | [unsubscribe_changed_param_custom](#classmavsdk_1_1_param_server_1aa78c8df43a9d4c2dbdb6516a04d5f2de) ([ChangedParamCustomHandle](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a27cf0998ffff4bbdb3f00743b30c903f) handle) | Unsubscribe from subscribe_changed_param_custom.
-const [ParamServer](classmavsdk_1_1_param_server.md) & | [operator=](#classmavsdk_1_1_param_server_1a29ce1d2c4a2b80fbe4a0b7e7470e14af) (const [ParamServer](classmavsdk_1_1_param_server.md) &)=delete | Equality operator (object is not copyable).
+const [ParamServer](classmavsdk_1_1_param_server.md) & | [operator=](#classmavsdk_1_1_param_server_1af919ccd34f6ada4ded2b9c84c448fffe) (const [ParamServer](classmavsdk_1_1_param_server.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -194,9 +195,33 @@ Value | Description
 ## Member Function Documentation
 
 
-### retrieve_param_int() {#classmavsdk_1_1_param_server_1a95c445dbdd2b764248c811da0230b0b4}
+### set_protocol() {#classmavsdk_1_1_param_server_1a04dd88d5e06f4d7f184c4d8da296ba00}
 ```cpp
-std::pair<Result, int32_t> mavsdk::ParamServer::retrieve_param_int(std::string name) const
+Result mavsdk::ParamServer::set_protocol(bool extended_protocol) const
+```
+
+
+Set param protocol.
+
+The extended param protocol is used by default. This allows to use the previous/normal one.
+
+
+Note that camera definition files are meant to implement/use the extended protocol.
+
+
+This function is blocking.
+
+**Parameters**
+
+* bool **extended_protocol** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) - Result of request.
+
+### retrieve_param_int() {#classmavsdk_1_1_param_server_1aba490929e68a2a280dd4637152ab45c1}
+```cpp
+std::pair< Result, int32_t > mavsdk::ParamServer::retrieve_param_int(std::string name) const
 ```
 
 
@@ -237,9 +262,9 @@ This function is blocking.
 
 &emsp;[Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) - Result of request.
 
-### retrieve_param_float() {#classmavsdk_1_1_param_server_1a2845916c07a7e47e7444a49f88b23320}
+### retrieve_param_float() {#classmavsdk_1_1_param_server_1a4ad8adbaafa16f597e0141716dc440bd}
 ```cpp
-std::pair<Result, float> mavsdk::ParamServer::retrieve_param_float(std::string name) const
+std::pair< Result, float > mavsdk::ParamServer::retrieve_param_float(std::string name) const
 ```
 
 
@@ -280,9 +305,9 @@ This function is blocking.
 
 &emsp;[Result](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a6f7fcc017f43dcf68837dbc35ee4f469) - Result of request.
 
-### retrieve_param_custom() {#classmavsdk_1_1_param_server_1aa6564b8138bc66519f425a350265b50d}
+### retrieve_param_custom() {#classmavsdk_1_1_param_server_1a60ab665d721dce7ab910b8f0abbf7946}
 ```cpp
-std::pair<Result, std::string> mavsdk::ParamServer::retrieve_param_custom(std::string name) const
+std::pair< Result, std::string > mavsdk::ParamServer::retrieve_param_custom(std::string name) const
 ```
 
 
@@ -427,9 +452,9 @@ Unsubscribe from subscribe_changed_param_custom.
 
 * [ChangedParamCustomHandle](classmavsdk_1_1_param_server.md#classmavsdk_1_1_param_server_1a27cf0998ffff4bbdb3f00743b30c903f) **handle** - 
 
-### operator=() {#classmavsdk_1_1_param_server_1a29ce1d2c4a2b80fbe4a0b7e7470e14af}
+### operator=() {#classmavsdk_1_1_param_server_1af919ccd34f6ada4ded2b9c84c448fffe}
 ```cpp
-const ParamServer& mavsdk::ParamServer::operator=(const ParamServer &)=delete
+const ParamServer & mavsdk::ParamServer::operator=(const ParamServer &)=delete
 ```
 
 

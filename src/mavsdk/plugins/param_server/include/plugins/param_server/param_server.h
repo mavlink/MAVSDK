@@ -173,7 +173,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_protocol(bool extended_protocol) const;
 
@@ -195,7 +197,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result provide_param_int(std::string name, int32_t value) const;
 
@@ -217,7 +221,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result provide_param_float(std::string name, float value) const;
 
@@ -239,7 +245,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result provide_param_custom(std::string name, std::string value) const;
 

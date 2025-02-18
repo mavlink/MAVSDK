@@ -539,41 +539,42 @@ const char descriptor_table_protodef_events_2fevents_2eproto[] ABSL_ATTRIBUTE_SE
     "ode\022C\n\021health_components\030\002 \003(\0132(.mavsdk."
     "rpc.events.HealthComponentReport\022D\n\014all_"
     "problems\030\003 \003(\0132..mavsdk.rpc.events.Healt"
-    "hAndArmingCheckProblem\"\230\002\n\014EventsResult\022"
+    "hAndArmingCheckProblem\"\254\002\n\014EventsResult\022"
     "6\n\006result\030\001 \001(\0162&.mavsdk.rpc.events.Even"
-    "tsResult.Result\022\022\n\nresult_str\030\002 \001(\t\"\273\001\n\006"
+    "tsResult.Result\022\022\n\nresult_str\030\002 \001(\t\"\317\001\n\006"
     "Result\022\022\n\016RESULT_SUCCESS\020\000\022\030\n\024RESULT_NOT"
     "_AVAILABLE\020\001\022\033\n\027RESULT_CONNECTION_ERROR\020"
     "\002\022\026\n\022RESULT_UNSUPPORTED\020\003\022\021\n\rRESULT_DENI"
     "ED\020\004\022\021\n\rRESULT_FAILED\020\005\022\022\n\016RESULT_TIMEOU"
-    "T\020\006\022\024\n\020RESULT_NO_SYSTEM\020\007\"\030\n\026SubscribeEv"
-    "entsRequest\"9\n\016EventsResponse\022\'\n\005event\030\001"
-    " \001(\0132\030.mavsdk.rpc.events.Event\"\'\n%Subscr"
-    "ibeHealthAndArmingChecksRequest\"^\n\035Healt"
-    "hAndArmingChecksResponse\022=\n\006report\030\001 \001(\013"
-    "2-.mavsdk.rpc.events.HealthAndArmingChec"
-    "kReport\"\'\n%GetHealthAndArmingChecksRepor"
-    "tRequest\"\237\001\n&GetHealthAndArmingChecksRep"
-    "ortResponse\0226\n\revents_result\030\001 \001(\0132\037.mav"
-    "sdk.rpc.events.EventsResult\022=\n\006report\030\002 "
-    "\001(\0132-.mavsdk.rpc.events.HealthAndArmingC"
-    "heckReport*\273\001\n\010LogLevel\022\027\n\023LOG_LEVEL_EME"
-    "RGENCY\020\000\022\023\n\017LOG_LEVEL_ALERT\020\001\022\026\n\022LOG_LEV"
-    "EL_CRITICAL\020\002\022\023\n\017LOG_LEVEL_ERROR\020\003\022\025\n\021LO"
-    "G_LEVEL_WARNING\020\004\022\024\n\020LOG_LEVEL_NOTICE\020\005\022"
-    "\022\n\016LOG_LEVEL_INFO\020\006\022\023\n\017LOG_LEVEL_DEBUG\020\007"
-    "2\255\003\n\rEventsService\022g\n\017SubscribeEvents\022)."
-    "mavsdk.rpc.events.SubscribeEventsRequest"
-    "\032!.mavsdk.rpc.events.EventsResponse\"\004\200\265\030"
-    "\0000\001\022\224\001\n\036SubscribeHealthAndArmingChecks\0228"
-    ".mavsdk.rpc.events.SubscribeHealthAndArm"
-    "ingChecksRequest\0320.mavsdk.rpc.events.Hea"
-    "lthAndArmingChecksResponse\"\004\200\265\030\0000\001\022\233\001\n\036G"
-    "etHealthAndArmingChecksReport\0228.mavsdk.r"
-    "pc.events.GetHealthAndArmingChecksReport"
-    "Request\0329.mavsdk.rpc.events.GetHealthAnd"
-    "ArmingChecksReportResponse\"\004\200\265\030\001B\037\n\020io.m"
-    "avsdk.eventsB\013EventsProtob\006proto3"
+    "T\020\006\022\024\n\020RESULT_NO_SYSTEM\020\007\022\022\n\016RESULT_UNKN"
+    "OWN\020\010\"\030\n\026SubscribeEventsRequest\"9\n\016Event"
+    "sResponse\022\'\n\005event\030\001 \001(\0132\030.mavsdk.rpc.ev"
+    "ents.Event\"\'\n%SubscribeHealthAndArmingCh"
+    "ecksRequest\"^\n\035HealthAndArmingChecksResp"
+    "onse\022=\n\006report\030\001 \001(\0132-.mavsdk.rpc.events"
+    ".HealthAndArmingCheckReport\"\'\n%GetHealth"
+    "AndArmingChecksReportRequest\"\237\001\n&GetHeal"
+    "thAndArmingChecksReportResponse\0226\n\revent"
+    "s_result\030\001 \001(\0132\037.mavsdk.rpc.events.Event"
+    "sResult\022=\n\006report\030\002 \001(\0132-.mavsdk.rpc.eve"
+    "nts.HealthAndArmingCheckReport*\273\001\n\010LogLe"
+    "vel\022\027\n\023LOG_LEVEL_EMERGENCY\020\000\022\023\n\017LOG_LEVE"
+    "L_ALERT\020\001\022\026\n\022LOG_LEVEL_CRITICAL\020\002\022\023\n\017LOG"
+    "_LEVEL_ERROR\020\003\022\025\n\021LOG_LEVEL_WARNING\020\004\022\024\n"
+    "\020LOG_LEVEL_NOTICE\020\005\022\022\n\016LOG_LEVEL_INFO\020\006\022"
+    "\023\n\017LOG_LEVEL_DEBUG\020\0072\255\003\n\rEventsService\022g"
+    "\n\017SubscribeEvents\022).mavsdk.rpc.events.Su"
+    "bscribeEventsRequest\032!.mavsdk.rpc.events"
+    ".EventsResponse\"\004\200\265\030\0000\001\022\224\001\n\036SubscribeHea"
+    "lthAndArmingChecks\0228.mavsdk.rpc.events.S"
+    "ubscribeHealthAndArmingChecksRequest\0320.m"
+    "avsdk.rpc.events.HealthAndArmingChecksRe"
+    "sponse\"\004\200\265\030\0000\001\022\233\001\n\036GetHealthAndArmingChe"
+    "cksReport\0228.mavsdk.rpc.events.GetHealthA"
+    "ndArmingChecksReportRequest\0329.mavsdk.rpc"
+    ".events.GetHealthAndArmingChecksReportRe"
+    "sponse\"\004\200\265\030\001B\037\n\020io.mavsdk.eventsB\013Events"
+    "Protob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_events_2fevents_2eproto_deps[1] =
     {
@@ -583,7 +584,7 @@ static ::absl::once_flag descriptor_table_events_2fevents_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_events_2fevents_2eproto = {
     false,
     false,
-    2233,
+    2253,
     descriptor_table_protodef_events_2fevents_2eproto,
     "events/events.proto",
     &descriptor_table_events_2fevents_2eproto_once,
@@ -604,9 +605,9 @@ const ::google::protobuf::EnumDescriptor* EventsResult_Result_descriptor() {
   return file_level_enum_descriptors_events_2fevents_2eproto[0];
 }
 PROTOBUF_CONSTINIT const uint32_t EventsResult_Result_internal_data_[] = {
-    524288u, 0u, };
+    589824u, 0u, };
 bool EventsResult_Result_IsValid(int value) {
-  return 0 <= value && value <= 7;
+  return 0 <= value && value <= 8;
 }
 #if (__cplusplus < 201703) && \
   (!defined(_MSC_VER) || (_MSC_VER >= 1900 && _MSC_VER < 1912))
@@ -619,6 +620,7 @@ constexpr EventsResult_Result EventsResult::RESULT_DENIED;
 constexpr EventsResult_Result EventsResult::RESULT_FAILED;
 constexpr EventsResult_Result EventsResult::RESULT_TIMEOUT;
 constexpr EventsResult_Result EventsResult::RESULT_NO_SYSTEM;
+constexpr EventsResult_Result EventsResult::RESULT_UNKNOWN;
 constexpr EventsResult_Result EventsResult::Result_MIN;
 constexpr EventsResult_Result EventsResult::Result_MAX;
 constexpr int EventsResult::Result_ARRAYSIZE;

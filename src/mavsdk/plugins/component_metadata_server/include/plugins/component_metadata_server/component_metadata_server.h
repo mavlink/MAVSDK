@@ -47,7 +47,7 @@ public:
     ~ComponentMetadataServer() override;
 
     /**
-     * @brief
+     * @brief The metadata type
      */
     enum class MetadataType {
         Parameter, /**< @brief Parameter metadata. */
@@ -64,7 +64,7 @@ public:
     operator<<(std::ostream& str, ComponentMetadataServer::MetadataType const& metadata_type);
 
     /**
-     * @brief
+     * @brief The metadata type and content
      */
     struct Metadata {
         MetadataType type{}; /**< @brief The metadata type */
@@ -92,7 +92,7 @@ public:
      *
      * This function is blocking.
      *
-     * @return Result of request.
+
      */
     void set_metadata(std::vector<Metadata> metadata) const;
 
