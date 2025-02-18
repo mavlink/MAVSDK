@@ -443,8 +443,7 @@ public:
     using MissionChangedHandle = Handle<bool>;
 
     /**
-     * @brief *
-     * Subscribes to mission changed.
+     * @brief Subscribes to mission changed.
      *
      * This notification can be used to be informed if a ground station has
      * been uploaded or changed by a ground station or companion computer.

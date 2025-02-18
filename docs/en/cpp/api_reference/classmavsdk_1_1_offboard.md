@@ -4,10 +4,7 @@
 ----
 
 
-<ul>
-<li><p>Control a drone with position, velocity, attitude or motor commands. </p>
-</li>
-</ul>
+Control a drone with position, velocity, attitude or motor commands. 
 
 
 The module is called offboard because the commands can be sent from external sources as opposed to onboard control right inside the autopilot "board".

@@ -4,10 +4,7 @@
 ----
 
 
-<ul>
-<li><p>Allow to communicate with the vehicle's system shell. </p>
-</li>
-</ul>
+Allow to communicate with the vehicle's system shell. 
 
 
 ## Public Types

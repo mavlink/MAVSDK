@@ -29,7 +29,7 @@ namespace mavsdk {
 namespace rpc {
 namespace shell {
 
-// *
+//
 // Allow to communicate with the vehicle's system shell.
 class ShellService final {
  public:

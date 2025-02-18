@@ -65,10 +65,7 @@ void | [set_current_mission_item_async](#classmavsdk_1_1_mission_raw_1a5540d6ca6
 [MissionProgressHandle](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a34e0eaf9922daa5d27d2b044eae7885c) | [subscribe_mission_progress](#classmavsdk_1_1_mission_raw_1a88a3c4b26418e734a547f251706988d2) (const [MissionProgressCallback](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a9dd594878925da494b4add6acc3184fc) & callback) | Subscribe to mission progress updates.
 void | [unsubscribe_mission_progress](#classmavsdk_1_1_mission_raw_1ac46f08b52706f45956cf3b01df381835) ([MissionProgressHandle](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a34e0eaf9922daa5d27d2b044eae7885c) handle) | Unsubscribe from subscribe_mission_progress.
 [MissionProgress](structmavsdk_1_1_mission_raw_1_1_mission_progress.md) | [mission_progress](#classmavsdk_1_1_mission_raw_1a3200dea1094926a4dd54f079f21b94e1) () const | Poll for '[MissionProgress](structmavsdk_1_1_mission_raw_1_1_mission_progress.md)' (blocking).
-[MissionChangedHandle](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a46da6d8a53822fd5fbd7b2a414624c5c) | [subscribe_mission_changed](#classmavsdk_1_1_mission_raw_1ad4a2991e1a8f9423270af4220309edfb) (const [MissionChangedCallback](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1ac22d81eefc5e883cdb6baf792a7487e6) & callback) | <ul>
-<li><p>Subscribes to mission changed. </p>
-</li>
-</ul>
+[MissionChangedHandle](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a46da6d8a53822fd5fbd7b2a414624c5c) | [subscribe_mission_changed](#classmavsdk_1_1_mission_raw_1ad4a2991e1a8f9423270af4220309edfb) (const [MissionChangedCallback](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1ac22d81eefc5e883cdb6baf792a7487e6) & callback) | Subscribes to mission changed.
 void | [unsubscribe_mission_changed](#classmavsdk_1_1_mission_raw_1ac6cd7602b2e5b46ad0ea1cf8bf602a0c) ([MissionChangedHandle](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a46da6d8a53822fd5fbd7b2a414624c5c) handle) | Unsubscribe from subscribe_mission_changed.
 std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > | [import_qgroundcontrol_mission](#classmavsdk_1_1_mission_raw_1a2a4ca261c37737e691c6954693d6d0a5) (std::string qgc_plan_path)const | Import a QGroundControl missions in JSON .plan format, from a file.
 std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > | [import_qgroundcontrol_mission_from_string](#classmavsdk_1_1_mission_raw_1a4a1b55650120d8af0ce7fa037f6b5ce9) (std::string qgc_plan)const | Import a QGroundControl missions in JSON .plan format, from a string.
@@ -654,10 +651,7 @@ MissionChangedHandle mavsdk::MissionRaw::subscribe_mission_changed(const Mission
 ```
 
 
-<ul>
-<li><p>Subscribes to mission changed. </p>
-</li>
-</ul>
+Subscribes to mission changed.
 
 This notification can be used to be informed if a ground station has been uploaded or changed by a ground station or companion computer.
 
