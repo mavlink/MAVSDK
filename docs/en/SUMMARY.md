@@ -165,7 +165,7 @@
             * [struct FloatParam](cpp/api_reference/structmavsdk_1_1_param_server_1_1_float_param.md)
             * [struct IntParam](cpp/api_reference/structmavsdk_1_1_param_server_1_1_int_param.md)
         * [class Rtk](cpp/api_reference/classmavsdk_1_1_rtk.md)
-             * [struct RtcmData](cpp/api_reference/structmavsdk_1_1_rtk_1_1_rtcm_data.md)
+            * [struct RtcmData](cpp/api_reference/structmavsdk_1_1_rtk_1_1_rtcm_data.md)
         * [class ServerComponent](cpp/api_reference/classmavsdk_1_1_server_component.md)
         * [class ServerUtility](cpp/api_reference/classmavsdk_1_1_server_utility.md)
         * [class Shell](cpp/api_reference/classmavsdk_1_1_shell.md)
