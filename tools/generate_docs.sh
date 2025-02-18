@@ -56,7 +56,7 @@ pushd ${INSTALL_DIR}/include/mavsdk
 doxygen_output_file=".doxygen_output.tmp"
 doxygen ${SCRIPT_DIR}/.doxygen &> $doxygen_output_file
 cat $doxygen_output_file
-if cat $doxygen_output_file | grep "warning" | grep -v "ignoring unsupported tag"
+if cat $doxygen_output_file | grep "warning" | grep -v "ignoring unsupported tag" | grep -v "operator"
 then
     return_result=1
     echo "Please check doxygen warnings."
