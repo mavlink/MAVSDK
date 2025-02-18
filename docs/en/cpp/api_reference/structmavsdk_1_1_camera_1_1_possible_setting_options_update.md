@@ -1,7 +1,10 @@
 # mavsdk::Camera::PossibleSettingOptionsUpdate Struct Reference
-`#include: UNKNOWN`
+`#include: camera.h`
 
 ----
+
+
+An update about possible setting options. 
 
 
 ## Data Fields

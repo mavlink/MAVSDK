@@ -113,6 +113,7 @@ enum EventsResult_Result : int {
   EventsResult_Result_RESULT_FAILED = 5,
   EventsResult_Result_RESULT_TIMEOUT = 6,
   EventsResult_Result_RESULT_NO_SYSTEM = 7,
+  EventsResult_Result_RESULT_UNKNOWN = 8,
   EventsResult_Result_EventsResult_Result_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   EventsResult_Result_EventsResult_Result_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -122,8 +123,8 @@ enum EventsResult_Result : int {
 bool EventsResult_Result_IsValid(int value);
 extern const uint32_t EventsResult_Result_internal_data_[];
 constexpr EventsResult_Result EventsResult_Result_Result_MIN = static_cast<EventsResult_Result>(0);
-constexpr EventsResult_Result EventsResult_Result_Result_MAX = static_cast<EventsResult_Result>(7);
-constexpr int EventsResult_Result_Result_ARRAYSIZE = 7 + 1;
+constexpr EventsResult_Result EventsResult_Result_Result_MAX = static_cast<EventsResult_Result>(8);
+constexpr int EventsResult_Result_Result_ARRAYSIZE = 8 + 1;
 const ::google::protobuf::EnumDescriptor*
 EventsResult_Result_descriptor();
 template <typename T>
@@ -136,7 +137,7 @@ const std::string& EventsResult_Result_Name(T value) {
 template <>
 inline const std::string& EventsResult_Result_Name(EventsResult_Result value) {
   return ::google::protobuf::internal::NameOfDenseEnum<EventsResult_Result_descriptor,
-                                                 0, 7>(
+                                                 0, 8>(
       static_cast<int>(value));
 }
 inline bool EventsResult_Result_Parse(absl::string_view name, EventsResult_Result* value) {
@@ -1275,6 +1276,7 @@ class EventsResult final
   static constexpr Result RESULT_FAILED = EventsResult_Result_RESULT_FAILED;
   static constexpr Result RESULT_TIMEOUT = EventsResult_Result_RESULT_TIMEOUT;
   static constexpr Result RESULT_NO_SYSTEM = EventsResult_Result_RESULT_NO_SYSTEM;
+  static constexpr Result RESULT_UNKNOWN = EventsResult_Result_RESULT_UNKNOWN;
   static inline bool Result_IsValid(int value) {
     return EventsResult_Result_IsValid(value);
   }

@@ -167,7 +167,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result erase_all_log_files() const;
 

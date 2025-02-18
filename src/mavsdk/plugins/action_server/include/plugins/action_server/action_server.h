@@ -302,7 +302,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_allow_takeoff(bool allow_takeoff) const;
 
@@ -311,7 +313,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_armable(bool armable, bool force_armable) const;
 
@@ -320,7 +324,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_disarmable(bool disarmable, bool force_disarmable) const;
 
@@ -329,7 +335,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_allowable_flight_modes(AllowableFlightModes flight_modes) const;
 

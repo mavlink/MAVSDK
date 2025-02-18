@@ -152,7 +152,9 @@ public:
      *
      * This function is blocking. See 'play_tune_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result play_tune(TuneDescription tune_description) const;
 

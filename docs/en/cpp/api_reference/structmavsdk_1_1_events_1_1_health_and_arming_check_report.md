@@ -1,7 +1,10 @@
 # mavsdk::Events::HealthAndArmingCheckReport Struct Reference
-`#include: UNKNOWN`
+`#include: events.h`
 
 ----
+
+
+Health and arming check report type. 
 
 
 ## Data Fields

@@ -1,7 +1,10 @@
 # mavsdk::ArmAuthorizerServer Class Reference
-`#include: UNKNOWN`
+`#include: arm_authorizer_server.h`
 
 ----
+
+
+Use arm authorization. 
 
 
 ## Public Types
@@ -9,8 +12,8 @@
 
 Type | Description
 --- | ---
-enum [RejectionReason](#classmavsdk_1_1_arm_authorizer_server_1a8e2f877e83640591859db072cb26a6ee) | 
-enum [Result](#classmavsdk_1_1_arm_authorizer_server_1aa8139980ee55b72cf04b69c453e04011) | 
+enum [RejectionReason](#classmavsdk_1_1_arm_authorizer_server_1a8e2f877e83640591859db072cb26a6ee) | The rejection reason.
+enum [Result](#classmavsdk_1_1_arm_authorizer_server_1aa8139980ee55b72cf04b69c453e04011) | The result.
 std::function< void([Result](classmavsdk_1_1_arm_authorizer_server.md#classmavsdk_1_1_arm_authorizer_server_1aa8139980ee55b72cf04b69c453e04011))> [ResultCallback](#classmavsdk_1_1_arm_authorizer_server_1ab4c5e8114b66740bd4382d0daa3052d9) | Callback type for asynchronous [ArmAuthorizerServer](classmavsdk_1_1_arm_authorizer_server.md) calls.
 std::function< void(uint32_t)> [ArmAuthorizationCallback](#classmavsdk_1_1_arm_authorizer_server_1ac608fecb1db7daea51078b1194c0ff86) | Callback type for subscribe_arm_authorization.
 [Handle](classmavsdk_1_1_handle.md)< uint32_t > [ArmAuthorizationHandle](#classmavsdk_1_1_arm_authorizer_server_1af0c4f4d88ebf36ae6adeb7d2af163fa5) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_arm_authorization.
@@ -112,6 +115,9 @@ using mavsdk::ArmAuthorizerServer::ArmAuthorizationHandle =  Handle<uint32_t>
 ### enum RejectionReason {#classmavsdk_1_1_arm_authorizer_server_1a8e2f877e83640591859db072cb26a6ee}
 
 
+The rejection reason.
+
+
 Value | Description
 --- | ---
 <span id="classmavsdk_1_1_arm_authorizer_server_1a8e2f877e83640591859db072cb26a6eea8045a0a6c688b0635e3caccc408a1446"></span> `Generic` | Not a specific reason. 
@@ -122,6 +128,9 @@ Value | Description
 <span id="classmavsdk_1_1_arm_authorizer_server_1a8e2f877e83640591859db072cb26a6eea4579786d67f36ba9295f37fd40151cf2"></span> `BadWeather` | Weather is not good to fly. 
 
 ### enum Result {#classmavsdk_1_1_arm_authorizer_server_1aa8139980ee55b72cf04b69c453e04011}
+
+
+The result.
 
 
 Value | Description

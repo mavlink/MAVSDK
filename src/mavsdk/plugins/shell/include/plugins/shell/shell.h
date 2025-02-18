@@ -87,7 +87,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result send(std::string command) const;
 

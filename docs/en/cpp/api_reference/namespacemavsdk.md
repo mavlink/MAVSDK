@@ -57,7 +57,7 @@ Namespace for all mavsdk types.
 
 Type | Description
 --- | ---
-enum [Autopilot](#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) |
+enum [Autopilot](#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) | Autopilot type.
 enum [ComponentType](#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) | ComponentType of configurations, used for automatic ID setting.
 enum [ConnectionResult](#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) | Result type returned when adding a connection.
 enum [ForwardingOption](#namespacemavsdk_1a7066729108eae8a605d4dd169e4581b9) | ForwardingOption for Connection, used to set message forwarding option.
@@ -66,8 +66,8 @@ enum [ForwardingOption](#namespacemavsdk_1a7066729108eae8a605d4dd169e4581b9) | F
 
 Type | Name | Description
 --- | --- | ---
-std::string | [base64_encode](#namespacemavsdk_1a57a9962be22a61e5c36a66bc17e6a2a7) (std::vector< uint8_t > & raw) |
-std::vector< uint8_t > | [base64_decode](#namespacemavsdk_1a34e7609c9e2ddcc72a74bbc79daf9c19) (const std::string & str) |
+std::string | [base64_encode](#namespacemavsdk_1a57a9962be22a61e5c36a66bc17e6a2a7) (std::vector< uint8_t > & raw) | Encode raw bytes to a base64 string.
+std::vector< uint8_t > | [base64_decode](#namespacemavsdk_1a34e7609c9e2ddcc72a74bbc79daf9c19) (const std::string & str) | Decode a base64 string into raw bytes.
 std::ostream & | [operator<<](#namespacemavsdk_1a2aa91d8b846b07fe7f305b399375ce5f) (std::ostream & str, const [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) & result) | Stream operator to print information about a `ConnectionResult`.
 &nbsp; | [overloaded](#namespacemavsdk_1a724e321aaff91eb2ba28279e0292e552) (Ts...)-> overloaded< Ts... > | Template deduction helper for `overloaded`
 
@@ -79,6 +79,9 @@ std::ostream & | [operator<<](#namespacemavsdk_1a2aa91d8b846b07fe7f305b399375ce5
 ```
 #include: autopilot.h
 ```
+
+
+Autopilot type.
 
 
 Value | Description
@@ -166,13 +169,16 @@ std::string mavsdk::base64_encode(std::vector< uint8_t > &raw)
 ```
 
 
+Encode raw bytes to a base64 string.
+
+
 **Parameters**
 
-* std::vector< uint8_t >& **raw** - 
+* std::vector< uint8_t >& **raw** - Raw bytes
 
 **Returns**
 
-&emsp;std::string - 
+&emsp;std::string - Base64 string
 
 ### base64_decode() {#namespacemavsdk_1a34e7609c9e2ddcc72a74bbc79daf9c19}
 
@@ -184,13 +190,16 @@ std::vector< uint8_t > mavsdk::base64_decode(const std::string &str)
 ```
 
 
+Decode a base64 string into raw bytes.
+
+
 **Parameters**
 
-* const std::string& **str** - 
+* const std::string& **str** - Base64 string
 
 **Returns**
 
-&emsp;std::vector< uint8_t > - 
+&emsp;std::vector< uint8_t > - Raw bytes
 
 ### operator<<() {#namespacemavsdk_1a2aa91d8b846b07fe7f305b399375ce5f}
 

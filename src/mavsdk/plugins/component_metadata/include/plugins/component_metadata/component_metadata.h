@@ -60,7 +60,7 @@ public:
     ~ComponentMetadata() override;
 
     /**
-     * @brief
+     * @brief The metadata type
      */
     enum class MetadataType {
         AllCompleted, /**< @brief This is set in the subscription callback when all metadata types
@@ -102,18 +102,18 @@ public:
     operator<<(std::ostream& str, ComponentMetadata::MetadataData const& metadata_data);
 
     /**
-     * @brief Possible results returned for GetMetadata
+     * @brief Possible results returned
      */
     enum class Result {
-        Success, /**< @brief. */
-        NotAvailable, /**< @brief. */
-        ConnectionError, /**< @brief. */
-        Unsupported, /**< @brief. */
-        Denied, /**< @brief. */
-        Failed, /**< @brief. */
-        Timeout, /**< @brief. */
-        NoSystem, /**< @brief. */
-        NotRequested, /**< @brief. */
+        Success, /**< @brief Success. */
+        NotAvailable, /**< @brief Not available. */
+        ConnectionError, /**< @brief Connection error. */
+        Unsupported, /**< @brief Unsupported. */
+        Denied, /**< @brief Denied. */
+        Failed, /**< @brief Failed. */
+        Timeout, /**< @brief Timeout. */
+        NoSystem, /**< @brief No system. */
+        NotRequested, /**< @brief Not requested. */
     };
 
     /**
@@ -155,23 +155,23 @@ public:
 
     /**
      * @brief Request metadata from a specific component. This is used to start requesting metadata
-     * from a component. The metadata can later be accessed via subscription (see below) or
-     * GetMetadata.
+     from a component.
+     * The metadata can later be accessed via subscription (see below) or GetMetadata.
      *
      * This function is blocking.
      *
-     * @return Result of request.
+
      */
     void request_component(uint32_t compid) const;
 
     /**
      * @brief Request metadata from the autopilot component. This is used to start requesting
-     * metadata from the autopilot. The metadata can later be accessed via subscription (see below)
-     * or GetMetadata.
+     metadata from the autopilot.
+     * The metadata can later be accessed via subscription (see below) or GetMetadata.
      *
      * This function is blocking.
      *
-     * @return Result of request.
+
      */
     void request_autopilot_component() const;
 

@@ -17,7 +17,7 @@ struct [Metadata](structmavsdk_1_1_component_metadata_server_1_1_metadata.md)
 
 Type | Description
 --- | ---
-enum [MetadataType](#classmavsdk_1_1_component_metadata_server_1abaa555f8d1e2ae73f2275b18271537d6) | 
+enum [MetadataType](#classmavsdk_1_1_component_metadata_server_1abaa555f8d1e2ae73f2275b18271537d6) | The metadata type.
 
 ## Public Member Functions
 
@@ -78,6 +78,9 @@ Copy constructor.
 
 
 ### enum MetadataType {#classmavsdk_1_1_component_metadata_server_1abaa555f8d1e2ae73f2275b18271537d6}
+
+
+The metadata type.
 
 
 Value | Description

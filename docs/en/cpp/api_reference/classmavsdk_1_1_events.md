@@ -25,8 +25,8 @@ struct [HealthComponentReport](structmavsdk_1_1_events_1_1_health_component_repo
 
 Type | Description
 --- | ---
-enum [LogLevel](#classmavsdk_1_1_events_1a237c8de77f3995138125db44d148cecc) | 
-enum [Result](#classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1) | 
+enum [LogLevel](#classmavsdk_1_1_events_1a237c8de77f3995138125db44d148cecc) | Log level type.
+enum [Result](#classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1) | Possible results returned.
 std::function< void([Result](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1))> [ResultCallback](#classmavsdk_1_1_events_1a36c781e03d503c528d7da31506cb0af3) | Callback type for asynchronous [Events](classmavsdk_1_1_events.md) calls.
 std::function< void([Event](structmavsdk_1_1_events_1_1_event.md))> [EventsCallback](#classmavsdk_1_1_events_1aaa9c2f1d7915aedfdb0da5de7e31bbfb) | Callback type for subscribe_events.
 [Handle](classmavsdk_1_1_handle.md)< [Event](structmavsdk_1_1_events_1_1_event.md) > [EventsHandle](#classmavsdk_1_1_events_1a64c99a834c6babf6cdb3b466a923e3ee) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_events.
@@ -170,30 +170,37 @@ using mavsdk::Events::HealthAndArmingChecksHandle =  Handle<HealthAndArmingCheck
 ### enum LogLevel {#classmavsdk_1_1_events_1a237c8de77f3995138125db44d148cecc}
 
 
+Log level type.
+
+
 Value | Description
 --- | ---
-<span id="classmavsdk_1_1_events_1a237c8de77f3995138125db44d148ceccaa3fa706f20bc0b7858b7ae6932261940"></span> `Emergency` |  
-<span id="classmavsdk_1_1_events_1a237c8de77f3995138125db44d148ceccab92071d61c88498171928745ca53078b"></span> `Alert` |  
-<span id="classmavsdk_1_1_events_1a237c8de77f3995138125db44d148cecca278d01e5af56273bae1bb99a98b370cd"></span> `Critical` |  
-<span id="classmavsdk_1_1_events_1a237c8de77f3995138125db44d148cecca902b0d55fddef6f8d651fe1035b7d4bd"></span> `Error` |  
-<span id="classmavsdk_1_1_events_1a237c8de77f3995138125db44d148cecca0eaadb4fcb48a0a0ed7bc9868be9fbaa"></span> `Warning` |  
-<span id="classmavsdk_1_1_events_1a237c8de77f3995138125db44d148cecca24efa7ee4511563b16144f39706d594f"></span> `Notice` |  
-<span id="classmavsdk_1_1_events_1a237c8de77f3995138125db44d148cecca4059b0251f66a18cb56f544728796875"></span> `Info` |  
-<span id="classmavsdk_1_1_events_1a237c8de77f3995138125db44d148ceccaa603905470e2a5b8c13e96b579ef0dba"></span> `Debug` |  
+<span id="classmavsdk_1_1_events_1a237c8de77f3995138125db44d148ceccaa3fa706f20bc0b7858b7ae6932261940"></span> `Emergency` | Emergency. 
+<span id="classmavsdk_1_1_events_1a237c8de77f3995138125db44d148ceccab92071d61c88498171928745ca53078b"></span> `Alert` | Alert. 
+<span id="classmavsdk_1_1_events_1a237c8de77f3995138125db44d148cecca278d01e5af56273bae1bb99a98b370cd"></span> `Critical` | Critical. 
+<span id="classmavsdk_1_1_events_1a237c8de77f3995138125db44d148cecca902b0d55fddef6f8d651fe1035b7d4bd"></span> `Error` | Error. 
+<span id="classmavsdk_1_1_events_1a237c8de77f3995138125db44d148cecca0eaadb4fcb48a0a0ed7bc9868be9fbaa"></span> `Warning` | Warning. 
+<span id="classmavsdk_1_1_events_1a237c8de77f3995138125db44d148cecca24efa7ee4511563b16144f39706d594f"></span> `Notice` | Notice. 
+<span id="classmavsdk_1_1_events_1a237c8de77f3995138125db44d148cecca4059b0251f66a18cb56f544728796875"></span> `Info` | [Info](classmavsdk_1_1_info.md). 
+<span id="classmavsdk_1_1_events_1a237c8de77f3995138125db44d148ceccaa603905470e2a5b8c13e96b579ef0dba"></span> `Debug` | Debug. 
 
 ### enum Result {#classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1}
 
 
+Possible results returned.
+
+
 Value | Description
 --- | ---
-<span id="classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1a505a83f220c02df2f85c3810cd9ceb38"></span> `Success` |  
-<span id="classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1a534ceac854da4ba59c4dc41b7ab732dc"></span> `NotAvailable` |  
-<span id="classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1a094a6f6b0868122a9dd008cb91c083e4"></span> `ConnectionError` |  
-<span id="classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1ab4080bdf74febf04d578ff105cce9d3f"></span> `Unsupported` |  
-<span id="classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1a58d036b9b7f0e7eb38cfb90f1cc70a73"></span> `Denied` |  
-<span id="classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1ad7c8c85bf79bbe1b7188497c32c3b0ca"></span> `Failed` |  
-<span id="classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1ac85a251cc457840f1e032f1b733e9398"></span> `Timeout` |  
-<span id="classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1a1119faf72ba0dfb23aeea644fed960ad"></span> `NoSystem` |  
+<span id="classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1a505a83f220c02df2f85c3810cd9ceb38"></span> `Success` | Successful result. 
+<span id="classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1a534ceac854da4ba59c4dc41b7ab732dc"></span> `NotAvailable` | Not available. 
+<span id="classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1a094a6f6b0868122a9dd008cb91c083e4"></span> `ConnectionError` | Connection error. 
+<span id="classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1ab4080bdf74febf04d578ff105cce9d3f"></span> `Unsupported` | Unsupported. 
+<span id="classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1a58d036b9b7f0e7eb38cfb90f1cc70a73"></span> `Denied` | Denied. 
+<span id="classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1ad7c8c85bf79bbe1b7188497c32c3b0ca"></span> `Failed` | Failed. 
+<span id="classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1ac85a251cc457840f1e032f1b733e9398"></span> `Timeout` | Timeout. 
+<span id="classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1a1119faf72ba0dfb23aeea644fed960ad"></span> `NoSystem` | No system available. 
+<span id="classmavsdk_1_1_events_1abf1e4db55bd810ee6f5fce5d5c9439b1a88183b946cc5f0e8c96b2e66e1c74a7e"></span> `Unknown` | Unknown result. 
 
 ## Member Function Documentation
 

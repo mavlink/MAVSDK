@@ -369,7 +369,9 @@ public:
      *
      * This function is blocking. See 'start_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result start() const;
 
@@ -389,7 +391,9 @@ public:
      *
      * This function is blocking. See 'stop_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result stop() const;
 
@@ -410,7 +414,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_attitude(Attitude attitude) const;
 
@@ -422,7 +428,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_actuator_control(ActuatorControl actuator_control) const;
 
@@ -431,7 +439,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_attitude_rate(AttitudeRate attitude_rate) const;
 
@@ -440,7 +450,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_position_ned(PositionNedYaw position_ned_yaw) const;
 
@@ -449,17 +461,21 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_position_global(PositionGlobalYaw position_global_yaw) const;
 
     /**
      * @brief Set the velocity in body coordinates and yaw angular rate. Not available for
-     * fixed-wing aircraft.
+     fixed-wing aircraft.
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_velocity_body(VelocityBodyYawspeed velocity_body_yawspeed) const;
 
@@ -468,7 +484,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_velocity_ned(VelocityNedYaw velocity_ned_yaw) const;
 
@@ -477,18 +495,22 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_position_velocity_ned(
         PositionNedYaw position_ned_yaw, VelocityNedYaw velocity_ned_yaw) const;
 
     /**
      * @brief Set the position, velocity and acceleration in NED coordinates, with velocity and
-     * acceleration used as feed-forward.
+     acceleration used as feed-forward.
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_position_velocity_acceleration_ned(
         PositionNedYaw position_ned_yaw,
@@ -500,7 +522,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_acceleration_ned(AccelerationNed acceleration_ned) const;
 

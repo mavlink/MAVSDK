@@ -1,7 +1,10 @@
 # mavsdk::ComponentMetadataServer::Metadata Struct Reference
-`#include: UNKNOWN`
+`#include: component_metadata_server.h`
 
 ----
+
+
+The metadata type and content. 
 
 
 ## Data Fields

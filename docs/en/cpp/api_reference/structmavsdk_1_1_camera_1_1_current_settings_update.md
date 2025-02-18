@@ -1,7 +1,10 @@
 # mavsdk::Camera::CurrentSettingsUpdate Struct Reference
-`#include: UNKNOWN`
+`#include: camera.h`
 
 ----
+
+
+An update about a current setting. 
 
 
 ## Data Fields

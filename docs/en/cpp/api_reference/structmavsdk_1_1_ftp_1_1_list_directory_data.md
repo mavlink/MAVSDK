@@ -1,7 +1,10 @@
 # mavsdk::Ftp::ListDirectoryData Struct Reference
-`#include: UNKNOWN`
+`#include: ftp.h`
 
 ----
+
+
+The output of a directory list. 
 
 
 ## Data Fields

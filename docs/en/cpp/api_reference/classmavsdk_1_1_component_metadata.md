@@ -19,8 +19,8 @@ struct [MetadataUpdate](structmavsdk_1_1_component_metadata_1_1_metadata_update.
 
 Type | Description
 --- | ---
-enum [MetadataType](#classmavsdk_1_1_component_metadata_1a0d85236afbbb3dc6b2dd46351a6b38bc) | 
-enum [Result](#classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44) | Possible results returned for GetMetadata.
+enum [MetadataType](#classmavsdk_1_1_component_metadata_1a0d85236afbbb3dc6b2dd46351a6b38bc) | The metadata type.
+enum [Result](#classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44) | Possible results returned.
 std::function< void([Result](classmavsdk_1_1_component_metadata.md#classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44))> [ResultCallback](#classmavsdk_1_1_component_metadata_1aca3d0432b9711666398eb1e3acdab327) | Callback type for asynchronous [ComponentMetadata](classmavsdk_1_1_component_metadata.md) calls.
 std::function< void([MetadataUpdate](structmavsdk_1_1_component_metadata_1_1_metadata_update.md))> [MetadataAvailableCallback](#classmavsdk_1_1_component_metadata_1aba4946a5e2219b6b24a9dd3ce4f9ace1) | Callback type for subscribe_metadata_available.
 [Handle](classmavsdk_1_1_handle.md)< [MetadataUpdate](structmavsdk_1_1_component_metadata_1_1_metadata_update.md) > [MetadataAvailableHandle](#classmavsdk_1_1_component_metadata_1a374204a0542af5f4a73bf36e25513910) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_metadata_available.
@@ -142,6 +142,9 @@ using mavsdk::ComponentMetadata::MetadataAvailableHandle =  Handle<MetadataUpdat
 ### enum MetadataType {#classmavsdk_1_1_component_metadata_1a0d85236afbbb3dc6b2dd46351a6b38bc}
 
 
+The metadata type.
+
+
 Value | Description
 --- | ---
 <span id="classmavsdk_1_1_component_metadata_1a0d85236afbbb3dc6b2dd46351a6b38bcaddd135693fb2c479c7a756317837042b"></span> `AllCompleted` | This is set in the subscription callback when all metadata types completed for a given component ID. 
@@ -152,20 +155,20 @@ Value | Description
 ### enum Result {#classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44}
 
 
-Possible results returned for GetMetadata.
+Possible results returned.
 
 
 Value | Description
 --- | ---
-<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44a505a83f220c02df2f85c3810cd9ceb38"></span> `Success` |  
-<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44a534ceac854da4ba59c4dc41b7ab732dc"></span> `NotAvailable` |  
-<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44a094a6f6b0868122a9dd008cb91c083e4"></span> `ConnectionError` |  
-<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44ab4080bdf74febf04d578ff105cce9d3f"></span> `Unsupported` |  
-<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44a58d036b9b7f0e7eb38cfb90f1cc70a73"></span> `Denied` |  
-<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44ad7c8c85bf79bbe1b7188497c32c3b0ca"></span> `Failed` |  
-<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44ac85a251cc457840f1e032f1b733e9398"></span> `Timeout` |  
-<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44a1119faf72ba0dfb23aeea644fed960ad"></span> `NoSystem` |  
-<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44ac534a66e591207038fe31a2a9e0164b7"></span> `NotRequested` |  
+<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44a505a83f220c02df2f85c3810cd9ceb38"></span> `Success` | Success. 
+<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44a534ceac854da4ba59c4dc41b7ab732dc"></span> `NotAvailable` | Not available. 
+<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44a094a6f6b0868122a9dd008cb91c083e4"></span> `ConnectionError` | Connection error. 
+<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44ab4080bdf74febf04d578ff105cce9d3f"></span> `Unsupported` | Unsupported. 
+<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44a58d036b9b7f0e7eb38cfb90f1cc70a73"></span> `Denied` | Denied. 
+<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44ad7c8c85bf79bbe1b7188497c32c3b0ca"></span> `Failed` | Failed. 
+<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44ac85a251cc457840f1e032f1b733e9398"></span> `Timeout` | Timeout. 
+<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44a1119faf72ba0dfb23aeea644fed960ad"></span> `NoSystem` | No system. 
+<span id="classmavsdk_1_1_component_metadata_1af7b6ff8c58634fac8d2670f2b882ef44ac534a66e591207038fe31a2a9e0164b7"></span> `NotRequested` | Not requested. 
 
 ## Member Function Documentation
 

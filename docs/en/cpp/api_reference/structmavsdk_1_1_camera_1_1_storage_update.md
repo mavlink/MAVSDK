@@ -1,7 +1,10 @@
 # mavsdk::Camera::StorageUpdate Struct Reference
-`#include: UNKNOWN`
+`#include: camera.h`
 
 ----
+
+
+An update about storage. 
 
 
 ## Data Fields

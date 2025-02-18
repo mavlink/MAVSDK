@@ -342,7 +342,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_vision_position_estimate(VisionPositionEstimate vision_position_estimate) const;
 
@@ -351,7 +353,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_attitude_position_mocap(AttitudePositionMocap attitude_position_mocap) const;
 
@@ -360,7 +364,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_odometry(Odometry odometry) const;
 

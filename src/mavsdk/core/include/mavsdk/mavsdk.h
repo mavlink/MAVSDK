@@ -129,8 +129,8 @@ public:
      * ConnectionError type
      */
     struct ConnectionError {
-        std::string error_description;
-        ConnectionHandle connection_handle;
+        std::string error_description; ///< The error description
+        ConnectionHandle connection_handle; ///< The connection handle
     };
 
     /**

@@ -44,7 +44,7 @@ void | [unsubscribe_component_discovered](#classmavsdk_1_1_system_1a5d62d308534b
 [ComponentDiscoveredIdHandle](classmavsdk_1_1_system.md#classmavsdk_1_1_system_1abd573ae09348f33e7cd3a006fc26a708) | [subscribe_component_discovered_id](#classmavsdk_1_1_system_1a1905176f3a6633a8a9fe655f2dcd2d23) (const [ComponentDiscoveredIdCallback](classmavsdk_1_1_system.md#classmavsdk_1_1_system_1a914c50b413b5bd61d334631096e614ca) & callback) | Subscribe to be called when a component is discovered.
 void | [unsubscribe_component_discovered_id](#classmavsdk_1_1_system_1a37bca637341bba8b07e8f95c97d122db) ([ComponentDiscoveredIdHandle](classmavsdk_1_1_system.md#classmavsdk_1_1_system_1abd573ae09348f33e7cd3a006fc26a708) handle) | Unsubscribe from subscribe_component_discovered_id.
 void | [enable_timesync](#classmavsdk_1_1_system_1a7c7177fb0789aefbfb375f4bb12ce824) () | Enable time synchronization using the TIMESYNC messages.
-Autopilot | [autopilot_type](#classmavsdk_1_1_system_1af3ded5464f6025f5d31955e100e15894) () const | Get autopilot type.
+[Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) | [autopilot_type](#classmavsdk_1_1_system_1af3ded5464f6025f5d31955e100e15894) () const | Get autopilot type.
 const [System](classmavsdk_1_1_system.md) & | [operator=](#classmavsdk_1_1_system_1ace4603ebad199e8619876993a2ad5237) (const [System](classmavsdk_1_1_system.md) &)=delete | Equality operator (object is not copyable).
 
 
@@ -367,7 +367,7 @@ Get autopilot type.
 
 **Returns**
 
-&emsp;Autopilot - autopilot type discovered.
+&emsp;[Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) - autopilot type discovered.
 
 ### operator=() {#classmavsdk_1_1_system_1ace4603ebad199e8619876993a2ad5237}
 ```cpp

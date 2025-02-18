@@ -119,7 +119,9 @@ public:
      *
      * This function is blocking. See 'start_log_streaming_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result start_log_streaming() const;
 
@@ -135,7 +137,9 @@ public:
      *
      * This function is blocking. See 'stop_log_streaming_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result stop_log_streaming() const;
 

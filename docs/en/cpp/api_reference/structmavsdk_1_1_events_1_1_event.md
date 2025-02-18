@@ -1,7 +1,10 @@
 # mavsdk::Events::Event Struct Reference
-`#include: UNKNOWN`
+`#include: events.h`
 
 ----
+
+
+[Event](structmavsdk_1_1_events_1_1_event.md) type. 
 
 
 ## Data Fields
@@ -13,7 +16,7 @@ std::string [message](#structmavsdk_1_1_events_1_1_event_1ae18a466fde5623f099c9b
 
 std::string [description](#structmavsdk_1_1_events_1_1_event_1aee27a34850edf145d56ebc6b37829fba) {} - Detailed description (optional, might be multiple lines)
 
-[LogLevel](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1a237c8de77f3995138125db44d148cecc) [log_level](#structmavsdk_1_1_events_1_1_event_1ae1a2b68931086b7ec4f31a6b2d4de3fd) {} -
+[LogLevel](classmavsdk_1_1_events.md#classmavsdk_1_1_events_1a237c8de77f3995138125db44d148cecc) [log_level](#structmavsdk_1_1_events_1_1_event_1ae1a2b68931086b7ec4f31a6b2d4de3fd) {} - Log level of message.
 
 std::string [event_namespace](#structmavsdk_1_1_events_1_1_event_1afa6ed28311d60fb9a44318d985931050) {} - Namespace, e.g. "px4".
 
@@ -58,6 +61,9 @@ Detailed description (optional, might be multiple lines)
 ```cpp
 LogLevel mavsdk::Events::Event::log_level {}
 ```
+
+
+Log level of message.
 
 
 ### event_namespace {#structmavsdk_1_1_events_1_1_event_1afa6ed28311d60fb9a44318d985931050}

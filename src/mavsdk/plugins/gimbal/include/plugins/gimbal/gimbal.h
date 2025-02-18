@@ -90,7 +90,7 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Gimbal::ControlMode const& control_mode);
 
     /**
-     * @brief
+     * @brief The send mode type
      */
     enum class SendMode {
         Once, /**< @brief Send command exactly once with quality of service (use for sporadic
@@ -356,7 +356,9 @@ public:
      *
      * This function is blocking. See 'set_angles_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_angles(
         int32_t gimbal_id,
@@ -397,7 +399,9 @@ public:
      *
      * This function is blocking. See 'set_angular_rates_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_angular_rates(
         int32_t gimbal_id,
@@ -436,7 +440,9 @@ public:
      *
      * This function is blocking. See 'set_roi_location_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result set_roi_location(
         int32_t gimbal_id, double latitude_deg, double longitude_deg, float altitude_m) const;
@@ -470,7 +476,9 @@ public:
      *
      * This function is blocking. See 'take_control_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result take_control(int32_t gimbal_id, ControlMode control_mode) const;
 
@@ -490,7 +498,9 @@ public:
      *
      * This function is blocking. See 'release_control_async' for the non-blocking counterpart.
      *
+
      * @return Result of request.
+
      */
     Result release_control(int32_t gimbal_id) const;
 

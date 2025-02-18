@@ -1,7 +1,10 @@
 # mavsdk::Camera::ModeUpdate Struct Reference
-`#include: UNKNOWN`
+`#include: camera.h`
 
 ----
+
+
+An update about the current mode. 
 
 
 ## Data Fields

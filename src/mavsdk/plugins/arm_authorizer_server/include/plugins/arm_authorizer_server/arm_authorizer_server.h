@@ -24,7 +24,7 @@ class ServerComponent;
 class ArmAuthorizerServerImpl;
 
 /**
- * @brief
+ * @brief Use arm authorization.
  */
 class ArmAuthorizerServer : public ServerPluginBase {
 public:
@@ -47,7 +47,7 @@ public:
     ~ArmAuthorizerServer() override;
 
     /**
-     * @brief
+     * @brief The rejection reason
      */
     enum class RejectionReason {
         Generic, /**< @brief Not a specific reason. */
@@ -68,7 +68,7 @@ public:
     operator<<(std::ostream& str, ArmAuthorizerServer::RejectionReason const& rejection_reason);
 
     /**
-     * @brief
+     * @brief The result
      */
     enum class Result {
         Unknown, /**< @brief Unknown result. */
@@ -114,7 +114,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result accept_arm_authorization(int32_t valid_time_s) const;
 
@@ -123,7 +125,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result
     reject_arm_authorization(bool temporarily, RejectionReason reason, int32_t extra_info) const;

@@ -31,7 +31,7 @@ Type | Description
 --- | ---
 enum [GimbalMode](#classmavsdk_1_1_gimbal_1afb92614c5d5915d3960bcea51bec2dca) | [Gimbal](classmavsdk_1_1_gimbal.md) mode type.
 enum [ControlMode](#classmavsdk_1_1_gimbal_1a01b721086d7de6089aefdeb0fda4cff3) | Control mode.
-enum [SendMode](#classmavsdk_1_1_gimbal_1a625fee23155be376ebd67853bf9383a2) | 
+enum [SendMode](#classmavsdk_1_1_gimbal_1a625fee23155be376ebd67853bf9383a2) | The send mode type.
 enum [Result](#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac) | Possible results returned for gimbal commands.
 std::function< void([Result](classmavsdk_1_1_gimbal.md#classmavsdk_1_1_gimbal_1aa732ec0bd49ac03b7910199d635f76ac))> [ResultCallback](#classmavsdk_1_1_gimbal_1a88ee7dd17821fb9b12c44b2a3630c197) | Callback type for asynchronous [Gimbal](classmavsdk_1_1_gimbal.md) calls.
 std::function< void([GimbalList](structmavsdk_1_1_gimbal_1_1_gimbal_list.md))> [GimbalListCallback](#classmavsdk_1_1_gimbal_1a1656fb54230e1adc61b3a050a423a6c9) | Callback type for subscribe_gimbal_list.
@@ -233,6 +233,9 @@ Value | Description
 <span id="classmavsdk_1_1_gimbal_1a01b721086d7de6089aefdeb0fda4cff3a0c7d6cf19426e01dcfa32434828ed266"></span> `Secondary` | To take secondary control over the gimbal. 
 
 ### enum SendMode {#classmavsdk_1_1_gimbal_1a625fee23155be376ebd67853bf9383a2}
+
+
+The send mode type.
 
 
 Value | Description

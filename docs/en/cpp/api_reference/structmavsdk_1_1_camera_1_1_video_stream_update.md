@@ -1,7 +1,10 @@
 # mavsdk::Camera::VideoStreamUpdate Struct Reference
-`#include: UNKNOWN`
+`#include: camera.h`
 
 ----
+
+
+An update about a video stream. 
 
 
 ## Data Fields

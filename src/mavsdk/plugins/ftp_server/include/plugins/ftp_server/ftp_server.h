@@ -77,7 +77,9 @@ public:
      *
      * This function is blocking.
      *
+
      * @return Result of request.
+
      */
     Result set_root_dir(std::string path) const;
 

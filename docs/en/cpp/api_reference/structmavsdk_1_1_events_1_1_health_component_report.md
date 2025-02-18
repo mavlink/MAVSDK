@@ -1,7 +1,10 @@
 # mavsdk::Events::HealthComponentReport Struct Reference
-`#include: UNKNOWN`
+`#include: events.h`
 
 ----
+
+
+Health component report type. 
 
 
 ## Data Fields

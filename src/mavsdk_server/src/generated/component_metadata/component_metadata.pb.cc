@@ -304,6 +304,14 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::component_metadata::RequestComponentRequest, _impl_.compid_),
         ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::component_metadata::RequestComponentResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::component_metadata::GetMetadataRequest, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
@@ -344,14 +352,6 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::component_metadata::ComponentMetadataResult, _impl_.result_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::component_metadata::ComponentMetadataResult, _impl_.result_str_),
-        ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::component_metadata::RequestComponentResponse, _internal_metadata_),
-        ~0u,  // no _extensions_
-        ~0u,  // no _oneof_case_
-        ~0u,  // no _weak_field_map_
-        ~0u,  // no _inlined_string_donated_
-        ~0u,  // no _split_
-        ~0u,  // no sizeof(Split)
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::component_metadata::RequestAutopilotComponentRequest, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -402,11 +402,11 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, -1, -1, sizeof(::mavsdk::rpc::component_metadata::RequestComponentRequest)},
-        {9, -1, -1, sizeof(::mavsdk::rpc::component_metadata::GetMetadataRequest)},
-        {19, 29, -1, sizeof(::mavsdk::rpc::component_metadata::GetMetadataResponse)},
-        {31, -1, -1, sizeof(::mavsdk::rpc::component_metadata::MetadataData)},
-        {40, -1, -1, sizeof(::mavsdk::rpc::component_metadata::ComponentMetadataResult)},
-        {50, -1, -1, sizeof(::mavsdk::rpc::component_metadata::RequestComponentResponse)},
+        {9, -1, -1, sizeof(::mavsdk::rpc::component_metadata::RequestComponentResponse)},
+        {17, -1, -1, sizeof(::mavsdk::rpc::component_metadata::GetMetadataRequest)},
+        {27, 37, -1, sizeof(::mavsdk::rpc::component_metadata::GetMetadataResponse)},
+        {39, -1, -1, sizeof(::mavsdk::rpc::component_metadata::MetadataData)},
+        {48, -1, -1, sizeof(::mavsdk::rpc::component_metadata::ComponentMetadataResult)},
         {58, -1, -1, sizeof(::mavsdk::rpc::component_metadata::RequestAutopilotComponentRequest)},
         {66, -1, -1, sizeof(::mavsdk::rpc::component_metadata::RequestAutopilotComponentResponse)},
         {74, -1, -1, sizeof(::mavsdk::rpc::component_metadata::SubscribeMetadataAvailableRequest)},
@@ -415,11 +415,11 @@ static const ::_pbi::MigrationSchema
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::component_metadata::_RequestComponentRequest_default_instance_._instance,
+    &::mavsdk::rpc::component_metadata::_RequestComponentResponse_default_instance_._instance,
     &::mavsdk::rpc::component_metadata::_GetMetadataRequest_default_instance_._instance,
     &::mavsdk::rpc::component_metadata::_GetMetadataResponse_default_instance_._instance,
     &::mavsdk::rpc::component_metadata::_MetadataData_default_instance_._instance,
     &::mavsdk::rpc::component_metadata::_ComponentMetadataResult_default_instance_._instance,
-    &::mavsdk::rpc::component_metadata::_RequestComponentResponse_default_instance_._instance,
     &::mavsdk::rpc::component_metadata::_RequestAutopilotComponentRequest_default_instance_._instance,
     &::mavsdk::rpc::component_metadata::_RequestAutopilotComponentResponse_default_instance_._instance,
     &::mavsdk::rpc::component_metadata::_SubscribeMetadataAvailableRequest_default_instance_._instance,
@@ -431,24 +431,24 @@ const char descriptor_table_protodef_component_5fmetadata_2fcomponent_5fmetadata
     "\n+component_metadata/component_metadata."
     "proto\022\035mavsdk.rpc.component_metadata\032\024ma"
     "vsdk_options.proto\")\n\027RequestComponentRe"
-    "quest\022\016\n\006compid\030\001 \001(\r\"h\n\022GetMetadataRequ"
-    "est\022\016\n\006compid\030\001 \001(\r\022B\n\rmetadata_type\030\002 \001"
-    "(\0162+.mavsdk.rpc.component_metadata.Metad"
-    "ataType\"\257\001\n\023GetMetadataResponse\022Y\n\031compo"
-    "nent_metadata_result\030\001 \001(\01326.mavsdk.rpc."
-    "component_metadata.ComponentMetadataResu"
-    "lt\022=\n\010response\030\002 \001(\0132+.mavsdk.rpc.compon"
-    "ent_metadata.MetadataData\"%\n\014MetadataDat"
-    "a\022\025\n\rjson_metadata\030\001 \001(\t\"\324\002\n\027ComponentMe"
-    "tadataResult\022M\n\006result\030\001 \001(\0162=.mavsdk.rp"
-    "c.component_metadata.ComponentMetadataRe"
-    "sult.Result\022\022\n\nresult_str\030\002 \001(\t\"\325\001\n\006Resu"
-    "lt\022\022\n\016RESULT_SUCCESS\020\000\022\030\n\024RESULT_NOT_AVA"
-    "ILABLE\020\001\022\033\n\027RESULT_CONNECTION_ERROR\020\002\022\026\n"
-    "\022RESULT_UNSUPPORTED\020\003\022\021\n\rRESULT_DENIED\020\004"
-    "\022\021\n\rRESULT_FAILED\020\005\022\022\n\016RESULT_TIMEOUT\020\006\022"
-    "\024\n\020RESULT_NO_SYSTEM\020\007\022\030\n\024RESULT_NOT_REQU"
-    "ESTED\020\010\"\032\n\030RequestComponentResponse\"\"\n R"
+    "quest\022\016\n\006compid\030\001 \001(\r\"\032\n\030RequestComponen"
+    "tResponse\"h\n\022GetMetadataRequest\022\016\n\006compi"
+    "d\030\001 \001(\r\022B\n\rmetadata_type\030\002 \001(\0162+.mavsdk."
+    "rpc.component_metadata.MetadataType\"\257\001\n\023"
+    "GetMetadataResponse\022Y\n\031component_metadat"
+    "a_result\030\001 \001(\01326.mavsdk.rpc.component_me"
+    "tadata.ComponentMetadataResult\022=\n\010respon"
+    "se\030\002 \001(\0132+.mavsdk.rpc.component_metadata"
+    ".MetadataData\"%\n\014MetadataData\022\025\n\rjson_me"
+    "tadata\030\001 \001(\t\"\324\002\n\027ComponentMetadataResult"
+    "\022M\n\006result\030\001 \001(\0162=.mavsdk.rpc.component_"
+    "metadata.ComponentMetadataResult.Result\022"
+    "\022\n\nresult_str\030\002 \001(\t\"\325\001\n\006Result\022\022\n\016RESULT"
+    "_SUCCESS\020\000\022\030\n\024RESULT_NOT_AVAILABLE\020\001\022\033\n\027"
+    "RESULT_CONNECTION_ERROR\020\002\022\026\n\022RESULT_UNSU"
+    "PPORTED\020\003\022\021\n\rRESULT_DENIED\020\004\022\021\n\rRESULT_F"
+    "AILED\020\005\022\022\n\016RESULT_TIMEOUT\020\006\022\024\n\020RESULT_NO"
+    "_SYSTEM\020\007\022\030\n\024RESULT_NOT_REQUESTED\020\010\"\"\n R"
     "equestAutopilotComponentRequest\"#\n!Reque"
     "stAutopilotComponentResponse\"#\n!Subscrib"
     "eMetadataAvailableRequest\"X\n\031MetadataAva"
@@ -745,6 +745,109 @@ void RequestComponentRequest::InternalSwap(RequestComponentRequest* PROTOBUF_RES
 
 ::google::protobuf::Metadata RequestComponentRequest::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class RequestComponentResponse::_Internal {
+ public:
+};
+
+RequestComponentResponse::RequestComponentResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.component_metadata.RequestComponentResponse)
+}
+RequestComponentResponse::RequestComponentResponse(
+    ::google::protobuf::Arena* arena,
+    const RequestComponentResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  RequestComponentResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.component_metadata.RequestComponentResponse)
+}
+
+inline void* RequestComponentResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) RequestComponentResponse(arena);
+}
+constexpr auto RequestComponentResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(RequestComponentResponse),
+                                            alignof(RequestComponentResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull RequestComponentResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_RequestComponentResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &RequestComponentResponse::MergeImpl,
+        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<RequestComponentResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &RequestComponentResponse::SharedDtor,
+        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<RequestComponentResponse>(), &RequestComponentResponse::ByteSizeLong,
+            &RequestComponentResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(RequestComponentResponse, _impl_._cached_size_),
+        false,
+    },
+    &RequestComponentResponse::kDescriptorMethods,
+    &descriptor_table_component_5fmetadata_2fcomponent_5fmetadata_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* RequestComponentResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 0, 0, 0, 2> RequestComponentResponse::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    0, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967295,  // skipmap
+    offsetof(decltype(_table_), field_names),  // no field_entries
+    0,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::component_metadata::RequestComponentResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }},
+  // no field_entries, or aux_entries
+  {{
+  }},
+};
+
+
+
+
+
+
+
+
+::google::protobuf::Metadata RequestComponentResponse::GetMetadata() const {
+  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
@@ -1775,109 +1878,6 @@ void ComponentMetadataResult::InternalSwap(ComponentMetadataResult* PROTOBUF_RES
 
 ::google::protobuf::Metadata ComponentMetadataResult::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
-}
-// ===================================================================
-
-class RequestComponentResponse::_Internal {
- public:
-};
-
-RequestComponentResponse::RequestComponentResponse(::google::protobuf::Arena* arena)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.component_metadata.RequestComponentResponse)
-}
-RequestComponentResponse::RequestComponentResponse(
-    ::google::protobuf::Arena* arena,
-    const RequestComponentResponse& from)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::internal::ZeroFieldsBase(arena, _class_data_.base()) {
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::internal::ZeroFieldsBase(arena) {
-#endif  // PROTOBUF_CUSTOM_VTABLE
-  RequestComponentResponse* const _this = this;
-  (void)_this;
-  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
-      from._internal_metadata_);
-
-  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.component_metadata.RequestComponentResponse)
-}
-
-inline void* RequestComponentResponse::PlacementNew_(const void*, void* mem,
-                                        ::google::protobuf::Arena* arena) {
-  return ::new (mem) RequestComponentResponse(arena);
-}
-constexpr auto RequestComponentResponse::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(RequestComponentResponse),
-                                            alignof(RequestComponentResponse));
-}
-PROTOBUF_CONSTINIT
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::google::protobuf::internal::ClassDataFull RequestComponentResponse::_class_data_ = {
-    ::google::protobuf::internal::ClassData{
-        &_RequestComponentResponse_default_instance_._instance,
-        &_table_.header,
-        nullptr,  // OnDemandRegisterArenaDtor
-        nullptr,  // IsInitialized
-        &RequestComponentResponse::MergeImpl,
-        ::google::protobuf::internal::ZeroFieldsBase::GetNewImpl<RequestComponentResponse>(),
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-        &RequestComponentResponse::SharedDtor,
-        ::google::protobuf::internal::ZeroFieldsBase::GetClearImpl<RequestComponentResponse>(), &RequestComponentResponse::ByteSizeLong,
-            &RequestComponentResponse::_InternalSerialize,
-#endif  // PROTOBUF_CUSTOM_VTABLE
-        PROTOBUF_FIELD_OFFSET(RequestComponentResponse, _impl_._cached_size_),
-        false,
-    },
-    &RequestComponentResponse::kDescriptorMethods,
-    &descriptor_table_component_5fmetadata_2fcomponent_5fmetadata_2eproto,
-    nullptr,  // tracker
-};
-const ::google::protobuf::internal::ClassData* RequestComponentResponse::GetClassData() const {
-  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
-  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
-  return _class_data_.base();
-}
-PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 0, 0, 0, 2> RequestComponentResponse::_table_ = {
-  {
-    0,  // no _has_bits_
-    0, // no _extensions_
-    0, 0,  // max_field_number, fast_idx_mask
-    offsetof(decltype(_table_), field_lookup_table),
-    4294967295,  // skipmap
-    offsetof(decltype(_table_), field_names),  // no field_entries
-    0,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
-    _class_data_.base(),
-    nullptr,  // post_loop_handler
-    ::_pbi::TcParser::GenericFallback,  // fallback
-    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::mavsdk::rpc::component_metadata::RequestComponentResponse>(),  // to_prefetch
-    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
-  }, {{
-    {::_pbi::TcParser::MiniParse, {}},
-  }}, {{
-    65535, 65535
-  }},
-  // no field_entries, or aux_entries
-  {{
-  }},
-};
-
-
-
-
-
-
-
-
-::google::protobuf::Metadata RequestComponentResponse::GetMetadata() const {
-  return ::google::protobuf::internal::ZeroFieldsBase::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
 
