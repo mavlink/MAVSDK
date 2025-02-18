@@ -44,8 +44,8 @@ if [ "$skip_checks" = false ]; then
 fi
 
 # Build and install locally.
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -B${BUILD_DIR} -H.;
-make -C${BUILD_DIR} install -j4;
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -B${BUILD_DIR} -H.
+make -C${BUILD_DIR} install -j$(nproc --all)
 
 return_result=0
 # Doxygen likes to run where the source is (because INPUT in .doxygen is empty),
