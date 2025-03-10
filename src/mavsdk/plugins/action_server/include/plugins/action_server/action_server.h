@@ -351,6 +351,28 @@ public:
     ActionServer::AllowableFlightModes get_allowable_flight_modes() const;
 
     /**
+     * @brief Set/override the armed/disarmed state of the vehicle directly, and notify subscribers
+     *
+     * This function is blocking.
+     *
+
+     * @return Result of request.
+
+     */
+    Result set_armed_state(bool is_armed) const;
+
+    /**
+     * @brief Set/override the flight mode of the vehicle directly, and notify subscribers
+     *
+     * This function is blocking.
+     *
+
+     * @return Result of request.
+
+     */
+    Result set_flight_mode(FlightMode flight_mode) const;
+
+    /**
      * @brief Copy constructor.
      */
     ActionServer(const ActionServer& other);

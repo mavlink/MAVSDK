@@ -148,6 +148,22 @@ class ActionServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>> PrepareAsyncGetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>>(PrepareAsyncGetAllowableFlightModesRaw(context, request, cq));
     }
+    // Set/override the armed/disarmed state of the vehicle directly, and notify subscribers
+    virtual ::grpc::Status SetArmedState(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest& request, ::mavsdk::rpc::action_server::SetArmedStateResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetArmedStateResponse>> AsyncSetArmedState(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetArmedStateResponse>>(AsyncSetArmedStateRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetArmedStateResponse>> PrepareAsyncSetArmedState(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetArmedStateResponse>>(PrepareAsyncSetArmedStateRaw(context, request, cq));
+    }
+    // Set/override the flight mode of the vehicle directly, and notify subscribers
+    virtual ::grpc::Status SetFlightMode(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest& request, ::mavsdk::rpc::action_server::SetFlightModeResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetFlightModeResponse>> AsyncSetFlightMode(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetFlightModeResponse>>(AsyncSetFlightModeRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetFlightModeResponse>> PrepareAsyncSetFlightMode(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetFlightModeResponse>>(PrepareAsyncSetFlightModeRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -180,6 +196,12 @@ class ActionServerService final {
       // Get which modes the vehicle can transition to (Manual always allowed)
       virtual void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Set/override the armed/disarmed state of the vehicle directly, and notify subscribers
+      virtual void SetArmedState(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest* request, ::mavsdk::rpc::action_server::SetArmedStateResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SetArmedState(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest* request, ::mavsdk::rpc::action_server::SetArmedStateResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Set/override the flight mode of the vehicle directly, and notify subscribers
+      virtual void SetFlightMode(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest* request, ::mavsdk::rpc::action_server::SetFlightModeResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SetFlightMode(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest* request, ::mavsdk::rpc::action_server::SetFlightModeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -216,6 +238,10 @@ class ActionServerService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>* PrepareAsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>* AsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>* PrepareAsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetArmedStateResponse>* AsyncSetArmedStateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetArmedStateResponse>* PrepareAsyncSetArmedStateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetFlightModeResponse>* AsyncSetFlightModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::action_server::SetFlightModeResponse>* PrepareAsyncSetFlightModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -318,6 +344,20 @@ class ActionServerService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>> PrepareAsyncGetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>>(PrepareAsyncGetAllowableFlightModesRaw(context, request, cq));
     }
+    ::grpc::Status SetArmedState(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest& request, ::mavsdk::rpc::action_server::SetArmedStateResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetArmedStateResponse>> AsyncSetArmedState(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetArmedStateResponse>>(AsyncSetArmedStateRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetArmedStateResponse>> PrepareAsyncSetArmedState(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetArmedStateResponse>>(PrepareAsyncSetArmedStateRaw(context, request, cq));
+    }
+    ::grpc::Status SetFlightMode(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest& request, ::mavsdk::rpc::action_server::SetFlightModeResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetFlightModeResponse>> AsyncSetFlightMode(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetFlightModeResponse>>(AsyncSetFlightModeRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetFlightModeResponse>> PrepareAsyncSetFlightMode(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetFlightModeResponse>>(PrepareAsyncSetFlightModeRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
@@ -338,6 +378,10 @@ class ActionServerService final {
       void SetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response, std::function<void(::grpc::Status)>) override;
       void GetAllowableFlightModes(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SetArmedState(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest* request, ::mavsdk::rpc::action_server::SetArmedStateResponse* response, std::function<void(::grpc::Status)>) override;
+      void SetArmedState(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest* request, ::mavsdk::rpc::action_server::SetArmedStateResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SetFlightMode(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest* request, ::mavsdk::rpc::action_server::SetFlightModeResponse* response, std::function<void(::grpc::Status)>) override;
+      void SetFlightMode(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest* request, ::mavsdk::rpc::action_server::SetFlightModeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -380,6 +424,10 @@ class ActionServerService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse>* PrepareAsyncSetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>* AsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>* PrepareAsyncGetAllowableFlightModesRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetArmedStateResponse>* AsyncSetArmedStateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetArmedStateResponse>* PrepareAsyncSetArmedStateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetFlightModeResponse>* AsyncSetFlightModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::action_server::SetFlightModeResponse>* PrepareAsyncSetFlightModeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeArmDisarm_;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeFlightModeChange_;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribeTakeoff_;
@@ -392,6 +440,8 @@ class ActionServerService final {
     const ::grpc::internal::RpcMethod rpcmethod_SetDisarmable_;
     const ::grpc::internal::RpcMethod rpcmethod_SetAllowableFlightModes_;
     const ::grpc::internal::RpcMethod rpcmethod_GetAllowableFlightModes_;
+    const ::grpc::internal::RpcMethod rpcmethod_SetArmedState_;
+    const ::grpc::internal::RpcMethod rpcmethod_SetFlightMode_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -423,6 +473,10 @@ class ActionServerService final {
     virtual ::grpc::Status SetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::SetAllowableFlightModesResponse* response);
     // Get which modes the vehicle can transition to (Manual always allowed)
     virtual ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* request, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* response);
+    // Set/override the armed/disarmed state of the vehicle directly, and notify subscribers
+    virtual ::grpc::Status SetArmedState(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest* request, ::mavsdk::rpc::action_server::SetArmedStateResponse* response);
+    // Set/override the flight mode of the vehicle directly, and notify subscribers
+    virtual ::grpc::Status SetFlightMode(::grpc::ServerContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest* request, ::mavsdk::rpc::action_server::SetFlightModeResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_SubscribeArmDisarm : public BaseClass {
@@ -664,7 +718,47 @@ class ActionServerService final {
       ::grpc::Service::RequestAsyncUnary(11, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SubscribeArmDisarm<WithAsyncMethod_SubscribeFlightModeChange<WithAsyncMethod_SubscribeTakeoff<WithAsyncMethod_SubscribeLand<WithAsyncMethod_SubscribeReboot<WithAsyncMethod_SubscribeShutdown<WithAsyncMethod_SubscribeTerminate<WithAsyncMethod_SetAllowTakeoff<WithAsyncMethod_SetArmable<WithAsyncMethod_SetDisarmable<WithAsyncMethod_SetAllowableFlightModes<WithAsyncMethod_GetAllowableFlightModes<Service > > > > > > > > > > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_SetArmedState : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SetArmedState() {
+      ::grpc::Service::MarkMethodAsync(12);
+    }
+    ~WithAsyncMethod_SetArmedState() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetArmedState(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetArmedStateRequest* /*request*/, ::mavsdk::rpc::action_server::SetArmedStateResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetArmedState(::grpc::ServerContext* context, ::mavsdk::rpc::action_server::SetArmedStateRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action_server::SetArmedStateResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(12, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_SetFlightMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SetFlightMode() {
+      ::grpc::Service::MarkMethodAsync(13);
+    }
+    ~WithAsyncMethod_SetFlightMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetFlightMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::SetFlightModeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetFlightMode(::grpc::ServerContext* context, ::mavsdk::rpc::action_server::SetFlightModeRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::action_server::SetFlightModeResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(13, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_SubscribeArmDisarm<WithAsyncMethod_SubscribeFlightModeChange<WithAsyncMethod_SubscribeTakeoff<WithAsyncMethod_SubscribeLand<WithAsyncMethod_SubscribeReboot<WithAsyncMethod_SubscribeShutdown<WithAsyncMethod_SubscribeTerminate<WithAsyncMethod_SetAllowTakeoff<WithAsyncMethod_SetArmable<WithAsyncMethod_SetDisarmable<WithAsyncMethod_SetAllowableFlightModes<WithAsyncMethod_GetAllowableFlightModes<WithAsyncMethod_SetArmedState<WithAsyncMethod_SetFlightMode<Service > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_SubscribeArmDisarm : public BaseClass {
    private:
@@ -954,7 +1048,61 @@ class ActionServerService final {
     virtual ::grpc::ServerUnaryReactor* GetAllowableFlightModes(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* /*request*/, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_SubscribeArmDisarm<WithCallbackMethod_SubscribeFlightModeChange<WithCallbackMethod_SubscribeTakeoff<WithCallbackMethod_SubscribeLand<WithCallbackMethod_SubscribeReboot<WithCallbackMethod_SubscribeShutdown<WithCallbackMethod_SubscribeTerminate<WithCallbackMethod_SetAllowTakeoff<WithCallbackMethod_SetArmable<WithCallbackMethod_SetDisarmable<WithCallbackMethod_SetAllowableFlightModes<WithCallbackMethod_GetAllowableFlightModes<Service > > > > > > > > > > > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_SetArmedState : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SetArmedState() {
+      ::grpc::Service::MarkMethodCallback(12,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::SetArmedStateRequest, ::mavsdk::rpc::action_server::SetArmedStateResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::action_server::SetArmedStateRequest* request, ::mavsdk::rpc::action_server::SetArmedStateResponse* response) { return this->SetArmedState(context, request, response); }));}
+    void SetMessageAllocatorFor_SetArmedState(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::action_server::SetArmedStateRequest, ::mavsdk::rpc::action_server::SetArmedStateResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(12);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::SetArmedStateRequest, ::mavsdk::rpc::action_server::SetArmedStateResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_SetArmedState() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetArmedState(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetArmedStateRequest* /*request*/, ::mavsdk::rpc::action_server::SetArmedStateResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetArmedState(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetArmedStateRequest* /*request*/, ::mavsdk::rpc::action_server::SetArmedStateResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_SetFlightMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SetFlightMode() {
+      ::grpc::Service::MarkMethodCallback(13,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::SetFlightModeRequest, ::mavsdk::rpc::action_server::SetFlightModeResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::action_server::SetFlightModeRequest* request, ::mavsdk::rpc::action_server::SetFlightModeResponse* response) { return this->SetFlightMode(context, request, response); }));}
+    void SetMessageAllocatorFor_SetFlightMode(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::action_server::SetFlightModeRequest, ::mavsdk::rpc::action_server::SetFlightModeResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(13);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::action_server::SetFlightModeRequest, ::mavsdk::rpc::action_server::SetFlightModeResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_SetFlightMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetFlightMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::SetFlightModeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetFlightMode(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::SetFlightModeResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_SubscribeArmDisarm<WithCallbackMethod_SubscribeFlightModeChange<WithCallbackMethod_SubscribeTakeoff<WithCallbackMethod_SubscribeLand<WithCallbackMethod_SubscribeReboot<WithCallbackMethod_SubscribeShutdown<WithCallbackMethod_SubscribeTerminate<WithCallbackMethod_SetAllowTakeoff<WithCallbackMethod_SetArmable<WithCallbackMethod_SetDisarmable<WithCallbackMethod_SetAllowableFlightModes<WithCallbackMethod_GetAllowableFlightModes<WithCallbackMethod_SetArmedState<WithCallbackMethod_SetFlightMode<Service > > > > > > > > > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SubscribeArmDisarm : public BaseClass {
@@ -1156,6 +1304,40 @@ class ActionServerService final {
     }
     // disable synchronous version of this method
     ::grpc::Status GetAllowableFlightModes(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest* /*request*/, ::mavsdk::rpc::action_server::GetAllowableFlightModesResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SetArmedState : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SetArmedState() {
+      ::grpc::Service::MarkMethodGeneric(12);
+    }
+    ~WithGenericMethod_SetArmedState() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetArmedState(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetArmedStateRequest* /*request*/, ::mavsdk::rpc::action_server::SetArmedStateResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_SetFlightMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SetFlightMode() {
+      ::grpc::Service::MarkMethodGeneric(13);
+    }
+    ~WithGenericMethod_SetFlightMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetFlightMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::SetFlightModeResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -1398,6 +1580,46 @@ class ActionServerService final {
     }
     void RequestGetAllowableFlightModes(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(11, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SetArmedState : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SetArmedState() {
+      ::grpc::Service::MarkMethodRaw(12);
+    }
+    ~WithRawMethod_SetArmedState() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetArmedState(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetArmedStateRequest* /*request*/, ::mavsdk::rpc::action_server::SetArmedStateResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetArmedState(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(12, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_SetFlightMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SetFlightMode() {
+      ::grpc::Service::MarkMethodRaw(13);
+    }
+    ~WithRawMethod_SetFlightMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetFlightMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::SetFlightModeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetFlightMode(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(13, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -1665,6 +1887,50 @@ class ActionServerService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithRawCallbackMethod_SetArmedState : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SetArmedState() {
+      ::grpc::Service::MarkMethodRawCallback(12,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetArmedState(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_SetArmedState() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetArmedState(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetArmedStateRequest* /*request*/, ::mavsdk::rpc::action_server::SetArmedStateResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetArmedState(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_SetFlightMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SetFlightMode() {
+      ::grpc::Service::MarkMethodRawCallback(13,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetFlightMode(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_SetFlightMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetFlightMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::SetFlightModeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetFlightMode(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_SetAllowTakeoff : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -1799,7 +2065,61 @@ class ActionServerService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedGetAllowableFlightModes(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::action_server::GetAllowableFlightModesRequest,::mavsdk::rpc::action_server::GetAllowableFlightModesResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_SetAllowTakeoff<WithStreamedUnaryMethod_SetArmable<WithStreamedUnaryMethod_SetDisarmable<WithStreamedUnaryMethod_SetAllowableFlightModes<WithStreamedUnaryMethod_GetAllowableFlightModes<Service > > > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_SetArmedState : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_SetArmedState() {
+      ::grpc::Service::MarkMethodStreamed(12,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::action_server::SetArmedStateRequest, ::mavsdk::rpc::action_server::SetArmedStateResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::action_server::SetArmedStateRequest, ::mavsdk::rpc::action_server::SetArmedStateResponse>* streamer) {
+                       return this->StreamedSetArmedState(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_SetArmedState() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SetArmedState(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetArmedStateRequest* /*request*/, ::mavsdk::rpc::action_server::SetArmedStateResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedSetArmedState(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::action_server::SetArmedStateRequest,::mavsdk::rpc::action_server::SetArmedStateResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_SetFlightMode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_SetFlightMode() {
+      ::grpc::Service::MarkMethodStreamed(13,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::action_server::SetFlightModeRequest, ::mavsdk::rpc::action_server::SetFlightModeResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::action_server::SetFlightModeRequest, ::mavsdk::rpc::action_server::SetFlightModeResponse>* streamer) {
+                       return this->StreamedSetFlightMode(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_SetFlightMode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SetFlightMode(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::action_server::SetFlightModeRequest* /*request*/, ::mavsdk::rpc::action_server::SetFlightModeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedSetFlightMode(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::action_server::SetFlightModeRequest,::mavsdk::rpc::action_server::SetFlightModeResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_SetAllowTakeoff<WithStreamedUnaryMethod_SetArmable<WithStreamedUnaryMethod_SetDisarmable<WithStreamedUnaryMethod_SetAllowableFlightModes<WithStreamedUnaryMethod_GetAllowableFlightModes<WithStreamedUnaryMethod_SetArmedState<WithStreamedUnaryMethod_SetFlightMode<Service > > > > > > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribeArmDisarm : public BaseClass {
    private:
@@ -1990,7 +2310,7 @@ class ActionServerService final {
     virtual ::grpc::Status StreamedSubscribeTerminate(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::action_server::SubscribeTerminateRequest,::mavsdk::rpc::action_server::TerminateResponse>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_SubscribeArmDisarm<WithSplitStreamingMethod_SubscribeFlightModeChange<WithSplitStreamingMethod_SubscribeTakeoff<WithSplitStreamingMethod_SubscribeLand<WithSplitStreamingMethod_SubscribeReboot<WithSplitStreamingMethod_SubscribeShutdown<WithSplitStreamingMethod_SubscribeTerminate<Service > > > > > > > SplitStreamedService;
-  typedef WithSplitStreamingMethod_SubscribeArmDisarm<WithSplitStreamingMethod_SubscribeFlightModeChange<WithSplitStreamingMethod_SubscribeTakeoff<WithSplitStreamingMethod_SubscribeLand<WithSplitStreamingMethod_SubscribeReboot<WithSplitStreamingMethod_SubscribeShutdown<WithSplitStreamingMethod_SubscribeTerminate<WithStreamedUnaryMethod_SetAllowTakeoff<WithStreamedUnaryMethod_SetArmable<WithStreamedUnaryMethod_SetDisarmable<WithStreamedUnaryMethod_SetAllowableFlightModes<WithStreamedUnaryMethod_GetAllowableFlightModes<Service > > > > > > > > > > > > StreamedService;
+  typedef WithSplitStreamingMethod_SubscribeArmDisarm<WithSplitStreamingMethod_SubscribeFlightModeChange<WithSplitStreamingMethod_SubscribeTakeoff<WithSplitStreamingMethod_SubscribeLand<WithSplitStreamingMethod_SubscribeReboot<WithSplitStreamingMethod_SubscribeShutdown<WithSplitStreamingMethod_SubscribeTerminate<WithStreamedUnaryMethod_SetAllowTakeoff<WithStreamedUnaryMethod_SetArmable<WithStreamedUnaryMethod_SetDisarmable<WithStreamedUnaryMethod_SetAllowableFlightModes<WithStreamedUnaryMethod_GetAllowableFlightModes<WithStreamedUnaryMethod_SetArmedState<WithStreamedUnaryMethod_SetFlightMode<Service > > > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace action_server

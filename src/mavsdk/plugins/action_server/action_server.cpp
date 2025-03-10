@@ -117,6 +117,16 @@ ActionServer::AllowableFlightModes ActionServer::get_allowable_flight_modes() co
     return _impl->get_allowable_flight_modes();
 }
 
+ActionServer::Result ActionServer::set_armed_state(bool is_armed) const
+{
+    return _impl->set_armed_state(is_armed);
+}
+
+ActionServer::Result ActionServer::set_flight_mode(FlightMode flight_mode) const
+{
+    return _impl->set_flight_mode(flight_mode);
+}
+
 bool operator==(
     const ActionServer::AllowableFlightModes& lhs, const ActionServer::AllowableFlightModes& rhs)
 {
