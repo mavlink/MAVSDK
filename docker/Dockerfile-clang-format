@@ -1,5 +1,7 @@
 #
-# Formatting helper for MAVSDK based on Ubuntu 24.04's clang-format-18
+# Formatting helper for MAVSDK based on Ubuntu 24.04's clang-format-18.
+#
+# This also contains doxygen to generate the docs.
 #
 # Author: Julian Oes <julian@oes.ch>
 #
@@ -14,6 +16,7 @@ RUN apt-get update \
         git \
         clang-format-18 \
         colordiff \
+        doxygen \
     && apt-get -y autoremove \
     && apt-get clean autoclean \
     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
