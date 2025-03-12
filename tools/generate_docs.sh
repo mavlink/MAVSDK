@@ -12,7 +12,25 @@ set -e
 
 echo "Generating docs"
 
-command -v doxygen >/dev/null 2>&1 || { echo "ERROR: 'doxygen' is required and was not found!"; exit 1; }
+show_docker_message() {
+    echo ""
+    echo "You can use doxygen from docker:"
+    echo ""
+    echo "    'tools/run-docker.sh tools/generate_docs.sh'"
+}
+
+if ! command -v doxygen >/dev/null 2>&1; then
+    echo "Error: 'doxygen' is required and was not found!"
+    show_docker_message
+    exit 1
+fi
+
+DOXYGEN_VERSION=$(doxygen --version)
+if [ "$DOXYGEN_VERSION" != "1.9.8" ]; then
+    echo "Error: Required Doxygen version 1.9.8 not found. Found version: $DOXYGEN_VERSION"
+    show_docker_message
+    exit 1
+fi
 
 # Get current directory of script.
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
