@@ -17,15 +17,11 @@ command -v doxygen >/dev/null 2>&1 || { echo "ERROR: 'doxygen' is required and w
 # Get current directory of script.
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-skip_checks=false
 overwrite=false
 
 if [ "$#" -ge 1 ]; then
     for arg in "$@"; do
         case "$arg" in
-            --skip-checks)
-                skip_checks=true
-                ;;
             --overwrite)
                 overwrite=true
                 ;;
@@ -35,13 +31,6 @@ fi
 
 BUILD_DIR="${SCRIPT_DIR}/../build-docs"
 INSTALL_DIR="${BUILD_DIR}/install"
-
-if [ "$skip_checks" = false ]; then
-    if [ -d ${BUILD_DIR} ] ; then
-	printf "\"${BUILD_DIR}\" already exists! Aborting...\n"
-	exit 1
-    fi
-fi
 
 # Build and install locally.
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${INSTALL_DIR} -B${BUILD_DIR} -H.
