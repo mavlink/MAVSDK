@@ -2,6 +2,7 @@
 #include "unused.h"
 #include "flight_mode.h"
 #include "callback_list.tpp"
+#include "px4_custom_mode.h"
 
 namespace mavsdk {
 
@@ -9,7 +10,8 @@ template class CallbackList<ActionServer::Result, ActionServer::ArmDisarm>;
 template class CallbackList<ActionServer::Result, ActionServer::FlightMode>;
 template class CallbackList<ActionServer::Result, bool>;
 
-ActionServer::FlightMode telemetry_flight_mode_from_flight_mode(FlightMode flight_mode)
+ActionServer::FlightMode
+ActionServerImpl::telemetry_flight_mode_from_flight_mode(FlightMode flight_mode)
 {
     switch (flight_mode) {
         case FlightMode::Ready:
@@ -41,6 +43,70 @@ ActionServer::FlightMode telemetry_flight_mode_from_flight_mode(FlightMode fligh
         default:
             return ActionServer::FlightMode::Unknown;
     }
+}
+
+uint32_t ActionServerImpl::to_px4_mode_from_flight_mode(ActionServer::FlightMode flight_mode)
+{
+    px4::px4_custom_mode px4_mode;
+    switch (flight_mode) {
+        case ActionServer::FlightMode::Ready:
+            px4_mode.main_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
+            px4_mode.sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_READY;
+            break;
+        case ActionServer::FlightMode::Takeoff:
+            px4_mode.main_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
+            px4_mode.sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF;
+            break;
+        case ActionServer::FlightMode::Hold:
+            px4_mode.main_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
+            px4_mode.sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LOITER;
+            break;
+        case ActionServer::FlightMode::Mission:
+            px4_mode.main_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
+            px4_mode.sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_MISSION;
+            break;
+        case ActionServer::FlightMode::ReturnToLaunch:
+            px4_mode.main_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
+            px4_mode.sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_RTL;
+            break;
+        case ActionServer::FlightMode::Land:
+            px4_mode.main_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
+            px4_mode.sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_LAND;
+            break;
+        case ActionServer::FlightMode::Offboard:
+            px4_mode.main_mode = px4::PX4_CUSTOM_MAIN_MODE_OFFBOARD;
+            px4_mode.sub_mode = 0;
+            break;
+        case ActionServer::FlightMode::FollowMe:
+            px4_mode.main_mode = px4::PX4_CUSTOM_MAIN_MODE_AUTO;
+            px4_mode.sub_mode = px4::PX4_CUSTOM_SUB_MODE_AUTO_FOLLOW_TARGET;
+            break;
+        case ActionServer::FlightMode::Manual:
+            px4_mode.main_mode = px4::PX4_CUSTOM_MAIN_MODE_MANUAL;
+            px4_mode.sub_mode = 0;
+            break;
+        case ActionServer::FlightMode::Posctl:
+            px4_mode.main_mode = px4::PX4_CUSTOM_MAIN_MODE_POSCTL;
+            px4_mode.sub_mode = 0;
+            break;
+        case ActionServer::FlightMode::Altctl:
+            px4_mode.main_mode = px4::PX4_CUSTOM_MAIN_MODE_ALTCTL;
+            px4_mode.sub_mode = 0;
+            break;
+        case ActionServer::FlightMode::Acro:
+            px4_mode.main_mode = px4::PX4_CUSTOM_MAIN_MODE_ACRO;
+            px4_mode.sub_mode = 0;
+            break;
+        case ActionServer::FlightMode::Stabilized:
+            px4_mode.main_mode = px4::PX4_CUSTOM_MAIN_MODE_STABILIZED;
+            px4_mode.sub_mode = 0;
+            break;
+        default:
+            px4_mode.main_mode = 0; // unknown
+            px4_mode.sub_mode = 0;
+            break;
+    }
+    return px4_mode.data;
 }
 
 ActionServerImpl::ActionServerImpl(std::shared_ptr<ServerComponent> server_component) :
@@ -138,7 +204,7 @@ void ActionServerImpl::init()
 
             if (is_custom) {
                 // PX4 uses custom modes
-                px4_custom_mode px4_mode{};
+                px4::px4_custom_mode px4_mode{};
                 px4_mode.main_mode = custom_mode;
                 px4_mode.sub_mode = sub_custom_mode;
                 auto system_flight_mode = to_flight_mode_from_px4_mode(px4_mode.data);
@@ -175,7 +241,7 @@ void ActionServerImpl::init()
             }
 
             // PX4...
-            px4_custom_mode px4_mode{};
+            px4::px4_custom_mode px4_mode{};
             px4_mode.data = get_custom_mode();
 
             if (allow_mode) {
@@ -331,6 +397,44 @@ ActionServer::AllowableFlightModes ActionServerImpl::get_allowable_flight_modes(
 {
     std::lock_guard<std::mutex> lock(_flight_mode_mutex);
     return _allowed_flight_modes;
+}
+
+ActionServer::Result ActionServerImpl::set_armed_state(bool armed)
+{
+    std::lock_guard<std::mutex> lock(_callback_mutex);
+    ActionServer::ArmDisarm arm_disarm{};
+
+    arm_disarm.arm = armed;
+    arm_disarm.force = true;
+    set_server_armed(armed);
+    _arm_disarm_callbacks.queue(
+        ActionServer::Result::Success, arm_disarm, [this](const auto& func) {
+            _server_component_impl->call_user_callback(func);
+        });
+    return ActionServer::Result::Success;
+}
+
+ActionServer::Result ActionServerImpl::set_flight_mode(ActionServer::FlightMode flight_mode)
+{
+    // note: currently on receipt of MAV_CMD_DO_SET_MODE, we error out if the mode
+    // is *not* PX4 custom. For symmetry we will also convert from FlightMode to
+    // PX4 custom when set directly.
+    std::lock_guard<std::mutex> lock(_callback_mutex);
+
+    px4::px4_custom_mode px4_mode{};
+    px4_mode.data = to_px4_mode_from_flight_mode(flight_mode);
+
+    uint8_t base_mode = get_base_mode();
+    base_mode |= MAV_MODE_FLAG_CUSTOM_MODE_ENABLED;
+    set_base_mode(base_mode);
+    set_custom_mode(px4_mode.data);
+
+    _flight_mode_change_callbacks.queue(
+        ActionServer::Result::Success, flight_mode, [this](const auto& func) {
+            _server_component_impl->call_user_callback(func);
+        });
+
+    return ActionServer::Result::Success;
 }
 
 void ActionServerImpl::set_base_mode(uint8_t base_mode)
