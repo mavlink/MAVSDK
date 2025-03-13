@@ -1036,7 +1036,10 @@ void TelemetryImpl::process_sys_status(const mavlink_message_t& message)
             sys_status.onboard_control_sensors_health & MAV_SYS_STATUS_SENSOR_3D_GYRO);
     }
 
-    if (sys_status.onboard_control_sensors_present & MAV_SYS_STATUS_SENSOR_3D_ACCEL) {
+    // PX4 v1.15.3 and previous has the bug that it doesn't set 3D_ACCEL present.
+    // Therefore, we ignore that and look at the health flag only.
+    if (sys_status.onboard_control_sensors_present & MAV_SYS_STATUS_SENSOR_3D_ACCEL ||
+        _system_impl->autopilot() == Autopilot::Px4) {
         set_health_accelerometer_calibration(
             sys_status.onboard_control_sensors_health & MAV_SYS_STATUS_SENSOR_3D_ACCEL);
     }
