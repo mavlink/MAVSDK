@@ -13,7 +13,7 @@ elif command -v clang-format >/dev/null; then
 else
     echo "You can use clang-format from docker:"
     echo ""
-    echo "    'tools/run-docker-clang-format.sh tools/fix_style.sh .'"
+    echo "    'tools/run-docker.sh tools/fix_style.sh .'"
     exit 1
 fi
 

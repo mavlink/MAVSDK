@@ -10,4 +10,4 @@ if [ -z "$DOCKER_CMD" ]; then
 fi
 
 # Use the found container runtime
-$DOCKER_CMD run -it --rm -v $(pwd):/home/user/MAVSDK:z -u `stat -c "%u:%g" $(pwd)` docker.io/mavsdk/mavsdk-clang-format "$@"
+$DOCKER_CMD run -it --rm -v $(pwd):/home/user/MAVSDK:z -u `stat -c "%u:%g" $(pwd)` docker.io/mavsdk/mavsdk-dev "$@"
