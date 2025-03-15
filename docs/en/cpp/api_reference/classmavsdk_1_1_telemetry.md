@@ -78,6 +78,7 @@ struct [Wind](structmavsdk_1_1_telemetry_1_1_wind.md)
 Type | Description
 --- | ---
 enum [FixType](#classmavsdk_1_1_telemetry_1a548213e1b26615d7b6d1b0b3934639de) | GPS fix type.
+enum [BatteryFunction](#classmavsdk_1_1_telemetry_1adf751b819a1a38fc2b02442b5d5dae60) | [Battery](structmavsdk_1_1_telemetry_1_1_battery.md) function type.
 enum [FlightMode](#classmavsdk_1_1_telemetry_1a8317d953a82a23654db6f14509acb4fe) | Flight modes.
 enum [StatusTextType](#classmavsdk_1_1_telemetry_1ada3ebb336abad223a98bc2a625e0e7d8) | Status types.
 enum [LandedState](#classmavsdk_1_1_telemetry_1ac6639935bc3b35b1da553cde41e8f046) | Landed State enumeration.
@@ -1073,6 +1074,20 @@ Value | Description
 <span id="classmavsdk_1_1_telemetry_1a548213e1b26615d7b6d1b0b3934639dea8372860807abaec59412bd6376f51b5f"></span> `FixDgps` | DGPS/SBAS aided 3D position. 
 <span id="classmavsdk_1_1_telemetry_1a548213e1b26615d7b6d1b0b3934639dea1eacb557d24c49af2ec6832c5fc32413"></span> `RtkFloat` | RTK float, 3D position. 
 <span id="classmavsdk_1_1_telemetry_1a548213e1b26615d7b6d1b0b3934639dea9effa0afed44833d540fec2c57e67426"></span> `RtkFixed` | RTK Fixed, 3D position. 
+
+### enum BatteryFunction {#classmavsdk_1_1_telemetry_1adf751b819a1a38fc2b02442b5d5dae60}
+
+
+[Battery](structmavsdk_1_1_telemetry_1_1_battery.md) function type.
+
+
+Value | Description
+--- | ---
+<span id="classmavsdk_1_1_telemetry_1adf751b819a1a38fc2b02442b5d5dae60a88183b946cc5f0e8c96b2e66e1c74a7e"></span> `Unknown` | [Battery](structmavsdk_1_1_telemetry_1_1_battery.md) function is unknown. 
+<span id="classmavsdk_1_1_telemetry_1adf751b819a1a38fc2b02442b5d5dae60ab1c94ca2fbc3e78fc30069c8d0f01680"></span> `All` | [Battery](structmavsdk_1_1_telemetry_1_1_battery.md) supports all flight systems. 
+<span id="classmavsdk_1_1_telemetry_1adf751b819a1a38fc2b02442b5d5dae60ae93e4a139c6304e9f1b4757fc8b7f169"></span> `Propulsion` | [Battery](structmavsdk_1_1_telemetry_1_1_battery.md) for the propulsion system. 
+<span id="classmavsdk_1_1_telemetry_1adf751b819a1a38fc2b02442b5d5dae60a0035c3a4fba659233a189e32e1849421"></span> `Avionics` | Avionics battery. 
+<span id="classmavsdk_1_1_telemetry_1adf751b819a1a38fc2b02442b5d5dae60a00f4e5788aab6d3546bb433842dbbefc"></span> `Payload` | Payload battery. 
 
 ### enum FlightMode {#classmavsdk_1_1_telemetry_1a8317d953a82a23654db6f14509acb4fe}
 

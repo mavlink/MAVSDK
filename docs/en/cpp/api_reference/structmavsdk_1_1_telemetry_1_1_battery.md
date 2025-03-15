@@ -22,6 +22,10 @@ float [capacity_consumed_ah](#structmavsdk_1_1_telemetry_1_1_battery_1a3593f72c6
 
 float [remaining_percent](#structmavsdk_1_1_telemetry_1_1_battery_1aec821550739844e0fa3fe18f91e6fda7) { float(NAN)} - Estimated battery remaining (range: 0 to 100)
 
+float [time_remaining_s](#structmavsdk_1_1_telemetry_1_1_battery_1a9dd00470568d20ccda1b502f8ddf4ff1) {float(NAN)} - Estimated battery usage time remaining.
+
+[BatteryFunction](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1adf751b819a1a38fc2b02442b5d5dae60) [battery_function](#structmavsdk_1_1_telemetry_1_1_battery_1a45654c797ef33bb134ac30313b73098c) {} - Function of the battery.
+
 
 ## Field Documentation
 
@@ -84,4 +88,24 @@ float mavsdk::Telemetry::Battery::remaining_percent { float(NAN)}
 
 
 Estimated battery remaining (range: 0 to 100)
+
+
+### time_remaining_s {#structmavsdk_1_1_telemetry_1_1_battery_1a9dd00470568d20ccda1b502f8ddf4ff1}
+
+```cpp
+float mavsdk::Telemetry::Battery::time_remaining_s {float(NAN)}
+```
+
+
+Estimated battery usage time remaining.
+
+
+### battery_function {#structmavsdk_1_1_telemetry_1_1_battery_1a45654c797ef33bb134ac30313b73098c}
+
+```cpp
+BatteryFunction mavsdk::Telemetry::Battery::battery_function {}
+```
+
+
+Function of the battery.
 

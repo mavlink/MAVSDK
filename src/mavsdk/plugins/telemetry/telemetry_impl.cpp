@@ -1155,7 +1155,34 @@ void TelemetryImpl::process_battery_status(const mavlink_message_t& message)
     new_battery.capacity_consumed_ah = (bat_status.current_consumed == -1) ?
                                            static_cast<float>(NAN) :
                                            bat_status.current_consumed * 1e-3f; // mAh to Ah
+    new_battery.time_remaining_s =
+        (bat_status.time_remaining == std::numeric_limits<int16_t>::max()) ?
+            static_cast<float>(NAN) :
+            bat_status.time_remaining;
 
+    Telemetry::BatteryFunction battery_function;
+    switch (bat_status.battery_function) {
+        case 0:
+            battery_function = Telemetry::BatteryFunction::Unknown;
+            break;
+        case 1:
+            battery_function = Telemetry::BatteryFunction::All;
+            break;
+        case 2:
+            battery_function = Telemetry::BatteryFunction::Propulsion;
+            break;
+        case 3:
+            battery_function = Telemetry::BatteryFunction::Avionics;
+            break;
+        case 4:
+            battery_function = Telemetry::BatteryFunction::Payload;
+            break;
+
+        default:
+            battery_function = Telemetry::BatteryFunction::Unknown;
+            break;
+    }
+    new_battery.battery_function = battery_function;
     set_battery(new_battery);
 
     {

@@ -80,6 +80,25 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Telemetry::FixType const& fix_type);
 
     /**
+     * @brief Battery function type.
+     */
+    enum class BatteryFunction {
+        Unknown, /**< @brief Battery function is unknown. */
+        All, /**< @brief Battery supports all flight systems. */
+        Propulsion, /**< @brief Battery for the propulsion system. */
+        Avionics, /**< @brief Avionics battery. */
+        Payload, /**< @brief Payload battery. */
+    };
+
+    /**
+     * @brief Stream operator to print information about a `Telemetry::BatteryFunction`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream&
+    operator<<(std::ostream& str, Telemetry::BatteryFunction const& battery_function);
+
+    /**
      * @brief Flight modes.
      *
      * For more information about flight modes, check out
@@ -383,6 +402,8 @@ public:
                             consumption estimate */
         float remaining_percent{
             float(NAN)}; /**< @brief Estimated battery remaining (range: 0 to 100) */
+        float time_remaining_s{float(NAN)}; /**< @brief Estimated battery usage time remaining */
+        BatteryFunction battery_function{}; /**< @brief Function of the battery */
     };
 
     /**
