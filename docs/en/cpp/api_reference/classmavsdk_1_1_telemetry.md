@@ -70,6 +70,8 @@ struct [VelocityBody](structmavsdk_1_1_telemetry_1_1_velocity_body.md)
 
 struct [VelocityNed](structmavsdk_1_1_telemetry_1_1_velocity_ned.md)
 
+struct [Wind](structmavsdk_1_1_telemetry_1_1_wind.md)
+
 ## Public Types
 
 
@@ -146,6 +148,8 @@ std::function< void([Heading](structmavsdk_1_1_telemetry_1_1_heading.md))> [Head
 [Handle](classmavsdk_1_1_handle.md)< [Heading](structmavsdk_1_1_telemetry_1_1_heading.md) > [HeadingHandle](#classmavsdk_1_1_telemetry_1a11cc43135c8162fd8478ba76a5b3166d) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_heading.
 std::function< void([Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md))> [AltitudeCallback](#classmavsdk_1_1_telemetry_1a868986de0ab3990d4fe1ec842bce6adf) | Callback type for subscribe_altitude.
 [Handle](classmavsdk_1_1_handle.md)< [Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md) > [AltitudeHandle](#classmavsdk_1_1_telemetry_1ae0714c14e07a08b4748c96ea20f1d12f) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_altitude.
+std::function< void([Wind](structmavsdk_1_1_telemetry_1_1_wind.md))> [WindCallback](#classmavsdk_1_1_telemetry_1a0ff4ab8c8680623cd92d82f169f54981) | Callback type for subscribe_wind.
+[Handle](classmavsdk_1_1_handle.md)< [Wind](structmavsdk_1_1_telemetry_1_1_wind.md) > [WindHandle](#classmavsdk_1_1_telemetry_1acdbf0937e0462ba9aac95ba1c9ca546e) | [Handle](classmavsdk_1_1_handle.md) type for subscribe_wind.
 std::function< void([Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75), [GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md))> [GetGpsGlobalOriginCallback](#classmavsdk_1_1_telemetry_1a350ee89a7e30a691e130e29ace8917ef) | Callback type for get_gps_global_origin_async.
 
 ## Public Member Functions
@@ -253,6 +257,9 @@ void | [unsubscribe_heading](#classmavsdk_1_1_telemetry_1afe400d67b33f60a43d3bd8
 [AltitudeHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1ae0714c14e07a08b4748c96ea20f1d12f) | [subscribe_altitude](#classmavsdk_1_1_telemetry_1ae50ada2726b9a074157c73ddf0894b23) (const [AltitudeCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a868986de0ab3990d4fe1ec842bce6adf) & callback) | Subscribe to '[Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md)' updates.
 void | [unsubscribe_altitude](#classmavsdk_1_1_telemetry_1aee258bae5149771cf37a6e5b5d63415c) ([AltitudeHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1ae0714c14e07a08b4748c96ea20f1d12f) handle) | Unsubscribe from subscribe_altitude.
 [Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md) | [altitude](#classmavsdk_1_1_telemetry_1a53f3c06d9b4e0f737f69c060c2be621d) () const | Poll for '[Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md)' (blocking).
+[WindHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1acdbf0937e0462ba9aac95ba1c9ca546e) | [subscribe_wind](#classmavsdk_1_1_telemetry_1a43ebab5f79023a0eff73f77380ddc435) (const [WindCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a0ff4ab8c8680623cd92d82f169f54981) & callback) | Subscribe to '[Wind](structmavsdk_1_1_telemetry_1_1_wind.md) Estimated' updates.
+void | [unsubscribe_wind](#classmavsdk_1_1_telemetry_1a93484d506878a4cc843f04983a9cc8e7) ([WindHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1acdbf0937e0462ba9aac95ba1c9ca546e) handle) | Unsubscribe from subscribe_wind.
+[Wind](structmavsdk_1_1_telemetry_1_1_wind.md) | [wind](#classmavsdk_1_1_telemetry_1a3944ec0785e10ec847ac7c72772447c2) () const | Poll for '[Wind](structmavsdk_1_1_telemetry_1_1_wind.md)' (blocking).
 void | [set_rate_position_async](#classmavsdk_1_1_telemetry_1ad7e5b576edb9398c8f5f2f14626b984a) (double rate_hz, const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) callback) | Set rate to 'position' updates.
 [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) | [set_rate_position](#classmavsdk_1_1_telemetry_1a665439f3d5f8c58b3ef3dd427cf4782b) (double rate_hz)const | Set rate to 'position' updates.
 void | [set_rate_home_async](#classmavsdk_1_1_telemetry_1a098f4c4f50fc3ac2c153ef152208fbbe) (double rate_hz, const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) callback) | Set rate to 'home position' updates.
@@ -300,8 +307,8 @@ void | [set_rate_distance_sensor_async](#classmavsdk_1_1_telemetry_1a0371c470866
 void | [set_rate_altitude_async](#classmavsdk_1_1_telemetry_1a15461dd3f64aef2b921c9f06ee144bc1) (double rate_hz, const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) callback) | Set rate to '[Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md)' updates.
 [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) | [set_rate_altitude](#classmavsdk_1_1_telemetry_1a100fc786b86637385c6188ea53121b98) (double rate_hz)const | Set rate to '[Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md)' updates.
 void | [get_gps_global_origin_async](#classmavsdk_1_1_telemetry_1a60cca43e2f87e3fd3a9e170ff2b64e0a) (const [GetGpsGlobalOriginCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a350ee89a7e30a691e130e29ace8917ef) callback) | Get the GPS location of where the estimator has been initialized.
-std::pair< [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75), [Telemetry::GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md) > | [get_gps_global_origin](#classmavsdk_1_1_telemetry_1a341b90234b30a27bb25670a31303e0cd) () const | Get the GPS location of where the estimator has been initialized.
-const [Telemetry](classmavsdk_1_1_telemetry.md) & | [operator=](#classmavsdk_1_1_telemetry_1ae606a3e3814c773a12035c2674a00c5c) (const [Telemetry](classmavsdk_1_1_telemetry.md) &)=delete | Equality operator (object is not copyable).
+std::pair< [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75), [Telemetry::GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md) > | [get_gps_global_origin](#classmavsdk_1_1_telemetry_1a77747e7cea5a4d644bd6bec9441c7bfb) () const | Get the GPS location of where the estimator has been initialized.
+const [Telemetry](classmavsdk_1_1_telemetry.md) & | [operator=](#classmavsdk_1_1_telemetry_1a703ac978c925be8806921925cf16aca9) (const [Telemetry](classmavsdk_1_1_telemetry.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -1016,6 +1023,26 @@ using mavsdk::Telemetry::AltitudeHandle =  Handle<Altitude>
 
 
 [Handle](classmavsdk_1_1_handle.md) type for subscribe_altitude.
+
+
+### typedef WindCallback {#classmavsdk_1_1_telemetry_1a0ff4ab8c8680623cd92d82f169f54981}
+
+```cpp
+using mavsdk::Telemetry::WindCallback =  std::function<void(Wind)>
+```
+
+
+Callback type for subscribe_wind.
+
+
+### typedef WindHandle {#classmavsdk_1_1_telemetry_1acdbf0937e0462ba9aac95ba1c9ca546e}
+
+```cpp
+using mavsdk::Telemetry::WindHandle =  Handle<Wind>
+```
+
+
+[Handle](classmavsdk_1_1_handle.md) type for subscribe_wind.
 
 
 ### typedef GetGpsGlobalOriginCallback {#classmavsdk_1_1_telemetry_1a350ee89a7e30a691e130e29ace8917ef}
@@ -2513,6 +2540,49 @@ Poll for '[Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md)' (blocking).
 
 &emsp;[Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md) - One [Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md) update.
 
+### subscribe_wind() {#classmavsdk_1_1_telemetry_1a43ebab5f79023a0eff73f77380ddc435}
+```cpp
+WindHandle mavsdk::Telemetry::subscribe_wind(const WindCallback &callback)
+```
+
+
+Subscribe to '[Wind](structmavsdk_1_1_telemetry_1_1_wind.md) Estimated' updates.
+
+
+**Parameters**
+
+* const [WindCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a0ff4ab8c8680623cd92d82f169f54981)& **callback** - 
+
+**Returns**
+
+&emsp;[WindHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1acdbf0937e0462ba9aac95ba1c9ca546e) - 
+
+### unsubscribe_wind() {#classmavsdk_1_1_telemetry_1a93484d506878a4cc843f04983a9cc8e7}
+```cpp
+void mavsdk::Telemetry::unsubscribe_wind(WindHandle handle)
+```
+
+
+Unsubscribe from subscribe_wind.
+
+
+**Parameters**
+
+* [WindHandle](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1acdbf0937e0462ba9aac95ba1c9ca546e) **handle** - 
+
+### wind() {#classmavsdk_1_1_telemetry_1a3944ec0785e10ec847ac7c72772447c2}
+```cpp
+Wind mavsdk::Telemetry::wind() const
+```
+
+
+Poll for '[Wind](structmavsdk_1_1_telemetry_1_1_wind.md)' (blocking).
+
+
+**Returns**
+
+&emsp;[Wind](structmavsdk_1_1_telemetry_1_1_wind.md) - One [Wind](structmavsdk_1_1_telemetry_1_1_wind.md) update.
+
 ### set_rate_position_async() {#classmavsdk_1_1_telemetry_1ad7e5b576edb9398c8f5f2f14626b984a}
 ```cpp
 void mavsdk::Telemetry::set_rate_position_async(double rate_hz, const ResultCallback callback)
@@ -3286,9 +3356,9 @@ This function is non-blocking. See 'get_gps_global_origin' for the blocking coun
 
 * const [GetGpsGlobalOriginCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a350ee89a7e30a691e130e29ace8917ef) **callback** - 
 
-### get_gps_global_origin() {#classmavsdk_1_1_telemetry_1a341b90234b30a27bb25670a31303e0cd}
+### get_gps_global_origin() {#classmavsdk_1_1_telemetry_1a77747e7cea5a4d644bd6bec9441c7bfb}
 ```cpp
-std::pair< Result, Telemetry::GpsGlobalOrigin > mavsdk::Telemetry::get_gps_global_origin() const
+std::pair<Result, Telemetry::GpsGlobalOrigin> mavsdk::Telemetry::get_gps_global_origin() const
 ```
 
 
@@ -3300,9 +3370,9 @@ This function is blocking. See 'get_gps_global_origin_async' for the non-blockin
 
 &emsp;std::pair< [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75), [Telemetry::GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md) > - Result of request.
 
-### operator=() {#classmavsdk_1_1_telemetry_1ae606a3e3814c773a12035c2674a00c5c}
+### operator=() {#classmavsdk_1_1_telemetry_1a703ac978c925be8806921925cf16aca9}
 ```cpp
-const Telemetry & mavsdk::Telemetry::operator=(const Telemetry &)=delete
+const Telemetry& mavsdk::Telemetry::operator=(const Telemetry &)=delete
 ```
 
 
