@@ -2522,8 +2522,7 @@ void TelemetryImpl::unsubscribe_altitude(Telemetry::AltitudeHandle handle)
     _altitude_subscriptions.unsubscribe(handle);
 }
 
-Telemetry::WindHandle
-TelemetryImpl::subscribe_wind(const Telemetry::WindCallback& callback)
+Telemetry::WindHandle TelemetryImpl::subscribe_wind(const Telemetry::WindCallback& callback)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     return _wind_subscriptions.subscribe(callback);
