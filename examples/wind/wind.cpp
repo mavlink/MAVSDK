@@ -62,11 +62,14 @@ int main(int argc, char** argv)
         std::cout << "Wind_X_NED: " << wind.wind_x_ned_m_s << " m/s\n"
                   << "Wind_Y_NED: " << wind.wind_y_ned_m_s << " m/s\n"
                   << "Wind_Z_NED: " << wind.wind_z_ned_m_s << " m/s\n"
-                  << "Horizontal_Variability: " << wind.horizontal_variability_stddev_m_s << " m/s\n"
+                  << "Horizontal_Variability: " << wind.horizontal_variability_stddev_m_s
+                  << " m/s\n"
                   << "Vertical_Variability: " << wind.vertical_variability_stddev_m_s << " m/s\n"
                   << "Wind_Altitude: " << wind.wind_altitude_msl_m << " m\n"
-                  << "Horizontal_Wind_Speed_Accuracy: " << wind.horizontal_wind_speed_accuracy_m_s << " m/s\n"
-                  << "Vertical_Wind_Speed_Accuracy: " << wind.vertical_wind_speed_accuracy_m_s << " m/s\n"
+                  << "Horizontal_Wind_Speed_Accuracy: " << wind.horizontal_wind_speed_accuracy_m_s
+                  << " m/s\n"
+                  << "Vertical_Wind_Speed_Accuracy: " << wind.vertical_wind_speed_accuracy_m_s
+                  << " m/s\n"
                   << std::endl;
     };
 
