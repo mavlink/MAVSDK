@@ -612,6 +612,42 @@ inline bool FixType_Parse(absl::string_view name, FixType* value) {
   return ::google::protobuf::internal::ParseNamedEnum<FixType>(
       FixType_descriptor(), name, value);
 }
+enum BatteryFunction : int {
+  BATTERY_FUNCTION_UNKNOWN = 0,
+  BATTERY_FUNCTION_ALL = 1,
+  BATTERY_FUNCTION_PROPULSION = 2,
+  BATTERY_FUNCTION_AVIONICS = 3,
+  BATTERY_FUNCTION_PAYLOAD = 4,
+  BatteryFunction_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  BatteryFunction_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool BatteryFunction_IsValid(int value);
+extern const uint32_t BatteryFunction_internal_data_[];
+constexpr BatteryFunction BatteryFunction_MIN = static_cast<BatteryFunction>(0);
+constexpr BatteryFunction BatteryFunction_MAX = static_cast<BatteryFunction>(4);
+constexpr int BatteryFunction_ARRAYSIZE = 4 + 1;
+const ::google::protobuf::EnumDescriptor*
+BatteryFunction_descriptor();
+template <typename T>
+const std::string& BatteryFunction_Name(T value) {
+  static_assert(std::is_same<T, BatteryFunction>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to BatteryFunction_Name().");
+  return BatteryFunction_Name(static_cast<BatteryFunction>(value));
+}
+template <>
+inline const std::string& BatteryFunction_Name(BatteryFunction value) {
+  return ::google::protobuf::internal::NameOfDenseEnum<BatteryFunction_descriptor,
+                                                 0, 4>(
+      static_cast<int>(value));
+}
+inline bool BatteryFunction_Parse(absl::string_view name, BatteryFunction* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<BatteryFunction>(
+      BatteryFunction_descriptor(), name, value);
+}
 enum FlightMode : int {
   FLIGHT_MODE_UNKNOWN = 0,
   FLIGHT_MODE_READY = 1,
@@ -16216,6 +16252,8 @@ class Battery final
     kCurrentBatteryAFieldNumber = 4,
     kCapacityConsumedAhFieldNumber = 5,
     kRemainingPercentFieldNumber = 6,
+    kTimeRemainingSFieldNumber = 7,
+    kBatteryFunctionFieldNumber = 8,
   };
   // uint32 id = 1 [(.mavsdk.options.default_value) = "0"];
   void clear_id() ;
@@ -16277,12 +16315,32 @@ class Battery final
   void _internal_set_remaining_percent(float value);
 
   public:
+  // float time_remaining_s = 7 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_time_remaining_s() ;
+  float time_remaining_s() const;
+  void set_time_remaining_s(float value);
+
+  private:
+  float _internal_time_remaining_s() const;
+  void _internal_set_time_remaining_s(float value);
+
+  public:
+  // .mavsdk.rpc.telemetry.BatteryFunction battery_function = 8;
+  void clear_battery_function() ;
+  ::mavsdk::rpc::telemetry::BatteryFunction battery_function() const;
+  void set_battery_function(::mavsdk::rpc::telemetry::BatteryFunction value);
+
+  private:
+  ::mavsdk::rpc::telemetry::BatteryFunction _internal_battery_function() const;
+  void _internal_set_battery_function(::mavsdk::rpc::telemetry::BatteryFunction value);
+
+  public:
   // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.Battery)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      3, 6, 0,
+      3, 8, 0,
       0, 2>
       _table_;
 
@@ -16306,6 +16364,8 @@ class Battery final
     float current_battery_a_;
     float capacity_consumed_ah_;
     float remaining_percent_;
+    float time_remaining_s_;
+    int battery_function_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -35692,6 +35752,50 @@ inline void Battery::_internal_set_remaining_percent(float value) {
   _impl_.remaining_percent_ = value;
 }
 
+// float time_remaining_s = 7 [(.mavsdk.options.default_value) = "NaN"];
+inline void Battery::clear_time_remaining_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.time_remaining_s_ = 0;
+}
+inline float Battery::time_remaining_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Battery.time_remaining_s)
+  return _internal_time_remaining_s();
+}
+inline void Battery::set_time_remaining_s(float value) {
+  _internal_set_time_remaining_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Battery.time_remaining_s)
+}
+inline float Battery::_internal_time_remaining_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.time_remaining_s_;
+}
+inline void Battery::_internal_set_time_remaining_s(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.time_remaining_s_ = value;
+}
+
+// .mavsdk.rpc.telemetry.BatteryFunction battery_function = 8;
+inline void Battery::clear_battery_function() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.battery_function_ = 0;
+}
+inline ::mavsdk::rpc::telemetry::BatteryFunction Battery::battery_function() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Battery.battery_function)
+  return _internal_battery_function();
+}
+inline void Battery::set_battery_function(::mavsdk::rpc::telemetry::BatteryFunction value) {
+  _internal_set_battery_function(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Battery.battery_function)
+}
+inline ::mavsdk::rpc::telemetry::BatteryFunction Battery::_internal_battery_function() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return static_cast<::mavsdk::rpc::telemetry::BatteryFunction>(_impl_.battery_function_);
+}
+inline void Battery::_internal_set_battery_function(::mavsdk::rpc::telemetry::BatteryFunction value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.battery_function_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // Health
@@ -38649,6 +38753,12 @@ struct is_proto_enum<::mavsdk::rpc::telemetry::FixType> : std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::telemetry::FixType>() {
   return ::mavsdk::rpc::telemetry::FixType_descriptor();
+}
+template <>
+struct is_proto_enum<::mavsdk::rpc::telemetry::BatteryFunction> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::mavsdk::rpc::telemetry::BatteryFunction>() {
+  return ::mavsdk::rpc::telemetry::BatteryFunction_descriptor();
 }
 template <>
 struct is_proto_enum<::mavsdk::rpc::telemetry::FlightMode> : std::true_type {};

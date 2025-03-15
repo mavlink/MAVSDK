@@ -76,6 +76,7 @@ struct [VelocityNed](structmavsdk_1_1_telemetry_1_1_velocity_ned.md)
 Type | Description
 --- | ---
 enum [FixType](#classmavsdk_1_1_telemetry_1a548213e1b26615d7b6d1b0b3934639de) | GPS fix type.
+enum [BatteryFunction](#classmavsdk_1_1_telemetry_1adf751b819a1a38fc2b02442b5d5dae60) | [Battery](structmavsdk_1_1_telemetry_1_1_battery.md) function type.
 enum [FlightMode](#classmavsdk_1_1_telemetry_1a8317d953a82a23654db6f14509acb4fe) | Flight modes.
 enum [StatusTextType](#classmavsdk_1_1_telemetry_1ada3ebb336abad223a98bc2a625e0e7d8) | Status types.
 enum [LandedState](#classmavsdk_1_1_telemetry_1ac6639935bc3b35b1da553cde41e8f046) | Landed State enumeration.
@@ -300,8 +301,8 @@ void | [set_rate_distance_sensor_async](#classmavsdk_1_1_telemetry_1a0371c470866
 void | [set_rate_altitude_async](#classmavsdk_1_1_telemetry_1a15461dd3f64aef2b921c9f06ee144bc1) (double rate_hz, const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) callback) | Set rate to '[Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md)' updates.
 [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) | [set_rate_altitude](#classmavsdk_1_1_telemetry_1a100fc786b86637385c6188ea53121b98) (double rate_hz)const | Set rate to '[Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md)' updates.
 void | [get_gps_global_origin_async](#classmavsdk_1_1_telemetry_1a60cca43e2f87e3fd3a9e170ff2b64e0a) (const [GetGpsGlobalOriginCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a350ee89a7e30a691e130e29ace8917ef) callback) | Get the GPS location of where the estimator has been initialized.
-std::pair< [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75), [Telemetry::GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md) > | [get_gps_global_origin](#classmavsdk_1_1_telemetry_1a341b90234b30a27bb25670a31303e0cd) () const | Get the GPS location of where the estimator has been initialized.
-const [Telemetry](classmavsdk_1_1_telemetry.md) & | [operator=](#classmavsdk_1_1_telemetry_1ae606a3e3814c773a12035c2674a00c5c) (const [Telemetry](classmavsdk_1_1_telemetry.md) &)=delete | Equality operator (object is not copyable).
+std::pair< [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75), [Telemetry::GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md) > | [get_gps_global_origin](#classmavsdk_1_1_telemetry_1a77747e7cea5a4d644bd6bec9441c7bfb) () const | Get the GPS location of where the estimator has been initialized.
+const [Telemetry](classmavsdk_1_1_telemetry.md) & | [operator=](#classmavsdk_1_1_telemetry_1a703ac978c925be8806921925cf16aca9) (const [Telemetry](classmavsdk_1_1_telemetry.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -1046,6 +1047,20 @@ Value | Description
 <span id="classmavsdk_1_1_telemetry_1a548213e1b26615d7b6d1b0b3934639dea8372860807abaec59412bd6376f51b5f"></span> `FixDgps` | DGPS/SBAS aided 3D position. 
 <span id="classmavsdk_1_1_telemetry_1a548213e1b26615d7b6d1b0b3934639dea1eacb557d24c49af2ec6832c5fc32413"></span> `RtkFloat` | RTK float, 3D position. 
 <span id="classmavsdk_1_1_telemetry_1a548213e1b26615d7b6d1b0b3934639dea9effa0afed44833d540fec2c57e67426"></span> `RtkFixed` | RTK Fixed, 3D position. 
+
+### enum BatteryFunction {#classmavsdk_1_1_telemetry_1adf751b819a1a38fc2b02442b5d5dae60}
+
+
+[Battery](structmavsdk_1_1_telemetry_1_1_battery.md) function type.
+
+
+Value | Description
+--- | ---
+<span id="classmavsdk_1_1_telemetry_1adf751b819a1a38fc2b02442b5d5dae60a88183b946cc5f0e8c96b2e66e1c74a7e"></span> `Unknown` | [Battery](structmavsdk_1_1_telemetry_1_1_battery.md) function is unknown. 
+<span id="classmavsdk_1_1_telemetry_1adf751b819a1a38fc2b02442b5d5dae60ab1c94ca2fbc3e78fc30069c8d0f01680"></span> `All` | [Battery](structmavsdk_1_1_telemetry_1_1_battery.md) supports all flight systems. 
+<span id="classmavsdk_1_1_telemetry_1adf751b819a1a38fc2b02442b5d5dae60ae93e4a139c6304e9f1b4757fc8b7f169"></span> `Propulsion` | [Battery](structmavsdk_1_1_telemetry_1_1_battery.md) for the propulsion system. 
+<span id="classmavsdk_1_1_telemetry_1adf751b819a1a38fc2b02442b5d5dae60a0035c3a4fba659233a189e32e1849421"></span> `Avionics` | Avionics battery. 
+<span id="classmavsdk_1_1_telemetry_1adf751b819a1a38fc2b02442b5d5dae60a00f4e5788aab6d3546bb433842dbbefc"></span> `Payload` | Payload battery. 
 
 ### enum FlightMode {#classmavsdk_1_1_telemetry_1a8317d953a82a23654db6f14509acb4fe}
 
@@ -3286,9 +3301,9 @@ This function is non-blocking. See 'get_gps_global_origin' for the blocking coun
 
 * const [GetGpsGlobalOriginCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a350ee89a7e30a691e130e29ace8917ef) **callback** - 
 
-### get_gps_global_origin() {#classmavsdk_1_1_telemetry_1a341b90234b30a27bb25670a31303e0cd}
+### get_gps_global_origin() {#classmavsdk_1_1_telemetry_1a77747e7cea5a4d644bd6bec9441c7bfb}
 ```cpp
-std::pair< Result, Telemetry::GpsGlobalOrigin > mavsdk::Telemetry::get_gps_global_origin() const
+std::pair<Result, Telemetry::GpsGlobalOrigin> mavsdk::Telemetry::get_gps_global_origin() const
 ```
 
 
@@ -3300,9 +3315,9 @@ This function is blocking. See 'get_gps_global_origin_async' for the non-blockin
 
 &emsp;std::pair< [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75), [Telemetry::GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md) > - Result of request.
 
-### operator=() {#classmavsdk_1_1_telemetry_1ae606a3e3814c773a12035c2674a00c5c}
+### operator=() {#classmavsdk_1_1_telemetry_1a703ac978c925be8806921925cf16aca9}
 ```cpp
-const Telemetry & mavsdk::Telemetry::operator=(const Telemetry &)=delete
+const Telemetry& mavsdk::Telemetry::operator=(const Telemetry &)=delete
 ```
 
 
