@@ -109,6 +109,8 @@ public:
     MOCK_CONST_METHOD1(unsubscribe_vtol_state, void(Telemetry::VtolStateHandle)){};
     MOCK_CONST_METHOD1(subscribe_altitude, Telemetry::AltitudeHandle(Telemetry::AltitudeCallback));
     MOCK_CONST_METHOD1(unsubscribe_altitude, void(Telemetry::AltitudeHandle));
+    MOCK_CONST_METHOD1(subscribe_wind, Telemetry::WindHandle(Telemetry::WindCallback)){};
+    MOCK_CONST_METHOD1(unsubscribe_wind, void(Telemetry::WindHandle)){};
 
     MOCK_METHOD1(set_rate_position, Telemetry::Result(double)){};
     MOCK_METHOD1(set_rate_home, Telemetry::Result(double)){};
