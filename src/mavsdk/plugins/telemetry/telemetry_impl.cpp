@@ -39,6 +39,7 @@ template class CallbackList<Telemetry::DistanceSensor>;
 template class CallbackList<Telemetry::ScaledPressure>;
 template class CallbackList<Telemetry::Heading>;
 template class CallbackList<Telemetry::Altitude>;
+template class CallbackList<Telemetry::Wind>;
 
 TelemetryImpl::TelemetryImpl(System& system) : PluginImplBase(system)
 {
@@ -170,6 +171,11 @@ void TelemetryImpl::init()
     _system_impl->register_mavlink_message_handler(
         MAVLINK_MSG_ID_ALTITUDE,
         [this](const mavlink_message_t& message) { process_altitude(message); },
+        this);
+
+    _system_impl->register_mavlink_message_handler(
+        MAVLINK_MSG_ID_WIND_COV,
+        [this](const mavlink_message_t& message) { process_wind(message); },
         this);
 
     _system_impl->register_statustext_handler(
@@ -798,6 +804,28 @@ void TelemetryImpl::process_altitude(const mavlink_message_t& message)
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _altitude_subscriptions.queue(
         altitude(), [this](const auto& func) { _system_impl->call_user_callback(func); });
+}
+
+void TelemetryImpl::process_wind(const mavlink_message_t& message)
+{
+    __mavlink_wind_cov_t mavlink_wind_cov;
+    mavlink_msg_wind_cov_decode(&message, &mavlink_wind_cov);
+
+    Telemetry::Wind new_wind;
+    new_wind.wind_x_ned_m_s = mavlink_wind_cov.wind_x;
+    new_wind.wind_y_ned_m_s = mavlink_wind_cov.wind_y;
+    new_wind.wind_z_ned_m_s = mavlink_wind_cov.wind_z;
+    new_wind.horizontal_variability_stddev_m_s = mavlink_wind_cov.var_horiz;
+    new_wind.vertical_variability_stddev_m_s = mavlink_wind_cov.var_vert;
+    new_wind.wind_altitude_msl_m = mavlink_wind_cov.wind_alt;
+    new_wind.horizontal_wind_speed_accuracy_m_s = mavlink_wind_cov.horiz_accuracy;
+    new_wind.vertical_wind_speed_accuracy_m_s = mavlink_wind_cov.vert_accuracy;
+
+    set_wind(new_wind);
+
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _wind_subscriptions.queue(
+        wind(), [this](const auto& func) { _system_impl->call_user_callback(func); });
 }
 
 void TelemetryImpl::process_imu_reading_ned(const mavlink_message_t& message)
@@ -1695,6 +1723,18 @@ void TelemetryImpl::set_altitude(Telemetry::Altitude altitude)
     _altitude = altitude;
 }
 
+Telemetry::Wind TelemetryImpl::wind() const
+{
+    std::lock_guard<std::mutex> lock(_wind_mutex);
+    return _wind;
+}
+
+void TelemetryImpl::set_wind(Telemetry::Wind wind)
+{
+    std::lock_guard<std::mutex> lock(_wind_mutex);
+    _wind = wind;
+}
+
 Telemetry::Position TelemetryImpl::home() const
 {
     std::lock_guard<std::mutex> lock(_home_position_mutex);
@@ -2480,6 +2520,18 @@ void TelemetryImpl::unsubscribe_altitude(Telemetry::AltitudeHandle handle)
 {
     std::lock_guard<std::mutex> lock(_subscription_mutex);
     _altitude_subscriptions.unsubscribe(handle);
+}
+
+Telemetry::WindHandle TelemetryImpl::subscribe_wind(const Telemetry::WindCallback& callback)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    return _wind_subscriptions.subscribe(callback);
+}
+
+void TelemetryImpl::unsubscribe_wind(Telemetry::WindHandle handle)
+{
+    std::lock_guard<std::mutex> lock(_subscription_mutex);
+    _wind_subscriptions.unsubscribe(handle);
 }
 
 void TelemetryImpl::get_gps_global_origin_async(

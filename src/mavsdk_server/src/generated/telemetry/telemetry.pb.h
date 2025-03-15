@@ -477,6 +477,9 @@ extern SubscribeVelocityNedRequestDefaultTypeInternal _SubscribeVelocityNedReque
 class SubscribeVtolStateRequest;
 struct SubscribeVtolStateRequestDefaultTypeInternal;
 extern SubscribeVtolStateRequestDefaultTypeInternal _SubscribeVtolStateRequest_default_instance_;
+class SubscribeWindRequest;
+struct SubscribeWindRequestDefaultTypeInternal;
+extern SubscribeWindRequestDefaultTypeInternal _SubscribeWindRequest_default_instance_;
 class TelemetryResult;
 struct TelemetryResultDefaultTypeInternal;
 extern TelemetryResultDefaultTypeInternal _TelemetryResult_default_instance_;
@@ -495,6 +498,12 @@ extern VelocityNedResponseDefaultTypeInternal _VelocityNedResponse_default_insta
 class VtolStateResponse;
 struct VtolStateResponseDefaultTypeInternal;
 extern VtolStateResponseDefaultTypeInternal _VtolStateResponse_default_instance_;
+class Wind;
+struct WindDefaultTypeInternal;
+extern WindDefaultTypeInternal _Wind_default_instance_;
+class WindResponse;
+struct WindResponseDefaultTypeInternal;
+extern WindResponseDefaultTypeInternal _WindResponse_default_instance_;
 }  // namespace telemetry
 }  // namespace rpc
 }  // namespace mavsdk
@@ -775,6 +784,281 @@ inline bool VtolState_Parse(absl::string_view name, VtolState* value) {
 
 // -------------------------------------------------------------------
 
+class Wind final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.Wind) */ {
+ public:
+  inline Wind() : Wind(nullptr) {}
+  ~Wind() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(Wind* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(Wind));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR Wind(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline Wind(const Wind& from) : Wind(nullptr, from) {}
+  inline Wind(Wind&& from) noexcept
+      : Wind(nullptr, std::move(from)) {}
+  inline Wind& operator=(const Wind& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Wind& operator=(Wind&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const Wind& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const Wind* internal_default_instance() {
+    return reinterpret_cast<const Wind*>(
+        &_Wind_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 147;
+  friend void swap(Wind& a, Wind& b) { a.Swap(&b); }
+  inline void Swap(Wind* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Wind* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  Wind* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<Wind>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const Wind& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const Wind& from) { Wind::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(Wind* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.telemetry.Wind"; }
+
+ protected:
+  explicit Wind(::google::protobuf::Arena* arena);
+  Wind(::google::protobuf::Arena* arena, const Wind& from);
+  Wind(::google::protobuf::Arena* arena, Wind&& from) noexcept
+      : Wind(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kWindXNedMSFieldNumber = 1,
+    kWindYNedMSFieldNumber = 2,
+    kWindZNedMSFieldNumber = 3,
+    kHorizontalVariabilityStddevMSFieldNumber = 4,
+    kVerticalVariabilityStddevMSFieldNumber = 5,
+    kWindAltitudeMslMFieldNumber = 6,
+    kHorizontalWindSpeedAccuracyMSFieldNumber = 7,
+    kVerticalWindSpeedAccuracyMSFieldNumber = 8,
+  };
+  // float wind_x_ned_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_wind_x_ned_m_s() ;
+  float wind_x_ned_m_s() const;
+  void set_wind_x_ned_m_s(float value);
+
+  private:
+  float _internal_wind_x_ned_m_s() const;
+  void _internal_set_wind_x_ned_m_s(float value);
+
+  public:
+  // float wind_y_ned_m_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_wind_y_ned_m_s() ;
+  float wind_y_ned_m_s() const;
+  void set_wind_y_ned_m_s(float value);
+
+  private:
+  float _internal_wind_y_ned_m_s() const;
+  void _internal_set_wind_y_ned_m_s(float value);
+
+  public:
+  // float wind_z_ned_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_wind_z_ned_m_s() ;
+  float wind_z_ned_m_s() const;
+  void set_wind_z_ned_m_s(float value);
+
+  private:
+  float _internal_wind_z_ned_m_s() const;
+  void _internal_set_wind_z_ned_m_s(float value);
+
+  public:
+  // float horizontal_variability_stddev_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_horizontal_variability_stddev_m_s() ;
+  float horizontal_variability_stddev_m_s() const;
+  void set_horizontal_variability_stddev_m_s(float value);
+
+  private:
+  float _internal_horizontal_variability_stddev_m_s() const;
+  void _internal_set_horizontal_variability_stddev_m_s(float value);
+
+  public:
+  // float vertical_variability_stddev_m_s = 5 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_vertical_variability_stddev_m_s() ;
+  float vertical_variability_stddev_m_s() const;
+  void set_vertical_variability_stddev_m_s(float value);
+
+  private:
+  float _internal_vertical_variability_stddev_m_s() const;
+  void _internal_set_vertical_variability_stddev_m_s(float value);
+
+  public:
+  // float wind_altitude_msl_m = 6 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_wind_altitude_msl_m() ;
+  float wind_altitude_msl_m() const;
+  void set_wind_altitude_msl_m(float value);
+
+  private:
+  float _internal_wind_altitude_msl_m() const;
+  void _internal_set_wind_altitude_msl_m(float value);
+
+  public:
+  // float horizontal_wind_speed_accuracy_m_s = 7 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_horizontal_wind_speed_accuracy_m_s() ;
+  float horizontal_wind_speed_accuracy_m_s() const;
+  void set_horizontal_wind_speed_accuracy_m_s(float value);
+
+  private:
+  float _internal_horizontal_wind_speed_accuracy_m_s() const;
+  void _internal_set_horizontal_wind_speed_accuracy_m_s(float value);
+
+  public:
+  // float vertical_wind_speed_accuracy_m_s = 8 [(.mavsdk.options.default_value) = "NaN"];
+  void clear_vertical_wind_speed_accuracy_m_s() ;
+  float vertical_wind_speed_accuracy_m_s() const;
+  void set_vertical_wind_speed_accuracy_m_s(float value);
+
+  private:
+  float _internal_vertical_wind_speed_accuracy_m_s() const;
+  void _internal_set_vertical_wind_speed_accuracy_m_s(float value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.Wind)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      3, 8, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const Wind& from_msg);
+    float wind_x_ned_m_s_;
+    float wind_y_ned_m_s_;
+    float wind_z_ned_m_s_;
+    float horizontal_variability_stddev_m_s_;
+    float vertical_variability_stddev_m_s_;
+    float wind_altitude_msl_m_;
+    float horizontal_wind_speed_accuracy_m_s_;
+    float vertical_wind_speed_accuracy_m_s_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
 class VtolStateResponse final
     : public ::google::protobuf::Message
 /* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.VtolStateResponse) */ {
@@ -1026,7 +1310,7 @@ class VelocityNed final
     return reinterpret_cast<const VelocityNed*>(
         &_VelocityNed_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 135;
+  static constexpr int kIndexInFileMessages = 137;
   friend void swap(VelocityNed& a, VelocityNed& b) { a.Swap(&b); }
   inline void Swap(VelocityNed* other) {
     if (other == this) return;
@@ -1241,7 +1525,7 @@ class VelocityBody final
     return reinterpret_cast<const VelocityBody*>(
         &_VelocityBody_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 129;
+  static constexpr int kIndexInFileMessages = 131;
   friend void swap(VelocityBody& a, VelocityBody& b) { a.Swap(&b); }
   inline void Swap(VelocityBody* other) {
     if (other == this) return;
@@ -1647,7 +1931,7 @@ class TelemetryResult final
     return reinterpret_cast<const TelemetryResult*>(
         &_TelemetryResult_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 145;
+  static constexpr int kIndexInFileMessages = 148;
   friend void swap(TelemetryResult& a, TelemetryResult& b) { a.Swap(&b); }
   inline void Swap(TelemetryResult* other) {
     if (other == this) return;
@@ -1817,6 +2101,152 @@ class TelemetryResult final
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SubscribeWindRequest final
+    : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.SubscribeWindRequest) */ {
+ public:
+  inline SubscribeWindRequest() : SubscribeWindRequest(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SubscribeWindRequest* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SubscribeWindRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SubscribeWindRequest(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline SubscribeWindRequest(const SubscribeWindRequest& from) : SubscribeWindRequest(nullptr, from) {}
+  inline SubscribeWindRequest(SubscribeWindRequest&& from) noexcept
+      : SubscribeWindRequest(nullptr, std::move(from)) {}
+  inline SubscribeWindRequest& operator=(const SubscribeWindRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SubscribeWindRequest& operator=(SubscribeWindRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SubscribeWindRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SubscribeWindRequest* internal_default_instance() {
+    return reinterpret_cast<const SubscribeWindRequest*>(
+        &_SubscribeWindRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 64;
+  friend void swap(SubscribeWindRequest& a, SubscribeWindRequest& b) { a.Swap(&b); }
+  inline void Swap(SubscribeWindRequest* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SubscribeWindRequest* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SubscribeWindRequest* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<SubscribeWindRequest>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const SubscribeWindRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const SubscribeWindRequest& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.telemetry.SubscribeWindRequest"; }
+
+ protected:
+  explicit SubscribeWindRequest(::google::protobuf::Arena* arena);
+  SubscribeWindRequest(::google::protobuf::Arena* arena, const SubscribeWindRequest& from);
+  SubscribeWindRequest(::google::protobuf::Arena* arena, SubscribeWindRequest&& from) noexcept
+      : SubscribeWindRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.SubscribeWindRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 0, 0,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const SubscribeWindRequest& from_msg);
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
   friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
 };
 // -------------------------------------------------------------------
@@ -6553,7 +6983,7 @@ class StatusText final
     return reinterpret_cast<const StatusText*>(
         &_StatusText_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 125;
+  static constexpr int kIndexInFileMessages = 127;
   friend void swap(StatusText& a, StatusText& b) { a.Swap(&b); }
   inline void Swap(StatusText* other) {
     if (other == this) return;
@@ -6762,7 +7192,7 @@ class SetRateVtolStateRequest final
     return reinterpret_cast<const SetRateVtolStateRequest*>(
         &_SetRateVtolStateRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 72;
+  static constexpr int kIndexInFileMessages = 74;
   friend void swap(SetRateVtolStateRequest& a, SetRateVtolStateRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateVtolStateRequest* other) {
     if (other == this) return;
@@ -6953,7 +7383,7 @@ class SetRateVelocityNedRequest final
     return reinterpret_cast<const SetRateVelocityNedRequest*>(
         &_SetRateVelocityNedRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 80;
+  static constexpr int kIndexInFileMessages = 82;
   friend void swap(SetRateVelocityNedRequest& a, SetRateVelocityNedRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateVelocityNedRequest* other) {
     if (other == this) return;
@@ -7144,7 +7574,7 @@ class SetRateUnixEpochTimeRequest final
     return reinterpret_cast<const SetRateUnixEpochTimeRequest*>(
         &_SetRateUnixEpochTimeRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 107;
+  static constexpr int kIndexInFileMessages = 109;
   friend void swap(SetRateUnixEpochTimeRequest& a, SetRateUnixEpochTimeRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateUnixEpochTimeRequest* other) {
     if (other == this) return;
@@ -7335,7 +7765,7 @@ class SetRateScaledImuRequest final
     return reinterpret_cast<const SetRateScaledImuRequest*>(
         &_SetRateScaledImuRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 103;
+  static constexpr int kIndexInFileMessages = 105;
   friend void swap(SetRateScaledImuRequest& a, SetRateScaledImuRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateScaledImuRequest* other) {
     if (other == this) return;
@@ -7526,7 +7956,7 @@ class SetRateRcStatusRequest final
     return reinterpret_cast<const SetRateRcStatusRequest*>(
         &_SetRateRcStatusRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 87;
+  static constexpr int kIndexInFileMessages = 89;
   friend void swap(SetRateRcStatusRequest& a, SetRateRcStatusRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateRcStatusRequest* other) {
     if (other == this) return;
@@ -7717,7 +8147,7 @@ class SetRateRawImuRequest final
     return reinterpret_cast<const SetRateRawImuRequest*>(
         &_SetRateRawImuRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 105;
+  static constexpr int kIndexInFileMessages = 107;
   friend void swap(SetRateRawImuRequest& a, SetRateRawImuRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateRawImuRequest* other) {
     if (other == this) return;
@@ -7908,7 +8338,7 @@ class SetRateRawGpsRequest final
     return reinterpret_cast<const SetRateRawGpsRequest*>(
         &_SetRateRawGpsRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 84;
+  static constexpr int kIndexInFileMessages = 86;
   friend void swap(SetRateRawGpsRequest& a, SetRateRawGpsRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateRawGpsRequest* other) {
     if (other == this) return;
@@ -8099,7 +8529,7 @@ class SetRatePositionVelocityNedRequest final
     return reinterpret_cast<const SetRatePositionVelocityNedRequest*>(
         &_SetRatePositionVelocityNedRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 95;
+  static constexpr int kIndexInFileMessages = 97;
   friend void swap(SetRatePositionVelocityNedRequest& a, SetRatePositionVelocityNedRequest& b) { a.Swap(&b); }
   inline void Swap(SetRatePositionVelocityNedRequest* other) {
     if (other == this) return;
@@ -8290,7 +8720,7 @@ class SetRatePositionRequest final
     return reinterpret_cast<const SetRatePositionRequest*>(
         &_SetRatePositionRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 64;
+  static constexpr int kIndexInFileMessages = 66;
   friend void swap(SetRatePositionRequest& a, SetRatePositionRequest& b) { a.Swap(&b); }
   inline void Swap(SetRatePositionRequest* other) {
     if (other == this) return;
@@ -8481,7 +8911,7 @@ class SetRateOdometryRequest final
     return reinterpret_cast<const SetRateOdometryRequest*>(
         &_SetRateOdometryRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 93;
+  static constexpr int kIndexInFileMessages = 95;
   friend void swap(SetRateOdometryRequest& a, SetRateOdometryRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateOdometryRequest* other) {
     if (other == this) return;
@@ -8672,7 +9102,7 @@ class SetRateLandedStateRequest final
     return reinterpret_cast<const SetRateLandedStateRequest*>(
         &_SetRateLandedStateRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 70;
+  static constexpr int kIndexInFileMessages = 72;
   friend void swap(SetRateLandedStateRequest& a, SetRateLandedStateRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateLandedStateRequest* other) {
     if (other == this) return;
@@ -8863,7 +9293,7 @@ class SetRateInAirRequest final
     return reinterpret_cast<const SetRateInAirRequest*>(
         &_SetRateInAirRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 68;
+  static constexpr int kIndexInFileMessages = 70;
   friend void swap(SetRateInAirRequest& a, SetRateInAirRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateInAirRequest* other) {
     if (other == this) return;
@@ -9054,7 +9484,7 @@ class SetRateImuRequest final
     return reinterpret_cast<const SetRateImuRequest*>(
         &_SetRateImuRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 101;
+  static constexpr int kIndexInFileMessages = 103;
   friend void swap(SetRateImuRequest& a, SetRateImuRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateImuRequest* other) {
     if (other == this) return;
@@ -9245,7 +9675,7 @@ class SetRateHomeRequest final
     return reinterpret_cast<const SetRateHomeRequest*>(
         &_SetRateHomeRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 66;
+  static constexpr int kIndexInFileMessages = 68;
   friend void swap(SetRateHomeRequest& a, SetRateHomeRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateHomeRequest* other) {
     if (other == this) return;
@@ -9436,7 +9866,7 @@ class SetRateGroundTruthRequest final
     return reinterpret_cast<const SetRateGroundTruthRequest*>(
         &_SetRateGroundTruthRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 97;
+  static constexpr int kIndexInFileMessages = 99;
   friend void swap(SetRateGroundTruthRequest& a, SetRateGroundTruthRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateGroundTruthRequest* other) {
     if (other == this) return;
@@ -9627,7 +10057,7 @@ class SetRateGpsInfoRequest final
     return reinterpret_cast<const SetRateGpsInfoRequest*>(
         &_SetRateGpsInfoRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 82;
+  static constexpr int kIndexInFileMessages = 84;
   friend void swap(SetRateGpsInfoRequest& a, SetRateGpsInfoRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateGpsInfoRequest* other) {
     if (other == this) return;
@@ -9818,7 +10248,7 @@ class SetRateFixedwingMetricsRequest final
     return reinterpret_cast<const SetRateFixedwingMetricsRequest*>(
         &_SetRateFixedwingMetricsRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 99;
+  static constexpr int kIndexInFileMessages = 101;
   friend void swap(SetRateFixedwingMetricsRequest& a, SetRateFixedwingMetricsRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateFixedwingMetricsRequest* other) {
     if (other == this) return;
@@ -10009,7 +10439,7 @@ class SetRateDistanceSensorRequest final
     return reinterpret_cast<const SetRateDistanceSensorRequest*>(
         &_SetRateDistanceSensorRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 109;
+  static constexpr int kIndexInFileMessages = 111;
   friend void swap(SetRateDistanceSensorRequest& a, SetRateDistanceSensorRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateDistanceSensorRequest* other) {
     if (other == this) return;
@@ -10200,7 +10630,7 @@ class SetRateBatteryRequest final
     return reinterpret_cast<const SetRateBatteryRequest*>(
         &_SetRateBatteryRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 85;
+  static constexpr int kIndexInFileMessages = 87;
   friend void swap(SetRateBatteryRequest& a, SetRateBatteryRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateBatteryRequest* other) {
     if (other == this) return;
@@ -10391,7 +10821,7 @@ class SetRateAttitudeQuaternionRequest final
     return reinterpret_cast<const SetRateAttitudeQuaternionRequest*>(
         &_SetRateAttitudeQuaternionRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 76;
+  static constexpr int kIndexInFileMessages = 78;
   friend void swap(SetRateAttitudeQuaternionRequest& a, SetRateAttitudeQuaternionRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateAttitudeQuaternionRequest* other) {
     if (other == this) return;
@@ -10582,7 +11012,7 @@ class SetRateAttitudeEulerRequest final
     return reinterpret_cast<const SetRateAttitudeEulerRequest*>(
         &_SetRateAttitudeEulerRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 74;
+  static constexpr int kIndexInFileMessages = 76;
   friend void swap(SetRateAttitudeEulerRequest& a, SetRateAttitudeEulerRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateAttitudeEulerRequest* other) {
     if (other == this) return;
@@ -10773,7 +11203,7 @@ class SetRateAttitudeAngularVelocityBodyRequest final
     return reinterpret_cast<const SetRateAttitudeAngularVelocityBodyRequest*>(
         &_SetRateAttitudeAngularVelocityBodyRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 78;
+  static constexpr int kIndexInFileMessages = 80;
   friend void swap(SetRateAttitudeAngularVelocityBodyRequest& a, SetRateAttitudeAngularVelocityBodyRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateAttitudeAngularVelocityBodyRequest* other) {
     if (other == this) return;
@@ -10964,7 +11394,7 @@ class SetRateAltitudeRequest final
     return reinterpret_cast<const SetRateAltitudeRequest*>(
         &_SetRateAltitudeRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 113;
+  static constexpr int kIndexInFileMessages = 115;
   friend void swap(SetRateAltitudeRequest& a, SetRateAltitudeRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateAltitudeRequest* other) {
     if (other == this) return;
@@ -11155,7 +11585,7 @@ class SetRateActuatorOutputStatusRequest final
     return reinterpret_cast<const SetRateActuatorOutputStatusRequest*>(
         &_SetRateActuatorOutputStatusRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 91;
+  static constexpr int kIndexInFileMessages = 93;
   friend void swap(SetRateActuatorOutputStatusRequest& a, SetRateActuatorOutputStatusRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateActuatorOutputStatusRequest* other) {
     if (other == this) return;
@@ -11346,7 +11776,7 @@ class SetRateActuatorControlTargetRequest final
     return reinterpret_cast<const SetRateActuatorControlTargetRequest*>(
         &_SetRateActuatorControlTargetRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 89;
+  static constexpr int kIndexInFileMessages = 91;
   friend void swap(SetRateActuatorControlTargetRequest& a, SetRateActuatorControlTargetRequest& b) { a.Swap(&b); }
   inline void Swap(SetRateActuatorControlTargetRequest* other) {
     if (other == this) return;
@@ -11537,7 +11967,7 @@ class ScaledPressure final
     return reinterpret_cast<const ScaledPressure*>(
         &_ScaledPressure_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 133;
+  static constexpr int kIndexInFileMessages = 135;
   friend void swap(ScaledPressure& a, ScaledPressure& b) { a.Swap(&b); }
   inline void Swap(ScaledPressure* other) {
     if (other == this) return;
@@ -11776,7 +12206,7 @@ class RcStatus final
     return reinterpret_cast<const RcStatus*>(
         &_RcStatus_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 124;
+  static constexpr int kIndexInFileMessages = 126;
   friend void swap(RcStatus& a, RcStatus& b) { a.Swap(&b); }
   inline void Swap(RcStatus* other) {
     if (other == this) return;
@@ -11991,7 +12421,7 @@ class RawGps final
     return reinterpret_cast<const RawGps*>(
         &_RawGps_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 121;
+  static constexpr int kIndexInFileMessages = 123;
   friend void swap(RawGps& a, RawGps& b) { a.Swap(&b); }
   inline void Swap(RawGps* other) {
     if (other == this) return;
@@ -12338,7 +12768,7 @@ class Quaternion final
     return reinterpret_cast<const Quaternion*>(
         &_Quaternion_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 117;
+  static constexpr int kIndexInFileMessages = 119;
   friend void swap(Quaternion& a, Quaternion& b) { a.Swap(&b); }
   inline void Swap(Quaternion* other) {
     if (other == this) return;
@@ -12577,7 +13007,7 @@ class PositionNed final
     return reinterpret_cast<const PositionNed*>(
         &_PositionNed_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 134;
+  static constexpr int kIndexInFileMessages = 136;
   friend void swap(PositionNed& a, PositionNed& b) { a.Swap(&b); }
   inline void Swap(PositionNed* other) {
     if (other == this) return;
@@ -12792,7 +13222,7 @@ class PositionBody final
     return reinterpret_cast<const PositionBody*>(
         &_PositionBody_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 130;
+  static constexpr int kIndexInFileMessages = 132;
   friend void swap(PositionBody& a, PositionBody& b) { a.Swap(&b); }
   inline void Swap(PositionBody* other) {
     if (other == this) return;
@@ -13007,7 +13437,7 @@ class Position final
     return reinterpret_cast<const Position*>(
         &_Position_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 115;
+  static constexpr int kIndexInFileMessages = 117;
   friend void swap(Position& a, Position& b) { a.Swap(&b); }
   inline void Swap(Position* other) {
     if (other == this) return;
@@ -13234,7 +13664,7 @@ class MagneticFieldFrd final
     return reinterpret_cast<const MagneticFieldFrd*>(
         &_MagneticFieldFrd_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 141;
+  static constexpr int kIndexInFileMessages = 143;
   friend void swap(MagneticFieldFrd& a, MagneticFieldFrd& b) { a.Swap(&b); }
   inline void Swap(MagneticFieldFrd* other) {
     if (other == this) return;
@@ -14022,7 +14452,7 @@ class Health final
     return reinterpret_cast<const Health*>(
         &_Health_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 123;
+  static constexpr int kIndexInFileMessages = 125;
   friend void swap(Health& a, Health& b) { a.Swap(&b); }
   inline void Swap(Health* other) {
     if (other == this) return;
@@ -14285,7 +14715,7 @@ class Heading final
     return reinterpret_cast<const Heading*>(
         &_Heading_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 116;
+  static constexpr int kIndexInFileMessages = 118;
   friend void swap(Heading& a, Heading& b) { a.Swap(&b); }
   inline void Swap(Heading* other) {
     if (other == this) return;
@@ -14476,7 +14906,7 @@ class GroundTruth final
     return reinterpret_cast<const GroundTruth*>(
         &_GroundTruth_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 137;
+  static constexpr int kIndexInFileMessages = 139;
   friend void swap(GroundTruth& a, GroundTruth& b) { a.Swap(&b); }
   inline void Swap(GroundTruth* other) {
     if (other == this) return;
@@ -14691,7 +15121,7 @@ class GpsInfo final
     return reinterpret_cast<const GpsInfo*>(
         &_GpsInfo_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 120;
+  static constexpr int kIndexInFileMessages = 122;
   friend void swap(GpsInfo& a, GpsInfo& b) { a.Swap(&b); }
   inline void Swap(GpsInfo* other) {
     if (other == this) return;
@@ -14894,7 +15324,7 @@ class GpsGlobalOrigin final
     return reinterpret_cast<const GpsGlobalOrigin*>(
         &_GpsGlobalOrigin_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 143;
+  static constexpr int kIndexInFileMessages = 145;
   friend void swap(GpsGlobalOrigin& a, GpsGlobalOrigin& b) { a.Swap(&b); }
   inline void Swap(GpsGlobalOrigin* other) {
     if (other == this) return;
@@ -15108,7 +15538,7 @@ class GetGpsGlobalOriginRequest final
     return reinterpret_cast<const GetGpsGlobalOriginRequest*>(
         &_GetGpsGlobalOriginRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 111;
+  static constexpr int kIndexInFileMessages = 113;
   friend void swap(GetGpsGlobalOriginRequest& a, GetGpsGlobalOriginRequest& b) { a.Swap(&b); }
   inline void Swap(GetGpsGlobalOriginRequest* other) {
     if (other == this) return;
@@ -15446,7 +15876,7 @@ class FixedwingMetrics final
     return reinterpret_cast<const FixedwingMetrics*>(
         &_FixedwingMetrics_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 138;
+  static constexpr int kIndexInFileMessages = 140;
   friend void swap(FixedwingMetrics& a, FixedwingMetrics& b) { a.Swap(&b); }
   inline void Swap(FixedwingMetrics* other) {
     if (other == this) return;
@@ -15697,7 +16127,7 @@ class EulerAngle final
     return reinterpret_cast<const EulerAngle*>(
         &_EulerAngle_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 118;
+  static constexpr int kIndexInFileMessages = 120;
   friend void swap(EulerAngle& a, EulerAngle& b) { a.Swap(&b); }
   inline void Swap(EulerAngle* other) {
     if (other == this) return;
@@ -15924,7 +16354,7 @@ class Covariance final
     return reinterpret_cast<const Covariance*>(
         &_Covariance_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 128;
+  static constexpr int kIndexInFileMessages = 130;
   friend void swap(Covariance& a, Covariance& b) { a.Swap(&b); }
   inline void Swap(Covariance* other) {
     if (other == this) return;
@@ -16123,7 +16553,7 @@ class Battery final
     return reinterpret_cast<const Battery*>(
         &_Battery_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 122;
+  static constexpr int kIndexInFileMessages = 124;
   friend void swap(Battery& a, Battery& b) { a.Swap(&b); }
   inline void Swap(Battery* other) {
     if (other == this) return;
@@ -16565,7 +16995,7 @@ class AngularVelocityFrd final
     return reinterpret_cast<const AngularVelocityFrd*>(
         &_AngularVelocityFrd_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 140;
+  static constexpr int kIndexInFileMessages = 142;
   friend void swap(AngularVelocityFrd& a, AngularVelocityFrd& b) { a.Swap(&b); }
   inline void Swap(AngularVelocityFrd* other) {
     if (other == this) return;
@@ -16780,7 +17210,7 @@ class AngularVelocityBody final
     return reinterpret_cast<const AngularVelocityBody*>(
         &_AngularVelocityBody_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 119;
+  static constexpr int kIndexInFileMessages = 121;
   friend void swap(AngularVelocityBody& a, AngularVelocityBody& b) { a.Swap(&b); }
   inline void Swap(AngularVelocityBody* other) {
     if (other == this) return;
@@ -16995,7 +17425,7 @@ class Altitude final
     return reinterpret_cast<const Altitude*>(
         &_Altitude_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 144;
+  static constexpr int kIndexInFileMessages = 146;
   friend void swap(Altitude& a, Altitude& b) { a.Swap(&b); }
   inline void Swap(Altitude* other) {
     if (other == this) return;
@@ -17246,7 +17676,7 @@ class ActuatorOutputStatus final
     return reinterpret_cast<const ActuatorOutputStatus*>(
         &_ActuatorOutputStatus_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 127;
+  static constexpr int kIndexInFileMessages = 129;
   friend void swap(ActuatorOutputStatus& a, ActuatorOutputStatus& b) { a.Swap(&b); }
   inline void Swap(ActuatorOutputStatus* other) {
     if (other == this) return;
@@ -17457,7 +17887,7 @@ class ActuatorControlTarget final
     return reinterpret_cast<const ActuatorControlTarget*>(
         &_ActuatorControlTarget_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 126;
+  static constexpr int kIndexInFileMessages = 128;
   friend void swap(ActuatorControlTarget& a, ActuatorControlTarget& b) { a.Swap(&b); }
   inline void Swap(ActuatorControlTarget* other) {
     if (other == this) return;
@@ -17668,7 +18098,7 @@ class AccelerationFrd final
     return reinterpret_cast<const AccelerationFrd*>(
         &_AccelerationFrd_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 139;
+  static constexpr int kIndexInFileMessages = 141;
   friend void swap(AccelerationFrd& a, AccelerationFrd& b) { a.Swap(&b); }
   inline void Swap(AccelerationFrd* other) {
     if (other == this) return;
@@ -17816,6 +18246,203 @@ class AccelerationFrd final
     float right_m_s2_;
     float down_m_s2_;
     ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_telemetry_2ftelemetry_2eproto;
+};
+// -------------------------------------------------------------------
+
+class WindResponse final
+    : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mavsdk.rpc.telemetry.WindResponse) */ {
+ public:
+  inline WindResponse() : WindResponse(nullptr) {}
+  ~WindResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(WindResponse* msg, std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(WindResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR WindResponse(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline WindResponse(const WindResponse& from) : WindResponse(nullptr, from) {}
+  inline WindResponse(WindResponse&& from) noexcept
+      : WindResponse(nullptr, std::move(from)) {}
+  inline WindResponse& operator=(const WindResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline WindResponse& operator=(WindResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const WindResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const WindResponse* internal_default_instance() {
+    return reinterpret_cast<const WindResponse*>(
+        &_WindResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 65;
+  friend void swap(WindResponse& a, WindResponse& b) { a.Swap(&b); }
+  inline void Swap(WindResponse* other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(WindResponse* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  WindResponse* New(::google::protobuf::Arena* arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<WindResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const WindResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const WindResponse& from) { WindResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(WindResponse* other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(
+      ::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "mavsdk.rpc.telemetry.WindResponse"; }
+
+ protected:
+  explicit WindResponse(::google::protobuf::Arena* arena);
+  WindResponse(::google::protobuf::Arena* arena, const WindResponse& from);
+  WindResponse(::google::protobuf::Arena* arena, WindResponse&& from) noexcept
+      : WindResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static void* PlacementNew_(const void*, void* mem,
+                             ::google::protobuf::Arena* arena);
+  static constexpr auto InternalNewImpl_();
+  static const ::google::protobuf::internal::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kWindFieldNumber = 1,
+  };
+  // .mavsdk.rpc.telemetry.Wind wind = 1;
+  bool has_wind() const;
+  void clear_wind() ;
+  const ::mavsdk::rpc::telemetry::Wind& wind() const;
+  PROTOBUF_NODISCARD ::mavsdk::rpc::telemetry::Wind* release_wind();
+  ::mavsdk::rpc::telemetry::Wind* mutable_wind();
+  void set_allocated_wind(::mavsdk::rpc::telemetry::Wind* value);
+  void unsafe_arena_set_allocated_wind(::mavsdk::rpc::telemetry::Wind* value);
+  ::mavsdk::rpc::telemetry::Wind* unsafe_arena_release_wind();
+
+  private:
+  const ::mavsdk::rpc::telemetry::Wind& _internal_wind() const;
+  ::mavsdk::rpc::telemetry::Wind* _internal_mutable_wind();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mavsdk.rpc.telemetry.WindResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 1,
+      0, 2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const WindResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::mavsdk::rpc::telemetry::Wind* wind_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -18277,7 +18904,7 @@ class SetRateVtolStateResponse final
     return reinterpret_cast<const SetRateVtolStateResponse*>(
         &_SetRateVtolStateResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 73;
+  static constexpr int kIndexInFileMessages = 75;
   friend void swap(SetRateVtolStateResponse& a, SetRateVtolStateResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateVtolStateResponse* other) {
     if (other == this) return;
@@ -18474,7 +19101,7 @@ class SetRateVelocityNedResponse final
     return reinterpret_cast<const SetRateVelocityNedResponse*>(
         &_SetRateVelocityNedResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 81;
+  static constexpr int kIndexInFileMessages = 83;
   friend void swap(SetRateVelocityNedResponse& a, SetRateVelocityNedResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateVelocityNedResponse* other) {
     if (other == this) return;
@@ -18671,7 +19298,7 @@ class SetRateUnixEpochTimeResponse final
     return reinterpret_cast<const SetRateUnixEpochTimeResponse*>(
         &_SetRateUnixEpochTimeResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 108;
+  static constexpr int kIndexInFileMessages = 110;
   friend void swap(SetRateUnixEpochTimeResponse& a, SetRateUnixEpochTimeResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateUnixEpochTimeResponse* other) {
     if (other == this) return;
@@ -18868,7 +19495,7 @@ class SetRateScaledImuResponse final
     return reinterpret_cast<const SetRateScaledImuResponse*>(
         &_SetRateScaledImuResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 104;
+  static constexpr int kIndexInFileMessages = 106;
   friend void swap(SetRateScaledImuResponse& a, SetRateScaledImuResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateScaledImuResponse* other) {
     if (other == this) return;
@@ -19065,7 +19692,7 @@ class SetRateRcStatusResponse final
     return reinterpret_cast<const SetRateRcStatusResponse*>(
         &_SetRateRcStatusResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 88;
+  static constexpr int kIndexInFileMessages = 90;
   friend void swap(SetRateRcStatusResponse& a, SetRateRcStatusResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateRcStatusResponse* other) {
     if (other == this) return;
@@ -19262,7 +19889,7 @@ class SetRateRawImuResponse final
     return reinterpret_cast<const SetRateRawImuResponse*>(
         &_SetRateRawImuResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 106;
+  static constexpr int kIndexInFileMessages = 108;
   friend void swap(SetRateRawImuResponse& a, SetRateRawImuResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateRawImuResponse* other) {
     if (other == this) return;
@@ -19459,7 +20086,7 @@ class SetRatePositionVelocityNedResponse final
     return reinterpret_cast<const SetRatePositionVelocityNedResponse*>(
         &_SetRatePositionVelocityNedResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 96;
+  static constexpr int kIndexInFileMessages = 98;
   friend void swap(SetRatePositionVelocityNedResponse& a, SetRatePositionVelocityNedResponse& b) { a.Swap(&b); }
   inline void Swap(SetRatePositionVelocityNedResponse* other) {
     if (other == this) return;
@@ -19656,7 +20283,7 @@ class SetRatePositionResponse final
     return reinterpret_cast<const SetRatePositionResponse*>(
         &_SetRatePositionResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 65;
+  static constexpr int kIndexInFileMessages = 67;
   friend void swap(SetRatePositionResponse& a, SetRatePositionResponse& b) { a.Swap(&b); }
   inline void Swap(SetRatePositionResponse* other) {
     if (other == this) return;
@@ -19853,7 +20480,7 @@ class SetRateOdometryResponse final
     return reinterpret_cast<const SetRateOdometryResponse*>(
         &_SetRateOdometryResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 94;
+  static constexpr int kIndexInFileMessages = 96;
   friend void swap(SetRateOdometryResponse& a, SetRateOdometryResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateOdometryResponse* other) {
     if (other == this) return;
@@ -20050,7 +20677,7 @@ class SetRateLandedStateResponse final
     return reinterpret_cast<const SetRateLandedStateResponse*>(
         &_SetRateLandedStateResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 71;
+  static constexpr int kIndexInFileMessages = 73;
   friend void swap(SetRateLandedStateResponse& a, SetRateLandedStateResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateLandedStateResponse* other) {
     if (other == this) return;
@@ -20247,7 +20874,7 @@ class SetRateInAirResponse final
     return reinterpret_cast<const SetRateInAirResponse*>(
         &_SetRateInAirResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 69;
+  static constexpr int kIndexInFileMessages = 71;
   friend void swap(SetRateInAirResponse& a, SetRateInAirResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateInAirResponse* other) {
     if (other == this) return;
@@ -20444,7 +21071,7 @@ class SetRateImuResponse final
     return reinterpret_cast<const SetRateImuResponse*>(
         &_SetRateImuResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 102;
+  static constexpr int kIndexInFileMessages = 104;
   friend void swap(SetRateImuResponse& a, SetRateImuResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateImuResponse* other) {
     if (other == this) return;
@@ -20641,7 +21268,7 @@ class SetRateHomeResponse final
     return reinterpret_cast<const SetRateHomeResponse*>(
         &_SetRateHomeResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 67;
+  static constexpr int kIndexInFileMessages = 69;
   friend void swap(SetRateHomeResponse& a, SetRateHomeResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateHomeResponse* other) {
     if (other == this) return;
@@ -20838,7 +21465,7 @@ class SetRateGroundTruthResponse final
     return reinterpret_cast<const SetRateGroundTruthResponse*>(
         &_SetRateGroundTruthResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 98;
+  static constexpr int kIndexInFileMessages = 100;
   friend void swap(SetRateGroundTruthResponse& a, SetRateGroundTruthResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateGroundTruthResponse* other) {
     if (other == this) return;
@@ -21035,7 +21662,7 @@ class SetRateGpsInfoResponse final
     return reinterpret_cast<const SetRateGpsInfoResponse*>(
         &_SetRateGpsInfoResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 83;
+  static constexpr int kIndexInFileMessages = 85;
   friend void swap(SetRateGpsInfoResponse& a, SetRateGpsInfoResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateGpsInfoResponse* other) {
     if (other == this) return;
@@ -21232,7 +21859,7 @@ class SetRateFixedwingMetricsResponse final
     return reinterpret_cast<const SetRateFixedwingMetricsResponse*>(
         &_SetRateFixedwingMetricsResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 100;
+  static constexpr int kIndexInFileMessages = 102;
   friend void swap(SetRateFixedwingMetricsResponse& a, SetRateFixedwingMetricsResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateFixedwingMetricsResponse* other) {
     if (other == this) return;
@@ -21429,7 +22056,7 @@ class SetRateDistanceSensorResponse final
     return reinterpret_cast<const SetRateDistanceSensorResponse*>(
         &_SetRateDistanceSensorResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 110;
+  static constexpr int kIndexInFileMessages = 112;
   friend void swap(SetRateDistanceSensorResponse& a, SetRateDistanceSensorResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateDistanceSensorResponse* other) {
     if (other == this) return;
@@ -21626,7 +22253,7 @@ class SetRateBatteryResponse final
     return reinterpret_cast<const SetRateBatteryResponse*>(
         &_SetRateBatteryResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 86;
+  static constexpr int kIndexInFileMessages = 88;
   friend void swap(SetRateBatteryResponse& a, SetRateBatteryResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateBatteryResponse* other) {
     if (other == this) return;
@@ -21823,7 +22450,7 @@ class SetRateAttitudeQuaternionResponse final
     return reinterpret_cast<const SetRateAttitudeQuaternionResponse*>(
         &_SetRateAttitudeQuaternionResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 77;
+  static constexpr int kIndexInFileMessages = 79;
   friend void swap(SetRateAttitudeQuaternionResponse& a, SetRateAttitudeQuaternionResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateAttitudeQuaternionResponse* other) {
     if (other == this) return;
@@ -22020,7 +22647,7 @@ class SetRateAttitudeEulerResponse final
     return reinterpret_cast<const SetRateAttitudeEulerResponse*>(
         &_SetRateAttitudeEulerResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 75;
+  static constexpr int kIndexInFileMessages = 77;
   friend void swap(SetRateAttitudeEulerResponse& a, SetRateAttitudeEulerResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateAttitudeEulerResponse* other) {
     if (other == this) return;
@@ -22217,7 +22844,7 @@ class SetRateAttitudeAngularVelocityBodyResponse final
     return reinterpret_cast<const SetRateAttitudeAngularVelocityBodyResponse*>(
         &_SetRateAttitudeAngularVelocityBodyResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 79;
+  static constexpr int kIndexInFileMessages = 81;
   friend void swap(SetRateAttitudeAngularVelocityBodyResponse& a, SetRateAttitudeAngularVelocityBodyResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateAttitudeAngularVelocityBodyResponse* other) {
     if (other == this) return;
@@ -22414,7 +23041,7 @@ class SetRateAltitudeResponse final
     return reinterpret_cast<const SetRateAltitudeResponse*>(
         &_SetRateAltitudeResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 114;
+  static constexpr int kIndexInFileMessages = 116;
   friend void swap(SetRateAltitudeResponse& a, SetRateAltitudeResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateAltitudeResponse* other) {
     if (other == this) return;
@@ -22611,7 +23238,7 @@ class SetRateActuatorOutputStatusResponse final
     return reinterpret_cast<const SetRateActuatorOutputStatusResponse*>(
         &_SetRateActuatorOutputStatusResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 92;
+  static constexpr int kIndexInFileMessages = 94;
   friend void swap(SetRateActuatorOutputStatusResponse& a, SetRateActuatorOutputStatusResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateActuatorOutputStatusResponse* other) {
     if (other == this) return;
@@ -22808,7 +23435,7 @@ class SetRateActuatorControlTargetResponse final
     return reinterpret_cast<const SetRateActuatorControlTargetResponse*>(
         &_SetRateActuatorControlTargetResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 90;
+  static constexpr int kIndexInFileMessages = 92;
   friend void swap(SetRateActuatorControlTargetResponse& a, SetRateActuatorControlTargetResponse& b) { a.Swap(&b); }
   inline void Swap(SetRateActuatorControlTargetResponse* other) {
     if (other == this) return;
@@ -23596,7 +24223,7 @@ class PositionVelocityNed final
     return reinterpret_cast<const PositionVelocityNed*>(
         &_PositionVelocityNed_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 136;
+  static constexpr int kIndexInFileMessages = 138;
   friend void swap(PositionVelocityNed& a, PositionVelocityNed& b) { a.Swap(&b); }
   inline void Swap(PositionVelocityNed* other) {
     if (other == this) return;
@@ -24007,7 +24634,7 @@ class Odometry final
     return reinterpret_cast<const Odometry*>(
         &_Odometry_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 131;
+  static constexpr int kIndexInFileMessages = 133;
   friend void swap(Odometry& a, Odometry& b) { a.Swap(&b); }
   inline void Swap(Odometry* other) {
     if (other == this) return;
@@ -24346,7 +24973,7 @@ class Imu final
     return reinterpret_cast<const Imu*>(
         &_Imu_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 142;
+  static constexpr int kIndexInFileMessages = 144;
   friend void swap(Imu& a, Imu& b) { a.Swap(&b); }
   inline void Swap(Imu* other) {
     if (other == this) return;
@@ -25586,7 +26213,7 @@ class GetGpsGlobalOriginResponse final
     return reinterpret_cast<const GetGpsGlobalOriginResponse*>(
         &_GetGpsGlobalOriginResponse_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 112;
+  static constexpr int kIndexInFileMessages = 114;
   friend void swap(GetGpsGlobalOriginResponse& a, GetGpsGlobalOriginResponse& b) { a.Swap(&b); }
   inline void Swap(GetGpsGlobalOriginResponse* other) {
     if (other == this) return;
@@ -25997,7 +26624,7 @@ class DistanceSensor final
     return reinterpret_cast<const DistanceSensor*>(
         &_DistanceSensor_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 132;
+  static constexpr int kIndexInFileMessages = 134;
   friend void swap(DistanceSensor& a, DistanceSensor& b) { a.Swap(&b); }
   inline void Swap(DistanceSensor* other) {
     if (other == this) return;
@@ -31550,6 +32177,110 @@ inline void AltitudeResponse::set_allocated_altitude(::mavsdk::rpc::telemetry::A
 
   _impl_.altitude_ = reinterpret_cast<::mavsdk::rpc::telemetry::Altitude*>(value);
   // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.AltitudeResponse.altitude)
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeWindRequest
+
+// -------------------------------------------------------------------
+
+// WindResponse
+
+// .mavsdk.rpc.telemetry.Wind wind = 1;
+inline bool WindResponse::has_wind() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.wind_ != nullptr);
+  return value;
+}
+inline void WindResponse::clear_wind() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.wind_ != nullptr) _impl_.wind_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::mavsdk::rpc::telemetry::Wind& WindResponse::_internal_wind() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::mavsdk::rpc::telemetry::Wind* p = _impl_.wind_;
+  return p != nullptr ? *p : reinterpret_cast<const ::mavsdk::rpc::telemetry::Wind&>(::mavsdk::rpc::telemetry::_Wind_default_instance_);
+}
+inline const ::mavsdk::rpc::telemetry::Wind& WindResponse::wind() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.WindResponse.wind)
+  return _internal_wind();
+}
+inline void WindResponse::unsafe_arena_set_allocated_wind(::mavsdk::rpc::telemetry::Wind* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.wind_);
+  }
+  _impl_.wind_ = reinterpret_cast<::mavsdk::rpc::telemetry::Wind*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:mavsdk.rpc.telemetry.WindResponse.wind)
+}
+inline ::mavsdk::rpc::telemetry::Wind* WindResponse::release_wind() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::telemetry::Wind* released = _impl_.wind_;
+  _impl_.wind_ = nullptr;
+  if (::google::protobuf::internal::DebugHardenForceCopyInRelease()) {
+    auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    if (GetArena() == nullptr) {
+      delete old;
+    }
+  } else {
+    if (GetArena() != nullptr) {
+      released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+    }
+  }
+  return released;
+}
+inline ::mavsdk::rpc::telemetry::Wind* WindResponse::unsafe_arena_release_wind() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:mavsdk.rpc.telemetry.WindResponse.wind)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::mavsdk::rpc::telemetry::Wind* temp = _impl_.wind_;
+  _impl_.wind_ = nullptr;
+  return temp;
+}
+inline ::mavsdk::rpc::telemetry::Wind* WindResponse::_internal_mutable_wind() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.wind_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::mavsdk::rpc::telemetry::Wind>(GetArena());
+    _impl_.wind_ = reinterpret_cast<::mavsdk::rpc::telemetry::Wind*>(p);
+  }
+  return _impl_.wind_;
+}
+inline ::mavsdk::rpc::telemetry::Wind* WindResponse::mutable_wind() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::mavsdk::rpc::telemetry::Wind* _msg = _internal_mutable_wind();
+  // @@protoc_insertion_point(field_mutable:mavsdk.rpc.telemetry.WindResponse.wind)
+  return _msg;
+}
+inline void WindResponse::set_allocated_wind(::mavsdk::rpc::telemetry::Wind* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.wind_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.wind_ = reinterpret_cast<::mavsdk::rpc::telemetry::Wind*>(value);
+  // @@protoc_insertion_point(field_set_allocated:mavsdk.rpc.telemetry.WindResponse.wind)
 }
 
 // -------------------------------------------------------------------
@@ -38543,6 +39274,186 @@ inline float Altitude::_internal_bottom_clearance_m() const {
 inline void Altitude::_internal_set_bottom_clearance_m(float value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.bottom_clearance_m_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// Wind
+
+// float wind_x_ned_m_s = 1 [(.mavsdk.options.default_value) = "NaN"];
+inline void Wind::clear_wind_x_ned_m_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.wind_x_ned_m_s_ = 0;
+}
+inline float Wind::wind_x_ned_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Wind.wind_x_ned_m_s)
+  return _internal_wind_x_ned_m_s();
+}
+inline void Wind::set_wind_x_ned_m_s(float value) {
+  _internal_set_wind_x_ned_m_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Wind.wind_x_ned_m_s)
+}
+inline float Wind::_internal_wind_x_ned_m_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.wind_x_ned_m_s_;
+}
+inline void Wind::_internal_set_wind_x_ned_m_s(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.wind_x_ned_m_s_ = value;
+}
+
+// float wind_y_ned_m_s = 2 [(.mavsdk.options.default_value) = "NaN"];
+inline void Wind::clear_wind_y_ned_m_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.wind_y_ned_m_s_ = 0;
+}
+inline float Wind::wind_y_ned_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Wind.wind_y_ned_m_s)
+  return _internal_wind_y_ned_m_s();
+}
+inline void Wind::set_wind_y_ned_m_s(float value) {
+  _internal_set_wind_y_ned_m_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Wind.wind_y_ned_m_s)
+}
+inline float Wind::_internal_wind_y_ned_m_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.wind_y_ned_m_s_;
+}
+inline void Wind::_internal_set_wind_y_ned_m_s(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.wind_y_ned_m_s_ = value;
+}
+
+// float wind_z_ned_m_s = 3 [(.mavsdk.options.default_value) = "NaN"];
+inline void Wind::clear_wind_z_ned_m_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.wind_z_ned_m_s_ = 0;
+}
+inline float Wind::wind_z_ned_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Wind.wind_z_ned_m_s)
+  return _internal_wind_z_ned_m_s();
+}
+inline void Wind::set_wind_z_ned_m_s(float value) {
+  _internal_set_wind_z_ned_m_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Wind.wind_z_ned_m_s)
+}
+inline float Wind::_internal_wind_z_ned_m_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.wind_z_ned_m_s_;
+}
+inline void Wind::_internal_set_wind_z_ned_m_s(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.wind_z_ned_m_s_ = value;
+}
+
+// float horizontal_variability_stddev_m_s = 4 [(.mavsdk.options.default_value) = "NaN"];
+inline void Wind::clear_horizontal_variability_stddev_m_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.horizontal_variability_stddev_m_s_ = 0;
+}
+inline float Wind::horizontal_variability_stddev_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Wind.horizontal_variability_stddev_m_s)
+  return _internal_horizontal_variability_stddev_m_s();
+}
+inline void Wind::set_horizontal_variability_stddev_m_s(float value) {
+  _internal_set_horizontal_variability_stddev_m_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Wind.horizontal_variability_stddev_m_s)
+}
+inline float Wind::_internal_horizontal_variability_stddev_m_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.horizontal_variability_stddev_m_s_;
+}
+inline void Wind::_internal_set_horizontal_variability_stddev_m_s(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.horizontal_variability_stddev_m_s_ = value;
+}
+
+// float vertical_variability_stddev_m_s = 5 [(.mavsdk.options.default_value) = "NaN"];
+inline void Wind::clear_vertical_variability_stddev_m_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.vertical_variability_stddev_m_s_ = 0;
+}
+inline float Wind::vertical_variability_stddev_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Wind.vertical_variability_stddev_m_s)
+  return _internal_vertical_variability_stddev_m_s();
+}
+inline void Wind::set_vertical_variability_stddev_m_s(float value) {
+  _internal_set_vertical_variability_stddev_m_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Wind.vertical_variability_stddev_m_s)
+}
+inline float Wind::_internal_vertical_variability_stddev_m_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.vertical_variability_stddev_m_s_;
+}
+inline void Wind::_internal_set_vertical_variability_stddev_m_s(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.vertical_variability_stddev_m_s_ = value;
+}
+
+// float wind_altitude_msl_m = 6 [(.mavsdk.options.default_value) = "NaN"];
+inline void Wind::clear_wind_altitude_msl_m() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.wind_altitude_msl_m_ = 0;
+}
+inline float Wind::wind_altitude_msl_m() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Wind.wind_altitude_msl_m)
+  return _internal_wind_altitude_msl_m();
+}
+inline void Wind::set_wind_altitude_msl_m(float value) {
+  _internal_set_wind_altitude_msl_m(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Wind.wind_altitude_msl_m)
+}
+inline float Wind::_internal_wind_altitude_msl_m() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.wind_altitude_msl_m_;
+}
+inline void Wind::_internal_set_wind_altitude_msl_m(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.wind_altitude_msl_m_ = value;
+}
+
+// float horizontal_wind_speed_accuracy_m_s = 7 [(.mavsdk.options.default_value) = "NaN"];
+inline void Wind::clear_horizontal_wind_speed_accuracy_m_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.horizontal_wind_speed_accuracy_m_s_ = 0;
+}
+inline float Wind::horizontal_wind_speed_accuracy_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Wind.horizontal_wind_speed_accuracy_m_s)
+  return _internal_horizontal_wind_speed_accuracy_m_s();
+}
+inline void Wind::set_horizontal_wind_speed_accuracy_m_s(float value) {
+  _internal_set_horizontal_wind_speed_accuracy_m_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Wind.horizontal_wind_speed_accuracy_m_s)
+}
+inline float Wind::_internal_horizontal_wind_speed_accuracy_m_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.horizontal_wind_speed_accuracy_m_s_;
+}
+inline void Wind::_internal_set_horizontal_wind_speed_accuracy_m_s(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.horizontal_wind_speed_accuracy_m_s_ = value;
+}
+
+// float vertical_wind_speed_accuracy_m_s = 8 [(.mavsdk.options.default_value) = "NaN"];
+inline void Wind::clear_vertical_wind_speed_accuracy_m_s() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.vertical_wind_speed_accuracy_m_s_ = 0;
+}
+inline float Wind::vertical_wind_speed_accuracy_m_s() const {
+  // @@protoc_insertion_point(field_get:mavsdk.rpc.telemetry.Wind.vertical_wind_speed_accuracy_m_s)
+  return _internal_vertical_wind_speed_accuracy_m_s();
+}
+inline void Wind::set_vertical_wind_speed_accuracy_m_s(float value) {
+  _internal_set_vertical_wind_speed_accuracy_m_s(value);
+  // @@protoc_insertion_point(field_set:mavsdk.rpc.telemetry.Wind.vertical_wind_speed_accuracy_m_s)
+}
+inline float Wind::_internal_vertical_wind_speed_accuracy_m_s() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.vertical_wind_speed_accuracy_m_s_;
+}
+inline void Wind::_internal_set_vertical_wind_speed_accuracy_m_s(float value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.vertical_wind_speed_accuracy_m_s_ = value;
 }
 
 // -------------------------------------------------------------------
