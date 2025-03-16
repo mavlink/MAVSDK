@@ -1,6 +1,6 @@
-<img alt="MAVSDK" src="https://mavsdk.mavlink.io/main/assets/site/sdk_logo_full.png" width="400">
+<img alt="MAVSDK" src="docs/assets/site/sdk_logo_full.png" width="400">
 
-[![GitHub Actions Status](https://github.com/mavlink/MAVSDK/workflows/Build%20and%20Test/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions?query=branch%3Amain)
+[![Build and Test](https://github.com/mavlink/MAVSDK/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions/workflows/main.yml)
 [![Coverage Status](https://coveralls.io/repos/github/mavlink/MAVSDK/badge.svg?branch=main)](https://coveralls.io/github/mavlink/MAVSDK?branch=main)
 
 ## Description
