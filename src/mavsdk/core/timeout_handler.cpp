@@ -15,8 +15,6 @@ TimeoutHandler::Cookie TimeoutHandler::add(std::function<void()> callback, doubl
     new_timeout.cookie = _next_cookie++;
     _timeouts.push_back(new_timeout);
 
-    _iterator_invalidated = true;
-
     return new_timeout.cookie;
 }
 
@@ -43,40 +41,34 @@ void TimeoutHandler::remove(Cookie cookie)
 
     if (it != _timeouts.end()) {
         _timeouts.erase(it);
-        _iterator_invalidated = true;
     }
 }
 
 void TimeoutHandler::run_once()
 {
-    std::unique_lock<std::mutex> lock(_timeouts_mutex);
+    // First, collect expired timeouts under the lock
+    std::vector<std::function<void()>> callbacks_to_run;
 
-    auto now = _time.steady_time();
+    {
+        std::lock_guard<std::mutex> lock(_timeouts_mutex);
+        auto now = _time.steady_time();
 
-    for (auto it = _timeouts.begin(); it != _timeouts.end(); /* no ++it */) {
-        // If time is passed, call timeout callback.
-        if (it->time < now) {
-            // Get a copy for the callback because we will remove it.
-            auto callback = it->callback;
-
-            // Self-destruct before calling to avoid locking issues.
-            it = _timeouts.erase(it);
-
-            if (callback) {
-                // Unlock while we call back because it might in turn want to add timeouts.
-                lock.unlock();
-                callback();
-                lock.lock();
-
-                // We start over if anyone has messed with this while we called the callback.
-                if (_iterator_invalidated) {
-                    _iterator_invalidated = false;
-                    it = _timeouts.begin();
+        for (auto it = _timeouts.begin(); it != _timeouts.end();) {
+            // If time is passed, collect the callback
+            if (it->time < now) {
+                if (it->callback) {
+                    callbacks_to_run.push_back(it->callback);
                 }
+                it = _timeouts.erase(it);
+            } else {
+                ++it;
             }
-        } else {
-            ++it;
         }
+    }
+
+    // Then, execute callbacks outside the lock
+    for (const auto& callback : callbacks_to_run) {
+        callback();
     }
 }
 
