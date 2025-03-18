@@ -22,8 +22,6 @@ CallEveryHandler::Cookie CallEveryHandler::add(std::function<void()> callback, d
     new_entry.cookie = _next_cookie++;
     _entries.push_back(new_entry);
 
-    _iterator_invalidated = true;
-
     return new_entry.cookie;
 }
 
@@ -60,34 +58,30 @@ void CallEveryHandler::remove(Cookie cookie)
 
     if (it != _entries.end()) {
         _entries.erase(it);
-        _iterator_invalidated = true;
     }
 }
 
 void CallEveryHandler::run_once()
 {
-    std::unique_lock<std::mutex> lock(_entries_mutex);
+    std::vector<std::function<void()>> callbacks_to_run;
 
-    for (auto& entry : _entries) {
-        if (_time.elapsed_since_s(entry.last_time) > double(entry.interval_s)) {
-            _time.shift_steady_time_by(entry.last_time, double(entry.interval_s));
+    {
+        std::lock_guard<std::mutex> lock(_entries_mutex);
 
-            if (entry.callback) {
-                // Make a copy and unlock while we call back because it might
-                // in turn want to remove or change it within.
-                std::function<void()> callback = entry.callback;
-                lock.unlock();
-                callback();
-                lock.lock();
+        for (auto& entry : _entries) {
+            if (_time.elapsed_since_s(entry.last_time) > double(entry.interval_s)) {
+                _time.shift_steady_time_by(entry.last_time, double(entry.interval_s));
+
+                if (entry.callback) {
+                    callbacks_to_run.push_back(entry.callback);
+                }
             }
         }
+    }
 
-        // We leave the loop.
-        // FIXME: there should be a nicer way to do this.
-        if (_iterator_invalidated) {
-            _iterator_invalidated = false;
-            break;
-        }
+    // Execute callbacks outside of the lock
+    for (const auto& callback : callbacks_to_run) {
+        callback();
     }
 }
 
