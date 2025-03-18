@@ -18,14 +18,14 @@ int main(int, char**)
     Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     ConnectionResult connection_result =
-        mavsdk.add_any_connection("udp://:12550", ForwardingOption::ForwardingOn);
+        mavsdk.add_any_connection("udpin://0.0.0.0:12550", ForwardingOption::ForwardingOn);
     if (connection_result != ConnectionResult::Success) {
         std::cerr << "First connection failed: " << connection_result << '\n';
         return 1;
     }
 
     connection_result =
-        mavsdk.add_any_connection("udp://127.0.0.1:14550", ForwardingOption::ForwardingOn);
+        mavsdk.add_any_connection("udpout://127.0.0.1:14550", ForwardingOption::ForwardingOn);
     if (connection_result != ConnectionResult::Success) {
         std::cerr << "Second connection failed: " << connection_result << '\n';
         return 1;
