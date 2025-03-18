@@ -17,7 +17,7 @@ A release build will omit the "Debug" messages.
 :::
 
 ```
-$ ./offboard udp://:14540
+$ ./offboard udpin://0.0.0.0:14540
 ```
 ```
 Wait for system to connect via heartbeat

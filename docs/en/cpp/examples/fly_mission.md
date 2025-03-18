@@ -17,7 +17,7 @@ A release build will omit the "Debug" messages.
 :::
 
 ```
-$ ./fly_mission udp://:14540
+$ ./fly_mission udpin://0.0.0.0:14540
 ```
 ```
 Waiting to discover system...

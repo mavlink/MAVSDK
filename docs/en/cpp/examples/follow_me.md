@@ -33,7 +33,7 @@ A release build will omit the "Debug" messages.
 :::
 
 ```
-$ ./follow_me udp://:14540
+$ ./follow_me udpin://0.0.0.0:14540
 ```
 ```
 [01:55:59|Info ] DronecodeSDK version: 0.2.8 (dronecode_sdk_impl.cpp:25)

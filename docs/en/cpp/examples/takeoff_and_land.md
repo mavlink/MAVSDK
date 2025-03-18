@@ -22,7 +22,7 @@ A release build will omit the "Debug" messages.
 :::
 
 ```sh
-$ ./takeoff_and_land udp://:14540
+$ ./takeoff_and_land udpin://0.0.0.0:14540
 ```
 ```sh
 Waiting to discover system...
