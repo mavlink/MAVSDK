@@ -307,8 +307,8 @@ void | [set_rate_distance_sensor_async](#classmavsdk_1_1_telemetry_1a0371c470866
 void | [set_rate_altitude_async](#classmavsdk_1_1_telemetry_1a15461dd3f64aef2b921c9f06ee144bc1) (double rate_hz, const [ResultCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a166e81c6573532978e5940eafdfcec0b) callback) | Set rate to '[Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md)' updates.
 [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75) | [set_rate_altitude](#classmavsdk_1_1_telemetry_1a100fc786b86637385c6188ea53121b98) (double rate_hz)const | Set rate to '[Altitude](structmavsdk_1_1_telemetry_1_1_altitude.md)' updates.
 void | [get_gps_global_origin_async](#classmavsdk_1_1_telemetry_1a60cca43e2f87e3fd3a9e170ff2b64e0a) (const [GetGpsGlobalOriginCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a350ee89a7e30a691e130e29ace8917ef) callback) | Get the GPS location of where the estimator has been initialized.
-std::pair< [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75), [Telemetry::GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md) > | [get_gps_global_origin](#classmavsdk_1_1_telemetry_1a77747e7cea5a4d644bd6bec9441c7bfb) () const | Get the GPS location of where the estimator has been initialized.
-const [Telemetry](classmavsdk_1_1_telemetry.md) & | [operator=](#classmavsdk_1_1_telemetry_1a703ac978c925be8806921925cf16aca9) (const [Telemetry](classmavsdk_1_1_telemetry.md) &)=delete | Equality operator (object is not copyable).
+std::pair< [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75), [Telemetry::GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md) > | [get_gps_global_origin](#classmavsdk_1_1_telemetry_1a341b90234b30a27bb25670a31303e0cd) () const | Get the GPS location of where the estimator has been initialized.
+const [Telemetry](classmavsdk_1_1_telemetry.md) & | [operator=](#classmavsdk_1_1_telemetry_1ae606a3e3814c773a12035c2674a00c5c) (const [Telemetry](classmavsdk_1_1_telemetry.md) &)=delete | Equality operator (object is not copyable).
 
 
 ## Constructor & Destructor Documentation
@@ -3356,9 +3356,9 @@ This function is non-blocking. See 'get_gps_global_origin' for the blocking coun
 
 * const [GetGpsGlobalOriginCallback](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a350ee89a7e30a691e130e29ace8917ef) **callback** - 
 
-### get_gps_global_origin() {#classmavsdk_1_1_telemetry_1a77747e7cea5a4d644bd6bec9441c7bfb}
+### get_gps_global_origin() {#classmavsdk_1_1_telemetry_1a341b90234b30a27bb25670a31303e0cd}
 ```cpp
-std::pair<Result, Telemetry::GpsGlobalOrigin> mavsdk::Telemetry::get_gps_global_origin() const
+std::pair< Result, Telemetry::GpsGlobalOrigin > mavsdk::Telemetry::get_gps_global_origin() const
 ```
 
 
@@ -3370,9 +3370,9 @@ This function is blocking. See 'get_gps_global_origin_async' for the non-blockin
 
 &emsp;std::pair< [Result](classmavsdk_1_1_telemetry.md#classmavsdk_1_1_telemetry_1a241427df9a06234df2d3020fb524db75), [Telemetry::GpsGlobalOrigin](structmavsdk_1_1_telemetry_1_1_gps_global_origin.md) > - Result of request.
 
-### operator=() {#classmavsdk_1_1_telemetry_1a703ac978c925be8806921925cf16aca9}
+### operator=() {#classmavsdk_1_1_telemetry_1ae606a3e3814c773a12035c2674a00c5c}
 ```cpp
-const Telemetry& mavsdk::Telemetry::operator=(const Telemetry &)=delete
+const Telemetry & mavsdk::Telemetry::operator=(const Telemetry &)=delete
 ```
 
 
