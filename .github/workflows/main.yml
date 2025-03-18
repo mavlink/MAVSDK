@@ -273,7 +273,7 @@ jobs:
         run: sudo cmake --build build/release --target install
       - name: Package
         if: startsWith(github.ref, 'refs/tags/v')
-        run: tools/create_packages.sh ./install . amd64 libmavsdk-dev
+        run: tools/create_packages.sh /usr/ . amd64 libmavsdk-dev
       - name: Publish artefacts
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
