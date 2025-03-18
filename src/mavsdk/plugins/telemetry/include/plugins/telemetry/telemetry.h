@@ -1000,6 +1000,41 @@ public:
     friend std::ostream& operator<<(std::ostream& str, Telemetry::Altitude const& altitude);
 
     /**
+     * @brief Wind message type
+     */
+    struct Wind {
+        float wind_x_ned_m_s{float(NAN)}; /**< @brief Wind in North (NED) direction */
+        float wind_y_ned_m_s{float(NAN)}; /**< @brief  Wind in East (NED) direction */
+        float wind_z_ned_m_s{float(NAN)}; /**< @brief Wind in down (NED) direction */
+        float horizontal_variability_stddev_m_s{
+            float(NAN)}; /**< @brief Variability of wind in XY, 1-STD estimated from a 1 Hz
+                            lowpassed wind estimate */
+        float vertical_variability_stddev_m_s{
+            float(NAN)}; /**< @brief Variability of wind in Z, 1-STD estimated from a 1 Hz lowpassed
+                            wind estimate */
+        float wind_altitude_msl_m{
+            float(NAN)}; /**< @brief Altitude (MSL) that this measurement was taken at */
+        float horizontal_wind_speed_accuracy_m_s{
+            float(NAN)}; /**< @brief Horizontal speed 1-STD accuracy */
+        float vertical_wind_speed_accuracy_m_s{
+            float(NAN)}; /**< @brief Vertical speed 1-STD accuracy */
+    };
+
+    /**
+     * @brief Equal operator to compare two `Telemetry::Wind` objects.
+     *
+     * @return `true` if items are equal.
+     */
+    friend bool operator==(const Telemetry::Wind& lhs, const Telemetry::Wind& rhs);
+
+    /**
+     * @brief Stream operator to print information about a `Telemetry::Wind`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::Wind const& wind);
+
+    /**
      * @brief Possible results returned for telemetry requests.
      */
     enum class Result {
@@ -1893,6 +1928,33 @@ public:
      * @return One Altitude update.
      */
     Altitude altitude() const;
+
+    /**
+     * @brief Callback type for subscribe_wind.
+     */
+    using WindCallback = std::function<void(Wind)>;
+
+    /**
+     * @brief Handle type for subscribe_wind.
+     */
+    using WindHandle = Handle<Wind>;
+
+    /**
+     * @brief Subscribe to 'Wind Estimated' updates.
+     */
+    WindHandle subscribe_wind(const WindCallback& callback);
+
+    /**
+     * @brief Unsubscribe from subscribe_wind
+     */
+    void unsubscribe_wind(WindHandle handle);
+
+    /**
+     * @brief Poll for 'Wind' (blocking).
+     *
+     * @return One Wind update.
+     */
+    Wind wind() const;
 
     /**
      * @brief Set rate to 'position' updates.
