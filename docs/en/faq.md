@@ -135,3 +135,7 @@ The unit tests are only concerned with one class or less. It's often used for MA
 System tests are used to test the MAVLink implementation, by running a plugin against it's server plugin counterpart. This way we can test both at the same time while keeping the tests fast because they don't rely on an simulation that would need to be started up.
 
 We have opted to slowly fade out integration tests and use a few examples instead (also see (explanation)[documentation.md#integration_tests]).
+
+## Why are the plugins called plugins?
+
+The initial idea was to support runtime plugins. However, this turned out to be very tricky when combined with language wrappers. To avoid that huge unnecessary complexity we opted for compile-time modules instead but left the name plugin as is.

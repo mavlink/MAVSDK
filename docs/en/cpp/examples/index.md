@@ -90,16 +90,16 @@ cmake -Bbuild -DCMAKE_PREFIX_PATH=wherever_mavsdk_is_locally_installed
 ### Running the Examples {#running_the_examples}
 
 You can then run the example, specifying the connection URL as the first argument.
-When running with the Simulator, you will use the connection string: `udp://:14540`
+When running with the Simulator, you will use the connection string: `udpin://0.0.0.0:14540`
 
 On Linux/macOS you would run the following (from the **/build** directory):
 ```sh
-build/takeoff_and_land udp://:14540
+build/takeoff_and_land udpin://0.0.0.0:14540
 ```
 
 For Windows you would run the following (from the **\build\Debug\** directory):
 ```cmd
-build\Debug\takeoff_and_land.exe udp://:14540
+build\Debug\takeoff_and_land.exe udpin://0.0.0.0:14540
 ```
 
 ::: tip

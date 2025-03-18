@@ -2,7 +2,7 @@
 
 # MAVSDK (main)
 
-[![Discord](https://img.shields.io/badge/Discord-Join_Us!-blue)](https://discord.com/invite/dronecode)&nbsp;[![Discuss](https://img.shields.io/badge/discuss-MAVSDK-ff69b4.svg)](https://discuss.px4.io/c/sdk) [![GitHub Actions Status](https://github.com/mavlink/MAVSDK/workflows/Build%20and%20Test/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions?query=branch%3Amain)
+[![Build and Test](https://github.com/mavlink/MAVSDK/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/mavlink/MAVSDK/actions/workflows/main.yml)
 [![Coverage Status](https://coveralls.io/repos/github/mavlink/MAVSDK/badge.svg?branch=main)](https://coveralls.io/github/mavlink/MAVSDK?branch=main)
 
 *MAVSDK* is a collection of libraries for various programming languages to interface with [MAVLink](https://mavlink.io/en/) systems such as drones, cameras or ground systems.

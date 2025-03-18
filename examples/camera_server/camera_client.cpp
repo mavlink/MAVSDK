@@ -14,7 +14,7 @@ int main(int argc, const char* argv[])
     // to communicate with the camera server plugins.
     mavsdk::Mavsdk mavsdk{mavsdk::Mavsdk::Configuration{mavsdk::ComponentType::GroundStation}};
 
-    auto result = mavsdk.add_any_connection("udp://:14030");
+    auto result = mavsdk.add_any_connection("udpin://0.0.0.0:14030");
     if (result == mavsdk::ConnectionResult::Success) {
         std::cout << "Connected!" << std::endl;
     }

@@ -18,7 +18,7 @@ jMAVSim does not support VTOL simulation.
 The example terminal output for a debug build of the SDK should be similar to that shown below (a release build will omit the "Debug" messages):
 
 ```
-$ ./transition_vtol_fixed_wing udp://:14540
+$ ./transition_vtol_fixed_wing udpin://0.0.0.0:14540
 ```
 ```
 Waiting to discover system...

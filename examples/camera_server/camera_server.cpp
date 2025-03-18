@@ -12,7 +12,7 @@ int main(int argc, char** argv)
     mavsdk::Mavsdk mavsdk{mavsdk::Mavsdk::Configuration{mavsdk::ComponentType::Camera}};
 
     // 14030 is the default camera port for PX4 SITL
-    auto result = mavsdk.add_any_connection("udp://127.0.0.1:14030");
+    auto result = mavsdk.add_any_connection("udpout://127.0.0.1:14030");
     if (result != mavsdk::ConnectionResult::Success) {
         std::cerr << "Could not establish connection: " << result << std::endl;
         return 1;
