@@ -191,9 +191,15 @@ void TelemetryImpl::deinit()
     _system_impl->unregister_all_mavlink_message_handlers(this);
 }
 
-void TelemetryImpl::enable() {}
+void TelemetryImpl::enable()
+{
+    // Nothing to do
+}
 
-void TelemetryImpl::disable() {}
+void TelemetryImpl::disable()
+{
+    // Nothing to do
+}
 
 Telemetry::Result TelemetryImpl::set_rate_position_velocity_ned(double rate_hz)
 {
