@@ -266,8 +266,6 @@ private:
 
     void receive_statustext(const MavlinkStatustextHandler::Statustext&);
 
-    void request_home_position_again();
-
     static bool sys_status_present_enabled_health(
         const mavlink_sys_status_t& sys_status, MAV_SYS_STATUS_SENSOR flag);
 
@@ -418,8 +416,6 @@ private:
     // Battery info can be extracted from SYS_STATUS or from BATTERY_STATUS.
     // If no BATTERY_STATUS messages are received, use info from SYS_STATUS.
     bool _has_bat_status{false};
-
-    CallEveryHandler::Cookie _homepos_cookie{};
 
     Telemetry::EulerAngle extractOrientation(mavlink_distance_sensor_t distance_sensor_msg);
 
