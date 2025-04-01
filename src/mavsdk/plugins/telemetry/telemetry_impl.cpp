@@ -193,32 +193,12 @@ void TelemetryImpl::deinit()
 
 void TelemetryImpl::enable()
 {
-    // We're going to retry until we have the Home Position.
-    _homepos_cookie =
-        _system_impl->add_call_every([this]() { request_home_position_again(); }, 2.0f);
+    // Nothing to do
 }
 
 void TelemetryImpl::disable()
 {
-    _system_impl->remove_call_every(_homepos_cookie);
-    {
-        std::lock_guard<std::mutex> lock(_health_mutex);
-        _health.is_home_position_ok = false;
-    }
-}
-
-void TelemetryImpl::request_home_position_again()
-{
-    {
-        std::lock_guard<std::mutex> lock(_health_mutex);
-        if (_health.is_home_position_ok) {
-            _system_impl->remove_call_every(_homepos_cookie);
-            return;
-        }
-
-        _system_impl->mavlink_request_message().request(
-            MAVLINK_MSG_ID_HOME_POSITION, MAV_COMP_ID_AUTOPILOT1, nullptr);
-    }
+    // Nothing to do
 }
 
 Telemetry::Result TelemetryImpl::set_rate_position_velocity_ned(double rate_hz)
