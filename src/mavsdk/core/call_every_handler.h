@@ -39,7 +39,6 @@ private:
 
     std::vector<Entry> _entries{};
     std::mutex _entries_mutex{};
-    bool _iterator_invalidated{false};
 
     Time& _time;
 
