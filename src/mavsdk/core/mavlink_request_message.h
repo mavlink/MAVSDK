@@ -59,6 +59,8 @@ private:
     std::mutex _mutex{};
     std::vector<WorkItem> _work_items{};
     std::vector<int> _deferred_message_cleanup{};
+
+    bool _debugging{false};
 };
 
 } // namespace mavsdk
