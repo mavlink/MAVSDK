@@ -246,8 +246,12 @@ void UdpConnection::receive()
             const uint8_t sysid = _mavlink_receiver->get_last_message().sysid;
 
             if (sysid != 0) {
-                add_remote_with_remote_sysid(
-                    inet_ntoa(src_addr.sin_addr), ntohs(src_addr.sin_port), sysid);
+                char ip_str[INET_ADDRSTRLEN];
+                if (inet_ntop(AF_INET, &src_addr.sin_addr, ip_str, INET_ADDRSTRLEN) != nullptr) {
+                    add_remote_with_remote_sysid(ip_str, ntohs(src_addr.sin_port), sysid);
+                } else {
+                    LogErr() << "inet_ntop failure for: " << strerror(errno);
+                }
             }
 
             receive_message(_mavlink_receiver->get_last_message(), this);
