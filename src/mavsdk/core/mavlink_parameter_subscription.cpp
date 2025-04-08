@@ -25,12 +25,19 @@ void MavlinkParameterSubscription::subscribe_param_custom_changed(
 void MavlinkParameterSubscription::find_and_call_subscriptions_value_changed(
     const std::string& param_name, const ParamValue& value)
 {
-    // Process any deferred operations before calling subscriptions
-    process_deferred_operations();
+    // Make a copy of the subscriptions to avoid holding the lock during callbacks
+    std::vector<ParamChangedSubscription> subscriptions_copy;
 
-    // Now lock the mutex and call the subscriptions
-    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
-    for (const auto& subscription : _param_changed_subscriptions) {
+    {
+        // First process any deferred operations
+        process_deferred_operations();
+
+        // Then lock the mutex and make a copy of the subscriptions
+        std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
+        subscriptions_copy = _param_changed_subscriptions;
+    }
+
+    for (const auto& subscription : subscriptions_copy) {
         if (subscription.param_name != param_name) {
             continue;
         }
