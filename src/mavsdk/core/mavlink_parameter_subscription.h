@@ -1,8 +1,11 @@
 #pragma once
 
 #include "param_value.h"
+#include <algorithm>
+#include <functional>
 #include <mutex>
 #include <string>
+#include <variant>
 #include <vector>
 
 namespace mavsdk {
@@ -50,32 +53,39 @@ public:
     void subscribe_param_changed(
         const std::string& name, const ParamChangedCallback<T>& callback, const void* cookie)
     {
-        std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
         if (callback != nullptr) {
             ParamChangedSubscription subscription{name, callback, cookie};
-            // This is just to let the upper level know of what probably is a bug, but we check
-            // again when actually calling the callback We also cannot assume here that the user
-            // called provide_param before subscribe_param_changed, so the only thing that makes
-            // sense is to log a warning, but then continue anyways.
-            /*std::lock_guard<std::mutex> lock2(_all_params_mutex);
-            if (_all_params.find(name) != _all_params.end()) {
-                const auto curr_value = _all_params.at(name);
-                if (!curr_value.template is_same_type_templated<T>()) {
-                    LogDebug()
-                        << "You just registered a param changed callback where the type does not
-            match the type already stored";
-                }
-            }*/
-            _param_changed_subscriptions.push_back(subscription);
+
+            // Try to lock the mutex, if it fails we're likely in a callback
+            if (_param_changed_subscriptions_mutex.try_lock()) {
+                // We've acquired the lock without blocking, so we can modify the list
+                _param_changed_subscriptions.push_back(subscription);
+                _param_changed_subscriptions_mutex.unlock();
+            } else {
+                // We couldn't acquire the lock because we're likely in a callback
+                // Defer the subscription
+                std::lock_guard<std::mutex> lock(_deferred_subscriptions_mutex);
+                _deferred_subscriptions.push_back(subscription);
+            }
         } else {
-            for (auto it = _param_changed_subscriptions.begin();
-                 it != _param_changed_subscriptions.end();
-                 /* ++it */) {
-                if (it->param_name == name && it->cookie == cookie) {
-                    it = _param_changed_subscriptions.erase(it);
-                } else {
-                    ++it;
+            // For unsubscribing, we also need to handle the case where we're in a callback
+            if (_param_changed_subscriptions_mutex.try_lock()) {
+                // We've acquired the lock without blocking, so we can modify the list
+                for (auto it = _param_changed_subscriptions.begin();
+                     it != _param_changed_subscriptions.end();
+                     /* ++it */) {
+                    if (it->param_name == name && it->cookie == cookie) {
+                        it = _param_changed_subscriptions.erase(it);
+                    } else {
+                        ++it;
+                    }
                 }
+                _param_changed_subscriptions_mutex.unlock();
+            } else {
+                // We couldn't acquire the lock because we're likely in a callback
+                // Defer the unsubscription
+                std::lock_guard<std::mutex> lock(_deferred_unsubscriptions_mutex);
+                _deferred_unsubscriptions.push_back({name, cookie});
             }
         }
     }
@@ -103,8 +113,69 @@ protected:
         const std::string& param_name, const ParamValue& new_param_value);
 
 private:
+    // Process any deferred subscriptions or unsubscriptions
+    void process_deferred_operations()
+    {
+        // Process deferred subscriptions
+        {
+            std::lock_guard<std::mutex> lock(_deferred_subscriptions_mutex);
+            if (!_deferred_subscriptions.empty() && _param_changed_subscriptions_mutex.try_lock()) {
+                for (const auto& subscription : _deferred_subscriptions) {
+                    _param_changed_subscriptions.push_back(subscription);
+                }
+                _deferred_subscriptions.clear();
+                _param_changed_subscriptions_mutex.unlock();
+            }
+        }
+
+        // Process deferred unsubscriptions
+        {
+            std::lock_guard<std::mutex> lock(_deferred_unsubscriptions_mutex);
+            if (!_deferred_unsubscriptions.empty() &&
+                _param_changed_subscriptions_mutex.try_lock()) {
+                for (const auto& unsub : _deferred_unsubscriptions) {
+                    if (unsub.param_name.empty()) {
+                        // This is a special marker for unsubscribe_all_params_changed
+                        _param_changed_subscriptions.erase(
+                            std::remove_if(
+                                _param_changed_subscriptions.begin(),
+                                _param_changed_subscriptions.end(),
+                                [&](const auto& subscription) {
+                                    return subscription.cookie == unsub.cookie;
+                                }),
+                            _param_changed_subscriptions.end());
+                    } else {
+                        // This is a normal unsubscription for a specific parameter
+                        for (auto it = _param_changed_subscriptions.begin();
+                             it != _param_changed_subscriptions.end();
+                             /* ++it */) {
+                            if (it->param_name == unsub.param_name && it->cookie == unsub.cookie) {
+                                it = _param_changed_subscriptions.erase(it);
+                            } else {
+                                ++it;
+                            }
+                        }
+                    }
+                }
+                _deferred_unsubscriptions.clear();
+                _param_changed_subscriptions_mutex.unlock();
+            }
+        }
+    }
+
+    struct DeferredUnsubscription {
+        std::string param_name;
+        const void* cookie;
+    };
+
     std::mutex _param_changed_subscriptions_mutex{};
     std::vector<ParamChangedSubscription> _param_changed_subscriptions{};
+
+    std::mutex _deferred_subscriptions_mutex{};
+    std::vector<ParamChangedSubscription> _deferred_subscriptions{};
+
+    std::mutex _deferred_unsubscriptions_mutex{};
+    std::vector<DeferredUnsubscription> _deferred_unsubscriptions{};
 };
 
 } // namespace mavsdk

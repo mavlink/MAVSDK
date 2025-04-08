@@ -25,6 +25,10 @@ void MavlinkParameterSubscription::subscribe_param_custom_changed(
 void MavlinkParameterSubscription::find_and_call_subscriptions_value_changed(
     const std::string& param_name, const ParamValue& value)
 {
+    // Process any deferred operations before calling subscriptions
+    process_deferred_operations();
+
+    // Now lock the mutex and call the subscriptions
     std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
     for (const auto& subscription : _param_changed_subscriptions) {
         if (subscription.param_name != param_name) {
@@ -50,14 +54,26 @@ void MavlinkParameterSubscription::find_and_call_subscriptions_value_changed(
 
 void MavlinkParameterSubscription::unsubscribe_all_params_changed(const void* cookie)
 {
-    std::lock_guard<std::mutex> lock(_param_changed_subscriptions_mutex);
+    // Process any deferred operations first
+    process_deferred_operations();
 
-    _param_changed_subscriptions.erase(
-        std::remove_if(
-            _param_changed_subscriptions.begin(),
-            _param_changed_subscriptions.end(),
-            [&](const auto& subscription) { return subscription.cookie == cookie; }),
-        _param_changed_subscriptions.end());
+    // Try to lock the mutex, if it fails we're likely in a callback
+    if (_param_changed_subscriptions_mutex.try_lock()) {
+        // We've acquired the lock without blocking, so we can modify the list
+        _param_changed_subscriptions.erase(
+            std::remove_if(
+                _param_changed_subscriptions.begin(),
+                _param_changed_subscriptions.end(),
+                [&](const auto& subscription) { return subscription.cookie == cookie; }),
+            _param_changed_subscriptions.end());
+        _param_changed_subscriptions_mutex.unlock();
+    } else {
+        // We couldn't acquire the lock because we're likely in a callback
+        // Defer the unsubscription of all params for this cookie
+        std::lock_guard<std::mutex> lock(_deferred_unsubscriptions_mutex);
+        // Add a special marker for unsubscribe_all (empty param_name)
+        _deferred_unsubscriptions.push_back({"", cookie});
+    }
 }
 
 } // namespace mavsdk
