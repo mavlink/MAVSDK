@@ -12,10 +12,12 @@ namespace mavsdk {
 using PositionBody = Mocap::PositionBody;
 using AngleBody = Mocap::AngleBody;
 using SpeedBody = Mocap::SpeedBody;
+using SpeedNed = Mocap::SpeedNed;
 using AngularVelocityBody = Mocap::AngularVelocityBody;
 using Covariance = Mocap::Covariance;
 using Quaternion = Mocap::Quaternion;
 using VisionPositionEstimate = Mocap::VisionPositionEstimate;
+using VisionSpeedEstimate = Mocap::VisionSpeedEstimate;
 using AttitudePositionMocap = Mocap::AttitudePositionMocap;
 using Odometry = Mocap::Odometry;
 
@@ -32,6 +34,11 @@ Mocap::Result
 Mocap::set_vision_position_estimate(VisionPositionEstimate vision_position_estimate) const
 {
     return _impl->set_vision_position_estimate(vision_position_estimate);
+}
+
+Mocap::Result Mocap::set_vision_speed_estimate(VisionSpeedEstimate vision_speed_estimate) const
+{
+    return _impl->set_vision_speed_estimate(vision_speed_estimate);
 }
 
 Mocap::Result
@@ -97,6 +104,26 @@ std::ostream& operator<<(std::ostream& str, Mocap::SpeedBody const& speed_body)
     str << "    x_m_s: " << speed_body.x_m_s << '\n';
     str << "    y_m_s: " << speed_body.y_m_s << '\n';
     str << "    z_m_s: " << speed_body.z_m_s << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Mocap::SpeedNed& lhs, const Mocap::SpeedNed& rhs)
+{
+    return ((std::isnan(rhs.north_m_s) && std::isnan(lhs.north_m_s)) ||
+            rhs.north_m_s == lhs.north_m_s) &&
+           ((std::isnan(rhs.east_m_s) && std::isnan(lhs.east_m_s)) ||
+            rhs.east_m_s == lhs.east_m_s) &&
+           ((std::isnan(rhs.down_m_s) && std::isnan(lhs.down_m_s)) || rhs.down_m_s == lhs.down_m_s);
+}
+
+std::ostream& operator<<(std::ostream& str, Mocap::SpeedNed const& speed_ned)
+{
+    str << std::setprecision(15);
+    str << "speed_ned:" << '\n' << "{\n";
+    str << "    north_m_s: " << speed_ned.north_m_s << '\n';
+    str << "    east_m_s: " << speed_ned.east_m_s << '\n';
+    str << "    down_m_s: " << speed_ned.down_m_s << '\n';
     str << '}';
     return str;
 }
@@ -176,6 +203,23 @@ operator<<(std::ostream& str, Mocap::VisionPositionEstimate const& vision_positi
     str << "    position_body: " << vision_position_estimate.position_body << '\n';
     str << "    angle_body: " << vision_position_estimate.angle_body << '\n';
     str << "    pose_covariance: " << vision_position_estimate.pose_covariance << '\n';
+    str << '}';
+    return str;
+}
+
+bool operator==(const Mocap::VisionSpeedEstimate& lhs, const Mocap::VisionSpeedEstimate& rhs)
+{
+    return (rhs.time_usec == lhs.time_usec) && (rhs.speed_ned == lhs.speed_ned) &&
+           (rhs.speed_covariance == lhs.speed_covariance);
+}
+
+std::ostream& operator<<(std::ostream& str, Mocap::VisionSpeedEstimate const& vision_speed_estimate)
+{
+    str << std::setprecision(15);
+    str << "vision_speed_estimate:" << '\n' << "{\n";
+    str << "    time_usec: " << vision_speed_estimate.time_usec << '\n';
+    str << "    speed_ned: " << vision_speed_estimate.speed_ned << '\n';
+    str << "    speed_covariance: " << vision_speed_estimate.speed_covariance << '\n';
     str << '}';
     return str;
 }
