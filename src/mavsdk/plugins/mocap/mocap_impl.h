@@ -24,6 +24,8 @@ public:
     Mocap::Result
     set_vision_position_estimate(const Mocap::VisionPositionEstimate& vision_position_estimate);
     Mocap::Result
+    set_vision_speed_estimate(const Mocap::VisionSpeedEstimate& vision_speed_estimate);
+    Mocap::Result
     set_attitude_position_mocap(const Mocap::AttitudePositionMocap& attitude_position_mocap);
     Mocap::Result set_odometry(const Mocap::Odometry& odometry);
 
@@ -33,6 +35,8 @@ public:
 private:
     Mocap::Result
     send_vision_position_estimate(const Mocap::VisionPositionEstimate& vision_position_estimate);
+    Mocap::Result
+    send_vision_speed_estimate(const Mocap::VisionSpeedEstimate& vision_speed_estimate);
     Mocap::Result
     send_attitude_position_mocap(const Mocap::AttitudePositionMocap& attitude_position_mocap);
     Mocap::Result send_odometry(const Mocap::Odometry& odometry);
