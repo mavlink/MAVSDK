@@ -126,6 +126,33 @@ public:
         return obj;
     }
 
+    static std::unique_ptr<rpc::mocap::SpeedNed>
+    translateToRpcSpeedNed(const mavsdk::Mocap::SpeedNed& speed_ned)
+    {
+        auto rpc_obj = std::make_unique<rpc::mocap::SpeedNed>();
+
+        rpc_obj->set_north_m_s(speed_ned.north_m_s);
+
+        rpc_obj->set_east_m_s(speed_ned.east_m_s);
+
+        rpc_obj->set_down_m_s(speed_ned.down_m_s);
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Mocap::SpeedNed translateFromRpcSpeedNed(const rpc::mocap::SpeedNed& speed_ned)
+    {
+        mavsdk::Mocap::SpeedNed obj;
+
+        obj.north_m_s = speed_ned.north_m_s();
+
+        obj.east_m_s = speed_ned.east_m_s();
+
+        obj.down_m_s = speed_ned.down_m_s();
+
+        return obj;
+    }
+
     static std::unique_ptr<rpc::mocap::AngularVelocityBody> translateToRpcAngularVelocityBody(
         const mavsdk::Mocap::AngularVelocityBody& angular_velocity_body)
     {
@@ -242,6 +269,36 @@ public:
 
         obj.pose_covariance =
             translateFromRpcCovariance(vision_position_estimate.pose_covariance());
+
+        return obj;
+    }
+
+    static std::unique_ptr<rpc::mocap::VisionSpeedEstimate> translateToRpcVisionSpeedEstimate(
+        const mavsdk::Mocap::VisionSpeedEstimate& vision_speed_estimate)
+    {
+        auto rpc_obj = std::make_unique<rpc::mocap::VisionSpeedEstimate>();
+
+        rpc_obj->set_time_usec(vision_speed_estimate.time_usec);
+
+        rpc_obj->set_allocated_speed_ned(
+            translateToRpcSpeedNed(vision_speed_estimate.speed_ned).release());
+
+        rpc_obj->set_allocated_speed_covariance(
+            translateToRpcCovariance(vision_speed_estimate.speed_covariance).release());
+
+        return rpc_obj;
+    }
+
+    static mavsdk::Mocap::VisionSpeedEstimate translateFromRpcVisionSpeedEstimate(
+        const rpc::mocap::VisionSpeedEstimate& vision_speed_estimate)
+    {
+        mavsdk::Mocap::VisionSpeedEstimate obj;
+
+        obj.time_usec = vision_speed_estimate.time_usec();
+
+        obj.speed_ned = translateFromRpcSpeedNed(vision_speed_estimate.speed_ned());
+
+        obj.speed_covariance = translateFromRpcCovariance(vision_speed_estimate.speed_covariance());
 
         return obj;
     }
@@ -424,6 +481,35 @@ public:
 
         auto result = _lazy_plugin.maybe_plugin()->set_vision_position_estimate(
             translateFromRpcVisionPositionEstimate(request->vision_position_estimate()));
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
+    grpc::Status SetVisionSpeedEstimate(
+        grpc::ServerContext* /* context */,
+        const rpc::mocap::SetVisionSpeedEstimateRequest* request,
+        rpc::mocap::SetVisionSpeedEstimateResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Mocap::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetVisionSpeedEstimate sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->set_vision_speed_estimate(
+            translateFromRpcVisionSpeedEstimate(request->vision_speed_estimate()));
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);

@@ -28,6 +28,33 @@ namespace mavsdk {
 namespace rpc {
 namespace mocap {
 
+inline constexpr SpeedNed::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : north_m_s_{0},
+        east_m_s_{0},
+        down_m_s_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR SpeedNed::SpeedNed(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct SpeedNedDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SpeedNedDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SpeedNedDefaultTypeInternal() {}
+  union {
+    SpeedNed _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SpeedNedDefaultTypeInternal _SpeedNed_default_instance_;
+
 inline constexpr SpeedBody::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : x_m_s_{0},
@@ -217,6 +244,33 @@ struct AngleBodyDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AngleBodyDefaultTypeInternal _AngleBody_default_instance_;
 
+inline constexpr VisionSpeedEstimate::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        speed_ned_{nullptr},
+        speed_covariance_{nullptr},
+        time_usec_{::uint64_t{0u}} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR VisionSpeedEstimate::VisionSpeedEstimate(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct VisionSpeedEstimateDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR VisionSpeedEstimateDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~VisionSpeedEstimateDefaultTypeInternal() {}
+  union {
+    VisionSpeedEstimate _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 VisionSpeedEstimateDefaultTypeInternal _VisionSpeedEstimate_default_instance_;
+
 inline constexpr VisionPositionEstimate::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -244,6 +298,31 @@ struct VisionPositionEstimateDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 VisionPositionEstimateDefaultTypeInternal _VisionPositionEstimate_default_instance_;
+
+inline constexpr SetVisionSpeedEstimateResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        mocap_result_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR SetVisionSpeedEstimateResponse::SetVisionSpeedEstimateResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct SetVisionSpeedEstimateResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SetVisionSpeedEstimateResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetVisionSpeedEstimateResponseDefaultTypeInternal() {}
+  union {
+    SetVisionSpeedEstimateResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetVisionSpeedEstimateResponseDefaultTypeInternal _SetVisionSpeedEstimateResponse_default_instance_;
 
 inline constexpr SetVisionPositionEstimateResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -380,6 +459,31 @@ struct AttitudePositionMocapDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AttitudePositionMocapDefaultTypeInternal _AttitudePositionMocap_default_instance_;
 
+inline constexpr SetVisionSpeedEstimateRequest::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        vision_speed_estimate_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR SetVisionSpeedEstimateRequest::SetVisionSpeedEstimateRequest(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct SetVisionSpeedEstimateRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SetVisionSpeedEstimateRequestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SetVisionSpeedEstimateRequestDefaultTypeInternal() {}
+  union {
+    SetVisionSpeedEstimateRequest _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SetVisionSpeedEstimateRequestDefaultTypeInternal _SetVisionSpeedEstimateRequest_default_instance_;
+
 inline constexpr SetVisionPositionEstimateRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -483,6 +587,26 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse, _impl_.mocap_result_),
         0,
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::SetVisionSpeedEstimateRequest, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::SetVisionSpeedEstimateRequest, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::SetVisionSpeedEstimateRequest, _impl_.vision_speed_estimate_),
+        0,
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::SetVisionSpeedEstimateResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::SetVisionSpeedEstimateResponse, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::SetVisionSpeedEstimateResponse, _impl_.mocap_result_),
+        0,
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -557,6 +681,17 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::SpeedBody, _impl_.y_m_s_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::SpeedBody, _impl_.z_m_s_),
         ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::SpeedNed, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::SpeedNed, _impl_.north_m_s_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::SpeedNed, _impl_.east_m_s_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::SpeedNed, _impl_.down_m_s_),
+        ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::AngularVelocityBody, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
@@ -604,6 +739,20 @@ const ::uint32_t
         0,
         1,
         2,
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionSpeedEstimate, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionSpeedEstimate, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionSpeedEstimate, _impl_.time_usec_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionSpeedEstimate, _impl_.speed_ned_),
+        PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::VisionSpeedEstimate, _impl_.speed_covariance_),
+        ~0u,
+        0,
+        1,
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::AttitudePositionMocap, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::mavsdk::rpc::mocap::AttitudePositionMocap, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -660,24 +809,30 @@ static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, 9, -1, sizeof(::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest)},
         {10, 19, -1, sizeof(::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse)},
-        {20, 29, -1, sizeof(::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest)},
-        {30, 39, -1, sizeof(::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse)},
-        {40, 49, -1, sizeof(::mavsdk::rpc::mocap::SetOdometryRequest)},
-        {50, 59, -1, sizeof(::mavsdk::rpc::mocap::SetOdometryResponse)},
-        {60, -1, -1, sizeof(::mavsdk::rpc::mocap::PositionBody)},
-        {71, -1, -1, sizeof(::mavsdk::rpc::mocap::AngleBody)},
-        {82, -1, -1, sizeof(::mavsdk::rpc::mocap::SpeedBody)},
-        {93, -1, -1, sizeof(::mavsdk::rpc::mocap::AngularVelocityBody)},
-        {104, -1, -1, sizeof(::mavsdk::rpc::mocap::Covariance)},
-        {113, -1, -1, sizeof(::mavsdk::rpc::mocap::Quaternion)},
-        {125, 137, -1, sizeof(::mavsdk::rpc::mocap::VisionPositionEstimate)},
-        {141, 153, -1, sizeof(::mavsdk::rpc::mocap::AttitudePositionMocap)},
-        {157, 173, -1, sizeof(::mavsdk::rpc::mocap::Odometry)},
-        {181, -1, -1, sizeof(::mavsdk::rpc::mocap::MocapResult)},
+        {20, 29, -1, sizeof(::mavsdk::rpc::mocap::SetVisionSpeedEstimateRequest)},
+        {30, 39, -1, sizeof(::mavsdk::rpc::mocap::SetVisionSpeedEstimateResponse)},
+        {40, 49, -1, sizeof(::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest)},
+        {50, 59, -1, sizeof(::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse)},
+        {60, 69, -1, sizeof(::mavsdk::rpc::mocap::SetOdometryRequest)},
+        {70, 79, -1, sizeof(::mavsdk::rpc::mocap::SetOdometryResponse)},
+        {80, -1, -1, sizeof(::mavsdk::rpc::mocap::PositionBody)},
+        {91, -1, -1, sizeof(::mavsdk::rpc::mocap::AngleBody)},
+        {102, -1, -1, sizeof(::mavsdk::rpc::mocap::SpeedBody)},
+        {113, -1, -1, sizeof(::mavsdk::rpc::mocap::SpeedNed)},
+        {124, -1, -1, sizeof(::mavsdk::rpc::mocap::AngularVelocityBody)},
+        {135, -1, -1, sizeof(::mavsdk::rpc::mocap::Covariance)},
+        {144, -1, -1, sizeof(::mavsdk::rpc::mocap::Quaternion)},
+        {156, 168, -1, sizeof(::mavsdk::rpc::mocap::VisionPositionEstimate)},
+        {172, 183, -1, sizeof(::mavsdk::rpc::mocap::VisionSpeedEstimate)},
+        {186, 198, -1, sizeof(::mavsdk::rpc::mocap::AttitudePositionMocap)},
+        {202, 218, -1, sizeof(::mavsdk::rpc::mocap::Odometry)},
+        {226, -1, -1, sizeof(::mavsdk::rpc::mocap::MocapResult)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::mocap::_SetVisionPositionEstimateRequest_default_instance_._instance,
     &::mavsdk::rpc::mocap::_SetVisionPositionEstimateResponse_default_instance_._instance,
+    &::mavsdk::rpc::mocap::_SetVisionSpeedEstimateRequest_default_instance_._instance,
+    &::mavsdk::rpc::mocap::_SetVisionSpeedEstimateResponse_default_instance_._instance,
     &::mavsdk::rpc::mocap::_SetAttitudePositionMocapRequest_default_instance_._instance,
     &::mavsdk::rpc::mocap::_SetAttitudePositionMocapResponse_default_instance_._instance,
     &::mavsdk::rpc::mocap::_SetOdometryRequest_default_instance_._instance,
@@ -685,10 +840,12 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mavsdk::rpc::mocap::_PositionBody_default_instance_._instance,
     &::mavsdk::rpc::mocap::_AngleBody_default_instance_._instance,
     &::mavsdk::rpc::mocap::_SpeedBody_default_instance_._instance,
+    &::mavsdk::rpc::mocap::_SpeedNed_default_instance_._instance,
     &::mavsdk::rpc::mocap::_AngularVelocityBody_default_instance_._instance,
     &::mavsdk::rpc::mocap::_Covariance_default_instance_._instance,
     &::mavsdk::rpc::mocap::_Quaternion_default_instance_._instance,
     &::mavsdk::rpc::mocap::_VisionPositionEstimate_default_instance_._instance,
+    &::mavsdk::rpc::mocap::_VisionSpeedEstimate_default_instance_._instance,
     &::mavsdk::rpc::mocap::_AttitudePositionMocap_default_instance_._instance,
     &::mavsdk::rpc::mocap::_Odometry_default_instance_._instance,
     &::mavsdk::rpc::mocap::_MocapResult_default_instance_._instance,
@@ -701,64 +858,77 @@ const char descriptor_table_protodef_mocap_2fmocap_2eproto[] ABSL_ATTRIBUTE_SECT
     "ate\030\001 \001(\0132(.mavsdk.rpc.mocap.VisionPosit"
     "ionEstimate\"X\n!SetVisionPositionEstimate"
     "Response\0223\n\014mocap_result\030\001 \001(\0132\035.mavsdk."
-    "rpc.mocap.MocapResult\"k\n\037SetAttitudePosi"
-    "tionMocapRequest\022H\n\027attitude_position_mo"
-    "cap\030\001 \001(\0132\'.mavsdk.rpc.mocap.AttitudePos"
-    "itionMocap\"W\n SetAttitudePositionMocapRe"
-    "sponse\0223\n\014mocap_result\030\001 \001(\0132\035.mavsdk.rp"
-    "c.mocap.MocapResult\"B\n\022SetOdometryReques"
-    "t\022,\n\010odometry\030\001 \001(\0132\032.mavsdk.rpc.mocap.O"
-    "dometry\"J\n\023SetOdometryResponse\0223\n\014mocap_"
-    "result\030\001 \001(\0132\035.mavsdk.rpc.mocap.MocapRes"
-    "ult\"5\n\014PositionBody\022\013\n\003x_m\030\001 \001(\002\022\013\n\003y_m\030"
-    "\002 \001(\002\022\013\n\003z_m\030\003 \001(\002\"A\n\tAngleBody\022\020\n\010roll_"
-    "rad\030\001 \001(\002\022\021\n\tpitch_rad\030\002 \001(\002\022\017\n\007yaw_rad\030"
-    "\003 \001(\002\"8\n\tSpeedBody\022\r\n\005x_m_s\030\001 \001(\002\022\r\n\005y_m"
-    "_s\030\002 \001(\002\022\r\n\005z_m_s\030\003 \001(\002\"Q\n\023AngularVeloci"
-    "tyBody\022\022\n\nroll_rad_s\030\001 \001(\002\022\023\n\013pitch_rad_"
-    "s\030\002 \001(\002\022\021\n\tyaw_rad_s\030\003 \001(\002\"\'\n\nCovariance"
-    "\022\031\n\021covariance_matrix\030\001 \003(\002\"8\n\nQuaternio"
-    "n\022\t\n\001w\030\001 \001(\002\022\t\n\001x\030\002 \001(\002\022\t\n\001y\030\003 \001(\002\022\t\n\001z\030"
-    "\004 \001(\002\"\312\001\n\026VisionPositionEstimate\022\021\n\ttime"
-    "_usec\030\001 \001(\004\0225\n\rposition_body\030\002 \001(\0132\036.mav"
-    "sdk.rpc.mocap.PositionBody\022/\n\nangle_body"
-    "\030\003 \001(\0132\033.mavsdk.rpc.mocap.AngleBody\0225\n\017p"
-    "ose_covariance\030\004 \001(\0132\034.mavsdk.rpc.mocap."
-    "Covariance\"\301\001\n\025AttitudePositionMocap\022\021\n\t"
-    "time_usec\030\001 \001(\004\022\'\n\001q\030\002 \001(\0132\034.mavsdk.rpc."
-    "mocap.Quaternion\0225\n\rposition_body\030\003 \001(\0132"
-    "\036.mavsdk.rpc.mocap.PositionBody\0225\n\017pose_"
-    "covariance\030\004 \001(\0132\034.mavsdk.rpc.mocap.Cova"
-    "riance\"\333\003\n\010Odometry\022\021\n\ttime_usec\030\001 \001(\004\0225"
-    "\n\010frame_id\030\002 \001(\0162#.mavsdk.rpc.mocap.Odom"
-    "etry.MavFrame\0225\n\rposition_body\030\003 \001(\0132\036.m"
-    "avsdk.rpc.mocap.PositionBody\022\'\n\001q\030\004 \001(\0132"
-    "\034.mavsdk.rpc.mocap.Quaternion\022/\n\nspeed_b"
-    "ody\030\005 \001(\0132\033.mavsdk.rpc.mocap.SpeedBody\022D"
-    "\n\025angular_velocity_body\030\006 \001(\0132%.mavsdk.r"
-    "pc.mocap.AngularVelocityBody\0225\n\017pose_cov"
-    "ariance\030\007 \001(\0132\034.mavsdk.rpc.mocap.Covaria"
-    "nce\0229\n\023velocity_covariance\030\010 \001(\0132\034.mavsd"
-    "k.rpc.mocap.Covariance\"<\n\010MavFrame\022\027\n\023MA"
-    "V_FRAME_MOCAP_NED\020\000\022\027\n\023MAV_FRAME_LOCAL_F"
-    "RD\020\001\"\366\001\n\013MocapResult\0224\n\006result\030\001 \001(\0162$.m"
-    "avsdk.rpc.mocap.MocapResult.Result\022\022\n\nre"
-    "sult_str\030\002 \001(\t\"\234\001\n\006Result\022\022\n\016RESULT_UNKN"
-    "OWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_NO_S"
-    "YSTEM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022\037\n\033"
-    "RESULT_INVALID_REQUEST_DATA\020\004\022\026\n\022RESULT_"
-    "UNSUPPORTED\020\0052\207\003\n\014MocapService\022\212\001\n\031SetVi"
-    "sionPositionEstimate\0222.mavsdk.rpc.mocap."
-    "SetVisionPositionEstimateRequest\0323.mavsd"
-    "k.rpc.mocap.SetVisionPositionEstimateRes"
-    "ponse\"\004\200\265\030\001\022\207\001\n\030SetAttitudePositionMocap"
-    "\0221.mavsdk.rpc.mocap.SetAttitudePositionM"
-    "ocapRequest\0322.mavsdk.rpc.mocap.SetAttitu"
-    "dePositionMocapResponse\"\004\200\265\030\001\022`\n\013SetOdom"
-    "etry\022$.mavsdk.rpc.mocap.SetOdometryReque"
-    "st\032%.mavsdk.rpc.mocap.SetOdometryRespons"
-    "e\"\004\200\265\030\001B\035\n\017io.mavsdk.mocapB\nMocapProtob\006"
-    "proto3"
+    "rpc.mocap.MocapResult\"e\n\035SetVisionSpeedE"
+    "stimateRequest\022D\n\025vision_speed_estimate\030"
+    "\001 \001(\0132%.mavsdk.rpc.mocap.VisionSpeedEsti"
+    "mate\"U\n\036SetVisionSpeedEstimateResponse\0223"
+    "\n\014mocap_result\030\001 \001(\0132\035.mavsdk.rpc.mocap."
+    "MocapResult\"k\n\037SetAttitudePositionMocapR"
+    "equest\022H\n\027attitude_position_mocap\030\001 \001(\0132"
+    "\'.mavsdk.rpc.mocap.AttitudePositionMocap"
+    "\"W\n SetAttitudePositionMocapResponse\0223\n\014"
+    "mocap_result\030\001 \001(\0132\035.mavsdk.rpc.mocap.Mo"
+    "capResult\"B\n\022SetOdometryRequest\022,\n\010odome"
+    "try\030\001 \001(\0132\032.mavsdk.rpc.mocap.Odometry\"J\n"
+    "\023SetOdometryResponse\0223\n\014mocap_result\030\001 \001"
+    "(\0132\035.mavsdk.rpc.mocap.MocapResult\"5\n\014Pos"
+    "itionBody\022\013\n\003x_m\030\001 \001(\002\022\013\n\003y_m\030\002 \001(\002\022\013\n\003z"
+    "_m\030\003 \001(\002\"A\n\tAngleBody\022\020\n\010roll_rad\030\001 \001(\002\022"
+    "\021\n\tpitch_rad\030\002 \001(\002\022\017\n\007yaw_rad\030\003 \001(\002\"8\n\tS"
+    "peedBody\022\r\n\005x_m_s\030\001 \001(\002\022\r\n\005y_m_s\030\002 \001(\002\022\r"
+    "\n\005z_m_s\030\003 \001(\002\"A\n\010SpeedNed\022\021\n\tnorth_m_s\030\001"
+    " \001(\002\022\020\n\010east_m_s\030\002 \001(\002\022\020\n\010down_m_s\030\003 \001(\002"
+    "\"Q\n\023AngularVelocityBody\022\022\n\nroll_rad_s\030\001 "
+    "\001(\002\022\023\n\013pitch_rad_s\030\002 \001(\002\022\021\n\tyaw_rad_s\030\003 "
+    "\001(\002\"\'\n\nCovariance\022\031\n\021covariance_matrix\030\001"
+    " \003(\002\"8\n\nQuaternion\022\t\n\001w\030\001 \001(\002\022\t\n\001x\030\002 \001(\002"
+    "\022\t\n\001y\030\003 \001(\002\022\t\n\001z\030\004 \001(\002\"\312\001\n\026VisionPositio"
+    "nEstimate\022\021\n\ttime_usec\030\001 \001(\004\0225\n\rposition"
+    "_body\030\002 \001(\0132\036.mavsdk.rpc.mocap.PositionB"
+    "ody\022/\n\nangle_body\030\003 \001(\0132\033.mavsdk.rpc.moc"
+    "ap.AngleBody\0225\n\017pose_covariance\030\004 \001(\0132\034."
+    "mavsdk.rpc.mocap.Covariance\"\217\001\n\023VisionSp"
+    "eedEstimate\022\021\n\ttime_usec\030\001 \001(\004\022-\n\tspeed_"
+    "ned\030\002 \001(\0132\032.mavsdk.rpc.mocap.SpeedNed\0226\n"
+    "\020speed_covariance\030\003 \001(\0132\034.mavsdk.rpc.moc"
+    "ap.Covariance\"\301\001\n\025AttitudePositionMocap\022"
+    "\021\n\ttime_usec\030\001 \001(\004\022\'\n\001q\030\002 \001(\0132\034.mavsdk.r"
+    "pc.mocap.Quaternion\0225\n\rposition_body\030\003 \001"
+    "(\0132\036.mavsdk.rpc.mocap.PositionBody\0225\n\017po"
+    "se_covariance\030\004 \001(\0132\034.mavsdk.rpc.mocap.C"
+    "ovariance\"\333\003\n\010Odometry\022\021\n\ttime_usec\030\001 \001("
+    "\004\0225\n\010frame_id\030\002 \001(\0162#.mavsdk.rpc.mocap.O"
+    "dometry.MavFrame\0225\n\rposition_body\030\003 \001(\0132"
+    "\036.mavsdk.rpc.mocap.PositionBody\022\'\n\001q\030\004 \001"
+    "(\0132\034.mavsdk.rpc.mocap.Quaternion\022/\n\nspee"
+    "d_body\030\005 \001(\0132\033.mavsdk.rpc.mocap.SpeedBod"
+    "y\022D\n\025angular_velocity_body\030\006 \001(\0132%.mavsd"
+    "k.rpc.mocap.AngularVelocityBody\0225\n\017pose_"
+    "covariance\030\007 \001(\0132\034.mavsdk.rpc.mocap.Cova"
+    "riance\0229\n\023velocity_covariance\030\010 \001(\0132\034.ma"
+    "vsdk.rpc.mocap.Covariance\"<\n\010MavFrame\022\027\n"
+    "\023MAV_FRAME_MOCAP_NED\020\000\022\027\n\023MAV_FRAME_LOCA"
+    "L_FRD\020\001\"\366\001\n\013MocapResult\0224\n\006result\030\001 \001(\0162"
+    "$.mavsdk.rpc.mocap.MocapResult.Result\022\022\n"
+    "\nresult_str\030\002 \001(\t\"\234\001\n\006Result\022\022\n\016RESULT_U"
+    "NKNOWN\020\000\022\022\n\016RESULT_SUCCESS\020\001\022\024\n\020RESULT_N"
+    "O_SYSTEM\020\002\022\033\n\027RESULT_CONNECTION_ERROR\020\003\022"
+    "\037\n\033RESULT_INVALID_REQUEST_DATA\020\004\022\026\n\022RESU"
+    "LT_UNSUPPORTED\020\0052\213\004\n\014MocapService\022\212\001\n\031Se"
+    "tVisionPositionEstimate\0222.mavsdk.rpc.moc"
+    "ap.SetVisionPositionEstimateRequest\0323.ma"
+    "vsdk.rpc.mocap.SetVisionPositionEstimate"
+    "Response\"\004\200\265\030\001\022\201\001\n\026SetVisionSpeedEstimat"
+    "e\022/.mavsdk.rpc.mocap.SetVisionSpeedEstim"
+    "ateRequest\0320.mavsdk.rpc.mocap.SetVisionS"
+    "peedEstimateResponse\"\004\200\265\030\001\022\207\001\n\030SetAttitu"
+    "dePositionMocap\0221.mavsdk.rpc.mocap.SetAt"
+    "titudePositionMocapRequest\0322.mavsdk.rpc."
+    "mocap.SetAttitudePositionMocapResponse\"\004"
+    "\200\265\030\001\022`\n\013SetOdometry\022$.mavsdk.rpc.mocap.S"
+    "etOdometryRequest\032%.mavsdk.rpc.mocap.Set"
+    "OdometryResponse\"\004\200\265\030\001B\035\n\017io.mavsdk.moca"
+    "pB\nMocapProtob\006proto3"
 };
 static const ::_pbi::DescriptorTable* const descriptor_table_mocap_2fmocap_2eproto_deps[1] =
     {
@@ -768,13 +938,13 @@ static ::absl::once_flag descriptor_table_mocap_2fmocap_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_mocap_2fmocap_2eproto = {
     false,
     false,
-    2526,
+    3061,
     descriptor_table_protodef_mocap_2fmocap_2eproto,
     "mocap/mocap.proto",
     &descriptor_table_mocap_2fmocap_2eproto_once,
     descriptor_table_mocap_2fmocap_2eproto_deps,
     1,
-    16,
+    20,
     schemas,
     file_default_instances,
     TableStruct_mocap_2fmocap_2eproto::offsets,
@@ -1326,6 +1496,506 @@ void SetVisionPositionEstimateResponse::InternalSwap(SetVisionPositionEstimateRe
 }
 
 ::google::protobuf::Metadata SetVisionPositionEstimateResponse::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class SetVisionSpeedEstimateRequest::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<SetVisionSpeedEstimateRequest>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(SetVisionSpeedEstimateRequest, _impl_._has_bits_);
+};
+
+SetVisionSpeedEstimateRequest::SetVisionSpeedEstimateRequest(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.SetVisionSpeedEstimateRequest)
+}
+inline PROTOBUF_NDEBUG_INLINE SetVisionSpeedEstimateRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::mocap::SetVisionSpeedEstimateRequest& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+SetVisionSpeedEstimateRequest::SetVisionSpeedEstimateRequest(
+    ::google::protobuf::Arena* arena,
+    const SetVisionSpeedEstimateRequest& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SetVisionSpeedEstimateRequest* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.vision_speed_estimate_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::mocap::VisionSpeedEstimate>(
+                              arena, *from._impl_.vision_speed_estimate_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mocap.SetVisionSpeedEstimateRequest)
+}
+inline PROTOBUF_NDEBUG_INLINE SetVisionSpeedEstimateRequest::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void SetVisionSpeedEstimateRequest::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.vision_speed_estimate_ = {};
+}
+SetVisionSpeedEstimateRequest::~SetVisionSpeedEstimateRequest() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.SetVisionSpeedEstimateRequest)
+  SharedDtor(*this);
+}
+inline void SetVisionSpeedEstimateRequest::SharedDtor(MessageLite& self) {
+  SetVisionSpeedEstimateRequest& this_ = static_cast<SetVisionSpeedEstimateRequest&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.vision_speed_estimate_;
+  this_._impl_.~Impl_();
+}
+
+inline void* SetVisionSpeedEstimateRequest::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetVisionSpeedEstimateRequest(arena);
+}
+constexpr auto SetVisionSpeedEstimateRequest::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetVisionSpeedEstimateRequest),
+                                            alignof(SetVisionSpeedEstimateRequest));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull SetVisionSpeedEstimateRequest::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_SetVisionSpeedEstimateRequest_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &SetVisionSpeedEstimateRequest::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<SetVisionSpeedEstimateRequest>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &SetVisionSpeedEstimateRequest::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<SetVisionSpeedEstimateRequest>(), &SetVisionSpeedEstimateRequest::ByteSizeLong,
+            &SetVisionSpeedEstimateRequest::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(SetVisionSpeedEstimateRequest, _impl_._cached_size_),
+        false,
+    },
+    &SetVisionSpeedEstimateRequest::kDescriptorMethods,
+    &descriptor_table_mocap_2fmocap_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* SetVisionSpeedEstimateRequest::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetVisionSpeedEstimateRequest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(SetVisionSpeedEstimateRequest, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::mocap::SetVisionSpeedEstimateRequest>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.mocap.VisionSpeedEstimate vision_speed_estimate = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetVisionSpeedEstimateRequest, _impl_.vision_speed_estimate_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.mocap.VisionSpeedEstimate vision_speed_estimate = 1;
+    {PROTOBUF_FIELD_OFFSET(SetVisionSpeedEstimateRequest, _impl_.vision_speed_estimate_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::mocap::VisionSpeedEstimate>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void SetVisionSpeedEstimateRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.SetVisionSpeedEstimateRequest)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.vision_speed_estimate_ != nullptr);
+    _impl_.vision_speed_estimate_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* SetVisionSpeedEstimateRequest::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SetVisionSpeedEstimateRequest& this_ = static_cast<const SetVisionSpeedEstimateRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SetVisionSpeedEstimateRequest::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SetVisionSpeedEstimateRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mocap.SetVisionSpeedEstimateRequest)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.mocap.VisionSpeedEstimate vision_speed_estimate = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.vision_speed_estimate_, this_._impl_.vision_speed_estimate_->GetCachedSize(), target,
+                stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.SetVisionSpeedEstimateRequest)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SetVisionSpeedEstimateRequest::ByteSizeLong(const MessageLite& base) {
+          const SetVisionSpeedEstimateRequest& this_ = static_cast<const SetVisionSpeedEstimateRequest&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SetVisionSpeedEstimateRequest::ByteSizeLong() const {
+          const SetVisionSpeedEstimateRequest& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mocap.SetVisionSpeedEstimateRequest)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.mocap.VisionSpeedEstimate vision_speed_estimate = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.vision_speed_estimate_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void SetVisionSpeedEstimateRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SetVisionSpeedEstimateRequest*>(&to_msg);
+  auto& from = static_cast<const SetVisionSpeedEstimateRequest&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.SetVisionSpeedEstimateRequest)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.vision_speed_estimate_ != nullptr);
+    if (_this->_impl_.vision_speed_estimate_ == nullptr) {
+      _this->_impl_.vision_speed_estimate_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::mocap::VisionSpeedEstimate>(arena, *from._impl_.vision_speed_estimate_);
+    } else {
+      _this->_impl_.vision_speed_estimate_->MergeFrom(*from._impl_.vision_speed_estimate_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SetVisionSpeedEstimateRequest::CopyFrom(const SetVisionSpeedEstimateRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mocap.SetVisionSpeedEstimateRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void SetVisionSpeedEstimateRequest::InternalSwap(SetVisionSpeedEstimateRequest* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.vision_speed_estimate_, other->_impl_.vision_speed_estimate_);
+}
+
+::google::protobuf::Metadata SetVisionSpeedEstimateRequest::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class SetVisionSpeedEstimateResponse::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<SetVisionSpeedEstimateResponse>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(SetVisionSpeedEstimateResponse, _impl_._has_bits_);
+};
+
+SetVisionSpeedEstimateResponse::SetVisionSpeedEstimateResponse(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.SetVisionSpeedEstimateResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE SetVisionSpeedEstimateResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::mocap::SetVisionSpeedEstimateResponse& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+SetVisionSpeedEstimateResponse::SetVisionSpeedEstimateResponse(
+    ::google::protobuf::Arena* arena,
+    const SetVisionSpeedEstimateResponse& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SetVisionSpeedEstimateResponse* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.mocap_result_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::mocap::MocapResult>(
+                              arena, *from._impl_.mocap_result_)
+                        : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mocap.SetVisionSpeedEstimateResponse)
+}
+inline PROTOBUF_NDEBUG_INLINE SetVisionSpeedEstimateResponse::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void SetVisionSpeedEstimateResponse::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.mocap_result_ = {};
+}
+SetVisionSpeedEstimateResponse::~SetVisionSpeedEstimateResponse() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.SetVisionSpeedEstimateResponse)
+  SharedDtor(*this);
+}
+inline void SetVisionSpeedEstimateResponse::SharedDtor(MessageLite& self) {
+  SetVisionSpeedEstimateResponse& this_ = static_cast<SetVisionSpeedEstimateResponse&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.mocap_result_;
+  this_._impl_.~Impl_();
+}
+
+inline void* SetVisionSpeedEstimateResponse::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SetVisionSpeedEstimateResponse(arena);
+}
+constexpr auto SetVisionSpeedEstimateResponse::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SetVisionSpeedEstimateResponse),
+                                            alignof(SetVisionSpeedEstimateResponse));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull SetVisionSpeedEstimateResponse::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_SetVisionSpeedEstimateResponse_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &SetVisionSpeedEstimateResponse::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<SetVisionSpeedEstimateResponse>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &SetVisionSpeedEstimateResponse::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<SetVisionSpeedEstimateResponse>(), &SetVisionSpeedEstimateResponse::ByteSizeLong,
+            &SetVisionSpeedEstimateResponse::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(SetVisionSpeedEstimateResponse, _impl_._cached_size_),
+        false,
+    },
+    &SetVisionSpeedEstimateResponse::kDescriptorMethods,
+    &descriptor_table_mocap_2fmocap_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* SetVisionSpeedEstimateResponse::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SetVisionSpeedEstimateResponse::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(SetVisionSpeedEstimateResponse, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::mocap::SetVisionSpeedEstimateResponse>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mavsdk.rpc.mocap.MocapResult mocap_result = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0, PROTOBUF_FIELD_OFFSET(SetVisionSpeedEstimateResponse, _impl_.mocap_result_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .mavsdk.rpc.mocap.MocapResult mocap_result = 1;
+    {PROTOBUF_FIELD_OFFSET(SetVisionSpeedEstimateResponse, _impl_.mocap_result_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::mocap::MocapResult>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void SetVisionSpeedEstimateResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.SetVisionSpeedEstimateResponse)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.mocap_result_ != nullptr);
+    _impl_.mocap_result_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* SetVisionSpeedEstimateResponse::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SetVisionSpeedEstimateResponse& this_ = static_cast<const SetVisionSpeedEstimateResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SetVisionSpeedEstimateResponse::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SetVisionSpeedEstimateResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mocap.SetVisionSpeedEstimateResponse)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.mocap.MocapResult mocap_result = 1;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                1, *this_._impl_.mocap_result_, this_._impl_.mocap_result_->GetCachedSize(), target,
+                stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.SetVisionSpeedEstimateResponse)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SetVisionSpeedEstimateResponse::ByteSizeLong(const MessageLite& base) {
+          const SetVisionSpeedEstimateResponse& this_ = static_cast<const SetVisionSpeedEstimateResponse&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SetVisionSpeedEstimateResponse::ByteSizeLong() const {
+          const SetVisionSpeedEstimateResponse& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mocap.SetVisionSpeedEstimateResponse)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+           {
+            // .mavsdk.rpc.mocap.MocapResult mocap_result = 1;
+            cached_has_bits = this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.mocap_result_);
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void SetVisionSpeedEstimateResponse::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SetVisionSpeedEstimateResponse*>(&to_msg);
+  auto& from = static_cast<const SetVisionSpeedEstimateResponse&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.SetVisionSpeedEstimateResponse)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.mocap_result_ != nullptr);
+    if (_this->_impl_.mocap_result_ == nullptr) {
+      _this->_impl_.mocap_result_ =
+          ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::mocap::MocapResult>(arena, *from._impl_.mocap_result_);
+    } else {
+      _this->_impl_.mocap_result_->MergeFrom(*from._impl_.mocap_result_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SetVisionSpeedEstimateResponse::CopyFrom(const SetVisionSpeedEstimateResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mocap.SetVisionSpeedEstimateResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void SetVisionSpeedEstimateResponse::InternalSwap(SetVisionSpeedEstimateResponse* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.mocap_result_, other->_impl_.mocap_result_);
+}
+
+::google::protobuf::Metadata SetVisionSpeedEstimateResponse::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
@@ -3110,6 +3780,266 @@ void SpeedBody::InternalSwap(SpeedBody* PROTOBUF_RESTRICT other) {
 }
 // ===================================================================
 
+class SpeedNed::_Internal {
+ public:
+};
+
+SpeedNed::SpeedNed(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.SpeedNed)
+}
+SpeedNed::SpeedNed(
+    ::google::protobuf::Arena* arena, const SpeedNed& from)
+    : SpeedNed(arena) {
+  MergeFrom(from);
+}
+inline PROTOBUF_NDEBUG_INLINE SpeedNed::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void SpeedNed::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, north_m_s_),
+           0,
+           offsetof(Impl_, down_m_s_) -
+               offsetof(Impl_, north_m_s_) +
+               sizeof(Impl_::down_m_s_));
+}
+SpeedNed::~SpeedNed() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.SpeedNed)
+  SharedDtor(*this);
+}
+inline void SpeedNed::SharedDtor(MessageLite& self) {
+  SpeedNed& this_ = static_cast<SpeedNed&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* SpeedNed::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) SpeedNed(arena);
+}
+constexpr auto SpeedNed::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(SpeedNed),
+                                            alignof(SpeedNed));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull SpeedNed::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_SpeedNed_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &SpeedNed::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<SpeedNed>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &SpeedNed::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<SpeedNed>(), &SpeedNed::ByteSizeLong,
+            &SpeedNed::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(SpeedNed, _impl_._cached_size_),
+        false,
+    },
+    &SpeedNed::kDescriptorMethods,
+    &descriptor_table_mocap_2fmocap_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* SpeedNed::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 0, 2> SpeedNed::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::mocap::SpeedNed>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // float north_m_s = 1;
+    {::_pbi::TcParser::FastF32S1,
+     {13, 63, 0, PROTOBUF_FIELD_OFFSET(SpeedNed, _impl_.north_m_s_)}},
+    // float east_m_s = 2;
+    {::_pbi::TcParser::FastF32S1,
+     {21, 63, 0, PROTOBUF_FIELD_OFFSET(SpeedNed, _impl_.east_m_s_)}},
+    // float down_m_s = 3;
+    {::_pbi::TcParser::FastF32S1,
+     {29, 63, 0, PROTOBUF_FIELD_OFFSET(SpeedNed, _impl_.down_m_s_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // float north_m_s = 1;
+    {PROTOBUF_FIELD_OFFSET(SpeedNed, _impl_.north_m_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float east_m_s = 2;
+    {PROTOBUF_FIELD_OFFSET(SpeedNed, _impl_.east_m_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+    // float down_m_s = 3;
+    {PROTOBUF_FIELD_OFFSET(SpeedNed, _impl_.down_m_s_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kFloat)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void SpeedNed::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.SpeedNed)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.north_m_s_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.down_m_s_) -
+      reinterpret_cast<char*>(&_impl_.north_m_s_)) + sizeof(_impl_.down_m_s_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* SpeedNed::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const SpeedNed& this_ = static_cast<const SpeedNed&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* SpeedNed::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const SpeedNed& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mocap.SpeedNed)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // float north_m_s = 1;
+          if (::absl::bit_cast<::uint32_t>(this_._internal_north_m_s()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                1, this_._internal_north_m_s(), target);
+          }
+
+          // float east_m_s = 2;
+          if (::absl::bit_cast<::uint32_t>(this_._internal_east_m_s()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                2, this_._internal_east_m_s(), target);
+          }
+
+          // float down_m_s = 3;
+          if (::absl::bit_cast<::uint32_t>(this_._internal_down_m_s()) != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                3, this_._internal_down_m_s(), target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.SpeedNed)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t SpeedNed::ByteSizeLong(const MessageLite& base) {
+          const SpeedNed& this_ = static_cast<const SpeedNed&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t SpeedNed::ByteSizeLong() const {
+          const SpeedNed& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mocap.SpeedNed)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // float north_m_s = 1;
+            if (::absl::bit_cast<::uint32_t>(this_._internal_north_m_s()) != 0) {
+              total_size += 5;
+            }
+            // float east_m_s = 2;
+            if (::absl::bit_cast<::uint32_t>(this_._internal_east_m_s()) != 0) {
+              total_size += 5;
+            }
+            // float down_m_s = 3;
+            if (::absl::bit_cast<::uint32_t>(this_._internal_down_m_s()) != 0) {
+              total_size += 5;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void SpeedNed::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SpeedNed*>(&to_msg);
+  auto& from = static_cast<const SpeedNed&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.SpeedNed)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (::absl::bit_cast<::uint32_t>(from._internal_north_m_s()) != 0) {
+    _this->_impl_.north_m_s_ = from._impl_.north_m_s_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_east_m_s()) != 0) {
+    _this->_impl_.east_m_s_ = from._impl_.east_m_s_;
+  }
+  if (::absl::bit_cast<::uint32_t>(from._internal_down_m_s()) != 0) {
+    _this->_impl_.down_m_s_ = from._impl_.down_m_s_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SpeedNed::CopyFrom(const SpeedNed& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mocap.SpeedNed)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void SpeedNed::InternalSwap(SpeedNed* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SpeedNed, _impl_.down_m_s_)
+      + sizeof(SpeedNed::_impl_.down_m_s_)
+      - PROTOBUF_FIELD_OFFSET(SpeedNed, _impl_.north_m_s_)>(
+          reinterpret_cast<char*>(&_impl_.north_m_s_),
+          reinterpret_cast<char*>(&other->_impl_.north_m_s_));
+}
+
+::google::protobuf::Metadata SpeedNed::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
 class AngularVelocityBody::_Internal {
  public:
 };
@@ -4245,6 +5175,333 @@ void VisionPositionEstimate::InternalSwap(VisionPositionEstimate* PROTOBUF_RESTR
 }
 
 ::google::protobuf::Metadata VisionPositionEstimate::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class VisionSpeedEstimate::_Internal {
+ public:
+  using HasBits =
+      decltype(std::declval<VisionSpeedEstimate>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_._has_bits_);
+};
+
+VisionSpeedEstimate::VisionSpeedEstimate(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mavsdk.rpc.mocap.VisionSpeedEstimate)
+}
+inline PROTOBUF_NDEBUG_INLINE VisionSpeedEstimate::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::mavsdk::rpc::mocap::VisionSpeedEstimate& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+VisionSpeedEstimate::VisionSpeedEstimate(
+    ::google::protobuf::Arena* arena,
+    const VisionSpeedEstimate& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  VisionSpeedEstimate* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.speed_ned_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::mocap::SpeedNed>(
+                              arena, *from._impl_.speed_ned_)
+                        : nullptr;
+  _impl_.speed_covariance_ = (cached_has_bits & 0x00000002u) ? ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::mocap::Covariance>(
+                              arena, *from._impl_.speed_covariance_)
+                        : nullptr;
+  _impl_.time_usec_ = from._impl_.time_usec_;
+
+  // @@protoc_insertion_point(copy_constructor:mavsdk.rpc.mocap.VisionSpeedEstimate)
+}
+inline PROTOBUF_NDEBUG_INLINE VisionSpeedEstimate::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void VisionSpeedEstimate::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, speed_ned_),
+           0,
+           offsetof(Impl_, time_usec_) -
+               offsetof(Impl_, speed_ned_) +
+               sizeof(Impl_::time_usec_));
+}
+VisionSpeedEstimate::~VisionSpeedEstimate() {
+  // @@protoc_insertion_point(destructor:mavsdk.rpc.mocap.VisionSpeedEstimate)
+  SharedDtor(*this);
+}
+inline void VisionSpeedEstimate::SharedDtor(MessageLite& self) {
+  VisionSpeedEstimate& this_ = static_cast<VisionSpeedEstimate&>(self);
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.speed_ned_;
+  delete this_._impl_.speed_covariance_;
+  this_._impl_.~Impl_();
+}
+
+inline void* VisionSpeedEstimate::PlacementNew_(const void*, void* mem,
+                                        ::google::protobuf::Arena* arena) {
+  return ::new (mem) VisionSpeedEstimate(arena);
+}
+constexpr auto VisionSpeedEstimate::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(VisionSpeedEstimate),
+                                            alignof(VisionSpeedEstimate));
+}
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::internal::ClassDataFull VisionSpeedEstimate::_class_data_ = {
+    ::google::protobuf::internal::ClassData{
+        &_VisionSpeedEstimate_default_instance_._instance,
+        &_table_.header,
+        nullptr,  // OnDemandRegisterArenaDtor
+        nullptr,  // IsInitialized
+        &VisionSpeedEstimate::MergeImpl,
+        ::google::protobuf::Message::GetNewImpl<VisionSpeedEstimate>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        &VisionSpeedEstimate::SharedDtor,
+        ::google::protobuf::Message::GetClearImpl<VisionSpeedEstimate>(), &VisionSpeedEstimate::ByteSizeLong,
+            &VisionSpeedEstimate::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+        PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_._cached_size_),
+        false,
+    },
+    &VisionSpeedEstimate::kDescriptorMethods,
+    &descriptor_table_mocap_2fmocap_2eproto,
+    nullptr,  // tracker
+};
+const ::google::protobuf::internal::ClassData* VisionSpeedEstimate::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 2, 0, 2> VisionSpeedEstimate::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_._has_bits_),
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    2,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mavsdk::rpc::mocap::VisionSpeedEstimate>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // uint64 time_usec = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint64_t, offsetof(VisionSpeedEstimate, _impl_.time_usec_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_.time_usec_)}},
+    // .mavsdk.rpc.mocap.SpeedNed speed_ned = 2;
+    {::_pbi::TcParser::FastMtS1,
+     {18, 0, 0, PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_.speed_ned_)}},
+    // .mavsdk.rpc.mocap.Covariance speed_covariance = 3;
+    {::_pbi::TcParser::FastMtS1,
+     {26, 1, 1, PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_.speed_covariance_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // uint64 time_usec = 1;
+    {PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_.time_usec_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUInt64)},
+    // .mavsdk.rpc.mocap.SpeedNed speed_ned = 2;
+    {PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_.speed_ned_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .mavsdk.rpc.mocap.Covariance speed_covariance = 3;
+    {PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_.speed_covariance_), _Internal::kHasBitsOffset + 1, 1,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::mocap::SpeedNed>()},
+    {::_pbi::TcParser::GetTable<::mavsdk::rpc::mocap::Covariance>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void VisionSpeedEstimate::Clear() {
+// @@protoc_insertion_point(message_clear_start:mavsdk.rpc.mocap.VisionSpeedEstimate)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      ABSL_DCHECK(_impl_.speed_ned_ != nullptr);
+      _impl_.speed_ned_->Clear();
+    }
+    if (cached_has_bits & 0x00000002u) {
+      ABSL_DCHECK(_impl_.speed_covariance_ != nullptr);
+      _impl_.speed_covariance_->Clear();
+    }
+  }
+  _impl_.time_usec_ = ::uint64_t{0u};
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* VisionSpeedEstimate::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const VisionSpeedEstimate& this_ = static_cast<const VisionSpeedEstimate&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* VisionSpeedEstimate::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const VisionSpeedEstimate& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:mavsdk.rpc.mocap.VisionSpeedEstimate)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // uint64 time_usec = 1;
+          if (this_._internal_time_usec() != 0) {
+            target = stream->EnsureSpace(target);
+            target = ::_pbi::WireFormatLite::WriteUInt64ToArray(
+                1, this_._internal_time_usec(), target);
+          }
+
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // .mavsdk.rpc.mocap.SpeedNed speed_ned = 2;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                2, *this_._impl_.speed_ned_, this_._impl_.speed_ned_->GetCachedSize(), target,
+                stream);
+          }
+
+          // .mavsdk.rpc.mocap.Covariance speed_covariance = 3;
+          if (cached_has_bits & 0x00000002u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                3, *this_._impl_.speed_covariance_, this_._impl_.speed_covariance_->GetCachedSize(), target,
+                stream);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:mavsdk.rpc.mocap.VisionSpeedEstimate)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t VisionSpeedEstimate::ByteSizeLong(const MessageLite& base) {
+          const VisionSpeedEstimate& this_ = static_cast<const VisionSpeedEstimate&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t VisionSpeedEstimate::ByteSizeLong() const {
+          const VisionSpeedEstimate& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:mavsdk.rpc.mocap.VisionSpeedEstimate)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+          cached_has_bits = this_._impl_._has_bits_[0];
+          if (cached_has_bits & 0x00000003u) {
+            // .mavsdk.rpc.mocap.SpeedNed speed_ned = 2;
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.speed_ned_);
+            }
+            // .mavsdk.rpc.mocap.Covariance speed_covariance = 3;
+            if (cached_has_bits & 0x00000002u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.speed_covariance_);
+            }
+          }
+           {
+            // uint64 time_usec = 1;
+            if (this_._internal_time_usec() != 0) {
+              total_size += ::_pbi::WireFormatLite::UInt64SizePlusOne(
+                  this_._internal_time_usec());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void VisionSpeedEstimate::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<VisionSpeedEstimate*>(&to_msg);
+  auto& from = static_cast<const VisionSpeedEstimate&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mavsdk.rpc.mocap.VisionSpeedEstimate)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      ABSL_DCHECK(from._impl_.speed_ned_ != nullptr);
+      if (_this->_impl_.speed_ned_ == nullptr) {
+        _this->_impl_.speed_ned_ =
+            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::mocap::SpeedNed>(arena, *from._impl_.speed_ned_);
+      } else {
+        _this->_impl_.speed_ned_->MergeFrom(*from._impl_.speed_ned_);
+      }
+    }
+    if (cached_has_bits & 0x00000002u) {
+      ABSL_DCHECK(from._impl_.speed_covariance_ != nullptr);
+      if (_this->_impl_.speed_covariance_ == nullptr) {
+        _this->_impl_.speed_covariance_ =
+            ::google::protobuf::Message::CopyConstruct<::mavsdk::rpc::mocap::Covariance>(arena, *from._impl_.speed_covariance_);
+      } else {
+        _this->_impl_.speed_covariance_->MergeFrom(*from._impl_.speed_covariance_);
+      }
+    }
+  }
+  if (from._internal_time_usec() != 0) {
+    _this->_impl_.time_usec_ = from._impl_.time_usec_;
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void VisionSpeedEstimate::CopyFrom(const VisionSpeedEstimate& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mavsdk.rpc.mocap.VisionSpeedEstimate)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void VisionSpeedEstimate::InternalSwap(VisionSpeedEstimate* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_.time_usec_)
+      + sizeof(VisionSpeedEstimate::_impl_.time_usec_)
+      - PROTOBUF_FIELD_OFFSET(VisionSpeedEstimate, _impl_.speed_ned_)>(
+          reinterpret_cast<char*>(&_impl_.speed_ned_),
+          reinterpret_cast<char*>(&other->_impl_.speed_ned_));
+}
+
+::google::protobuf::Metadata VisionSpeedEstimate::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================

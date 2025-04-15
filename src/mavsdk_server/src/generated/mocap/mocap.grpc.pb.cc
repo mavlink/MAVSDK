@@ -25,6 +25,7 @@ namespace mocap {
 
 static const char* MocapService_method_names[] = {
   "/mavsdk.rpc.mocap.MocapService/SetVisionPositionEstimate",
+  "/mavsdk.rpc.mocap.MocapService/SetVisionSpeedEstimate",
   "/mavsdk.rpc.mocap.MocapService/SetAttitudePositionMocap",
   "/mavsdk.rpc.mocap.MocapService/SetOdometry",
 };
@@ -37,8 +38,9 @@ std::unique_ptr< MocapService::Stub> MocapService::NewStub(const std::shared_ptr
 
 MocapService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
   : channel_(channel), rpcmethod_SetVisionPositionEstimate_(MocapService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetAttitudePositionMocap_(MocapService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_SetOdometry_(MocapService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetVisionSpeedEstimate_(MocapService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetAttitudePositionMocap_(MocapService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetOdometry_(MocapService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status MocapService::Stub::SetVisionPositionEstimate(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest& request, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* response) {
@@ -60,6 +62,29 @@ void MocapService::Stub::async::SetVisionPositionEstimate(::grpc::ClientContext*
 ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse>* MocapService::Stub::AsyncSetVisionPositionEstimateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
     this->PrepareAsyncSetVisionPositionEstimateRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status MocapService::Stub::SetVisionSpeedEstimate(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetVisionSpeedEstimateRequest& request, ::mavsdk::rpc::mocap::SetVisionSpeedEstimateResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::mocap::SetVisionSpeedEstimateRequest, ::mavsdk::rpc::mocap::SetVisionSpeedEstimateResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetVisionSpeedEstimate_, context, request, response);
+}
+
+void MocapService::Stub::async::SetVisionSpeedEstimate(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetVisionSpeedEstimateRequest* request, ::mavsdk::rpc::mocap::SetVisionSpeedEstimateResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::mocap::SetVisionSpeedEstimateRequest, ::mavsdk::rpc::mocap::SetVisionSpeedEstimateResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetVisionSpeedEstimate_, context, request, response, std::move(f));
+}
+
+void MocapService::Stub::async::SetVisionSpeedEstimate(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetVisionSpeedEstimateRequest* request, ::mavsdk::rpc::mocap::SetVisionSpeedEstimateResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetVisionSpeedEstimate_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mocap::SetVisionSpeedEstimateResponse>* MocapService::Stub::PrepareAsyncSetVisionSpeedEstimateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetVisionSpeedEstimateRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::mocap::SetVisionSpeedEstimateResponse, ::mavsdk::rpc::mocap::SetVisionSpeedEstimateRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetVisionSpeedEstimate_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mocap::SetVisionSpeedEstimateResponse>* MocapService::Stub::AsyncSetVisionSpeedEstimateRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mocap::SetVisionSpeedEstimateRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSetVisionSpeedEstimateRaw(context, request, cq);
   result->StartCall();
   return result;
 }
@@ -124,6 +149,16 @@ MocapService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MocapService_method_names[1],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< MocapService::Service, ::mavsdk::rpc::mocap::SetVisionSpeedEstimateRequest, ::mavsdk::rpc::mocap::SetVisionSpeedEstimateResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](MocapService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::mocap::SetVisionSpeedEstimateRequest* req,
+             ::mavsdk::rpc::mocap::SetVisionSpeedEstimateResponse* resp) {
+               return service->SetVisionSpeedEstimate(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MocapService_method_names[2],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MocapService::Service, ::mavsdk::rpc::mocap::SetAttitudePositionMocapRequest, ::mavsdk::rpc::mocap::SetAttitudePositionMocapResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MocapService::Service* service,
              ::grpc::ServerContext* ctx,
@@ -132,7 +167,7 @@ MocapService::Service::Service() {
                return service->SetAttitudePositionMocap(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      MocapService_method_names[2],
+      MocapService_method_names[3],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< MocapService::Service, ::mavsdk::rpc::mocap::SetOdometryRequest, ::mavsdk::rpc::mocap::SetOdometryResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](MocapService::Service* service,
@@ -147,6 +182,13 @@ MocapService::Service::~Service() {
 }
 
 ::grpc::Status MocapService::Service::SetVisionPositionEstimate(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetVisionPositionEstimateRequest* request, ::mavsdk::rpc::mocap::SetVisionPositionEstimateResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MocapService::Service::SetVisionSpeedEstimate(::grpc::ServerContext* context, const ::mavsdk::rpc::mocap::SetVisionSpeedEstimateRequest* request, ::mavsdk::rpc::mocap::SetVisionSpeedEstimateResponse* response) {
   (void) context;
   (void) request;
   (void) response;
