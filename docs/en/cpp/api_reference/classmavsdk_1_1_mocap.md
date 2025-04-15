@@ -26,7 +26,11 @@ struct [Quaternion](structmavsdk_1_1_mocap_1_1_quaternion.md)
 
 struct [SpeedBody](structmavsdk_1_1_mocap_1_1_speed_body.md)
 
+struct [SpeedNed](structmavsdk_1_1_mocap_1_1_speed_ned.md)
+
 struct [VisionPositionEstimate](structmavsdk_1_1_mocap_1_1_vision_position_estimate.md)
+
+struct [VisionSpeedEstimate](structmavsdk_1_1_mocap_1_1_vision_speed_estimate.md)
 
 ## Public Types
 
@@ -46,6 +50,7 @@ Type | Name | Description
 &nbsp; | [~Mocap](#classmavsdk_1_1_mocap_1ad78b5299367dc1db3236d0b674816e22) () override | Destructor (internal use only).
 &nbsp; | [Mocap](#classmavsdk_1_1_mocap_1a0c2242e86da34ecd94c0a40dcec4858f) (const [Mocap](classmavsdk_1_1_mocap.md) & other) | Copy constructor.
 [Result](classmavsdk_1_1_mocap.md#classmavsdk_1_1_mocap_1a3af8c27b8ad9a4567feb1045e82884d5) | [set_vision_position_estimate](#classmavsdk_1_1_mocap_1a22d007409839e28a45d7b10f10e22fd6) ([VisionPositionEstimate](structmavsdk_1_1_mocap_1_1_vision_position_estimate.md) vision_position_estimate)const | Send Global position/attitude estimate from a vision source.
+[Result](classmavsdk_1_1_mocap.md#classmavsdk_1_1_mocap_1a3af8c27b8ad9a4567feb1045e82884d5) | [set_vision_speed_estimate](#classmavsdk_1_1_mocap_1ac4324727d28027114791f73581be7784) ([VisionSpeedEstimate](structmavsdk_1_1_mocap_1_1_vision_speed_estimate.md) vision_speed_estimate)const | Send Global speed estimate from a vision source.
 [Result](classmavsdk_1_1_mocap.md#classmavsdk_1_1_mocap_1a3af8c27b8ad9a4567feb1045e82884d5) | [set_attitude_position_mocap](#classmavsdk_1_1_mocap_1a5f9a63d8bbed750056e139640b38cd7f) ([AttitudePositionMocap](structmavsdk_1_1_mocap_1_1_attitude_position_mocap.md) attitude_position_mocap)const | Send motion capture attitude and position.
 [Result](classmavsdk_1_1_mocap.md#classmavsdk_1_1_mocap_1a3af8c27b8ad9a4567feb1045e82884d5) | [set_odometry](#classmavsdk_1_1_mocap_1a149fa242e0b01bc0aee9204118b00f59) ([Odometry](structmavsdk_1_1_mocap_1_1_odometry.md) odometry)const | Send odometry information with an external interface.
 const [Mocap](classmavsdk_1_1_mocap.md) & | [operator=](#classmavsdk_1_1_mocap_1afb0d68876155a6990317b3b620f018f7) (const [Mocap](classmavsdk_1_1_mocap.md) &)=delete | Equality operator (object is not copyable).
@@ -159,6 +164,24 @@ This function is blocking.
 **Parameters**
 
 * [VisionPositionEstimate](structmavsdk_1_1_mocap_1_1_vision_position_estimate.md) **vision_position_estimate** - 
+
+**Returns**
+
+&emsp;[Result](classmavsdk_1_1_mocap.md#classmavsdk_1_1_mocap_1a3af8c27b8ad9a4567feb1045e82884d5) - Result of request.
+
+### set_vision_speed_estimate() {#classmavsdk_1_1_mocap_1ac4324727d28027114791f73581be7784}
+```cpp
+Result mavsdk::Mocap::set_vision_speed_estimate(VisionSpeedEstimate vision_speed_estimate) const
+```
+
+
+Send Global speed estimate from a vision source.
+
+This function is blocking.
+
+**Parameters**
+
+* [VisionSpeedEstimate](structmavsdk_1_1_mocap_1_1_vision_speed_estimate.md) **vision_speed_estimate** - 
 
 **Returns**
 

@@ -41,6 +41,16 @@ Mocap::Result MocapImpl::set_vision_position_estimate(
 }
 
 Mocap::Result
+MocapImpl::set_vision_speed_estimate(const Mocap::VisionSpeedEstimate& vision_speed_estimate)
+{
+    if (!_system_impl->is_connected()) {
+        return Mocap::Result::NoSystem;
+    }
+
+    return send_vision_speed_estimate(vision_speed_estimate);
+}
+
+Mocap::Result
 MocapImpl::set_attitude_position_mocap(const Mocap::AttitudePositionMocap& attitude_position_mocap)
 {
     if (!_system_impl->is_connected()) {
@@ -105,6 +115,57 @@ Mocap::Result MocapImpl::send_vision_position_estimate(
             vision_position_estimate.angle_body.roll_rad,
             vision_position_estimate.angle_body.pitch_rad,
             vision_position_estimate.angle_body.yaw_rad,
+            covariance.data(),
+            0); // FIXME: reset_counter not set
+        return message;
+    }) ?
+               Mocap::Result::Success :
+               Mocap::Result::ConnectionError;
+}
+
+Mocap::Result
+MocapImpl::send_vision_speed_estimate(const Mocap::VisionSpeedEstimate& vision_speed_estimate)
+{
+    const uint64_t autopilot_time_usec =
+        (!vision_speed_estimate.time_usec) ?
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                _system_impl->get_autopilot_time().now().time_since_epoch())
+                .count() :
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                _system_impl->get_autopilot_time()
+                    .time_in(
+                        SystemTimePoint(std::chrono::microseconds(vision_speed_estimate.time_usec)))
+                    .time_since_epoch())
+                .count();
+
+    std::array<float, 9> covariance{};
+
+    // The covariance matrix needs to have length 9 or 1 with the one entry set to NaN.
+
+    if (vision_speed_estimate.speed_covariance.covariance_matrix.size() == 9) {
+        std::copy(
+            vision_speed_estimate.speed_covariance.covariance_matrix.begin(),
+            vision_speed_estimate.speed_covariance.covariance_matrix.end(),
+            covariance.begin());
+    } else if (
+        vision_speed_estimate.speed_covariance.covariance_matrix.size() == 1 &&
+        std::isnan(vision_speed_estimate.speed_covariance.covariance_matrix[0])) {
+        covariance[0] = NAN;
+    } else {
+        return Mocap::Result::InvalidRequestData;
+    }
+
+    return _system_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
+        mavlink_message_t message;
+        mavlink_msg_vision_speed_estimate_pack_chan(
+            mavlink_address.system_id,
+            mavlink_address.component_id,
+            channel,
+            &message,
+            autopilot_time_usec,
+            vision_speed_estimate.speed_ned.north_m_s,
+            vision_speed_estimate.speed_ned.east_m_s,
+            vision_speed_estimate.speed_ned.down_m_s,
             covariance.data(),
             0); // FIXME: reset_counter not set
         return message;
