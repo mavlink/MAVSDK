@@ -113,7 +113,7 @@ private:
         bool flow_control,
         ForwardingOption forwarding_option);
 
-    Mavsdk::ConnectionHandle add_connection(const std::shared_ptr<Connection>&);
+    Mavsdk::ConnectionHandle add_connection(std::unique_ptr<Connection>&& connection);
     void make_system_with_component(uint8_t system_id, uint8_t component_id);
 
     void work_thread();
@@ -128,7 +128,7 @@ private:
     std::mutex _connections_mutex{};
     HandleFactory<> _connections_handle_factory;
     struct ConnectionEntry {
-        std::shared_ptr<Connection> connection;
+        std::unique_ptr<Connection> connection;
         Handle<> handle;
     };
     std::vector<ConnectionEntry> _connections{};

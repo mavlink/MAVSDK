@@ -528,7 +528,7 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_any_connec
 std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
 MavsdkImpl::add_udp_connection(const CliArg::Udp& udp, ForwardingOption forwarding_option)
 {
-    auto new_conn = std::make_shared<UdpConnection>(
+    auto new_conn = std::make_unique<UdpConnection>(
         [this](mavlink_message_t& message, Connection* connection) {
             receive_message(message, connection);
         },
@@ -545,8 +545,6 @@ MavsdkImpl::add_udp_connection(const CliArg::Udp& udp, ForwardingOption forwardi
     if (ret != ConnectionResult::Success) {
         return {ret, Mavsdk::ConnectionHandle{}};
     }
-
-    auto handle = add_connection(new_conn);
 
     if (udp.mode == CliArg::Udp::Mode::Out) {
         // We need to add the IP rather than a hostname, otherwise we end up with two remotes:
@@ -565,6 +563,9 @@ MavsdkImpl::add_udp_connection(const CliArg::Udp& udp, ForwardingOption forwardi
         new_configuration.set_always_send_heartbeats(true);
         set_configuration(new_configuration);
     }
+
+    auto handle = add_connection(std::move(new_conn));
+
     return {ConnectionResult::Success, handle};
 }
 
@@ -572,7 +573,7 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle>
 MavsdkImpl::add_tcp_connection(const CliArg::Tcp& tcp, ForwardingOption forwarding_option)
 {
     if (tcp.mode == CliArg::Tcp::Mode::Out) {
-        auto new_conn = std::make_shared<TcpClientConnection>(
+        auto new_conn = std::make_unique<TcpClientConnection>(
             [this](mavlink_message_t& message, Connection* connection) {
                 receive_message(message, connection);
             },
@@ -584,12 +585,12 @@ MavsdkImpl::add_tcp_connection(const CliArg::Tcp& tcp, ForwardingOption forwardi
         }
         ConnectionResult ret = new_conn->start();
         if (ret == ConnectionResult::Success) {
-            return {ret, add_connection(new_conn)};
+            return {ret, add_connection(std::move(new_conn))};
         } else {
             return {ret, Mavsdk::ConnectionHandle{}};
         }
     } else {
-        auto new_conn = std::make_shared<TcpServerConnection>(
+        auto new_conn = std::make_unique<TcpServerConnection>(
             [this](mavlink_message_t& message, Connection* connection) {
                 receive_message(message, connection);
             },
@@ -601,7 +602,7 @@ MavsdkImpl::add_tcp_connection(const CliArg::Tcp& tcp, ForwardingOption forwardi
         }
         ConnectionResult ret = new_conn->start();
         if (ret == ConnectionResult::Success) {
-            return {ret, add_connection(new_conn)};
+            return {ret, add_connection(std::move(new_conn))};
         } else {
             return {ret, Mavsdk::ConnectionHandle{}};
         }
@@ -614,7 +615,7 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_serial_con
     bool flow_control,
     ForwardingOption forwarding_option)
 {
-    auto new_conn = std::make_shared<SerialConnection>(
+    auto new_conn = std::make_unique<SerialConnection>(
         [this](mavlink_message_t& message, Connection* connection) {
             receive_message(message, connection);
         },
@@ -627,7 +628,7 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_serial_con
     }
     ConnectionResult ret = new_conn->start();
     if (ret == ConnectionResult::Success) {
-        auto handle = add_connection(new_conn);
+        auto handle = add_connection(std::move(new_conn));
 
         auto new_configuration = get_configuration();
 
@@ -644,12 +645,11 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_serial_con
     }
 }
 
-Mavsdk::ConnectionHandle
-MavsdkImpl::add_connection(const std::shared_ptr<Connection>& new_connection)
+Mavsdk::ConnectionHandle MavsdkImpl::add_connection(std::unique_ptr<Connection>&& new_connection)
 {
     std::lock_guard<std::mutex> lock(_connections_mutex);
     auto handle = _connections_handle_factory.create();
-    _connections.emplace_back(ConnectionEntry{new_connection, handle});
+    _connections.emplace_back(ConnectionEntry{std::move(new_connection), handle});
 
     return handle;
 }
