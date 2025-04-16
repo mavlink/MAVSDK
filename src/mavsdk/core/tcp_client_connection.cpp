@@ -67,7 +67,6 @@ ConnectionResult TcpClientConnection::setup_port()
     WSADATA wsa;
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
         LogErr() << "Error: Winsock failed, error: %d", WSAGetLastError();
-        _is_ok = false;
         return ConnectionResult::SocketError;
     }
 #endif
@@ -76,7 +75,6 @@ ConnectionResult TcpClientConnection::setup_port()
 
     if (_socket_fd.empty()) {
         LogErr() << "socket error" << GET_ERROR(errno);
-        _is_ok = false;
         return ConnectionResult::SocketError;
     }
 
@@ -88,7 +86,6 @@ ConnectionResult TcpClientConnection::setup_port()
     hp = gethostbyname(_remote_ip.c_str());
     if (hp == nullptr) {
         LogErr() << "Could not get host by name";
-        _is_ok = false;
         return ConnectionResult::SocketConnectionError;
     }
 
@@ -99,11 +96,22 @@ ConnectionResult TcpClientConnection::setup_port()
             reinterpret_cast<sockaddr*>(&remote_addr),
             sizeof(struct sockaddr_in)) < 0) {
         LogErr() << "connect error: " << GET_ERROR(errno);
-        _is_ok = false;
         return ConnectionResult::SocketConnectionError;
     }
 
-    _is_ok = true;
+    // Set receive timeout cross-platform
+    const unsigned timeout_ms = 500;
+
+#if defined(WINDOWS)
+    setsockopt(
+        _socket_fd.get(), SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout_ms, sizeof(timeout_ms));
+#else
+    struct timeval tv;
+    tv.tv_sec = 0;
+    tv.tv_usec = timeout_ms * 1000;
+    setsockopt(_socket_fd.get(), SOL_SOCKET, SO_RCVTIMEO, (const void*)&tv, sizeof(tv));
+#endif
+
     return ConnectionResult::Success;
 }
 
@@ -116,12 +124,12 @@ ConnectionResult TcpClientConnection::stop()
 {
     _should_exit = true;
 
-    _socket_fd.close();
-
     if (_recv_thread) {
         _recv_thread->join();
         _recv_thread.reset();
     }
+
+    _socket_fd.close();
 
     // We need to stop this after stopping the receive thread, otherwise
     // it can happen that we interfere with the parsing of a message.
@@ -133,13 +141,6 @@ ConnectionResult TcpClientConnection::stop()
 std::pair<bool, std::string> TcpClientConnection::send_message(const mavlink_message_t& message)
 {
     std::pair<bool, std::string> result;
-
-    if (!_is_ok) {
-        // TODO: not entirely sure whether this makes sense here.
-        result.first = false;
-        result.second = "not ok";
-        return result;
-    }
 
     if (_remote_ip.empty()) {
         result.first = false;
@@ -181,7 +182,6 @@ std::pair<bool, std::string> TcpClientConnection::send_message(const mavlink_mes
         std::stringstream ss;
         ss << "Send failure: " << GET_ERROR(errno);
         LogErr() << ss.str();
-        _is_ok = false;
         result.first = false;
         result.second = ss.str();
         return result;
@@ -197,33 +197,22 @@ void TcpClientConnection::receive()
     char buffer[2048];
 
     while (!_should_exit) {
-        if (!_is_ok) {
-            LogErr() << "TCP receive error, trying to reconnect...";
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-            setup_port();
-        }
-
         const auto recv_len = recv(_socket_fd.get(), buffer, sizeof(buffer), 0);
 
-        if (recv_len == 0) {
-            // This can happen when shutdown is called on the socket,
-            // therefore we check _should_exit again.
-            _is_ok = false;
+        if (recv_len == 0 || (recv_len < 0 && (errno == EAGAIN || errno == ETIMEDOUT))) {
+            // Timeout, just try again.
             continue;
         }
 
         if (recv_len < 0) {
-            // This happens on destruction when close(_socket_fd.get()) is called,
-            // therefore be quiet.
-            // LogErr() << "recvfrom error: " << GET_ERROR(errno);
-            // Something went wrong, we should try to re-connect in next iteration.
-            _is_ok = false;
+            LogErr() << "TCP receive error: " << GET_ERROR(errno) << ", trying to reeconnect...";
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+            setup_port();
             continue;
         }
 
         _mavlink_receiver->set_new_datagram(buffer, static_cast<int>(recv_len));
 
-        // Parse all mavlink messages in one data packet. Once exhausted, we'll exit while.
         while (_mavlink_receiver->parse_message()) {
             receive_message(_mavlink_receiver->get_last_message(), this);
         }
