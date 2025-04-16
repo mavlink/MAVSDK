@@ -104,6 +104,8 @@ endif()
 if(TSAN)
     set(CMAKE_C_FLAGS "-fsanitize=thread -fsanitize-ignorelist=${PROJECT_SOURCE_DIR}/../tools/fsanitize-ignorelist.txt ${CMAKE_C_FLAGS}")
     set(CMAKE_CXX_FLAGS "-fsanitize=thread -fsanitize-ignorelist=${PROJECT_SOURCE_DIR}/../tools/fsanitize-ignorelist.txt ${CMAKE_CXX_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=thread")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=thread")
 endif()
 
 set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} --coverage")
