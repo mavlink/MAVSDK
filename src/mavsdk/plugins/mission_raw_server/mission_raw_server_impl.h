@@ -38,6 +38,9 @@ private:
     void process_mission_set_current(const mavlink_message_t& message);
     void process_mission_clear(const mavlink_message_t message);
 
+    std::vector<MavlinkMissionTransferServer::ItemInt>&
+    get_mission_items(const uint8_t mission_type);
+
     CallbackList<MissionRawServer::Result, MissionRawServer::MissionPlan>
         _incoming_mission_callbacks{};
     CallbackList<MissionRawServer::Result, MissionRawServer::MissionPlan>
@@ -50,6 +53,9 @@ private:
     std::atomic<bool> _mission_completed;
 
     std::vector<MavlinkMissionTransferServer::ItemInt> _current_mission;
+    std::vector<MavlinkMissionTransferServer::ItemInt> _current_fence;
+    std::vector<MavlinkMissionTransferServer::ItemInt> _current_rally;
+    std::vector<MavlinkMissionTransferServer::ItemInt> _empty_mission_items{};
     std::size_t _current_seq;
 
     std::weak_ptr<MavlinkMissionTransferServer::WorkItem> _last_download{};

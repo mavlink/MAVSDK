@@ -311,7 +311,7 @@ void MavlinkMissionTransferServer::ReceiveIncomingMission::process_timeout()
 void MavlinkMissionTransferServer::ReceiveIncomingMission::callback_and_reset(Result result)
 {
     if (_callback) {
-        _callback(result, _items);
+        _callback(result, _type, _items);
     }
     _callback = nullptr;
     _done = true;
