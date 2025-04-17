@@ -66,6 +66,7 @@ enum [ForwardingOption](#namespacemavsdk_1a7066729108eae8a605d4dd169e4581b9) | F
 
 Type | Name | Description
 --- | --- | ---
+std::ostream & | [operator<<](#namespacemavsdk_1ad782054ca8c33116d0210acca8c55ce6) (std::ostream & os, const [Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) & autopilot) | Stream operator to print information about an `Autopilot`.
 std::string | [base64_encode](#namespacemavsdk_1a57a9962be22a61e5c36a66bc17e6a2a7) (std::vector< uint8_t > & raw) | Encode raw bytes to a base64 string.
 std::vector< uint8_t > | [base64_decode](#namespacemavsdk_1a34e7609c9e2ddcc72a74bbc79daf9c19) (const std::string & str) | Decode a base64 string into raw bytes.
 std::ostream & | [operator<<](#namespacemavsdk_1a2aa91d8b846b07fe7f305b399375ce5f) (std::ostream & str, const [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) & result) | Stream operator to print information about a `ConnectionResult`.
@@ -158,6 +159,28 @@ Value | Description
 
 ## Function Documentation
 
+
+### operator<<() {#namespacemavsdk_1ad782054ca8c33116d0210acca8c55ce6}
+
+```
+#include: autopilot.h
+```
+```cpp
+std::ostream & mavsdk::operator<<(std::ostream &os, const Autopilot &autopilot)
+```
+
+
+Stream operator to print information about an `Autopilot`.
+
+
+**Parameters**
+
+* std::ostream& **os** - 
+* const [Autopilot](namespacemavsdk.md#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297)& **autopilot** - 
+
+**Returns**
+
+&emsp;std::ostream & - A reference to the stream.
 
 ### base64_encode() {#namespacemavsdk_1a57a9962be22a61e5c36a66bc17e6a2a7}
 
