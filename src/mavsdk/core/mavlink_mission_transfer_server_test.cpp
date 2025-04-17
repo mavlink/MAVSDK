@@ -272,14 +272,15 @@ protected:
 
 class MissionTypeParameterTest : public MavlinkMissionTransferServerTest,
                                  public ::testing::WithParamInterface<uint8_t> {
+public:
+    uint8_t mission_type{};
+
 protected:
     void SetUp() override
     {
         MavlinkMissionTransferServerTest::SetUp();
         mission_type = GetParam();
     }
-
-    uint8_t mission_type{};
 };
 
 TEST_P(MissionTypeParameterTest, ReceiveIncomingMissionSendsMissionRequests)
@@ -530,7 +531,7 @@ TEST_P(MissionTypeParameterTest, SendOutgoingMissionEmptyMission)
         target_address.system_id,
         target_address.component_id,
         [&prom, this](Result result) {
-            EXPECT_EQ(result, Result::Success); /// @todo fix test
+            EXPECT_EQ(result, Result::Success);
             ONCE_ONLY;
             prom.set_value();
         });
