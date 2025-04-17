@@ -3,6 +3,7 @@
 #include "plugins/param/param.h"
 #include "plugins/param_server/param_server.h"
 #include <gtest/gtest.h>
+#include <atomic>
 #include <chrono>
 #include <vector>
 #include <thread>
@@ -126,7 +127,7 @@ TEST(SystemTest, ParamGetAllLossy)
     mavsdk_autopilot.set_timeout_s(reduced_timeout_s);
 
     // Drop every third message
-    unsigned counter = 0;
+    std::atomic<unsigned> counter = 0;
     auto drop_some = [&counter](mavlink_message_t&) { return counter++ % 5; };
 
     mavsdk_groundstation.intercept_incoming_messages_async(drop_some);
