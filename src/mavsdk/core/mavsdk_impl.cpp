@@ -60,8 +60,6 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
 
 MavsdkImpl::~MavsdkImpl()
 {
-    call_every_handler.remove(_heartbeat_send_cookie);
-
     _should_exit = true;
 
     if (_process_user_callbacks_thread != nullptr) {
