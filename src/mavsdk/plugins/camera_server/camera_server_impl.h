@@ -203,8 +203,9 @@ private:
 
     bool _is_information_set{};
 
+    std::mutex _mutex{};
+
     // CAMERA_TRACKING_STATUS messages sending fields
-    std::mutex _tracking_status_mutex{};
     bool _sending_tracking_status{};
     TrackingMode _tracking_mode{};
     CameraServer::TrackPoint _tracked_point{};

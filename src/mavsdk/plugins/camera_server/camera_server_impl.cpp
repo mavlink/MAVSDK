@@ -186,21 +186,21 @@ bool CameraServerImpl::is_command_sender_ok(const MavlinkCommandReceiver::Comman
 
 void CameraServerImpl::set_tracking_point_status(CameraServer::TrackPoint tracked_point)
 {
-    std::lock_guard<std::mutex> lg{_tracking_status_mutex};
+    std::lock_guard<std::mutex> lg{_mutex};
     _tracking_mode = TrackingMode::POINT;
     _tracked_point = tracked_point;
 }
 
 void CameraServerImpl::set_tracking_rectangle_status(CameraServer::TrackRectangle tracked_rectangle)
 {
-    std::lock_guard<std::mutex> lg{_tracking_status_mutex};
+    std::lock_guard<std::mutex> lg{_mutex};
     _tracking_mode = TrackingMode::RECTANGLE;
     _tracked_rectangle = tracked_rectangle;
 }
 
 void CameraServerImpl::set_tracking_off_status()
 {
-    std::lock_guard<std::mutex> lg{_tracking_status_mutex};
+    std::lock_guard<std::mutex> lg{_mutex};
     _tracking_mode = TrackingMode::NONE;
 }
 
@@ -242,6 +242,8 @@ CameraServer::Result CameraServerImpl::set_information(CameraServer::Information
         return CameraServer::Result::WrongArgument;
     }
 
+    std::lock_guard<std::mutex> lg{_mutex};
+
     // TODO: validate information.definition_file_uri
 
     _is_information_set = true;
@@ -254,6 +256,8 @@ CameraServer::Result
 CameraServerImpl::set_video_streaming(CameraServer::VideoStreaming video_streaming)
 {
     // TODO: validate uri length
+
+    std::lock_guard<std::mutex> lg{_mutex};
 
     _is_video_streaming_set = true;
     _video_streaming = video_streaming;
@@ -272,17 +276,21 @@ CameraServer::Result CameraServerImpl::set_in_progress(bool in_progress)
 CameraServer::TakePhotoHandle
 CameraServerImpl::subscribe_take_photo(const CameraServer::TakePhotoCallback& callback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _take_photo_callbacks.subscribe(callback);
 }
 
 void CameraServerImpl::unsubscribe_take_photo(CameraServer::TakePhotoHandle handle)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     _take_photo_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result CameraServerImpl::respond_take_photo(
     CameraServer::CameraFeedback take_photo_feedback, CameraServer::CaptureInfo capture_info)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     // If capture_info.index == INT32_MIN, it means this was an interval
     // capture rather than a single image capture.
     if (capture_info.index != INT32_MIN) {
@@ -296,6 +304,13 @@ CameraServer::Result CameraServerImpl::respond_take_photo(
 
         _image_capture_count = capture_info.index;
     }
+
+    // Log the command details to help debug
+    LogDebug() << "Responding to take photo command: " << "target_system_id: "
+               << static_cast<int>(_last_take_photo_command.target_system_id)
+               << ", target_component_id: "
+               << static_cast<int>(_last_take_photo_command.target_component_id)
+               << ", command: " << _last_take_photo_command.command;
 
     switch (take_photo_feedback) {
         default:
@@ -370,17 +385,21 @@ CameraServer::Result CameraServerImpl::respond_take_photo(
 CameraServer::StartVideoHandle
 CameraServerImpl::subscribe_start_video(const CameraServer::StartVideoCallback& callback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _start_video_callbacks.subscribe(callback);
 }
 
 void CameraServerImpl::unsubscribe_start_video(CameraServer::StartVideoHandle handle)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     _start_video_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result
 CameraServerImpl::respond_start_video(CameraServer::CameraFeedback start_video_feedback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     switch (start_video_feedback) {
         default:
             // Fallthrough
@@ -410,17 +429,21 @@ CameraServerImpl::respond_start_video(CameraServer::CameraFeedback start_video_f
 CameraServer::StopVideoHandle
 CameraServerImpl::subscribe_stop_video(const CameraServer::StopVideoCallback& callback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _stop_video_callbacks.subscribe(callback);
 }
 
 void CameraServerImpl::unsubscribe_stop_video(CameraServer::StopVideoHandle handle)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _stop_video_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result
 CameraServerImpl::respond_stop_video(CameraServer::CameraFeedback stop_video_feedback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     switch (stop_video_feedback) {
         default:
             // Fallthrough
@@ -450,18 +473,22 @@ CameraServerImpl::respond_stop_video(CameraServer::CameraFeedback stop_video_fee
 CameraServer::StartVideoStreamingHandle CameraServerImpl::subscribe_start_video_streaming(
     const CameraServer::StartVideoStreamingCallback& callback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _start_video_streaming_callbacks.subscribe(callback);
 }
 
 void CameraServerImpl::unsubscribe_start_video_streaming(
     CameraServer::StartVideoStreamingHandle handle)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _start_video_streaming_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result CameraServerImpl::respond_start_video_streaming(
     CameraServer::CameraFeedback start_video_streaming_feedback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     switch (start_video_streaming_feedback) {
         default:
             // Fallthrough
@@ -491,18 +518,22 @@ CameraServer::Result CameraServerImpl::respond_start_video_streaming(
 CameraServer::StopVideoStreamingHandle CameraServerImpl::subscribe_stop_video_streaming(
     const CameraServer::StopVideoStreamingCallback& callback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _stop_video_streaming_callbacks.subscribe(callback);
 }
 
 void CameraServerImpl::unsubscribe_stop_video_streaming(
     CameraServer::StopVideoStreamingHandle handle)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _stop_video_streaming_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result CameraServerImpl::respond_stop_video_streaming(
     CameraServer::CameraFeedback stop_video_streaming_feedback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     switch (stop_video_streaming_feedback) {
         default:
             // Fallthrough
@@ -532,17 +563,21 @@ CameraServer::Result CameraServerImpl::respond_stop_video_streaming(
 CameraServer::SetModeHandle
 CameraServerImpl::subscribe_set_mode(const CameraServer::SetModeCallback& callback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _set_mode_callbacks.subscribe(callback);
 }
 
 void CameraServerImpl::unsubscribe_set_mode(CameraServer::SetModeHandle handle)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     _set_mode_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result
 CameraServerImpl::respond_set_mode(CameraServer::CameraFeedback set_mode_feedback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     switch (set_mode_feedback) {
         default:
             // Fallthrough
@@ -572,12 +607,14 @@ CameraServerImpl::respond_set_mode(CameraServer::CameraFeedback set_mode_feedbac
 CameraServer::StorageInformationHandle CameraServerImpl::subscribe_storage_information(
     const CameraServer::StorageInformationCallback& callback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _storage_information_callbacks.subscribe(callback);
 }
 
 void CameraServerImpl::unsubscribe_storage_information(
     CameraServer::StorageInformationHandle handle)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     _storage_information_callbacks.unsubscribe(handle);
 }
 
@@ -585,6 +622,8 @@ CameraServer::Result CameraServerImpl::respond_storage_information(
     CameraServer::CameraFeedback storage_information_feedback,
     CameraServer::StorageInformation storage_information)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     switch (storage_information_feedback) {
         default:
             // Fallthrough
@@ -689,11 +728,13 @@ CameraServer::Result CameraServerImpl::respond_storage_information(
 CameraServer::CaptureStatusHandle
 CameraServerImpl::subscribe_capture_status(const CameraServer::CaptureStatusCallback& callback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _capture_status_callbacks.subscribe(callback);
 }
 
 void CameraServerImpl::unsubscribe_capture_status(CameraServer::CaptureStatusHandle handle)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     _capture_status_callbacks.unsubscribe(handle);
 }
 
@@ -701,6 +742,8 @@ CameraServer::Result CameraServerImpl::respond_capture_status(
     CameraServer::CameraFeedback capture_status_feedback,
     CameraServer::CaptureStatus capture_status)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     switch (capture_status_feedback) {
         default:
             // Fallthrough
@@ -737,16 +780,20 @@ CameraServer::Result CameraServerImpl::respond_capture_status(
 CameraServer::FormatStorageHandle
 CameraServerImpl::subscribe_format_storage(const CameraServer::FormatStorageCallback& callback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _format_storage_callbacks.subscribe(callback);
 }
 void CameraServerImpl::unsubscribe_format_storage(CameraServer::FormatStorageHandle handle)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     _format_storage_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result
 CameraServerImpl::respond_format_storage(CameraServer::CameraFeedback format_storage_feedback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     switch (format_storage_feedback) {
         default:
             // Fallthrough
@@ -776,17 +823,21 @@ CameraServerImpl::respond_format_storage(CameraServer::CameraFeedback format_sto
 CameraServer::ResetSettingsHandle
 CameraServerImpl::subscribe_reset_settings(const CameraServer::ResetSettingsCallback& callback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _reset_settings_callbacks.subscribe(callback);
 }
 
 void CameraServerImpl::unsubscribe_reset_settings(CameraServer::ResetSettingsHandle handle)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     _reset_settings_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result
 CameraServerImpl::respond_reset_settings(CameraServer::CameraFeedback reset_settings_feedback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     switch (reset_settings_feedback) {
         default:
             // Fallthrough
@@ -816,18 +867,22 @@ CameraServerImpl::respond_reset_settings(CameraServer::CameraFeedback reset_sett
 CameraServer::TrackingPointCommandHandle CameraServerImpl::subscribe_tracking_point_command(
     const CameraServer::TrackingPointCommandCallback& callback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _tracking_point_callbacks.subscribe(callback);
 }
 
 void CameraServerImpl::unsubscribe_tracking_point_command(
     CameraServer::TrackingPointCommandHandle handle)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     _tracking_point_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result CameraServerImpl::respond_tracking_point_command(
     CameraServer::CameraFeedback tracking_point_feedback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     switch (tracking_point_feedback) {
         default:
             // Fallthrough
@@ -858,18 +913,22 @@ CameraServer::Result CameraServerImpl::respond_tracking_point_command(
 CameraServer::TrackingRectangleCommandHandle CameraServerImpl::subscribe_tracking_rectangle_command(
     const CameraServer::TrackingRectangleCommandCallback& callback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _tracking_rectangle_callbacks.subscribe(callback);
 }
 
 void CameraServerImpl::unsubscribe_tracking_rectangle_command(
     CameraServer::TrackingRectangleCommandHandle handle)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     _tracking_rectangle_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result CameraServerImpl::respond_tracking_rectangle_command(
     CameraServer::CameraFeedback tracking_rectangle_feedback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     switch (tracking_rectangle_feedback) {
         default:
             // Fallthrough
@@ -900,18 +959,22 @@ CameraServer::Result CameraServerImpl::respond_tracking_rectangle_command(
 CameraServer::TrackingOffCommandHandle CameraServerImpl::subscribe_tracking_off_command(
     const CameraServer::TrackingOffCommandCallback& callback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _tracking_off_callbacks.subscribe(callback);
 }
 
 void CameraServerImpl::unsubscribe_tracking_off_command(
     CameraServer::TrackingOffCommandHandle handle)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     _tracking_off_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result
 CameraServerImpl::respond_tracking_off_command(CameraServer::CameraFeedback tracking_off_feedback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     switch (tracking_off_feedback) {
         default:
             // Fallthrough
@@ -951,7 +1014,9 @@ void CameraServerImpl::start_image_capture_interval(float interval_s, int32_t co
             LogDebug() << "capture image timer triggered";
 
             if (!_take_photo_callbacks.empty()) {
-                _take_photo_callbacks(_last_interval_index++);
+                _take_photo_callbacks.queue(_last_interval_index++, [this](const auto& func) {
+                    _server_component_impl->call_user_callback(func);
+                });
                 (*remaining)--;
             }
 
@@ -969,6 +1034,7 @@ void CameraServerImpl::stop_image_capture_interval()
 {
     _server_component_impl->remove_call_every(_image_capture_timer_cookie);
 
+    std::lock_guard<std::mutex> lg{_mutex};
     _is_image_capture_interval_set = false;
     _image_capture_timer_interval_s = 0;
 }
@@ -1008,6 +1074,8 @@ CameraServerImpl::process_request_message(const MavlinkCommandReceiver::CommandL
 std::optional<mavlink_command_ack_t>
 CameraServerImpl::send_camera_information(const MavlinkCommandReceiver::CommandLong& command)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     if (!_is_information_set) {
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_TEMPORARILY_REJECTED);
@@ -1148,6 +1216,8 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_storage_informati
             command, MAV_RESULT::MAV_RESULT_ACCEPTED);
     }
 
+    std::lock_guard<std::mutex> lg{_mutex};
+
     if (_storage_information_callbacks.empty()) {
         LogDebug()
             << "Get storage information requested with no set storage information subscriber";
@@ -1159,7 +1229,9 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_storage_informati
     _last_storage_id = storage_id;
 
     _last_storage_information_command = command;
-    _storage_information_callbacks(storage_id);
+
+    _storage_information_callbacks.queue(
+        storage_id, [this](const auto& func) { _server_component_impl->call_user_callback(func); });
 
     // ack will be sent later in respond_storage_information
     return std::nullopt;
@@ -1174,6 +1246,9 @@ CameraServerImpl::process_storage_format(const MavlinkCommandReceiver::CommandLo
 
     UNUSED(format);
     UNUSED(reset_image_log);
+
+    std::lock_guard<std::mutex> lg{_mutex};
+
     if (_format_storage_callbacks.empty()) {
         LogDebug() << "process storage format requested with no storage format subscriber";
         return _server_component_impl->make_command_ack_message(
@@ -1181,7 +1256,9 @@ CameraServerImpl::process_storage_format(const MavlinkCommandReceiver::CommandLo
     }
 
     _last_format_storage_command = command;
-    _format_storage_callbacks(storage_id);
+
+    _format_storage_callbacks.queue(
+        storage_id, [this](const auto& func) { _server_component_impl->call_user_callback(func); });
 
     return std::nullopt;
 }
@@ -1196,6 +1273,7 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_capture_st
             command, MAV_RESULT::MAV_RESULT_ACCEPTED);
     }
 
+    std::lock_guard<std::mutex> lg{_mutex};
     if (_capture_status_callbacks.empty()) {
         LogDebug() << "process camera capture status requested with no capture status subscriber";
         return _server_component_impl->make_command_ack_message(
@@ -1205,7 +1283,8 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_capture_st
     _last_capture_status_command = command;
 
     // may not need param for now ,just use zero
-    _capture_status_callbacks(0);
+    _capture_status_callbacks.queue(
+        0, [this](const auto& func) { _server_component_impl->call_user_callback(func); });
 
     // ack was already sent
     return std::nullopt;
@@ -1213,6 +1292,8 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_camera_capture_st
 
 void CameraServerImpl::send_capture_status()
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     uint8_t image_status{};
     if (_capture_status.image_status ==
             CameraServer::CaptureStatus::ImageStatus::CaptureInProgress ||
@@ -1267,6 +1348,8 @@ CameraServerImpl::process_reset_camera_settings(const MavlinkCommandReceiver::Co
 
     UNUSED(reset);
 
+    std::lock_guard<std::mutex> lg{_mutex};
+
     if (_reset_settings_callbacks.empty()) {
         LogDebug() << "reset camera settings requested with no camera settings subscriber";
         return _server_component_impl->make_command_ack_message(
@@ -1274,7 +1357,8 @@ CameraServerImpl::process_reset_camera_settings(const MavlinkCommandReceiver::Co
     }
 
     _last_reset_settings_command = command;
-    _reset_settings_callbacks(0);
+    _reset_settings_callbacks.queue(
+        0, [this](const auto& func) { _server_component_impl->call_user_callback(func); });
 
     return std::nullopt;
 }
@@ -1283,6 +1367,8 @@ std::optional<mavlink_command_ack_t>
 CameraServerImpl::process_set_camera_mode(const MavlinkCommandReceiver::CommandLong& command)
 {
     auto camera_mode = static_cast<CAMERA_MODE>(command.params.param2);
+
+    std::lock_guard<std::mutex> lg{_mutex};
 
     if (_set_mode_callbacks.empty()) {
         LogDebug() << "Set mode requested with no set mode subscriber";
@@ -1304,7 +1390,10 @@ CameraServerImpl::process_set_camera_mode(const MavlinkCommandReceiver::CommandL
     }
 
     _last_set_mode_command = command;
-    _set_mode_callbacks(convert_camera_mode);
+
+    _set_mode_callbacks.queue(convert_camera_mode, [this](const auto& func) {
+        _server_component_impl->call_user_callback(func);
+    });
 
     return std::nullopt;
 }
@@ -1314,6 +1403,8 @@ CameraServerImpl::process_set_camera_zoom(const MavlinkCommandReceiver::CommandL
 {
     auto zoom_type = static_cast<CAMERA_ZOOM_TYPE>(command.params.param1);
     auto zoom_value = command.params.param2;
+
+    std::lock_guard<std::mutex> lg{_mutex};
 
     if (_zoom_in_start_callbacks.empty() && _zoom_out_start_callbacks.empty() &&
         _zoom_stop_callbacks.empty() && _zoom_range_callbacks.empty()) {
@@ -1336,7 +1427,9 @@ CameraServerImpl::process_set_camera_zoom(const MavlinkCommandReceiver::CommandL
                 } else {
                     _last_zoom_out_start_command = command;
                     int dummy = 0;
-                    _zoom_out_start_callbacks(dummy);
+                    _zoom_out_start_callbacks.queue(dummy, [this](const auto& func) {
+                        _server_component_impl->call_user_callback(func);
+                    });
                 }
             } else if (zoom_value == 1.f) {
                 if (_zoom_in_start_callbacks.empty()) {
@@ -1346,7 +1439,9 @@ CameraServerImpl::process_set_camera_zoom(const MavlinkCommandReceiver::CommandL
                 } else {
                     _last_zoom_in_start_command = command;
                     int dummy = 0;
-                    _zoom_in_start_callbacks(dummy);
+                    _zoom_in_start_callbacks.queue(dummy, [this](const auto& func) {
+                        _server_component_impl->call_user_callback(func);
+                    });
                 }
             } else if (zoom_value == 0.f) {
                 if (_zoom_stop_callbacks.empty()) {
@@ -1356,7 +1451,9 @@ CameraServerImpl::process_set_camera_zoom(const MavlinkCommandReceiver::CommandL
                 } else {
                     _last_zoom_stop_command = command;
                     int dummy = 0;
-                    _zoom_stop_callbacks(dummy);
+                    _zoom_stop_callbacks.queue(dummy, [this](const auto& func) {
+                        _server_component_impl->call_user_callback(func);
+                    });
                 }
             } else {
                 LogWarn() << "Invalid zoom value";
@@ -1372,7 +1469,9 @@ CameraServerImpl::process_set_camera_zoom(const MavlinkCommandReceiver::CommandL
 
             } else {
                 _last_zoom_range_command = command;
-                _zoom_range_callbacks(zoom_value);
+                _zoom_range_callbacks.queue(zoom_value, [this](const auto& func) {
+                    _server_component_impl->call_user_callback(func);
+                });
             }
             break;
         case ZOOM_TYPE_STEP:
@@ -1436,6 +1535,8 @@ CameraServerImpl::process_image_start_capture(const MavlinkCommandReceiver::Comm
 
     stop_image_capture_interval();
 
+    std::lock_guard<std::mutex> lg{_mutex};
+
     if (_take_photo_callbacks.empty()) {
         LogDebug() << "image capture requested with no take photo subscriber";
         return _server_component_impl->make_command_ack_message(
@@ -1451,7 +1552,9 @@ CameraServerImpl::process_image_start_capture(const MavlinkCommandReceiver::Comm
 
         _last_take_photo_command = command;
 
-        _take_photo_callbacks(seq_number);
+        _take_photo_callbacks.queue(seq_number, [this](const auto& func) {
+            _server_component_impl->call_user_callback(func);
+        });
 
         return std::nullopt;
     }
@@ -1496,6 +1599,8 @@ CameraServerImpl::process_video_start_capture(const MavlinkCommandReceiver::Comm
 
     UNUSED(status_frequency);
 
+    std::lock_guard<std::mutex> lg{_mutex};
+
     if (_start_video_callbacks.empty()) {
         LogDebug() << "video start capture requested with no video start capture subscriber";
         return _server_component_impl->make_command_ack_message(
@@ -1503,7 +1608,8 @@ CameraServerImpl::process_video_start_capture(const MavlinkCommandReceiver::Comm
     }
 
     _last_start_video_command = command;
-    _start_video_callbacks(stream_id);
+    _start_video_callbacks.queue(
+        stream_id, [this](const auto& func) { _server_component_impl->call_user_callback(func); });
 
     return std::nullopt;
 }
@@ -1513,6 +1619,8 @@ CameraServerImpl::process_video_stop_capture(const MavlinkCommandReceiver::Comma
 {
     auto stream_id = static_cast<uint8_t>(command.params.param1);
 
+    std::lock_guard<std::mutex> lg{_mutex};
+
     if (_stop_video_callbacks.empty()) {
         LogDebug() << "video stop capture requested with no video stop capture subscriber";
         return _server_component_impl->make_command_ack_message(
@@ -1520,7 +1628,8 @@ CameraServerImpl::process_video_stop_capture(const MavlinkCommandReceiver::Comma
     }
 
     _last_stop_video_command = command;
-    _stop_video_callbacks(stream_id);
+    _stop_video_callbacks.queue(
+        stream_id, [this](const auto& func) { _server_component_impl->call_user_callback(func); });
 
     return std::nullopt;
 }
@@ -1530,6 +1639,8 @@ CameraServerImpl::process_video_start_streaming(const MavlinkCommandReceiver::Co
 {
     auto stream_id = static_cast<uint8_t>(command.params.param1);
 
+    std::lock_guard<std::mutex> lg{_mutex};
+
     if (_start_video_streaming_callbacks.empty()) {
         LogDebug() << "video start streaming requested with no video start streaming subscriber";
         return _server_component_impl->make_command_ack_message(
@@ -1537,7 +1648,8 @@ CameraServerImpl::process_video_start_streaming(const MavlinkCommandReceiver::Co
     }
 
     _last_start_video_streaming_command = command;
-    _start_video_streaming_callbacks(stream_id);
+    _start_video_streaming_callbacks.queue(
+        stream_id, [this](const auto& func) { _server_component_impl->call_user_callback(func); });
 
     return std::nullopt;
 }
@@ -1547,6 +1659,8 @@ CameraServerImpl::process_video_stop_streaming(const MavlinkCommandReceiver::Com
 {
     auto stream_id = static_cast<uint8_t>(command.params.param1);
 
+    std::lock_guard<std::mutex> lg{_mutex};
+
     if (_stop_video_streaming_callbacks.empty()) {
         LogDebug() << "video stop streaming requested with no video stop streaming subscriber";
         return _server_component_impl->make_command_ack_message(
@@ -1554,7 +1668,8 @@ CameraServerImpl::process_video_stop_streaming(const MavlinkCommandReceiver::Com
     }
 
     _last_stop_video_streaming_command = command;
-    _stop_video_streaming_callbacks(stream_id);
+    _stop_video_streaming_callbacks.queue(
+        stream_id, [this](const auto& func) { _server_component_impl->call_user_callback(func); });
 
     return std::nullopt;
 }
@@ -1565,6 +1680,8 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_info
     auto stream_id = static_cast<uint8_t>(command.params.param1);
 
     UNUSED(stream_id);
+
+    std::lock_guard<std::mutex> lg{_mutex};
 
     if (_is_video_streaming_set) {
         auto command_ack = _server_component_impl->make_command_ack_message(
@@ -1614,6 +1731,8 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_stat
 
     UNUSED(stream_id);
 
+    std::lock_guard<std::mutex> lg{_mutex};
+
     if (!_is_video_streaming_set) {
         return _server_component_impl->make_command_ack_message(
             command, MAV_RESULT::MAV_RESULT_UNSUPPORTED);
@@ -1647,17 +1766,21 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_video_stream_stat
 CameraServer::ZoomInStartHandle
 CameraServerImpl::subscribe_zoom_in_start(const CameraServer::ZoomInStartCallback& callback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _zoom_in_start_callbacks.subscribe(callback);
 }
 
 void CameraServerImpl::unsubscribe_zoom_in_start(CameraServer::ZoomInStartHandle handle)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     _zoom_in_start_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result
 CameraServerImpl::respond_zoom_in_start(CameraServer::CameraFeedback zoom_in_start_feedback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     switch (zoom_in_start_feedback) {
         default:
             // Fallthrough
@@ -1687,17 +1810,21 @@ CameraServerImpl::respond_zoom_in_start(CameraServer::CameraFeedback zoom_in_sta
 CameraServer::ZoomOutStartHandle
 CameraServerImpl::subscribe_zoom_out_start(const CameraServer::ZoomOutStartCallback& callback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _zoom_out_start_callbacks.subscribe(callback);
 }
 
 void CameraServerImpl::unsubscribe_zoom_out_start(CameraServer::ZoomOutStartHandle handle)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     _zoom_out_start_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result
 CameraServerImpl::respond_zoom_out_start(CameraServer::CameraFeedback zoom_out_start_feedback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     switch (zoom_out_start_feedback) {
         default:
             // Fallthrough
@@ -1727,17 +1854,21 @@ CameraServerImpl::respond_zoom_out_start(CameraServer::CameraFeedback zoom_out_s
 CameraServer::ZoomStopHandle
 CameraServerImpl::subscribe_zoom_stop(const CameraServer::ZoomStopCallback& callback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _zoom_stop_callbacks.subscribe(callback);
 }
 
 void CameraServerImpl::unsubscribe_zoom_stop(CameraServer::ZoomStopHandle handle)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     _zoom_stop_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result
 CameraServerImpl::respond_zoom_stop(CameraServer::CameraFeedback zoom_stop_feedback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     switch (zoom_stop_feedback) {
         default:
             // Fallthrough
@@ -1767,17 +1898,21 @@ CameraServerImpl::respond_zoom_stop(CameraServer::CameraFeedback zoom_stop_feedb
 CameraServer::ZoomRangeHandle
 CameraServerImpl::subscribe_zoom_range(const CameraServer::ZoomRangeCallback& callback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     return _zoom_range_callbacks.subscribe(callback);
 }
 
 void CameraServerImpl::unsubscribe_zoom_range(CameraServer::ZoomRangeHandle handle)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
     _zoom_range_callbacks.unsubscribe(handle);
 }
 
 CameraServer::Result
 CameraServerImpl::respond_zoom_range(CameraServer::CameraFeedback zoom_range_feedback)
 {
+    std::lock_guard<std::mutex> lg{_mutex};
+
     switch (zoom_range_feedback) {
         case CameraServer::CameraFeedback::Ok: {
             auto command_ack = _server_component_impl->make_command_ack_message(
@@ -1814,6 +1949,8 @@ CameraServerImpl::process_track_point_command(const MavlinkCommandReceiver::Comm
         return std::nullopt;
     }
 
+    std::lock_guard<std::mutex> lg{_mutex};
+
     if (_tracking_point_callbacks.empty()) {
         LogDebug() << "Track point requested with no user callback provided";
         return _server_component_impl->make_command_ack_message(
@@ -1824,7 +1961,9 @@ CameraServerImpl::process_track_point_command(const MavlinkCommandReceiver::Comm
         command.params.param1, command.params.param2, command.params.param3};
 
     _last_track_point_command = command;
-    _tracking_point_callbacks(track_point);
+    _tracking_point_callbacks.queue(track_point, [this](const auto& func) {
+        _server_component_impl->call_user_callback(func);
+    });
     // We don't send an ack but leave that to the user.
     return std::nullopt;
 }
@@ -1839,6 +1978,8 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_track_rectangle_c
         return std::nullopt;
     }
 
+    std::lock_guard<std::mutex> lg{_mutex};
+
     if (_tracking_rectangle_callbacks.empty()) {
         LogDebug() << "Track rectangle requested with no user callback provided";
         return _server_component_impl->make_command_ack_message(
@@ -1849,7 +1990,9 @@ std::optional<mavlink_command_ack_t> CameraServerImpl::process_track_rectangle_c
         command.params.param1, command.params.param2, command.params.param3, command.params.param4};
 
     _last_track_rectangle_command = command;
-    _tracking_rectangle_callbacks(track_rectangle);
+    _tracking_rectangle_callbacks.queue(track_rectangle, [this](const auto& func) {
+        _server_component_impl->call_user_callback(func);
+    });
     // We don't send an ack but leave that to the user.
     return std::nullopt;
 }
@@ -1864,6 +2007,8 @@ CameraServerImpl::process_track_off_command(const MavlinkCommandReceiver::Comman
         return std::nullopt;
     }
 
+    std::lock_guard<std::mutex> lg{_mutex};
+
     if (_tracking_off_callbacks.empty()) {
         LogDebug() << "Tracking off requested with no user callback provided";
         return _server_component_impl->make_command_ack_message(
@@ -1871,7 +2016,8 @@ CameraServerImpl::process_track_off_command(const MavlinkCommandReceiver::Comman
     }
 
     _last_tracking_off_command = command;
-    _tracking_off_callbacks(0);
+    _tracking_off_callbacks.queue(
+        0, [this](const auto& func) { _server_component_impl->call_user_callback(func); });
     // We don't send an ack but leave that to the user.
     return std::nullopt;
 }
@@ -1907,14 +2053,14 @@ void CameraServerImpl::send_tracking_status_with_interval(uint32_t interval_us)
     while (true) {
         std::this_thread::sleep_for(std::chrono::microseconds{interval_us});
         {
-            std::scoped_lock lg{_tracking_status_mutex};
+            std::scoped_lock lg{_mutex};
             if (!_sending_tracking_status) {
                 return;
             }
         }
         _server_component_impl->queue_message([&](MavlinkAddress mavlink_address, uint8_t channel) {
             mavlink_message_t message;
-            std::lock_guard<std::mutex> lg{_tracking_status_mutex};
+            std::lock_guard<std::mutex> lg{_mutex};
 
             // The message is filled based on current tracking mode
             switch (_tracking_mode) {
@@ -1988,6 +2134,8 @@ void CameraServerImpl::start_sending_tracking_status(uint32_t interval_ms)
 {
     // Stop sending status with the old interval
     stop_sending_tracking_status();
+
+    std::lock_guard<std::mutex> lg{_mutex};
     _sending_tracking_status = true;
     _tracking_status_sending_thread =
         std::thread{&CameraServerImpl::send_tracking_status_with_interval, this, interval_ms};
@@ -1997,7 +2145,7 @@ void CameraServerImpl::stop_sending_tracking_status()
 {
     // Firstly, ask the other thread to stop sending the status
     {
-        std::scoped_lock lg{_tracking_status_mutex};
+        std::scoped_lock lg{_mutex};
         _sending_tracking_status = false;
     }
     // If the thread was active, wait for it to finish
