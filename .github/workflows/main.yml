@@ -60,7 +60,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - ubuntu_image: ubuntu-20.04
           - ubuntu_image: ubuntu-22.04
           - ubuntu_image: ubuntu-24.04
     steps:
@@ -90,10 +89,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - ubuntu_image: ubuntu-20.04
-            cc: gcc
-            cxx: g++
-            description: Ubuntu 20.04 (GCC)
           - ubuntu_image: ubuntu-22.04
             cc: gcc
             cxx: g++
@@ -178,7 +173,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - ubuntu_image: ubuntu-20.04
           - ubuntu_image: ubuntu-22.04
           - ubuntu_image: ubuntu-24.04
     steps:
@@ -251,7 +245,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        container_name: [ubuntu-20.04, ubuntu-22.04, ubuntu-24.04]
+        container_name: [ubuntu-22.04, ubuntu-24.04]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -286,7 +280,7 @@ jobs:
 
   dockcross-linux-arm:
     name: linux-${{ matrix.docker_name }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -337,7 +331,7 @@ jobs:
 
   alpine-linux:
     name: alpine 3.19.0 (musl)
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     container: alpine:3.19.0
     steps:
       - name: install tools
@@ -385,7 +379,7 @@ jobs:
 
   dockcross-linux-musl:
     name: ${{ matrix.arch_name }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -420,7 +414,7 @@ jobs:
 
   dockcross-android:
     name: ${{ matrix.name }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
