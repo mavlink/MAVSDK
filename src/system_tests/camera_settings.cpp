@@ -76,8 +76,15 @@ TEST(SystemTest, CameraSettings)
 
     auto camera = Camera{system};
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    EXPECT_EQ(camera.camera_list().cameras.size(), 1);
+    // Wait for camera list to be populated before proceeding
+    for (unsigned i = 0; i < 20; ++i) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        if (camera.camera_list().cameras.size() > 0) {
+            break;
+        }
+    }
+
+    ASSERT_EQ(camera.camera_list().cameras.size(), 1);
 
     std::pair<Camera::Result, std::vector<Camera::SettingOptions>> possible_setting_options;
 
@@ -229,8 +236,16 @@ TEST(SystemTest, CameraSettingsAsync)
     auto system = fut.get();
 
     auto camera = Camera{system};
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    EXPECT_EQ(camera.camera_list().cameras.size(), 1);
+
+    // Wait for camera list to be populated before proceeding
+    for (unsigned i = 0; i < 20; ++i) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        if (camera.camera_list().cameras.size() > 0) {
+            break;
+        }
+    }
+
+    ASSERT_EQ(camera.camera_list().cameras.size(), 1);
 
     bool found_wb_temp = false;
     camera.subscribe_current_settings([&](const Camera::CurrentSettingsUpdate& update) {
