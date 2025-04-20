@@ -247,15 +247,19 @@ TEST(SystemTest, CameraSettingsAsync)
 
     ASSERT_EQ(camera.camera_list().cameras.size(), 1);
 
-    bool found_wb_temp = false;
-    camera.subscribe_current_settings([&](const Camera::CurrentSettingsUpdate& update) {
-        for (auto& setting : update.current_settings) {
-            // std::cout << "setting: " << setting << "\n";
-            if (setting.setting_id == "WB_TEMP") {
-                found_wb_temp = true;
+    std::promise<void> prom_found_wb_temp;
+    auto fut_found_wb_temp = prom_found_wb_temp.get_future();
+
+    Camera::CurrentSettingsHandle handle_settings =
+        camera.subscribe_current_settings([&](const Camera::CurrentSettingsUpdate& update) {
+            for (auto& setting : update.current_settings) {
+                // std::cout << "setting: " << setting << "\n";
+                if (setting.setting_id == "WB_TEMP") {
+                    camera.unsubscribe_current_settings(handle_settings);
+                    prom_found_wb_temp.set_value();
+                }
             }
-        }
-    });
+        });
 
     // Set white balance mode to manual, so we have the WB_TEMP param available.
     Camera::Setting setting{};
@@ -265,15 +269,16 @@ TEST(SystemTest, CameraSettingsAsync)
         camera.set_setting(camera.camera_list().cameras[0].component_id, setting),
         Camera::Result::Success);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    EXPECT_TRUE(found_wb_temp);
+    EXPECT_EQ(fut_found_wb_temp.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 
-    bool found_exp_absolute = false;
+    std::promise<void> prom_found_exp_absolute;
+    auto fut_found_exp_absolute = prom_found_exp_absolute.get_future();
     camera.subscribe_possible_setting_options(
         [&](const Camera::PossibleSettingOptionsUpdate& update) {
             for (auto& setting_options : update.setting_options) {
+                // std::cout << "setting options: " << setting_options.setting_id << "\n";
                 if (setting_options.setting_id == "EXP_ABSOLUTE") {
-                    found_exp_absolute = true;
+                    prom_found_exp_absolute.set_value();
                 }
             }
         });
@@ -285,6 +290,5 @@ TEST(SystemTest, CameraSettingsAsync)
         camera.set_setting(camera.camera_list().cameras[0].component_id, setting),
         Camera::Result::Success);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    EXPECT_TRUE(found_exp_absolute);
+    EXPECT_EQ(fut_found_exp_absolute.wait_for(std::chrono::seconds(1)), std::future_status::ready);
 }
