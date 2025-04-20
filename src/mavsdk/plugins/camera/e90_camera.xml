@@ -6,7 +6,7 @@
     </definition>
     <parameters>
         <!-- control = 0 tells us this should not create an automatic UI control -->
-        <parameter name="CAM_MODE" type="uint32" default="1" control="0">
+        <parameter name="CAM_MODE" type="int32" default="1" control="0">
             <description>Camera Mode</description>
             <!-- This tells us when this parameter changes, these parameters must be updated (requested)-->
             <updates>
@@ -48,7 +48,7 @@
                 </option>
             </options>
         </parameter>
-        <parameter name="CAM_WBMODE" type="uint32" default="0">
+        <parameter name="CAM_WBMODE" type="int32" default="0">
             <description>White Balance Mode</description>
             <options>
                 <option name="Auto" value="0" />
@@ -61,10 +61,10 @@
                 <option name="Lock" value="99" />
             </options>
         </parameter>
-        <parameter name="CAM_CUSTOMWB" type="uint16" min="3000" max="8000" default="5500" control="0" step="1">
+        <parameter name="CAM_CUSTOMWB" type="int16" min="3000" max="8000" default="5500" control="0" step="1">
             <description>Custom White Balance (K)</description>
         </parameter>
-        <parameter name="CAM_EXPMODE" type="uint32" default="0">
+        <parameter name="CAM_EXPMODE" type="int32" default="0">
             <description>Exposure Mode</description>
             <updates>
                 <update>CAM_SHUTTERSPD</update>
@@ -109,7 +109,7 @@
                 <option name="1/8000" value="0.000125" />
             </options>
         </parameter>
-        <parameter name="CAM_ISO" type="uint32" default="100">
+        <parameter name="CAM_ISO" type="int32" default="100">
             <description>ISO</description>
             <options>
                 <option name="100" value="100" />
@@ -142,7 +142,7 @@
                 <option name="+3" value="3" />
             </options>
         </parameter>
-        <parameter name="CAM_VIDRES" type="uint32" default="0">
+        <parameter name="CAM_VIDRES" type="int32" default="0">
             <description>Video Resolution</description>
             <updates>
                 <update>CAM_SHUTTERSPD</update>
@@ -797,7 +797,7 @@
                 </option>
             </options>
         </parameter>
-        <parameter name="CAM_VIDFMT" type="uint32" default="1">
+        <parameter name="CAM_VIDFMT" type="int32" default="1">
             <description>Video Format</description>
             <updates>
                 <update>CAM_SHUTTERSPD</update>
@@ -841,7 +841,7 @@
                 </option>
             </options>
         </parameter>
-        <parameter name="CAM_PHOTORATIO" type="uint8" default="1">
+        <parameter name="CAM_PHOTORATIO" type="int8" default="1">
             <description>Photo Aspect Ratio</description>
             <updates>
                 <update>CAM_ASPECTRATIO</update>
@@ -852,7 +852,7 @@
                 <option name="16:9" value="3" />
             </options>
         </parameter>
-        <parameter name="CAM_METERING" type="uint32" default="0">
+        <parameter name="CAM_METERING" type="int32" default="0">
             <description>Metering Mode</description>
             <options>
                 <option name="Average" value="1" />
@@ -860,7 +860,7 @@
                 <option name="Spot" value="2" />
             </options>
         </parameter>
-        <parameter name="CAM_COLORMODE" type="uint32" default="1">
+        <parameter name="CAM_COLORMODE" type="int32" default="1">
             <description>Color Mode</description>
             <options>
                 <option name="Neutral" value="0" />
@@ -873,7 +873,7 @@
         <!--
             DataPilot does not use this
         -->
-        <parameter name="CAM_FLICKER" type="uint32" default="0" control="0">
+        <parameter name="CAM_FLICKER" type="int32" default="0" control="0">
             <description>Flickering Mode</description>
             <options>
                 <option name="Auto" value="0" />
@@ -881,14 +881,14 @@
                 <option name="50Hz" value="2" />
             </options>
         </parameter>
-        <parameter name="CAM_PHOTOFMT" type="uint32" default="0">
+        <parameter name="CAM_PHOTOFMT" type="int32" default="0">
             <description>Image Format</description>
             <options>
                 <option name="Jpeg" value="0" />
                 <option name="Jpeg+DNG" value="2" />
             </options>
         </parameter>
-        <parameter name="CAM_PHOTOQUAL" type="uint32" default="1">
+        <parameter name="CAM_PHOTOQUAL" type="int32" default="1">
             <description>Image Quality</description>
             <options>
                 <option name="Low" value="0" />
@@ -897,7 +897,7 @@
                 <option name="Ultra" value="3" />
             </options>
         </parameter>
-        <parameter name="CAM_IMAGEDEWARP" type="uint8" default="0">
+        <parameter name="CAM_IMAGEDEWARP" type="int8" default="0">
             <description>Distortion Correction</description>
             <options>
                 <option name="Off" value="0" />
@@ -907,7 +907,7 @@
         <!--
             DataPilot does not use this
         -->
-        <parameter name="CAM_COLORENCODE" type="uint32" default="0" control="0">
+        <parameter name="CAM_COLORENCODE" type="int32" default="0" control="0">
             <description>Color Encoding System</description>
             <options>
                 <option name="NTSC" value="0" />
