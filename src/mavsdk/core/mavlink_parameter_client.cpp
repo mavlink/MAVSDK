@@ -684,6 +684,8 @@ void MavlinkParameterClient::process_param_value(const mavlink_message_t& messag
     const auto work = work_queue_guard->get_front();
 
     if (!work) {
+        // Prevent deadlock by releasing the lock before doing more work.
+        work_queue_guard.reset();
         // update existing param
         find_and_call_subscriptions_value_changed(safe_param_id, received_value);
         return;
@@ -887,6 +889,8 @@ void MavlinkParameterClient::process_param_ext_value(const mavlink_message_t& me
     auto work = work_queue_guard->get_front();
 
     if (!work) {
+        // Prevent deadlock by releasing the lock before doing more work.
+        work_queue_guard.reset();
         // update existing param
         find_and_call_subscriptions_value_changed(safe_param_id, received_value);
         return;
