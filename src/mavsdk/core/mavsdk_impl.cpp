@@ -810,9 +810,9 @@ void MavsdkImpl::call_user_callback_located(
 {
     auto callback_size = _user_callback_queue.size();
     if (callback_size == 10) {
-        LogWarn()
-            << "User callback queue too slow.\n"
-               "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
+        // LogWarn()
+        //     << "User callback queue too slow.\n"
+        //        "See: https://mavsdk.mavlink.io/main/en/cpp/troubleshooting.html#user_callbacks";
 
     } else if (callback_size == 99) {
         LogErr()
