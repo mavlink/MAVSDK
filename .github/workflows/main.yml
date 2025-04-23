@@ -183,7 +183,7 @@ jobs:
         id: cache
         with:
           path: ~/.hunter
-          key: ${{ github.job }}-${{ matrix.ubuntu_image }}-${{ hashFiles('~/.hunter/**') }}-2
+          key: ${{ github.job }}-${{ matrix.ubuntu_image }}-${{ hashFiles('~/.hunter/**') }}
       - name: install mavlink on the system
         run: |
             cmake -Bthird_party/mavlink/build -Sthird_party/mavlink
@@ -389,7 +389,7 @@ jobs:
         with:
           submodules: recursive
       - name: setup dockcross
-        run: docker run --rm dockcross/${{ matrix.arch_name }}:20250109-7bf589c > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
+        run: docker run --rm dockcross/${{ matrix.arch_name }}:20250311-4bd0eec > ./dockcross-${{ matrix.arch_name }}; chmod +x ./dockcross-${{ matrix.arch_name }}
       - uses: actions/cache@v4
         id: cache
         with:
@@ -397,9 +397,9 @@ jobs:
           key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/${{ matrix.arch_name }}/third_party/install" >> $GITHUB_ENV
+        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=ON -Bbuild/${{ matrix.arch_name }} -H."
+        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "cmake $superbuild -DCMAKE_PREFIX_PATH=/work/build/${{ matrix.arch_name }}/third_party/install" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=ON -Bbuild/${{ matrix.arch_name }} -H."
       - name: build
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j2 --target install
       - name: Publish artefacts
@@ -432,7 +432,7 @@ jobs:
         with:
           submodules: recursive
       - name: setup dockcross
-        run: docker run --rm dockcross/${{ matrix.name }}:20250109-7bf589c > ./dockcross-${{ matrix.name }}; chmod +x ./dockcross-${{ matrix.name }}
+        run: docker run --rm dockcross/${{ matrix.name }}:20250311-4bd0eec > ./dockcross-${{ matrix.name }}; chmod +x ./dockcross-${{ matrix.name }}
       - uses: actions/cache@v4
         id: cache
         with:
@@ -440,9 +440,9 @@ jobs:
           key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/${{ matrix.name }}/third_party/install" >> $GITHUB_ENV
+        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-${{ matrix.name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/${{ matrix.name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild/${{ matrix.name }} -H."
+        run: ./dockcross-${{ matrix.name }} /bin/bash -c "cmake $superbuild -DCMAKE_PREFIX_PATH=/work/build/${{ matrix.name }}/third_party/install -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/${{ matrix.name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild/${{ matrix.name }} -H."
       - name: build
         run: ./dockcross-${{ matrix.name }} cmake --build build/${{ matrix.name }} -j2 --target install
       - name: create tar with header and library
