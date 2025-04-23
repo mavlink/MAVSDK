@@ -118,7 +118,7 @@ jobs:
         id: cache
         with:
           path: ./build/release/third_party/install
-          key: ${{ github.job }}-${{ matrix.ubuntu_image }}-${{ matrix.cc }}-${{ hashFiles('./third_party/**') }}-1
+          key: ${{ github.job }}-${{ matrix.ubuntu_image }}-${{ matrix.cc }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
@@ -304,7 +304,7 @@ jobs:
         id: cache
         with:
           path: ./build/linux-${{ matrix.docker_name }}/third_party/install
-          key: ${{ github.job }}-linux-${{ matrix.docker_name }}-${{ hashFiles('./third_party/**') }}-6
+          key: ${{ github.job }}-linux-${{ matrix.docker_name }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
@@ -347,7 +347,7 @@ jobs:
         id: cache
         with:
           path: ./build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-1
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
@@ -493,7 +493,7 @@ jobs:
         id: cache
         with:
           path: ./build/macos/third_party/install
-          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}-1
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
@@ -566,7 +566,7 @@ jobs:
         id: cache
         with:
           path: ./build/${{ matrix.name }}/third_party/install
-          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './tools/ios.toolchain.cmake') }}-1
+          key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './tools/ios.toolchain.cmake') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
@@ -655,7 +655,7 @@ jobs:
         id: cache
         with:
           path: ./build/release/third_party/install
-          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-4
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
