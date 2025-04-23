@@ -32,11 +32,11 @@ jobs:
           key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/third_party/install" >> $GITHUB_ENV
+        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install -y lcov python3-future
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild -H.
+        run: cmake $superbuild -DCMAKE_PREFIX_PATH=$(pwd)/build/third_party/install -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild -H.
       - name: build
         run: cmake --build build -j2
       - name: unit tests
@@ -121,12 +121,12 @@ jobs:
           key: ${{ github.job }}-${{ matrix.ubuntu_image }}-${{ matrix.cc }}-${{ hashFiles('./third_party/**') }}-1
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
+        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
       - name: configure
         run: |
           echo "CC=${{ matrix.cc }}" >> $GITHUB_ENV
           echo "CXX=${{ matrix.cxx }}" >> $GITHUB_ENV
-          cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=ON -DENABLE_CPPTRACE=On -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
+          cmake $superbuild -DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=ON -DENABLE_CPPTRACE=On -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
       - name: cleanup to save space
         run: |
           rm -rf ./build/release/third_party/absl
@@ -213,9 +213,9 @@ jobs:
           key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/default/third_party/install" >> $GITHUB_ENV
+        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
       - name: build necessary protoc tooling
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=ON -DENABLE_CPPTRACE=On -Bbuild/default -H.
+        run: cmake $superbuild -DCMAKE_PREFIX_PATH=$(pwd)/build/default/third_party/install -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=ON -DENABLE_CPPTRACE=On -Bbuild/default -H.
       - name: generate code from protos
         run: PATH="$PATH:$HOME/.local/bin" tools/generate_from_protos.sh
       - name: fix style
@@ -307,9 +307,9 @@ jobs:
           key: ${{ github.job }}-linux-${{ matrix.docker_name }}-${{ hashFiles('./third_party/**') }}-6
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=/work/build/linux-${{ matrix.docker_name }}/third_party/install" >> $GITHUB_ENV
+        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-linux-${{ matrix.docker_name }}-custom /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-${{ matrix.docker_name }}/install -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DWERROR=ON -Bbuild/linux-${{ matrix.docker_name }} -H."
+        run: ./dockcross-linux-${{ matrix.docker_name }}-custom /bin/bash -c "cmake $superbuild -DCMAKE_PREFIX_PATH=/work/build/linux-${{ matrix.docker_name }}/third_party/install -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-${{ matrix.docker_name }}/install -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DWERROR=ON -Bbuild/linux-${{ matrix.docker_name }} -H."
       - name: build
         run: ./dockcross-linux-${{ matrix.docker_name }}-custom cmake --build build/linux-${{ matrix.docker_name }} -j2 --target install
       - name: create deb packages
@@ -350,9 +350,9 @@ jobs:
           key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}-1
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
+        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild/release -H.
+        run: cmake $superbuild -DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild/release -H.
       - name: build
         run: cmake --build build/release --target install -- -j2
       - name: unit tests
@@ -399,7 +399,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "cmake $superbuild -DCMAKE_PREFIX_PATH=/work/build/${{ matrix.arch_name }}/third_party/install" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=ON -Bbuild/${{ matrix.arch_name }} -H."
+        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "cmake $superbuild -DCMAKE_PREFIX_PATH=/work/build/${{ matrix.arch_name }}/third_party/install -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=ON -Bbuild/${{ matrix.arch_name }} -H."
       - name: build
         run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j2 --target install
       - name: Publish artefacts
@@ -496,11 +496,11 @@ jobs:
           key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}-1
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/macos/third_party/install" >> $GITHUB_ENV
+        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
       - name: set SDKROOT value
         run: echo "SDKROOT=$(xcrun --sdk macosx --show-sdk-path)" >> $GITHUB_ENV
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/macos/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DMACOS_FRAMEWORK=${{ matrix.build-framework }} -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild/macos -H.
+        run: cmake $superbuild -DCMAKE_PREFIX_PATH=$(pwd)/build/macos/third_party/install -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/macos/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DMACOS_FRAMEWORK=${{ matrix.build-framework }} -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild/macos -H.
       - name: build
         run: cmake --build build/macos -j2 --target install
       - name: unit tests
@@ -569,7 +569,7 @@ jobs:
           key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './tools/ios.toolchain.cmake') }}-1
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV && echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/${{ matrix.name }}/third_party/install" >> $GITHUB_ENV
+        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
       - name: set SDK-related environment variables (for non-cmake deps)
         run: |
           echo "SDKROOT=$(xcrun --sdk ${{ matrix.sdk }} --show-sdk-path)" >> $GITHUB_ENV
@@ -579,7 +579,7 @@ jobs:
           python3 -m pip install wheel
           python3 -m pip install future
       - name: configure
-        run: cmake $superbuild $cmake_prefix_path -DENABLE_STRICT_TRY_COMPILE=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DENABLE_BITCODE=Off -DPLATFORM=${{ matrix.platform }} -DDEPLOYMENT_TARGET=14.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild/${{ matrix.name }} -H.
+        run: cmake $superbuild -DCMAKE_PREFIX_PATH=$(pwd)/build/${{ matrix.name }}/third_party/install -DENABLE_STRICT_TRY_COMPILE=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DENABLE_BITCODE=Off -DPLATFORM=${{ matrix.platform }} -DDEPLOYMENT_TARGET=14.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild/${{ matrix.name }} -H.
       - name: build
         run: cmake --build build/${{ matrix.name }} -j$(nproc)
       - uses: actions/upload-artifact@v4
@@ -660,13 +660,12 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
             echo "superbuild=-DSUPERBUILD=OFF" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-            echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
       - name: install packages
         run: |
             choco install nasm
             echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: configure
-        run: cmake -G "Visual Studio 17 2022" $env:superbuild $env:cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild/release -S.
+        run: cmake -G "Visual Studio 17 2022" $env:superbuild -DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild/release -S.
       - name: build
         run: cmake --build build/release -j2 --config RelWithDebInfo --target install
       - name: Create zip file mavsdk libraries
