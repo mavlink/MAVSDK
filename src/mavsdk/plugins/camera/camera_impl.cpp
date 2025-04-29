@@ -1307,7 +1307,7 @@ void CameraImpl::check_camera_definition_with_lock(PotentialCamera& potential_ca
         } else if (starts_with(url, "http://") || starts_with(url, "https://")) {
 #if BUILD_WITHOUT_CURL == 1
             potential_camera.camera_definition_result = Camera::Result::ProtocolUnsupported;
-            notify_camera_list();
+            notify_camera_list_with_lock();
 #else
             if (_http_loader == nullptr) {
                 _http_loader = std::make_unique<HttpLoader>();

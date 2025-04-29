@@ -386,7 +386,9 @@ private:
     CallEveryHandler::Cookie _request_slower_call_every_cookie{};
     CallEveryHandler::Cookie _request_faster_call_every_cookie{};
 
+#if BUILD_WITHOUT_CURL != 1
     std::unique_ptr<HttpLoader> _http_loader{nullptr};
+#endif
 
     bool _debugging{false};
 };
