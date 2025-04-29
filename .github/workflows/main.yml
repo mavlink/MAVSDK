@@ -167,6 +167,27 @@ jobs:
       - name: test (mavsdk_server)
         run: ./build/release/src/mavsdk_server/test/unit_tests_mavsdk_server
 
+  ubuntu-no-curl:
+    name: Ubuntu 24.04 (mavsdk, without curl)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./build/release/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+      - name: configure
+        run: |
+          cmake $superbuild -DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_WITHOUT_CURL=ON -DWERROR=ON -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
+      - name: build
+        run: cmake --build build/release -j2
+
   ubuntu-hunter:
     name: ${{ matrix.ubuntu_image }} (non-mavsdk_server, hunter)
     runs-on: ${{ matrix.ubuntu_image }}
