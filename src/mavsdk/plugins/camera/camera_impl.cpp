@@ -1,12 +1,15 @@
 #include "camera_impl.h"
 #include "camera_definition.h"
 #include "system.h"
-#include "http_loader.h"
 #include "unused.h"
 #include "callback_list.tpp"
 #include "fs_utils.h"
 #include "string_utils.h"
 #include "math_utils.h"
+
+#if BUILD_WITHOUT_CURL != 1
+#include "http_loader.h"
+#endif
 
 #include <algorithm>
 #include <cassert>
