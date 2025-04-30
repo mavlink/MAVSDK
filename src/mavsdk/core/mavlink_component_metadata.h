@@ -2,9 +2,12 @@
 
 #include "callback_list.h"
 #include "file_cache.h"
-#include "http_loader.h"
 #include "mavlink_command_sender.h"
 #include <json/json.h>
+
+#if BUILD_WITHOUT_CURL != 1
+#include "http_loader.h"
+#endif
 
 #include <optional>
 #include <set>
