@@ -15,7 +15,6 @@ find_package(tinyxml2 REQUIRED)
 
 target_link_libraries(unit_tests_runner
     mavsdk
-    CURL::libcurl
     JsonCpp::JsonCpp
     tinyxml2::tinyxml2
     GTest::gtest
@@ -26,6 +25,11 @@ target_link_libraries(unit_tests_runner
 target_include_directories(unit_tests_runner
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../mavsdk/core
     PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/../mavsdk/core
+)
+
+target_compile_definitions(unit_tests_runner
+    PRIVATE
+    BUILD_WITHOUT_CURL=1
 )
 
 if (MSVC AND BUILD_SHARED_LIBS)
