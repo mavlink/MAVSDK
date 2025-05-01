@@ -121,6 +121,26 @@ std::pair<bool, std::string> UdpConnection::send_message(const mavlink_message_t
 
     std::lock_guard<std::mutex> lock(_remote_mutex);
 
+    // Remove inactive remotes before sending messages
+    auto now = std::chrono::steady_clock::now();
+
+    _remotes.erase(
+        std::remove_if(
+            _remotes.begin(),
+            _remotes.end(),
+            [&now, this](const Remote& remote) {
+                auto elapsed = now - remote.last_activity;
+                bool inactive = elapsed > REMOTE_TIMEOUT;
+
+                if (inactive) {
+                    LogInfo() << "Removing inactive remote: " << remote.ip << ":"
+                              << remote.port_number;
+                }
+
+                return inactive;
+            }),
+        _remotes.end());
+
     if (_remotes.size() == 0) {
         result.first = false;
         result.second = "no remotes";
@@ -193,6 +213,7 @@ void UdpConnection::add_remote_with_remote_sysid(
     Remote new_remote;
     new_remote.ip = remote_ip;
     new_remote.port_number = remote_port;
+    new_remote.last_activity = std::chrono::steady_clock::now();
 
     auto existing_remote =
         std::find_if(_remotes.begin(), _remotes.end(), [&new_remote](Remote& remote) {
@@ -207,6 +228,9 @@ void UdpConnection::add_remote_with_remote_sysid(
                       << " (with system ID: " << static_cast<int>(remote_sysid) << ")";
         }
         _remotes.push_back(new_remote);
+    } else {
+        // Update the timestamp for the existing remote
+        existing_remote->last_activity = std::chrono::steady_clock::now();
     }
 }
 

@@ -7,6 +7,7 @@
 #include <atomic>
 #include <vector>
 #include <cstdint>
+#include <chrono>
 
 #include "connection.h"
 #include "socket_holder.h"
@@ -48,6 +49,7 @@ private:
     struct Remote {
         std::string ip{};
         int port_number{0};
+        std::chrono::steady_clock::time_point last_activity{std::chrono::steady_clock::now()};
 
         bool operator==(const UdpConnection::Remote& other) const
         {
@@ -59,6 +61,9 @@ private:
     SocketHolder _socket_fd;
     std::unique_ptr<std::thread> _recv_thread{};
     std::atomic_bool _should_exit{false};
+
+    // Timeout for inactive connections in seconds
+    static constexpr std::chrono::seconds REMOTE_TIMEOUT{10};
 };
 
 } // namespace mavsdk
