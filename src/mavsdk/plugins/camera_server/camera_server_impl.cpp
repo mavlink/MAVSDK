@@ -172,6 +172,25 @@ void CameraServerImpl::deinit()
 {
     stop_image_capture_interval();
     _server_component_impl->unregister_all_mavlink_command_handlers(this);
+
+    std::lock_guard lg(_mutex);
+    _take_photo_callbacks.clear();
+    _start_video_callbacks.clear();
+    _stop_video_callbacks.clear();
+    _start_video_streaming_callbacks.clear();
+    _stop_video_streaming_callbacks.clear();
+    _set_mode_callbacks.clear();
+    _storage_information_callbacks.clear();
+    _capture_status_callbacks.clear();
+    _format_storage_callbacks.clear();
+    _reset_settings_callbacks.clear();
+    _tracking_point_callbacks.clear();
+    _tracking_rectangle_callbacks.clear();
+    _tracking_off_callbacks.clear();
+    _zoom_in_start_callbacks.clear();
+    _zoom_out_start_callbacks.clear();
+    _zoom_stop_callbacks.clear();
+    _zoom_range_callbacks.clear();
 }
 
 bool CameraServerImpl::is_command_sender_ok(const MavlinkCommandReceiver::CommandLong& command)
