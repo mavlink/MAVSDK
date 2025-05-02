@@ -37,8 +37,17 @@ private:
         Cookie cookie{};
     };
 
-    std::vector<Entry> _entries{};
     std::mutex _entries_mutex{};
+    std::vector<Entry> _entries{};
+
+    std::mutex _add_mutex{};
+    std::vector<Entry> _add_list{};
+
+    std::mutex _change_mutex{};
+    std::vector<Entry> _change_list{};
+
+    std::mutex _remove_mutex{};
+    std::vector<Cookie> _remove_list{};
 
     Time& _time;
 
