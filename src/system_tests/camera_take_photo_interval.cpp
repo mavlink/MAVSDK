@@ -2,6 +2,7 @@
 #include "plugins/camera/camera.h"
 #include "plugins/camera_server/camera_server.h"
 #include "log.h"
+#include <atomic>
 #include <future>
 #include <mutex>
 #include <thread>
@@ -62,12 +63,14 @@ TEST(SystemTest, CameraTakePhotoInterval)
     // We expect to find one camera.
     ASSERT_EQ(camera.camera_list().cameras.size(), 1);
 
-    unsigned captured = 0;
+    // We need to make sure this doesn't go out of scope before the callback is called.
+    auto captured = std::make_shared<std::atomic<unsigned>>(0);
 
-    camera.subscribe_capture_info([&](Camera::CaptureInfo capture_info) {
-        LogInfo() << "Received captured info for image: " << capture_info.index;
-        ++captured;
-    });
+    auto capture_info_handle =
+        camera.subscribe_capture_info([captured](Camera::CaptureInfo capture_info) {
+            LogInfo() << "Received captured info for image: " << capture_info.index;
+            ++(*captured);
+        });
 
     EXPECT_EQ(
         camera.start_photo_interval(camera.camera_list().cameras[0].component_id, 0.1f),
@@ -77,5 +80,7 @@ TEST(SystemTest, CameraTakePhotoInterval)
     EXPECT_EQ(
         camera.stop_photo_interval(camera.camera_list().cameras[0].component_id),
         Camera::Result::Success);
-    EXPECT_GE(captured, 2);
+    EXPECT_GE(*captured, 2);
+
+    camera.unsubscribe_capture_info(capture_info_handle);
 }
