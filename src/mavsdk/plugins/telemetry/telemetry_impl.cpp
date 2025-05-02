@@ -205,6 +205,10 @@ void TelemetryImpl::disable()
         std::lock_guard<std::mutex> lock(_health_mutex);
         _health.is_home_position_ok = false;
     }
+
+    // FIXME: this is a race condition where request_home_position_again
+    //        could still be executing after we have removed it.
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
 }
 
 void TelemetryImpl::request_home_position_again()
