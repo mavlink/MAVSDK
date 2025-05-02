@@ -14,10 +14,12 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <chrono>
 #include <iterator>
 #include <filesystem>
 #include <functional>
 #include <string>
+#include <thread>
 
 namespace mavsdk {
 
@@ -128,6 +130,12 @@ void CameraImpl::deinit()
     _system_impl->remove_call_every(_request_slower_call_every_cookie);
     _system_impl->remove_call_every(_request_faster_call_every_cookie);
 
+    // FIXME: There is a race condition here.
+    // We need to wait until all call every calls are done before we go
+    // out of scope.
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    std::lock_guard lock(_mutex);
     _storage_subscription_callbacks.clear();
     _mode_subscription_callbacks.clear();
     _capture_info_callbacks.clear();
