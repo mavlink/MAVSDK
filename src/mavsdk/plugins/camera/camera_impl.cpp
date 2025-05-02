@@ -124,7 +124,6 @@ void CameraImpl::deinit()
 
     _system_impl->cancel_all_param(this);
 
-    std::lock_guard lock(_mutex);
     _system_impl->remove_call_every(_request_missing_capture_info_cookie);
     _system_impl->remove_call_every(_request_slower_call_every_cookie);
     _system_impl->remove_call_every(_request_faster_call_every_cookie);
