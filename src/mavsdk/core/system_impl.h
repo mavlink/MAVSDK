@@ -19,6 +19,7 @@
 #include "timeout_handler.h"
 #include "timesync.h"
 #include "system.h"
+#include "vehicle.h"
 #include <cstdint>
 #include <functional>
 #include <atomic>
@@ -133,6 +134,7 @@ public:
     uint8_t get_own_component_id() const;
     uint8_t get_own_mav_type() const;
     MAV_TYPE get_vehicle_type() const;
+    Vehicle vehicle() const;
 
     bool is_armed() const { return _armed; }
 

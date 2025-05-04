@@ -61,6 +61,7 @@ enum [Autopilot](#namespacemavsdk_1aba05635d1785223a4d7b457ae0407297) | Autopilo
 enum [ComponentType](#namespacemavsdk_1a20fe7f7c8312779a187017111bf33d12) | ComponentType of configurations, used for automatic ID setting.
 enum [ConnectionResult](#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) | Result type returned when adding a connection.
 enum [ForwardingOption](#namespacemavsdk_1a7066729108eae8a605d4dd169e4581b9) | ForwardingOption for Connection, used to set message forwarding option.
+enum [Vehicle](#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) | Vehicle type.
 
 ## Functions
 
@@ -71,6 +72,8 @@ std::string | [base64_encode](#namespacemavsdk_1a57a9962be22a61e5c36a66bc17e6a2a
 std::vector< uint8_t > | [base64_decode](#namespacemavsdk_1a34e7609c9e2ddcc72a74bbc79daf9c19) (const std::string & str) | Decode a base64 string into raw bytes.
 std::ostream & | [operator<<](#namespacemavsdk_1a2aa91d8b846b07fe7f305b399375ce5f) (std::ostream & str, const [ConnectionResult](namespacemavsdk.md#namespacemavsdk_1a0bad93f6d037051ac3906a0bcc09f992) & result) | Stream operator to print information about a `ConnectionResult`.
 &nbsp; | [overloaded](#namespacemavsdk_1a724e321aaff91eb2ba28279e0292e552) (Ts...)-> overloaded< Ts... > | Template deduction helper for `overloaded`
+std::ostream & | [operator<<](#namespacemavsdk_1a3e7a55e89629afd2a079d79c047e8dbd) (std::ostream & os, const [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) & vehicle) | Stream operator to print information about a `Vehicle`.
+[Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) | [to_vehicle_from_mav_type](#namespacemavsdk_1a4dede924df915e32b4807aa87a98b5bb) (MAV_TYPE type) | Convert a 'MAV_TYPE' to a `Vehicle`.
 
 ## Enumeration Type Documentation
 
@@ -156,6 +159,47 @@ Value | Description
 --- | ---
 <span id="namespacemavsdk_1a7066729108eae8a605d4dd169e4581b9a67cc131236b099b681048d4812558fca"></span> `ForwardingOff` |  
 <span id="namespacemavsdk_1a7066729108eae8a605d4dd169e4581b9ac07f34e9a31f4a26b48711122e89cdb8"></span> `ForwardingOn` |  
+
+### enum Vehicle {#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b}
+
+```
+#include: vehicle.h
+```
+
+
+Vehicle type.
+
+
+Value | Description
+--- | ---
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba88183b946cc5f0e8c96b2e66e1c74a7e"></span> `Unknown` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba8045a0a6c688b0635e3caccc408a1446"></span> `Generic` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95bafd01c0a8cba34e17735a9878e76d485d"></span> `FixedWing` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba623a7997ee9493420463eb52b88de935"></span> `Quadrotor` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95badc6f3fe82dfec3326452006d58dd4aad"></span> `Coaxial` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba2ab8b43468e8b92b0fc5c81e70e35a2d"></span> `Helicopter` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95bade750545706d10adc6a3b6ca1b0f7c3f"></span> `Airship` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba3dd340796c8755fa272c9b776f7b1058"></span> `FreeBalloon` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba15e8bfff2c10ca22da244d85b2bf7d94"></span> `Rocket` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba6c985fc3261cb4ccf6d72c725780807e"></span> `GroundRover` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba5e17c124ec97ee9ed25907042ef61f35"></span> `SurfaceBoat` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba0d234e5bcf75c768eb0db6bf96e3c22d"></span> `Submarine` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95baceee3c48890aa63467460b92940d24fe"></span> `Hexarotor` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba782cacf1683e035f039e607f34e4e945"></span> `Octorotor` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba7f5a1551acfeb83770c0665760132e17"></span> `Tricopter` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95bab80c55e3e8ba28a29ace551cf3390763"></span> `FlappingWing` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba65c449ad44e2c0b6c1fffc5c5cea7413"></span> `Kite` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba06b101d8e4475605ca9d1e2217c7296a"></span> `VtolTailsitterDuorotor` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba8b5a7606cd877542d59f2edc0618d06a"></span> `VtolTailsitterQuadrotor` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95baac9f48fd3bb7a7e42f5ae811fec2781e"></span> `VtolTiltrotor` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95bad755986e4ea01f23bdf03c2653676d75"></span> `VtolFixedrotor` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95babf28f759e1d46a1198943c8882d652b2"></span> `VtolTailsitter` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba278136ab9f897733648f230a9a6f6384"></span> `VtolTiltwing` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba88cbbac22ccc3e79b5adc1af44d7b8ec"></span> `Parafoil` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba4786f3d8d1faa285ddecf2a74f16c922"></span> `Dodecarotor` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba27005abdd874048c19c30c061eb1d9ba"></span> `Decarotor` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba889d6c668249b544803bafc6c18dbf34"></span> `Parachute` |  
+<span id="namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95ba35a7a97619a60e154205a06207e18b60"></span> `GenericMultirotor` |  
 
 ## Function Documentation
 
@@ -262,3 +306,46 @@ Template deduction helper for `overloaded`
 **Parameters**
 
 * Ts...  - 
+
+### operator<<() {#namespacemavsdk_1a3e7a55e89629afd2a079d79c047e8dbd}
+
+```
+#include: vehicle.h
+```
+```cpp
+std::ostream & mavsdk::operator<<(std::ostream &os, const Vehicle &vehicle)
+```
+
+
+Stream operator to print information about a `Vehicle`.
+
+
+**Parameters**
+
+* std::ostream& **os** - 
+* const [Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b)& **vehicle** - 
+
+**Returns**
+
+&emsp;std::ostream & - A reference to the stream.
+
+### to_vehicle_from_mav_type() {#namespacemavsdk_1a4dede924df915e32b4807aa87a98b5bb}
+
+```
+#include: vehicle.h
+```
+```cpp
+Vehicle mavsdk::to_vehicle_from_mav_type(MAV_TYPE type)
+```
+
+
+Convert a 'MAV_TYPE' to a `Vehicle`.
+
+
+**Parameters**
+
+* MAV_TYPE **type** - 
+
+**Returns**
+
+&emsp;[Vehicle](namespacemavsdk.md#namespacemavsdk_1a9e3a3a502dc8313cb931a8a44cc6f95b) - The corresponding `Vehicle`.
