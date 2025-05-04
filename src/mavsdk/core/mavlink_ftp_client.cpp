@@ -31,6 +31,7 @@ MavlinkFtpClient::MavlinkFtpClient(SystemImpl& system_impl) : _system_impl(syste
 
 MavlinkFtpClient::~MavlinkFtpClient()
 {
+    stop_timer();
     _system_impl.unregister_all_mavlink_message_handlers(this);
 }
 
