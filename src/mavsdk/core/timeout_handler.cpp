@@ -7,7 +7,7 @@ TimeoutHandler::TimeoutHandler(Time& time) : _time(time) {}
 
 TimeoutHandler::Cookie TimeoutHandler::add(std::function<void()> callback, double duration_s)
 {
-    std::lock_guard<std::mutex> lock(_timeouts_mutex);
+    std::lock_guard<std::recursive_mutex> lock(_timeouts_mutex);
     auto new_timeout = Timeout{};
     new_timeout.callback = std::move(callback);
     new_timeout.time = _time.steady_time_in_future(duration_s);
@@ -20,7 +20,7 @@ TimeoutHandler::Cookie TimeoutHandler::add(std::function<void()> callback, doubl
 
 void TimeoutHandler::refresh(Cookie cookie)
 {
-    std::lock_guard<std::mutex> lock(_timeouts_mutex);
+    std::lock_guard<std::recursive_mutex> lock(_timeouts_mutex);
 
     auto it = std::find_if(_timeouts.begin(), _timeouts.end(), [&](const Timeout& timeout) {
         return timeout.cookie == cookie;
@@ -33,7 +33,7 @@ void TimeoutHandler::refresh(Cookie cookie)
 
 void TimeoutHandler::remove(Cookie cookie)
 {
-    std::lock_guard<std::mutex> lock(_timeouts_mutex);
+    std::lock_guard<std::recursive_mutex> lock(_timeouts_mutex);
 
     auto it = std::find_if(_timeouts.begin(), _timeouts.end(), [&](auto& timeout) {
         return timeout.cookie == cookie;
@@ -46,29 +46,38 @@ void TimeoutHandler::remove(Cookie cookie)
 
 void TimeoutHandler::run_once()
 {
-    // First, collect expired timeouts under the lock
-    std::vector<std::function<void()>> callbacks_to_run;
+    std::lock_guard<std::recursive_mutex> lock(_timeouts_mutex);
+    auto now = _time.steady_time();
 
-    {
-        std::lock_guard<std::mutex> lock(_timeouts_mutex);
-        auto now = _time.steady_time();
+    for (auto it = _timeouts.begin(); it != _timeouts.end();) {
+        // If time is passed, execute the callback and remove the timeout
+        if (it->time < now) {
+            // Copy callback and cookie before executing the callback
+            // in case the callback calls remove() on itself
+            auto callback = it->callback;
+            auto cookie = it->cookie;
 
-        for (auto it = _timeouts.begin(); it != _timeouts.end();) {
-            // If time is passed, collect the callback
-            if (it->time < now) {
-                if (it->callback) {
-                    callbacks_to_run.push_back(it->callback);
-                }
-                it = _timeouts.erase(it);
-            } else {
-                ++it;
+            // Execute the callback
+            if (callback) {
+                callback();
             }
-        }
-    }
 
-    // Then, execute callbacks outside the lock
-    for (const auto& callback : callbacks_to_run) {
-        callback();
+            // Check if the timeout still exists (it might have been removed by the callback)
+            auto it_after_callback =
+                std::find_if(_timeouts.begin(), _timeouts.end(), [&](auto& timeout) {
+                    return timeout.cookie == cookie;
+                });
+
+            if (it_after_callback != _timeouts.end()) {
+                // If it still exists, remove it
+                it = _timeouts.erase(it_after_callback);
+            } else {
+                // If it was already removed by the callback, just continue
+                it = it_after_callback;
+            }
+        } else {
+            ++it;
+        }
     }
 }
 
