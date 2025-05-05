@@ -12,7 +12,6 @@ using namespace mavsdk;
 TEST(SystemTest, CameraMode)
 {
     Mavsdk mavsdk_groundstation{Mavsdk::Configuration{ComponentType::GroundStation}};
-
     Mavsdk mavsdk_camera{Mavsdk::Configuration{ComponentType::Camera}};
 
     ASSERT_EQ(
@@ -31,10 +30,20 @@ TEST(SystemTest, CameraMode)
     information.definition_file_uri = "";
     camera_server.set_information(information);
 
+    // Add proper synchronization
+    std::mutex mode_mutex;
+    std::condition_variable mode_cv;
     CameraServer::Mode mode{CameraServer::Mode::Unknown};
-    camera_server.subscribe_set_mode([&](CameraServer::Mode new_mode) {
+    bool mode_updated = false;
+
+    auto mode_handle = camera_server.subscribe_set_mode([&](CameraServer::Mode new_mode) {
         LogInfo() << "Set mode to " << new_mode;
-        mode = new_mode;
+        {
+            std::lock_guard<std::mutex> lock(mode_mutex);
+            mode = new_mode;
+            mode_updated = true;
+        }
+        mode_cv.notify_one();
         camera_server.respond_set_mode(CameraServer::CameraFeedback::Ok);
     });
 
@@ -59,20 +68,43 @@ TEST(SystemTest, CameraMode)
     // We expect to find one camera.
     ASSERT_EQ(camera.camera_list().cameras.size(), 1);
 
+    // Reset the mode_updated flag
+    {
+        std::lock_guard<std::mutex> lock(mode_mutex);
+        mode_updated = false;
+    }
+
     EXPECT_EQ(
         camera.set_mode(camera.camera_list().cameras[0].component_id, Camera::Mode::Photo),
         Camera::Result::Success);
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    EXPECT_EQ(mode, CameraServer::Mode::Photo);
+
+    // Wait for the mode to be updated with proper synchronization
+    {
+        std::unique_lock<std::mutex> lock(mode_mutex);
+        EXPECT_TRUE(mode_cv.wait_for(lock, std::chrono::seconds(1), [&] { return mode_updated; }));
+        EXPECT_EQ(mode, CameraServer::Mode::Photo);
+    }
+
+    // Reset the mode_updated flag
+    {
+        std::lock_guard<std::mutex> lock(mode_mutex);
+        mode_updated = false;
+    }
 
     EXPECT_EQ(
         camera.set_mode(camera.camera_list().cameras[0].component_id, Camera::Mode::Video),
         Camera::Result::Success);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    EXPECT_EQ(mode, CameraServer::Mode::Video);
+    // Wait for the mode to be updated with proper synchronization
+    {
+        std::unique_lock<std::mutex> lock(mode_mutex);
+        EXPECT_TRUE(mode_cv.wait_for(lock, std::chrono::seconds(1), [&] { return mode_updated; }));
+        EXPECT_EQ(mode, CameraServer::Mode::Video);
+    }
 
     auto ret = camera.get_mode(camera.camera_list().cameras[0].component_id);
     EXPECT_EQ(ret.first, Camera::Result::Success);
     EXPECT_EQ(ret.second, Camera::Mode::Video);
+
+    camera_server.unsubscribe_set_mode(mode_handle);
 }

@@ -5,7 +5,7 @@
         <vendor>Logitech C270HD Webcam</vendor>
     </definition>
     <parameters>
-        <parameter name="CAM_MODE" type="uint32" default="1" control="0">
+        <parameter name="CAM_MODE" type="int32" default="1" control="0">
             <description>Camera Mode</description>
             <options>
                 <option name="still" value="0">

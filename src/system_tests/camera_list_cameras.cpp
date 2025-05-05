@@ -49,7 +49,7 @@ TEST(SystemTest, CameraListCameras)
     auto camera = Camera{system};
 
     bool found_camera = false;
-    camera.subscribe_camera_list([&](Camera::CameraList camera_list) {
+    auto camera_list_handle = camera.subscribe_camera_list([&](Camera::CameraList camera_list) {
         if (!camera_list.cameras.empty()) {
             found_camera = true;
         }
@@ -60,4 +60,6 @@ TEST(SystemTest, CameraListCameras)
 
     EXPECT_EQ(camera.camera_list().cameras.size(), 1);
     EXPECT_TRUE(found_camera);
+
+    camera.unsubscribe_camera_list(camera_list_handle);
 }

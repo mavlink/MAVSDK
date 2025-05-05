@@ -6,7 +6,7 @@
 #include <mutex>
 #include <memory>
 #include <functional>
-#include <vector>
+#include <list>
 
 namespace mavsdk {
 
@@ -37,9 +37,8 @@ private:
         Cookie cookie{0};
     };
 
-    std::vector<Timeout> _timeouts{};
-    std::mutex _timeouts_mutex{};
-    bool _iterator_invalidated{false};
+    std::list<Timeout> _timeouts{};
+    std::recursive_mutex _timeouts_mutex{};
 
     Time& _time;
 

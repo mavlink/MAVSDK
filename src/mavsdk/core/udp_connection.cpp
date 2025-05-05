@@ -11,6 +11,7 @@
 #else
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <sys/time.h>
 #include <arpa/inet.h>
 #include <errno.h>
 #endif
@@ -89,6 +90,19 @@ ConnectionResult UdpConnection::setup_port()
         return ConnectionResult::BindError;
     }
 
+    // Set receive timeout cross-platform
+    const unsigned timeout_ms = 500;
+
+#if defined(WINDOWS)
+    setsockopt(
+        _socket_fd.get(), SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout_ms, sizeof(timeout_ms));
+#else
+    struct timeval tv;
+    tv.tv_sec = 0;
+    tv.tv_usec = timeout_ms * 1000;
+    setsockopt(_socket_fd.get(), SOL_SOCKET, SO_RCVTIMEO, (const void*)&tv, sizeof(tv));
+#endif
+
     return ConnectionResult::Success;
 }
 
@@ -101,12 +115,12 @@ ConnectionResult UdpConnection::stop()
 {
     _should_exit = true;
 
-    _socket_fd.close();
-
     if (_recv_thread) {
         _recv_thread->join();
         _recv_thread.reset();
     }
+
+    _socket_fd.close();
 
     // We need to stop this after stopping the receive thread, otherwise
     // it can happen that we interfere with the parsing of a message.

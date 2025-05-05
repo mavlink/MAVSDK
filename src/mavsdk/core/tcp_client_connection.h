@@ -49,7 +49,6 @@ private:
 
     std::unique_ptr<std::thread> _recv_thread{};
     std::atomic_bool _should_exit;
-    std::atomic_bool _is_ok{false};
 };
 
 } // namespace mavsdk

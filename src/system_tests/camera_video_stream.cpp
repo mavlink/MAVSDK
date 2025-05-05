@@ -57,19 +57,14 @@ TEST(SystemTest, CameraVideoStreamSettings)
     auto camera = Camera{system};
 
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    bool got_info = false;
+    auto prom_got_info = std::promise<void>();
+    auto fut_got_info = prom_got_info.get_future();
     camera.subscribe_video_stream_info([&](const Camera::VideoStreamUpdate& update) {
         EXPECT_EQ(update.video_stream_info.settings.uri, example_rtsp_url);
-        got_info = true;
+        prom_got_info.set_value();
     });
 
     // We expect to find one camera.
     EXPECT_EQ(camera.camera_list().cameras.size(), 1);
-    for (unsigned i = 0; i < 60; ++i) {
-        if (got_info) {
-            break;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    }
-    EXPECT_TRUE(got_info);
+    EXPECT_EQ(fut_got_info.wait_for(std::chrono::seconds(30)), std::future_status::ready);
 }

@@ -31,11 +31,12 @@ TEST(SystemTest, CameraFormatStorage)
     information.definition_file_uri = "";
     camera_server.set_information(information);
 
-    camera_server.subscribe_format_storage([&camera_server](int32_t index) {
-        LogInfo() << "Let's format " << index;
+    auto format_storage_handle =
+        camera_server.subscribe_format_storage([&camera_server](int32_t index) {
+            LogInfo() << "Let's format " << index;
 
-        camera_server.respond_format_storage(CameraServer::CameraFeedback::Ok);
-    });
+            camera_server.respond_format_storage(CameraServer::CameraFeedback::Ok);
+        });
 
     auto prom = std::promise<std::shared_ptr<System>>();
     auto fut = prom.get_future();
@@ -63,4 +64,6 @@ TEST(SystemTest, CameraFormatStorage)
     EXPECT_EQ(
         camera.format_storage(camera.camera_list().cameras[0].component_id, 0),
         Camera::Result::Success);
+
+    camera_server.unsubscribe_format_storage(format_storage_handle);
 }

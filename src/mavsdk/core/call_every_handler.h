@@ -4,7 +4,7 @@
 #include <mutex>
 #include <memory>
 #include <functional>
-#include <vector>
+#include <list>
 #include "mavsdk_time.h"
 
 namespace mavsdk {
@@ -37,9 +37,8 @@ private:
         Cookie cookie{};
     };
 
-    std::vector<Entry> _entries{};
-    std::mutex _entries_mutex{};
-    bool _iterator_invalidated{false};
+    std::recursive_mutex _mutex{};
+    std::list<Entry> _entries{};
 
     Time& _time;
 
