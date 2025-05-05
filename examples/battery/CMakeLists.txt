@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(battery)
 
 add_executable(publish_battery
-publish_battery.cpp
+    publish_battery.cpp
 )
 
 add_executable(subscribe_battery
