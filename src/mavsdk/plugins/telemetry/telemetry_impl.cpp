@@ -1160,22 +1160,20 @@ void TelemetryImpl::process_battery_status(const mavlink_message_t& message)
 
     Telemetry::BatteryFunction battery_function;
     switch (bat_status.battery_function) {
-        case 0:
-            battery_function = Telemetry::BatteryFunction::Unknown;
-            break;
-        case 1:
+        case MAV_BATTERY_FUNCTION_ALL:
             battery_function = Telemetry::BatteryFunction::All;
             break;
-        case 2:
+        case MAV_BATTERY_FUNCTION_PROPULSION:
             battery_function = Telemetry::BatteryFunction::Propulsion;
             break;
-        case 3:
+        case MAV_BATTERY_FUNCTION_AVIONICS:
             battery_function = Telemetry::BatteryFunction::Avionics;
             break;
-        case 4:
+        case MAV_BATTERY_FUNCTION_PAYLOAD:
             battery_function = Telemetry::BatteryFunction::Payload;
             break;
-
+        case MAV_BATTERY_FUNCTION_UNKNOWN:
+        // Fallthrough
         default:
             battery_function = Telemetry::BatteryFunction::Unknown;
             break;
