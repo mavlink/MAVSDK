@@ -9,6 +9,7 @@
 #include "component_type.h"
 #include "deprecated.h"
 #include "handle.h"
+#include "vehicle.h"
 
 namespace mavsdk {
 
@@ -184,6 +185,13 @@ public:
      * @return autopilot type discovered.
      */
     Autopilot autopilot_type() const;
+
+    /**
+     * @brief Get vehicle type.
+     *
+     * @return vehicle type discovered.
+     */
+    Vehicle vehicle_type() const;
 
     /**
      * @brief Copy constructor (object is not copyable).

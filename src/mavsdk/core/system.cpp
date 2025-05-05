@@ -97,4 +97,9 @@ Autopilot System::autopilot_type() const
     return _system_impl->autopilot();
 }
 
+Vehicle System::vehicle_type() const
+{
+    return _system_impl->vehicle();
+}
+
 } // namespace mavsdk
