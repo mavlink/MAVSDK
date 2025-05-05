@@ -63,7 +63,8 @@ public:
     };
 
     using ResultCallback = std::function<void(Result result)>;
-    using ResultAndItemsCallback = std::function<void(Result result, std::vector<ItemInt> items)>;
+    using ResultAndItemsCallback =
+        std::function<void(Result result, uint8_t type, std::vector<ItemInt> items)>;
     using ProgressCallback = std::function<void(float progress)>;
 
     class WorkItem {
