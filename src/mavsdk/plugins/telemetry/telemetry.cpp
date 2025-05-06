@@ -982,7 +982,10 @@ bool operator==(const Telemetry::Battery& lhs, const Telemetry::Battery& rhs)
            ((std::isnan(rhs.capacity_consumed_ah) && std::isnan(lhs.capacity_consumed_ah)) ||
             rhs.capacity_consumed_ah == lhs.capacity_consumed_ah) &&
            ((std::isnan(rhs.remaining_percent) && std::isnan(lhs.remaining_percent)) ||
-            rhs.remaining_percent == lhs.remaining_percent);
+            rhs.remaining_percent == lhs.remaining_percent) &&
+           ((std::isnan(rhs.time_remaining_s) && std::isnan(lhs.time_remaining_s)) ||
+            rhs.time_remaining_s == lhs.time_remaining_s) &&
+           (rhs.battery_function == lhs.battery_function);
 }
 
 std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery)
@@ -995,6 +998,8 @@ std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery)
     str << "    current_battery_a: " << battery.current_battery_a << '\n';
     str << "    capacity_consumed_ah: " << battery.capacity_consumed_ah << '\n';
     str << "    remaining_percent: " << battery.remaining_percent << '\n';
+    str << "    time_remaining_s: " << battery.time_remaining_s << '\n';
+    str << "    battery_function: " << battery.battery_function << '\n';
     str << '}';
     return str;
 }
@@ -1583,6 +1588,24 @@ std::ostream& operator<<(std::ostream& str, Telemetry::FixType const& fix_type)
             return str << "Rtk Float";
         case Telemetry::FixType::RtkFixed:
             return str << "Rtk Fixed";
+        default:
+            return str << "Unknown";
+    }
+}
+
+std::ostream& operator<<(std::ostream& str, Telemetry::BatteryFunction const& battery_function)
+{
+    switch (battery_function) {
+        case Telemetry::BatteryFunction::Unknown:
+            return str << "Unknown";
+        case Telemetry::BatteryFunction::All:
+            return str << "All";
+        case Telemetry::BatteryFunction::Propulsion:
+            return str << "Propulsion";
+        case Telemetry::BatteryFunction::Avionics:
+            return str << "Avionics";
+        case Telemetry::BatteryFunction::Payload:
+            return str << "Payload";
         default:
             return str << "Unknown";
     }
