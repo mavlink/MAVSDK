@@ -133,8 +133,8 @@ MissionImport::import_mission(const Json::Value& root, Autopilot autopilot)
                     0.0f,
                     0.0f,
                     0.0f,
-                    static_cast<int32_t>(std::round(home[0].asDouble() * 1e7)),
-                    static_cast<int32_t>(std::round(home[1].asDouble() * 1e7)),
+                    set_int32(home[0], MAV_FRAME_GLOBAL_INT),
+                    set_int32(home[1], MAV_FRAME_GLOBAL_INT),
                     home[2].asFloat(),
                     MAV_MISSION_TYPE_MISSION});
         }
@@ -225,8 +225,8 @@ MissionImport::import_rally_points(const Json::Value& root)
         item.command = MAV_CMD_NAV_RALLY_POINT;
         item.frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
         item.mission_type = MAV_MISSION_TYPE_RALLY;
-        item.x = set_int32(point[0]);
-        item.y = set_int32(point[1]);
+        item.x = set_int32(point[0], item.frame);
+        item.y = set_int32(point[1], item.frame);
         item.z = set_float(point[2]);
 
         rally_items.push_back(item);
@@ -281,10 +281,10 @@ MissionImport::import_simple_mission_item(const Json::Value& json_item)
                 item.param4 = set_float(json_item["params"][i]);
                 break;
             case 4:
-                item.x = set_int32(json_item["params"][i]);
+                item.x = set_int32(json_item["params"][i], item.frame);
                 break;
             case 5:
-                item.y = set_int32(json_item["params"][i]);
+                item.y = set_int32(json_item["params"][i], item.frame);
                 break;
             case 6:
                 item.z = set_float(json_item["params"][i]);
@@ -363,8 +363,8 @@ MissionImport::import_polygon_geofences(const Json::Value& polygons)
                                        MAV_CMD_NAV_FENCE_POLYGON_VERTEX_EXCLUSION;
             item.frame = MAV_FRAME_GLOBAL;
             item.param1 = set_float(points.size());
-            item.x = set_int32(point[0]);
-            item.y = set_int32(point[1]);
+            item.x = set_int32(point[0], item.frame);
+            item.y = set_int32(point[1], item.frame);
             item.mission_type = MAV_MISSION_TYPE_FENCE;
 
             polygon_geofences.push_back(item);
@@ -390,8 +390,8 @@ MissionImport::import_circular_geofences(const Json::Value& circles)
             inclusion ? MAV_CMD_NAV_FENCE_CIRCLE_INCLUSION : MAV_CMD_NAV_FENCE_CIRCLE_EXCLUSION;
         item.frame = MAV_FRAME_GLOBAL;
         item.param1 = set_float(radius);
-        item.x = set_int32(center[0]);
-        item.y = set_int32(center[1]);
+        item.x = set_int32(center[0], item.frame);
+        item.y = set_int32(center[1], item.frame);
         item.mission_type = MAV_MISSION_TYPE_FENCE;
 
         circular_geofences.push_back(item);
@@ -405,9 +405,14 @@ float MissionImport::set_float(const Json::Value& val)
     return val.isNull() ? NAN : val.asFloat();
 }
 
-int32_t MissionImport::set_int32(const Json::Value& val)
+int32_t MissionImport::set_int32(const Json::Value& val, uint32_t frame)
 {
-    return static_cast<int32_t>(val.isNull() ? 0 : (std::round(val.asDouble() * 1e7)));
+    // Don't apply 10^7 conversion for MAV_FRAME_MISSION
+    if (frame == MAV_FRAME_MISSION) {
+        return static_cast<int32_t>(val.isNull() ? 0 : val.asFloat());
+    } else {
+        return static_cast<int32_t>(val.isNull() ? 0 : (std::round(val.asDouble() * 1e7)));
+    }
 }
 
 } // namespace mavsdk

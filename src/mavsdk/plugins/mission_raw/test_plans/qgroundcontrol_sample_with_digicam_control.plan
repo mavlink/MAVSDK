@@ -1,0 +1,48 @@
+{
+  "fileType": "Plan",
+  "geoFence": {
+    "circles": [],
+    "polygons": [],
+    "version": 2
+  },
+  "groundStation": "LiniaGenerator",
+  "mission": {
+    "cruiseSpeed": 10.0,
+    "firmwareType": 3,
+    "globalPlanAltitudeMode": 1,
+    "hoverSpeed": 10.0,
+    "items": [
+      {
+        "autoContinue": true,
+        "command": 203,
+        "doJumpId": 7,
+        "frame": 2,
+        "params": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "type": "SimpleItem",
+        "amslaltAboveTerrain": null,
+        "altitudeMode": null,
+        "altitude": null
+      }
+            ],
+    "vehicleType": 2,
+    "plannedHomePosition": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "version": 2
+  },
+  "rallyPoints": {
+    "points": [],
+    "version": 2
+  },
+  "version": 1
+}
