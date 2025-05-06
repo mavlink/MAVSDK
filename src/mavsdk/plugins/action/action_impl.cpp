@@ -477,7 +477,7 @@ void ActionImpl::goto_location_async(
             command.command = MAV_CMD_DO_REPOSITION;
             command.target_component_id = _system_impl->get_autopilot_id();
             command.frame = MAV_FRAME_GLOBAL_INT;
-            command.params.maybe_param4 = static_cast<float>(to_rad_from_deg(yaw_deg));
+            command.params.maybe_param4 = yaw_deg;
             command.params.x = int32_t(std::round(latitude_deg * 1e7));
             command.params.y = int32_t(std::round(longitude_deg * 1e7));
             command.params.maybe_z = altitude_amsl_m;
