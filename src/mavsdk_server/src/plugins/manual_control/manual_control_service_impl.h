@@ -165,7 +165,7 @@ public:
         }
 
         auto result = _lazy_plugin.maybe_plugin()->set_manual_control_input(
-            request->x(), request->y(), request->z(), -request->r());
+            request->x(), request->y(), request->z(), request->r());
 
         if (response != nullptr) {
             fillResponseWithResult(response, result);
