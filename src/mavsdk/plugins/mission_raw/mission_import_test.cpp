@@ -441,3 +441,33 @@ TEST(MissionRaw, ImportSamplePlanWithArduPilot)
 
     EXPECT_EQ(reference_items, result_pair.second.mission_items);
 }
+
+TEST(MissionRaw, ImportSamplePlanWithDigicamControl)
+{
+    auto digicam_control_items = std::vector<MissionRaw::MissionItem>{
+        {0,
+         MAV_FRAME_MISSION,
+         MAV_CMD_DO_DIGICAM_CONTROL,
+         1, // current
+         1, // autocontinue
+         1,
+         0,
+         0,
+         0,
+         1,
+         0,
+         0,
+         MAV_MISSION_TYPE_MISSION}};
+
+    std::ifstream file{path_prefix("qgroundcontrol_sample_with_digicam_control.plan")};
+    ASSERT_TRUE(file);
+
+    std::stringstream buf;
+    buf << file.rdbuf();
+    file.close();
+
+    const auto result_pair = MissionImport::parse_json(buf.str(), Autopilot::Px4);
+    ASSERT_EQ(result_pair.first, MissionRaw::Result::Success);
+
+    EXPECT_EQ(digicam_control_items, result_pair.second.mission_items);
+}
