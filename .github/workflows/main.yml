@@ -303,7 +303,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
 
-  dockcross-linux-arm:
+  dockcross-linux:
     name: linux-${{ matrix.docker_name }}
     runs-on: ubuntu-24.04
     strategy:
@@ -319,6 +319,8 @@ jobs:
           - docker_name: arm64-lts
             arch_name: arm64
             rename_distro: true
+          - docker_name: x64
+            arch_name: x86_64
     steps:
       - uses: actions/checkout@v4
         with:
