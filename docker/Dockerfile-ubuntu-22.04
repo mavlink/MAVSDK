@@ -1,0 +1,40 @@
+#
+# MAVSDK container for Ubuntu 22.04.
+#
+# This container includes all dependencies needed for:
+# - Development
+# - CI builds
+# - Documentation generation
+#
+
+FROM ubuntu:22.04
+
+LABEL maintainer="Julian Oes <julian@oes.ch>"
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update \
+    && apt-get -y --quiet --no-install-recommends install \
+        sudo \
+        ca-certificates \
+        git \
+        build-essential \
+        gcc \
+        g++ \
+        cmake \
+        python3 \
+        python3-pip \
+        python3-future \
+        ruby-dev \
+        doxygen \
+        colordiff \
+    && apt-get -y autoremove \
+    && apt-get clean autoclean \
+    && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+# Install fpm for packaging
+# First install a compatible version of dotenv for Ruby 2.7
+RUN gem install --no-document dotenv -v 2.8.1 && \
+    gem install --no-document fpm
+
+WORKDIR "/home/user/MAVSDK"

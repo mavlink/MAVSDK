@@ -9,5 +9,8 @@ if [ -z "$DOCKER_CMD" ]; then
   exit 1
 fi
 
+# Set default Docker image if not specified
+DOCKER_IMAGE=${DOCKER_IMAGE:-docker.io/mavsdk/mavsdk-dev}
+
 # Use the found container runtime
-$DOCKER_CMD run -it --rm -v $(pwd):/home/user/MAVSDK:z -u `stat -c "%u:%g" $(pwd)` docker.io/mavsdk/mavsdk-dev "$@"
+$DOCKER_CMD run -it --rm -v $(pwd):/home/user/MAVSDK:z -u `stat -c "%u:%g" $(pwd)` $DOCKER_IMAGE "$@"

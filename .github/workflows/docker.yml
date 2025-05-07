@@ -1,0 +1,96 @@
+name: Build and Push Docker Images
+
+on:
+  workflow_call:
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_PASSWORD:
+        required: true
+
+jobs:
+  setup:
+    name: Setup Docker Build
+    runs-on: ubuntu-24.04
+    outputs:
+      tag_suffix: ${{ steps.set-tags.outputs.tag_suffix }}
+    steps:
+      - name: Set Docker tags
+        id: set-tags
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "tag_suffix=-pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag_suffix=" >> $GITHUB_OUTPUT
+          fi
+
+  build-docker-images:
+    name: Build ${{ matrix.name }}
+    needs: setup
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Always build Ubuntu images
+          - name: Ubuntu 20.04
+            dockerfile: Dockerfile-ubuntu-20.04
+            image: mavsdk-ubuntu-20.04
+          - name: Ubuntu 22.04
+            dockerfile: Dockerfile-ubuntu-22.04
+            image: mavsdk-ubuntu-22.04
+          - name: Ubuntu 24.04
+            dockerfile: Dockerfile-ubuntu-24.04
+            image: mavsdk-ubuntu-24.04
+            extra_tag: mavsdk-dev
+          # Add Debian images
+          - name: Debian 11 (Bullseye)
+            dockerfile: Dockerfile-debian-11
+            image: mavsdk-debian-11
+          - name: Debian 12 (Bookworm)
+            dockerfile: Dockerfile-debian-12
+            image: mavsdk-debian-12
+          - name: Debian 13 (Trixie)
+            dockerfile: Dockerfile-debian-13
+            image: mavsdk-debian-13
+          - name: Dockcross ARMv6
+            dockerfile: Dockerfile.dockcross-linux-armv6-custom
+            image: mavsdk-dockcross-linux-armv6-custom
+          - name: Dockcross ARMv7
+            dockerfile: Dockerfile.dockcross-linux-armv7-custom
+            image: mavsdk-dockcross-linux-armv7-custom
+          - name: Dockcross ARM64
+            dockerfile: Dockerfile.dockcross-linux-arm64-custom
+            image: mavsdk-dockcross-linux-arm64-custom
+          - name: Dockcross ARM64 LTS
+            dockerfile: Dockerfile.dockcross-linux-arm64-lts-custom
+            image: mavsdk-dockcross-linux-arm64-lts-custom
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      
+      - name: Set tags
+        id: set-tags
+        run: |
+          TAGS="docker.io/mavsdk/${{ matrix.image }}${{ needs.setup.outputs.tag_suffix }}:latest"
+          if [ -n "${{ matrix.extra_tag }}" ] && [ "${{ github.event_name }}" != "pull_request" ]; then
+            TAGS="$TAGS,docker.io/mavsdk/${{ matrix.extra_tag }}:latest"
+          fi
+          echo "tags=$TAGS" >> $GITHUB_OUTPUT
+      
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker
+          file: ./docker/${{ matrix.dockerfile }}
+          push: true
+          tags: ${{ steps.set-tags.outputs.tags }}
