@@ -45,37 +45,45 @@ jobs:
         uses: docker/setup-buildx-action@v3
       
       - name: Login to DockerHub
-        if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Set Docker tags
+        id: set-tags
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "tag_suffix=-pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag_suffix=" >> $GITHUB_OUTPUT
+          fi
       
       - name: Build and push Ubuntu 20.04 image
         uses: docker/build-push-action@v5
         with:
           context: ./docker
           file: ./docker/Dockerfile-ubuntu-20.04
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: docker.io/mavsdk/mavsdk-ubuntu-20.04:latest
+          push: true
+          tags: docker.io/mavsdk/mavsdk-ubuntu-20.04${{ steps.set-tags.outputs.tag_suffix }}:latest
       
       - name: Build and push Ubuntu 22.04 image
         uses: docker/build-push-action@v5
         with:
           context: ./docker
           file: ./docker/Dockerfile-ubuntu-22.04
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: docker.io/mavsdk/mavsdk-ubuntu-22.04:latest
+          push: true
+          tags: docker.io/mavsdk/mavsdk-ubuntu-22.04${{ steps.set-tags.outputs.tag_suffix }}:latest
       
       - name: Build and push Ubuntu 24.04 image
         uses: docker/build-push-action@v5
         with:
           context: ./docker
           file: ./docker/Dockerfile-ubuntu-24.04
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           tags: |
-            docker.io/mavsdk/mavsdk-ubuntu-24.04:latest
-            docker.io/mavsdk/mavsdk-dev:latest
+            docker.io/mavsdk/mavsdk-ubuntu-24.04${{ steps.set-tags.outputs.tag_suffix }}:latest
+            ${{ github.event_name != 'pull_request' && 'docker.io/mavsdk/mavsdk-dev:latest' || '' }}
       
       - name: Build and push dockcross armv6 image
         uses: docker/build-push-action@v5
@@ -112,7 +120,13 @@ jobs:
       - name: Set outputs
         id: set-outputs
         run: |
-          echo "ubuntu-20-04-image=docker.io/mavsdk/mavsdk-ubuntu-20.04:latest" >> $GITHUB_OUTPUT
-          echo "ubuntu-22-04-image=docker.io/mavsdk/mavsdk-ubuntu-22.04:latest" >> $GITHUB_OUTPUT
-          echo "ubuntu-24-04-image=docker.io/mavsdk/mavsdk-ubuntu-24.04:latest" >> $GITHUB_OUTPUT
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "ubuntu-20-04-image=docker.io/mavsdk/mavsdk-ubuntu-20.04-pr-${{ github.event.pull_request.number }}:latest" >> $GITHUB_OUTPUT
+            echo "ubuntu-22-04-image=docker.io/mavsdk/mavsdk-ubuntu-22.04-pr-${{ github.event.pull_request.number }}:latest" >> $GITHUB_OUTPUT
+            echo "ubuntu-24-04-image=docker.io/mavsdk/mavsdk-ubuntu-24.04-pr-${{ github.event.pull_request.number }}:latest" >> $GITHUB_OUTPUT
+          else
+            echo "ubuntu-20-04-image=docker.io/mavsdk/mavsdk-ubuntu-20.04:latest" >> $GITHUB_OUTPUT
+            echo "ubuntu-22-04-image=docker.io/mavsdk/mavsdk-ubuntu-22.04:latest" >> $GITHUB_OUTPUT
+            echo "ubuntu-24-04-image=docker.io/mavsdk/mavsdk-ubuntu-24.04:latest" >> $GITHUB_OUTPUT
+          fi
           echo "images-built=true" >> $GITHUB_OUTPUT
