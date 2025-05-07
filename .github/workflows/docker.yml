@@ -109,14 +109,6 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: docker.io/mavsdk/mavsdk-dockcross-linux-arm64-lts-custom:latest
       
-      - name: Build and push dockcross x64 image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./docker
-          file: ./docker/Dockerfile.dockcross-linux-x64-custom
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: docker.io/mavsdk/mavsdk-dockcross-linux-x64-custom:latest
-      
       - name: Set outputs
         id: set-outputs
         run: |
