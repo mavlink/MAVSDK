@@ -138,3 +138,53 @@ TEST(CallEveryHandler, CallImmediately)
     }
     EXPECT_EQ(num_called, 1);
 }
+
+TEST(CallEveryHandler, NextHandlerRemovedDuringCallback)
+{
+    Time time{};
+    CallEveryHandler ceh(time);
+
+    CallEveryHandler::Cookie cookie2{};
+
+    CallEveryHandler::Cookie cookie1 = ceh.add(
+        [&ceh, &cookie2]() {
+            // This is evil but can potentially happen. We remove the other handler while
+            // being called. This triggers that the iterator is invalid and could cause a segfault
+            // if not handled properly.
+            ceh.remove(cookie2);
+        },
+        0.1);
+
+    cookie2 = ceh.add([]() {}, 0.1);
+
+    time.sleep_for(std::chrono::milliseconds(200));
+    ceh.run_once();
+
+    UNUSED(cookie1);
+}
+
+TEST(CallEveryHandler, AllHandlersRemovedDuringCallback)
+{
+    Time time{};
+    CallEveryHandler ceh(time);
+
+    CallEveryHandler::Cookie cookie1{};
+    CallEveryHandler::Cookie cookie2{};
+    CallEveryHandler::Cookie cookie3{};
+
+    cookie1 = ceh.add(
+        [&ceh, &cookie1, &cookie2, &cookie3]() {
+            // This is even more evil. We remove all handlers, including ourselves,
+            // while being called. This tests if there are no iterator invalidation issues.
+            ceh.remove(cookie1);
+            ceh.remove(cookie2);
+            ceh.remove(cookie3);
+        },
+        0.1);
+
+    cookie2 = ceh.add([]() {}, 0.1);
+    cookie3 = ceh.add([]() {}, 0.1);
+
+    time.sleep_for(std::chrono::milliseconds(200));
+    ceh.run_once();
+}

@@ -1,5 +1,6 @@
 #include "timeout_handler.h"
 #include <algorithm>
+#include <vector>
 
 namespace mavsdk {
 
@@ -49,34 +50,24 @@ void TimeoutHandler::run_once()
     std::lock_guard<std::recursive_mutex> lock(_timeouts_mutex);
     auto now = _time.steady_time();
 
-    for (auto it = _timeouts.begin(); it != _timeouts.end();) {
-        // If time is passed, execute the callback and remove the timeout
-        if (it->time < now) {
-            // Copy callback and cookie before executing the callback
-            // in case the callback calls remove() on itself
-            auto callback = it->callback;
-            auto cookie = it->cookie;
+    // First, identify all timeouts that need to be executed
+    std::vector<std::pair<Cookie, std::function<void()>>> callbacks_with_cookies;
 
-            // Execute the callback
-            if (callback) {
-                callback();
-            }
+    for (const auto& timeout : _timeouts) {
+        if (timeout.time < now) {
+            callbacks_with_cookies.push_back({timeout.cookie, timeout.callback});
+        }
+    }
 
-            // Check if the timeout still exists (it might have been removed by the callback)
-            auto it_after_callback =
-                std::find_if(_timeouts.begin(), _timeouts.end(), [&](auto& timeout) {
-                    return timeout.cookie == cookie;
-                });
+    // Remove all timeouts that need to be executed
+    for (const auto& [cookie, _] : callbacks_with_cookies) {
+        remove(cookie);
+    }
 
-            if (it_after_callback != _timeouts.end()) {
-                // If it still exists, remove it
-                it = _timeouts.erase(it_after_callback);
-            } else {
-                // If it was already removed by the callback, just continue
-                it = it_after_callback;
-            }
-        } else {
-            ++it;
+    // Now execute all callbacks
+    for (const auto& [_, callback] : callbacks_with_cookies) {
+        if (callback) {
+            callback();
         }
     }
 }

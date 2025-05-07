@@ -2,6 +2,7 @@
 
 #include <utility>
 #include <algorithm>
+#include <vector>
 
 namespace mavsdk {
 
@@ -62,15 +63,24 @@ void CallEveryHandler::run_once()
 {
     std::lock_guard<std::recursive_mutex> lock(_mutex);
 
-    // Process entries and collect callbacks that need to be executed
+    // First, identify all entries that need to be executed
+    std::vector<std::function<void()>> callbacks_to_execute;
+
     for (auto& entry : _entries) {
         if (_time.elapsed_since_s(entry.last_time) > double(entry.interval_s)) {
+            // Update the timestamp before potentially executing
             _time.shift_steady_time_by(entry.last_time, double(entry.interval_s));
 
+            // Store the callback for later execution
             if (entry.callback) {
-                entry.callback();
+                callbacks_to_execute.push_back(entry.callback);
             }
         }
+    }
+
+    // Now execute all callbacks
+    for (const auto& callback : callbacks_to_execute) {
+        callback();
     }
 }
 
