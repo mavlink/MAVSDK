@@ -10,7 +10,7 @@
 FROM ubuntu:24.04
 LABEL maintainer="MAVSDK Team <mavsdk-discuss@googlegroups.com>"
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
     && apt-get -y --quiet --no-install-recommends install \
@@ -38,6 +38,8 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 # Install fpm for packaging
-RUN gem install --no-document fpm
+# First install a compatible version of dotenv for Ruby 2.7
+RUN gem install --no-document dotenv -v 2.8.1 && \
+    gem install --no-document fpm
 
 WORKDIR "/home/user/MAVSDK"
