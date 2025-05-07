@@ -1,0 +1,126 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'docker/**'
+  pull_request:
+    branches:
+      - '*'
+    paths:
+      - 'docker/**'
+  workflow_dispatch:
+  workflow_call:
+    outputs:
+      ubuntu-20-04-image:
+        description: "The Ubuntu 20.04 Docker image that was built"
+        value: ${{ jobs.build-and-push.outputs.ubuntu-20-04-image }}
+      ubuntu-22-04-image:
+        description: "The Ubuntu 22.04 Docker image that was built"
+        value: ${{ jobs.build-and-push.outputs.ubuntu-22-04-image }}
+      ubuntu-24-04-image:
+        description: "The Ubuntu 24.04 Docker image that was built"
+        value: ${{ jobs.build-and-push.outputs.ubuntu-24-04-image }}
+      images-built:
+        description: "Whether Docker images were built"
+        value: ${{ jobs.build-and-push.outputs.images-built }}
+
+jobs:
+  build-and-push:
+    name: Build and Push Docker Images
+    outputs:
+      ubuntu-20-04-image: ${{ steps.set-outputs.outputs.ubuntu-20-04-image }}
+      ubuntu-22-04-image: ${{ steps.set-outputs.outputs.ubuntu-22-04-image }}
+      ubuntu-24-04-image: ${{ steps.set-outputs.outputs.ubuntu-24-04-image }}
+      images-built: ${{ steps.set-outputs.outputs.images-built }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Login to DockerHub
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Build and push Ubuntu 20.04 image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker
+          file: ./docker/Dockerfile-ubuntu-20.04
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: docker.io/mavsdk/mavsdk-ubuntu-20.04:latest
+      
+      - name: Build and push Ubuntu 22.04 image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker
+          file: ./docker/Dockerfile-ubuntu-22.04
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: docker.io/mavsdk/mavsdk-ubuntu-22.04:latest
+      
+      - name: Build and push Ubuntu 24.04 image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker
+          file: ./docker/Dockerfile-ubuntu-24.04
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            docker.io/mavsdk/mavsdk-ubuntu-24.04:latest
+            docker.io/mavsdk/mavsdk-dev:latest
+      
+      - name: Build and push dockcross armv6 image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker
+          file: ./docker/Dockerfile.dockcross-linux-armv6-custom
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: docker.io/mavsdk/mavsdk-dockcross-linux-armv6-custom:latest
+      
+      - name: Build and push dockcross armv7 image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker
+          file: ./docker/Dockerfile.dockcross-linux-armv7-custom
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: docker.io/mavsdk/mavsdk-dockcross-linux-armv7-custom:latest
+      
+      - name: Build and push dockcross arm64 image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker
+          file: ./docker/Dockerfile.dockcross-linux-arm64-custom
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: docker.io/mavsdk/mavsdk-dockcross-linux-arm64-custom:latest
+      
+      - name: Build and push dockcross arm64-lts image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker
+          file: ./docker/Dockerfile.dockcross-linux-arm64-lts-custom
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: docker.io/mavsdk/mavsdk-dockcross-linux-arm64-lts-custom:latest
+      
+      - name: Build and push dockcross x64 image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker
+          file: ./docker/Dockerfile.dockcross-linux-x64-custom
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: docker.io/mavsdk/mavsdk-dockcross-linux-x64-custom:latest
+      
+      - name: Set outputs
+        id: set-outputs
+        run: |
+          echo "ubuntu-20-04-image=docker.io/mavsdk/mavsdk-ubuntu-20.04:latest" >> $GITHUB_OUTPUT
+          echo "ubuntu-22-04-image=docker.io/mavsdk/mavsdk-ubuntu-22.04:latest" >> $GITHUB_OUTPUT
+          echo "ubuntu-24-04-image=docker.io/mavsdk/mavsdk-ubuntu-24.04:latest" >> $GITHUB_OUTPUT
+          echo "images-built=true" >> $GITHUB_OUTPUT

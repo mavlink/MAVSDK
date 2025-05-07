@@ -16,9 +16,38 @@ on:
     - '.github/workflows/docs_deploy.yml'
 
 jobs:
+  check-docker:
+    name: Check if Docker images need to be built
+    runs-on: ubuntu-24.04
+    outputs:
+      docker-changes: ${{ steps.check-docker.outputs.changes_detected }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      
+      - name: Check for changes in docker directory
+        id: check-docker
+        run: |
+          if git diff --name-only HEAD^ HEAD | grep -q "^docker/"; then
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
+          fi
+
+  build-docker:
+    name: Build Docker Images
+    needs: check-docker
+    if: needs.check-docker.outputs.docker-changes == 'true'
+    uses: ./.github/workflows/docker.yml
+
   coverage:
     name: Coverage (ubuntu-22.04)
-    runs-on: ubuntu-22.04
+    needs: [check-docker, build-docker]
+    if: always() && (needs.check-docker.outputs.docker-changes == 'false' || needs.build-docker.result == 'success')
+    runs-on: ubuntu-24.04
+    container:
+      image: ${{ needs.build-docker.outputs.ubuntu-22-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-22.04' }}
     env:
       NODE_OPTIONS: --max_old_space_size=4096
     steps:
@@ -33,8 +62,17 @@ jobs:
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
-      - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y lcov python3-future
+      # Install dependencies needed for packaging
+      - name: install dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y \
+            libjsoncpp-dev \
+            libcurl4-openssl-dev \
+            libtinyxml2-dev \
+            libgtest-dev \
+            libgmock-dev \
+            liblzma-dev \
+            libsdl2-dev
       - name: configure
         run: cmake $superbuild -DCMAKE_PREFIX_PATH=$(pwd)/build/third_party/install -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild -H.
       - name: build
@@ -55,19 +93,23 @@ jobs:
           path-to-lcov: "./lcov.info"
 
   ubuntu-non-superbuild:
-    name: ${{ matrix.ubuntu_image }} (non-mavsdk_server, non-superbuild)
-    runs-on: ${{ matrix.ubuntu_image }}
+    name: Ubuntu ${{ matrix.ubuntu_version }} (non-mavsdk_server, non-superbuild)
+    needs: [check-docker, build-docker]
+    if: always() && (needs.check-docker.outputs.docker-changes == 'false' || needs.build-docker.result == 'success')
+    runs-on: ubuntu-24.04
+    container:
+      image: ${{ matrix.ubuntu_version == '20.04' && (needs.build-docker.outputs.ubuntu-20-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-20.04') || matrix.ubuntu_version == '22.04' && (needs.build-docker.outputs.ubuntu-22-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-22.04') || (needs.build-docker.outputs.ubuntu-24-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-24.04') }}
     strategy:
       matrix:
         include:
-          - ubuntu_image: ubuntu-22.04
-          - ubuntu_image: ubuntu-24.04
+          - ubuntu_version: "20.04"
+          - ubuntu_version: "22.04"
+          - ubuntu_version: "24.04"
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: install
-        run: sudo apt-get update && sudo apt-get install -y libjsoncpp-dev libcurl4-openssl-dev libtinyxml2-dev libgtest-dev libgmock-dev liblzma-dev
+      # Dependencies are already installed in the Docker image
       - name: install mavlink on the system
         run: |
             cmake -Bthird_party/mavlink/build -Sthird_party/mavlink
@@ -79,29 +121,37 @@ jobs:
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
-        if: ${{ matrix.ubuntu_image }} == "ubuntu-24.04"
+        if: ${{ matrix.ubuntu_version }} == "24.04"
         run: ./build/release/src/system_tests/system_tests_runner
 
   ubuntu-superbuild:
-    name: ${{ matrix.ubuntu_image }} (mavsdk_server, superbuild)
-    runs-on: ${{ matrix.ubuntu_image }}
+    name: ${{ matrix.description }}
+    needs: [check-docker, build-docker]
+    if: always() && (needs.check-docker.outputs.docker-changes == 'false' || needs.build-docker.result == 'success')
+    runs-on: ubuntu-24.04
+    container:
+      image: ${{ matrix.ubuntu_version == '20.04' && (needs.build-docker.outputs.ubuntu-20-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-20.04') || matrix.ubuntu_version == '22.04' && (needs.build-docker.outputs.ubuntu-22-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-22.04') || (needs.build-docker.outputs.ubuntu-24-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-24.04') }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - ubuntu_image: ubuntu-22.04
+          - ubuntu_version: "20.04"
+            cc: gcc
+            cxx: g++
+            description: Ubuntu 20.04 (GCC)
+          - ubuntu_version: "22.04"
             cc: gcc
             cxx: g++
             description: Ubuntu 22.04 (GCC)
-          - ubuntu_image: ubuntu-24.04
+          - ubuntu_version: "24.04"
             cc: gcc-13
             cxx: g++-13
             description: Ubuntu 24.04 (GCC 13)
-          - ubuntu_image: ubuntu-24.04
+          - ubuntu_version: "24.04"
             cc: gcc-14
             cxx: g++-14
             description: Ubuntu 24.04 (GCC 14)
-          - ubuntu_image: ubuntu-24.04
+          - ubuntu_version: "24.04"
             cc: clang-18
             cxx: clang++-18
             description: Ubuntu 24.04 (clang 18)
@@ -118,7 +168,7 @@ jobs:
         id: cache
         with:
           path: ./build/release/third_party/install
-          key: ${{ github.job }}-${{ matrix.ubuntu_image }}-${{ matrix.cc }}-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ matrix.ubuntu_version }}-${{ matrix.cc }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
@@ -150,12 +200,11 @@ jobs:
       - name: install
         run: cmake --build build/release --target install
       - name: temporary workaround for Ubuntu 22.04
-        if: ${{ matrix.ubuntu_image }} == "ubuntu-22.04"
+        if: ${{ matrix.ubuntu_version }} == "22.04"
         run: |
          echo 'APT::Get::Always-Include-Phased-Updates "true";' | sudo tee -a /etc/apt/apt.conf.d/99-phased-updates
          sudo apt-get update
-      - name: install examples dependencies
-        run: sudo apt-get install libsdl2-dev ${{ matrix.cc }} ${{ matrix.cxx }}
+      # Dependencies are already installed in the Docker image
       - name: configure examples
         run: cmake -DCMAKE_PREFIX_PATH="$(pwd)/install;$(pwd)/build/release/third_party/install" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWERROR=ON -Bexamples/build -Hexamples
       - name: build examples
@@ -169,7 +218,11 @@ jobs:
 
   ubuntu-no-curl:
     name: Ubuntu 24.04 (mavsdk, without curl)
+    needs: [check-docker, build-docker]
+    if: always() && (needs.check-docker.outputs.docker-changes == 'false' || needs.build-docker.result == 'success')
     runs-on: ubuntu-24.04
+    container:
+      image: ${{ needs.build-docker.outputs.ubuntu-24-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-24.04' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -189,13 +242,18 @@ jobs:
         run: cmake --build build/release -j2
 
   ubuntu-hunter:
-    name: ${{ matrix.ubuntu_image }} (non-mavsdk_server, hunter)
-    runs-on: ${{ matrix.ubuntu_image }}
+    name: Ubuntu ${{ matrix.ubuntu_version }} (non-mavsdk_server, hunter)
+    needs: [check-docker, build-docker]
+    if: always() && (needs.check-docker.outputs.docker-changes == 'false' || needs.build-docker.result == 'success')
+    runs-on: ubuntu-24.04
+    container:
+      image: ${{ matrix.ubuntu_version == '20.04' && (needs.build-docker.outputs.ubuntu-20-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-20.04') || matrix.ubuntu_version == '22.04' && (needs.build-docker.outputs.ubuntu-22-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-22.04') || (needs.build-docker.outputs.ubuntu-24-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-24.04') }}
     strategy:
       matrix:
         include:
-          - ubuntu_image: ubuntu-22.04
-          - ubuntu_image: ubuntu-24.04
+          - ubuntu_version: "20.04"
+          - ubuntu_version: "22.04"
+          - ubuntu_version: "24.04"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -204,7 +262,7 @@ jobs:
         id: cache
         with:
           path: ~/.hunter
-          key: ${{ github.job }}-${{ matrix.ubuntu_image }}-${{ hashFiles('~/.hunter/**') }}
+          key: ${{ github.job }}-${{ matrix.ubuntu_version }}-${{ hashFiles('~/.hunter/**') }}
       - name: install mavlink on the system
         run: |
             cmake -Bthird_party/mavlink/build -Sthird_party/mavlink
@@ -220,13 +278,16 @@ jobs:
 
   ubuntu24-style-and-proto-check:
     name: ubuntu-24.04 (style and proto check)
+    needs: [check-docker, build-docker]
+    if: always() && (needs.check-docker.outputs.docker-changes == 'false' || needs.build-docker.result == 'success')
     runs-on: ubuntu-24.04
+    container:
+      image: ${{ needs.build-docker.outputs.ubuntu-24-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-24.04' }}
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: install dependencies
-        run: sudo apt-get update && sudo apt-get install -y clang-format-18
+      # Dependencies are already installed in the Docker image
       - uses: actions/cache@v4
         id: cache
         with:
@@ -246,27 +307,32 @@ jobs:
 
   ubuntu24-docs-check:
     name: ubuntu-24.04 (docs check)
+    needs: [check-docker, build-docker]
+    if: always() && (needs.check-docker.outputs.docker-changes == 'false' || needs.build-docker.result == 'success')
     runs-on: ubuntu-24.04
+    container:
+      image: ${{ needs.build-docker.outputs.ubuntu-24-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-24.04' }}
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Install doxygen
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y doxygen
+      # Dependencies are already installed in the Docker image
       - name: generate docs
         run: tools/generate_docs.sh --overwrite
       - name: check for diff
         run: git diff --exit-code
 
   deb-package:
-    name: ${{ matrix.container_name }} (package, non-mavsdk_server)
-    runs-on: ${{ matrix.container_name }}
+    name: Ubuntu ${{ matrix.ubuntu_version }} (package, non-mavsdk_server)
+    needs: [check-docker, build-docker]
+    if: always() && (needs.check-docker.outputs.docker-changes == 'false' || needs.build-docker.result == 'success')
+    runs-on: ubuntu-24.04
+    container:
+      image: ${{ matrix.ubuntu_version == '20.04' && (needs.build-docker.outputs.ubuntu-20-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-20.04') || matrix.ubuntu_version == '22.04' && (needs.build-docker.outputs.ubuntu-22-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-22.04') || (needs.build-docker.outputs.ubuntu-24-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-24.04') }}
     strategy:
       fail-fast: false
       matrix:
-        container_name: [ubuntu-22.04, ubuntu-24.04]
+        ubuntu_version: ["20.04", "22.04", "24.04"]
     steps:
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@main
@@ -279,11 +345,17 @@ jobs:
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config --global --add safe.directory /github/workspace
-      - name: Install ruby, gem, and fpm
+      # Install dependencies needed for packaging
+      - name: install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ruby-dev
-          sudo gem install --no-document fpm
+          sudo apt-get update && sudo apt-get install -y \
+            libjsoncpp-dev \
+            libcurl4-openssl-dev \
+            libtinyxml2-dev \
+            libgtest-dev \
+            libgmock-dev \
+            liblzma-dev \
+            libsdl2-dev
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -Bbuild/release -H.
       - name: build
@@ -303,7 +375,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
 
-  dockcross-linux-arm:
+  dockcross-linux:
     name: linux-${{ matrix.docker_name }}
     runs-on: ubuntu-24.04
     strategy:
@@ -319,6 +391,8 @@ jobs:
           - docker_name: arm64-lts
             arch_name: arm64
             rename_distro: true
+          - docker_name: x64
+            arch_name: x86_64
     steps:
       - uses: actions/checkout@v4
         with:
