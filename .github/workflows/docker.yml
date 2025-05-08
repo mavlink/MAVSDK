@@ -47,12 +47,12 @@ jobs:
       - name: Debug
         run: |
          if [ -n "${{ secrets.DOCKERHUB_USERNAME }}" ]; then echo "Username is set"; else echo "Username is NOT set"; fi
-         if [ -n "${{ secrets.DOCKERHUB_TOKEN }}" ]; then echo "Token is set"; else echo "Token is NOT set"; fi     
+         if [ -n "${{ secrets.DOCKERHUB_PASSWORD }}" ]; then echo "Token is set"; else echo "Token is NOT set"; fi     
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
       
       - name: Set Docker tags
         id: set-tags
