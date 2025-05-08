@@ -233,13 +233,16 @@ void MavlinkMissionTransferClient::UploadWorkItem::start()
         }
     }
 
-    int num_currents = 0;
-    std::for_each(_items.cbegin(), _items.cend(), [&num_currents](const ItemInt& item) {
-        num_currents += item.current;
-    });
-    if (num_currents != 1) {
-        callback_and_reset(Result::CurrentInvalid);
-        return;
+    if (_type == MAV_MISSION_TYPE_MISSION) {
+        int num_currents = 0;
+        std::for_each(_items.cbegin(), _items.cend(), [&num_currents](const ItemInt& item) {
+            num_currents += item.current;
+        });
+
+        if (num_currents != 1) {
+            callback_and_reset(Result::CurrentInvalid);
+            return;
+        }
     }
 
     if (std::any_of(_items.cbegin(), _items.cend(), [this](const ItemInt& item) {
