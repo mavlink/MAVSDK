@@ -14,8 +14,14 @@ on:
     paths-ignore:
     - 'docs/**'
     - '.github/workflows/docs_deploy.yml'
+  workflow_dispatch:
 
 jobs:
+  update-docker-images:
+    name: Update Docker Images
+    uses: ./.github/workflows/docker.yml
+    secrets: inherit
+
   determine-image-suffix:
     name: Determine Docker Image Suffix
     runs-on: ubuntu-24.04
@@ -33,7 +39,7 @@ jobs:
 
   coverage:
     name: Coverage (ubuntu-22.04)
-    needs: [determine-image-suffix]
+    needs: [update-docker-images, determine-image-suffix]
     runs-on: ubuntu-24.04
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-22.04${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
@@ -76,7 +82,7 @@ jobs:
 
   ubuntu-non-superbuild:
     name: Ubuntu ${{ matrix.ubuntu_version }} (non-mavsdk_server, non-superbuild)
-    needs: [determine-image-suffix]
+    needs: [update-docker-images, determine-image-suffix]
     runs-on: ubuntu-24.04
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-${{ matrix.ubuntu_version }}${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
@@ -107,7 +113,7 @@ jobs:
 
   ubuntu-superbuild:
     name: ${{ matrix.description }}
-    needs: [determine-image-suffix]
+    needs: [update-docker-images, determine-image-suffix]
     runs-on: ubuntu-24.04
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-${{ matrix.ubuntu_version }}${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
@@ -198,7 +204,7 @@ jobs:
 
   ubuntu-no-curl:
     name: Ubuntu 24.04 (mavsdk, without curl)
-    needs: [determine-image-suffix]
+    needs: [update-docker-images, determine-image-suffix]
     runs-on: ubuntu-24.04
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-24.04${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
@@ -222,7 +228,7 @@ jobs:
 
   ubuntu-hunter:
     name: Ubuntu ${{ matrix.ubuntu_version }} (non-mavsdk_server, hunter)
-    needs: [determine-image-suffix]
+    needs: [update-docker-images, determine-image-suffix]
     runs-on: ubuntu-24.04
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-${{ matrix.ubuntu_version }}${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
@@ -256,7 +262,7 @@ jobs:
 
   ubuntu24-style-and-proto-check:
     name: ubuntu-24.04 (style and proto check)
-    needs: [determine-image-suffix]
+    needs: [update-docker-images, determine-image-suffix]
     runs-on: ubuntu-24.04
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-24.04${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
@@ -284,7 +290,7 @@ jobs:
 
   ubuntu24-docs-check:
     name: ubuntu-24.04 (docs check)
-    needs: [determine-image-suffix]
+    needs: [update-docker-images, determine-image-suffix]
     runs-on: ubuntu-24.04
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-24.04${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
@@ -300,7 +306,7 @@ jobs:
 
   deb-package:
     name: Ubuntu ${{ matrix.ubuntu_version }} (package, non-mavsdk_server)
-    needs: [determine-image-suffix]
+    needs: [update-docker-images, determine-image-suffix]
     runs-on: ubuntu-24.04
     container:
       image: docker.io/mavsdk/mavsdk-ubuntu-${{ matrix.ubuntu_version }}${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
