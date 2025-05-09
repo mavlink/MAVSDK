@@ -21,8 +21,6 @@ jobs:
     name: Update Docker Images
     uses: ./.github/workflows/docker.yml
     secrets: inherit
-    outputs:
-      docker-images-updated: ${{ jobs.build-docker-images-called.result == 'success' }}
 
   determine-image-suffix:
     name: Determine Docker Image Suffix
