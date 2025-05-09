@@ -14,6 +14,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
     && apt-get -y --quiet --no-install-recommends install \
+        sudo \
         ca-certificates \
         git \
         build-essential \
