@@ -30,93 +30,47 @@ jobs:
             echo "tag_suffix=" >> $GITHUB_OUTPUT
           fi
 
-  build-docker-images-direct:
-    name: Build ${{ matrix.name }} (Direct)
+  build-docker-images:
+    name: Build ${{ matrix.name }}
     needs: setup
     runs-on: ubuntu-24.04
-    if: ${{ github.event_name != 'workflow_call' }}
     strategy:
       fail-fast: false
       matrix:
         include:
+          # Always build Ubuntu images
           - name: Ubuntu 20.04
             dockerfile: Dockerfile-ubuntu-20.04
             image: mavsdk-ubuntu-20.04
-            pr_only: false
+            always_build: true
           - name: Ubuntu 22.04
             dockerfile: Dockerfile-ubuntu-22.04
             image: mavsdk-ubuntu-22.04
-            pr_only: false
+            always_build: true
           - name: Ubuntu 24.04
             dockerfile: Dockerfile-ubuntu-24.04
             image: mavsdk-ubuntu-24.04
             extra_tag: mavsdk-dev
-            pr_only: false
+            always_build: true
+          # Only build Dockcross images for direct triggers (not when called from linux.yml)
           - name: Dockcross ARMv6
             dockerfile: Dockerfile.dockcross-linux-armv6-custom
             image: mavsdk-dockcross-linux-armv6-custom
-            pr_only: true
+            always_build: false
           - name: Dockcross ARMv7
             dockerfile: Dockerfile.dockcross-linux-armv7-custom
             image: mavsdk-dockcross-linux-armv7-custom
-            pr_only: true
+            always_build: false
           - name: Dockcross ARM64
             dockerfile: Dockerfile.dockcross-linux-arm64-custom
             image: mavsdk-dockcross-linux-arm64-custom
-            pr_only: true
+            always_build: false
           - name: Dockcross ARM64 LTS
             dockerfile: Dockerfile.dockcross-linux-arm64-lts-custom
             image: mavsdk-dockcross-linux-arm64-lts-custom
-            pr_only: true
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          registry: docker.io
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-      
-      - name: Set tags
-        id: set-tags
-        run: |
-          TAGS="docker.io/mavsdk/${{ matrix.image }}${{ needs.setup.outputs.tag_suffix }}:latest"
-          if [ -n "${{ matrix.extra_tag }}" ] && [ "${{ github.event_name }}" != "pull_request" ]; then
-            TAGS="$TAGS,docker.io/mavsdk/${{ matrix.extra_tag }}:latest"
-          fi
-          echo "tags=$TAGS" >> $GITHUB_OUTPUT
-      
-      - name: Build and push image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./docker
-          file: ./docker/${{ matrix.dockerfile }}
-          push: true
-          tags: ${{ steps.set-tags.outputs.tags }}
-
-  build-docker-images-called:
-    name: Build ${{ matrix.name }} (Called)
-    needs: setup
-    runs-on: ubuntu-24.04
-    if: ${{ github.event_name == 'workflow_call' }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: Ubuntu 20.04
-            dockerfile: Dockerfile-ubuntu-20.04
-            image: mavsdk-ubuntu-20.04
-          - name: Ubuntu 22.04
-            dockerfile: Dockerfile-ubuntu-22.04
-            image: mavsdk-ubuntu-22.04
-          - name: Ubuntu 24.04
-            dockerfile: Dockerfile-ubuntu-24.04
-            image: mavsdk-ubuntu-24.04
-            extra_tag: mavsdk-dev
+            always_build: false
+    # Skip Dockcross images when called from linux.yml
+    if: ${{ matrix.always_build == true || github.event_name != 'workflow_call' }}
     steps:
       - uses: actions/checkout@v4
       

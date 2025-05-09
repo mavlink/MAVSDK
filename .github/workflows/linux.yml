@@ -21,6 +21,7 @@ jobs:
     name: Update Docker Images
     uses: ./.github/workflows/docker.yml
     secrets: inherit
+    # This will run the build-docker-images job in docker.yml, but only for Ubuntu images
 
   determine-image-suffix:
     name: Determine Docker Image Suffix
