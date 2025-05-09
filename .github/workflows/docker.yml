@@ -34,7 +34,7 @@ jobs:
     name: Build ${{ matrix.name }} (Direct)
     needs: setup
     runs-on: ubuntu-24.04
-    if: ${{ github.event_name != 'workflow_call' && (!matrix.pr_only || github.event_name != 'pull_request') }}
+    if: ${{ github.event_name != 'workflow_call' }}
     strategy:
       fail-fast: false
       matrix:
