@@ -62,17 +62,10 @@ jobs:
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
-      # Install dependencies needed for packaging
-      - name: install dependencies
+      - name: Install lcov
         run: |
           sudo apt-get update && sudo apt-get install -y \
-            libjsoncpp-dev \
-            libcurl4-openssl-dev \
-            libtinyxml2-dev \
-            libgtest-dev \
-            libgmock-dev \
-            liblzma-dev \
-            libsdl2-dev
+            lcov
       - name: configure
         run: cmake $superbuild -DCMAKE_PREFIX_PATH=$(pwd)/build/third_party/install -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild -H.
       - name: build
