@@ -16,38 +16,27 @@ on:
     - '.github/workflows/docs_deploy.yml'
 
 jobs:
-  check-docker:
-    name: Check if Docker images need to be built
+  determine-image-suffix:
+    name: Determine Docker Image Suffix
     runs-on: ubuntu-24.04
     outputs:
-      docker-changes: ${{ steps.check-docker.outputs.changes_detected }}
+      tag_suffix: ${{ steps.set-tag-suffix.outputs.tag_suffix }}
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-      
-      - name: Check for changes in docker directory
-        id: check-docker
+      - name: Set tag suffix
+        id: set-tag-suffix
         run: |
-          if git diff --name-only HEAD^ HEAD | grep -q "^docker/"; then
-            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "tag_suffix=-pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
           else
-            echo "changes_detected=false" >> $GITHUB_OUTPUT
+            echo "tag_suffix=" >> $GITHUB_OUTPUT
           fi
-
-  build-docker:
-    name: Build Docker Images
-    needs: check-docker
-    if: needs.check-docker.outputs.docker-changes == 'true'
-    uses: ./.github/workflows/docker.yml
 
   coverage:
     name: Coverage (ubuntu-22.04)
-    needs: [check-docker, build-docker]
-    if: always() && (needs.check-docker.outputs.docker-changes == 'false' || needs.build-docker.result == 'success')
+    needs: [determine-image-suffix]
     runs-on: ubuntu-24.04
     container:
-      image: ${{ needs.build-docker.outputs.ubuntu-22-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-22.04' }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-22.04${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
     env:
       NODE_OPTIONS: --max_old_space_size=4096
     steps:
@@ -87,11 +76,10 @@ jobs:
 
   ubuntu-non-superbuild:
     name: Ubuntu ${{ matrix.ubuntu_version }} (non-mavsdk_server, non-superbuild)
-    needs: [check-docker, build-docker]
-    if: always() && (needs.check-docker.outputs.docker-changes == 'false' || needs.build-docker.result == 'success')
+    needs: [determine-image-suffix]
     runs-on: ubuntu-24.04
     container:
-      image: ${{ matrix.ubuntu_version == '20.04' && (needs.build-docker.outputs.ubuntu-20-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-20.04') || matrix.ubuntu_version == '22.04' && (needs.build-docker.outputs.ubuntu-22-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-22.04') || (needs.build-docker.outputs.ubuntu-24-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-24.04') }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-${{ matrix.ubuntu_version }}${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
     strategy:
       matrix:
         include:
@@ -119,11 +107,10 @@ jobs:
 
   ubuntu-superbuild:
     name: ${{ matrix.description }}
-    needs: [check-docker, build-docker]
-    if: always() && (needs.check-docker.outputs.docker-changes == 'false' || needs.build-docker.result == 'success')
+    needs: [determine-image-suffix]
     runs-on: ubuntu-24.04
     container:
-      image: ${{ matrix.ubuntu_version == '20.04' && (needs.build-docker.outputs.ubuntu-20-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-20.04') || matrix.ubuntu_version == '22.04' && (needs.build-docker.outputs.ubuntu-22-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-22.04') || (needs.build-docker.outputs.ubuntu-24-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-24.04') }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-${{ matrix.ubuntu_version }}${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
     strategy:
       fail-fast: false
       matrix:
@@ -211,11 +198,10 @@ jobs:
 
   ubuntu-no-curl:
     name: Ubuntu 24.04 (mavsdk, without curl)
-    needs: [check-docker, build-docker]
-    if: always() && (needs.check-docker.outputs.docker-changes == 'false' || needs.build-docker.result == 'success')
+    needs: [determine-image-suffix]
     runs-on: ubuntu-24.04
     container:
-      image: ${{ needs.build-docker.outputs.ubuntu-24-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-24.04' }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -236,11 +222,10 @@ jobs:
 
   ubuntu-hunter:
     name: Ubuntu ${{ matrix.ubuntu_version }} (non-mavsdk_server, hunter)
-    needs: [check-docker, build-docker]
-    if: always() && (needs.check-docker.outputs.docker-changes == 'false' || needs.build-docker.result == 'success')
+    needs: [determine-image-suffix]
     runs-on: ubuntu-24.04
     container:
-      image: ${{ matrix.ubuntu_version == '20.04' && (needs.build-docker.outputs.ubuntu-20-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-20.04') || matrix.ubuntu_version == '22.04' && (needs.build-docker.outputs.ubuntu-22-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-22.04') || (needs.build-docker.outputs.ubuntu-24-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-24.04') }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-${{ matrix.ubuntu_version }}${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
     strategy:
       matrix:
         include:
@@ -271,11 +256,10 @@ jobs:
 
   ubuntu24-style-and-proto-check:
     name: ubuntu-24.04 (style and proto check)
-    needs: [check-docker, build-docker]
-    if: always() && (needs.check-docker.outputs.docker-changes == 'false' || needs.build-docker.result == 'success')
+    needs: [determine-image-suffix]
     runs-on: ubuntu-24.04
     container:
-      image: ${{ needs.build-docker.outputs.ubuntu-24-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-24.04' }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -300,11 +284,10 @@ jobs:
 
   ubuntu24-docs-check:
     name: ubuntu-24.04 (docs check)
-    needs: [check-docker, build-docker]
-    if: always() && (needs.check-docker.outputs.docker-changes == 'false' || needs.build-docker.result == 'success')
+    needs: [determine-image-suffix]
     runs-on: ubuntu-24.04
     container:
-      image: ${{ needs.build-docker.outputs.ubuntu-24-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-24.04' }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -317,11 +300,10 @@ jobs:
 
   deb-package:
     name: Ubuntu ${{ matrix.ubuntu_version }} (package, non-mavsdk_server)
-    needs: [check-docker, build-docker]
-    if: always() && (needs.check-docker.outputs.docker-changes == 'false' || needs.build-docker.result == 'success')
+    needs: [determine-image-suffix]
     runs-on: ubuntu-24.04
     container:
-      image: ${{ matrix.ubuntu_version == '20.04' && (needs.build-docker.outputs.ubuntu-20-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-20.04') || matrix.ubuntu_version == '22.04' && (needs.build-docker.outputs.ubuntu-22-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-22.04') || (needs.build-docker.outputs.ubuntu-24-04-image || 'docker.io/mavsdk/mavsdk-ubuntu-24.04') }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-${{ matrix.ubuntu_version }}${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
     strategy:
       fail-fast: false
       matrix:

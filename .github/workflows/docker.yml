@@ -6,55 +6,15 @@ on:
       - 'main'
     paths:
       - 'docker/**'
-  pull_request:
-    branches:
-      - '*'
-    paths:
-      - 'docker/**'
   workflow_dispatch:
-  workflow_call:
-    outputs:
-      ubuntu-20-04-image:
-        description: "The Ubuntu 20.04 Docker image that was built"
-        value: ${{ jobs.build-and-push.outputs.ubuntu-20-04-image }}
-      ubuntu-22-04-image:
-        description: "The Ubuntu 22.04 Docker image that was built"
-        value: ${{ jobs.build-and-push.outputs.ubuntu-22-04-image }}
-      ubuntu-24-04-image:
-        description: "The Ubuntu 24.04 Docker image that was built"
-        value: ${{ jobs.build-and-push.outputs.ubuntu-24-04-image }}
-      images-built:
-        description: "Whether Docker images were built"
-        value: ${{ jobs.build-and-push.outputs.images-built }}
 
 jobs:
-  build-and-push:
-    name: Build and Push Docker Images
-    outputs:
-      ubuntu-20-04-image: ${{ steps.set-outputs.outputs.ubuntu-20-04-image }}
-      ubuntu-22-04-image: ${{ steps.set-outputs.outputs.ubuntu-22-04-image }}
-      ubuntu-24-04-image: ${{ steps.set-outputs.outputs.ubuntu-24-04-image }}
-      images-built: ${{ steps.set-outputs.outputs.images-built }}
+  setup:
+    name: Setup Docker Build
     runs-on: ubuntu-24.04
+    outputs:
+      tag_suffix: ${{ steps.set-tags.outputs.tag_suffix }}
     steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Debug
-        run: |
-         if [ -n "${{ secrets.DOCKERHUB_USERNAME }}" ]; then echo "Username is set"; else echo "Username is NOT set"; fi
-         if [ -n "${{ secrets.DOCKERHUB_PASSWORD }}" ]; then echo "Token is set"; else echo "Token is NOT set"; fi     
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          registry: docker.io
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-      
       - name: Set Docker tags
         id: set-tags
         run: |
@@ -63,75 +23,71 @@ jobs:
           else
             echo "tag_suffix=" >> $GITHUB_OUTPUT
           fi
+
+  build-docker-images:
+    name: Build ${{ matrix.name }}
+    needs: setup
+    runs-on: ubuntu-24.04
+    if: ${{ !matrix.pr_only || github.event_name != 'pull_request' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Ubuntu 20.04
+            dockerfile: Dockerfile-ubuntu-20.04
+            image: mavsdk-ubuntu-20.04
+            pr_only: false
+          - name: Ubuntu 22.04
+            dockerfile: Dockerfile-ubuntu-22.04
+            image: mavsdk-ubuntu-22.04
+            pr_only: false
+          - name: Ubuntu 24.04
+            dockerfile: Dockerfile-ubuntu-24.04
+            image: mavsdk-ubuntu-24.04
+            extra_tag: mavsdk-dev
+            pr_only: false
+          - name: Dockcross ARMv6
+            dockerfile: Dockerfile.dockcross-linux-armv6-custom
+            image: mavsdk-dockcross-linux-armv6-custom
+            pr_only: true
+          - name: Dockcross ARMv7
+            dockerfile: Dockerfile.dockcross-linux-armv7-custom
+            image: mavsdk-dockcross-linux-armv7-custom
+            pr_only: true
+          - name: Dockcross ARM64
+            dockerfile: Dockerfile.dockcross-linux-arm64-custom
+            image: mavsdk-dockcross-linux-arm64-custom
+            pr_only: true
+          - name: Dockcross ARM64 LTS
+            dockerfile: Dockerfile.dockcross-linux-arm64-lts-custom
+            image: mavsdk-dockcross-linux-arm64-lts-custom
+            pr_only: true
+    steps:
+      - uses: actions/checkout@v4
       
-      - name: Build and push Ubuntu 20.04 image
-        uses: docker/build-push-action@v5
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
         with:
-          context: ./docker
-          file: ./docker/Dockerfile-ubuntu-20.04
-          push: true
-          tags: docker.io/mavsdk/mavsdk-ubuntu-20.04${{ steps.set-tags.outputs.tag_suffix }}:latest
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
       
-      - name: Build and push Ubuntu 22.04 image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./docker
-          file: ./docker/Dockerfile-ubuntu-22.04
-          push: true
-          tags: docker.io/mavsdk/mavsdk-ubuntu-22.04${{ steps.set-tags.outputs.tag_suffix }}:latest
-      
-      - name: Build and push Ubuntu 24.04 image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./docker
-          file: ./docker/Dockerfile-ubuntu-24.04
-          push: true
-          tags: |
-            docker.io/mavsdk/mavsdk-ubuntu-24.04${{ steps.set-tags.outputs.tag_suffix }}:latest
-            ${{ github.event_name != 'pull_request' && 'docker.io/mavsdk/mavsdk-dev:latest' || '' }}
-      
-      - name: Build and push dockcross armv6 image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./docker
-          file: ./docker/Dockerfile.dockcross-linux-armv6-custom
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: docker.io/mavsdk/mavsdk-dockcross-linux-armv6-custom:latest
-      
-      - name: Build and push dockcross armv7 image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./docker
-          file: ./docker/Dockerfile.dockcross-linux-armv7-custom
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: docker.io/mavsdk/mavsdk-dockcross-linux-armv7-custom:latest
-      
-      - name: Build and push dockcross arm64 image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./docker
-          file: ./docker/Dockerfile.dockcross-linux-arm64-custom
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: docker.io/mavsdk/mavsdk-dockcross-linux-arm64-custom:latest
-      
-      - name: Build and push dockcross arm64-lts image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./docker
-          file: ./docker/Dockerfile.dockcross-linux-arm64-lts-custom
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: docker.io/mavsdk/mavsdk-dockcross-linux-arm64-lts-custom:latest
-      
-      - name: Set outputs
-        id: set-outputs
+      - name: Set tags
+        id: set-tags
         run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            echo "ubuntu-20-04-image=docker.io/mavsdk/mavsdk-ubuntu-20.04-pr-${{ github.event.pull_request.number }}:latest" >> $GITHUB_OUTPUT
-            echo "ubuntu-22-04-image=docker.io/mavsdk/mavsdk-ubuntu-22.04-pr-${{ github.event.pull_request.number }}:latest" >> $GITHUB_OUTPUT
-            echo "ubuntu-24-04-image=docker.io/mavsdk/mavsdk-ubuntu-24.04-pr-${{ github.event.pull_request.number }}:latest" >> $GITHUB_OUTPUT
-          else
-            echo "ubuntu-20-04-image=docker.io/mavsdk/mavsdk-ubuntu-20.04:latest" >> $GITHUB_OUTPUT
-            echo "ubuntu-22-04-image=docker.io/mavsdk/mavsdk-ubuntu-22.04:latest" >> $GITHUB_OUTPUT
-            echo "ubuntu-24-04-image=docker.io/mavsdk/mavsdk-ubuntu-24.04:latest" >> $GITHUB_OUTPUT
+          TAGS="docker.io/mavsdk/${{ matrix.image }}${{ needs.setup.outputs.tag_suffix }}:latest"
+          if [ -n "${{ matrix.extra_tag }}" ] && [ "${{ github.event_name }}" != "pull_request" ]; then
+            TAGS="$TAGS,docker.io/mavsdk/${{ matrix.extra_tag }}:latest"
           fi
-          echo "images-built=true" >> $GITHUB_OUTPUT
+          echo "tags=$TAGS" >> $GITHUB_OUTPUT
+      
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker
+          file: ./docker/${{ matrix.dockerfile }}
+          push: true
+          tags: ${{ steps.set-tags.outputs.tags }}
