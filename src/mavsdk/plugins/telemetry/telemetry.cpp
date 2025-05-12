@@ -787,6 +787,16 @@ Telemetry::Result Telemetry::set_rate_altitude(double rate_hz) const
     return _impl->set_rate_altitude(rate_hz);
 }
 
+void Telemetry::set_rate_health_async(double rate_hz, const ResultCallback callback)
+{
+    _impl->set_rate_health_async(rate_hz, callback);
+}
+
+Telemetry::Result Telemetry::set_rate_health(double rate_hz) const
+{
+    return _impl->set_rate_health(rate_hz);
+}
+
 void Telemetry::get_gps_global_origin_async(const GetGpsGlobalOriginCallback callback)
 {
     _impl->get_gps_global_origin_async(callback);

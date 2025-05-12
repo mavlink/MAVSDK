@@ -50,6 +50,7 @@ public:
     Telemetry::Result set_rate_scaled_pressure(double rate_hz);
     Telemetry::Result set_rate_unix_epoch_time(double rate_hz);
     Telemetry::Result set_rate_altitude(double rate_hz);
+    Telemetry::Result set_rate_health(double rate_hz);
 
     void set_rate_position_velocity_ned_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_position_async(double rate_hz, Telemetry::ResultCallback callback);
@@ -75,6 +76,7 @@ public:
     void set_rate_scaled_pressure_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_unix_epoch_time_async(double rate_hz, Telemetry::ResultCallback callback);
     void set_rate_altitude_async(double rate_hz, Telemetry::ResultCallback callback);
+    void set_rate_health_async(double rate_hz, Telemetry::ResultCallback callback);
 
     void get_gps_global_origin_async(const Telemetry::GetGpsGlobalOriginCallback callback);
     std::pair<Telemetry::Result, Telemetry::GpsGlobalOrigin> get_gps_global_origin();
