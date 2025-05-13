@@ -55,13 +55,15 @@ jobs:
           key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/macos/third_party/install" >> $GITHUB_ENV
       - name: set SDKROOT value
         run: echo "SDKROOT=$(xcrun --sdk macosx --show-sdk-path)" >> $GITHUB_ENV
       - name: configure
-        run: cmake $superbuild -DCMAKE_PREFIX_PATH=$(pwd)/build/macos/third_party/install -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/macos/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DMACOS_FRAMEWORK=${{ matrix.build-framework }} -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild/macos -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/macos/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DMACOS_FRAMEWORK=${{ matrix.build-framework }} -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild/macos -H.
       - name: build
-        run: cmake --build build/macos -j2 --target install
+        run: cmake --build build/macos -j$(sysctl -n hw.ncpu) --target install
       - name: unit tests
         run: ./build/macos/src/unit_tests/unit_tests_runner
       - name: system tests
@@ -128,7 +130,9 @@ jobs:
           key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**', './tools/ios.toolchain.cmake') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/${{ matrix.name }}/third_party/install" << $GITHUB_ENV
       - name: set SDK-related environment variables (for non-cmake deps)
         run: |
           echo "SDKROOT=$(xcrun --sdk ${{ matrix.sdk }} --show-sdk-path)" >> $GITHUB_ENV
@@ -138,9 +142,9 @@ jobs:
           python3 -m pip install wheel
           python3 -m pip install future
       - name: configure
-        run: cmake $superbuild -DCMAKE_PREFIX_PATH=$(pwd)/build/${{ matrix.name }}/third_party/install -DENABLE_STRICT_TRY_COMPILE=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DENABLE_BITCODE=Off -DPLATFORM=${{ matrix.platform }} -DDEPLOYMENT_TARGET=14.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild/${{ matrix.name }} -H.
+        run: cmake $superbuild $cmake_prefix_path -DENABLE_STRICT_TRY_COMPILE=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tools/ios.toolchain.cmake -DENABLE_BITCODE=Off -DPLATFORM=${{ matrix.platform }} -DDEPLOYMENT_TARGET=14.0 -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild/${{ matrix.name }} -H.
       - name: build
-        run: cmake --build build/${{ matrix.name }} -j$(nproc)
+        run: cmake --build build/${{ matrix.name }} -j$(sysctl -n hw.ncpu)
       - uses: actions/upload-artifact@v4
         with:
           name: mavsdk_server_${{ matrix.name }}.framework

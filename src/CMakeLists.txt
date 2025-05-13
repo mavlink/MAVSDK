@@ -44,10 +44,18 @@ hunter_add_package(jsoncpp)
 hunter_add_package(CURL)
 hunter_add_package(lzma)
 
+
+message(STATUS "Build with CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
+message(STATUS "CMAKE_FIND_ROOT_PATHS: ${CMAKE_FIND_ROOT_PATH}")
+
 if(NOT BUILD_WITHOUT_CURL)
     find_package(CURL REQUIRED)
 endif()
-find_package(LibLZMA REQUIRED)
+if (CMAKE_CROSSCOMPILING)
+    find_package(LibLZMA HINTS "${CMAKE_PREFIX_PATH}" REQUIRED)
+else()
+    find_package(LibLZMA REQUIRED)
+endif()
 
 if(BUILD_TESTING AND (IOS OR ANDROID))
     message(STATUS "Building for iOS or Android: forcing BUILD_TESTING to FALSE...")

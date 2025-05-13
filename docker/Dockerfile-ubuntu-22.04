@@ -21,7 +21,6 @@ RUN apt-get update \
         build-essential \
         gcc \
         g++ \
-        cmake \
         python3 \
         python3-pip \
         python3-future \
@@ -31,6 +30,9 @@ RUN apt-get update \
     && apt-get -y autoremove \
     && apt-get clean autoclean \
     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+# Manually install newer cmake
+RUN python3 -m pip install cmake==3.28.3
 
 # Install fpm for packaging
 # First install a compatible version of dotenv for Ruby 2.7

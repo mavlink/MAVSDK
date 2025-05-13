@@ -32,7 +32,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 # Manually install newer cmake
-RUN python3 -m pip install cmake==3.20.5
+RUN python3 -m pip install cmake==3.28.3
 
 # Install fpm for packaging
 # First install a compatible version of dotenv for Ruby 2.7

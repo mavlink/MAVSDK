@@ -8,6 +8,8 @@ option(BUILD_SHARED_LIBS "Build core as shared libraries instead of static ones"
 option(MAVLINK_DIALECT "MAVLink dialect. Default: common" "common")
 option(BUILD_TESTING "Build tests" ON)
 
+message("Using cmake version: ${CMAKE_VERSION}")
+
 if (SUPERBUILD AND HUNTER_ENABLED)
     message(FATAL_ERROR "Cannot SUPERBUILD while HUNTER_ENABLED. Set -DSUPERBUILD=OFF when using Hunter")
 endif()

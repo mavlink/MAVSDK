@@ -9,24 +9,24 @@ on:
         required: true
 
 jobs:
-  setup:
-    name: Setup Docker Build
+  determine-docker-tag:
+    name: Determine Docker Image Tag
     runs-on: ubuntu-24.04
     outputs:
-      tag_suffix: ${{ steps.set-tags.outputs.tag_suffix }}
+      docker_tag: ${{ steps.set-docker-tag.outputs.docker_tag }}
     steps:
-      - name: Set Docker tags
-        id: set-tags
+      - name: Set docker tag
+        id: set-docker-tag
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            echo "tag_suffix=-pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+            echo "docker_tag=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
           else
-            echo "tag_suffix=" >> $GITHUB_OUTPUT
+            echo "docker_tag=latest" >> $GITHUB_OUTPUT
           fi
 
   build-docker-images:
     name: Build ${{ matrix.name }}
-    needs: setup
+    needs: determine-docker-tag
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -81,9 +81,9 @@ jobs:
       - name: Set tags
         id: set-tags
         run: |
-          TAGS="docker.io/mavsdk/${{ matrix.image }}${{ needs.setup.outputs.tag_suffix }}:latest"
+          TAGS="docker.io/mavsdk/${{ matrix.image }}:${{ needs.determine-docker-tag.outputs.docker_tag }}"
           if [ -n "${{ matrix.extra_tag }}" ] && [ "${{ github.event_name }}" != "pull_request" ]; then
-            TAGS="$TAGS,docker.io/mavsdk/${{ matrix.extra_tag }}:latest"
+            TAGS="$TAGS,docker.io/mavsdk/${{ matrix.extra_tag }}:${{ needs.determine-docker-tag.outputs.docker_tag }}"
           fi
           echo "tags=$TAGS" >> $GITHUB_OUTPUT
       

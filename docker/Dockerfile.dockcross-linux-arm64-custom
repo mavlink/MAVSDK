@@ -1,4 +1,4 @@
-FROM dockcross/linux-arm64
+FROM dockcross/linux-arm64:20250109-7bf589c
 
 ENV DEFAULT_DOCKCROSS_IMAGE mavsdk/mavsdk-dockcross-linux-arm64-custom
 

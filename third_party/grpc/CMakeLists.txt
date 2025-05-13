@@ -51,6 +51,15 @@ foreach(CMAKE_ARG ${CMAKE_ARGS})
     message(STATUS "-- ${CMAKE_ARG}")
 endforeach()
 
+if(NOT MSVC)
+    set(MODULES_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Modules/non-msvc")
+    message(STATUS "cmake modules path: ${MODULES_PATH}")
+
+    list(APPEND CMAKE_ARGS
+        "-DCMAKE_MODULE_PATH=${MODULES_PATH}"
+    )
+endif()
+
 ExternalProject_add(
     grpc
     URL https://github.com/grpc/grpc/archive/v1.68.2.tar.gz

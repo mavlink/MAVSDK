@@ -21,30 +21,29 @@ jobs:
     name: Update Docker Images
     uses: ./.github/workflows/docker.yml
     secrets: inherit
-    # This will run the build-docker-images job in docker.yml for Ubuntu and Debian images
 
-  determine-image-suffix:
-    name: Determine Docker Image Suffix
+  determine-docker-tag:
+    name: Determine Docker Image Tag
     runs-on: ubuntu-24.04
     outputs:
-      tag_suffix: ${{ steps.set-tag-suffix.outputs.tag_suffix }}
+      docker_tag: ${{ steps.set-docker-tag.outputs.docker_tag }}
     steps:
-      - name: Set tag suffix
-        id: set-tag-suffix
+      - name: Set docker tag
+        id: set-docker-tag
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            echo "tag_suffix=-pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+            echo "docker_tag=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
           else
-            echo "tag_suffix=" >> $GITHUB_OUTPUT
+            echo "docker_tag=latest" >> $GITHUB_OUTPUT
           fi
 
   coverage:
     # Use 22.04 for now because 24.04 throws a 'ERROR: mismatched end line ...'
     name: Coverage (ubuntu-22.04)
-    needs: [update-docker-images, determine-image-suffix]
+    needs: [update-docker-images, determine-docker-tag]
     runs-on: ubuntu-24.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-22.04${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
+      image: docker.io/mavsdk/mavsdk-ubuntu-22.04:${{ needs.determine-docker-tag.outputs.docker_tag }}
     env:
       NODE_OPTIONS: --max_old_space_size=4096
     steps:
@@ -65,16 +64,18 @@ jobs:
           key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/third_party/install" >> $GITHUB_ENV
       - name: Install lcov
         run: |
           sudo apt-get update && sudo apt-get install -y \
             lcov \
             curl
       - name: configure
-        run: cmake $superbuild -DCMAKE_PREFIX_PATH=$(pwd)/build/third_party/install -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Coverage -DASAN=ON -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild -H.
       - name: build
-        run: cmake --build build -j2
+        run: cmake --build build -j$(nproc)
       - name: unit tests
         run: ./build/src/unit_tests/unit_tests_runner
       - name: system tests
@@ -92,10 +93,10 @@ jobs:
 
   ubuntu-superbuild:
     name: ${{ matrix.description }}
-    needs: [update-docker-images, determine-image-suffix]
+    needs: [update-docker-images, determine-docker-tag]
     runs-on: ubuntu-24.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-${{ matrix.ubuntu_version }}${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
+      image: docker.io/mavsdk/mavsdk-ubuntu-${{ matrix.ubuntu_version }}:${{ needs.determine-docker-tag.outputs.docker_tag }}
     strategy:
       fail-fast: false
       matrix:
@@ -134,20 +135,22 @@ jobs:
           key: ${{ github.job }}-${{ matrix.ubuntu_version }}-${{ matrix.cc }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
       - name: configure
         run: |
           echo "CC=${{ matrix.cc }}" >> $GITHUB_ENV
           echo "CXX=${{ matrix.cxx }}" >> $GITHUB_ENV
-          cmake $superbuild -DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=ON -DENABLE_CPPTRACE=On -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
+          cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=ON -DWERROR=ON -DENABLE_CPPTRACE=On -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
       - name: build
-        run: cmake --build build/release -j2
+        run: cmake --build build/release -j$(nproc)
       - name: install
         run: cmake --build build/release --target install
       - name: configure examples
-        run: cmake -DCMAKE_PREFIX_PATH="$(pwd)/install;$(pwd)/build/release/third_party/install" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWERROR=ON -Bexamples/build -Hexamples
+        run: cmake -DCMAKE_PREFIX_PATH="$(pwd)/install" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWERROR=ON -Bexamples/build -Hexamples
       - name: build examples
-        run: cmake --build examples/build -j2
+        run: cmake --build examples/build -j$(nproc)
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
@@ -157,10 +160,10 @@ jobs:
 
   ubuntu-no-curl:
     name: Ubuntu 24.04 (mavsdk, without curl)
-    needs: [update-docker-images, determine-image-suffix]
+    needs: [update-docker-images, determine-docker-tag]
     runs-on: ubuntu-24.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-24.04${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.determine-docker-tag.outputs.docker_tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -173,19 +176,21 @@ jobs:
           key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
       - name: configure
         run: |
-          cmake $superbuild -DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_WITHOUT_CURL=ON -DWERROR=ON -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
+          cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_WITHOUT_CURL=ON -DWERROR=ON -DCMAKE_INSTALL_PREFIX=install -Bbuild/release -H.
       - name: build
-        run: cmake --build build/release -j2
+        run: cmake --build build/release -j$(nproc)
 
   ubuntu-hunter:
     name: Ubuntu 24.04 (non-mavsdk_server, hunter)
-    needs: [update-docker-images, determine-image-suffix]
+    needs: [update-docker-images, determine-docker-tag]
     runs-on: ubuntu-24.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-24.04${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.determine-docker-tag.outputs.docker_tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -209,7 +214,7 @@ jobs:
       - name: configure
         run: cmake -DSUPERBUILD=OFF -DHUNTER_ENABLED=ON -DCMAKE_TOOLCHAIN_FILE=$(pwd)/cmake/fpic_toolchain.cmake  -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=OFF -DENABLE_CPPTRACE=On -Bbuild -H.
       - name: build
-        run: cmake --build build -j2
+        run: cmake --build build -j$(nproc)
       - name: unit tests
         run: ./build/src/unit_tests/unit_tests_runner
       - name: system tests
@@ -217,10 +222,10 @@ jobs:
 
   ubuntu24-style-and-proto-check:
     name: ubuntu-24.04 (style and proto check)
-    needs: [update-docker-images, determine-image-suffix]
+    needs: [update-docker-images, determine-docker-tag]
     runs-on: ubuntu-24.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-24.04${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.determine-docker-tag.outputs.docker_tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -239,9 +244,11 @@ jobs:
           key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/default/third_party/install" >> $GITHUB_ENV
       - name: build necessary protoc tooling
-        run: cmake $superbuild -DCMAKE_PREFIX_PATH=$(pwd)/build/default/third_party/install -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=ON -DENABLE_CPPTRACE=On -Bbuild/default -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Debug -DBUILD_MAVSDK_SERVER=ON -DENABLE_CPPTRACE=On -Bbuild/default -H.
       - name: generate code from protos
         run: PATH="$PATH:$HOME/.local/bin" tools/generate_from_protos.sh
       - name: fix style
@@ -251,10 +258,10 @@ jobs:
 
   ubuntu24-docs-check:
     name: ubuntu-24.04 (docs check)
-    needs: [update-docker-images, determine-image-suffix]
+    needs: [update-docker-images, determine-docker-tag]
     runs-on: ubuntu-24.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-24.04${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.determine-docker-tag.outputs.docker_tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -273,10 +280,10 @@ jobs:
 
   deb-package:
     name: ${{ matrix.os_name }} ${{ matrix.os_version }} (package, non-mavsdk_server)
-    needs: [update-docker-images, determine-image-suffix]
+    needs: [update-docker-images, determine-docker-tag]
     runs-on: ubuntu-24.04
     container:
-      image: docker.io/mavsdk/mavsdk-${{ matrix.os_type }}-${{ matrix.os_version }}${{ needs.determine-image-suffix.outputs.tag_suffix }}:latest
+      image: docker.io/mavsdk/mavsdk-${{ matrix.os_type }}-${{ matrix.os_version }}:${{ needs.determine-docker-tag.outputs.docker_tag }}
     strategy:
       fail-fast: false
       matrix:
@@ -313,7 +320,7 @@ jobs:
       - name: configure
         run: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -Bbuild/release -H.
       - name: build
-        run: cmake --build build/release -- -j2
+        run: cmake --build build/release -- -j$(nproc)
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
@@ -340,8 +347,10 @@ jobs:
 
   dockcross-linux:
     name: linux-${{ matrix.docker_name }}
-    needs: [update-docker-images, determine-image-suffix]
+    needs: [update-docker-images, determine-docker-tag]
     runs-on: ubuntu-24.04
+    env:
+      ARG_IMAGE: docker.io/mavsdk/mavsdk-dockcross-linux-${{ matrix.docker_name }}-custom:${{ needs.determine-docker-tag.outputs.docker_tag }}
     strategy:
       fail-fast: false
       matrix:
@@ -361,7 +370,7 @@ jobs:
           submodules: recursive
           fetch-depth: 0
       - name: setup dockcross
-        run: docker run --rm docker.io/mavsdk/mavsdk-dockcross-linux-${{ matrix.docker_name }}-custom > ./dockcross-linux-${{ matrix.docker_name }}-custom; chmod +x ./dockcross-linux-${{ matrix.docker_name }}-custom
+        run: docker run --rm ${{ env.ARG_IMAGE }} > ./dockcross-linux-${{ matrix.docker_name }}-custom; chmod +x ./dockcross-linux-${{ matrix.docker_name }}-custom
       - uses: actions/cache@v4
         id: cache
         with:
@@ -369,11 +378,13 @@ jobs:
           key: ${{ github.job }}-linux-${{ matrix.docker_name }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/linux-${{ matrix.docker_name }}/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-linux-${{ matrix.docker_name }}-custom /bin/bash -c "cmake $superbuild -DCMAKE_PREFIX_PATH=/work/build/linux-${{ matrix.docker_name }}/third_party/install -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-${{ matrix.docker_name }}/install -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DWERROR=ON -Bbuild/linux-${{ matrix.docker_name }} -H."
+        run: ./dockcross-linux-${{ matrix.docker_name }}-custom /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/linux-${{ matrix.docker_name }}/install -DBUILD_MAVSDK_SERVER=OFF -DBUILD_SHARED_LIBS=ON -DWERROR=ON -Bbuild/linux-${{ matrix.docker_name }} -H."
       - name: build
-        run: ./dockcross-linux-${{ matrix.docker_name }}-custom cmake --build build/linux-${{ matrix.docker_name }} -j2 --target install
+        run: ./dockcross-linux-${{ matrix.docker_name }}-custom cmake --build build/linux-${{ matrix.docker_name }} -j$(nproc) --target install
       - name: create deb packages
         run: ./dockcross-linux-${{ matrix.docker_name }}-custom tools/create_packages.sh ./build/linux-${{ matrix.docker_name }}/install . ${{ matrix.arch_name }} libmavsdk-dev
       - if: ${{ matrix.rename_distro }}
@@ -416,11 +427,13 @@ jobs:
           key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: cmake $superbuild -DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild/release -H.
+        run: cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DCMAKE_INSTALL_PREFIX=install -DWERROR=ON -DENABLE_CPPTRACE=On -Bbuild/release -H.
       - name: build
-        run: cmake --build build/release --target install -- -j2
+        run: cmake --build build/release --target install -- -j$(nproc)
       - name: unit tests
         run: ./build/release/src/unit_tests/unit_tests_runner
       - name: system tests
@@ -464,11 +477,13 @@ jobs:
           key: ${{ github.job }}-${{ matrix.arch_name }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/${{ matrix.arch_name }}/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "cmake $superbuild -DCMAKE_PREFIX_PATH=/work/build/${{ matrix.arch_name }}/third_party/install -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=ON -Bbuild/${{ matrix.arch_name }} -H."
+        run: ./dockcross-${{ matrix.arch_name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=build/${{ matrix.arch_name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_MAVSDK_SERVER=ON -DWERROR=ON -Bbuild/${{ matrix.arch_name }} -H."
       - name: build
-        run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j2 --target install
+        run: ./dockcross-${{ matrix.arch_name }} cmake --build build/${{ matrix.arch_name }} -j$(nproc) --target install
       - name: Upload as artifact
         uses: actions/upload-artifact@v4
         with:
@@ -514,11 +529,13 @@ jobs:
           key: ${{ github.job }}-${{ matrix.name }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+        run: |
+          echo "superbuild=-DSUPERBUILD=OFF" >> $GITHUB_ENV
+          echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/${{ matrix.name }}/third_party/install" >> $GITHUB_ENV
       - name: configure
-        run: ./dockcross-${{ matrix.name }} /bin/bash -c "cmake $superbuild -DCMAKE_PREFIX_PATH=/work/build/${{ matrix.name }}/third_party/install -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/${{ matrix.name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild/${{ matrix.name }} -H."
+        run: ./dockcross-${{ matrix.name }} /bin/bash -c "cmake $superbuild $cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/${{ matrix.name }}/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild/${{ matrix.name }} -H."
       - name: build
-        run: ./dockcross-${{ matrix.name }} cmake --build build/${{ matrix.name }} -j2 --target install
+        run: ./dockcross-${{ matrix.name }} cmake --build build/${{ matrix.name }} -j$(nproc) --target install
       - name: create tar with header and library
         run: mkdir -p build/${{ matrix.name }}/export/include; cp build/${{ matrix.name }}/install/include/mavsdk/mavsdk_server/mavsdk_server_api.h build/${{ matrix.name }}/export/include; mkdir -p build/${{ matrix.name }}/export/${{ matrix.arch }}; cp build/${{ matrix.name }}/install/lib/libmavsdk_server.so build/${{ matrix.name }}/export/${{ matrix.arch }}; tar -C build/${{ matrix.name }}/export -cf build/${{ matrix.name }}/export/mavsdk_server_${{ matrix.name }}.tar ${{ matrix.arch }} include;
       - name: Upload as artifact
