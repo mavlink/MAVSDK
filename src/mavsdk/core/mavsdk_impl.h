@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <cstdint>
 #include <mutex>
 #include <sys/types.h>
@@ -7,6 +8,7 @@
 #include <vector>
 #include <atomic>
 #include <thread>
+#include <queue>
 
 #include "autopilot.h"
 #include "call_every_handler.h"
@@ -116,16 +118,27 @@ private:
     Mavsdk::ConnectionHandle add_connection(std::unique_ptr<Connection>&& connection);
     void make_system_with_component(uint8_t system_id, uint8_t component_id);
 
+    void send_heartbeats();
+
     void work_thread();
     void process_user_callbacks_thread();
 
-    void send_heartbeat();
+    void process_messages();
+    void process_message(mavlink_message_t& message, Connection* connection);
+
+    void deliver_messages();
+    void deliver_message(mavlink_message_t& message);
+
     bool is_any_system_connected() const;
+
+    std::shared_ptr<ServerComponent> server_component_by_id_with_lock(uint8_t component_id);
+    ServerComponentImpl& default_server_component_with_lock();
 
     static uint8_t get_target_system_id(const mavlink_message_t& message);
     static uint8_t get_target_component_id(const mavlink_message_t& message);
 
-    std::mutex _connections_mutex{};
+    mutable std::recursive_mutex _mutex{};
+
     HandleFactory<> _connections_handle_factory;
     struct ConnectionEntry {
         std::unique_ptr<Connection> connection;
@@ -134,16 +147,17 @@ private:
     std::vector<ConnectionEntry> _connections{};
     CallbackList<Mavsdk::ConnectionError> _connections_errors_subscriptions{};
 
-    mutable std::recursive_mutex _systems_mutex{};
     std::vector<std::pair<uint8_t, std::shared_ptr<System>>> _systems{};
 
-    mutable std::mutex _server_components_mutex{};
+    std::recursive_mutex _server_components_mutex;
     std::vector<std::pair<uint8_t, std::shared_ptr<ServerComponent>>> _server_components{};
     std::shared_ptr<ServerComponent> _default_server_component{nullptr};
 
     CallbackList<> _new_system_callbacks{};
 
     Mavsdk::Configuration _configuration{ComponentType::GroundStation};
+    std::atomic<uint8_t> _our_system_id{0};
+    std::atomic<uint8_t> _our_component_id{0};
 
     struct UserCallback {
         UserCallback() = default;
@@ -167,11 +181,20 @@ private:
     bool _callback_debugging{false};
     bool _system_debugging{false};
 
-    mutable std::mutex _intercept_callback_mutex{};
     std::function<bool(mavlink_message_t&)> _intercept_incoming_messages_callback{nullptr};
     std::function<bool(mavlink_message_t&)> _intercept_outgoing_messages_callback{nullptr};
 
     std::atomic<double> _timeout_s{DEFAULT_TIMEOUT_S};
+
+    struct ReceivedMessage {
+        mavlink_message_t message;
+        Connection* connection_ptr;
+    };
+    mutable std::mutex _received_messages_mutex{};
+    std::queue<ReceivedMessage> _received_messages;
+
+    mutable std::mutex _messages_to_send_mutex{};
+    std::queue<mavlink_message_t> _messages_to_send;
 
     static constexpr double HEARTBEAT_SEND_INTERVAL_S = 1.0;
     CallEveryHandler::Cookie _heartbeat_send_cookie{};

@@ -63,6 +63,8 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
 
 MavsdkImpl::~MavsdkImpl()
 {
+    call_every_handler.remove(_heartbeat_send_cookie);
+
     _should_exit = true;
 
     // Stop work first because we don't want to trigger anything that would
@@ -81,15 +83,10 @@ MavsdkImpl::~MavsdkImpl()
         _process_user_callbacks_thread = nullptr;
     }
 
-    {
-        std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-        _systems.clear();
-    }
+    std::lock_guard lock(_mutex);
 
-    {
-        std::lock_guard<std::mutex> lock(_connections_mutex);
-        _connections.clear();
-    }
+    _systems.clear();
+    _connections.clear();
 }
 
 std::string MavsdkImpl::version()
@@ -124,7 +121,7 @@ std::vector<std::shared_ptr<System>> MavsdkImpl::systems() const
 {
     std::vector<std::shared_ptr<System>> systems_result{};
 
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+    std::lock_guard lock(_mutex);
     for (auto& system : _systems) {
         // We ignore the 0 entry because it's just a null system.
         // It's only created because the older, deprecated API needs a
@@ -141,7 +138,7 @@ std::vector<std::shared_ptr<System>> MavsdkImpl::systems() const
 std::optional<std::shared_ptr<System>> MavsdkImpl::first_autopilot(double timeout_s)
 {
     {
-        std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+        std::lock_guard lock(_mutex);
         for (auto system : _systems) {
             if (system.second->is_connected() && system.second->has_autopilot()) {
                 return system.second;
@@ -158,9 +155,13 @@ std::optional<std::shared_ptr<System>> MavsdkImpl::first_autopilot(double timeou
 
     std::once_flag flag;
     auto handle = subscribe_on_new_system([this, &prom, &flag]() {
-        const auto system = systems().at(0);
-        if (system->is_connected() && system->has_autopilot()) {
-            std::call_once(flag, [&prom, &system]() { prom.set_value(system); });
+        // Check all systems, not just the first one
+        auto all_systems = systems();
+        for (auto& system : all_systems) {
+            if (system->is_connected() && system->has_autopilot()) {
+                std::call_once(flag, [&prom, &system]() { prom.set_value(system); });
+                break;
+            }
         }
     });
 
@@ -185,6 +186,8 @@ std::optional<std::shared_ptr<System>> MavsdkImpl::first_autopilot(double timeou
 
 std::shared_ptr<ServerComponent> MavsdkImpl::server_component(unsigned instance)
 {
+    std::lock_guard lock(_mutex);
+
     auto component_type = _configuration.get_component_type();
     switch (component_type) {
         case ComponentType::Autopilot:
@@ -266,8 +269,13 @@ std::shared_ptr<ServerComponent> MavsdkImpl::server_component_by_id(uint8_t comp
         return nullptr;
     }
 
-    std::lock_guard<std::mutex> lock(_server_components_mutex);
+    std::lock_guard lock(_server_components_mutex);
 
+    return server_component_by_id_with_lock(component_id);
+}
+
+std::shared_ptr<ServerComponent> MavsdkImpl::server_component_by_id_with_lock(uint8_t component_id)
+{
     for (auto& it : _server_components) {
         if (it.first == component_id) {
             if (it.second != nullptr) {
@@ -327,6 +335,26 @@ void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connect
 
 void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connection)
 {
+    std::lock_guard lock(_received_messages_mutex);
+    _received_messages.emplace(ReceivedMessage{std::move(message), connection});
+}
+
+void MavsdkImpl::process_messages()
+{
+    std::unique_lock lock(_received_messages_mutex);
+    while (!_received_messages.empty()) {
+        auto message_copied = _received_messages.front();
+        lock.unlock();
+        process_message(message_copied.message, message_copied.connection_ptr);
+        lock.lock();
+        _received_messages.pop();
+    }
+}
+
+void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connection)
+{
+    // Assumes _received_messages_mutex
+
     if (_message_logging_on) {
         LogDebug() << "Processing message " << message.msgid << " from "
                    << static_cast<int>(message.sysid) << "/" << static_cast<int>(message.compid);
@@ -337,37 +365,36 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
         return;
     }
 
-    // This is a low level interface where incoming messages can be tampered
-    // with or even dropped.
     {
-        std::lock_guard<std::mutex> lock(_intercept_callback_mutex);
-        if (_intercept_incoming_messages_callback != nullptr) {
-            bool keep = _intercept_incoming_messages_callback(message);
-            if (!keep) {
-                LogDebug() << "Dropped incoming message: " << int(message.msgid);
-                return;
+        std::lock_guard lock(_mutex);
+
+        // This is a low level interface where incoming messages can be tampered
+        // with or even dropped.
+        {
+            if (_intercept_incoming_messages_callback != nullptr) {
+                bool keep = _intercept_incoming_messages_callback(message);
+                if (!keep) {
+                    LogDebug() << "Dropped incoming message: " << int(message.msgid);
+                    return;
+                }
             }
         }
-    }
 
-    if (_should_exit) {
-        // If we're meant to clean up, let's not try to acquire any more locks but bail.
-        return;
-    }
+        if (_should_exit) {
+            // If we're meant to clean up, let's not try to acquire any more locks but bail.
+            return;
+        }
 
-    /** @note: Forward message if option is enabled and multiple interfaces are connected.
-     *  Performs message forwarding checks for every messages if message forwarding
-     *  is enabled on at least one connection, and in case of a single forwarding connection,
-     *  we check that it is not the one which received the current message.
-     *
-     * Conditions:
-     * 1. At least 2 connections.
-     * 2. At least 1 forwarding connection.
-     * 3. At least 2 forwarding connections or current connection is not forwarding.
-     */
-
-    {
-        std::lock_guard<std::mutex> lock(_connections_mutex);
+        /** @note: Forward message if option is enabled and multiple interfaces are connected.
+         *  Performs message forwarding checks for every messages if message forwarding
+         *  is enabled on at least one connection, and in case of a single forwarding connection,
+         *  we check that it is not the one which received the current message.
+         *
+         * Conditions:
+         * 1. At least 2 connections.
+         * 2. At least 1 forwarding connection.
+         * 3. At least 2 forwarding connections or current connection is not forwarding.
+         */
 
         if (_connections.size() > 1 && mavsdk::Connection::forwarding_connections_count() > 0 &&
             (mavsdk::Connection::forwarding_connections_count() > 1 ||
@@ -379,61 +406,64 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
             }
             forward_message(message, connection);
         }
-    }
 
-    // Don't ever create a system with sysid 0.
-    if (message.sysid == 0) {
-        if (_message_logging_on) {
-            LogDebug() << "Ignoring message with sysid == 0";
-        }
-        return;
-    }
-
-    // Filter out messages by QGroundControl, however, only do that if MAVSDK
-    // is also implementing a ground station and not if it is used in another
-    // configuration, e.g. on a companion.
-    //
-    // This is a workaround because PX4 started forwarding messages between
-    // mavlink instances which leads to existing implementations (including
-    // examples and integration tests) to connect to QGroundControl by accident
-    // instead of PX4 because the check `has_autopilot()` is not used.
-    if (_configuration.get_component_type() == ComponentType::GroundStation &&
-        message.sysid == 255 && message.compid == MAV_COMP_ID_MISSIONPLANNER) {
-        if (_message_logging_on) {
-            LogDebug() << "Ignoring messages from QGC as we are also a ground station";
-        }
-        return;
-    }
-
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
-
-    bool found_system = false;
-    for (auto& system : _systems) {
-        if (system.first == message.sysid) {
-            system.second->system_impl()->add_new_component(message.compid);
-            found_system = true;
-            break;
-        }
-    }
-
-    if (!found_system) {
-        if (_system_debugging) {
-            LogWarn() << "Create new system/component " << (int)message.sysid << "/"
-                      << (int)message.compid;
-            LogWarn() << "From message " << (int)message.msgid << " with len " << (int)message.len;
-            std::string bytes = "";
-            for (unsigned i = 0; i < 12 + message.len; ++i) {
-                bytes += std::to_string(reinterpret_cast<uint8_t*>(&message)[i]) + ' ';
+        // Don't ever create a system with sysid 0.
+        if (message.sysid == 0) {
+            if (_message_logging_on) {
+                LogDebug() << "Ignoring message with sysid == 0";
             }
-            LogWarn() << "Bytes: " << bytes;
+            return;
         }
-        make_system_with_component(message.sysid, message.compid);
-    }
 
-    if (_should_exit) {
-        // Don't try to call at() if systems have already been destroyed
-        // in destructor.
-        return;
+        // Filter out messages by QGroundControl, however, only do that if MAVSDK
+        // is also implementing a ground station and not if it is used in another
+        // configuration, e.g. on a companion.
+        //
+        // This is a workaround because PX4 started forwarding messages between
+        // mavlink instances which leads to existing implementations (including
+        // examples and integration tests) to connect to QGroundControl by accident
+        // instead of PX4 because the check `has_autopilot()` is not used.
+
+        if (_configuration.get_component_type() == ComponentType::GroundStation &&
+            message.sysid == 255 && message.compid == MAV_COMP_ID_MISSIONPLANNER) {
+            if (_message_logging_on) {
+                LogDebug() << "Ignoring messages from QGC as we are also a ground station";
+            }
+            return;
+        }
+
+        bool found_system = false;
+        for (auto& system : _systems) {
+            if (system.first == message.sysid) {
+                system.second->system_impl()->add_new_component(message.compid);
+                found_system = true;
+                break;
+            }
+        }
+
+        if (!found_system) {
+            if (_system_debugging) {
+                LogWarn() << "Create new system/component " << (int)message.sysid << "/"
+                          << (int)message.compid;
+                LogWarn() << "From message " << (int)message.msgid << " with len "
+                          << (int)message.len;
+                std::string bytes = "";
+                for (unsigned i = 0; i < 12 + message.len; ++i) {
+                    bytes += std::to_string(reinterpret_cast<uint8_t*>(&message)[i]) + ' ';
+                }
+                LogWarn() << "Bytes: " << bytes;
+            }
+            make_system_with_component(message.sysid, message.compid);
+
+            // We now better talk back.
+            start_sending_heartbeats();
+        }
+
+        if (_should_exit) {
+            // Don't try to call at() if systems have already been destroyed
+            // in destructor.
+            return;
+        }
     }
 
     mavlink_message_handler.process_message(message);
@@ -447,6 +477,43 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
 }
 
 bool MavsdkImpl::send_message(mavlink_message_t& message)
+{
+    // Create a copy of the message to avoid reference issues
+    mavlink_message_t message_copy = message;
+
+    {
+        std::lock_guard lock(_messages_to_send_mutex);
+        _messages_to_send.push(std::move(message_copy));
+    }
+
+    // For heartbeat messages, we want to process them immediately to speed up system discovery
+    if (message.msgid == MAVLINK_MSG_ID_HEARTBEAT) {
+        // Trigger message processing in the work thread
+        // This is a hint to process messages sooner, but doesn't block
+        std::this_thread::yield();
+    }
+
+    return true;
+}
+
+void MavsdkImpl::deliver_messages()
+{
+    // Process messages one at a time to avoid holding the mutex while delivering
+    while (true) {
+        mavlink_message_t message;
+        {
+            std::lock_guard lock(_messages_to_send_mutex);
+            if (_messages_to_send.empty()) {
+                break;
+            }
+            message = _messages_to_send.front();
+            _messages_to_send.pop();
+        }
+        deliver_message(message);
+    }
+}
+
+void MavsdkImpl::deliver_message(mavlink_message_t& message)
 {
     if (_message_logging_on) {
         LogDebug() << "Sending message " << message.msgid << " from "
@@ -464,16 +531,16 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
             // a potential loss would happen later, and we would not be informed
             // about it.
             LogDebug() << "Dropped outgoing message: " << int(message.msgid);
-            return true;
+            return;
         }
     }
 
-    std::lock_guard<std::mutex> lock(_connections_mutex);
+    std::lock_guard lock(_mutex);
 
     if (_connections.empty()) {
         // We obviously can't send any messages without a connection added, so
         // we silently ignore this.
-        return true;
+        return;
     }
 
     uint8_t successful_emissions = 0;
@@ -495,10 +562,7 @@ bool MavsdkImpl::send_message(mavlink_message_t& message)
 
     if (successful_emissions == 0) {
         LogErr() << "Sending message failed";
-        return false;
     }
-
-    return true;
 }
 
 std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_any_connection(
@@ -560,7 +624,7 @@ MavsdkImpl::add_udp_connection(const CliArg::Udp& udp, ForwardingOption forwardi
         }
 
         new_conn->add_remote(remote_ip.value(), udp.port);
-        std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+        std::lock_guard lock(_mutex);
 
         // With a UDP remote, we need to initiate the connection by sending heartbeats.
         auto new_configuration = get_configuration();
@@ -651,7 +715,7 @@ std::pair<ConnectionResult, Mavsdk::ConnectionHandle> MavsdkImpl::add_serial_con
 
 Mavsdk::ConnectionHandle MavsdkImpl::add_connection(std::unique_ptr<Connection>&& new_connection)
 {
-    std::lock_guard<std::mutex> lock(_connections_mutex);
+    std::lock_guard lock(_mutex);
     auto handle = _connections_handle_factory.create();
     _connections.emplace_back(ConnectionEntry{std::move(new_connection), handle});
 
@@ -660,7 +724,7 @@ Mavsdk::ConnectionHandle MavsdkImpl::add_connection(std::unique_ptr<Connection>&
 
 void MavsdkImpl::remove_connection(Mavsdk::ConnectionHandle handle)
 {
-    std::lock_guard<std::mutex> lock(_connections_mutex);
+    std::lock_guard lock(_mutex);
 
     _connections.erase(std::remove_if(_connections.begin(), _connections.end(), [&](auto&& entry) {
         return (entry.handle == handle);
@@ -669,15 +733,18 @@ void MavsdkImpl::remove_connection(Mavsdk::ConnectionHandle handle)
 
 Mavsdk::Configuration MavsdkImpl::get_configuration() const
 {
+    std::lock_guard configuration_lock(_mutex);
     return _configuration;
 }
 
 void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
 {
+    std::lock_guard server_components_lock(_server_components_mutex);
     // We just point the default to the newly created component. This means
     // that the previous default component will be deleted if it is not
     // used/referenced anywhere.
-    _default_server_component = server_component_by_id(new_configuration.get_component_id());
+    _default_server_component =
+        server_component_by_id_with_lock(new_configuration.get_component_id());
 
     if (new_configuration.get_always_send_heartbeats() &&
         !_configuration.get_always_send_heartbeats()) {
@@ -689,16 +756,19 @@ void MavsdkImpl::set_configuration(Mavsdk::Configuration new_configuration)
     }
 
     _configuration = new_configuration;
+    // We cache these values as atomic to avoid having to lock any mutex for them.
+    _our_system_id = new_configuration.get_system_id();
+    _our_component_id = new_configuration.get_component_id();
 }
 
 uint8_t MavsdkImpl::get_own_system_id() const
 {
-    return _configuration.get_system_id();
+    return _our_system_id;
 }
 
 uint8_t MavsdkImpl::get_own_component_id() const
 {
-    return _configuration.get_component_id();
+    return _our_component_id;
 }
 
 uint8_t MavsdkImpl::channel() const
@@ -744,20 +814,20 @@ void MavsdkImpl::make_system_with_component(uint8_t system_id, uint8_t comp_id)
 
 void MavsdkImpl::notify_on_discover()
 {
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+    // Queue the callbacks without holding the mutex to avoid deadlocks
     _new_system_callbacks.queue([this](const auto& func) { call_user_callback(func); });
 }
 
 void MavsdkImpl::notify_on_timeout()
 {
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+    // Queue the callbacks without holding the mutex to avoid deadlocks
     _new_system_callbacks.queue([this](const auto& func) { call_user_callback(func); });
 }
 
 Mavsdk::NewSystemHandle
 MavsdkImpl::subscribe_on_new_system(const Mavsdk::NewSystemCallback& callback)
 {
-    std::lock_guard<std::recursive_mutex> lock(_systems_mutex);
+    std::lock_guard lock(_mutex);
 
     const auto handle = _new_system_callbacks.subscribe(callback);
 
@@ -784,11 +854,16 @@ bool MavsdkImpl::is_any_system_connected() const
 void MavsdkImpl::work_thread()
 {
     while (!_should_exit) {
+        // Process incoming messages
+        process_messages();
+
+        // Run timers
         timeout_handler.run_once();
         call_every_handler.run_once();
 
+        // Do component work
         {
-            std::lock_guard<std::mutex> lock(_server_components_mutex);
+            std::lock_guard lock(_server_components_mutex);
             for (auto& it : _server_components) {
                 if (it.second != nullptr) {
                     it.second->_impl->do_work();
@@ -796,7 +871,25 @@ void MavsdkImpl::work_thread()
             }
         }
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        // Deliver outgoing messages
+        deliver_messages();
+
+        // Check if we have any pending messages
+        bool nothing_received;
+        bool messages_to_send;
+        {
+            std::lock_guard lock_received(_received_messages_mutex);
+            nothing_received = _received_messages.empty();
+
+            std::lock_guard lock_send(_messages_to_send_mutex);
+            messages_to_send = !_messages_to_send.empty();
+        }
+
+        // If there's nothing to do, sleep a bit to avoid busy looping
+        if (nothing_received && !messages_to_send) {
+            // Use a shorter sleep time to improve responsiveness
+            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        }
     }
 }
 
@@ -863,7 +956,7 @@ void MavsdkImpl::start_sending_heartbeats()
 
     call_every_handler.remove(_heartbeat_send_cookie);
     _heartbeat_send_cookie =
-        call_every_handler.add([this]() { send_heartbeat(); }, HEARTBEAT_SEND_INTERVAL_S);
+        call_every_handler.add([this]() { send_heartbeats(); }, HEARTBEAT_SEND_INTERVAL_S);
 }
 
 void MavsdkImpl::stop_sending_heartbeats()
@@ -875,15 +968,21 @@ void MavsdkImpl::stop_sending_heartbeats()
 
 ServerComponentImpl& MavsdkImpl::default_server_component_impl()
 {
+    std::lock_guard lock(_server_components_mutex);
+    return default_server_component_with_lock();
+}
+
+ServerComponentImpl& MavsdkImpl::default_server_component_with_lock()
+{
     if (_default_server_component == nullptr) {
-        _default_server_component = server_component_by_id(_configuration.get_component_id());
+        _default_server_component = server_component_by_id_with_lock(_our_component_id);
     }
     return *_default_server_component->_impl;
 }
 
-void MavsdkImpl::send_heartbeat()
+void MavsdkImpl::send_heartbeats()
 {
-    std::lock_guard<std::mutex> lock(_server_components_mutex);
+    std::lock_guard lock(_server_components_mutex);
 
     for (auto& it : _server_components) {
         if (it.second != nullptr) {
@@ -894,20 +993,20 @@ void MavsdkImpl::send_heartbeat()
 
 void MavsdkImpl::intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback)
 {
-    std::lock_guard<std::mutex> lock(_intercept_callback_mutex);
+    std::lock_guard lock(_mutex);
     _intercept_incoming_messages_callback = callback;
 }
 
 void MavsdkImpl::intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback)
 {
-    std::lock_guard<std::mutex> lock(_intercept_callback_mutex);
+    std::lock_guard lock(_mutex);
     _intercept_outgoing_messages_callback = callback;
 }
 
 Mavsdk::ConnectionErrorHandle
 MavsdkImpl::subscribe_connection_errors(Mavsdk::ConnectionErrorCallback callback)
 {
-    std::lock_guard lock(_connections_mutex);
+    std::lock_guard lock(_mutex);
 
     const auto handle = _connections_errors_subscriptions.subscribe(callback);
 
@@ -916,7 +1015,7 @@ MavsdkImpl::subscribe_connection_errors(Mavsdk::ConnectionErrorCallback callback
 
 void MavsdkImpl::unsubscribe_connection_errors(Mavsdk::ConnectionErrorHandle handle)
 {
-    std::lock_guard lock(_connections_mutex);
+    std::lock_guard lock(_mutex);
     _connections_errors_subscriptions.unsubscribe(handle);
 }
 
@@ -958,7 +1057,8 @@ uint8_t MavsdkImpl::get_target_component_id(const mavlink_message_t& message)
 
 Sender& MavsdkImpl::sender()
 {
-    return default_server_component_impl().sender();
+    std::lock_guard lock(_server_components_mutex);
+    return default_server_component_with_lock().sender();
 }
 
 } // namespace mavsdk
