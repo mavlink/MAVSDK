@@ -2543,7 +2543,7 @@ CameraImpl::PotentialCamera* CameraImpl::maybe_potential_camera_for_component_id
 
     const auto it = std::find_if(
         _potential_cameras.begin(), _potential_cameras.end(), [&](auto& potential_camera) {
-            return potential_camera.component_id = component_id;
+            return potential_camera.component_id == component_id;
         });
 
     if (it == _potential_cameras.end()) {
