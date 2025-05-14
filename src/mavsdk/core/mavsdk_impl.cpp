@@ -63,7 +63,10 @@ MavsdkImpl::MavsdkImpl(const Mavsdk::Configuration& configuration) :
 
 MavsdkImpl::~MavsdkImpl()
 {
-    call_every_handler.remove(_heartbeat_send_cookie);
+    {
+        std::lock_guard<std::mutex> lock(_heartbeat_mutex);
+        call_every_handler.remove(_heartbeat_send_cookie);
+    }
 
     _should_exit = true;
 
@@ -371,12 +374,17 @@ void MavsdkImpl::process_message(mavlink_message_t& message, Connection* connect
         // This is a low level interface where incoming messages can be tampered
         // with or even dropped.
         {
-            if (_intercept_incoming_messages_callback != nullptr) {
-                bool keep = _intercept_incoming_messages_callback(message);
-                if (!keep) {
-                    LogDebug() << "Dropped incoming message: " << int(message.msgid);
-                    return;
+            bool keep = true;
+            {
+                std::lock_guard<std::mutex> intercept_lock(_intercept_callbacks_mutex);
+                if (_intercept_incoming_messages_callback != nullptr) {
+                    keep = _intercept_incoming_messages_callback(message);
                 }
+            }
+
+            if (!keep) {
+                LogDebug() << "Dropped incoming message: " << int(message.msgid);
+                return;
             }
         }
 
@@ -524,15 +532,20 @@ void MavsdkImpl::deliver_message(mavlink_message_t& message)
 
     // This is a low level interface where outgoing messages can be tampered
     // with or even dropped.
-    if (_intercept_outgoing_messages_callback != nullptr) {
-        const bool keep = _intercept_outgoing_messages_callback(message);
-        if (!keep) {
-            // We fake that everything was sent as instructed because
-            // a potential loss would happen later, and we would not be informed
-            // about it.
-            LogDebug() << "Dropped outgoing message: " << int(message.msgid);
-            return;
+    bool keep = true;
+    {
+        std::lock_guard<std::mutex> lock(_intercept_callbacks_mutex);
+        if (_intercept_outgoing_messages_callback != nullptr) {
+            keep = _intercept_outgoing_messages_callback(message);
         }
+    }
+
+    if (!keep) {
+        // We fake that everything was sent as instructed because
+        // a potential loss would happen later, and we would not be informed
+        // about it.
+        LogDebug() << "Dropped outgoing message: " << int(message.msgid);
+        return;
     }
 
     std::lock_guard lock(_mutex);
@@ -896,6 +909,11 @@ void MavsdkImpl::work_thread()
 void MavsdkImpl::call_user_callback_located(
     const std::string& filename, const int linenumber, const std::function<void()>& func)
 {
+    // Don't enqueue callbacks if we're shutting down
+    if (_should_exit) {
+        return;
+    }
+
     auto callback_size = _user_callback_queue.size();
     if (callback_size == 10) {
         LogWarn()
@@ -926,6 +944,11 @@ void MavsdkImpl::process_user_callbacks_thread()
             continue;
         }
 
+        // Check if we're in the process of shutting down before executing the callback
+        if (_should_exit) {
+            continue;
+        }
+
         const double timeout_s = 1.0;
         auto cookie = timeout_handler.add(
             [&]() {
@@ -950,18 +973,27 @@ void MavsdkImpl::process_user_callbacks_thread()
 
 void MavsdkImpl::start_sending_heartbeats()
 {
+    // Check if we're in the process of shutting down
+    if (_should_exit) {
+        return;
+    }
+
     // Before sending out first heartbeats we need to make sure we have a
     // default server component.
     default_server_component_impl();
 
-    call_every_handler.remove(_heartbeat_send_cookie);
-    _heartbeat_send_cookie =
-        call_every_handler.add([this]() { send_heartbeats(); }, HEARTBEAT_SEND_INTERVAL_S);
+    {
+        std::lock_guard<std::mutex> lock(_heartbeat_mutex);
+        call_every_handler.remove(_heartbeat_send_cookie);
+        _heartbeat_send_cookie =
+            call_every_handler.add([this]() { send_heartbeats(); }, HEARTBEAT_SEND_INTERVAL_S);
+    }
 }
 
 void MavsdkImpl::stop_sending_heartbeats()
 {
     if (!_configuration.get_always_send_heartbeats()) {
+        std::lock_guard<std::mutex> lock(_heartbeat_mutex);
         call_every_handler.remove(_heartbeat_send_cookie);
     }
 }
@@ -993,13 +1025,13 @@ void MavsdkImpl::send_heartbeats()
 
 void MavsdkImpl::intercept_incoming_messages_async(std::function<bool(mavlink_message_t&)> callback)
 {
-    std::lock_guard lock(_mutex);
+    std::lock_guard<std::mutex> lock(_intercept_callbacks_mutex);
     _intercept_incoming_messages_callback = callback;
 }
 
 void MavsdkImpl::intercept_outgoing_messages_async(std::function<bool(mavlink_message_t&)> callback)
 {
-    std::lock_guard lock(_mutex);
+    std::lock_guard<std::mutex> lock(_intercept_callbacks_mutex);
     _intercept_outgoing_messages_callback = callback;
 }
 

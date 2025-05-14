@@ -496,11 +496,14 @@ void SystemImpl::set_connected()
 
             _connected = true;
 
-            // We call this later to avoid deadlocks on creating the server components.
-            _mavsdk_impl.call_user_callback([this]() {
-                // Send a heartbeat back immediately.
-                _mavsdk_impl.start_sending_heartbeats();
-            });
+            // Only send heartbeats if we're not shutting down
+            if (!_should_exit) {
+                // We call this later to avoid deadlocks on creating the server components.
+                _mavsdk_impl.call_user_callback([this]() {
+                    // Send a heartbeat back immediately.
+                    _mavsdk_impl.start_sending_heartbeats();
+                });
+            }
 
             _heartbeat_timeout_cookie =
                 register_timeout_handler([this] { heartbeats_timed_out(); }, HEARTBEAT_TIMEOUT_S);

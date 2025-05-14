@@ -181,6 +181,7 @@ private:
     bool _callback_debugging{false};
     bool _system_debugging{false};
 
+    mutable std::mutex _intercept_callbacks_mutex{};
     std::function<bool(mavlink_message_t&)> _intercept_incoming_messages_callback{nullptr};
     std::function<bool(mavlink_message_t&)> _intercept_outgoing_messages_callback{nullptr};
 
@@ -197,6 +198,7 @@ private:
     std::queue<mavlink_message_t> _messages_to_send;
 
     static constexpr double HEARTBEAT_SEND_INTERVAL_S = 1.0;
+    std::mutex _heartbeat_mutex{};
     CallEveryHandler::Cookie _heartbeat_send_cookie{};
 
     std::atomic<bool> _should_exit = {false};
