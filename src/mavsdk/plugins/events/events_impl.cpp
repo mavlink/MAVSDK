@@ -41,7 +41,7 @@ void EventsImpl::init()
     get_or_create_event_handler(MAV_COMP_ID_AUTOPILOT1);
 
     // Request metadata
-    _system_impl->component_metadata().subscribe_metadata_available(
+    _subscribe_metadata_handle = _system_impl->component_metadata().subscribe_metadata_available(
         [this](MavlinkComponentMetadata::MetadataUpdate update) {
             if (update.type == MavlinkComponentMetadata::MetadataType::Events) {
                 set_metadata(update.compid, update.json_metadata);
@@ -52,6 +52,8 @@ void EventsImpl::init()
 
 void EventsImpl::deinit()
 {
+    _system_impl->component_metadata().unsubscribe_metadata_available(_subscribe_metadata_handle);
+
     if (_current_mode_cookie) {
         _system_impl->unregister_all_mavlink_message_handlers(_current_mode_cookie);
         _current_mode_cookie = nullptr;

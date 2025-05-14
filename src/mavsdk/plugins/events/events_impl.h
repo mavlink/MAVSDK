@@ -59,6 +59,8 @@ private:
     CallbackList<Events::Event> _events_callbacks;
     CallbackList<Events::HealthAndArmingCheckReport> _health_and_arming_checks_callbacks;
 
+    MavlinkComponentMetadata::MetadataAvailableHandle _subscribe_metadata_handle{};
+
     std::optional<uint32_t>
         _maybe_custom_mode_user_intention; ///< current user intention if available
     uint32_t _custom_mode{}; ///< current custom mode
