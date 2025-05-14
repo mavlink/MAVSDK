@@ -338,8 +338,11 @@ void MavsdkImpl::forward_message(mavlink_message_t& message, Connection* connect
 
 void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connection)
 {
-    std::lock_guard lock(_received_messages_mutex);
-    _received_messages.emplace(ReceivedMessage{std::move(message), connection});
+    {
+        std::lock_guard lock(_received_messages_mutex);
+        _received_messages.emplace(ReceivedMessage{std::move(message), connection});
+    }
+    _received_messages_cv.notify_one();
 }
 
 void MavsdkImpl::process_messages()
@@ -887,21 +890,13 @@ void MavsdkImpl::work_thread()
         // Deliver outgoing messages
         deliver_messages();
 
-        // Check if we have any pending messages
-        bool nothing_received;
-        bool messages_to_send;
-        {
-            std::lock_guard lock_received(_received_messages_mutex);
-            nothing_received = _received_messages.empty();
-
-            std::lock_guard lock_send(_messages_to_send_mutex);
-            messages_to_send = !_messages_to_send.empty();
-        }
-
-        // If there's nothing to do, sleep a bit to avoid busy looping
-        if (nothing_received && !messages_to_send) {
-            // Use a shorter sleep time to improve responsiveness
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        // If no messages to send, check if there are messages to receive
+        std::unique_lock lock_received(_received_messages_mutex);
+        if (_received_messages.empty()) {
+            // No messages to process, wait for a signal or timeout
+            _received_messages_cv.wait_for(lock_received, std::chrono::milliseconds(10), [this]() {
+                return !_received_messages.empty() || _should_exit;
+            });
         }
     }
 }

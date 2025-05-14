@@ -193,6 +193,7 @@ private:
     };
     mutable std::mutex _received_messages_mutex{};
     std::queue<ReceivedMessage> _received_messages;
+    std::condition_variable _received_messages_cv{};
 
     mutable std::mutex _messages_to_send_mutex{};
     std::queue<mavlink_message_t> _messages_to_send;
@@ -201,7 +202,7 @@ private:
     std::mutex _heartbeat_mutex{};
     CallEveryHandler::Cookie _heartbeat_send_cookie{};
 
-    std::atomic<bool> _should_exit = {false};
+    std::atomic<bool> _should_exit{false};
 };
 
 } // namespace mavsdk
