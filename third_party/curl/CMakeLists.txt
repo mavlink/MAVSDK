@@ -11,12 +11,14 @@ list(APPEND CMAKE_ARGS
     "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
     "-DCURL_USE_OPENSSL=ON"
     "-DCURL_USE_LIBSSH2=OFF"
+    "-DCURL_USE_LIBPSL=OFF"
     "-DBUILD_CURL_EXE=OFF"
     "-DBUILD_SHARED_LIBS=OFF"
+    "-DCURL_BROTLI=OFF"
     "-DCURL_ZLIB=OFF"
+    "-DCURL_ZSTD=OFF"
     "-DHTTP_ONLY=OFF"
     "-DUSE_NGHTTP2=OFF"
-    "-DHAVE_POSIX_STRERROR_R=1"
     "-DBUILD_TESTING=OFF"
     "-DUSE_LIBIDN2=OFF"
     )
@@ -56,7 +58,7 @@ endforeach()
 ExternalProject_add(
     curl
     GIT_REPOSITORY https://github.com/curl/curl.git
-    GIT_TAG curl-8_10_1
+    GIT_TAG curl-8_13_0
     GIT_SHALLOW ON
     PREFIX curl
     CMAKE_ARGS "${CMAKE_ARGS}"

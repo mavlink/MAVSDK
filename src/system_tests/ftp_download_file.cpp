@@ -184,18 +184,21 @@ TEST(SystemTest, FtpDownloadBigFileLossy)
 
     auto ftp = Ftp{system};
 
+    unsigned slow_down_counter = 0;
     auto prom = std::promise<Ftp::Result>();
     auto fut = prom.get_future();
     ftp.download_async(
         ("" / temp_file).string(),
         temp_dir_downloaded.string(),
         false,
-        [&prom](Ftp::Result result, Ftp::ProgressData progress_data) {
+        [&prom, &slow_down_counter](Ftp::Result result, Ftp::ProgressData progress_data) {
             if (result != Ftp::Result::Next) {
                 prom.set_value(result);
             } else {
-                LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                           << progress_data.total_bytes << " bytes";
+                if (slow_down_counter++ % 10 == 0) {
+                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
+                               << progress_data.total_bytes << " bytes";
+                }
             }
         });
 
@@ -251,21 +254,25 @@ TEST(SystemTest, FtpDownloadStopAndTryAgain)
     auto ftp = Ftp{system};
 
     {
+        unsigned slow_down_counter = 0;
         auto prom = std::promise<Ftp::Result>();
         auto fut = prom.get_future();
         ftp.download_async(
             ("" / temp_file).string(),
             temp_dir_downloaded.string(),
             false,
-            [&prom, &got_half](Ftp::Result result, Ftp::ProgressData progress_data) {
+            [&prom, &got_half, &slow_down_counter](
+                Ftp::Result result, Ftp::ProgressData progress_data) {
                 if (progress_data.bytes_transferred > 200) {
                     got_half = true;
                 }
                 if (result != Ftp::Result::Next) {
                     prom.set_value(result);
                 } else {
-                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                               << progress_data.total_bytes << " bytes";
+                    if (slow_down_counter++ % 10 == 0) {
+                        LogDebug() << "Download progress: " << progress_data.bytes_transferred
+                                   << "/" << progress_data.total_bytes << " bytes";
+                    }
                 }
             });
 

@@ -125,18 +125,21 @@ TEST(SystemTest, FtpDownloadBurstBigFile)
 
     auto ftp = Ftp{system};
 
+    unsigned slow_down_counter = 0;
     auto prom = std::promise<Ftp::Result>();
     auto fut = prom.get_future();
     ftp.download_async(
         temp_file.string(),
         temp_dir_downloaded.string(),
         true,
-        [&prom](Ftp::Result result, Ftp::ProgressData progress_data) {
+        [&prom, &slow_down_counter](Ftp::Result result, Ftp::ProgressData progress_data) {
             if (result != Ftp::Result::Next) {
                 prom.set_value(result);
             } else {
-                LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                           << progress_data.total_bytes << " bytes";
+                if (slow_down_counter++ % 10 == 0) {
+                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
+                               << progress_data.total_bytes << " bytes";
+                }
             }
         });
 
@@ -185,18 +188,21 @@ TEST(SystemTest, FtpDownloadBurstBigFileLossy)
 
     auto ftp = Ftp{system};
 
+    unsigned slow_down_counter = 0;
     auto prom = std::promise<Ftp::Result>();
     auto fut = prom.get_future();
     ftp.download_async(
         ("" / temp_file).string(),
         temp_dir_downloaded.string(),
         true,
-        [&prom](Ftp::Result result, Ftp::ProgressData progress_data) {
+        [&prom, &slow_down_counter](Ftp::Result result, Ftp::ProgressData progress_data) {
             if (result != Ftp::Result::Next) {
                 prom.set_value(result);
             } else {
-                LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
-                           << progress_data.total_bytes << " bytes";
+                if (slow_down_counter++ % 10 == 0) {
+                    LogDebug() << "Download progress: " << progress_data.bytes_transferred << "/"
+                               << progress_data.total_bytes << " bytes";
+                }
             }
         });
 

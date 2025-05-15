@@ -7,6 +7,11 @@ include(cmake/build_target.cmake)
 list(APPEND CMAKE_PREFIX_PATH "${DEPS_INSTALL_PATH}")
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} PARENT_SCOPE)
 
+if (CMAKE_CROSSCOMPILING)
+    list(APPEND CMAKE_FIND_ROOT_PATH "${DEPS_INSTALL_PATH}")
+    set(CMAKE_FIND_ROOT_PATH ${CMAKE_FIND_ROOT_PATH} PARENT_SCOPE)
+endif()
+
 if(SUPERBUILD)
     build_target(mavlink)
     build_target(jsoncpp)

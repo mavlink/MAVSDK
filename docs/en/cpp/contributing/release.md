@@ -20,7 +20,7 @@ The idea is of course to automate this as much as possible.
 1. - Update the version branch (e.g. `v3`) as well to track main.
    - Create the release on GitHub for the pushed tag. Generate the changelog using the GitHub button.
 1. Check later if all artifacts have been uploaded correctly to the release.
-1. Update the Arch AUR repository. This depends on the AUR maintainter's credentials (currently julianoes).
+1. Update the Arch AUR repository. This depends on the AUR maintainer's credentials (currently julianoes).
    - Use the repo: `ssh://aur@aur.archlinux.org/mavsdk.git`.
    - Bump the version in `pkgver=X.Y.Z`.
    - Check PKGBUILD: `namcap PKGBUILD`.

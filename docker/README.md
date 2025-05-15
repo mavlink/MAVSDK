@@ -1,34 +1,48 @@
-## Building and using Docker development images.
+# MAVSDK Docker Images
 
-These Dockerfiles will create a MAVSDK development container image based on whichever flavour of Ubuntu or Fedora you prefer.
+This directory contains Dockerfiles for building Docker images used in the MAVSDK project.
 
-Docker images are built by the project and are hosted on Docker Hub.
-You can use them simply by :
+## Available Images
+
+### Ubuntu Images
+
+- `Dockerfile-ubuntu-20.04`: Ubuntu 20.04 with build dependencies for MAVSDK
+- `Dockerfile-ubuntu-22.04`: Ubuntu 22.04 with build dependencies for MAVSDK
+- `Dockerfile-ubuntu-24.04`: Ubuntu 24.04 with build dependencies for MAVSDK
+
+These images include all the dependencies needed for development, CI builds, and documentation generation.
+
+### Debian Images
+
+- `Dockerfile-debian-11`: Debian 11 (Bullseye)
+- `Dockerfile-debian-12`: Debian 12 (Bookworm)
+- `Dockerfile-debian-13`: Debian 13 (Trixie)
+
+### Dockcross Images
+
+- `Dockerfile.dockcross-linux-armv6-custom`: For cross-compiling to ARMv6
+- `Dockerfile.dockcross-linux-armv7-custom`: For cross-compiling to ARMv7
+- `Dockerfile.dockcross-linux-arm64-custom`: For cross-compiling to ARM64
+- `Dockerfile.dockcross-linux-arm64-lts-custom`: For cross-compiling to ARM64 LTS
+
+## Using the Docker Images
+
+Docker images are built by the project and are hosted on Docker Hub. You can use them simply by:
 
 ```bash
 cd /whereever/MAVSDK
 ./tools/run-docker.sh
 ```
 
-Should you wish to create and use your own local images, use the following.
+By default, this will use the `mavsdk/mavsdk-dev` image, which is an alias for the Ubuntu 24.04 image.
 
-To create an image :
-
-```bash
-cd /whereever/MAVSDK/docker
-docker build -t mavsdk/mavsdk-ubuntu-20.04 -f Dockerfile-Ubuntu-20.04 .
-```
-
-To use the image :
+To use a specific Ubuntu version:
 
 ```bash
 cd /whereever/MAVSDK
-./tools/run-docker.sh
+DOCKER_IMAGE=mavsdk/mavsdk-ubuntu-24.04 ./tools/run-docker.sh
 ```
 
-This will create and run a container based on your image.
-/whereever/MAVSDK will be mounted inside the container at /home/user/MAVSDK
+## CI Integration
 
-```bash
-user@a476023ed255:~/MAVSDK$
-```
+The Docker images are used in the GitHub Actions workflow to provide consistent build environments for the CI pipeline. The workflow uses the images as containers for the jobs, which allows us to have a consistent build environment across all jobs.

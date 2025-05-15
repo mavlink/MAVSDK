@@ -1,4 +1,4 @@
-FROM dockcross/linux-armv6
+FROM dockcross/linux-armv6:20250311-4bd0eec
 
 ENV DEFAULT_DOCKCROSS_IMAGE mavsdk/mavsdk-dockcross-linux-armv6-custom
 
