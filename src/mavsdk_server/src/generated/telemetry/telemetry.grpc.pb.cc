@@ -80,6 +80,7 @@ static const char* TelemetryService_method_names[] = {
   "/mavsdk.rpc.telemetry.TelemetryService/SetRateUnixEpochTime",
   "/mavsdk.rpc.telemetry.TelemetryService/SetRateDistanceSensor",
   "/mavsdk.rpc.telemetry.TelemetryService/SetRateAltitude",
+  "/mavsdk.rpc.telemetry.TelemetryService/SetRateHealth",
   "/mavsdk.rpc.telemetry.TelemetryService/GetGpsGlobalOrigin",
 };
 
@@ -146,7 +147,8 @@ TelemetryService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& c
   , rpcmethod_SetRateUnixEpochTime_(TelemetryService_method_names[53], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetRateDistanceSensor_(TelemetryService_method_names[54], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_SetRateAltitude_(TelemetryService_method_names[55], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_GetGpsGlobalOrigin_(TelemetryService_method_names[56], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_SetRateHealth_(TelemetryService_method_names[56], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetGpsGlobalOrigin_(TelemetryService_method_names[57], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::ClientReader< ::mavsdk::rpc::telemetry::PositionResponse>* TelemetryService::Stub::SubscribePositionRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SubscribePositionRequest& request) {
@@ -1206,6 +1208,29 @@ void TelemetryService::Stub::async::SetRateAltitude(::grpc::ClientContext* conte
   return result;
 }
 
+::grpc::Status TelemetryService::Stub::SetRateHealth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest& request, ::mavsdk::rpc::telemetry::SetRateHealthResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::telemetry::SetRateHealthRequest, ::mavsdk::rpc::telemetry::SetRateHealthResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_SetRateHealth_, context, request, response);
+}
+
+void TelemetryService::Stub::async::SetRateHealth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest* request, ::mavsdk::rpc::telemetry::SetRateHealthResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::telemetry::SetRateHealthRequest, ::mavsdk::rpc::telemetry::SetRateHealthResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetRateHealth_, context, request, response, std::move(f));
+}
+
+void TelemetryService::Stub::async::SetRateHealth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest* request, ::mavsdk::rpc::telemetry::SetRateHealthResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_SetRateHealth_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateHealthResponse>* TelemetryService::Stub::PrepareAsyncSetRateHealthRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::telemetry::SetRateHealthResponse, ::mavsdk::rpc::telemetry::SetRateHealthRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_SetRateHealth_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateHealthResponse>* TelemetryService::Stub::AsyncSetRateHealthRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncSetRateHealthRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 ::grpc::Status TelemetryService::Stub::GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest& request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response) {
   return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetGpsGlobalOrigin_, context, request, response);
 }
@@ -1793,6 +1818,16 @@ TelemetryService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       TelemetryService_method_names[56],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::SetRateHealthRequest, ::mavsdk::rpc::telemetry::SetRateHealthResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](TelemetryService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::telemetry::SetRateHealthRequest* req,
+             ::mavsdk::rpc::telemetry::SetRateHealthResponse* resp) {
+               return service->SetRateHealth(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      TelemetryService_method_names[57],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< TelemetryService::Service, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](TelemetryService::Service* service,
              ::grpc::ServerContext* ctx,
@@ -2191,6 +2226,13 @@ TelemetryService::Service::~Service() {
 }
 
 ::grpc::Status TelemetryService::Service::SetRateAltitude(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SetRateAltitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateAltitudeResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status TelemetryService::Service::SetRateHealth(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest* request, ::mavsdk::rpc::telemetry::SetRateHealthResponse* response) {
   (void) context;
   (void) request;
   (void) response;
