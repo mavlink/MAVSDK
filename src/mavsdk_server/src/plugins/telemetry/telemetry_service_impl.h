@@ -3482,6 +3482,34 @@ public:
         return grpc::Status::OK;
     }
 
+    grpc::Status SetRateHealth(
+        grpc::ServerContext* /* context */,
+        const rpc::telemetry::SetRateHealthRequest* request,
+        rpc::telemetry::SetRateHealthResponse* response) override
+    {
+        if (_lazy_plugin.maybe_plugin() == nullptr) {
+            if (response != nullptr) {
+                auto result = mavsdk::Telemetry::Result::NoSystem;
+                fillResponseWithResult(response, result);
+            }
+
+            return grpc::Status::OK;
+        }
+
+        if (request == nullptr) {
+            LogWarn() << "SetRateHealth sent with a null request! Ignoring...";
+            return grpc::Status::OK;
+        }
+
+        auto result = _lazy_plugin.maybe_plugin()->set_rate_health(request->rate_hz());
+
+        if (response != nullptr) {
+            fillResponseWithResult(response, result);
+        }
+
+        return grpc::Status::OK;
+    }
+
     grpc::Status GetGpsGlobalOrigin(
         grpc::ServerContext* /* context */,
         const rpc::telemetry::GetGpsGlobalOriginRequest* /* request */,

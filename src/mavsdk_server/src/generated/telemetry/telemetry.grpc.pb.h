@@ -555,6 +555,14 @@ class TelemetryService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateAltitudeResponse>> PrepareAsyncSetRateAltitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAltitudeRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateAltitudeResponse>>(PrepareAsyncSetRateAltitudeRaw(context, request, cq));
     }
+    // Set rate to 'Health' updates.
+    virtual ::grpc::Status SetRateHealth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest& request, ::mavsdk::rpc::telemetry::SetRateHealthResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateHealthResponse>> AsyncSetRateHealth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateHealthResponse>>(AsyncSetRateHealthRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateHealthResponse>> PrepareAsyncSetRateHealth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateHealthResponse>>(PrepareAsyncSetRateHealthRaw(context, request, cq));
+    }
     // Get the GPS location of where the estimator has been initialized.
     virtual ::grpc::Status GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest& request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>> AsyncGetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) {
@@ -702,6 +710,9 @@ class TelemetryService final {
       // Set rate to 'Altitude' updates.
       virtual void SetRateAltitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAltitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateAltitudeResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void SetRateAltitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAltitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateAltitudeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      // Set rate to 'Health' updates.
+      virtual void SetRateHealth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest* request, ::mavsdk::rpc::telemetry::SetRateHealthResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void SetRateHealth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest* request, ::mavsdk::rpc::telemetry::SetRateHealthResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       // Get the GPS location of where the estimator has been initialized.
       virtual void GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
@@ -855,6 +866,8 @@ class TelemetryService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse>* PrepareAsyncSetRateDistanceSensorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateAltitudeResponse>* AsyncSetRateAltitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAltitudeRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateAltitudeResponse>* PrepareAsyncSetRateAltitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAltitudeRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateHealthResponse>* AsyncSetRateHealthRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::SetRateHealthResponse>* PrepareAsyncSetRateHealthRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>* AsyncGetGpsGlobalOriginRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>* PrepareAsyncGetGpsGlobalOriginRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
@@ -1319,6 +1332,13 @@ class TelemetryService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateAltitudeResponse>> PrepareAsyncSetRateAltitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAltitudeRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateAltitudeResponse>>(PrepareAsyncSetRateAltitudeRaw(context, request, cq));
     }
+    ::grpc::Status SetRateHealth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest& request, ::mavsdk::rpc::telemetry::SetRateHealthResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateHealthResponse>> AsyncSetRateHealth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateHealthResponse>>(AsyncSetRateHealthRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateHealthResponse>> PrepareAsyncSetRateHealth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateHealthResponse>>(PrepareAsyncSetRateHealthRaw(context, request, cq));
+    }
     ::grpc::Status GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest& request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>> AsyncGetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>>(AsyncGetGpsGlobalOriginRaw(context, request, cq));
@@ -1408,6 +1428,8 @@ class TelemetryService final {
       void SetRateDistanceSensor(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest* request, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void SetRateAltitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAltitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateAltitudeResponse* response, std::function<void(::grpc::Status)>) override;
       void SetRateAltitude(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAltitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateAltitudeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void SetRateHealth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest* request, ::mavsdk::rpc::telemetry::SetRateHealthResponse* response, std::function<void(::grpc::Status)>) override;
+      void SetRateHealth(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest* request, ::mavsdk::rpc::telemetry::SetRateHealthResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response, std::function<void(::grpc::Status)>) override;
       void GetGpsGlobalOrigin(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
@@ -1566,6 +1588,8 @@ class TelemetryService final {
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse>* PrepareAsyncSetRateDistanceSensorRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateAltitudeResponse>* AsyncSetRateAltitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAltitudeRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateAltitudeResponse>* PrepareAsyncSetRateAltitudeRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateAltitudeRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateHealthResponse>* AsyncSetRateHealthRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::SetRateHealthResponse>* PrepareAsyncSetRateHealthRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>* AsyncGetGpsGlobalOriginRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>* PrepareAsyncGetGpsGlobalOriginRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SubscribePosition_;
@@ -1624,6 +1648,7 @@ class TelemetryService final {
     const ::grpc::internal::RpcMethod rpcmethod_SetRateUnixEpochTime_;
     const ::grpc::internal::RpcMethod rpcmethod_SetRateDistanceSensor_;
     const ::grpc::internal::RpcMethod rpcmethod_SetRateAltitude_;
+    const ::grpc::internal::RpcMethod rpcmethod_SetRateHealth_;
     const ::grpc::internal::RpcMethod rpcmethod_GetGpsGlobalOrigin_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
@@ -1745,6 +1770,8 @@ class TelemetryService final {
     virtual ::grpc::Status SetRateDistanceSensor(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SetRateDistanceSensorRequest* request, ::mavsdk::rpc::telemetry::SetRateDistanceSensorResponse* response);
     // Set rate to 'Altitude' updates.
     virtual ::grpc::Status SetRateAltitude(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SetRateAltitudeRequest* request, ::mavsdk::rpc::telemetry::SetRateAltitudeResponse* response);
+    // Set rate to 'Health' updates.
+    virtual ::grpc::Status SetRateHealth(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest* request, ::mavsdk::rpc::telemetry::SetRateHealthResponse* response);
     // Get the GPS location of where the estimator has been initialized.
     virtual ::grpc::Status GetGpsGlobalOrigin(::grpc::ServerContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response);
   };
@@ -2869,12 +2896,32 @@ class TelemetryService final {
     }
   };
   template <class BaseClass>
+  class WithAsyncMethod_SetRateHealth : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_SetRateHealth() {
+      ::grpc::Service::MarkMethodAsync(56);
+    }
+    ~WithAsyncMethod_SetRateHealth() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetRateHealth(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateHealthRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateHealthResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetRateHealth(::grpc::ServerContext* context, ::mavsdk::rpc::telemetry::SetRateHealthRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::telemetry::SetRateHealthResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(56, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithAsyncMethod_GetGpsGlobalOrigin : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_GetGpsGlobalOrigin() {
-      ::grpc::Service::MarkMethodAsync(56);
+      ::grpc::Service::MarkMethodAsync(57);
     }
     ~WithAsyncMethod_GetGpsGlobalOrigin() override {
       BaseClassMustBeDerivedFromService(this);
@@ -2885,10 +2932,10 @@ class TelemetryService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetGpsGlobalOrigin(::grpc::ServerContext* context, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::grpc::ServerAsyncResponseWriter< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(56, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(57, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SubscribePosition<WithAsyncMethod_SubscribeHome<WithAsyncMethod_SubscribeInAir<WithAsyncMethod_SubscribeLandedState<WithAsyncMethod_SubscribeArmed<WithAsyncMethod_SubscribeVtolState<WithAsyncMethod_SubscribeAttitudeQuaternion<WithAsyncMethod_SubscribeAttitudeEuler<WithAsyncMethod_SubscribeAttitudeAngularVelocityBody<WithAsyncMethod_SubscribeVelocityNed<WithAsyncMethod_SubscribeGpsInfo<WithAsyncMethod_SubscribeRawGps<WithAsyncMethod_SubscribeBattery<WithAsyncMethod_SubscribeFlightMode<WithAsyncMethod_SubscribeHealth<WithAsyncMethod_SubscribeRcStatus<WithAsyncMethod_SubscribeStatusText<WithAsyncMethod_SubscribeActuatorControlTarget<WithAsyncMethod_SubscribeActuatorOutputStatus<WithAsyncMethod_SubscribeOdometry<WithAsyncMethod_SubscribePositionVelocityNed<WithAsyncMethod_SubscribeGroundTruth<WithAsyncMethod_SubscribeFixedwingMetrics<WithAsyncMethod_SubscribeImu<WithAsyncMethod_SubscribeScaledImu<WithAsyncMethod_SubscribeRawImu<WithAsyncMethod_SubscribeHealthAllOk<WithAsyncMethod_SubscribeUnixEpochTime<WithAsyncMethod_SubscribeDistanceSensor<WithAsyncMethod_SubscribeScaledPressure<WithAsyncMethod_SubscribeHeading<WithAsyncMethod_SubscribeAltitude<WithAsyncMethod_SubscribeWind<WithAsyncMethod_SetRatePosition<WithAsyncMethod_SetRateHome<WithAsyncMethod_SetRateInAir<WithAsyncMethod_SetRateLandedState<WithAsyncMethod_SetRateVtolState<WithAsyncMethod_SetRateAttitudeQuaternion<WithAsyncMethod_SetRateAttitudeEuler<WithAsyncMethod_SetRateVelocityNed<WithAsyncMethod_SetRateGpsInfo<WithAsyncMethod_SetRateBattery<WithAsyncMethod_SetRateRcStatus<WithAsyncMethod_SetRateActuatorControlTarget<WithAsyncMethod_SetRateActuatorOutputStatus<WithAsyncMethod_SetRateOdometry<WithAsyncMethod_SetRatePositionVelocityNed<WithAsyncMethod_SetRateGroundTruth<WithAsyncMethod_SetRateFixedwingMetrics<WithAsyncMethod_SetRateImu<WithAsyncMethod_SetRateScaledImu<WithAsyncMethod_SetRateRawImu<WithAsyncMethod_SetRateUnixEpochTime<WithAsyncMethod_SetRateDistanceSensor<WithAsyncMethod_SetRateAltitude<WithAsyncMethod_GetGpsGlobalOrigin<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
+  typedef WithAsyncMethod_SubscribePosition<WithAsyncMethod_SubscribeHome<WithAsyncMethod_SubscribeInAir<WithAsyncMethod_SubscribeLandedState<WithAsyncMethod_SubscribeArmed<WithAsyncMethod_SubscribeVtolState<WithAsyncMethod_SubscribeAttitudeQuaternion<WithAsyncMethod_SubscribeAttitudeEuler<WithAsyncMethod_SubscribeAttitudeAngularVelocityBody<WithAsyncMethod_SubscribeVelocityNed<WithAsyncMethod_SubscribeGpsInfo<WithAsyncMethod_SubscribeRawGps<WithAsyncMethod_SubscribeBattery<WithAsyncMethod_SubscribeFlightMode<WithAsyncMethod_SubscribeHealth<WithAsyncMethod_SubscribeRcStatus<WithAsyncMethod_SubscribeStatusText<WithAsyncMethod_SubscribeActuatorControlTarget<WithAsyncMethod_SubscribeActuatorOutputStatus<WithAsyncMethod_SubscribeOdometry<WithAsyncMethod_SubscribePositionVelocityNed<WithAsyncMethod_SubscribeGroundTruth<WithAsyncMethod_SubscribeFixedwingMetrics<WithAsyncMethod_SubscribeImu<WithAsyncMethod_SubscribeScaledImu<WithAsyncMethod_SubscribeRawImu<WithAsyncMethod_SubscribeHealthAllOk<WithAsyncMethod_SubscribeUnixEpochTime<WithAsyncMethod_SubscribeDistanceSensor<WithAsyncMethod_SubscribeScaledPressure<WithAsyncMethod_SubscribeHeading<WithAsyncMethod_SubscribeAltitude<WithAsyncMethod_SubscribeWind<WithAsyncMethod_SetRatePosition<WithAsyncMethod_SetRateHome<WithAsyncMethod_SetRateInAir<WithAsyncMethod_SetRateLandedState<WithAsyncMethod_SetRateVtolState<WithAsyncMethod_SetRateAttitudeQuaternion<WithAsyncMethod_SetRateAttitudeEuler<WithAsyncMethod_SetRateVelocityNed<WithAsyncMethod_SetRateGpsInfo<WithAsyncMethod_SetRateBattery<WithAsyncMethod_SetRateRcStatus<WithAsyncMethod_SetRateActuatorControlTarget<WithAsyncMethod_SetRateActuatorOutputStatus<WithAsyncMethod_SetRateOdometry<WithAsyncMethod_SetRatePositionVelocityNed<WithAsyncMethod_SetRateGroundTruth<WithAsyncMethod_SetRateFixedwingMetrics<WithAsyncMethod_SetRateImu<WithAsyncMethod_SetRateScaledImu<WithAsyncMethod_SetRateRawImu<WithAsyncMethod_SetRateUnixEpochTime<WithAsyncMethod_SetRateDistanceSensor<WithAsyncMethod_SetRateAltitude<WithAsyncMethod_SetRateHealth<WithAsyncMethod_GetGpsGlobalOrigin<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_SubscribePosition : public BaseClass {
    private:
@@ -4237,18 +4284,45 @@ class TelemetryService final {
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateAltitudeRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateAltitudeResponse* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithCallbackMethod_SetRateHealth : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_SetRateHealth() {
+      ::grpc::Service::MarkMethodCallback(56,
+          new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateHealthRequest, ::mavsdk::rpc::telemetry::SetRateHealthResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::SetRateHealthRequest* request, ::mavsdk::rpc::telemetry::SetRateHealthResponse* response) { return this->SetRateHealth(context, request, response); }));}
+    void SetMessageAllocatorFor_SetRateHealth(
+        ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::SetRateHealthRequest, ::mavsdk::rpc::telemetry::SetRateHealthResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(56);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::SetRateHealthRequest, ::mavsdk::rpc::telemetry::SetRateHealthResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_SetRateHealth() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetRateHealth(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateHealthRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateHealthResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetRateHealth(
+      ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateHealthRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateHealthResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithCallbackMethod_GetGpsGlobalOrigin : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_GetGpsGlobalOrigin() {
-      ::grpc::Service::MarkMethodCallback(56,
+      ::grpc::Service::MarkMethodCallback(57,
           new ::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* request, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* response) { return this->GetGpsGlobalOrigin(context, request, response); }));}
     void SetMessageAllocatorFor_GetGpsGlobalOrigin(
         ::grpc::MessageAllocator< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(56);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(57);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -4263,7 +4337,7 @@ class TelemetryService final {
     virtual ::grpc::ServerUnaryReactor* GetGpsGlobalOrigin(
       ::grpc::CallbackServerContext* /*context*/, const ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest* /*request*/, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_SubscribePosition<WithCallbackMethod_SubscribeHome<WithCallbackMethod_SubscribeInAir<WithCallbackMethod_SubscribeLandedState<WithCallbackMethod_SubscribeArmed<WithCallbackMethod_SubscribeVtolState<WithCallbackMethod_SubscribeAttitudeQuaternion<WithCallbackMethod_SubscribeAttitudeEuler<WithCallbackMethod_SubscribeAttitudeAngularVelocityBody<WithCallbackMethod_SubscribeVelocityNed<WithCallbackMethod_SubscribeGpsInfo<WithCallbackMethod_SubscribeRawGps<WithCallbackMethod_SubscribeBattery<WithCallbackMethod_SubscribeFlightMode<WithCallbackMethod_SubscribeHealth<WithCallbackMethod_SubscribeRcStatus<WithCallbackMethod_SubscribeStatusText<WithCallbackMethod_SubscribeActuatorControlTarget<WithCallbackMethod_SubscribeActuatorOutputStatus<WithCallbackMethod_SubscribeOdometry<WithCallbackMethod_SubscribePositionVelocityNed<WithCallbackMethod_SubscribeGroundTruth<WithCallbackMethod_SubscribeFixedwingMetrics<WithCallbackMethod_SubscribeImu<WithCallbackMethod_SubscribeScaledImu<WithCallbackMethod_SubscribeRawImu<WithCallbackMethod_SubscribeHealthAllOk<WithCallbackMethod_SubscribeUnixEpochTime<WithCallbackMethod_SubscribeDistanceSensor<WithCallbackMethod_SubscribeScaledPressure<WithCallbackMethod_SubscribeHeading<WithCallbackMethod_SubscribeAltitude<WithCallbackMethod_SubscribeWind<WithCallbackMethod_SetRatePosition<WithCallbackMethod_SetRateHome<WithCallbackMethod_SetRateInAir<WithCallbackMethod_SetRateLandedState<WithCallbackMethod_SetRateVtolState<WithCallbackMethod_SetRateAttitudeQuaternion<WithCallbackMethod_SetRateAttitudeEuler<WithCallbackMethod_SetRateVelocityNed<WithCallbackMethod_SetRateGpsInfo<WithCallbackMethod_SetRateBattery<WithCallbackMethod_SetRateRcStatus<WithCallbackMethod_SetRateActuatorControlTarget<WithCallbackMethod_SetRateActuatorOutputStatus<WithCallbackMethod_SetRateOdometry<WithCallbackMethod_SetRatePositionVelocityNed<WithCallbackMethod_SetRateGroundTruth<WithCallbackMethod_SetRateFixedwingMetrics<WithCallbackMethod_SetRateImu<WithCallbackMethod_SetRateScaledImu<WithCallbackMethod_SetRateRawImu<WithCallbackMethod_SetRateUnixEpochTime<WithCallbackMethod_SetRateDistanceSensor<WithCallbackMethod_SetRateAltitude<WithCallbackMethod_GetGpsGlobalOrigin<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
+  typedef WithCallbackMethod_SubscribePosition<WithCallbackMethod_SubscribeHome<WithCallbackMethod_SubscribeInAir<WithCallbackMethod_SubscribeLandedState<WithCallbackMethod_SubscribeArmed<WithCallbackMethod_SubscribeVtolState<WithCallbackMethod_SubscribeAttitudeQuaternion<WithCallbackMethod_SubscribeAttitudeEuler<WithCallbackMethod_SubscribeAttitudeAngularVelocityBody<WithCallbackMethod_SubscribeVelocityNed<WithCallbackMethod_SubscribeGpsInfo<WithCallbackMethod_SubscribeRawGps<WithCallbackMethod_SubscribeBattery<WithCallbackMethod_SubscribeFlightMode<WithCallbackMethod_SubscribeHealth<WithCallbackMethod_SubscribeRcStatus<WithCallbackMethod_SubscribeStatusText<WithCallbackMethod_SubscribeActuatorControlTarget<WithCallbackMethod_SubscribeActuatorOutputStatus<WithCallbackMethod_SubscribeOdometry<WithCallbackMethod_SubscribePositionVelocityNed<WithCallbackMethod_SubscribeGroundTruth<WithCallbackMethod_SubscribeFixedwingMetrics<WithCallbackMethod_SubscribeImu<WithCallbackMethod_SubscribeScaledImu<WithCallbackMethod_SubscribeRawImu<WithCallbackMethod_SubscribeHealthAllOk<WithCallbackMethod_SubscribeUnixEpochTime<WithCallbackMethod_SubscribeDistanceSensor<WithCallbackMethod_SubscribeScaledPressure<WithCallbackMethod_SubscribeHeading<WithCallbackMethod_SubscribeAltitude<WithCallbackMethod_SubscribeWind<WithCallbackMethod_SetRatePosition<WithCallbackMethod_SetRateHome<WithCallbackMethod_SetRateInAir<WithCallbackMethod_SetRateLandedState<WithCallbackMethod_SetRateVtolState<WithCallbackMethod_SetRateAttitudeQuaternion<WithCallbackMethod_SetRateAttitudeEuler<WithCallbackMethod_SetRateVelocityNed<WithCallbackMethod_SetRateGpsInfo<WithCallbackMethod_SetRateBattery<WithCallbackMethod_SetRateRcStatus<WithCallbackMethod_SetRateActuatorControlTarget<WithCallbackMethod_SetRateActuatorOutputStatus<WithCallbackMethod_SetRateOdometry<WithCallbackMethod_SetRatePositionVelocityNed<WithCallbackMethod_SetRateGroundTruth<WithCallbackMethod_SetRateFixedwingMetrics<WithCallbackMethod_SetRateImu<WithCallbackMethod_SetRateScaledImu<WithCallbackMethod_SetRateRawImu<WithCallbackMethod_SetRateUnixEpochTime<WithCallbackMethod_SetRateDistanceSensor<WithCallbackMethod_SetRateAltitude<WithCallbackMethod_SetRateHealth<WithCallbackMethod_GetGpsGlobalOrigin<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SubscribePosition : public BaseClass {
@@ -5218,12 +5292,29 @@ class TelemetryService final {
     }
   };
   template <class BaseClass>
+  class WithGenericMethod_SetRateHealth : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_SetRateHealth() {
+      ::grpc::Service::MarkMethodGeneric(56);
+    }
+    ~WithGenericMethod_SetRateHealth() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetRateHealth(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateHealthRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateHealthResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
   class WithGenericMethod_GetGpsGlobalOrigin : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_GetGpsGlobalOrigin() {
-      ::grpc::Service::MarkMethodGeneric(56);
+      ::grpc::Service::MarkMethodGeneric(57);
     }
     ~WithGenericMethod_GetGpsGlobalOrigin() override {
       BaseClassMustBeDerivedFromService(this);
@@ -6355,12 +6446,32 @@ class TelemetryService final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_SetRateHealth : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_SetRateHealth() {
+      ::grpc::Service::MarkMethodRaw(56);
+    }
+    ~WithRawMethod_SetRateHealth() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetRateHealth(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateHealthRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateHealthResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestSetRateHealth(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(56, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawMethod_GetGpsGlobalOrigin : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_GetGpsGlobalOrigin() {
-      ::grpc::Service::MarkMethodRaw(56);
+      ::grpc::Service::MarkMethodRaw(57);
     }
     ~WithRawMethod_GetGpsGlobalOrigin() override {
       BaseClassMustBeDerivedFromService(this);
@@ -6371,7 +6482,7 @@ class TelemetryService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestGetGpsGlobalOrigin(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(56, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(57, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -7607,12 +7718,34 @@ class TelemetryService final {
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
+  class WithRawCallbackMethod_SetRateHealth : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_SetRateHealth() {
+      ::grpc::Service::MarkMethodRawCallback(56,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->SetRateHealth(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_SetRateHealth() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status SetRateHealth(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateHealthRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateHealthResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* SetRateHealth(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
   class WithRawCallbackMethod_GetGpsGlobalOrigin : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_GetGpsGlobalOrigin() {
-      ::grpc::Service::MarkMethodRawCallback(56,
+      ::grpc::Service::MarkMethodRawCallback(57,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetGpsGlobalOrigin(context, request, response); }));
@@ -8250,12 +8383,39 @@ class TelemetryService final {
     virtual ::grpc::Status StreamedSetRateAltitude(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::telemetry::SetRateAltitudeRequest,::mavsdk::rpc::telemetry::SetRateAltitudeResponse>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
+  class WithStreamedUnaryMethod_SetRateHealth : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_SetRateHealth() {
+      ::grpc::Service::MarkMethodStreamed(56,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::mavsdk::rpc::telemetry::SetRateHealthRequest, ::mavsdk::rpc::telemetry::SetRateHealthResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::mavsdk::rpc::telemetry::SetRateHealthRequest, ::mavsdk::rpc::telemetry::SetRateHealthResponse>* streamer) {
+                       return this->StreamedSetRateHealth(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_SetRateHealth() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status SetRateHealth(::grpc::ServerContext* /*context*/, const ::mavsdk::rpc::telemetry::SetRateHealthRequest* /*request*/, ::mavsdk::rpc::telemetry::SetRateHealthResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedSetRateHealth(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::telemetry::SetRateHealthRequest,::mavsdk::rpc::telemetry::SetRateHealthResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_GetGpsGlobalOrigin : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_GetGpsGlobalOrigin() {
-      ::grpc::Service::MarkMethodStreamed(56,
+      ::grpc::Service::MarkMethodStreamed(57,
         new ::grpc::internal::StreamedUnaryHandler<
           ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest, ::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>(
             [this](::grpc::ServerContext* context,
@@ -8276,7 +8436,7 @@ class TelemetryService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedGetGpsGlobalOrigin(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::mavsdk::rpc::telemetry::GetGpsGlobalOriginRequest,::mavsdk::rpc::telemetry::GetGpsGlobalOriginResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_SetRatePosition<WithStreamedUnaryMethod_SetRateHome<WithStreamedUnaryMethod_SetRateInAir<WithStreamedUnaryMethod_SetRateLandedState<WithStreamedUnaryMethod_SetRateVtolState<WithStreamedUnaryMethod_SetRateAttitudeQuaternion<WithStreamedUnaryMethod_SetRateAttitudeEuler<WithStreamedUnaryMethod_SetRateVelocityNed<WithStreamedUnaryMethod_SetRateGpsInfo<WithStreamedUnaryMethod_SetRateBattery<WithStreamedUnaryMethod_SetRateRcStatus<WithStreamedUnaryMethod_SetRateActuatorControlTarget<WithStreamedUnaryMethod_SetRateActuatorOutputStatus<WithStreamedUnaryMethod_SetRateOdometry<WithStreamedUnaryMethod_SetRatePositionVelocityNed<WithStreamedUnaryMethod_SetRateGroundTruth<WithStreamedUnaryMethod_SetRateFixedwingMetrics<WithStreamedUnaryMethod_SetRateImu<WithStreamedUnaryMethod_SetRateScaledImu<WithStreamedUnaryMethod_SetRateRawImu<WithStreamedUnaryMethod_SetRateUnixEpochTime<WithStreamedUnaryMethod_SetRateDistanceSensor<WithStreamedUnaryMethod_SetRateAltitude<WithStreamedUnaryMethod_GetGpsGlobalOrigin<Service > > > > > > > > > > > > > > > > > > > > > > > > StreamedUnaryService;
+  typedef WithStreamedUnaryMethod_SetRatePosition<WithStreamedUnaryMethod_SetRateHome<WithStreamedUnaryMethod_SetRateInAir<WithStreamedUnaryMethod_SetRateLandedState<WithStreamedUnaryMethod_SetRateVtolState<WithStreamedUnaryMethod_SetRateAttitudeQuaternion<WithStreamedUnaryMethod_SetRateAttitudeEuler<WithStreamedUnaryMethod_SetRateVelocityNed<WithStreamedUnaryMethod_SetRateGpsInfo<WithStreamedUnaryMethod_SetRateBattery<WithStreamedUnaryMethod_SetRateRcStatus<WithStreamedUnaryMethod_SetRateActuatorControlTarget<WithStreamedUnaryMethod_SetRateActuatorOutputStatus<WithStreamedUnaryMethod_SetRateOdometry<WithStreamedUnaryMethod_SetRatePositionVelocityNed<WithStreamedUnaryMethod_SetRateGroundTruth<WithStreamedUnaryMethod_SetRateFixedwingMetrics<WithStreamedUnaryMethod_SetRateImu<WithStreamedUnaryMethod_SetRateScaledImu<WithStreamedUnaryMethod_SetRateRawImu<WithStreamedUnaryMethod_SetRateUnixEpochTime<WithStreamedUnaryMethod_SetRateDistanceSensor<WithStreamedUnaryMethod_SetRateAltitude<WithStreamedUnaryMethod_SetRateHealth<WithStreamedUnaryMethod_GetGpsGlobalOrigin<Service > > > > > > > > > > > > > > > > > > > > > > > > > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_SubscribePosition : public BaseClass {
    private:
@@ -9169,7 +9329,7 @@ class TelemetryService final {
     virtual ::grpc::Status StreamedSubscribeWind(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::mavsdk::rpc::telemetry::SubscribeWindRequest,::mavsdk::rpc::telemetry::WindResponse>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_SubscribePosition<WithSplitStreamingMethod_SubscribeHome<WithSplitStreamingMethod_SubscribeInAir<WithSplitStreamingMethod_SubscribeLandedState<WithSplitStreamingMethod_SubscribeArmed<WithSplitStreamingMethod_SubscribeVtolState<WithSplitStreamingMethod_SubscribeAttitudeQuaternion<WithSplitStreamingMethod_SubscribeAttitudeEuler<WithSplitStreamingMethod_SubscribeAttitudeAngularVelocityBody<WithSplitStreamingMethod_SubscribeVelocityNed<WithSplitStreamingMethod_SubscribeGpsInfo<WithSplitStreamingMethod_SubscribeRawGps<WithSplitStreamingMethod_SubscribeBattery<WithSplitStreamingMethod_SubscribeFlightMode<WithSplitStreamingMethod_SubscribeHealth<WithSplitStreamingMethod_SubscribeRcStatus<WithSplitStreamingMethod_SubscribeStatusText<WithSplitStreamingMethod_SubscribeActuatorControlTarget<WithSplitStreamingMethod_SubscribeActuatorOutputStatus<WithSplitStreamingMethod_SubscribeOdometry<WithSplitStreamingMethod_SubscribePositionVelocityNed<WithSplitStreamingMethod_SubscribeGroundTruth<WithSplitStreamingMethod_SubscribeFixedwingMetrics<WithSplitStreamingMethod_SubscribeImu<WithSplitStreamingMethod_SubscribeScaledImu<WithSplitStreamingMethod_SubscribeRawImu<WithSplitStreamingMethod_SubscribeHealthAllOk<WithSplitStreamingMethod_SubscribeUnixEpochTime<WithSplitStreamingMethod_SubscribeDistanceSensor<WithSplitStreamingMethod_SubscribeScaledPressure<WithSplitStreamingMethod_SubscribeHeading<WithSplitStreamingMethod_SubscribeAltitude<WithSplitStreamingMethod_SubscribeWind<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > SplitStreamedService;
-  typedef WithSplitStreamingMethod_SubscribePosition<WithSplitStreamingMethod_SubscribeHome<WithSplitStreamingMethod_SubscribeInAir<WithSplitStreamingMethod_SubscribeLandedState<WithSplitStreamingMethod_SubscribeArmed<WithSplitStreamingMethod_SubscribeVtolState<WithSplitStreamingMethod_SubscribeAttitudeQuaternion<WithSplitStreamingMethod_SubscribeAttitudeEuler<WithSplitStreamingMethod_SubscribeAttitudeAngularVelocityBody<WithSplitStreamingMethod_SubscribeVelocityNed<WithSplitStreamingMethod_SubscribeGpsInfo<WithSplitStreamingMethod_SubscribeRawGps<WithSplitStreamingMethod_SubscribeBattery<WithSplitStreamingMethod_SubscribeFlightMode<WithSplitStreamingMethod_SubscribeHealth<WithSplitStreamingMethod_SubscribeRcStatus<WithSplitStreamingMethod_SubscribeStatusText<WithSplitStreamingMethod_SubscribeActuatorControlTarget<WithSplitStreamingMethod_SubscribeActuatorOutputStatus<WithSplitStreamingMethod_SubscribeOdometry<WithSplitStreamingMethod_SubscribePositionVelocityNed<WithSplitStreamingMethod_SubscribeGroundTruth<WithSplitStreamingMethod_SubscribeFixedwingMetrics<WithSplitStreamingMethod_SubscribeImu<WithSplitStreamingMethod_SubscribeScaledImu<WithSplitStreamingMethod_SubscribeRawImu<WithSplitStreamingMethod_SubscribeHealthAllOk<WithSplitStreamingMethod_SubscribeUnixEpochTime<WithSplitStreamingMethod_SubscribeDistanceSensor<WithSplitStreamingMethod_SubscribeScaledPressure<WithSplitStreamingMethod_SubscribeHeading<WithSplitStreamingMethod_SubscribeAltitude<WithSplitStreamingMethod_SubscribeWind<WithStreamedUnaryMethod_SetRatePosition<WithStreamedUnaryMethod_SetRateHome<WithStreamedUnaryMethod_SetRateInAir<WithStreamedUnaryMethod_SetRateLandedState<WithStreamedUnaryMethod_SetRateVtolState<WithStreamedUnaryMethod_SetRateAttitudeQuaternion<WithStreamedUnaryMethod_SetRateAttitudeEuler<WithStreamedUnaryMethod_SetRateVelocityNed<WithStreamedUnaryMethod_SetRateGpsInfo<WithStreamedUnaryMethod_SetRateBattery<WithStreamedUnaryMethod_SetRateRcStatus<WithStreamedUnaryMethod_SetRateActuatorControlTarget<WithStreamedUnaryMethod_SetRateActuatorOutputStatus<WithStreamedUnaryMethod_SetRateOdometry<WithStreamedUnaryMethod_SetRatePositionVelocityNed<WithStreamedUnaryMethod_SetRateGroundTruth<WithStreamedUnaryMethod_SetRateFixedwingMetrics<WithStreamedUnaryMethod_SetRateImu<WithStreamedUnaryMethod_SetRateScaledImu<WithStreamedUnaryMethod_SetRateRawImu<WithStreamedUnaryMethod_SetRateUnixEpochTime<WithStreamedUnaryMethod_SetRateDistanceSensor<WithStreamedUnaryMethod_SetRateAltitude<WithStreamedUnaryMethod_GetGpsGlobalOrigin<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
+  typedef WithSplitStreamingMethod_SubscribePosition<WithSplitStreamingMethod_SubscribeHome<WithSplitStreamingMethod_SubscribeInAir<WithSplitStreamingMethod_SubscribeLandedState<WithSplitStreamingMethod_SubscribeArmed<WithSplitStreamingMethod_SubscribeVtolState<WithSplitStreamingMethod_SubscribeAttitudeQuaternion<WithSplitStreamingMethod_SubscribeAttitudeEuler<WithSplitStreamingMethod_SubscribeAttitudeAngularVelocityBody<WithSplitStreamingMethod_SubscribeVelocityNed<WithSplitStreamingMethod_SubscribeGpsInfo<WithSplitStreamingMethod_SubscribeRawGps<WithSplitStreamingMethod_SubscribeBattery<WithSplitStreamingMethod_SubscribeFlightMode<WithSplitStreamingMethod_SubscribeHealth<WithSplitStreamingMethod_SubscribeRcStatus<WithSplitStreamingMethod_SubscribeStatusText<WithSplitStreamingMethod_SubscribeActuatorControlTarget<WithSplitStreamingMethod_SubscribeActuatorOutputStatus<WithSplitStreamingMethod_SubscribeOdometry<WithSplitStreamingMethod_SubscribePositionVelocityNed<WithSplitStreamingMethod_SubscribeGroundTruth<WithSplitStreamingMethod_SubscribeFixedwingMetrics<WithSplitStreamingMethod_SubscribeImu<WithSplitStreamingMethod_SubscribeScaledImu<WithSplitStreamingMethod_SubscribeRawImu<WithSplitStreamingMethod_SubscribeHealthAllOk<WithSplitStreamingMethod_SubscribeUnixEpochTime<WithSplitStreamingMethod_SubscribeDistanceSensor<WithSplitStreamingMethod_SubscribeScaledPressure<WithSplitStreamingMethod_SubscribeHeading<WithSplitStreamingMethod_SubscribeAltitude<WithSplitStreamingMethod_SubscribeWind<WithStreamedUnaryMethod_SetRatePosition<WithStreamedUnaryMethod_SetRateHome<WithStreamedUnaryMethod_SetRateInAir<WithStreamedUnaryMethod_SetRateLandedState<WithStreamedUnaryMethod_SetRateVtolState<WithStreamedUnaryMethod_SetRateAttitudeQuaternion<WithStreamedUnaryMethod_SetRateAttitudeEuler<WithStreamedUnaryMethod_SetRateVelocityNed<WithStreamedUnaryMethod_SetRateGpsInfo<WithStreamedUnaryMethod_SetRateBattery<WithStreamedUnaryMethod_SetRateRcStatus<WithStreamedUnaryMethod_SetRateActuatorControlTarget<WithStreamedUnaryMethod_SetRateActuatorOutputStatus<WithStreamedUnaryMethod_SetRateOdometry<WithStreamedUnaryMethod_SetRatePositionVelocityNed<WithStreamedUnaryMethod_SetRateGroundTruth<WithStreamedUnaryMethod_SetRateFixedwingMetrics<WithStreamedUnaryMethod_SetRateImu<WithStreamedUnaryMethod_SetRateScaledImu<WithStreamedUnaryMethod_SetRateRawImu<WithStreamedUnaryMethod_SetRateUnixEpochTime<WithStreamedUnaryMethod_SetRateDistanceSensor<WithStreamedUnaryMethod_SetRateAltitude<WithStreamedUnaryMethod_SetRateHealth<WithStreamedUnaryMethod_GetGpsGlobalOrigin<Service > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > StreamedService;
 };
 
 }  // namespace telemetry
