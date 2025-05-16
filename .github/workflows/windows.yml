@@ -40,7 +40,7 @@ jobs:
       - name: configure
         run: cmake -G "Visual Studio 17 2022" $env:superbuild $env:cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild/release -S.
       - name: build
-        run: cmake --build build/release -j${{ runner.os == 'Windows' && env.NUMBER_OF_PROCESSORS || runtime.numCPU }} --config RelWithDebInfo --target install
+        run: cmake --build build/release -j4 --config RelWithDebInfo --target install
       - name: Create zip file mavsdk libraries
         if: startsWith(github.ref, 'refs/tags/v')
         run: cd build/release/install && 7z.exe a -tzip ../../../mavsdk-windows-x64-release.zip . && cd ../../..
