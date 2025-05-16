@@ -2409,6 +2409,24 @@ public:
     Result set_rate_altitude(double rate_hz) const;
 
     /**
+     * @brief Set rate to 'Health' updates.
+     *
+     * This function is non-blocking. See 'set_rate_health' for the blocking counterpart.
+     */
+    void set_rate_health_async(double rate_hz, const ResultCallback callback);
+
+    /**
+     * @brief Set rate to 'Health' updates.
+     *
+     * This function is blocking. See 'set_rate_health_async' for the non-blocking counterpart.
+     *
+
+     * @return Result of request.
+
+     */
+    Result set_rate_health(double rate_hz) const;
+
+    /**
      * @brief Callback type for get_gps_global_origin_async.
      */
     using GetGpsGlobalOriginCallback = std::function<void(Result, GpsGlobalOrigin)>;
