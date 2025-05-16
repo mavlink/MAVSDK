@@ -56,7 +56,7 @@ TEST(SystemTest, CameraVideoStreamSettings)
 
     auto camera = Camera{system};
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
     auto prom_got_info = std::promise<void>();
     auto fut_got_info = prom_got_info.get_future();
     camera.subscribe_video_stream_info([&](const Camera::VideoStreamUpdate& update) {
