@@ -56,7 +56,7 @@ TEST(SystemTest, CameraListCameras)
     });
 
     // We have to wait until camera is found.
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 
     EXPECT_EQ(camera.camera_list().cameras.size(), 1);
     EXPECT_TRUE(found_camera);

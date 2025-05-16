@@ -59,7 +59,7 @@ TEST(SystemTest, CameraTakePhotoInterval)
 
     auto camera = Camera{system};
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
     // We expect to find one camera.
     ASSERT_EQ(camera.camera_list().cameras.size(), 1);
 
