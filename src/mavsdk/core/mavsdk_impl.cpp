@@ -347,12 +347,10 @@ void MavsdkImpl::receive_message(mavlink_message_t& message, Connection* connect
 
 void MavsdkImpl::process_messages()
 {
-    std::unique_lock lock(_received_messages_mutex);
+    std::lock_guard lock(_received_messages_mutex);
     while (!_received_messages.empty()) {
         auto message_copied = _received_messages.front();
-        lock.unlock();
         process_message(message_copied.message, message_copied.connection_ptr);
-        lock.lock();
         _received_messages.pop();
     }
 }
