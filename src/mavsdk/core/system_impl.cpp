@@ -142,7 +142,6 @@ void SystemImpl::enable_timesync()
 System::IsConnectedHandle
 SystemImpl::subscribe_is_connected(const System::IsConnectedCallback& callback)
 {
-    std::lock_guard<std::mutex> lock(_connection_mutex);
     return _is_connected_callbacks.subscribe(callback);
 }
 
@@ -490,8 +489,6 @@ void SystemImpl::set_connected()
 {
     bool enable_needed = false;
     {
-        std::lock_guard<std::mutex> lock(_connection_mutex);
-
         if (!_connected) {
             if (!_components.empty()) {
                 LogDebug() << "Discovered " << _components.size() << " component(s)";
@@ -499,35 +496,46 @@ void SystemImpl::set_connected()
 
             _connected = true;
 
-            // We call this later to avoid deadlocks on creating the server components.
-            _mavsdk_impl.call_user_callback([this]() {
-                // Send a heartbeat back immediately.
-                _mavsdk_impl.start_sending_heartbeats();
-            });
+            // Only send heartbeats if we're not shutting down
+            if (!_should_exit) {
+                // We call this later to avoid deadlocks on creating the server components.
+                _mavsdk_impl.call_user_callback([this]() {
+                    // Send a heartbeat back immediately.
+                    _mavsdk_impl.start_sending_heartbeats();
+                });
+            }
 
             _heartbeat_timeout_cookie =
                 register_timeout_handler([this] { heartbeats_timed_out(); }, HEARTBEAT_TIMEOUT_S);
 
             enable_needed = true;
 
+            // Queue callbacks without holding any locks to avoid deadlocks
             _is_connected_callbacks.queue(
                 true, [this](const auto& func) { _mavsdk_impl.call_user_callback(func); });
 
         } else if (_connected) {
             refresh_timeout_handler(_heartbeat_timeout_cookie);
         }
-        // If not yet connected there is nothing to do/
+        // If not yet connected there is nothing to do
     }
 
     if (enable_needed) {
+        // Notify about the new system without holding any locks
         _mavsdk_impl.notify_on_discover();
 
         if (has_autopilot()) {
             send_autopilot_version_request();
         }
 
-        std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
-        for (auto plugin_impl : _plugin_impls) {
+        // Enable plugins
+        std::vector<PluginImplBase*> plugin_impls_to_enable;
+        {
+            std::lock_guard<std::mutex> lock(_plugin_impls_mutex);
+            plugin_impls_to_enable = _plugin_impls;
+        }
+
+        for (auto plugin_impl : plugin_impls_to_enable) {
             plugin_impl->enable();
         }
     }
@@ -536,8 +544,6 @@ void SystemImpl::set_connected()
 void SystemImpl::set_disconnected()
 {
     {
-        std::lock_guard<std::mutex> lock(_connection_mutex);
-
         // This might not be needed because this is probably called from the triggered
         // timeout anyway, but it should also do no harm.
         // unregister_timeout_handler(_heartbeat_timeout_cookie);

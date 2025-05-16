@@ -61,24 +61,27 @@ void CallEveryHandler::remove(Cookie cookie)
 
 void CallEveryHandler::run_once()
 {
-    std::lock_guard<std::recursive_mutex> lock(_mutex);
-
-    // First, identify all entries that need to be executed
+    // First, identify all entries that need to be executed and update timestamps
+    // while holding the lock
     std::vector<std::function<void()>> callbacks_to_execute;
 
-    for (auto& entry : _entries) {
-        if (_time.elapsed_since_s(entry.last_time) > double(entry.interval_s)) {
-            // Update the timestamp before potentially executing
-            _time.shift_steady_time_by(entry.last_time, double(entry.interval_s));
+    {
+        std::lock_guard<std::recursive_mutex> lock(_mutex);
 
-            // Store the callback for later execution
-            if (entry.callback) {
-                callbacks_to_execute.push_back(entry.callback);
+        for (auto& entry : _entries) {
+            if (_time.elapsed_since_s(entry.last_time) > double(entry.interval_s)) {
+                // Update the timestamp before potentially executing
+                _time.shift_steady_time_by(entry.last_time, double(entry.interval_s));
+
+                // Store the callback for later execution
+                if (entry.callback) {
+                    callbacks_to_execute.push_back(entry.callback);
+                }
             }
         }
     }
 
-    // Now execute all callbacks
+    // Now execute all callbacks outside the lock to prevent lock-order inversions
     for (const auto& callback : callbacks_to_execute) {
         callback();
     }

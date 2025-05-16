@@ -230,7 +230,11 @@ TEST(SystemTest, FtpDownloadStopAndTryAgain)
 
     // Once we received half, we want to stop all traffic.
     bool got_half = false;
-    auto drop_at_some_point = [&got_half](mavlink_message_t&) { return !got_half; };
+    std::mutex got_half_mutex;
+    auto drop_at_some_point = [&got_half, &got_half_mutex](mavlink_message_t&) {
+        std::lock_guard<std::mutex> lock(got_half_mutex);
+        return !got_half;
+    };
 
     mavsdk_groundstation.intercept_incoming_messages_async(drop_at_some_point);
     mavsdk_groundstation.intercept_outgoing_messages_async(drop_at_some_point);
@@ -261,9 +265,10 @@ TEST(SystemTest, FtpDownloadStopAndTryAgain)
             ("" / temp_file).string(),
             temp_dir_downloaded.string(),
             false,
-            [&prom, &got_half, &slow_down_counter](
+            [&prom, &got_half, &got_half_mutex, &slow_down_counter](
                 Ftp::Result result, Ftp::ProgressData progress_data) {
                 if (progress_data.bytes_transferred > 200) {
+                    std::lock_guard<std::mutex> lock(got_half_mutex);
                     got_half = true;
                 }
                 if (result != Ftp::Result::Next) {

@@ -372,7 +372,6 @@ private:
 
     static constexpr double HEARTBEAT_TIMEOUT_S = 3.0;
 
-    std::mutex _connection_mutex{};
     std::atomic<bool> _connected{false};
     CallbackList<bool> _is_connected_callbacks{};
     TimeoutHandler::Cookie _heartbeat_timeout_cookie{};

@@ -47,28 +47,41 @@ void TimeoutHandler::remove(Cookie cookie)
 
 void TimeoutHandler::run_once()
 {
-    std::lock_guard<std::recursive_mutex> lock(_timeouts_mutex);
-    auto now = _time.steady_time();
+    // First, identify all timeouts that need to be executed and remove them
+    // while holding the lock
+    std::vector<std::function<void()>> callbacks_to_execute;
 
-    // First, identify all timeouts that need to be executed
-    std::vector<std::pair<Cookie, std::function<void()>>> callbacks_with_cookies;
+    {
+        std::lock_guard<std::recursive_mutex> lock(_timeouts_mutex);
+        auto now = _time.steady_time();
 
-    for (const auto& timeout : _timeouts) {
-        if (timeout.time < now) {
-            callbacks_with_cookies.push_back({timeout.cookie, timeout.callback});
+        // Identify timeouts that need to be executed
+        std::vector<Cookie> cookies_to_remove;
+
+        for (const auto& timeout : _timeouts) {
+            if (timeout.time < now) {
+                if (timeout.callback) {
+                    callbacks_to_execute.push_back(timeout.callback);
+                }
+                cookies_to_remove.push_back(timeout.cookie);
+            }
+        }
+
+        // Remove all timeouts that need to be executed
+        for (const auto& cookie : cookies_to_remove) {
+            auto it = std::find_if(_timeouts.begin(), _timeouts.end(), [&](auto& timeout) {
+                return timeout.cookie == cookie;
+            });
+
+            if (it != _timeouts.end()) {
+                _timeouts.erase(it);
+            }
         }
     }
 
-    // Remove all timeouts that need to be executed
-    for (const auto& [cookie, _] : callbacks_with_cookies) {
-        remove(cookie);
-    }
-
-    // Now execute all callbacks
-    for (const auto& [_, callback] : callbacks_with_cookies) {
-        if (callback) {
-            callback();
-        }
+    // Now execute all callbacks outside the lock to prevent lock-order inversions
+    for (const auto& callback : callbacks_to_execute) {
+        callback();
     }
 }
 
