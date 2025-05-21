@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.22.1)
 
 option(HUNTER_ENABLED "Enable Hunter package manager support" OFF)
 option(SUPERBUILD "Build dependencies" ON)
