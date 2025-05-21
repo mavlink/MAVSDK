@@ -69,9 +69,28 @@ static void complete_mission(std::string qgc_plan, std::shared_ptr<System> syste
 
 static std::string getCurrentTimeString()
 {
+    // Get the current time
     time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    
+    // Create buffer to hold formatted time string
     std::string s(30, '\0');
-    strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
+    
+    // Use thread-safe time conversion
+#ifdef _WIN32
+    // Windows thread-safe version
+    struct tm timeinfo;
+    localtime_s(&timeinfo, &now);
+    strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S", &timeinfo);
+#else
+    // POSIX thread-safe version
+    struct tm timeinfo;
+    localtime_r(&now, &timeinfo);
+    strftime(&s[0], s.size(), "%Y-%m-%d %H:%M:%S", &timeinfo);
+#endif
+
+    // Resize string to actual content length (removing trailing nulls)
+    s.resize(strlen(s.c_str()));
+    
     return s;
 }
 
