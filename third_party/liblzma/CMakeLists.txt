@@ -30,6 +30,7 @@ endforeach()
 
 ExternalProject_Add(
         liblzma
-        URL https://github.com/tukaani-project/xz/releases/download/v5.8.1/xz-5.8.1.tar.gz
+        URL https://github.com/tukaani-project/xz/releases/download/v5.4.5/xz-5.4.5.tar.gz
+        URL_MD5 d2bb81e1a1a7808352c4ca28622f5c72
         CMAKE_ARGS "${CMAKE_ARGS}"
 )
