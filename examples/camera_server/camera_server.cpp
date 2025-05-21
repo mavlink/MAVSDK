@@ -30,21 +30,23 @@ int main(int argc, char** argv)
 
     // Finally call set_information() to "activate" the camera plugin.
 
-    auto ret = camera_server.set_information({
-        .vendor_name = "MAVSDK",
-        .model_name = "Example Camera Server",
-        .firmware_version = "1.0.0",
-        .focal_length_mm = 3.0,
-        .horizontal_sensor_size_mm = 3.68,
-        .vertical_sensor_size_mm = 2.76,
-        .horizontal_resolution_px = 3280,
-        .vertical_resolution_px = 2464,
-        .lens_id = 0,
-        .definition_file_version = 0, // TODO: add this
-        .definition_file_uri = "", // TODO: implement this using MAVLink FTP
-        .image_in_video_mode_supported = false,
-        .video_in_image_mode_supported = false,
-    });
+    mavsdk::CameraServer::Information information{};
+
+    information.vendor_name = "MAVSDK";
+    information.model_name = "Example Camera Server";
+    information.firmware_version = "1.0.0";
+    information.focal_length_mm = 3.0;
+    information.horizontal_sensor_size_mm = 3.68f;
+    information.vertical_sensor_size_mm = 2.76f;
+    information.horizontal_resolution_px = 3280;
+    information.vertical_resolution_px = 2464;
+    information.lens_id = 0;
+    information.definition_file_version = 0; // TODO: add this
+    information.definition_file_uri = ""; // TODO: implement this using MAVLink FTP
+    information.image_in_video_mode_supported = false;
+    information.video_in_image_mode_supported = false;
+
+    auto ret = camera_server.set_information(information);
 
     if (ret != mavsdk::CameraServer::Result::Success) {
         std::cerr << "Failed to set camera info, exiting" << std::endl;
@@ -89,16 +91,17 @@ static void subscribe_camera_operation(mavsdk::CameraServer& camera_server)
         image_count++;
         camera_server.set_in_progress(false);
 
+        mavsdk::CameraServer::CaptureInfo capture_info{};
+        capture_info.position = position;
+        capture_info.attitude_quaternion = attitude;
+        capture_info.time_utc_us = static_cast<uint64_t>(timestamp);
+        capture_info.is_success = success;
+        capture_info.index = index;
+        capture_info.file_url = "";
+
         camera_server.respond_take_photo(
             mavsdk::CameraServer::CameraFeedback::Ok,
-            mavsdk::CameraServer::CaptureInfo{
-                .position = position,
-                .attitude_quaternion = attitude,
-                .time_utc_us = static_cast<uint64_t>(timestamp),
-                .is_success = success,
-                .index = index,
-                .file_url = {},
-            });
+            capture_info);
 
         is_capture_in_progress = false;
     });
@@ -161,8 +164,8 @@ static void subscribe_camera_operation(mavsdk::CameraServer& camera_server)
         auto current_time = std::chrono::steady_clock::now();
         if (is_recording_video) {
             capture_status.recording_time_s =
-                std::chrono::duration_cast<std::chrono::seconds>(current_time - start_video_time)
-                    .count();
+                static_cast<float>(std::chrono::duration_cast<std::chrono::seconds>(current_time - start_video_time)
+                    .count());
         }
         camera_server.respond_capture_status(
             mavsdk::CameraServer::CameraFeedback::Ok, capture_status);

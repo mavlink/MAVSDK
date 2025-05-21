@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
     Mavsdk mavsdk{Mavsdk::Configuration{ComponentType::GroundStation}};
 
     // Half of argc is how many udp ports is being used
-    size_t total_ports_used = argc / 2;
+    int total_ports_used = argc / 2;
 
     // the loop below adds the number of ports the sdk monitors.
     // Loop must start from 1 since we are ignoring argv[0] which would be the name of the
