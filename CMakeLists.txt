@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.22.1)
 
 option(HUNTER_ENABLED "Enable Hunter package manager support" OFF)
 option(SUPERBUILD "Build dependencies" ON)
@@ -7,6 +7,7 @@ option(BUILD_WITH_PROTO_REFLECTION "Build mavsdk_server with proto reflection" O
 option(BUILD_SHARED_LIBS "Build core as shared libraries instead of static ones" ON)
 option(MAVLINK_DIALECT "MAVLink dialect. Default: common" "common")
 option(BUILD_TESTING "Build tests" ON)
+option(BUILD_WITHOUT_CURL "Build without CURL" OFF)
 
 message("Using cmake version: ${CMAKE_VERSION}")
 

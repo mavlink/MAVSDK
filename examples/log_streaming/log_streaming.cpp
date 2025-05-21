@@ -60,23 +60,19 @@ int main(int argc, char** argv)
     }
 
     // Create file to log to.
-    // Get current time
     auto now = std::chrono::system_clock::now();
-    auto in_time_t = std::chrono::system_clock::to_time_t(now);
-
-    // Convert time_t to tm struct
-    struct tm buf;
-    localtime_r(&in_time_t, &buf);
-
-    // Create a stringstream to hold the filename
+    const auto time_point = std::chrono::system_clock::to_time_t(now);
+    struct tm timeinfo;
+#ifdef _WIN32
+    // Windows version
+    localtime_s(&timeinfo, &time_point); // Changed from in_time_t to time_point
+#else
+    // POSIX version (Linux, macOS, etc.)
+    localtime_r(&time_point, &timeinfo); // Changed from in_time_t to time_point
+#endif
     std::stringstream ss;
-
-    // Format the time into the stringstream
-    ss << std::put_time(&buf, "%Y-%m-%d_%H-%M-%S") << ".ulg";
-
-    // Convert stringstream to string to use as filename
+    ss << std::put_time(&timeinfo, "%Y-%m-%d_%H-%M-%S") << ".ulg";
     std::string filename = ss.str();
-
     // Open the file
     std::ofstream file(filename, std::ios::binary);
 
