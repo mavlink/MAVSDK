@@ -10,6 +10,8 @@ if(NOT @BUILD_SHARED_LIBS@)
     find_dependency(Threads)
     find_dependency(jsoncpp)
     find_dependency(tinyxml2)
+    find_dependency(LibLZMA)
+    find_dependency(LibEvents)
 
     if(@BUILD_MAVSDK_SERVER@)
         find_dependency(gRPC)
