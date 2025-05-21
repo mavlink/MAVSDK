@@ -23,5 +23,5 @@ endif()
 
 if(MINGW OR MSVC)
     # For M_PI
-    add_target_definitions(offboard "-D_USE_MATH_DEFINES")
+    target_compile_definitions(offboard PRIVATE "-D_USE_MATH_DEFINES")
 endif()
