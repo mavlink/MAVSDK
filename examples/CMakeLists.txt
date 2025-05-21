@@ -31,7 +31,6 @@ add_subdirectory(gimbal_device_tester)
 add_subdirectory(log_callback)
 add_subdirectory(logfile_download)
 add_subdirectory(log_streaming)
-add_subdirectory(manual_control)
 add_subdirectory(mavshell)
 add_subdirectory(multiple_drones)
 add_subdirectory(offboard)
@@ -49,3 +48,8 @@ add_subdirectory(winch)
 add_subdirectory(wind)
 # Disabled, requires mavsdk_server library.
 #add_subdirectory(start_stop_server)
+
+if(NOT MSVC)
+    # Requires sdl2, so we're skipping it on Windows.
+    add_subdirectory(manual_control)
+endif()
