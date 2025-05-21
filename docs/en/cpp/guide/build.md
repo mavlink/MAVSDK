@@ -47,14 +47,17 @@ brew install cmake
 
 #### Windows
 
+> Note: Building using Cygwin or MingW is not supported. Below are the instructions using MSVC.
+
 To build the library in Windows, you need:
 
 - [Build Tools for Visual Studio 2022](https://www.visualstudio.com/downloads/): Download and install (only the "Visual C+ Build Tools" are needed from installer).
 - [cmake](https://cmake.org/download/): Download the installer and run it.
   Make sure to tick "add to PATH" during the installation.
 - [git](https://git-scm.com/download/win) or any other tool to work with git.
+- [perl](https://strawberryperl.com/) for OpenSSL unless building without CURL (see [Build without CURL](#build_without_curl)).
 
-> Note: Building using Cygwin or MingW is not supported.
+> Note: Strawberry Linux installs all sorts of tools including cmake and adds them all to the system PATH. It is possible to prevent this by removing the paths `C:\Strawberry\c\bin` and `C:\Strawberry\perl\site\bin` and only leaving `C:\Strawberry\perl\bin`. (To edit Windows paths, go to System -> Advanced system settings -> Environment Variables and then edit the System variable `Path`.
 
 ### Getting the source
 
@@ -91,6 +94,7 @@ During the configure step you can set more flags using `-DFLAG=Value`:
 - `SUPERBUILD`: set to `OFF` to use system dependencies instead of [third party dependencies](https://github.com/mavlink/MAVSDK/tree/main/third_party) downloaded and built using cmake.
 - `CMAKE_PREFIX_PATH`: can be used to set the path where the dependencies can be found if `SUPERBUILD` is set to `OFF`.
 - `BUILD_MAVSDK_SERVER`: set to `ON` to build mavsdk_server, see instruction to [build mavsdk_server](build_mavsdk_server.md).
+- `BUILD_WITHOUT_CURL`: set to `OFF` by default (check [Build without CURL](#build_without_curl).
 - `ASAN`: set to `ON` to enable address sanitizer.
 - `UBSAN`: set to `ON` to enable undefined behavior sanitizer.
 - `LSAN`: set to `ON` to enable leak sanitizer.
@@ -209,3 +213,7 @@ We only try to support building using MSVC, MingW is not working, mostly because
 If you only just built the library and installed it system-wide may also need to [update the linker cache](http://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html).
 
 On Linux this is done with `sudo ldconfig`.
+
+### Build without CURL (#build_without_curl)
+
+If you don't need http/https downloads for camera definition files or other component definition files (because you are using MAVLink FTP for these), and you don't build the MAVSDK server (`BUILD_MAVSDK_SERVER=OFF`), you can exclude CURL and OpenSSL using `-DBUILD_WITHOUT_CURL=ON`.
