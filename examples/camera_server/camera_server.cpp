@@ -99,9 +99,7 @@ static void subscribe_camera_operation(mavsdk::CameraServer& camera_server)
         capture_info.index = index;
         capture_info.file_url = "";
 
-        camera_server.respond_take_photo(
-            mavsdk::CameraServer::CameraFeedback::Ok,
-            capture_info);
+        camera_server.respond_take_photo(mavsdk::CameraServer::CameraFeedback::Ok, capture_info);
 
         is_capture_in_progress = false;
     });
@@ -163,8 +161,8 @@ static void subscribe_camera_operation(mavsdk::CameraServer& camera_server)
                 mavsdk::CameraServer::CaptureStatus::VideoStatus::Idle;
         auto current_time = std::chrono::steady_clock::now();
         if (is_recording_video) {
-            capture_status.recording_time_s =
-                static_cast<float>(std::chrono::duration_cast<std::chrono::seconds>(current_time - start_video_time)
+            capture_status.recording_time_s = static_cast<float>(
+                std::chrono::duration_cast<std::chrono::seconds>(current_time - start_video_time)
                     .count());
         }
         camera_server.respond_capture_status(

@@ -65,10 +65,10 @@ int main(int argc, char** argv)
     struct tm timeinfo;
 #ifdef _WIN32
     // Windows version
-    localtime_s(&timeinfo, &time_point);  // Changed from in_time_t to time_point
+    localtime_s(&timeinfo, &time_point); // Changed from in_time_t to time_point
 #else
     // POSIX version (Linux, macOS, etc.)
-    localtime_r(&time_point, &timeinfo);  // Changed from in_time_t to time_point
+    localtime_r(&time_point, &timeinfo); // Changed from in_time_t to time_point
 #endif
     std::stringstream ss;
     ss << std::put_time(&timeinfo, "%Y-%m-%d_%H-%M-%S") << ".ulg";

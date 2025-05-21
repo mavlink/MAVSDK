@@ -71,10 +71,10 @@ static std::string getCurrentTimeString()
 {
     // Get the current time
     time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-    
+
     // Create buffer to hold formatted time string
     std::string s(30, '\0');
-    
+
     // Use thread-safe time conversion
 #ifdef _WIN32
     // Windows thread-safe version
@@ -90,7 +90,7 @@ static std::string getCurrentTimeString()
 
     // Resize string to actual content length (removing trailing nulls)
     s.resize(strlen(s.c_str()));
-    
+
     return s;
 }
 
