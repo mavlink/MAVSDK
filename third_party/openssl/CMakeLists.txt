@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.22.1)
 
 project(external-openssl)
 include(ExternalProject)
@@ -92,9 +92,7 @@ elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
 
 elseif(MSVC)
     message("CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
-    # Only available from cmake 3.20, for now do it manually.
-    #cmake_path(NATIVE_PATH CMAKE_INSTALL_PREFIX NORMALIZE NATIVE_INSTALL_PREFIX)
-    string(REPLACE "/" "\\" NATIVE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
+    cmake_path(NATIVE_PATH CMAKE_INSTALL_PREFIX NORMALIZE NATIVE_INSTALL_PREFIX)
     message("NATIVE_INSTALL_PREFIX: ${NATIVE_INSTALL_PREFIX}")
 
     find_program(JOM_EXECUTABLE
