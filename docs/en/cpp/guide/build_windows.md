@@ -13,6 +13,7 @@ The build requirements are:
 - CMake
 - Git
 - Perl (for OpenSSL unless building without CURL)
+- jom (optional) to parallelize the OpenSSL build
 
 ### Install Build Tools
 
@@ -33,6 +34,8 @@ The build requirements are:
      2. Edit the System variable `Path`
      3. Remove `C:\Strawberry\c\bin` and `C:\Strawberry\perl\site\bin`
      4. Keep only `C:\Strawberry\perl\bin`
+
+5. (Optional) Install [jom](https://download.qt.io/official_releases/jom/) and add it to the path.
 
 ## Getting the Source
 
