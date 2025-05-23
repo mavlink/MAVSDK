@@ -27,7 +27,7 @@ jobs:
         id: cache
         with:
           path: ./build/third_party/install
-          key: ${{ github.job }}-mavsdk_server-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -40,19 +40,26 @@ jobs:
           choco install jom
           echo "C:\Program Files\jom" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: configure
-        run: cmake -GNinja \
-          $env:superbuild \
-          $env:cmake_prefix_path \
-          -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-          -DCMAKE_INSTALL_PREFIX=install \
-          -DBUILD_MAVSDK_SERVER=ON \
-          -DBUILD_SHARED_LIBS=OFF \
-          -DWERROR=ON \
-          -Bbuild \
+        run: cmake -GNinja
+          $env:superbuild
+          $env:cmake_prefix_path
+          -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          -DCMAKE_INSTALL_PREFIX=install
+          -DBUILD_MAVSDK_SERVER=ON
+          -DBUILD_SHARED_LIBS=OFF
+          -DWERROR=ON
+          -Bbuild
+          -A x64
           -S.
       - name: build
         run: cmake --build build --config RelWithDebInfo --target install
-      - name: Publish mavsdk_server binary
+      - name: Upload mavsdk_server binary as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'mavsdk_server_win32.exe'
+          path: 'install/bin/mavsdk_server_bin.exe'
+          retention-days: 2
+      - name: Publish mavsdk_server binary to release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
@@ -73,7 +80,7 @@ jobs:
         id: cache
         with:
           path: ./build/third_party/install
-          key: ${{ github.job }}-library-${{ hashFiles('./third_party/**') }}
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
@@ -87,27 +94,34 @@ jobs:
           echo "C:\Program Files\jom" \
             | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: configure
-        run: cmake -GNinja \
-          $env:superbuild \
-          $env:cmake_prefix_path \
-          -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-          -DCMAKE_INSTALL_PREFIX=install \
-          -DBUILD_MAVSDK_SERVER=OFF \
-          -DBUILD_SHARED_LIBS=ON \
-          -DWERROR=ON \
-          -Bbuild \
+        run: cmake -GNinja
+          $env:superbuild
+          $env:cmake_prefix_path
+          -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          -DCMAKE_INSTALL_PREFIX=install
+          -DBUILD_MAVSDK_SERVER=OFF
+          -DBUILD_SHARED_LIBS=ON
+          -DWERROR=ON
+          -Bbuild
+          -A x64
           -S.
       - name: build
         run: cmake --build build --config RelWithDebInfo --target install
       - name: Create zip file from mavsdk libraries
         if: startsWith(github.ref, 'refs/tags/v')
         run: (cd install && 7z.exe a -tzip ../mavsdk-library-windows-x64.zip .)
-      - name: Publish mavsdk libraries
+      - name: Upload mavsdk library as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'mavsdk-library-windows-x64.zip'
+          path: 'mavsdk-library-windows-x64.zip'
+          retention-days: 2
+      - name: Publish mavsdk library to release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'mavsdk-windows-x64-release.zip'
+          file: 'mavsdk-library-windows-x64.zip'
           asset_name: 'mavsdk-library-windows-x64.zip'
           tag: ${{ github.ref }}
           overwrite: true
