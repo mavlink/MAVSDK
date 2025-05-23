@@ -14,7 +14,7 @@ Below we explain how to set up a minimal build setup (**CMakeLists.txt**) file f
 
 *Cmake* uses a definition file named **CMakeLists.txt** to define the project. This specifies the name of the project, compiler flags for different platforms and targets, where to find dependencies (libraries and header files), source files to build, and the name of the generated binary. **CMakeLists.txt** is typically stored in the root directory of your app project.
 
-The sections below show how you can set up the file for when the SDK is [installed system wide](installation.md) (the default) or [locally](build.md#sdk_local_install).
+The sections below show how you can set up the file for when the SDK is [installed system wide](installation.md) (the default) or [locally](build.md).
 
 ::: warning
 On Windows use the [local installation](#sdk_local_install).
