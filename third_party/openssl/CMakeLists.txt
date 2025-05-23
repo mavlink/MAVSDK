@@ -46,8 +46,8 @@ if(ANDROID)
         PREFIX openssl
         PATCH_COMMAND patch -p 0 < ${PROJECT_SOURCE_DIR}/dockcross-android.patch
         CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env ANDROID_NDK=$ENV{CROSS_ROOT} <SOURCE_DIR>/Configure --sysroot=$ENV{CROSS_ROOT}/sysroot ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-asm no-shared
-        BUILD_COMMAND make -j${BUILD_PARALLEL_JOBS}
-        INSTALL_COMMAND make install_sw
+        BUILD_COMMAND make -j${BUILD_PARALLEL_JOBS} build_libs
+        INSTALL_COMMAND make install_dev
         )
 
 elseif(IOS)
@@ -67,7 +67,7 @@ elseif(IOS)
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-        CONFIGURE_COMMAND <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
+        CONFIGURE_COMMAND <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared no-tests
         )
 
 elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
@@ -85,9 +85,9 @@ elseif(CMAKE_CROSSCOMPILING) # This assumes we use dockcross
         openssl
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
-        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CROSS_COMPILE="" <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared
-        BUILD_COMMAND make -j${BUILD_PARALLEL_JOBS}
-        INSTALL_COMMAND make install_sw
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CROSS_COMPILE="" <SOURCE_DIR>/Configure ${OPENSSL_PLATFORM} --prefix=${CMAKE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared no-tests
+        BUILD_COMMAND make -j${BUILD_PARALLEL_JOBS} build_libs
+        INSTALL_COMMAND make install_dev
         )
 
 elseif(MSVC)
@@ -97,14 +97,34 @@ elseif(MSVC)
     string(REPLACE "/" "\\" NATIVE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
     message("NATIVE_INSTALL_PREFIX: ${NATIVE_INSTALL_PREFIX}")
 
-    ExternalProject_add(
-        openssl
-        URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
-        PREFIX openssl
-        CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure VC-WIN64A --prefix=${NATIVE_INSTALL_PREFIX} --openssldir=${NATIVE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared no-asm
-        BUILD_COMMAND set MAKEFLAGS= && set CL=/MP && nmake
-        INSTALL_COMMAND set MAKEFLAGS= && nmake install_sw
+    find_program(JOM_EXECUTABLE
+        NAMES jom jom.exe
+        DOC "Path to jom executable"
+    )
+
+    if(JOM_EXECUTABLE)
+        message(STATUS "Using jom for OpenSSL parallel build")
+        # Parallel build of openssl is not supported unless you use jom.
+        # See: https://github.com/openssl/openssl/issues/9931
+        ExternalProject_add(
+            openssl
+            URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
+            PREFIX openssl
+            CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure VC-WIN64A --prefix=${NATIVE_INSTALL_PREFIX} --openssldir=${NATIVE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared no-asm no-tests /FS
+            BUILD_COMMAND set MAKEFLAGS= && set set CL=/O2 /MT /DNDEBUG /FS && jom -j ${BUILD_PARALLEL_JOBS} build_libs
+            INSTALL_COMMAND set MAKEFLAGS= && nmake install_dev
+            )
+    else()
+        message(STATUS "Falling back to nmake for OpenSSL build using single core")
+           ExternalProject_add(
+            openssl
+            URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
+            PREFIX openssl
+            CONFIGURE_COMMAND perl <SOURCE_DIR>/Configure VC-WIN64A --prefix=${NATIVE_INSTALL_PREFIX} --openssldir=${NATIVE_INSTALL_PREFIX} ${OPENSSL_BUILD_TYPE} no-shared no-asm no-tests
+            BUILD_COMMAND set MAKEFLAGS= && nmake build_libs
+            INSTALL_COMMAND nmake install_dev
         )
+    endif()
 
 else()
     ExternalProject_add(
@@ -112,7 +132,7 @@ else()
         URL https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
         PREFIX openssl
         CONFIGURE_COMMAND <SOURCE_DIR>/config ${OPENSSL_BUILD_TYPE} --prefix=${CMAKE_INSTALL_PREFIX} no-shared
-        BUILD_COMMAND make -j${BUILD_PARALLEL_JOBS}
-        INSTALL_COMMAND make install_sw
+        BUILD_COMMAND make -j${BUILD_PARALLEL_JOBS} build_libs
+        INSTALL_COMMAND make install_dev
         )
 endif()
