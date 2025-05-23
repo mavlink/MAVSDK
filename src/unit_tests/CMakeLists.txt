@@ -32,11 +32,4 @@ target_compile_definitions(unit_tests_runner
     BUILD_WITHOUT_CURL=1
 )
 
-if (MSVC AND BUILD_SHARED_LIBS)
-    target_compile_definitions(unit_tests_runner PRIVATE -DGTEST_LINKED_AS_SHARED_LIBRARY)
-    set_target_properties(unit_tests_runner
-        PROPERTIES COMPILE_FLAGS "${warnings} /wd4275"
-    )
-endif()
-
 add_test(unit_tests unit_tests_runner)
