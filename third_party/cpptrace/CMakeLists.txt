@@ -10,6 +10,7 @@ list(APPEND CMAKE_ARGS
     "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
     "-DCMAKE_CXX_STANDARD=17"
+    "-DBUILD_SHARED_LIBS=OFF"
     )
 
 message(STATUS "Preparing external project \"cpptrace\" with args:")

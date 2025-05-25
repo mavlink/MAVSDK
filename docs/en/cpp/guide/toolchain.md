@@ -14,7 +14,7 @@ Below we explain how to set up a minimal build setup (**CMakeLists.txt**) file f
 
 *Cmake* uses a definition file named **CMakeLists.txt** to define the project. This specifies the name of the project, compiler flags for different platforms and targets, where to find dependencies (libraries and header files), source files to build, and the name of the generated binary. **CMakeLists.txt** is typically stored in the root directory of your app project.
 
-The sections below show how you can set up the file for when the SDK is [installed system wide](installation.md) (the default) or [locally](build.md#sdk_local_install).
+The sections below show how you can set up the file for when the SDK is [installed system wide](installation.md) (the default) or [locally](build.md).
 
 ::: warning
 On Windows use the [local installation](#sdk_local_install).
@@ -92,6 +92,11 @@ E.g. here there would be a directory called mavsdk just one directory up:
 cmake -Bbuild -DCMAKE_PREFIX_PATH=../mavsdk -H.
 cmake --build build -j8
 ```
+
+::: tip
+When you run and ship your exe, you need to include the mavsdk.dll and have it either somewhere in the path, or in the same folder, so next to your exe.
+Otherwise you get a "System Error: The code execution cannot proceed because mavsdk.dll was not found. Reinstalling the program may fix this problem" when you try to run it.
+:::
 
 ## Run the App
 

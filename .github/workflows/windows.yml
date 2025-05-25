@@ -16,49 +16,110 @@ on:
     - '.github/workflows/docs_deploy.yml'
 
 jobs:
-  Windows:
-    name: Windows
+  Windows-mavsdk_server:
+    name: Windows mavsdk_server build
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+          fetch-depth: 0
+      - name: git get version tags
+        run: git fetch --tags
       - uses: actions/cache@v4
         id: cache
         with:
-          path: ./build/release/third_party/install
+          path: ./build/third_party/install
           key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
       - name: disable superbuild on cache hit
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
             echo "superbuild=-DSUPERBUILD=OFF" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-            echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/release/third_party/install" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-      - name: install packages
+            echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/third_party/install" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: install jom
         run: |
-            choco install nasm
-            echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          choco install jom
+          echo "C:\Program Files\jom" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: configure
-        run: cmake -G "Visual Studio 17 2022" $env:superbuild $env:cmake_prefix_path -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=build/release/install -DBUILD_MAVSDK_SERVER=ON -DBUILD_SHARED_LIBS=OFF -DWERROR=ON -Bbuild/release -S.
+        run: cmake -G"Visual Studio 17 2022"
+          $env:superbuild
+          $env:cmake_prefix_path
+          -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          -DCMAKE_INSTALL_PREFIX=install
+          -DBUILD_MAVSDK_SERVER=ON
+          -DBUILD_SHARED_LIBS=OFF
+          -DWERROR=ON
+          -Bbuild
+          -S.
       - name: build
-        run: cmake --build build/release -j4 --config RelWithDebInfo --target install
-      - name: Create zip file mavsdk libraries
+        run: cmake --build build -j4 --config RelWithDebInfo --target install
+      - name: Upload mavsdk_server binary as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'mavsdk_server-windows-x64-release'
+          path: 'install/bin/mavsdk_server_bin.exe'
+          retention-days: 2
+      - name: Publish mavsdk_server binary to release
         if: startsWith(github.ref, 'refs/tags/v')
-        run: cd build/release/install && 7z.exe a -tzip ../../../mavsdk-windows-x64-release.zip . && cd ../../..
-      - name: Publish mavsdk libraries
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: 'install/bin/mavsdk_server_bin.exe'
+          asset_name: 'mavsdk_server_win32.exe'
+          tag: ${{ github.ref }}
+          overwrite: true
+
+  Windows-mavsdk-library:
+    name: Windows mavsdk library build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: git get version tags
+        run: git fetch --tags
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: ./build/third_party/install
+          key: ${{ github.job }}-${{ hashFiles('./third_party/**') }}
+      - name: disable superbuild on cache hit
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+            echo "superbuild=-DSUPERBUILD=OFF" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+            echo "cmake_prefix_path=-DCMAKE_PREFIX_PATH=$(pwd)/build/third_party/install" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: install jom
+        run: |
+          choco install jom
+          echo "C:\Program Files\jom" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      - name: configure
+        run: cmake -G"Visual Studio 17 2022"
+          $env:superbuild
+          $env:cmake_prefix_path
+          -DCMAKE_BUILD_TYPE=RelWithDebInfo
+          -DCMAKE_INSTALL_PREFIX=install
+          -DBUILD_MAVSDK_SERVER=OFF
+          -DBUILD_SHARED_LIBS=ON
+          -DWERROR=ON
+          -Bbuild
+          -S.
+      - name: build
+        run: cmake --build build -j4 --config RelWithDebInfo --target install
+      - name: Create zip file from mavsdk libraries
+        run: (cd install && 7z.exe a -tzip ../mavsdk-windows-x64-release.zip .)
+      - name: Upload mavsdk library as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'mavsdk-windows-x64-release'
+          path: 'install/'
+          retention-days: 2
+      - name: Publish mavsdk library to release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: 'mavsdk-windows-x64-release.zip'
           asset_name: 'mavsdk-windows-x64-release.zip'
-          tag: ${{ github.ref }}
-          overwrite: true
-      - name: Publish mavsdk_server binary
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: svenstaro/upload-release-action@v1-release
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: 'build/release/install/bin/mavsdk_server_bin.exe'
-          asset_name: 'mavsdk_server_win32.exe'
           tag: ${{ github.ref }}
           overwrite: true
