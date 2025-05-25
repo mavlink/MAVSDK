@@ -93,6 +93,11 @@ cmake -Bbuild -DCMAKE_PREFIX_PATH=../mavsdk -H.
 cmake --build build -j8
 ```
 
+::: tip
+When you run and ship your exe, you need to include the mavsdk.dll and have it either somewhere in the path, or in the same folder, so next to your exe.
+Otherwise you get a "System Error: The code execution cannot proceed because mavsdk.dll was not found. Reinstalling the program may fix this problem" when you try to run it.
+:::
+
 ## Run the App
 
 To Execute the file (in your build directory):
