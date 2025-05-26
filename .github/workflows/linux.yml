@@ -17,33 +17,50 @@ on:
   workflow_dispatch:
 
 jobs:
-  update-docker-images:
-    name: Update Docker Images
-    uses: ./.github/workflows/docker.yml
-    secrets: inherit
-
-  determine-docker-tag:
-    name: Determine Docker Image Tag
+  check-docker-changes:
+    name: Check Docker Changes
     runs-on: ubuntu-24.04
     outputs:
-      docker_tag: ${{ steps.set-docker-tag.outputs.docker_tag }}
+      docker_changed: ${{ steps.set-any-changed.outputs.docker_changed }}
+      docker_tag: ${{ steps.set-docker-tag.outputs.docker_tag}}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Get changed files
+        id: check-changes
+        uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
+        with:
+          files: docker/**
+          since_last_remote_commit: true
+      - name: List all changed files
+        id: set-any-changed
+        run: |
+          echo "docker_changed=${{ steps.check-changes.outputs.any_changed }}" >> $GITHUB_OUTPUT
       - name: Set docker tag
         id: set-docker-tag
         run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
+          if [ "${{ github.event_name }}" = "pull_request" ] && [ "${{ steps.check-changes.outputs.any_changed }}" = "true" ]; then
             echo "docker_tag=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
           else
             echo "docker_tag=latest" >> $GITHUB_OUTPUT
           fi
 
+  update-docker-images:
+    name: Update Docker Images
+    needs: check-docker-changes
+    if: needs.check-docker-changes.outputs.docker_changed == 'true'
+    uses: ./.github/workflows/docker.yml
+    secrets: inherit
+
   coverage:
     # Use 22.04 for now because 24.04 throws a 'ERROR: mismatched end line ...'
     name: Coverage (ubuntu-22.04)
-    needs: [update-docker-images, determine-docker-tag]
+    needs: [check-docker-changes, update-docker-images]
+    if: always() && needs.check-docker-changes.result == 'success'
     runs-on: ubuntu-24.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-22.04:${{ needs.determine-docker-tag.outputs.docker_tag }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-22.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     env:
       NODE_OPTIONS: --max_old_space_size=4096
     steps:
@@ -93,10 +110,11 @@ jobs:
 
   ubuntu-superbuild:
     name: ${{ matrix.description }}
-    needs: [update-docker-images, determine-docker-tag]
+    needs: [check-docker-changes, update-docker-images]
+    if: always() && needs.check-docker-changes.result == 'success'
     runs-on: ubuntu-24.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-${{ matrix.ubuntu_version }}:${{ needs.determine-docker-tag.outputs.docker_tag }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-${{ matrix.ubuntu_version }}:${{ needs.check-docker-changes.outputs.docker_tag }}
     strategy:
       fail-fast: false
       matrix:
@@ -160,10 +178,11 @@ jobs:
 
   ubuntu-no-curl:
     name: Ubuntu 24.04 (mavsdk, without curl)
-    needs: [update-docker-images, determine-docker-tag]
+    needs: [check-docker-changes, update-docker-images]
+    if: always() && needs.check-docker-changes.result == 'success'
     runs-on: ubuntu-24.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.determine-docker-tag.outputs.docker_tag }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -187,10 +206,11 @@ jobs:
 
   ubuntu-hunter:
     name: Ubuntu 24.04 (non-mavsdk_server, hunter)
-    needs: [update-docker-images, determine-docker-tag]
+    needs: [check-docker-changes, update-docker-images]
+    if: always() && needs.check-docker-changes.result == 'success'
     runs-on: ubuntu-24.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.determine-docker-tag.outputs.docker_tag }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -222,10 +242,11 @@ jobs:
 
   ubuntu24-style-and-proto-check:
     name: ubuntu-24.04 (style and proto check)
-    needs: [update-docker-images, determine-docker-tag]
+    needs: [check-docker-changes, update-docker-images]
+    if: always() && needs.check-docker-changes.result == 'success'
     runs-on: ubuntu-24.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.determine-docker-tag.outputs.docker_tag }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -258,10 +279,11 @@ jobs:
 
   ubuntu24-docs-check:
     name: ubuntu-24.04 (docs check)
-    needs: [update-docker-images, determine-docker-tag]
+    needs: [check-docker-changes, update-docker-images]
+    if: always() && needs.check-docker-changes.result == 'success'
     runs-on: ubuntu-24.04
     container:
-      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.determine-docker-tag.outputs.docker_tag }}
+      image: docker.io/mavsdk/mavsdk-ubuntu-24.04:${{ needs.check-docker-changes.outputs.docker_tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -280,10 +302,11 @@ jobs:
 
   deb-package:
     name: ${{ matrix.os_name }} ${{ matrix.os_version }} (package, non-mavsdk_server)
-    needs: [update-docker-images, determine-docker-tag]
+    needs: [check-docker-changes, update-docker-images]
+    if: always() && needs.check-docker-changes.result == 'success'
     runs-on: ubuntu-24.04
     container:
-      image: docker.io/mavsdk/mavsdk-${{ matrix.os_type }}-${{ matrix.os_version }}:${{ needs.determine-docker-tag.outputs.docker_tag }}
+      image: docker.io/mavsdk/mavsdk-${{ matrix.os_type }}-${{ matrix.os_version }}:${{ needs.check-docker-changes.outputs.docker_tag }}
     strategy:
       fail-fast: false
       matrix:
@@ -347,10 +370,11 @@ jobs:
 
   dockcross-linux:
     name: linux-${{ matrix.docker_name }}
-    needs: [update-docker-images, determine-docker-tag]
+    needs: [check-docker-changes, update-docker-images]
+    if: always() && needs.check-docker-changes.result == 'success'
     runs-on: ubuntu-24.04
     env:
-      ARG_IMAGE: docker.io/mavsdk/mavsdk-dockcross-linux-${{ matrix.docker_name }}-custom:${{ needs.determine-docker-tag.outputs.docker_tag }}
+      ARG_IMAGE: docker.io/mavsdk/mavsdk-dockcross-linux-${{ matrix.docker_name }}-custom:${{ needs.check-docker-changes.outputs.docker_tag }}
     strategy:
       fail-fast: false
       matrix:
