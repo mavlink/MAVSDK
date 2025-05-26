@@ -374,6 +374,12 @@ Telemetry::Result TelemetryImpl::set_rate_altitude(double rate_hz)
         _system_impl->set_msg_rate(MAVLINK_MSG_ID_ALTITUDE, rate_hz));
 }
 
+Telemetry::Result TelemetryImpl::set_rate_health(double rate_hz)
+{
+    return telemetry_result_from_command_result(
+        _system_impl->set_msg_rate(MAVLINK_MSG_ID_SYS_STATUS, rate_hz));
+}
+
 void TelemetryImpl::set_rate_position_velocity_ned_async(
     double rate_hz, Telemetry::ResultCallback callback)
 {
@@ -432,6 +438,16 @@ void TelemetryImpl::set_rate_altitude_async(double rate_hz, Telemetry::ResultCal
 {
     _system_impl->set_msg_rate_async(
         MAVLINK_MSG_ID_ALTITUDE,
+        rate_hz,
+        [callback](MavlinkCommandSender::Result command_result, float) {
+            command_result_callback(command_result, callback);
+        });
+}
+
+void TelemetryImpl::set_rate_health_async(double rate_hz, Telemetry::ResultCallback callback)
+{
+    _system_impl->set_msg_rate_async(
+        MAVLINK_MSG_ID_SYS_STATUS,
         rate_hz,
         [callback](MavlinkCommandSender::Result command_result, float) {
             command_result_callback(command_result, callback);
