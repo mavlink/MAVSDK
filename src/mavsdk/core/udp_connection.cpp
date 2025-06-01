@@ -143,15 +143,18 @@ std::pair<bool, std::string> UdpConnection::send_message(const mavlink_message_t
             _remotes.begin(),
             _remotes.end(),
             [&now, this](const Remote& remote) {
-                auto elapsed = now - remote.last_activity;
-                bool inactive = elapsed > REMOTE_TIMEOUT;
+                const auto elapsed = now - remote.last_activity;
+                const bool inactive = elapsed > REMOTE_TIMEOUT;
 
-                if (inactive) {
+                const bool should_remove = inactive && remote.remote_option == RemoteOption::Found;
+
+                // We can cleanup old/previous remotes if we have
+                if (should_remove) {
                     LogInfo() << "Removing inactive remote: " << remote.ip << ":"
                               << remote.port_number;
                 }
 
-                return inactive;
+                return should_remove;
             }),
         _remotes.end());
 
@@ -215,19 +218,23 @@ std::pair<bool, std::string> UdpConnection::send_message(const mavlink_message_t
     return result;
 }
 
-void UdpConnection::add_remote(const std::string& remote_ip, const int remote_port)
+void UdpConnection::add_remote_to_keep(const std::string& remote_ip, const int remote_port)
 {
-    add_remote_with_remote_sysid(remote_ip, remote_port, 0);
+    add_remote_impl(remote_ip, remote_port, 0, RemoteOption::Fixed);
 }
 
-void UdpConnection::add_remote_with_remote_sysid(
-    const std::string& remote_ip, const int remote_port, const uint8_t remote_sysid)
+void UdpConnection::add_remote_impl(
+    const std::string& remote_ip,
+    const int remote_port,
+    const uint8_t remote_sysid,
+    RemoteOption remote_option)
 {
     std::lock_guard<std::mutex> lock(_remote_mutex);
     Remote new_remote;
     new_remote.ip = remote_ip;
     new_remote.port_number = remote_port;
     new_remote.last_activity = std::chrono::steady_clock::now();
+    new_remote.remote_option = remote_option;
 
     auto existing_remote =
         std::find_if(_remotes.begin(), _remotes.end(), [&new_remote](Remote& remote) {
@@ -286,7 +293,7 @@ void UdpConnection::receive()
             if (sysid != 0) {
                 char ip_str[INET_ADDRSTRLEN];
                 if (inet_ntop(AF_INET, &src_addr.sin_addr, ip_str, INET_ADDRSTRLEN) != nullptr) {
-                    add_remote_with_remote_sysid(ip_str, ntohs(src_addr.sin_port), sysid);
+                    add_remote_impl(ip_str, ntohs(src_addr.sin_port), sysid, RemoteOption::Found);
                 } else {
                     LogErr() << "inet_ntop failure for: " << strerror(errno);
                 }

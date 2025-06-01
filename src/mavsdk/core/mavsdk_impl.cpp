@@ -637,7 +637,7 @@ MavsdkImpl::add_udp_connection(const CliArg::Udp& udp, ForwardingOption forwardi
             return {ConnectionResult::DestinationIpUnknown, Mavsdk::ConnectionHandle{}};
         }
 
-        new_conn->add_remote(remote_ip.value(), udp.port);
+        new_conn->add_remote_to_keep(remote_ip.value(), udp.port);
         std::lock_guard lock(_mutex);
 
         // With a UDP remote, we need to initiate the connection by sending heartbeats.
