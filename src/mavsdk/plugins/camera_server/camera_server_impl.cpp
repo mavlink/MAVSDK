@@ -761,35 +761,37 @@ CameraServer::Result CameraServerImpl::respond_capture_status(
     CameraServer::CameraFeedback capture_status_feedback,
     CameraServer::CaptureStatus capture_status)
 {
-    std::lock_guard<std::mutex> lg{_mutex};
+    {
+        std::lock_guard<std::mutex> lg{_mutex};
 
-    switch (capture_status_feedback) {
-        default:
-            // Fallthrough
-        case CameraServer::CameraFeedback::Unknown:
-            return CameraServer::Result::Error;
-        case CameraServer::CameraFeedback::Ok: {
-            auto command_ack = _server_component_impl->make_command_ack_message(
-                _last_capture_status_command, MAV_RESULT_ACCEPTED);
-            _server_component_impl->send_command_ack(command_ack);
-            // break and send capture status
-            break;
+        switch (capture_status_feedback) {
+            default:
+                // Fallthrough
+            case CameraServer::CameraFeedback::Unknown:
+                return CameraServer::Result::Error;
+            case CameraServer::CameraFeedback::Ok: {
+                auto command_ack = _server_component_impl->make_command_ack_message(
+                    _last_capture_status_command, MAV_RESULT_ACCEPTED);
+                _server_component_impl->send_command_ack(command_ack);
+                // break and send capture status
+                break;
+            }
+            case CameraServer::CameraFeedback::Busy: {
+                auto command_ack = _server_component_impl->make_command_ack_message(
+                    _last_capture_status_command, MAV_RESULT_TEMPORARILY_REJECTED);
+                _server_component_impl->send_command_ack(command_ack);
+                return CameraServer::Result::Success;
+            }
+            case CameraServer::CameraFeedback::Failed: {
+                auto command_ack = _server_component_impl->make_command_ack_message(
+                    _last_capture_status_command, MAV_RESULT_FAILED);
+                _server_component_impl->send_command_ack(command_ack);
+                return CameraServer::Result::Success;
+            }
         }
-        case CameraServer::CameraFeedback::Busy: {
-            auto command_ack = _server_component_impl->make_command_ack_message(
-                _last_capture_status_command, MAV_RESULT_TEMPORARILY_REJECTED);
-            _server_component_impl->send_command_ack(command_ack);
-            return CameraServer::Result::Success;
-        }
-        case CameraServer::CameraFeedback::Failed: {
-            auto command_ack = _server_component_impl->make_command_ack_message(
-                _last_capture_status_command, MAV_RESULT_FAILED);
-            _server_component_impl->send_command_ack(command_ack);
-            return CameraServer::Result::Success;
-        }
+
+        _capture_status = capture_status;
     }
-
-    _capture_status = capture_status;
 
     send_capture_status();
 
