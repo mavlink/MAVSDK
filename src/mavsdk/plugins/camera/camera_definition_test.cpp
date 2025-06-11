@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <memory>
 #include <fstream>
+#include <sstream>
 
 using namespace mavsdk;
 
@@ -641,4 +642,63 @@ TEST(CameraDefinition, UVCCheckOptionHumanReadable)
 
     EXPECT_TRUE(cd.get_option_str("EXP_PRIORITY", "1", description));
     EXPECT_STREQ(description.c_str(), "ON");
+}
+
+TEST(CameraDefinition, GazeboOperatorStream)
+{
+    CameraDefinition cd;
+    ASSERT_TRUE(cd.load_file("src/mavsdk/plugins/camera/gazebo_camera.xml"));
+
+    cd.assume_default_settings();
+
+    // Test operator<< with different parameter types
+    {
+        ParamValue value;
+        ASSERT_TRUE(cd.get_setting("CAM_MODE", value));
+        std::stringstream ss;
+        ss << value;
+        EXPECT_FLOAT_EQ(std::stof(ss.str()), 1.0f); // Default value is 1
+    }
+
+    {
+        ParamValue value;
+        ASSERT_TRUE(cd.get_setting("CAM_ZOOM", value));
+        std::stringstream ss;
+        ss << value;
+        EXPECT_FLOAT_EQ(std::stof(ss.str()), 1.0f); // Default value is 1
+    }
+
+    {
+        ParamValue value;
+        ASSERT_TRUE(cd.get_setting("CAM_Z2F", value));
+        std::stringstream ss;
+        ss << value;
+        EXPECT_FLOAT_EQ(std::stof(ss.str()), 4.3f); // Default value is 4.3
+    }
+
+    // Test setting and getting values
+    {
+        ParamValue value;
+        value.set<uint32_t>(2);
+        ASSERT_TRUE(cd.set_setting("CAM_ZOOM", value));
+
+        ParamValue retrieved;
+        ASSERT_TRUE(cd.get_setting("CAM_ZOOM", retrieved));
+        std::stringstream ss;
+        ss << retrieved;
+        EXPECT_FLOAT_EQ(std::stof(ss.str()), 2.0f);
+    }
+
+    // Test setting a new value
+    {
+        ParamValue new_value;
+        new_value.set(3);
+        EXPECT_TRUE(cd.set_setting("CAM_ZOOM", new_value));
+
+        ParamValue retrieved;
+        EXPECT_TRUE(cd.get_setting("CAM_ZOOM", retrieved));
+        std::stringstream ss;
+        ss << retrieved;
+        EXPECT_FLOAT_EQ(std::stof(ss.str()), 3.0f);
+    }
 }

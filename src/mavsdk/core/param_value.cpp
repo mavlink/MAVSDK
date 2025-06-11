@@ -1,6 +1,7 @@
 #include "param_value.h"
 
 #include <cassert>
+#include <sstream>
 
 namespace mavsdk {
 
@@ -635,7 +636,7 @@ bool ParamValue::operator==(const std::string& value_str) const
 
 std::ostream& operator<<(std::ostream& str, const ParamValue& obj)
 {
-    str << "ParamValue{" << obj.typestr() << ":" << obj.get_string() << "}";
+    str << obj.get_string();
     return str;
 }
 
