@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mavlinkcamera>
+    <definition version="11">
+        <model>GaeboEO</model>
+        <vendor>XP4</vendor>
+    </definition>
+    <parameters>
+        <!-- control = 0 tells us this should not create an automatic UI control -->
+        <parameter name="CAM_MODE" type="uint32" default="1" control="0">
+            <description>Camera Mode</description>
+            <options>
+                <option name="Photo" value="0"/>
+                <option name="Video" value="1"/>
+            </options>
+        </parameter>
+        <parameter name="CAM_ZOOM" type="uint32" default="1" control="1">
+            <description>Optical Zoom</description>
+            <options>
+                <option name="1x" value="1"/>
+                <option name="2x" value="2"/>
+                <option name="3x" value="3"/>
+                <option name="4x" value="4"/>
+                <option name="5x" value="5"/>
+                <option name="6x" value="6"/>
+                <option name="7x" value="7"/>
+                <option name="8x" value="8"/>
+                <option name="9x" value="9"/>
+                <option name="10x" value="10"/>
+                <option name="11x" value="11"/>
+                <option name="12x" value="12"/>
+                <option name="13x" value="13"/>
+                <option name="14x" value="14"/>
+                <option name="15x" value="15"/>
+                <option name="16x" value="16"/>
+                <option name="17x" value="17"/>
+                <option name="18x" value="18"/>
+                <option name="19x" value="19"/>
+                <option name="20x" value="20"/>
+                <option name="21x" value="21"/>
+                <option name="22x" value="22"/>
+                <option name="23x" value="23"/>
+                <option name="24x" value="24"/>
+                <option name="25x" value="25"/>
+                <option name="26x" value="26"/>
+                <option name="27x" value="27"/>
+                <option name="28x" value="28"/>
+                <option name="29x" value="29"/>
+                <option name="30x" value="30"/>
+            </options>
+        </parameter>
+        <parameter name="CAM_OPTCTRL" type="uint32" writeonly="1" default="3" control="1">
+            <description>Camera Zoom</description>
+            <options>
+                <option name="tele" value="1"/>
+                <option name="wide" value="2"/>
+                <option name="stop" value="3"/>
+            </options>
+        </parameter>
+        <parameter name="CAM_Z2F" type="float" default="4.3" control="0">
+            <description>Zoom to focal length</description>
+            <options>
+                <option name="1x" value="4.3"/>
+                <option name="2x" value="4.4"/>
+                <option name="3x" value="4.8"/>
+                <option name="4x" value="5.4"/>
+                <option name="5x" value="6.1"/>
+                <option name="6x" value="6.9"/>
+                <option name="7x" value="7.8"/>
+                <option name="8x" value="8.0"/>
+                <option name="9x" value="10.0"/>
+                <option name="10x" value="10.9"/>
+                <option name="11x" value="12.7"/>
+                <option name="12x" value="14.4"/>
+                <option name="13x" value="16.3"/>
+                <option name="14x" value="18.6"/>
+                <option name="15x" value="21.3"/>
+                <option name="16x" value="24.3"/>
+                <option name="17x" value="27.6"/>
+                <option name="18x" value="31.2"/>
+                <option name="19x" value="35.1"/>
+                <option name="20x" value="39.5"/>
+                <option name="21x" value="44.3"/>
+                <option name="22x" value="49.5"/>
+                <option name="23x" value="55.6"/>
+                <option name="24x" value="62.1"/>
+                <option name="25x" value="69.5"/>
+                <option name="26x" value="78.2"/>
+                <option name="27x" value="88.4"/>
+                <option name="28x" value="100.9"/>
+                <option name="29x" value="112.1"/>
+                <option name="30x" value="126.8"/>
+                <option name="31x" value="127.9"/>
+                <option name="32x" value="129.0"/>
+            </options>
+        </parameter>
+    </parameters>
+</mavlinkcamera> 
