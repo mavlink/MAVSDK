@@ -12,6 +12,8 @@ namespace mavsdk {
 
 class MissionRawImpl : public PluginImplBase {
 public:
+    enum class MissionState { Unknown = 0, NotCompleted = 1, Completed = 2 };
+
     explicit MissionRawImpl(System& system);
     explicit MissionRawImpl(std::shared_ptr<System> system);
     ~MissionRawImpl() override;
@@ -66,6 +68,8 @@ public:
     subscribe_mission_progress(const MissionRaw::MissionProgressCallback& callback);
     void unsubscribe_mission_progress(MissionRaw::MissionProgressHandle handle);
 
+    std::pair<MissionRaw::Result, bool> is_mission_finished() const;
+
     std::pair<MissionRaw::Result, MissionRaw::MissionImportData>
     import_qgroundcontrol_mission(std::string qgc_plan_path);
 
@@ -119,11 +123,12 @@ private:
     std::weak_ptr<MavlinkMissionTransferClient::WorkItem> _last_download{};
 
     struct {
-        std::mutex mutex{};
+        mutable std::mutex mutex{};
         MissionRaw::MissionProgress last{};
         MissionRaw::MissionProgress last_reported{};
         CallbackList<MissionRaw::MissionProgress> callbacks{};
         int32_t last_reached{};
+        MissionState mission_state{MissionState::Unknown};
     } _mission_progress{};
 
     struct {

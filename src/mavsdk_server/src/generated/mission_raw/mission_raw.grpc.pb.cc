@@ -40,6 +40,7 @@ static const char* MissionRawService_method_names[] = {
   "/mavsdk.rpc.mission_raw.MissionRawService/SubscribeMissionChanged",
   "/mavsdk.rpc.mission_raw.MissionRawService/ImportQgroundcontrolMission",
   "/mavsdk.rpc.mission_raw.MissionRawService/ImportQgroundcontrolMissionFromString",
+  "/mavsdk.rpc.mission_raw.MissionRawService/IsMissionFinished",
 };
 
 std::unique_ptr< MissionRawService::Stub> MissionRawService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -65,6 +66,7 @@ MissionRawService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& 
   , rpcmethod_SubscribeMissionChanged_(MissionRawService_method_names[13], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   , rpcmethod_ImportQgroundcontrolMission_(MissionRawService_method_names[14], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_ImportQgroundcontrolMissionFromString_(MissionRawService_method_names[15], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_IsMissionFinished_(MissionRawService_method_names[16], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status MissionRawService::Stub::UploadMission(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::UploadMissionRequest& request, ::mavsdk::rpc::mission_raw::UploadMissionResponse* response) {
@@ -421,6 +423,29 @@ void MissionRawService::Stub::async::ImportQgroundcontrolMissionFromString(::grp
   return result;
 }
 
+::grpc::Status MissionRawService::Stub::IsMissionFinished(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest& request, ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest, ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_IsMissionFinished_, context, request, response);
+}
+
+void MissionRawService::Stub::async::IsMissionFinished(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest* request, ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest, ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_IsMissionFinished_, context, request, response, std::move(f));
+}
+
+void MissionRawService::Stub::async::IsMissionFinished(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest* request, ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_IsMissionFinished_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse>* MissionRawService::Stub::PrepareAsyncIsMissionFinishedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse, ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_IsMissionFinished_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse>* MissionRawService::Stub::AsyncIsMissionFinishedRaw(::grpc::ClientContext* context, const ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncIsMissionFinishedRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 MissionRawService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       MissionRawService_method_names[0],
@@ -582,6 +607,16 @@ MissionRawService::Service::Service() {
              ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse* resp) {
                return service->ImportQgroundcontrolMissionFromString(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      MissionRawService_method_names[16],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< MissionRawService::Service, ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest, ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](MissionRawService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest* req,
+             ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse* resp) {
+               return service->IsMissionFinished(ctx, req, resp);
+             }, this)));
 }
 
 MissionRawService::Service::~Service() {
@@ -693,6 +728,13 @@ MissionRawService::Service::~Service() {
 }
 
 ::grpc::Status MissionRawService::Service::ImportQgroundcontrolMissionFromString(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringRequest* request, ::mavsdk::rpc::mission_raw::ImportQgroundcontrolMissionFromStringResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status MissionRawService::Service::IsMissionFinished(::grpc::ServerContext* context, const ::mavsdk::rpc::mission_raw::IsMissionFinishedRequest* request, ::mavsdk::rpc::mission_raw::IsMissionFinishedResponse* response) {
   (void) context;
   (void) request;
   (void) response;

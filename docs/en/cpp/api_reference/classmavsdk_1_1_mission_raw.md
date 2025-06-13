@@ -69,6 +69,7 @@ void | [unsubscribe_mission_progress](#classmavsdk_1_1_mission_raw_1ac46f08b5270
 void | [unsubscribe_mission_changed](#classmavsdk_1_1_mission_raw_1ac6cd7602b2e5b46ad0ea1cf8bf602a0c) ([MissionChangedHandle](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a46da6d8a53822fd5fbd7b2a414624c5c) handle) | Unsubscribe from subscribe_mission_changed.
 std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > | [import_qgroundcontrol_mission](#classmavsdk_1_1_mission_raw_1a2a4ca261c37737e691c6954693d6d0a5) (std::string qgc_plan_path)const | Import a QGroundControl missions in JSON .plan format, from a file.
 std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > | [import_qgroundcontrol_mission_from_string](#classmavsdk_1_1_mission_raw_1a4a1b55650120d8af0ce7fa037f6b5ce9) (std::string qgc_plan)const | Import a QGroundControl missions in JSON .plan format, from a string.
+std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), bool > | [is_mission_finished](#classmavsdk_1_1_mission_raw_1a998db451c2718d9728276ca2d01ce315) () const | Check if the mission is finished.
 const [MissionRaw](classmavsdk_1_1_mission_raw.md) & | [operator=](#classmavsdk_1_1_mission_raw_1a2b8cdc1fbee72224a9ef6eb9266b2e2a) (const [MissionRaw](classmavsdk_1_1_mission_raw.md) &)=delete | Equality operator (object is not copyable).
 
 
@@ -733,6 +734,23 @@ This function is blocking.
 **Returns**
 
 &emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), [MissionRaw::MissionImportData](structmavsdk_1_1_mission_raw_1_1_mission_import_data.md) > - Result of request.
+
+### is_mission_finished() {#classmavsdk_1_1_mission_raw_1a998db451c2718d9728276ca2d01ce315}
+```cpp
+std::pair< Result, bool > mavsdk::MissionRaw::is_mission_finished() const
+```
+
+
+Check if the mission is finished.
+
+Returns true if the mission is finished, false otherwise.
+
+
+This function is blocking.
+
+**Returns**
+
+&emsp;std::pair< [Result](classmavsdk_1_1_mission_raw.md#classmavsdk_1_1_mission_raw_1a7ea2a624818ebb5a3e209cc275d58eaf), bool > - Result of request.
 
 ### operator=() {#classmavsdk_1_1_mission_raw_1a2b8cdc1fbee72224a9ef6eb9266b2e2a}
 ```cpp
