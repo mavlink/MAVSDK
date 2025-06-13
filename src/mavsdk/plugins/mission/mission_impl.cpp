@@ -999,13 +999,15 @@ std::pair<Mission::Result, bool> MissionImpl::is_mission_finished_locked() const
         // It is not straightforward to look at "current" because it jumps to 0
         // once the last item has been done. Therefore we have to lo decide using
         // "reached" here.
-        // It seems that we never receive a reached when RTL is initiated after
-        // a mission, and we need to account for that.
+        // With PX4, it seems that we didn't use to receive a reached when RTL is initiated
+        // after a mission, and we needed to account for that all the way to PX4 v1.16.
         const unsigned rtl_correction = _enable_return_to_launch_after_mission ? 2 : 1;
 
+        // By accepting the current to be larger than the total, we are accepting the case
+        // where we no longer require the rtl_correction, as this is now getting fixed in PX4.
         return std::make_pair<Mission::Result, bool>(
             Mission::Result::Success,
-            unsigned(_mission_data.last_reached_mavlink_mission_item + rtl_correction) ==
+            unsigned(_mission_data.last_reached_mavlink_mission_item + rtl_correction) >=
                 _mission_data.mavlink_mission_item_to_mission_item_indices.size());
     }
 
